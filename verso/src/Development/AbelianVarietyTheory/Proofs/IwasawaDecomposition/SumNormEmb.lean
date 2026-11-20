@@ -20,7 +20,7 @@ def extId {R : Type} [CommRing R] {m n : ℕ} (M : Matrix (Fin m) (Fin n) R) (P 
     (x : Matrix (Fin n) (Fin n) R) : Matrix (Fin m) (Fin m) R := 1 + M * (x - 1) * P
 
 /- English proof (translation)
-Rewrite using `[extId, extId, Matrix.map_add _ (map_add f), Matrix.map_mul, Matrix.map_mul, Matrix.map_sub _ (map_sub f), Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_emb {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m n : ℕ} (M : Matrix (Fin m) (Fin n) R)
     (P : Matrix (Fin n) (Fin m) R) (x : Matrix (Fin n) (Fin n) R) :
@@ -29,13 +29,13 @@ theorem map_emb {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m n : �
     Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Use `⟨∑ i, ∑ j, (‖(1 - M * P : Matrix (Fin m) (Fin m) ℂ) i j‖ + ∑ l, ∑ k, ‖M i k‖ * ‖P l j‖), by positivity, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : extId M P x = (1 - M * P) + M * x * P`. Rewrite using `[extId, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hS : 0 ≤ ∑ k, ∑ l, ‖x k l‖` using `by positivity`. Establish `hx : ∀ k l, ‖x k l‖ ≤ 1 + ∑ k, ∑ l, ‖x k l‖` using `fun k l => ((Finset.single_le_sum (f := fun l => ‖x k l‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ l)).trans (Finset.single_le_sum (f := fun k => ∑ l, ‖x k l‖) (fun _ _ => by positivity) (Finset.mem_univ k))).trans (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.add_apply, add_mul]`. Use `(norm_add_le _ _).trans (add_le_add (le_mul_of_one_le_right (norm_nonneg _) (by linarith)) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hx k l) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_emb {m n : ℕ} (M : Matrix (Fin m) (Fin n) ℂ) (P : Matrix (Fin n) (Fin m) ℂ) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ x : Matrix (Fin n) (Fin n) ℂ,
@@ -73,7 +73,7 @@ theorem matHom_emb (h : GA D B) : (matHom A (emb hι h)).1 =
       (matHom B h).1 := rfl
 
 /- English proof (translation)
-Establish `h1 : (matHom B h).1.map f = 1` using `congrArg Units.val hh`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(matHom A (emb hι h)).1.map f = 1`. Rewrite using `[matHom_emb, map_emb, h1, extId, sub_self, Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_ker {S : Type} [CommRing S] (f : AF D.host.F ⊗[D.host.F] D.host.E →+* S) (h : GA D B)
     (hh : Formalism.UG.bc f (matHom B h) = 1) : Formalism.UG.bc f (matHom A (emb hι h)) = 1 := by
@@ -83,17 +83,17 @@ theorem emb_ker {S : Type} [CommRing S] (f : AF D.host.F ⊗[D.host.F] D.host.E 
   rw [matHom_emb, map_emb, h1, extId, sub_self, Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-The claim follows from `emb_ker hι _ h hh`.
+A detailed English derivation is pending.
 -/
 theorem emb_GfC {h : GA D B} (hh : h ∈ GfC B) : emb hι h ∈ GfC A := emb_ker hι _ h hh
 
 /- English proof (translation)
-The claim follows from `emb_ker hι _ h hh`.
+A detailed English derivation is pending.
 -/
 theorem emb_GinfC {h : GA D B} (hh : h ∈ GinfC B) : emb hι h ∈ GinfC A := emb_ker hι _ h hh
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun h => ?_⟩` and prove the remaining obligations. Use `rotate_left 2`. Express the relevant statement in the definitionally equal form `((matHom A (emb hι h)).1.map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom).map θ = _`. Rewrite using `[matHom_emb, map_emb, map_emb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infMat_emb (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) : ∃ M P, ∀ h : GA D B,
     infMat D.sp.cm.sig A.gram θ (emb hι h) = extId M P (infMat D.sp.cm.sig B.gram θ h) := by
@@ -105,11 +105,11 @@ theorem infMat_emb (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) : ∃ M
   rfl
 
 /- English proof (translation)
-Use `choose M P hMP using fun τ => infMat_emb hι (θ τ)`. Use `choose c hc0 hc using fun τ => sum_norm_emb (M τ) (P τ)`. Use `⟨∑ τ, 2 * c τ, Finset.sum_nonneg fun τ _ => by have := hc0 τ; positivity, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, normInf]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∑ i, ∑ j, (‖infMat D.sp.cm.sig B.gram (θ τ) h i j‖ + ‖infMat D.sp.cm.sig B.gram (θ τ) h⁻¹ i j‖) ≤ normInf θ B h` using `Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig B.gram (θ τ) h i j‖ + ‖infMat D.sp.cm.sig B.gram (θ τ) h⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Simplify using `only [Finset.sum_add_distrib] at h0 ⊢`. Rewrite using `[← map_inv, hMP, hMP]`. Establish `h1` using `hc τ (infMat D.sp.cm.sig B.gram (θ τ) h)`. Establish `h2` using `hc τ (infMat D.sp.cm.sig B.gram (θ τ) h⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left h0 (hc0 τ)`. Establish `h4` using `mul_nonneg (hc0 τ) (GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) h)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem normInf_emb (θ : InfF D) : ∃ c : ℝ, 0 ≤ c ∧ ∀ h : GA D B,
     normInf θ A (emb hι h) ≤ c * (1 + normInf θ B h) := by
@@ -131,11 +131,11 @@ theorem normInf_emb (θ : InfF D) : ∃ c : ℝ, 0 ≤ c ∧ ∀ h : GA D B,
   nlinarith
 
 /- English proof (translation)
-Take `⟨U, hU, hUφ⟩` from `hφ.level`. Take `⟨S, C₀, M, hS⟩` from `GlobalTheory.SmoothForms.reduction hθ ((GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ B) (U.comap (emb hι)) (hU.preimage hc)`. Take `⟨N, hN⟩` from `hφ.growth`. Use `choose C hC using hN [] (by simp)`. Take `⟨c, hc0, hc⟩` from `normInf_emb hι θ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M * N, (∑ x ∈ S, |C (emb hι x)|) * (c * (1 + |C₀|)) ^ N, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, x, hx, a, ha, k, hk, hk', e, hb⟩` from `hS g`. Rewrite using `[← hφ.left _ (hQ γ hγ), ← map_mul, e, map_mul, map_mul, hUφ _ hk (emb_GfC hι hk'), pow_mul, mul_assoc, ← mul_pow]`. Establish `h1 : (1 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ B g : ℝ) ^ M` using `one_le_pow₀ (by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.one_le_height θ B g)`. Establish `h2 : normInf θ A (emb hι a) ≤ c * (1 + |C₀|) * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ B g : ℝ) ^ M`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hc a).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, add_mul, one_mul]`. Conclude with `mul_le_mul_of_nonneg_left (add_le_add h1 (hb.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (zero_le_one.trans h1)))) hc0`. Conclude with `(hC _ _ (emb_GinfC hι ha)).trans (mul_le_mul ((le_abs_self _).trans (Finset.single_le_sum (f := fun x => |C (emb hι x)|) (fun _ _ => abs_nonneg _) hx)) (pow_le_pow_left₀ (GlobalTheory.SmoothForms.normInf_nonneg _) h2 N) (pow_nonneg (GlobalTheory.SmoothForms.normInf_nonneg _) N) ( …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_moderate {θ : InfF D} (hθ : IsInfFam θ) (hc : Continuous (emb hι)) (hQ : ∀ γ ∈ GQ B, emb hι γ ∈ GQ A)
     {φ : GA D A → ℂ} (hφ : IsAutFunSm θ A φ) :
@@ -161,11 +161,11 @@ theorem emb_moderate {θ : InfF D} (hθ : IsInfFam θ) (hc : Continuous (emb hι
     (Finset.sum_nonneg fun _ _ => abs_nonneg _))
 
 /- English proof (translation)
-Introduce `θ hθ A B ι hι μ 𝓕 hq s hs φ φ' hφ hφ'`. Take `rfl : s = emb hι` from `funext fun h => (GlobalTheory.AutFunCompare.embRel_iff A B ι hι _ _).1 (hs h)`. Take `⟨s, hc, hrel, hQ⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D A B ι hι`. Establish `e : ∀ h, emb hι h = s h` using `fun h => (hrel h _).1 (hs h)`. Establish `hc' : Continuous (emb hι)` using `by rw [show ⇑(emb hι) = s from funext e]; exact hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ' : ∀ γ ∈ GQ B, emb hι γ ∈ GQ A` using `fun γ hγ => e γ ▸ hQ γ hγ`. Take `⟨N, C, hC⟩` from `emb_moderate hι hθ hc' hQ' hφ`. Take `⟨K, hK⟩` from `(GlobalTheory.CuspDecay.isRapidDecay_of_cuspForm hP hθ hφ'.1 hφ'.2).mul_bounded (ψ := fun g => φ (emb hι g)) (fun γ hγ g => by simp only [map_mul]; exact hφ.left _ (hQ' γ hγ) _) hC`. Establish `: BorelSpace (GA D B)` using `⟨rfl⟩`. Use `Measure.integrableOn_of_bounded (M := K) (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol B μ 𝓕 hq.1 hq.2).ne (((hφ.cont.comp hc').star.mul hφ'.1.cont).measurable.aestronglyMeasurable) (.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_star]`. Conclude with `hK g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topInt (hP : GlobalTheory.Published.CuspRapidDecay) (D : D7) : TopInt D := by
   intro θ hθ A B ι hι μ 𝓕 hq s hs φ φ' hφ hφ'

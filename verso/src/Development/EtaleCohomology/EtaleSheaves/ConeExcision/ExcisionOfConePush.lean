@@ -8,9 +8,9 @@ namespace LateralTheory.E.LeafExcPf
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `T`. Establish `hg : Function.Injective (g.app T)` using `(mono_iff_injective _).1 ((NatTrans.mono_iff_mono_app g).1 ‹_› T)`. Rewrite using `[ModuleCat.mono_iff_injective]`. Express the relevant statement in the definitionally equal form `Function.Injective (Finsupp.mapDomain (ULift.map (g.app T)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Finsupp.mapDomain_injective (fun a b h => ULift.ext _ _ (hg (congrArg ULift.down h)))`.
+A detailed English derivation is pending.
 -/
 theorem mono_freePresheaf_map {X Y : PSh} (g : X ⟶ Y) [Mono g] : Mono ((freeP R).map g) := by
   rw [NatTrans.mono_iff_mono_app]
@@ -22,7 +22,7 @@ theorem mono_freePresheaf_map {X Y : PSh} (g : X ⟶ Y) [Mono g] : Mono ((freeP 
   exact Finsupp.mapDomain_injective (fun a b h => ULift.ext _ _ (hg (congrArg ULift.down h)))
 
 /- English proof (translation)
-Use `mono_freePresheaf_map R g` as an intermediate fact. Express the relevant statement in the definitionally equal form `Mono ((presheafToSheaf _ _).map ((freeP R).map g))`. Use `infer_instance`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem free_mono {X Y : PSh} (g : X ⟶ Y) [Mono g] : Mono ((free R).map g) := by
   have := mono_freePresheaf_map R g
@@ -30,11 +30,11 @@ theorem free_mono {X Y : PSh} (g : X ⟶ Y) [Mono g] : Mono ((free R).map g) := 
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ E E' f _ n`. Establish `hlev : ∀ p : ℕ, Mono (f.app (op (SimplexCategory.mk p)))` using `fun p => (NatTrans.mono_iff_mono_app f).1 ‹_› _`. Express the relevant statement in the definitionally equal form `Mono (HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat |>.f n)`. Distinguish the cases in `h : ∃ p : ℕ, ComplexShape.embeddingDownNat.f p = n`. Take `⟨p, hp⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[HomologicalComplex.extendMap_f _ _ hp]`. Establish `: Mono (((chainsN R).map f).f p)`. Express the relevant statement in the definitionally equal form `Mono ((free R).map (f.app (op (SimplexCategory.mk p))))`. Conclude with `free_mono R _`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [not_exists] at h`. Establish `hz` using `HomologicalComplex.isZero_extend_X ((chainsN R).obj E) ComplexShape.embeddingDownNat n h`. Conclude with `⟨fun g k _ => hz.eq_of_tgt g k⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafMono_pf : LeafMono := by
   intro R _ E E' f _ n
@@ -53,7 +53,7 @@ theorem LeafMono_pf : LeafMono := by
     exact ⟨fun g k _ => hz.eq_of_tgt g k⟩
 
 /- English proof (translation)
-The claim follows from `LeafExc_of hRel LeafMono_pf hSq hCone`.
+A detailed English derivation is pending.
 -/
 theorem excision_of_conePush (hRel : LateralTheory.E.t_E6Cut.LeafRel) (hSq : LeafSq) (hCone : LeafConePush) :
     LateralTheory.E.t_E6Cut.LeafExc :=

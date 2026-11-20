@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.BoxBound
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hA : ∀ i k, ‖A i k‖ ≤ ‖toL A‖` using `fun i k => (norm_le_pi_norm (toL A i) k).trans (norm_le_pi_norm (toL A) i)`. Establish `hB : ∀ i k, ‖B i k‖ ≤ ‖toL B‖` using `fun i k => (norm_le_pi_norm (toL B i) k).trans (norm_le_pi_norm (toL B) i)`. Establish `h0 : 0 ≤ (a : ℝ) * (‖toL A‖ * ‖toL B‖)` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(A * B) i j‖ ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ (‖toL A‖ * ‖toL B‖) fun k _ => ?_).trans_eq (by simp)` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hA i k) (hB k j) (norm_nonneg _) (norm_nonneg _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
     ‖toL (A * B)‖ ≤ a * (‖toL A‖ * ‖toL B‖) := by
@@ -36,13 +36,13 @@ theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
   exact (norm_mul_le _ _).trans (mul_le_mul (hA i k) (hB k j) (norm_nonneg _) (norm_nonneg _))
 
 /- English proof (translation)
-Establish `h1` using `norm_toL_mul_le (y.val) (z.val)`. Establish `h2` using `norm_toL_mul_le ((z⁻¹).val) ((y⁻¹).val)`. Establish `e1 : (y * z).val = y.val * z.val` using `rfl`. Establish `e2 : ((y * z)⁻¹).val = (z⁻¹).val * (y⁻¹).val` using `by rw [_root_.mul_inv_rev]; rfl`. Establish `hy` using `one_le_height y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `one_le_height z`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL z.val)`. Establish `n3` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n4` using `norm_nonneg (toL (z⁻¹).val)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : ‖toL y.val‖ * ‖toL z.val‖ ≤ CuspRep.height y * CuspRep.height z` using `mul_le_mul (by unfold CuspRep.height; linarith) (by unfold CuspRep.height; linarith) n2 (by linarith)`. Establish `m2 : ‖toL (z⁻¹).val‖ * ‖toL (y⁻¹).val‖ ≤ CuspRep.height y * CuspRep.height z`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul (by unfold CuspRep.height; linarith) (by unfold CuspRep.height; linarith) n4 (by linarith)`. Establish `m3 : 1 ≤ CuspRep.height y * CuspRep.height z` using `one_le_mul_of_one_le_of_one_le hy hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `: CuspRep.height (y * z) = 1 + ‖toL (y * z).val‖ + ‖toL ((y * z)⁻¹).val‖` using `rfl`. Rewrite using `[this, e1, e2]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left m1 ha, mul_le_mul_of_nonneg_left m2 ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem height_mul_le' (y z : GL (Fin a) (Cinf E)) :
     CuspRep.height (y * z) ≤ (1 + 2 * a) * (CuspRep.height y * CuspRep.height z) := by
@@ -68,9 +68,9 @@ theorem height_mul_le' (y z : GL (Fin a) (Cinf E)) :
   nlinarith [mul_le_mul_of_nonneg_left m1 ha, mul_le_mul_of_nonneg_left m2 ha]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun y : GL (Fin a) (Cinf E) => (y.val : Matrix (Fin a) (Fin a) (Cinf E))` using `Units.continuous_val`. Establish `h2 : Continuous fun y : GL (Fin a) (Cinf E) => ((y⁻¹).val : Matrix (Fin a) (Fin a) (Cinf E))` using `Units.continuous_coe_inv`. Establish `n1 : Continuous fun y : GL (Fin a) (Cinf E) => ‖toL y.val‖` using `(continuous_norm (E := Lie E a)).comp h1`. Establish `n2 : Continuous fun y : GL (Fin a) (Cinf E) => ‖toL (y⁻¹).val‖` using `(continuous_norm (E := Lie E a)).comp h2`. Unfold `CuspRep.height`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(continuous_const.add n1).add n2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_height : Continuous (CuspRep.height : GL (Fin a) (Cinf E) → ℝ) := by
   have h1 : Continuous fun y : GL (Fin a) (Cinf E) => (y.val : Matrix (Fin a) (Fin a) (Cinf E)) :=
@@ -87,19 +87,19 @@ abbrev gInf (g : GA E a) : GL (Fin a) (Cinf E) := GeneralLinearGroup.map (pInf E
 abbrev gFin (g : GA E a) : GL (Fin a) (Af E) := GeneralLinearGroup.map (pFin E) g
 
 /- English proof (translation)
-The claim follows from `GASplit.continuous_glMap a (pInf E) (GASplit.continuous_pInf E)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gInf : Continuous (gInf : GA E a → GL (Fin a) (Cinf E)) :=
   GASplit.continuous_glMap a (pInf E) (GASplit.continuous_pInf E)
 
 /- English proof (translation)
-The claim follows from `GASplit.continuous_glMap a (pFin E) (GASplit.continuous_pFin E)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gFin : Continuous (gFin : GA E a → GL (Fin a) (Af E)) :=
   GASplit.continuous_glMap a (pFin E) (GASplit.continuous_pFin E)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(hS.image (continuous_height.comp continuous_gInf)).bddAbove`. Conclude with `⟨max B 0, le_max_right _ _, fun g hg => (hB ⟨g, hg, rfl⟩).trans (le_max_left _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_height_bound {S : Set (GA E a)} (hS : IsCompact S) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ g ∈ S, CuspRep.height (gInf g) ≤ B := by
@@ -107,15 +107,13 @@ theorem exists_height_bound {S : Set (GA E a)} (hS : IsCompact S) :
   exact ⟨max B 0, le_max_right _ _, fun g hg => (hB ⟨g, hg, rfl⟩).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Use `choose Cf Nf hf using fun x : GL (Fin a) (Af E) => hφ.growth (finGL E a x)`. Establish `hU : ∀ x ∈ T, {t | x⁻¹ * t ∈ {k | finRep E a k φ = φ}} ∈ 𝓝 x` using `fun x _ => (hφ.level.preimage (continuous_const.mul continuous_id : Continuous fun t : GL (Fin a) (Af E) => x⁻¹ * t)).mem_nhds (by`. Express the relevant statement in the definitionally equal form `finRep E a (x⁻¹ * x) φ = φ`. Rewrite using `[inv_mul_cancel, map_one]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, -, hs⟩` from `hT.elim_nhds_subcover _ hU`. Use `⟨∑ x ∈ s, |Cf x|, s.sup Nf, Finset.sum_nonneg fun _ _ => abs_nonneg _, fun t ht y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxt⟩` from `Set.mem_iUnion₂.1 (hs ht)`. Establish `hk : finRep E a (x⁻¹ * t) φ = φ` using `hxt`. Establish `e : φ.1 (finGL E a t * infGL E a y) = φ.1 (finGL E a x * infGL E a y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : finGL E a t = finGL E a x * finGL E a (x⁻¹ * t)`. Rewrite using `[← map_mul, mul_inv_cancel_left]`. Establish `h2` using `congrFun (congrArg Subtype.val hk) (finGL E a x * infGL E a y)`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = φ.1 (finGL E a x * infGL E a y * finGL E a (x⁻¹ * t))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mul_assoc, mul_assoc, infGL_comm]`. Rewrite using `[e]`. Establish `hy` using `one_le_height y`. Use `(hf x y).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans ?_` and prove the remaining obligations.
-
-Use `mul_le_mul (Finset.single_le_sum (f := fun x => |Cf x|) (fun _ _ => abs_nonneg _) hx) (pow_le_pow_right₀ hy (Finset.le_sup hx)) (by positivity) (Finset.sum_nonneg fun _ _ => abs_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_growth_uniform {φ : Sm E a} (hφ : IsAutForm φ) {T : Set (GL (Fin a) (Af E))} (hT : IsCompact T) :
     ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ t ∈ T, ∀ y, ‖φ.1 (finGL E a t * infGL E a y)‖ ≤ C * CuspRep.height y ^ N := by
@@ -144,7 +142,7 @@ theorem exists_growth_uniform {φ : Sm E a} (hφ : IsAutForm φ) {T : Set (GL (F
     (pow_le_pow_right₀ hy (Finset.le_sup hx)) (by positivity) (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
 /- English proof (translation)
-The claim follows from `norm_isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w) (x.1 w)`.
+A detailed English derivation is pending.
 -/
 theorem norm_pInf_apply (x : Ad E) (w : InfinitePlace E) : ‖pInf E x w‖ = ‖x.1 w‖ :=
   norm_isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w) (x.1 w)
@@ -153,9 +151,7 @@ abbrev dg (a : ℕ) (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) : GA E a :=
   diagUnits a (fun i => posIdele (K := E) (ρ i) (hρ i))
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pFin E ((diagonal fun i => ((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E])) i j) = (1 : Matrix (Fin a) (Fin a) (Af E)) i j`. Rewrite using `[Matrix.diagonal_apply, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
-
-Conclude with `FiniteAdeleRing.ext _ fun v => posIdele_finite (K := E) (ρ i) (hρ i) v`. Conclude with `map_zero _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gFin_dg (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) : gFin (dg (E := E) a ρ hρ) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -167,19 +163,17 @@ theorem gFin_dg (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) : gFin (dg (E := E)
   · exact map_zero _
 
 /- English proof (translation)
-Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `key : ∀ i w, ‖pInf E ((posIdele (K` using `E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E]) w‖ = ρ i := fun i w => by`. Rewrite using `[norm_pInf_apply]`. Conclude with `norm_posIdele_infinite (K := E) (ρ i) (hρ i) w`. Establish `key' : ∀ i w, ‖pInf E (((posIdele (K` using `E) (ρ i) (hρ i) : IdeleGroup E)⁻¹ : IdeleGroup E) : 𝔸[E]) w‖ = (ρ i)⁻¹ := fun i w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : pInf E ((posIdele (K` using `E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E]) w * pInf E (((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E)⁻¹ : IdeleGroup E) : 𝔸[E]) w = 1 := by`. Rewrite using `[← Pi.mul_apply, ← map_mul, Units.mul_inv, map_one, Pi.one_apply]`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, key, norm_one]`. Conclude with `eq_inv_of_mul_eq_one_right h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b1 : ‖toL (gInf (dg (E` using `E) a ρ hρ)).val‖ ≤ L := by`. Use `(pi_norm_le_iff_of_nonneg hL0).2 fun i => (pi_norm_le_iff_of_nonneg hL0).2 fun j => (pi_norm_le_iff_of_nonneg hL0).2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖pInf E ((diagonal fun i => ((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E) : 𝔸[E])) i j) w‖ ≤ L`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Rewrite using `[key]`. Conclude with `(hL i).1`. Simplify using `using hL0`. Establish `b2 : ‖toL ((gInf (dg (E` using `E) a ρ hρ))⁻¹).val‖ ≤ L := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Use `(pi_norm_le_iff_of_nonneg hL0).2 fun i => (pi_norm_le_iff_of_nonneg hL0).2 fun j => (pi_norm_le_iff_of_nonneg hL0).2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖pInf E ((diagonal fun i => (((posIdele (K := E) (ρ i) (hρ i) : IdeleGroup E)⁻¹ : IdeleGroup E) : 𝔸[E])) i j) w‖ ≤ L`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Substitute `h` using the available equality. Rewrite using `[key']`. Conclude with `(hL i).2`. Simplify using `using hL0`. Unfold `CuspRep.height`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem height_gInf_dg_le (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) {L : ℝ} (hL1 : 1 ≤ L)
     (hL : ∀ i, ρ i ≤ L ∧ (ρ i)⁻¹ ≤ L) : CuspRep.height (gInf (dg (E := E) a ρ hρ)) ≤ 3 * L := by
@@ -214,7 +208,7 @@ theorem height_gInf_dg_le (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) {L : ℝ}
   linarith
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h` using `AutomorphicForm.prodEquiv_infEmb (K := E) (n := a) y`. Establish `h2` using `congrArg (fun p => (p.2 : GL (Fin a) (Af E)) i j) h`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gFin_infEmb (y : AutomorphicForm.archGroup E a) : gFin (AutomorphicForm.infEmb E a y : GA E a) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -223,27 +217,25 @@ theorem gFin_infEmb (y : AutomorphicForm.archGroup E a) : gFin (AutomorphicForm.
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← infGL_comm]`. Conclude with `infGL_mul_finGL g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finGL_mul_infGL (g : GA E a) : finGL E a (gFin g) * infGL E a (gInf g) = g := by
   rw [← infGL_comm]; exact infGL_mul_finGL g
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ ω hω`. Establish `hK : IsCompact (maxCompact (K` using `E) (n := a) : Set (AdelicGLn.AdelicGL E a)) := isCompact_maxCompact`. Establish `hT : IsCompact ((fun p : GA E a × GA E a => gFin p.1 * gFin p.2) '' (ω ×ˢ (maxCompact (K` using `E) (n := a) : Set (AdelicGLn.AdelicGL E a)))) := (hω.prod hK).image ((continuous_gFin.comp continuous_fst).mul (continuous_gFin.comp continuous_snd))`. Take `⟨C₀, N, hC₀, hgrow⟩` from `exists_growth_uniform hφ hT`. Use `⟨N, fun Q hQ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B₁, hB₁, h₁⟩` from `exists_height_bound (E := E) (a := a) hω`. Take `⟨B₂, hB₂, h₂⟩` from `exists_height_bound (E := E) (a := a) hK`. Take `⟨B₃, hB₃, h₃⟩` from `exists_height_bound (E := E) (a := a) (hQ.image (AutomorphicForm.continuous_infEmb (K := E) (n := a)))`. Use `set c : ℝ := 1 + 2 * a with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C₀ * (c * (c * (c * (B₁ * 3)) * B₂) * B₃) ^ N, fun b hb ρ hρ kk hk y hy L hL1 hL => ?_⟩` and prove the remaining obligations. Use `set D : GA E a := dg a ρ hρ with hD`. Use `set Y : GA E a := AutomorphicForm.infEmb E a y with hY`. Use `set x : GA E a := b * D * kk * Y with hx`. Establish `hfin : gFin x = gFin b * gFin kk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hx, map_mul, hD, gFin_dg, hY, gFin_infEmb, mul_one]`. Establish `hinf : gInf x = gInf b * gInf D * gInf kk * gInf Y`. Simplify using `only [hx, map_mul]`. Establish `hb'` using `h₁ b hb`. Establish `hk'` using `h₂ kk hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `h₃ Y ⟨y, hy, rfl⟩`. Establish `hd' : CuspRep.height (gInf D) ≤ 3 * L` using `height_gInf_dg_le ρ hρ hL1 hL`. Establish `hH : CuspRep.height (gInf x) ≤ (c * (c * (c * (B₁ * 3)) * B₂) * B₃) * L`. Establish `o1` using `one_le_height (gInf b)`. Establish `o2` using `one_le_height (gInf D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o3` using `one_le_height (gInf kk)`. Establish `o4` using `one_le_height (gInf Y)`. Establish `s1 : CuspRep.height (gInf b * gInf D) ≤ c * (B₁ * (3 * L))` using `(height_mul_le' _ _).trans (mul_le_mul_of_nonneg_left (mul_le_mul hb' hd' (by linarith) hB₁) hc0)`. Establish `s2 : CuspRep.height (gInf b * gInf D * gInf kk) ≤ c * ((c * (B₁ * (3 * L))) * B₂)` using `(height_mul_le' _ _).trans (mul_le_mul_of_nonneg_left (mul_le_mul s1 hk' (by linarith) (by positivity)) hc0)`. Establish `s3 : CuspRep.height (gInf b * gInf D * gInf kk * gInf Y) ≤ c * ((c * ((c * (B₁ * (3 * L))) * B₂)) * B₃)` using `(height_mul_le' _ _).trans (mul_le_mul_of_nonneg_left (mul_le_mul s2 hy' (by linarith) (by positivity)) hc0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hinf]`. Conclude with `s3.trans_eq (by ring)`. Establish `hbound` using `hgrow (gFin x) ⟨(b, kk), ⟨hb, hk⟩, hfin.symm⟩ (gInf x)`. Rewrite `hbound` using `[finGL_mul_infGL]`. Use `hbound.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left ?_ hC₀` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (by linarith [one_le_height (gInf x)]) hH N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem box_bound : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a), IsAutForm φ → (∀ ω : Set (AdelicGLn.AdelicGL E a), IsCompact ω → ∃ N : ℕ, ∀ Q : Set (AutomorphicForm.archGroup E a), IsCompact Q → ∃ C : ℝ,
     ∀ b ∈ ω, ∀ (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i), ∀ kk ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL E a)), ∀ y ∈ Q, ∀ L : ℝ, 1 ≤ L →

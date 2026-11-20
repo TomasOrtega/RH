@@ -19,11 +19,11 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact hz`. Consider the case `zero => exact ⟨0, 1, 0, J.zero_mem, one_mem _, isHomogeneous_zero _ _ _, isHomogeneous_one _ _, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨G, m, e, hG, hm, hGe, hme, rfl⟩` from `ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G', m', e', hG', hm', hGe', hme', rfl⟩` from `hb`. Use `⟨G * m' + m * G', m * m', e + e', J.add_mem (J.mul_mem_right _ hG) (J.mul_mem_left _ hG'), mul_mem hm hm', (hGe.mul hme').add (hme.mul hGe'), hme.mul hme', ?_⟩` and prove the remaining obligations. Rewrite using `[div_add_div _ _ (eval_ne_zero_of_mem_monos I hm) (eval_ne_zero_of_mem_monos I hm')]`. Simplify using `only [map_add, map_mul]`. Consider the case `smul r a _ ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨F, m₀, e₀, hm₀, hF, hm₀e, hr⟩` from `r.2`. Take `⟨G, m, e, hG, hm, hGe, hme, rfl⟩` from `ha`. Use `⟨F * G, m₀ * m, e₀ + e, J.mul_mem_left _ hG, mul_mem hm₀ hm, hF.mul hGe, hm₀e.mul hme, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, hr, map_mul, map_mul, div_mul_div_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_mem_idealMod (J : Ideal (Poly S N)) (I : Chart x) {z : Ω} (hz : z ∈ idealMod (x := x) J I) :
     ∃ (G m : Poly S N) (e : ℕ), G ∈ J ∧ m ∈ monos I.1 ∧ G.IsHomogeneous e ∧ m.IsHomogeneous e ∧
@@ -47,9 +47,9 @@ theorem exists_of_mem_idealMod (J : Ideal (Poly S N)) (I : Chart x) {z : Ω} (hz
 omit [Algebra S Ω] in
 
 /- English proof (translation)
-Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨j, hj, rfl⟩` from `ha`. Conclude with `hX j (by exact_mod_cast hj)`. Consider the case `one => exact fun h => hpp.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => exact fun h => (hpp.mem_or_mem h).elim ha hb`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_of_mem_monos {pp : Ideal (Poly S N)} (hpp : pp.IsPrime) {I : Chart x}
     (hX : ∀ j ∈ I.1, (X j : Poly S N) ∉ pp) {m : Poly S N} (hm : m ∈ monos I.1) : m ∉ pp := by
@@ -61,11 +61,11 @@ theorem not_mem_of_mem_monos {pp : Ideal (Poly S N)} (hpp : pp.IsPrime) {I : Cha
   | mul a b _ _ ha hb => exact fun h => (hpp.mem_or_mem h).elim ha hb
 
 /- English proof (translation)
-Take `⟨G, m', e', hG, hm', hGe, hme', heq⟩` from `exists_of_mem_idealMod pp I h`. Establish `h0` using `eval_ne_zero_of_mem_monos I hm`. Establish `h0'` using `eval_ne_zero_of_mem_monos I hm'`. Establish `hdiff : F * m' - m * G ∈ primeOf (S` using `S) x := by`. Establish `hhom : (F * m' - m * G).IsHomogeneous (e + e')` using `(hF.mul hme').sub (hme.mul hGe)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_primeOf_of_isHomogeneous x hhom, map_sub, map_mul, map_mul, sub_eq_zero]`. Rewrite `heq` using `[div_eq_div_iff h0 h0']`. Rewrite using `[heq, mul_comm]`. Establish `hFm : F * m' ∈ pp`. Use `pp.add_mem (hZ hdiff) (pp.mul_mem_left m hG)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(hpp.mem_or_mem hFm).resolve_right (not_mem_of_mem_monos hpp hX hm')`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_div_mem_idealMod {pp : Ideal (Poly S N)} (hpp : pp.IsPrime) (hZ : primeOf (S := S) x ≤ pp)
     {I : Chart x} (hX : ∀ j ∈ I.1, (X j : Poly S N) ∉ pp) {F m : Poly S N} {e : ℕ} (hm : m ∈ monos I.1)
@@ -85,9 +85,9 @@ theorem mem_of_div_mem_idealMod {pp : Ideal (Poly S N)} (hpp : pp.IsPrime) (hZ :
   exact (hpp.mem_or_mem hFm).resolve_right (not_mem_of_mem_monos hpp hX hm')
 
 /- English proof (translation)
-Take `⟨F, m, e, hm, hF, hme, ha⟩` from `a.2`. Take `⟨F', m', e', hm', hF', hme', hb⟩` from `b.2`. Rewrite `h` using `[ha, hb, div_mul_div_comm, ← map_mul, ← map_mul]`. Use `mem_of_div_mem_idealMod hpp hZ hX (mul_mem hm hm') (hF.mul hF') (hme.mul hme') h` as an intermediate fact. Use `(hpp.mem_or_mem this).imp (fun hF0 => ?_) (fun hF0 => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Conclude with `Submodule.subset_span ⟨F, m, e, hF0, hm, hF, hme, rfl⟩`. Rewrite using `[hb]`. Conclude with `Submodule.subset_span ⟨F', m', e', hF0, hm', hF', hme', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_or_mem {pp : Ideal (Poly S N)} (hpp : pp.IsPrime) (hZ : primeOf (S := S) x ≤ pp)
     {I : Chart x} (hX : ∀ j ∈ I.1, (X j : Poly S N) ∉ pp) (a b : chartRing S x I)
@@ -106,37 +106,29 @@ end SectionMulInj
 open SectionMulInj in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x pp hpp hhom hZ D M s ⟨f, hf, hfp⟩ I y hy hsy`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Express the relevant statement in the definitionally equal form `y ∈ idealMod (x := x) pp I * M.sub I`. Distinguish the cases in `hX : ∃ j ∈ I.1, (X j : Poly k N) ∈ pp`. Take `⟨j, hj, hXj⟩` from `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `StepThree.OnW.Gen.sub_le_twist_idealSys_of_mem M.toSubSystem I hj hXj hy` as an intermediate fact. Rewrite `this` using `[SubSystem.twist_sub_eq_mul_of_line]`. Then use the resulting hypothesis. Use `push Not at hX`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, homogeneousComponent e f ∉ pp := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hfp (by rw [← sum_homogeneousComponent f]; exact pp.sum_mem fun d _ => hall d)`. Use `set g : chartRing k x I := ⟨_, StepThree.Away.div_pow_mem_chartRing I hi (homogeneousComponent_isHomogeneous e f)⟩ with hg`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgI : (g : Ω) ∉ idealMod (x` using `x) pp I := fun h => he <| by`. Use `mem_of_div_mem_idealMod hpp hZ hX (pow_mem (X_mem_monos hi) e) (homogeneousComponent_isHomogeneous e f) (isHomogeneous_X_pow i e) ?_` and prove the remaining obligations. Rewrite using `[map_pow, aeval_X]`. Conclude with `h`. Establish `hgD : Submodule.span (chartRing k x I) {(g : Ω)} * D.sub I ≤ Submodule.span _ {s}`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mul_le]`. Introduce `a ha δ hδ`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp ha`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.mp (StepThree.Away.homogeneousComponent_mul_mem D.toSubSystem s I hi hf e δ hδ)`. Rewrite using `[Submodule.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r * t, ?_⟩` and prove the remaining obligations. Establish `hpow : x i ^ e ≠ 0` using `pow_ne_zero _ hxi`. Rewrite `ht` using `[chartRing_smul_def]`. Express the relevant statement in the definitionally equal form `((r * t : chartRing k x I) : Ω) * s = ((r : Ω) * (g : Ω)) * δ`. Rewrite using `[Subalgebra.coe_mul, hg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `(r : Ω) * t * s = (r : Ω) * (aeval x (homogeneousComponent e f) / x i ^ e) * δ`. Rewrite using `[mul_assoc (r : Ω), mul_assoc (r : Ω)]`. Use `congr 1`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hpow, ← ht]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D', hD'⟩` from `D.invertible I`. Take `⟨M', hM'⟩` from `M.invertible I`. Establish `h1D : (1 : Ω) ∈ D.sub I * D'` using `by rw [hD']; exact Submodule.mem_one.mpr ⟨1, map_one _⟩`. Establish `hgs : (g : Ω) ∈ Submodule.span (chartRing k x I) {s} * D'`. Use `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self (g : Ω)) h1D` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `this` using `[mul_one, ← mul_assoc]`. Conclude with `mul_le_mul' hgD le_rfl this`. Establish `hsy' : s * y ∈ idealMod (x` using `x) pp I * (D.sub I * M.sub I) := by`. Rewrite `hsy` using `[SubSystem.twist_sub_eq_mul_of_line, SubSystem.twist_sub_eq_mul_of_line]`. Conclude with `hsy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgy : Submodule.span (chartRing k x I) {(g : Ω) * y} ≤ idealMod (x` using `x) pp I * M.sub I := by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.mul_mem_mul hgs (Submodule.mem_span_singleton_self y)`. Use `_ = D' * Submodule.span _ {s * y} := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.singleton_mul_singleton, ← Submodule.span_mul_span]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ D' * (idealMod (x := x) pp I * (D.sub I * M.sub I)) := by gcongr`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hsy'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = idealMod (x := x) pp I * M.sub I * (D.sub I * D') := by ring`. Use `_ = idealMod (x := x) pp I * M.sub I := by rw [hD', mul_one]`. Establish `hyM : Submodule.span (chartRing k x I) {y} * M' ≤ idealMod (x` using `x) pp I := by`. Introduce `z hz`. Establish `hz1 : z ∈ (1 : Submodule (chartRing k x I) Ω)`.
-
-Rewrite using `[← hM']`. Use `(mul_le_mul' ?_ le_rfl : _ ≤ M.sub I * M') hz` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hy`. Take `⟨r, rfl⟩` from `Submodule.mem_one.mp hz1`.
-
-Establish `hgz : (g : Ω) * algebraMap (chartRing k x I) Ω r ∈ idealMod (x` using `x) pp I := by`. Establish `hle : Submodule.span (chartRing k x I) {(g : Ω)} * (Submodule.span _ {y} * M') ≤ idealMod (x` using `x) pp I := by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Set.singleton_mul_singleton, ← Submodule.span_mul_span]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ idealMod (x := x) pp I * M.sub I * M' := by gcongr`. Use `_ = idealMod (x := x) pp I := by rw [mul_assoc, hM', mul_one]`. Conclude with `hle (Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) hz)`. Conclude with `((mem_or_mem hpp hZ hX g r hgz).resolve_left hgI)`. Establish `hle : Submodule.span (chartRing k x I) {y} ≤ idealMod (x` using `x) pp I * M.sub I :=`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_comm M', hM', mul_one]`. Use `_ ≤ idealMod (x := x) pp I * M.sub I := by gcongr`. Conclude with `hle (Submodule.mem_span_singleton_self y)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SectionMulInj.proof : SectionMulInj.Statement.{u, w} := by
   intro k _ Ω _ _ N x pp hpp hhom hZ D M s ⟨f, hf, hfp⟩ I y hy hsy

@@ -16,11 +16,11 @@ namespace GlobalTheory.ConeTateSupp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨b₀.traceDual i, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_mul, map_add, hx, hy, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r x`. Establish `h1` using `Module.Basis.traceDual_repr_apply b₀.traceDual x i`. Rewrite `h1` using `[Module.Basis.traceDual_traceDual, Algebra.traceForm_apply]`. Establish `h2 : (r ⊗ₜ[F] x : AE F E) * inclR (F` using `F) (AF F) (b₀.traceDual i) = r • ((1 : AF F) ⊗ₜ[F] (x * b₀.traceDual i)) := by`. Simplify using `[inclR, TensorProduct.smul_tmul']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_smul, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply, ← h1]`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_mul_dual {m : ℕ} (b₀ : Module.Basis (Fin m) F E) (i : Fin m) : ∃ c : E, ∀ x : AE F E,
     Algebra.trace (AF F) (AE F E) (x * inclR (F := F) (AF F) c) = (Algebra.TensorProduct.basis (AF F) b₀).equivFun x i := by
@@ -40,7 +40,7 @@ theorem trace_mul_dual {m : ℕ} (b₀ : Module.Basis (Fin m) F E) (i : Fin m) :
     simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Rewrite using `[← smul_assoc, symp, GlobalTheory.XTermSupp.hTens_vv, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_inc, hH, GlobalTheory.XTermSupp.form_skew hcm hJ, hH', map_smul, hc, GlobalTheory.XTermSupp.invol hcm, ← smul_eq_mul a, ← map_smul (Algebra.trace (AF F) (AE F E))]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem symp_shift (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (JW j i) = -JW i j) (H : Plane E n n₁) (H' : Plane E d d₁) (hH : form σ JX H.x H.y = 1)
@@ -56,7 +56,7 @@ theorem symp_shift (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fi
   simp
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.XTermSupp.schA_fixed_smul ψ hψ Φ hΦ (isCompact_univ (X := Unit)) (fun _ => M.co.e u) continuous_const] with t ht`. Rewrite using `[Darboux.rho, map_smul]`. Conclude with `ht () (Set.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_fixed {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     (Φ : Fn F n d) (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -69,13 +69,13 @@ theorem rho_fixed {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W)
 end GlobalTheory.ConeTateSupp
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT _ Φ hΦ y m b₀`. Establish `hstd` using `hT.base.std`. Use `choose c hc using GlobalTheory.ConeTateSupp.trace_mul_dual (F := F) (E := E) b₀`. Establish `hO` using `fun i => GlobalTheory.ConeTateSupp.rho_fixed G.M B.ψ hstd.1 Φ hΦ (inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x))`. Take `⟨U, hU, hUm⟩` from `GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F B.ψ hstd.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hstd) _ (Filter.eventually_all.2 hO)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Set.pi Set.univ fun _ => U, isCompact_univ_pi fun _ => hU, fun l hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hl fun i _ => hUm _ fun t ht => ?_` and prove the remaining obligations. Establish `hfix` using `ht i`. Establish `h1` using `congrArg e (GlobalTheory.XTermSupp.rho_comm G.M.co B.ψ (l • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (pairA F 0 t • inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)) Φ)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfix, map_smul, he.inv _ (Or.inl ⟨pairA F 0 t • inclR (F := F) (AF F) (σ (c i)) • incV F H.y, by`. Rewrite using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec]⟩) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΦ),`. Use the proof step `GlobalTheory.ConeTateSupp.symp_shift hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc] at h1`. Establish `h2 : pairA F 0 t * (Algebra.TensorProduct.basis (AF F) b₀).equivFun l i = pairA F 0 (t * ((Algebra.TensorProduct.basis (AF F) b₀).equivFun l i).2)` using `Prod.ext (zero_mul _) rfl`. Rewrite `h1` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun h1 y`. Rewrite `h3` using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `((mul_eq_right₀ hne).1 h3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConeTateSupp.finsupp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

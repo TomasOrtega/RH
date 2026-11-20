@@ -20,15 +20,13 @@ noncomputable section
 namespace GlobalTheory.SquareSectionWeightZero
 
 /- English proof (translation)
-Introduce `R _ _ _ _ G _ _ _ D A U`. Take `⟨h1, h2, -⟩` from `GlobalTheory.allSixLaws`. Take `⟨E, hE⟩` from `GlobalTheory.FamFree.exists_fam_support (F := FractionRing R) h1.globalFns h2.secTwist D.tau_bimult (k := 2) (by norm_num) (0 : D.toPre.X)`. Establish `hE0 : ¬ ∀ j, (E.s 0).f j = 0` using `(hE 0).2 ⟨0, by simp⟩`. Take `⟨s, hs, -⟩` from `(U.expand 2 (by norm_num)).2 E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, σ, f, -, hf, hexp⟩` from `hs`. Use `⟨σ, f, hexp, fun h0 => hE0 ?_⟩` and prove the remaining obligations. Establish `key` using `(GlobalTheory.ConstFam.secScal_iff_resF D.toPre (FractionRing R) (E.s 0) (f 0) r).1 (hf 0)`. Establish `hf0 : (f 0 : GlobalTheory.ConstFam.SecBMod D.toPre 2 0) = 0` using `ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext h0`. Rewrite `key` using `[hf0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [map_zero] at key`. Establish `hr' : GlobalTheory.ConstFam.toF (R` using `R) (FractionRing R) r ≠ 0 := by`. Introduce `h`. Apply `hr` to reduce the goal to its premises. Establish `hinj : Function.Injective (GlobalTheory.ConstFam.toF (R` using `R) (FractionRing R)) := (algebraMap (FractionRing R) (FractionRing R)).injective.comp (IsFractionRing.injective R _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hinj (h.trans (map_zero _).symm)`. Set `t : GlobalTheory.ConstFam.SecFMod D.toPre (FractionRing R) 2 0` to `E.s 0`. Establish `k2 : GlobalTheory.ConstFam.toF (R` using `R) (FractionRing R) r • t = 0 := key.symm`. Establish `e0 : t = 0` using `by rw [← inv_smul_smul₀ hr' t, k2, smul_zero]`. Introduce `j`.
-
-Conclude with `congrArg (fun q : GlobalTheory.ConstFam.SecFMod D.toPre (FractionRing R) 2 0 => LB.Sec.f q j) e0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), ∃ (σ : H0 U.LG.L 2) (f : ∀ α : D.toPre.X, D.toPre.SecB 2 α), (∀ e : ℕ, U.ExpandsAt e 2 σ f) ∧ ¬ ∀ j, (f 0).f j = 0 := by
   intro R _ _ _ _ G _ _ _ D A U

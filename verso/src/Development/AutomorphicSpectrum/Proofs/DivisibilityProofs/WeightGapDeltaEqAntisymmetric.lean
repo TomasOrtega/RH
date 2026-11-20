@@ -12,25 +12,25 @@ def xAt {Ψ : Type} {N : ℕ} (τ : Ψ) (i : ℕ) : MvPolynomial (Ψ × Fin N) �
   if h : i < N then X (τ, ⟨i, h⟩) else 0
 
 /- English proof (translation)
-Simplify using `[xAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xAt_val {Ψ : Type} {N : ℕ} (τ : Ψ) (a : Fin N) :
     (xAt τ (a : ℕ) : MvPolynomial (Ψ × Fin N) ℝ) = X (τ, a) := by
   simp [xAt]
 
 /- English proof (translation)
-Simplify using `[PB.gapX, xAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gapX_eq_xAt_sub {Ψ : Type} {N : ℕ} (τ : Ψ) (s : Fin N) :
     PB.gapX (τ, s) = xAt τ (s : ℕ) - xAt τ ((s : ℕ) + 1) := by
   simp [PB.gapX, xAt]
 
 /- English proof (translation)
-Establish `h1 : ∑ s ∈ Finset.Ico a b, PB.gapX (τ, s) = ∑ i ∈ Finset.Ico (a : ℕ) (b : ℕ), ((xAt τ i : MvPolynomial (Ψ × Fin N) ℝ) - xAt τ (i + 1))`. Rewrite using `[← Fin.map_valEmbedding_Ico, Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun s _ => gapX_eq_xAt_sub τ s`. Establish `hle : (a : ℕ) ≤ b` using `hab`. Establish `h2 : ∀ n : ℕ, ∑ i ∈ Finset.Ico (a : ℕ) ((a : ℕ) + n), ((xAt τ i : MvPolynomial (Ψ × Fin N) ℝ) - xAt τ (i + 1)) = xAt τ (a : ℕ) - xAt τ ((a : ℕ) + n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← add_assoc, Finset.sum_Ico_succ_top (Nat.le_add_right _ _), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[h1, hn, h2, ← hn, xAt_val, xAt_val]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_gapX_Ico {Ψ : Type} {N : ℕ} (τ : Ψ) {a b : Fin N} (hab : a ≤ b) :
     ∑ s ∈ Finset.Ico a b, PB.gapX (τ, s) = X (τ, a) - X (τ, b) := by
@@ -53,9 +53,9 @@ theorem sum_gapX_Ico {Ψ : Type} {N : ℕ} (τ : Ψ) {a b : Fin N} (hab : a ≤ 
   rw [h1, hn, h2, ← hn, xAt_val, xAt_val]
 
 /- English proof (translation)
-Unfold `gapDelta GroundTheory.Heights₂.Heights.antisymDelta`. Simplify using `only [map_prod, map_sum]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : a ≤ b` using `(Finset.mem_Ioi.1 hb).le`. Rewrite using `[← sum_gapX_Ico τ hab]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[PB.toWt]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem toWt_gapDelta_eq_antisymDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     PB.toWt (gapDelta Ψ N) = GroundTheory.Heights₂.Heights.antisymDelta Ψ N := by

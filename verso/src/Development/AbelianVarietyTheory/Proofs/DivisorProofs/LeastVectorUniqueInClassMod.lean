@@ -17,9 +17,9 @@ def cross {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X]
   ∑ u, ∑ v, W u v * (β (x u) (y v) + β (y u) (x v))
 
 /- English proof (translation)
-Unfold `qW cross`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, map_add, LinearMap.add_apply, map_zsmul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qW_add_zsmul {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X)
     (x y : Fin s → X) (n : ℤ) :
@@ -33,13 +33,13 @@ theorem qW_add_zsmul {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddC
   ring
 
 /- English proof (translation)
-Introduce `s W hW X _ β hs hβ H hpos mu₀ hmu₀ _ hmin N₁ hN nu hnu hnu0`. Establish `hq` using `qW_add_zsmul W β mu₀ nu`. Establish `h1 : 0 ≤ qW W β (mu₀ + nu)` using `qW_nonneg hW hs hβ _`. Rewrite `h1` using `[← one_zsmul nu, hq 1]`. Simplify using `only [one_mul, one_pow] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hN' : qW W β (mu₀ + N₁ • nu) = qW W β mu₀ + (N₁ : ℤ) * cross W β mu₀ nu + (N₁ : ℤ) ^ 2 * qW W β nu`. Rewrite using `[← hq, natCast_zsmul]`. Rewrite using `[hN']`. Establish `hle` using `hmin nu hnu hnu0`. Establish `hp` using `hpos nu hnu hnu0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN3 : (3 : ℤ) ≤ N₁` using `by exact_mod_cast hN`. Use `set B := cross W β mu₀ nu`. Use `set q0 := qW W β mu₀`. Use `set qn := qW W β nu`. Establish `hNn : (0 : ℤ) ≤ N₁` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (N₁ : ℤ) * (-q0 - qn) ≤ (N₁ : ℤ) * B` using `mul_le_mul_of_nonneg_left (by linarith) hNn`. Establish `e2 : (N₁ : ℤ) * q0 ≤ (N₁ : ℤ) * qn` using `mul_le_mul_of_nonneg_left hle hNn`. Establish `e3 : 0 < (N₁ : ℤ) * ((N₁ : ℤ) - 2) * qn`. Apply `mul_pos (mul_pos (by omega) (by omega)) hp` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem least_lt_add_smul : ∀ (s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ), PosW W → ∀ (X : Type) [AddCommGroup X] (β : LinearMap.BilinForm ℤ X), (∀ a b, β a b = β b a) → (∀ a, 0 ≤ β a a) → ∀ (H : AddSubgroup (Fin s → X)), (∀ mu ∈ H, mu ≠ 0 → 0 < qW W β mu) → ∀ mu₀ ∈ H, mu₀ ≠ 0 → (∀ mu ∈ H, mu ≠ 0 → qW W β mu₀ ≤ qW W β mu) → ∀ N₁ : ℕ, 3 ≤ N₁ → ∀ nu ∈ H, nu ≠ 0 → qW W β mu₀ < qW W β (mu₀ + N₁ • nu) := by
   intro s W hW X _ β hs hβ H hpos mu₀ hmu₀ _ hmin N₁ hN nu hnu hnu0

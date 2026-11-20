@@ -28,20 +28,20 @@ def UsedTuplesBoundByConstant (D : D7) (L : SizeData₂ D) (EX : ErrX D) (C1 : �
       (y = 0 ∨ -(∑ j ∈ LiftErrorLocal.lifts D, vNN EX i u j w) - C1 * LiftErrorLocal.errC D L ≤ LiftErrorLocal.vG D w y)
 
 /- English proof (translation)
-Introduce `u μ _ hμ` and use `h u μ hμ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : D7} {T : TwForms D} (h : TwistedChainIntegral D T) : TwistedPointIntegral D T := fun u μ _ hμ => h u μ hμ
 /- English proof (translation)
-Introduce `hD u μ _ hμ` and use `h hD u μ hμ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : D7} {Dx : DivX D} {T : TwForms D} (h : TwistedPeriodIntegral D Dx T) : TwistedPeriodAdmissible D Dx T := fun hD u μ _ hμ => h hD u μ hμ
 /- English proof (translation)
-Introduce `w hw μ _ _ hQ x hx` and use `h w hw μ hQ x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : D7} {Dx : DivX D} {T : TwForms D} {u : D.what₂.Word} (h : product_first_zeroth_parts.TupleChainSharpColumnValuation Dx T u) : TwistedColumnBoundAtT Dx T u :=
   fun w hw μ _ _ hQ x hx => h w hw μ hQ x hx
 /- English proof (translation)
-Introduce `i w hi u hw μ _ φ hφ F hF` and use `h.1 i w hi u hw μ φ hφ F hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {D : D7} {L : SizeData₂ D} {EX : ErrX D} {C1 C2 : ℝ} (h : LiftErrorLocal.PropositionCLatticeBound D L EX C1 C2) : UsedTuplesBoundByConstant D L EX C1 :=
   fun i w hi u hw μ _ φ hφ F hF => h.1 i w hi u hw μ φ hφ F hF
@@ -49,9 +49,9 @@ example {D : D7} {L : SizeData₂ D} {EX : ErrX D} {C1 C2 : ℝ} (h : LiftErrorL
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Introduce `u w z hz F hF hF0`. Take `⟨_, _, _, ⟨hR, hI, _⟩, _⟩` from `h0 u`. Set `g : ((D.fm u).lat D.R.m).V →ₛₗ[D.what₂.embLL] ℂ` to `((((D.mem u).P.period.flip ((D.eMt u).symm F)).comp ((D.mem u).P.lowerMap.comp (D.mem u).P.evz))).comp ((D.fm u).emb D.R.m)`. Use `pair_core D w _ g _ ?_ z hz` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hv⟩` from `hp0 hD u _ (hI x hx) F hF hF0`. Use `⟨y, ?_, hv w⟩` and prove the remaining obligations. Rewrite using `[hy, (D.fm u).PtL_spec hR x]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pair0U (h0 : MemberChainIntegral D) (hp0 : PeriodClassSumWeyl D) (hD : DGamDef D) : ∀ u (w : D.what₂.places.Pl),
     ∀ z ∈ locW D.what₂.places w ((D.fm u).lat D.R.m).L,
@@ -70,9 +70,9 @@ theorem pair0U (h0 : MemberChainIntegral D) (hp0 : PeriodClassSumWeyl D) (hD : D
   rfl
 
 /- English proof (translation)
-Introduce `u μ hU hμ w hQ z hz F hF hF0`. Take `⟨hR, hI⟩` from `hT u μ hU hμ`. Set `g : ((T.fm u μ).lat D.R.m).V →ₛₗ[D.what₂.embLL] ℂ` to `((((D.PTw u μ).period.flip ((D.eMtTw u μ).symm F)).comp ((D.PTw u μ).lowerMap.comp (D.PTw u μ).evz))).comp ((T.fm u μ).emb D.R.m)`. Use `pair_core D w _ g _ ?_ z hz` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hv⟩` from `hpT hD u μ hU hμ _ (hI x hx) F hF hF0`. Use `⟨y, ?_, hv w hQ⟩` and prove the remaining obligations. Rewrite using `[hy, (T.fm u μ).PtL_spec hR x]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairTwU {Dx : DivX D} {T : TwForms D} (hT : TwistedPointIntegral D T) (hpT : TwistedPeriodAdmissible D Dx T) (hD : DGamDef D) :
     ∀ u μ, LocalQuadraticParts.UsedT D μ → μ ≠ D.what₂.mu0 → ∀ w : D.what₂.places.Pl,
@@ -92,11 +92,11 @@ theorem pairTwU {Dx : DivX D} {T : TwForms D} (hT : TwistedPointIntegral D T) (h
   rfl
 
 /- English proof (translation)
-Introduce `μ hU hQ hc F hF hF0`. Distinguish the cases in `hμ : μ = D.what₂.mu0`. Substitute `hμ` using the available equality. Take `⟨y, hy, a, z, hz, rfl, ha⟩` from `hc.1 rfl`. Take `⟨y0, hy0, hv0⟩` from `pair0U h0 hp0 hD u w z hz F hF hF0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * y0, ?_, val_step D w ha hv0⟩` and prove the remaining obligations. Rewrite using `[D.perCol_base_eq_PtilCol, D.nuIn_jN, PeriodMap.PtilCol, ← hy, map_mul, hy0, LinearMap.map_smulₛₗ]`. Simplify using `[PeriodMap.Ptil]`. Take `⟨y, hy, a, z, hz, rfl, ha⟩` from `hc.2 hμ`. Take `⟨y0, hy0, hv0⟩` from `pairTwU hT hpT hD u μ hU hμ w hQ z hz F hF hF0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * y0, ?_, val_step D w ha hv0⟩` and prove the remaining obligations. Rewrite using `[D.perCol_tie u μ hμ, D.nuIn_jN, PeriodMap.PtilCol, ← hy, map_mul, hy0, LinearMap.map_smulₛₗ]`. Simplify using `[PeriodMap.Ptil]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem period_geTU {Dx : DivX D} {T : TwForms D} (h0 : MemberChainIntegral D) (hT : TwistedPointIntegral D T) (hp0 : PeriodClassSumWeyl D) (hpT : TwistedPeriodAdmissible D Dx T)
     (hD : DGamDef D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (φ : (D.div.Nu u).V) (s : ℝ) :
@@ -119,11 +119,11 @@ theorem period_geTU {Dx : DivX D} {T : TwForms D} (h0 : MemberChainIntegral D) (
     simp [PeriodMap.Ptil]
 
 /- English proof (translation)
-Introduce `u w hw φ hφ F hF1 hF0`. Establish `hin : D.nuIn u φ ∈ LT.Nlam D u w`. Use `(hN u w hw φ).1 ⟨1, ?_, by simpa using hφ⟩` and prove the remaining obligations. Conclude with `fun h1 => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hc : ColGe T u (D.what₂.muAt w) w (D.nuIn u φ) (-((D.R.m : ℝ) * EatT D u w))` using `⟨fun _ => Formalism.MainNotions.J.ColGe0_atT D u (h5 u) w hw _ hin, fun hμ => h5T u w hw _ (Or.inr ⟨w, rfl⟩) hμ (Dx.Qp_muAt w) _ hin⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `h1` using `period_geTU h0 hT hp0 hpT hD u w φ _ _ (Or.inr ⟨w, rfl⟩) (Dx.Qp_muAt w) hc F hF1 hF0`. Establish `h00 : vDG D u w = 0`. Unfold `vDG`. Rewrite using `[hw, padicValNat.eq_zero_of_not_dvd (hG u)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h00, sub_zero, ← sg_atT hE u w hw]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_at_twist_places {Dx : DivX D} {T : TwForms D} (h0 : MemberChainIntegral D) (hT : TwistedPointIntegral D T) (hp0 : PeriodClassSumWeyl D) (hpT : TwistedPeriodAdmissible D Dx T)
     (hD : DGamDef D) (hE : LevelPrimeSizes D L) (hN : NuAtTDef D L) (hG : LevelPrimeCoprimeStabiliser D) (h5 : ∀ u, product_first_zeroth_parts.Conclusion5Sharp D u) (h5T : ∀ u, TwistedColumnBoundAtT Dx T u) :
@@ -147,11 +147,11 @@ theorem admissible_at_twist_places {Dx : DivX D} {T : TwForms D} (h0 : MemberCha
   exact h1
 
 /- English proof (translation)
-Introduce `u w i hg hT φ hφ F hF`. Take `⟨y, hy, hv⟩` from `hCL i w hg u hT (D.what₂.muAt w) (Or.inr ⟨w, rfl⟩) φ hφ F hF`. Use `⟨y, hy, hv.imp_right fun hb => ?_⟩` and prove the remaining obligations. Establish `hs` using `hS i w hg u hT`. Establish `he : (0 : ℝ) < D.what₂.places.ramIdx w` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact_mod_cast D.what₂.places.ramIdx_pos w`. Consider the case `exact_mod_cast Nat.pos_of_ne_zero (D.what₂.places.ramIdx_ne_zero w)`. Consider the case `exact_mod_cast D.what₂.places.ram_pos w`. Consider the case `positivity`. Unfold `ur`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Unfold `LiftErrorLocal.vG at hb`. Rewrite `hb` using `[le_div_iff₀ he]`. Establish `hm` using `mul_le_mul_of_nonneg_left hs he.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem atG_coreU {Xe : ErrX D} {C1 : ℝ} (hCL : UsedTuplesBoundByConstant D L Xe C1) (hS : SgAtG D L Xe C1) :
     ∀ u (w : D.what₂.places.Pl) (i : Fin 2), D.what₂.places.resChar w = D.host.g i → D.what₂.places.resChar w ≠ (D.mem u).A.T →
@@ -175,19 +175,17 @@ theorem atG_coreU {Xe : ErrX D} {C1 : ℝ} (hCL : UsedTuplesBoundByConstant D L 
   linarith
 
 /- English proof (translation)
-Introduce `u w i hi hw φ hφ F hF`. Take `⟨s, hs, hm⟩` from `hN u w hw φ hφ`. Rewrite `hm` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Take `⟨y, hy, hv⟩` from `atG_coreU hCL hS u w i hi hw (s • φ) hm F hF`. Rewrite using `[sg_atG u w (mem_gTypes_of w i hi)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hs0 : (s : D.what₂.LL) ≠ 0`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `hj : D.jN u (s • φ) = D.what₂.embLL (s : D.what₂.LL) • D.jN u φ`. Rewrite using `[← algebraMap_smul D.what₂.LL s φ, LinearMap.map_smulₛₗ]`. Rewrite `hy` using `[hj, hlin]`. Use `⟨((s : D.what₂.LL))⁻¹ * y, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hy, map_inv₀, ← mul_assoc, inv_mul_cancel₀ ((map_ne_zero _).2 hs0), one_mul]`. Distinguish the cases in `hy0 : y = 0`. Use `left`. Rewrite using `[hy0, mul_zero]`. Use `right`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hv with h0 | hv` into its components or cases. Conclude with `absurd h0 hy0`. Establish `hu : vAdd (D.plEq w) ((s : D.what₂.LL))⁻¹ = 0`. Establish `h1 : (D.plEq w).valuation D.what₂.LL (s : D.what₂.LL) = 1`. Use `(D.plEq w).valuation_of_algebraMap (K := D.what₂.LL) s` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (s : D.what₂.LL) = algebraMap (𝓞 D.what₂.LL) D.what₂.LL s from rfl, this]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hs`. Unfold `vAdd`. Rewrite using `[map_inv₀, h1]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[Formalism.BasicNotions.SkeletonIndexLemmas.vAdd_mul (D.plEq w) (inv_ne_zero hs0) hy0, hu, zero_add]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissible_at_generator_places {Xe : ErrX D} {C1 : ℝ} (hCL : UsedTuplesBoundByConstant D L Xe C1) (hS : SgAtG D L Xe C1) (hN : NuInM D L)
     (hlin : PerColSmul D) :
@@ -227,13 +225,13 @@ theorem admissible_at_generator_places {Xe : ErrX D} {C1 : ℝ} (hCL : UsedTuple
     exact hv
 
 /- English proof (translation)
-Introduce `u w hw hgw φ hφ F hF1 hF0`. Establish `hin : InNP X Y K c u w (D.nuIn u φ)`. Distinguish the cases in `hVV : VV X K (aL L) (bL L) (D.what₂.places.resChar w) = ∅`. Conclude with `Or.inr ⟨hVV, nuIn_mem_Sram_loc u w φ (hN u w hw) hφ⟩`. Use `Or.inl ⟨hGI u w hw hVV, (hS u w (hGI u w hw hVV) hVV φ).1 ⟨1, ?_, by simpa using hφ⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun h1 => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hc` using `h ht hE u w hw hgw (D.what₂.muAt w) (WeilJacquetShalikaLaw.used_muAt D w) (Dx.Qp_muAt w) _ hin`. Establish `hle : L.sg u w + vDG D u w ≤ totS X K Xe ce 1 u w`. Unfold `SizeData₂.sg totS ES`. Rewrite using `[one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `add_le_add_left (Finset.sum_le_sum fun j hj => ?_) _` and prove the remaining obligations. Rewrite using `[← hE.edef u j hj w]`. Combine the linear relations using `[hgain w j hj]`. Establish `h1` using `period_geTU h0 hT hp0 hpT hE.dgam u w φ _ _ (Or.inr ⟨w, rfl⟩) (Dx.Qp_muAt w) (ColGe_mono hle hc) F hF1 hF0`. Rewrite `h1` using `[add_sub_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem admissible_off_twist_places {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D} {T : TwForms D}
     {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
@@ -263,9 +261,9 @@ theorem admissible_off_twist_places {X : Inst D L} {Y : LatInst D} {K : Consts} 
   exact h1
 
 /- English proof (translation)
-Introduce `u w hw hg φ hφ F hF1 hF0`. Establish `hc` using `h hF hE u w hw hg (D.what₂.muAt w) (used_muAt D w) (Dx.Qp_muAt w) _ (nuIn_mem_Sram D u w φ hφ)`. Rewrite `hc` using `[lowS_eq_lowFE hE.edef u w]`. Establish `h1` using `period_geTU h0 hT hp0 hpT hE.dgam u w φ _ _ (Or.inr ⟨w, rfl⟩) (Dx.Qp_muAt w) hc F hF1 hF0`. Rewrite `h1` using `[show lowFE L u w + 1 * vDG D u w - vDG D u w = lowFE L u w by ring]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem admissible_away_from_twist {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
     (h0 : MemberChainIntegral D) (hT : TwistedPointIntegral D T) (hp0 : PeriodClassSumWeyl D) (hpT : TwistedPeriodAdmissible D Dx T)
@@ -284,15 +282,13 @@ theorem admissible_away_from_twist {K : Consts} {Dx : DivX D} {T : TwForms D} {l
   exact h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `Formalism.MainNotions.LocalQuadraticParts.valuation_bound_of_unrounded D L ?_` and prove the remaining obligations. Introduce `u w φ hφ F hF1 hF0`. Distinguish the cases in `hw : D.what₂.places.resChar w = (D.mem u).A.T`. Conclude with `admissible_at_twist_places h0 hT hp0 hpT hE.dgam hET hNT hG h5 h5T u w hw φ hφ F hF1 hF0`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : D.what₂.places.resChar w ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Establish `hi : ∃ i : Fin 2, D.what₂.places.resChar w = D.host.g i`. Break down `Finset.mem_insert.1 hg with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, Finset.mem_singleton.1 h⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hi`. Conclude with `admissible_at_generator_places hCL hSg hN hlin u w i hi hw φ hφ F hF1`. Conclude with `admissible_off_twist_places h0 hT hp0 hpT hE ht hSd hN hGI (gainLe_of_fills hF hcs) hS.2.1 u w hw hg φ hφ F hF1 hF0`. Introduce `u w hw φ hφ F hF1 hF0`. Distinguish the cases in `hg : D.what₂.places.resChar w ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hi : ∃ i : Fin 2, D.what₂.places.resChar w = D.host.g i`. Break down `Finset.mem_insert.1 hg with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, Finset.mem_singleton.1 h⟩`. Take `⟨i, hi⟩` from `hi`.
-
-Conclude with `atG_coreU hCL hSg u w i hi hw φ hφ F hF1`. Conclude with `admissible_away_from_twist h0 hT hp0 hpT hE ht.fdef hS.2.2 u w hw hg φ hφ F hF1 hF0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissible_level_two {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D} {T : TwForms D}
     {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {C : ℝ}
@@ -328,9 +324,9 @@ theorem admissible_level_two {X : Inst D L} {Y : LatInst D} {K : Consts} {c : La
     · exact admissible_away_from_twist h0 hT hp0 hpT hE ht.fdef hS.2.2 u w hw hg φ hφ F hF1 hF0
 
 /- English proof (translation)
-Introduce `u w z hz F hF hF0`. Take `⟨hR, hI⟩` from `h u`. Set `g : ((D.fm u).lat D.R.m).V →ₛₗ[D.what₂.embLL] ℂ` to `((((D.mem u).P.period.flip ((D.eMt u).symm F)).comp ((D.mem u).P.lowerMap.comp (D.mem u).P.evz))).comp ((D.fm u).emb D.R.m)`. Use `pair_core D w _ g _ ?_ z hz` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hv⟩` from `hp0 hD u _ (hI x hx) F hF hF0`. Use `⟨y, ?_, hv w⟩` and prove the remaining obligations. Rewrite using `[hy, (D.fm u).PtL_spec hR x]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example (h : ∀ u, ∃ hR : (D.fm u).PRat, (D.fm u).PtilIntegral hR) (hp0 : PeriodClassSumWeyl D) (hD : DGamDef D) : ∀ u (w : D.what₂.places.Pl),
     ∀ z ∈ locW D.what₂.places w ((D.fm u).lat D.R.m).L,
@@ -349,13 +345,13 @@ example (h : ∀ u, ∃ hR : (D.fm u).PRat, (D.fm u).PtilIntegral hR) (hp0 : Per
   rfl
 
 /- English proof (translation)
-Take `⟨y1, g1⟩` from `g1`. Take `⟨y2, g2⟩` from `g2`. Take `⟨y3, g3⟩` from `g3`. Take `⟨y4, g4⟩` from `g4`. Take `⟨C, _, y5, hS⟩` from `hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xa, ha⟩` from `ha`. Take `⟨xb, hb⟩` from `hb`. Take `⟨y6, hCL⟩` from `hCL`. Take `⟨y7, hSg⟩` from `hSg`. Establish `key : ∀ x, max (max (max (max y1 y2) (max y3 y4)) (max y5 (max xa xb))) (max (max y6 y7) ((3 : ℝ) ^ (5 / Fm.ez))) ≤ x → ∀ _ : Fm.x1 < x, ∀ i : Fm.Ix x, L2BoundAlt (Fm.D x i) (Fm.L x i) ∧ FourthComplement (Fm.D x i) (Fm.L x i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx h1 i`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨⟨a1, a2⟩, a3, a4⟩, a5, a6, a7⟩, ⟨a8, a9⟩, a10⟩` from `hx`. Use `admissible_level_two (g1 x a1 h1 i) (g2 x a2 h1 i) (g3 x a3 h1 i) (g4 x a4 h1 i) (hS x a5 h1 i) (Fm.ex x h1 i).err (Formalism.MainNotions.J.sizeData_at_level_primes (Fm.params x h1 i) (WeilJacquetShalikaLaw.local_compatibility_family Fm x h1 i).fdef (Fm.ex x h1 i).err.edef) (Weil …` and prove the remaining obligations. Establish `hez : 0 < Fm.ez` using `by rw [← Fm.L_ez x i]; exact (Fm.L x i).sc.ez_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fm.L_x x i h1, Fm.L_ez x i]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by norm_num), show 5 / Fm.ez * (Fm.ez / 5) = 1 by field_simp, Real.rpow_one]`. Use `_ ≤ x ^ (Fm.ez / 5) := Real.rpow_le_rpow (by positivity) a10 (by positivity)`. Conclude with `⟨⟨_, fun x hx h1 i => (key x hx h1 i).1⟩, ⟨_, fun x hx h1 i => (key x hx h1 i).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem famU {eps : ℝ} (he : 0 < eps) (Fm : FamP eps)
     (g1 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), ∀ u, product_first_zeroth_parts.Conclusion6 (Fm.D x i) u)
@@ -410,13 +406,13 @@ structure Adm2InU (𝒞 : FamClass) : Prop where
     (∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, UsedTuplesBoundByConstant (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX C1) ∧ familySizeBoundAtTypePrime Fm C1
 
 /- English proof (translation)
-Establish `cand : ∀ {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop}, Closed 𝒞 P → Closed 𝒞 Q → Closed 𝒞 (fun Fm CH => P Fm CH ∧ Q Fm CH)`. Introduce `P Q hP hQ`. Take `⟨e1, he1, hK1⟩` from `hP`. Take `⟨e2, he2, hK2⟩` from `hQ`. Use `⟨min e1 e2, lt_min he1 he2, fun eps he hle => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K1, k1⟩` from `hK1 eps he (hle.trans (min_le_left _ _))`. Take `⟨K2, k2⟩` from `hK2 eps he (hle.trans (min_le_right _ _))`. Use `⟨⟨max K1.pre K2.pre, fun l => max (K1.t l) (K2.t l), fun l => max (K1.mid l) (K2.mid l), fun l => max (K1.last l) (K2.last l)⟩, fun Fm CH hc hL => ⟨k1 Fm CH hc ?_, k2 Fm CH hc ?_⟩⟩` and prove the remaining obligations. Take `⟨a, -, c, d⟩` from `hL`. Conclude with `⟨fun x hx => (le_max_left _ _).trans (a x hx), trivial, fun x hx => (le_max_left _ _).trans (c x hx),`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `fun x hx => (le_max_left _ _).trans (d x hx)⟩`. Take `⟨a, -, c, d⟩` from `hL`. Conclude with `⟨fun x hx => (le_max_right _ _).trans (a x hx), trivial, fun x hx => (le_max_right _ _).trans (c x hx),`. Use `fun x hx => (le_max_right _ _).trans (d x hx)⟩`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ε1, hε1, hK⟩` from `cand h1 (cand h2 (cand h3 (cand h4 (cand h5 (cand h6 (cand h7 h8))))))`. Use `⟨ε1, hε1, fun eps he hle => (hK eps he hle).imp fun K hK' Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2, g3, g4, hS, ha, hb, C1, hCL, hSg⟩` from `hK' Fm CH hc hL`. Conclude with `famU he Fm g1 g2 g3 g4 hS ha hb hCL hSg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissible_family_of_inclusion {𝒞 : FamClass} (h : Adm2InU 𝒞) :
     Closed 𝒞 fun Fm _ => (∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, LocalQuadraticParts.adm2 (Fm.D x i) (Fm.L x i)) ∧
@@ -444,7 +440,7 @@ theorem admissible_family_of_inclusion {𝒞 : FamClass} (h : Adm2InU 𝒞) :
   exact famU he Fm g1 g2 g3 g4 hS ha hb hCL hSg
 
 /- English proof (translation)
-The claim follows from `h.pt0 ptTw := h.ptTw.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 i u μ _ hμ => g x hx h1 i u μ hμ⟩ per0 := h.per0 perTw := h.perTw.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 i hD u μ _ hμ => g x hx h1 i hD u μ hμ⟩ serv := h.serv p10 := h.p10.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 …`.
+A detailed English derivation is pending.
 -/
 theorem inU_of_in {𝒞 : FamClass} (h : Formalism.L2.G.Adm2In.Adm2In 𝒞) : Adm2InU 𝒞 where
   pt0 := h.pt0

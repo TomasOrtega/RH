@@ -14,13 +14,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 def cf (a : ℕ) (k : Kinf E a) (g : GL (Fin a) (Af E)) : GA E a := infGL E a (Unitary.toUnits k) * finGL E a g
 
 /- English proof (translation)
-The claim follows from `congrArg ψ.1 (mul_assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem A.act_cf {a : ℕ} (k : Kinf E a) (g : GL (Fin a) (Af E)) (ψ : Sm E a) (x : GA E a) :
     (act (.cpt k) (act (.fin g) ψ)).1 x = ψ.1 (x * cf a k g) := congrArg ψ.1 (mul_assoc _ _ _)
 
 /- English proof (translation)
-Use `Submodule.sum_mem (tens2 U₁ U₂) (t := Finset.univ) (f := fun i (m : GA E r × GA E s) => (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2) fun i _ => Submodule.subset_span ⟨_, h₁ i, _, h₂ i, rfl⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem A.sum_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {n : ℕ} {ψ₁ : Fin n → Sm E r}
     {ψ₂ : Fin n → Sm E s} (h₁ : ∀ i, ψ₁ i ∈ U₁) (h₂ : ∀ i, ψ₂ i ∈ U₂) :
@@ -33,7 +33,7 @@ theorem A.sum_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)
   simp
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `LinearMap.exists_extend ((Sm E a).subtype ∘ₗ f)`. Conclude with `⟨T, fun ψ => LinearMap.congr_fun hT ψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_extOp {a : ℕ} (f : Sm E a →ₗ[ℂ] Sm E a) :
     ∃ T : Module.End ℂ (GA E a → ℂ), ∀ ψ : Sm E a, T ψ.1 = (f ψ).1 := by
@@ -43,7 +43,7 @@ theorem exists_extOp {a : ℕ} (f : Sm E a →ₗ[ℂ] Sm E a) :
 def extOp {a : ℕ} (f : Sm E a →ₗ[ℂ] Sm E a) : Module.End ℂ (GA E a → ℂ) := (exists_extOp f).choose
 
 /- English proof (translation)
-The claim follows from `(exists_extOp f).choose_spec ψ`.
+A detailed English derivation is pending.
 -/
 theorem extOp_apply {a : ℕ} (f : Sm E a →ₗ[ℂ] Sm E a) (ψ : Sm E a) : extOp f ψ.1 = (f ψ).1 :=
   (exists_extOp f).choose_spec ψ
@@ -65,11 +65,11 @@ def tensOp (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ] Sm E s)
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `e1 : ∀ b, (fun a => ∑ i, (ψ₁ i).1 a * (ψ₂ i).1 b) = ∑ i, (ψ₂ i).1 b • (ψ₁ i).1` using `fun b => by`. Use function extensionality and compare the values at `a`. Simplify using `[mul_comm]`. Establish `e2 : (fun b => extOp f₁ (fun a => ∑ i, (ψ₁ i).1 a * (ψ₂ i).1 b) m.1) = ∑ i, (f₁ (ψ₁ i)).1 m.1 • (ψ₂ i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[e1, map_sum]`. Simplify using `[extOp_apply, mul_comm]`. Express the relevant statement in the definitionally equal form `extOp f₂ (fun b => extOp f₁ (fun a => ∑ i, (ψ₁ i).1 a * (ψ₂ i).1 b) m.1) m.2 = _`. Rewrite using `[e2, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[extOp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensOp_sum (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ] Sm E s) {n : ℕ} (ψ₁ : Fin n → Sm E r)
     (ψ₂ : Fin n → Sm E s) :
@@ -86,7 +86,7 @@ theorem tensOp_sum (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ]
   simp [extOp_apply]
 
 /- English proof (translation)
-Take `⟨n, c, g, rfl⟩` from `Submodule.mem_span_set'.1 hF`. Use `choose φ₁ h₁ φ₂ h₂ e using fun i => (g i).2`. Use `⟨n, fun i => c i • φ₁ i, φ₂, fun i => U₁.smul_mem _ (h₁ i), h₂, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `[e, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensor_pair_finite_sum {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 U₁ U₂) : ∃ (n : ℕ) (ψ₁ : Fin n → Sm E r) (ψ₂ : Fin n → Sm E s), (∀ i, ψ₁ i ∈ U₁) ∧ (∀ i, ψ₂ i ∈ U₂) ∧
@@ -97,7 +97,7 @@ theorem tensor_pair_finite_sum {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule
   simp [e, mul_assoc]
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hF`. Rewrite using `[tensOp_sum]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tensOp_id {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 U₁ U₂) : tensOp LinearMap.id LinearMap.id F = F := by
@@ -106,7 +106,7 @@ theorem tensOp_id {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)
   rfl
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hF`. Rewrite using `[tensOp_sum]`. Conclude with `A.sum_mem (fun _ => trivial) fun _ => trivial`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensOp_mem (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ] Sm E s) {U₁ : Submodule ℂ (Sm E r)}
     {U₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ} (hF : F ∈ tens2 U₁ U₂) : tensOp f₁ f₂ F ∈ tens2 ⊤ ⊤ := by
@@ -115,9 +115,9 @@ theorem tensOp_mem (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ]
   exact A.sum_mem (fun _ => trivial) fun _ => trivial
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, h₁, h₂, rfl⟩` from `tensor_pair_finite_sum hF`. Establish `e` using `tensOp_sum f₁ f₂ (fun i => act (.cpt k₁) (act (.fin g₁) (ψ₁ i))) fun i => act (.cpt k₂) (act (.fin g₂) (ψ₂ i))`. Simplify using `only [A.act_cf] at e`. Rewrite using `[e, tensOp_sum]`. Use function extensionality and compare the values at `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf₁ _ _ (hU₁ _ _ (h₁ i)), hf₁ _ _ (h₁ i), hf₂ _ _ (hU₂ _ _ (h₂ i)), hf₂ _ _ (h₂ i), A.act_cf, A.act_cf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensOp_translate {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁)
     (hU₂ : IsStable U₂) {f₁ : Sm E r →ₗ[ℂ] Sm E r} {f₂ : Sm E s →ₗ[ℂ] Sm E s}
@@ -135,11 +135,11 @@ theorem tensOp_translate {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (
   rw [hf₁ _ _ (hU₁ _ _ (h₁ i)), hf₁ _ _ (h₁ i), hf₂ _ _ (hU₂ _ _ (h₂ i)), hf₂ _ _ (h₂ i), A.act_cf, A.act_cf]
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, u₁, u₂, rfl⟩` from `tensor_pair_finite_sum hF`. Establish `key : ∀ (χ₁ : Fin n → Sm E r) (χ₂ : Fin n → Sm E s) (m : GA E r × GA E s), HasDerivAt (fun t => ∑ i, (χ₁ i).1 (m.1 * infGL E r (γ₁ t)) * (χ₂ i).1 (m.2 * infGL E s (γ₂ t))) (∑ i, (lie E r Z₁ (χ₁ i)).1 m.1 * (χ₂ i).1 m.2 + ∑ i, (χ₁ i).1 m.1 * (lie E s Z₂ (χ₂ i)).1 m.2) 0`. Introduce `χ₁ χ₂ m`. Rewrite using `[← Finset.sum_add_distrib]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hasDerivAt_curve (χ₁ i) m.1 γ₁ Z₁ h₁ hγ₁).mul (hasDerivAt_curve (χ₂ i) m.2 γ₂ Z₂ h₂ hγ₂)` as an intermediate fact. Simplify using `only [h₁, h₂, map_one, mul_one] at this`. Conclude with `this`. Use `⟨(fun m => ∑ i, (lie E r Z₁ (ψ₁ i)).1 m.1 * (ψ₂ i).1 m.2) + fun m => ∑ i, (ψ₁ i).1 m.1 * (lie E s Z₂ (ψ₂ i)).1 m.2, key ψ₁ ψ₂, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, tensOp_sum, tensOp_sum, tensOp_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁ : ∀ i, f₁ (lie E r Z₁ (ψ₁ i)) = lie E r Z₁ (f₁ (ψ₁ i))` using `fun i => hf₁ (.lie Z₁) _ (u₁ i)`. Establish `e₂ : ∀ i, f₂ (lie E s Z₂ (ψ₂ i)) = lie E s Z₂ (f₂ (ψ₂ i))` using `fun i => hf₂ (.lie Z₂) _ (u₂ i)`. Simplify using `only [e₁, e₂]`. Conclude with `key (fun i => f₁ (ψ₁ i)) (fun i => f₂ (ψ₂ i)) m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensOp_deriv {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (hf₁ : ∀ o, ∀ ψ ∈ U₁, f₁ (act o ψ) = act o (f₁ ψ))
@@ -168,9 +168,9 @@ theorem tensOp_deriv {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E
   exact key (fun i => f₁ (ψ₁ i)) (fun i => f₂ (ψ₂ i)) m
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hF`. Use `ContDiffAt.sum fun i _ => ContDiffAt.mul ?_ ?_` and prove the remaining obligations. Use `(contDiffAt_chart (ψ₁ i).2 m.1 (val_mem_invSet (b₁ y₀))).comp y₀ hb₁` as an intermediate fact. Simplify `this` using `only [Function.comp_def, chart_val]`. Use `(contDiffAt_chart (ψ₂ i).2 m.2 (val_mem_invSet (b₂ y₀))).comp y₀ hb₂` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [Function.comp_def, chart_val]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contDiffAt_tens {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {P : Type} [NormedAddCommGroup P]
     [NormedSpace ℝ P] {y₀ : P} (b₁ : P → GL (Fin r) (Cinf E)) (b₂ : P → GL (Fin s) (Cinf E))

@@ -21,13 +21,13 @@ open scoped MonoidAlgebra
 section Characters
 
 /- English proof (translation)
-Establish `hnt : Nontrivial (Subrepresentation ρ)` using `⟨⊥, ⊤, fun h => bot_ne_top (congrArg Subrepresentation.toSubmodule h)⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hS : S.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hS)`. Use `Or.inr (Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun w _ => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one k hv0`. Take `⟨a, ha⟩` from `h (LinearMap.smulRight φ w)`. Establish `hw : ρ.asAlgebraHom a v = w` using `by rw [ha]; simp [hφ]`. Rewrite using `[← hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `clear hw ha`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, LinearMap.add_apply]`. Conclude with `S.toSubmodule.add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `single t c`. Rewrite using `[Representation.asAlgebraHom_single, LinearMap.smul_apply]`. Conclude with `S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule t hv)`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_of_surjective {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] [Nontrivial V]
     (ρ : Representation k G V) (h : Function.Surjective ρ.asAlgebraHom) : ρ.IsIrreducible := by
@@ -51,9 +51,9 @@ theorem irreducible_of_surjective {k G V : Type} [Field k] [Group G] [AddCommGro
       exact S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule t hv)
 
 /- English proof (translation)
-Establish `h1` using `pair_character_eq_finrank K L G _ _ ρ ρ`. Establish `h2` using `pair_character_eq_finrank L L G _ _ (extendScalarsRep K L ρ) (extendScalarsRep K L ρ)`. Simplify using `only [character_extendScalarsRep, Algebra.algebraMap_self, RingHom.id_apply] at h2`. Rewrite `h2` using `[h1, h]`. Take `⟨h3, h4⟩` from `GlobalTheory.asAlgebraHom_surjective_of_finrank_intertwiningMap_eq_one L G _ (extendScalarsRep K L ρ) (by exact_mod_cast h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `irreducible_of_surjective _ h4`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_extend (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K] [CharZero L] {G : Type} [Group G]
     [Finite G] {n : ℕ} (ρ : Representation K G (Fin n → K))
@@ -67,13 +67,13 @@ theorem irreducible_extend (K L : Type) [Field K] [Field L] [Algebra K L] [CharZ
   exact irreducible_of_surjective _ h4
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `: ∀ s : Finset ι, IsChar ℂ ℂ (fun t : ∀ i, G i => ∏ i ∈ s, χ i (t i))`. Introduce `s`. Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simpa using isChar_one ℂ ℂ (∀ i, G i)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Take `⟨n, ρ, hρ⟩` from `(h a).1`. Establish `h1 : IsChar ℂ ℂ (fun t : ∀ i, G i => χ a (t a))` using `⟨n, ρ.comp (Pi.evalMonoidHom G a), fun t => hρ (t a)⟩`. Use `isChar_mul_complex h1 ih` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[Finset.prod_insert ha]`. Both sides reduce to the same expression. Conclude with `this _`. Use `letI : ∀ i, Fintype (G i) := fun i => Fintype.ofFinite _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h2 : ∏ i, pair (χ i) (χ i) = 1` using `Finset.prod_eq_one fun i _ => (h i).2`. Rewrite using `[← h2]`. Simplify using `only [pair, finsum_eq_sum_of_fintype, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Rewrite using `[Nat.card_pi, Nat.cast_prod, Fintype.prod_sum]`. Simplify using `only [Finset.prod_mul_distrib, Pi.inv_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_one_prod {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)] {χ : ∀ i, G i → ℂ}
     (h : ∀ i, IsChar ℂ ℂ (χ i) ∧ pair (χ i) (χ i) = 1) :

@@ -17,17 +17,17 @@ noncomputable section
 namespace GlobalTheory.TrIdem
 
 /- English proof (translation)
-Establish `hm : MeasurableSet (H : Set G)` using `hHo.measurableSet`. Establish `hpos : μ (H : Set G) ≠ 0` using `(hHo.measure_pos μ ⟨1, H.one_mem⟩).ne'`. Establish `hfin : μ (H : Set G) ≠ ⊤` using `hHc.measure_lt_top.ne`. Establish `hr : (μ.real (H : Set G) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, measureReal_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.toReal_pos hpos hfin).ne'`. Use function extensionality and compare the values at `y`. Simplify using `only [conv, normInd]`. Use `set c : ℂ := (μ.real (H : Set G) : ℂ)⁻¹ with hc`. Distinguish the cases in `hy : y ∈ H`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : (fun x => (c • (H : Set G).indicator (1 : G → ℂ)) x * (c • (H : Set G).indicator (1 : G → ℂ)) (x⁻¹ * y)) = (H : Set G).indicator (fun _ => c * c)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ H`. Establish `: x⁻¹ * y ∈ H` using `H.mul_mem (H.inv_mem hx) hy`. Simplify using `[Set.indicator_of_mem (show x ∈ (H : Set G) from hx), Set.indicator_of_mem (show x⁻¹ * y ∈ (H : Set G) from this)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_of_notMem (show x ∉ (H : Set G) from hx)]`. Rewrite using `[key, integral_indicator_const _ hm]`. Simplify using `only [Pi.smul_apply, Set.indicator_of_mem (show y ∈ (H : Set G) from hy), Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[Complex.real_smul, hc]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : (fun x => (c • (H : Set G).indicator (1 : G → ℂ)) x * (c • (H : Set G).indicator (1 : G → ℂ)) (x⁻¹ * y)) = fun _ => 0`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ H`. Establish `: x⁻¹ * y ∉ H` using `fun h => hy (by simpa using H.mul_mem hx h)`. Simplify using `[Set.indicator_of_notMem (show x⁻¹ * y ∉ (H : Set G) from this)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_of_notMem (show x ∉ (H : Set G) from hx)]`. Rewrite using `[key, integral_zero]`. Simplify using `[Set.indicator_of_notMem (show y ∉ (H : Set G) from hy)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_normInd_self (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G)

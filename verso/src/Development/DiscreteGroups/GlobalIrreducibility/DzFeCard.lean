@@ -15,9 +15,9 @@ namespace DiscreteGroups.sglob.DzFe
 variable {g : ℕ} [Fact g.Prime] {m : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Break down `Nat.lt_or_ge n k with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_pos h, min_eq_left h.le, min_eq_left (by omega)]`. Rewrite using `[if_neg (by omega), min_eq_right h, min_eq_right (by omega), add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_lt (n k : ℕ) : ∑ x ∈ Finset.range n, (if x < k then 1 else 0) = min n k := by
   induction n with
@@ -29,9 +29,9 @@ theorem sum_range_lt (n k : ℕ) : ∑ x ∈ Finset.range n, (if x < k then 1 el
     · rw [if_neg (by omega), min_eq_right h, min_eq_right (by omega), add_zero]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]`. Establish `h : ∀ k : Fin (m + 1), ∑ i : Fin (m + 1), (if (i, k).1 < (i, k).2 then 1 else 0) = (k : ℕ)` using `fun k => by show ∑ i : Fin (m + 1), (if (i : ℕ) < (k : ℕ) then 1 else 0) = (k : ℕ)`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun x => if x < (k : ℕ) then 1 else 0), sum_range_lt]`. Conclude with `min_eq_right k.2.le`. Rewrite using `[Finset.sum_congr rfl (fun k _ => h k), Fin.sum_univ_eq_sum_range (fun x => x), Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem card_SIdx : Fintype.card (SIdx m) = (m + 1) * m / 2 := by
   rw [Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]
@@ -43,9 +43,9 @@ theorem card_SIdx : Fintype.card (SIdx m) = (m + 1) * m / 2 := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Simplify using `only [Nat.min_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_range_between (n j m : ℕ) :
     ∑ x ∈ Finset.range n, (if j < x ∧ x < m then 1 else 0) = min n m - min n (j + 1) := by
@@ -57,7 +57,7 @@ theorem sum_range_between (n j m : ℕ) :
     split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Finset.card_filter]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun x => if j < x ∧ x < m then 1 else 0), sum_range_between]`. Simplify using `only [Nat.min_def]`. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem card_WIdx (j : ℕ) : Fintype.card (WIdx m j) = m - 1 - j := by
   rw [Fintype.card_subtype, Finset.card_filter]
@@ -66,7 +66,7 @@ theorem card_WIdx (j : ℕ) : Fintype.card (WIdx m j) = m - 1 - j := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[← (Equiv.funSplitAt (j0 m j) (ZMod g)).symm.sum_comp, Fintype.sum_prod_type]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Simplify using `[Equiv.funSplitAt_symm_apply, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_split (j : ℕ) (f : ZMod g → ℂ) :
     ∑ b : JIdx m j → ZMod g, f (b (j0 m j)) =

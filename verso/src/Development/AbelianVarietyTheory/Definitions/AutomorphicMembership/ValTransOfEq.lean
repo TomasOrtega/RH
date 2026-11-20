@@ -21,12 +21,12 @@ variable {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {N : Type} 
   {ip : N → N → ℂ} {j : X ≃ₗ[ℂ] P}
 
 /- English proof (translation)
-Introduce `x y` and use `h x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hilbTie_ofEq (e : P = P') (h : HilbTie P ip j) : HilbTie P' ip (j.trans (LinearEquiv.ofEq _ _ e)) := fun x y => h x y
 
 /- English proof (translation)
-Introduce `x y` and use `(h x y).trans (congrArg (ip (j x)) (hg y).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projTie_ofEq {Y : Type} {f : Y → X} {g g' : Y → N} (e : P = P') (h : ProjTie P ip j f g) (hg : ∀ y, g' y = g y) :
     ProjTie P' ip (j.trans (LinearEquiv.ofEq _ _ e)) f g' := fun x y => (h x y).trans (congrArg (ip (j x)) (hg y).symm)
@@ -34,7 +34,7 @@ theorem projTie_ofEq {Y : Type} {f : Y → X} {g g' : Y → N} (e : P = P') (h :
 omit [NormedAddCommGroup X] [InnerProductSpace ℂ X] in
 
 /- English proof (translation)
-The claim follows from `e ▸ e' ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem le_of_eqs {Q Q' : Submodule ℂ N} (e : P = P') (e' : Q = Q') (h : P ≤ Q) : P' ≤ Q' := e ▸ e' ▸ h
 
@@ -44,7 +44,7 @@ Both sides reduce to the same expression.
 theorem val_trans_ofEq (e : P = P') (x : X) : ((j.trans (LinearEquiv.ofEq _ _ e)) x).1 = (j x).1 := rfl
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Conclude with `hf (Submodule.inclusion h (j y))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem map_incl {Q Q' : Submodule ℂ N} {Z : Type} (e : P = P') (e' : Q = Q') (h : P ≤ Q) (j : X ≃ₗ[ℂ] P) {f : Q → Z} (f' : Q' → Z)
     (hf : ∀ v, f' (LinearEquiv.ofEq _ _ e' v) = f v) (y : X) :
@@ -63,7 +63,7 @@ def stepB (l : Bool) (μ : a.D.what₂.Tup) (k : ℕ) (v : spCC c F tupT hm hTop
   (by with_unfolding_all exact (((chainB c.to F tupT hm hTop).ioC l ((μ)) k ((v))).1 : _))
 
 /- English proof (translation)
-The claim follows from `(ioCB_eq c l μ k v)`.
+A detailed English derivation is pending.
 -/
 theorem stepB_eq (l : Bool) (μ : a.D.what₂.Tup) (k : ℕ) (v : (toChainReal R F tupT hm hTop).CC l μ (k + 1)) :
     stepB c l μ k (LinearEquiv.ofEq _ _ (congrFun (congrFun (congrFun (spCC_eq c F tupT hm hTop) l) μ) (k + 1)) v) =
@@ -73,7 +73,7 @@ def topB (l : Bool) (μ : a.D.what₂.Tup) (v : spCCX c F tupT hm hTop l μ) : (
   (by with_unfolding_all exact (((chainB c.to F tupT hm hTop).ioX l ((μ)) ((v))).1 : _))
 
 /- English proof (translation)
-The claim follows from `(ioXB'_eq c l μ v)`.
+A detailed English derivation is pending.
 -/
 theorem topB_eq (l : Bool) (μ : a.D.what₂.Tup) (v : (toChainReal R F tupT hm hTop).CCX l μ) :
     topB c l μ (LinearEquiv.ofEq _ _ (congrFun (congrFun (spCCX_eq c F tupT hm hTop) l) μ) v) =
@@ -95,13 +95,11 @@ def rowIds (I : RowIds X (toChainReal R F tupT hm hTop) l) : RowIds (rowSide c X
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `@RowSideReal.mk _ _ _ _ _ _ _ _ _ _ _ _ ?parY ?lvl ?lvlP ?lvlX ?ee ?mult ?multX ?io0 ?io0X ?io ?ioTop ?ft ?prt_disj` and prove the remaining obligations. Use `case parY =>`. Conclude with `(H.parY)`. Use `case lvl => kexactB (fun (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) => le_of_eqs (congrFun (spEEc_eq c F tupT hm hTop) l) (congrFun (congrFun (congrFun (spCC_eq c F tupT hm hTop) l) μ) 0) (H.lvl μ hμ))`. Use `case lvlP => kexactB (fun (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ a.D.R.m - 1) => le_of_eqs (congrFun (congrFun (congrFun (spCCP_eq c F tupT hm hTop) l) μ) j) (congrFun (congrFun (congrFun (spCC_eq c F tupT hm hTop) l) μ) j) (H.lvlP μ hμ j h1 h2))`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case lvlX => kexactB (fun (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) => le_of_eqs (congrFun (congrFun (spCCXP_eq c F tupT hm hTop) l) μ) (congrFun (congrFun (spCCX_eq c F tupT hm hTop) l) μ) (H.lvlX μ hμ))`. Use `case ee => kexactB (hilbTie_ofEq (congrFun (spEEc_eq c F tupT hm hTop) l) H.ee)`. Use `case mult => kexactB (fun (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ a.D.R.m - 1) => hilbTie_ofEq (congrFun (congrFun (congrFun (spCCP_eq c F tupT hm hTop) l) μ) j) (H.mult μ hμ j h1 h2))`. Use `case multX => kexactB (fun (h : 1 ≤ a.D.R.m) (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) => hilbTie_ofEq (congrFun (congrFun (spCCXP_eq c F tupT hm hTop) l) μ) (H.multX h μ hμ))`. Use `case io0 => kexactB (fun (h : 2 ≤ a.D.R.m) (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (ok : okB c F tupT hm hTop l μ) => projTie_ofEq (congrFun (spEEc_eq c F tupT hm hTop) l) (H.io0 h μ hμ (okB_imp c ok)) fun y => map_incl (congrFun (congrFun (congrFun (spCCP_eq c F tupT hm hTop) l) …`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case io0X => kexactB (fun (h : a.D.R.m = 1) (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (ok : okB c F tupT hm hTop l μ) => projTie_ofEq (congrFun (spEEc_eq c F tupT hm hTop) l) (H.io0X h μ hμ (okB_imp c ok)) fun y => congrArg (cast (congrArg (toChainReal R F tupT hm hTop).Amb (show a. …`. Use `case io => kexactB (fun (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (ok : okB c F tupT hm hTop l μ) (j : ℕ) (h1 : 1 ≤ j) (h2 : j + 1 ≤ a.D.R.m - 1) => projTie_ofEq (congrFun (congrFun (congrFun (spCCP_eq c F tupT hm hTop) l) μ) j) (H.io μ hμ (okB_imp c ok) j h1 h2) fun y => map_incl ( …`. Use `case ioTop => kexactB (fun (h : 2 ≤ a.D.R.m) (μ : a.D.what₂.Tup) (hμ : Used0 a.D μ) (ok : okB c F tupT hm hTop l μ) => projTie_ofEq (congrFun (congrFun (congrFun (spCCP_eq c F tupT hm hTop) l) μ) (a.D.R.m - 1)) (H.ioTop h μ hμ (okB_imp c ok)) fun y => map_incl (congrFun (congrFun …`. Use `case ft => kexactB (fun σ => cast (congrArg (· ∈ I.prt (ty σ)) (val_trans_ofEq (j := I.jE) (congrFun (spEEc_eq c F tupT hm hTop) l) (bs σ)).symm) (H.ft σ))`. Use `case prt_disj =>`.
-
-Conclude with `(H.prt_disj)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rowSideReal_tr {I : RowIds X (toChainReal R F tupT hm hTop) l} {n : ℕ} {bs : OrthonormalBasis (Fin n) ℂ EE}
     {ty : Fin n → a.D.what₂.FT} (H : RowSideReal X (toChainReal R F tupT hm hTop) l I bs ty) :
@@ -164,7 +162,7 @@ def spWc : type_of% (toLiftReal R F tupT hm hTop hinj).Wc := ((liftB c.to F tupT
 variable (F tupT hm hTop hinj) in
 
 /- English proof (translation)
-The claim follows from `(lift_Wc c.to F tupT hm hTop hinj)`.
+A detailed English derivation is pending.
 -/
 theorem spWc_eq : (toLiftReal R F tupT hm hTop hinj).Wc = spWc c F tupT hm hTop hinj := (lift_Wc c.to F tupT hm hTop hinj)
 
@@ -175,7 +173,7 @@ def spMultW : type_of% (toLiftReal R F tupT hm hTop hinj).MultW := ((liftB c.to 
 variable (F tupT hm hTop hinj) in
 
 /- English proof (translation)
-The claim follows from `(lift_MultW c.to F tupT hm hTop hinj)`.
+A detailed English derivation is pending.
 -/
 theorem spMultW_eq : (toLiftReal R F tupT hm hTop hinj).MultW = spMultW c F tupT hm hTop hinj := (lift_MultW c.to F tupT hm hTop hinj)
 
@@ -185,7 +183,7 @@ def liftIds (I : LiftIds (toLiftReal R F tupT hm hTop hinj)) : LiftIds (liftB c.
     ((I.jMt)) ((I.prtW))
 
 /- English proof (translation)
-Use `@LiftTie.mk _ _ _ _ ((H.hol)) (kc% (fun i => hilbTie_ofEq (congrFun (spWc_eq c F tupT hm hTop hinj) i) (H.mj i))) ((H.mt)) ?_ (kc% H.isot) ((H.prtW_disj)) ((H.lamP))` and prove the remaining obligations. Use `kexactB (cast (congrArg₂ (fun (P : type_of% (toLiftReal R F tupT hm hTop hinj).MultW) (Q : type_of% (toLiftReal R F tupT hm hTop hinj).Wc) => ∀ μ (hμ : Used0 a.D μ) (i : Fin a.D.R.m) (x : a.D.what₂.Mt μ (i + 1)) (w : (toLiftReal R F tupT hm hTop hinj).AmbW i), Lift.IsThetaP ((toL …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem liftTie_tr {I : LiftIds (toLiftReal R F tupT hm hTop hinj)} (H : LiftTie (toLiftReal R F tupT hm hTop hinj) I) :
     LiftTie (liftB c.to F tupT hm hTop hinj) (liftIds c I) := by
@@ -201,7 +199,7 @@ theorem liftTie_tr {I : LiftIds (toLiftReal R F tupT hm hTop hinj)} (H : LiftTie
     (spMultW_eq c F tupT hm hTop hinj) (spWc_eq c F tupT hm hTop hinj)) (kc% H.theta))
 
 /- English proof (translation)
-The claim follows from `@RecTied.mk _ _ _ _ _ _ _ _ ((rowSideReal_tr c H.sharp)) ((by with_unfolding_all exact @rowSideReal_tr B C a c G ‹Group G› ‹Fintype G› Pl0 T Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› iK A R F tupT hm hTop (@Rows.Data.EE0 (@Late.D B C a).R (@Late.D B C a).what₂) (@Rows.Data.instE …`.
+A detailed English derivation is pending.
 -/
 theorem recTied_tr {X0 : BaseLevelRowSide a.D} {Ish : RowIds (RowSide.sharp a.D) (toChainReal R F tupT hm hTop) true}
     {Iz : RowIds X0.s (toChainReal R F tupT hm hTop) false} {IL : LiftIds (toLiftReal R F tupT hm hTop hinj)} {K : ColReal a.D}

@@ -8,7 +8,7 @@ section
 variable {RR : Type*} {K : Type*} [CommRing RR] [CommRing K] [Algebra RR K]
 
 /- English proof (translation)
-Unfold `descend`. Rewrite using `[dif_pos hZ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem descend_mk {k : ℕ} (Z : Matrix (Fin k) (Fin k) RR) (r : Fin k → K)
     (hZ : LinearMap.range Z.mulVecLin ≤ LinearMap.ker (rowInvMod K Z r)) (v : Fin k → RR) :

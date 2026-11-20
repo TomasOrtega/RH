@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 
 /- English proof (translation)
-Unfold `Lev.levChi`. Rewrite using `[map_mul, ← Units.val_mul]`. Conclude with `congrArg _ ((Formalism.L2.DIV.levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MiTop.levChi_mul_lev {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) {k k' : GA D V}
     (hk : k ∈ Lev.levG V β L) (hk' : k' ∈ Lev.levG V β L) :
@@ -28,9 +28,9 @@ theorem GlobalTheory.MiTop.levChi_mul_lev {D : D7} (V : Formalism.BasicNotions.T
   exact congrArg _ ((Formalism.L2.DIV.levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩)
 
 /- English proof (translation)
-Use `⟨⟨fun hj => J.mul_mem (J.mul_mem hk hj) (J.inv_mem hk), fun hj => ?_⟩, fun hj => ?_⟩` and prove the remaining obligations. Use `J.mul_mem (J.mul_mem (J.inv_mem hk) hj) hk` as an intermediate fact. Rewrite `this` using `[show k⁻¹ * (k * j * k⁻¹) * k = j by group]`. Then use the resulting hypothesis. Establish `e` using `hm _ (J.mul_mem (J.mul_mem hk hj) (J.inv_mem hk)) _ hk`. Rewrite `e` using `[show k * j * k⁻¹ * k = k * j by group, hm _ hk _ hj, mul_comm (χ k)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ (h0 k) e).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MiTop.conj_in_level {G : Type} [Group G] (J : Subgroup G) (χ : G → ℂ)
     (hm : ∀ a ∈ J, ∀ b ∈ J, χ (a * b) = χ a * χ b) (h0 : ∀ a, χ a ≠ 0) {k : G} (hk : k ∈ J) (j : G) :
@@ -43,9 +43,9 @@ theorem GlobalTheory.MiTop.conj_in_level {G : Type} [Group G] (J : Subgroup G) (
     exact (mul_right_cancel₀ (h0 k) e).symm
 
 /- English proof (translation)
-Use `⟨mul_mem ht.1 hk.1, fun j => ?_⟩` and prove the remaining obligations. Establish `hc` using `GlobalTheory.MiTop.conj_in_level (G := GA D (D.sp.Y 0)) (Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (rChi W) (fun a ha b hb => GlobalTheory.MiTop.levChi_mul_lev _ _ _ ha hb) (fun a => Lev.levChi_ne_zero _ _) hk j`. Establish `h2` using `ht.2 (k * j * k⁻¹)`. Establish `e : (t⁻¹)⁻¹ * (k * j * k⁻¹) * t⁻¹ = ((t * k)⁻¹)⁻¹ * j * (t * k)⁻¹` using `by group`. Rewrite `h2` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hc.1.trans h2.1, fun hj => (h2.2 (hc.1.1 hj)).trans (hc.2 hj)⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.MiTop.matches_mul_lev {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex)
     {t k : GA D (D.sp.Y 0)} (ht : Matches W.S.X W.Q.instEq (rJ W) (rChi W) t) (hk : k ∈ rJ W) :
@@ -60,21 +60,21 @@ theorem GlobalTheory.MiTop.matches_mul_lev {D : D7} {L : SizeData₂ D} {hT : Ga
   exact ⟨hc.1.trans h2.1, fun hj => (h2.2 (hc.1.1 hj)).trans (hc.2 hj)⟩
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP hr`. Distinguish the cases in `hex : ∃ (u : D.what₂.Word) (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), PlacedP f B ∧ Framed B`. Take `⟨u₀, f₀, B₀, hpl₀, hF₀⟩` from `hex`. Apply the tactic sequence `obtain ⟨a₀, a, hAt⟩ := GlobalTheory.T.exists_placed_bessel_points W hP u₀ f₀ B₀ (by first | exact PlacedP.placed _ _ hpl₀ | exact hpl₀) hF₀`. Establish `hm` using `GlobalTheory.MiTop.botHyp_match W hP.bot`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : Matches W.S.X W.Q.instEq (rJ W) (rChi W) (show GA D (D.sp.Y 0) from W.Q.tS)`. Establish `h1` using `hm.2.2.2.1 1 (one_mem _) (one_mem _)`. Rewrite `h1` using `[one_mul]`. Then use the resulting hypothesis. Take `⟨z, hzf, hzc, c, hcf, hcc, k₀, hk₀, ht⟩` from `GlobalTheory.T.matching_translates_bottom W hP.bot hr u₀ B₀ _ hAt.2.2.2.1 _ hS.1 hAt.2.2.2 hS`. Establish `ht₀ : tOf f₀ B₀ a₀ (c⁻¹ * a) = z * (show GA D (D.sp.Y 0) from W.Q.tS) * k₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : a₀ * (c⁻¹ * a) = c⁻¹ * (a₀ * a)`. Rewrite using `[← mul_assoc, Subgroup.mem_center_iff.1 (inv_mem hcc) a₀, mul_assoc]`. Unfold `tOf at ht ⊢`. Rewrite using `[hc, map_mul, map_inv]`. Generalize the expression as in `(iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u₀) = x at ht ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `embA B₀.d B₀.o (a₀ * a) = p at ht ⊢`. Generalize the expression as in `embA B₀.d B₀.o c = q at ht ⊢`. Generalize the expression as in `(show GA D (D.sp.Y 0) from f₀.g.b 0) = b at ht ⊢`. Generalize the expression as in `(show GA D (D.sp.Y 0) from W.Q.tS) = s at ht ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 
-Establish `hAt₀ : IsAt f₀ B₀ a₀ (c⁻¹ * a)`. Use `⟨hAt.1, mul_mem (inv_mem hcf) hAt.2.1, mul_mem (inv_mem hcc) hAt.2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[ht₀]`. Conclude with `GlobalTheory.MiTop.matches_mul_lev W (hm.2.2.2.1 z hzf hzc) hk₀`. Use `⟨z, hzf, hzc, fun u f B hpl hF => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `obtain ⟨b₀, b, hAt'⟩ := GlobalTheory.T.exists_placed_bessel_points W hP u f B (by first | exact PlacedP.placed _ _ hpl | exact hpl) hF`. Take `⟨a₁, hAt1, k, hk, hkt⟩` from `GlobalTheory.T.placed_bessel_compatibility W hP hr u u₀ f f₀ B B₀ hpl hpl₀ hF hF₀ b₀ b a₀ _ hAt' hAt₀`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hBT, _⟩` from `hpl`. Use `⟨⟨B, (show GA D (D.sp.Y 0) from f.g.b 0), b₀, a₁, k₀ * k⟩, rfl, rfl, ⟨hBT.adapted, hAt1.1, hAt1.2.1, hAt1.2.2.1, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Formalism.IndefR.Lev.levG _ _ _).mul_mem hk₀ hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hkt`. Rewrite `e` using `[ht₀]`. Unfold `tOf at e`. Use `show embA B.d B.o (b₀ * a₁) * (show GA D (D.sp.Y 0) from f.g.b 0) = (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS) * (k₀ * k))`. Establish `e' : ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * (embA B.d B.o (b₀ * a₁) * (show GA D (D.sp.Y 0) from f.g.b 0)) = z * (show GA D (D.sp.Y 0) from W.Q.tS) * k₀ * k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← mul_assoc]`. Conclude with `e`. Rewrite using `[← mul_assoc (z * _) k₀ k, ← e', mul_inv_cancel_left]`. Conclude with `⟨1, one_mem _, one_mem _, fun u f B hpl hF => (hex ⟨u, f, B, hpl, hF⟩).elim⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MiTop.one_central_pin : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∃ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) ∧ ∀ u (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), GlobalTheory.MiTop.PlacedP f B → GlobalTheory.MiTop.Framed B → ∃ d : BotDat W u, d.B = B ∧ d.b = (show GA D (D.sp.Y 0) from f.g.b 0) ∧ d.Pin z := by
   intro D L hT Gi Gl Kc Yd cX ex W hP hr

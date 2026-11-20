@@ -13,9 +13,9 @@ namespace GlobalTheory.ConjVal
 open GlobalTheory.IdemSupport
 
 /- English proof (translation)
-Establish `: cP Q = Formalism.BasicNotions.Examples₂.PlacesToy.conjW Q`. Use extensionality with `r`. Use `Formalism.BasicNotions.Examples₂.PlacesToy.mem_conjW_pow Q r 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Rewrite using `[this, mem_cP]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Formalism.BasicNotions.Examples₂.PlacesToy.valuation_conjW, star_star]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_cP {D : D7} (Q : HeightOneSpectrum (𝓞 D.host.E)) (x : D.host.E) :
     (cP Q).valuation D.host.E (star x) = Q.valuation D.host.E x := by
@@ -28,9 +28,9 @@ theorem valuation_cP {D : D7} (Q : HeightOneSpectrum (𝓞 D.host.E)) (x : D.hos
   rw [this, Formalism.BasicNotions.Examples₂.PlacesToy.valuation_conjW, star_star]
 
 /- English proof (translation)
-Establish `key : ∀ {a b : WithZero (Multiplicative ℤ)}, (∀ c, c ≠ 0 → a ≤ c → b ≤ c) → b ≤ a`. Introduce `a b h`. Distinguish the cases in `ha : a = 0`. Assume the negation of the conclusion as `hb`. Establish `hb0 : b ≠ 0` using `fun e => hb (by rw [e]; exact zero_le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `h (WithZero.exp (WithZero.log b - 1)) WithZero.exp_ne_zero (by rw [ha]; exact zero_le)`. Rewrite `h1` using `[← WithZero.exp_log hb0, WithZero.exp_le_exp, WithZero.log_exp]`. Use linear arithmetic over natural numbers and integers. Conclude with `h a ha le_rfl`. Conclude with `le_antisymm (key fun c hc => (h c hc).2) (key fun c hc => (h c hc).1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_le_iff {a b : WithZero (Multiplicative ℤ)}
     (h : ∀ c, c ≠ 0 → (a ≤ c ↔ b ≤ c)) : a = b := by
@@ -46,11 +46,9 @@ theorem eq_of_le_iff {a b : WithZero (Multiplicative ℤ)}
   exact le_antisymm (key fun c hc => (h c hc).2) (key fun c hc => (h c hc).1)
 
 /- English proof (translation)
-Establish `e1 : ∀ R, (e * (y * algebraMap E (FiniteAdeleRing (𝓞 E) E) k⁻¹)) R = e R * (y R * algebraMap E (R.adicCompletion E) k⁻¹)` using `fun R => rfl`. Establish `hv : 0 < P.valuation E k` using `zero_lt_iff.2 (by simpa using hk)`. Establish `e2 : Valued.v ((e * (y * algebraMap E (FiniteAdeleRing (𝓞 E) E) k⁻¹)) P) ≤ 1 ↔ Valued.v (y P) ≤ P.valuation E k`. Rewrite using `[e1, h1, one_mul, map_mul, Formalism.UG.P.levelaf_valued_algebraMap, map_inv₀, mul_inv_le_iff₀ hv, one_mul]`. Rewrite using `[← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => h P, fun h R => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hR : R = P`. Rewrite using `[hR]`. Conclude with `h`. Rewrite using `[e1, h0 R hR, zero_mul, map_zero]`.
-
-Conclude with `zero_le`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_iff {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {e : FiniteAdeleRing (𝓞 E) E}
     (h1 : e P = 1) (h0 : ∀ R, R ≠ P → e R = 0) (y : FiniteAdeleRing (𝓞 E) E) {k : E} (hk : k ≠ 0) :
@@ -70,14 +68,14 @@ theorem int_iff {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (�
     exact zero_le
 
 /- English proof (translation)
-Simplify using `only [map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_three {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B ≃+* C) (a b c : A) :
     g (f (a * (b * c))) = g (f a) * (g (f b) * g (f c)) := by
   simp only [map_mul]
 
 /- English proof (translation)
-Rewrite using `[← star_inv₀, ← cA_incA, ← RingHom.map_mul, ← RingHom.map_mul]`. Use `⟨fun h => ?_, finPart_cA_mem⟩` and prove the remaining obligations. Use `finPart_cA_mem h` as an intermediate fact. Rewrite `this` using `[cA_cA]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_iff {D : D7} (e z : AE D) (k : D.host.E) :
     finPart D (cA D e * (cA D z * incA D (star k)⁻¹)) ∈ intAE D ↔ finPart D (e * (z * incA D k⁻¹)) ∈ intAE D := by
@@ -89,13 +87,13 @@ theorem conj_mem_iff {D : D7} (e z : AE D) (k : D.host.E) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D ι hinc hint hid`. Take `⟨Φ, hΦ⟩` from `exists_comp D`. Use `choose ε hε using hid`. Establish `hd : ∀ P, IsDelta Φ P (ε P)` using `fun P => (tie_iff hΦ (hε P).1.1 (hε P).2.1 P).1 (hε P).1.2.2`. Use `⟨fun e P h => ?_, fun z Q => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[delta_unique hΦ (delta_of_isIdemAt hΦ h) (hd P)]`. Conclude with `(hε P).2`. Establish `hc : cA D (ε Q) = ε (cP Q)` using `delta_unique hΦ (delta_conj hΦ (hd Q)) (hd _)`. Establish `key : ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (y : AE D) (k : D.host.E), k ≠ 0 → (finPart D (ε P * (y * incA D k⁻¹)) ∈ intAE D ↔ Valued.v (ι (finPart D y) P) ≤ P.valuation D.host.E k)`. Introduce `P y k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ι (finPart D (incA D k⁻¹)) = algebraMap D.host.E _ k⁻¹` using `hinc k⁻¹`. Rewrite using `[hint, map_three, this]`. Conclude with `int_iff (hε P).2.2.1 (hε P).2.2.2 _ hk`. Use `eq_of_le_iff fun c hc0 => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Q.valuation_surjective D.host.E c`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : k ≠ 0` using `fun e => hc0 (by rw [e, Valuation.map_zero])`. Establish `h1` using `key (cP Q) (cA D z) (star k) (star_ne_zero.2 hk)`. Rewrite `h1` using `[valuation_cP, ← hc, conj_mem_iff]`. Conclude with `h1.symm.trans (key Q z k hk)`.
+A detailed English derivation is pending.
 -/
 theorem components_and_conj_valuation : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → (∀ P : HeightOneSpectrum (𝓞 D.host.E), ∃ e : AE D, IsPlIdem D e P ∧ infPart D e = 0 ∧ ι (finPart D e) P = 1 ∧ ∀ P' : HeightOneSpectrum (𝓞 D.host.E), P' ≠ P → ι (finPart D e) P' = 0) → (∀ (e : AE D) (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt e P → infPart D e = 0 ∧ ι (finPart D e) P = 1 ∧ ∀ P' : HeightOneSpectrum (𝓞 D.host.E), P' ≠ P → ι (finPart D e) P' = 0) ∧ ∀ (z : AE D) (Q : HeightOneSpectrum (𝓞 D.host.E)), Valued.v (ι (finPart D (cA D z)) (GlobalTheory.IdemSupport.cP Q)) = Valued.v (ι (finPart D z) Q) := by
   intro D ι hinc hint hid

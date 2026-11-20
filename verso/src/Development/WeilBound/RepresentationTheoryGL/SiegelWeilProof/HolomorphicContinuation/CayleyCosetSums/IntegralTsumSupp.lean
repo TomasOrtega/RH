@@ -19,9 +19,9 @@ Both sides reduce to the same expression.
 theorem ιK_apply (k : KR n) : ιK n k = mR (k : GR n) := rfl
 
 /- English proof (translation)
-Establish `h1 : (fun Y : GR n => fz m e w (mR Y)) = fun Y => F0 m 0 e Y * ((hLoc Y : ℝ) : ℂ) ^ w`. Use function extensionality and compare the values at `fun Y => hS n m e w Y`. Rewrite using `[h1]`. Use `(Vac.continuous_weight_factor detU1 m 0 e).mul ?_` and prove the remaining obligations. Use `Continuous.cpow (Complex.continuous_ofReal.comp (Vac.continuous_hLoc detU1)) continuous_const fun Y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.ofReal_mem_slitPlane.mpr (Vac.hLoc_pos detU1 Y)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fzG (hS : SecFz) (w : ℂ) : Continuous fun Y : GR n => fz m e w (mR Y) := by
   have h1 : (fun Y : GR n => fz m e w (mR Y)) = fun Y => F0 m 0 e Y * ((hLoc Y : ℝ) : ℂ) ^ w :=
@@ -32,17 +32,17 @@ theorem continuous_fzG (hS : SecFz) (w : ℂ) : Continuous fun Y : GR n => fz m 
   exact Complex.ofReal_mem_slitPlane.mpr (Vac.hLoc_pos detU1 Y)
 
 /- English proof (translation)
-Establish `hFi : ∀ q, Integrable (F q) ν` using `fun q => Integrable.mono' (hbd.const_mul (u q)) (hFm q) (ae_of_all _ (hF q))`. Establish `hIn : ∀ q, ‖∫ x, F q x ∂ν‖ ≤ u q * ∫ x, bd x ∂ν`. Introduce `q`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Summable.of_norm_bounded (hu.mul_right _) hIn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF0 : ∀ q, q ∉ Function.support u → ∀ x, F q x = 0`. Introduce `q hq x`. Establish `h0 : u q = 0` using `Function.notMem_support.mp hq`. Use `hF q x` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `norm_le_zero_iff.mp this`. Establish `: Countable (Function.support u)` using `hu.countable_support.to_subtype`. Establish `hL : ∀ x, ∑' q, F q x = ∑' s : Function.support u, F s x`. Introduce `x`. Use `(tsum_subtype_eq_of_support_subset (f := fun q => F q x) ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Assume the negation of the conclusion as `h`. Conclude with `hq (hF0 q h x)`. Establish `hN : ∀ q, ∫ x, ‖F q x‖ ∂ν ≤ u q * ∫ x, bd x ∂ν`. Introduce `q`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsumn : Summable fun s : Function.support u => ∫ x, ‖F s x‖ ∂ν` using `Summable.of_nonneg_of_le (fun s => integral_nonneg fun _ => norm_nonneg _) (fun s => hN s) ((hu.subtype _).mul_right _)`. Repeatedly rewrite using `[hL]`. Rewrite using `[← integral_tsum_of_summable_integral_norm (F := fun (s : Function.support u) x => F s x) (fun s => hFi s) hsumn]`. Use `tsum_subtype_eq_of_support_subset (f := fun q => ∫ x, F q x ∂ν) ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `q hq`. Assume the negation of the conclusion as `h`. Conclude with `hq (by simp only [hF0 q h, integral_zero])`.
+A detailed English derivation is pending.
 -/
 theorem integral_tsum_supp {X : Type} [MeasurableSpace X] {ν : Measure X} {ι' : Type} (F : ι' → X → ℂ) (u : ι' → ℝ)
     (hu : Summable u) (hu0 : ∀ q, 0 ≤ u q) (bd : X → ℝ) (hbd : Integrable bd ν)

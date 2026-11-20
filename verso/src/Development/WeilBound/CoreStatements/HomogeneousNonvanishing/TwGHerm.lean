@@ -4,23 +4,23 @@ open NumberField TensorProduct
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `Z R _ _ _ σ hσ lam hlam hbij N ψ halt hψ hadj`. Establish `hskew : ∀ x y, ψ x y = -ψ y x` using `fun x y => by`. Use `halt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, halt] at this`. Take the linear combination `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hinj : ∀ a b : R, (∀ r, lam (a * r) = lam (b * r)) → a = b` using `fun a b h => hbij.1 (LinearMap.ext fun r => h r)`. Establish `hex : ∀ i j : Fin N, ∃ a : R, ∀ r : R, lam (a * r) = ψ (r • Pi.single i 1) (Pi.single j 1)`. Introduce `i j`. Take `⟨a, ha⟩` from `hbij.2 ((ψ.flip (Pi.single j 1)).comp ((LinearMap.toSpanSingleton R (Fin N → R) (Pi.single i 1)).restrictScalars Z))`. Conclude with `⟨a, fun r => LinearMap.congr_fun ha r⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose A hA using hex`. Establish `hform : ∀ x y, ψ x y = lam (∑ i, ∑ j, x i * A i j * σ (y j))`. Introduce `x y`. Use `conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y]`. Simplify using `only [map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `hadj (σ (y j)) (x i • Pi.single i 1) (Pi.single j 1)`. Rewrite `h1` using `[hσ, smul_smul, ← hA]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Matrix.of A, ?_, ?_, hform⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hinj _ _ fun r => ?_` and prove the remaining obligations. Establish `h1` using `hlam (A j i * σ r)`. Rewrite `h1` using `[map_mul, hσ]`. Rewrite using `[h1, hA, hA, hadj r, hskew (Pi.single i 1)]`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.vecMul_surjective_iff_isUnit]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `w`. Set `F : (Fin N → R) →ₗ[Z] Z` to `∑ j, lam.comp ((LinearMap.mulLeft Z (w j)).comp (σ.toLinearMap.comp ((LinearMap.proj j : (Fin N → R) →ₗ[R] R).restrictScalars Z)))`. Take `⟨x, hx⟩` from `hψ.2 F`. Use `⟨x, funext fun j => hinj _ _ fun r => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hx (Pi.single j (σ r))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hform]`. Simplify using `only [F, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply] at h1`. Establish `h2 : ∑ d, lam (w d * σ (Pi.single (M` using `fun _ => R) j (σ r) d)) = lam (w j * r) := by`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp), Pi.single_eq_same, hσ]`. Rewrite using `[← h2, ← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp), Pi.single_eq_same, hσ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_g_herm : ∀ (Z R : Type) [CommRing Z] [CommRing R] [Algebra Z R] (σ : R →ₐ[Z] R), (∀ r, σ (σ r) = r) → ∀ lam : R →ₗ[Z] Z, (∀ r, lam (σ r) = -lam r) → Function.Bijective (fun r : R => lam.comp (LinearMap.mulLeft Z r)) → ∀ (N : ℕ) (ψ : LinearMap.BilinForm Z (Fin N → R)), (∀ x, ψ x x = 0) → Function.Bijective ψ → (∀ (a : R) x y, ψ (a • x) y = ψ x (σ a • y)) → ∃ A : Matrix (Fin N) (Fin N) R, (A.map σ).transpose = A ∧ IsUnit A.det ∧ ∀ x y, ψ x y = lam (∑ i, ∑ j, x i * A i j * σ (y j)) := by
   intro Z R _ _ _ σ hσ lam hlam hbij N ψ halt hψ hadj

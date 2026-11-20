@@ -14,7 +14,7 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.TypePrimeEta
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_Icc_succ_top (by omega), ih]; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_two_mul_Icc (r : ℕ) : ∑ a ∈ Finset.Icc 1 r, 2 * a = r * (r + 1) := by
   induction r with
@@ -22,9 +22,9 @@ theorem sum_two_mul_Icc (r : ℕ) : ∑ a ∈ Finset.Icc 1 r, 2 * a = r * (r + 1
   | succ n ih => rw [Finset.sum_Icc_succ_top (by omega), ih]; ring
 
 /- English proof (translation)
-Use `haveI : Fact g.Prime := ⟨hg⟩`. Establish `h1 : 1 < g' ^ a` using `Nat.one_lt_pow (by omega) (by omega)`. Establish `hpos : 0 < g' ^ a - 1` using `by omega`. Establish `hle : g ^ padicValNat g (g' ^ a - 1) ≤ g' ^ a - 1` using `Nat.le_of_dvd hpos pow_padicValNat_dvd`. Establish `hlt : g ^ padicValNat g (g' ^ a - 1) < g ^ (2 * a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `h`. Establish `h` using `Nat.lt_of_not_le h`. Use `Nat.pow_le_pow_right hg.pos h.le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem padicValNat_pow_sub_one_le (g g' a : ℕ) (hg : g.Prime) (hg' : 2 ≤ g') (hgg : g' ≤ g ^ 2)
     (ha : 1 ≤ a) : padicValNat g (g' ^ a - 1) ≤ 2 * a := by
@@ -43,11 +43,11 @@ theorem padicValNat_pow_sub_one_le (g g' a : ℕ) (hg : g.Prime) (hg' : 2 ≤ g'
   omega
 
 /- English proof (translation)
-Use `haveI : Fact g.Prime := ⟨hg⟩`. Use `haveI : Fact g'.Prime := ⟨hg'⟩`. Establish `h0 : ∀ q : ℕ, [Fact q.Prime] → Nat.card (Matrix.GeneralLinearGroup (Fin r) (ZMod q)) ≠ 0` using `fun q _ => Nat.card_pos.ne'`. Take `⟨h1, h2⟩` from `Formalism.IrreducibleCountingLemmas.WindowSums.padicValCardGeneralLinear g g' r hne`. Rewrite using `[padicValNat.mul (pow_ne_zero _ (h0 g)) (pow_ne_zero _ (h0 g')), padicValNat.pow, padicValNat.pow, h1, h2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ a ∈ Finset.Icc 1 r, padicValNat g (g' ^ a - 1) ≤ r * (r + 1)`. Rewrite using `[← sum_two_mul_Icc]`. Conclude with `Finset.sum_le_sum fun a ha => padicValNat_pow_sub_one_le g g' a hg hg'.two_le hgg (Finset.mem_Icc.1 ha).1`. Establish `hd : r * (r - 1) / 2 ≤ r * (r - 1)` using `Nat.div_le_self _ _`. Establish `he : r * (r - 1) + r * (r + 1) = 2 * r ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `r with`. Consider the case `zero => simp`. Consider the case `succ n => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_card_le (g g' r f : ℕ) (hg : g.Prime) (hg' : g'.Prime) (hne : g ≠ g')
     (hgg : g' ≤ g ^ 2) :
@@ -75,13 +75,11 @@ theorem val_card_le (g g' r f : ℕ) (hg : g.Prime) (hg' : g'.Prime) (hne : g �
     _ = 2 * f * r ^ 2 := by rw [← mul_add, he]; ring
 
 /- English proof (translation)
-Establish `hg` using `D.host.g_prime k`. Establish `hg'` using `D.host.g_prime k'`. Establish `hgg : D.host.g k' ≤ D.host.g k ^ 2`. Establish `h1 : (0 : ℝ) < D.host.g k'` using `by exact_mod_cast hg'.pos`. Establish `h0 : (0 : ℝ) < (D.host.g k : ℝ) ^ 2` using `pow_pos (by exact_mod_cast hg.pos) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Real.log (D.host.g k' : ℝ) ≤ Real.log ((D.host.g k : ℝ) ^ 2)`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Real.log_le_log_iff h1 h0).1 h2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Apply the tactic sequence `have hk : (k = 0 ∧ k' = 1) ∨ (k = 1 ∧ k' = 0) := by fin_cases k <;> fin_cases k' <;> simp_all`. Break down `hk with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[D.nd.restN_card_levelGroup_eq, Fin.prod_univ_two]`. Conclude with `val_card_le _ _ _ _ hg hg' D.host.g_ne hgg`.
-
-Rewrite using `[D.nd.restN_card_levelGroup_eq, Fin.prod_univ_two, mul_comm]`. Conclude with `val_card_le _ _ _ _ hg hg' D.host.g_ne.symm hgg`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cardG0g_le (D : D7) (k k' : Fin 2) (hkk : k ≠ k')
     (hlog : Real.log (D.host.g k' : ℝ) ≤ 2 * Real.log (D.host.g k : ℝ)) :
@@ -104,15 +102,15 @@ theorem val_cardG0g_le (D : D7) (k k' : Fin 2) (hkk : k ≠ k')
     exact val_card_le _ _ _ _ hg hg' D.host.g_ne.symm hgg
 
 /- English proof (translation)
-Establish `hn1 : (1 : ℝ) ≤ n` using `by have : 1 ≤ n := by omega`. Conclude with `this` after adjusting the coercions. Establish `hnR : (n : ℝ) = r + t` using `by rw [← hn]; push_cast; ring`. Establish `a1 : (4 : ℝ) * r' ≤ (N : ℝ) ^ 2` using `by exact_mod_cast hr4`. Establish `a2 : (N : ℝ) ≤ 2 * n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: N ≤ 2 * n` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `a0 : (0 : ℝ) ≤ N` using `by positivity`. Establish `a3 : (N : ℝ) ^ 2 ≤ (2 * n) ^ 2` using `pow_le_pow_left₀ a0 a2 2`. Establish `hNr : 4 * ((N : ℝ) * r') ≤ 4 * (2 * (n : ℝ) ^ 3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hs : (N : ℝ) + r' ≤ 3 * (n : ℝ) ^ 2` using `by nlinarith`. Establish `he0 : (0 : ℝ) ≤ e` using `by positivity`. Establish `ht0 : (0 : ℝ) ≤ t` using `by positivity`. Establish `hr0 : (0 : ℝ) ≤ r'` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ((e : ℝ) + t + 1) * (N + r') ≤ ((e : ℝ) + t + n) * (3 * (n : ℝ) ^ 2)` using `mul_le_mul (by linarith) hs (by positivity) (by positivity)`. Establish `hX : (N : ℝ) * r' + ((e : ℝ) + t + 1) * (N + r') ≤ 5 * ((n : ℝ) ^ 2 * ((n : ℝ) + e + t))`. Use polynomial arithmetic with `[pow_nonneg (show (0:ℝ) ≤ n by linarith) 2]`. Establish `hY : (0 : ℝ) ≤ (n : ℝ) ^ 2 * ((n : ℝ) + e + t)` using `by positivity`. Establish `hCT : (0 : ℝ) ≤ CT` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hCX : (CT : ℝ) * ((N : ℝ) * r' + ((e : ℝ) + t + 1) * (N + r')) ≤ C * ((n : ℝ) ^ 2 * ((n : ℝ) + e + t))`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hX hCT, mul_le_mul_of_nonneg_right hC hY]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem first_le (f r t CT N r' e n : ℕ) (C : ℝ) (hC : 8 * (CT : ℝ) ≤ C) (hN2 : 2 ≤ N)
     (hN : N ≤ n + 1) (hr4 : 4 * r' ≤ N ^ 2) (hn : r + t = n) :
@@ -158,11 +156,11 @@ end GlobalTheory.TypePrimeEta
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D C CT hC hQ i k k' hkk hl r ρ hr hadm eta s S sg U h1 h2 h3 h4 h5 h6 h7 h8`. Take `⟨c, hη, hL⟩` from `hQ i k k' hkk hl r ρ hr hadm eta s S sg U h1 h2 h3 h4 h5 h6 h7 h8`. Establish `hv : (padicValNat (D.host.g k) D.what₂.restRowsFiniteGroupCard : ℝ) ≤ 2 * D.R.f * (D.R.r : ℝ) ^ 2`. Conclude with `TypePrimeEta.val_cardG0g_le D k k' hkk h2` after adjusting the coercions. Establish `key : ∀ π ∈ D.nd.Zgood i, (c π : ℝ) + (padicValNat (D.host.g k) D.what₂.restRowsFiniteGroupCard : ℝ) ≤ rhs C eta i ρ π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `π hπ`. Take `⟨N, r', hN2, hN, hr1, hr4, hc⟩` from `hL π hπ`. Establish `hA` using `TypePrimeEta.first_le D.R.f D.R.r D.R.t CT N r' eta D.R.nV C hC hN2 hN hr4 rfl`. Unfold `rhs eT`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hη' : (D.nd.etaLoc i : ℝ) ≤ ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ) * ((c π : ℝ) + (padicValNat (D.host.g k) D.what₂.restRowsFiniteGroupCard : ℝ))`. Conclude with `hη` after adjusting the coercions. Conclude with `hη'.trans (Finset.sum_le_sum fun π hπ => mul_le_mul_of_nonneg_left (key π hπ) (Nat.cast_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem typePrimeBound_of_etaBound : ∀ (D : D7) (C : ℝ) (CT : ℕ), 8 * (CT : ℝ) ≤ C →
     CongruenceAtTypePrimes (D := D) CT (EtaBound CT) → PairedCharacterCondition.aux₃ (D := D) C CT := by

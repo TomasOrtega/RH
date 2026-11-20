@@ -23,11 +23,11 @@ open scoped ComplexOrder in
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] in
 
 /- English proof (translation)
-Take `⟨s⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Establish `hli : LinearIndependent K ![c]` using `(linearIndependent_unique_iff (v := ![c])).2 (by simpa using hne)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos` using `(h.posDef s 1 ![c] hli).diag_pos (i := 0)`. Establish `hzero : h'.form s 0 0 = 0` using `by simpa using h'.smul_right s 0 0 0`. Establish `hcc : h.form s c c = 0` using `by rw [← hM, hc, hzero]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val_fin_one] at hpos`. Rewrite `hpos` using `[hcc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hpos`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_isometry (h : HermFam K V) (h' : HermFam K V') (M : V →ₗ[K] V')
     (hM : ∀ s c c', h'.form s (M c) (M c') = h.form s c c') : Function.Injective M := by
@@ -44,15 +44,15 @@ theorem injective_of_isometry (h : HermFam K V) (h' : HermFam K V') (M : V →�
   exact lt_irrefl _ hpos
 
 /- English proof (translation)
-Apply the tactic sequence `have hinj := injective_of_isometry h h' M hM`. Take `⟨v, hv⟩` from `exists_isFrame E hE`. Take `⟨hvE, hvli, hvsp⟩` from `hv`. Establish `hv' : IsFrame K (E.map (M.restrictScalars (𝓞 K))) (M ∘ v)`. Use `⟨fun i => Submodule.mem_map_of_mem (hvE i), hvli.map' M (LinearMap.ker_eq_bot.2 hinj), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx'` using `hvsp hx`. Rewrite using `[Set.range_comp, Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem hx'`. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE ⟨hvE, hvli, hvsp⟩, arakelovDegree_eq_degreeOfFamily h' (hE.map _) hv']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgram : ∀ σ, h'.gram σ (M ∘ v) = h.gram σ v` using `fun σ => by`. Use extensionality with `i j`. Simplify using `[HermFam.gram, hM]`. Establish `hspan : Submodule.span (𝓞 K) (Set.range (M ∘ v)) = (Submodule.span (𝓞 K) (Set.range v)).map (M.restrictScalars (𝓞 K))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hidx : (Submodule.span (𝓞 K) (Set.range (M ∘ v))).toAddSubgroup.relIndex (E.map (M.restrictScalars (𝓞 K))).toAddSubgroup = (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup`. Rewrite using `[hspan, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`. Unfold `degreeOfFamily`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hidx]`. Simplify using `only [hgram]`.
+A detailed English derivation is pending.
 -/
 theorem deg_map_of_isometry (h : HermFam K V) (h' : HermFam K V') (M : V →ₗ[K] V')
     (hM : ∀ s c c', h'.form s (M c) (M c') = h.form s c c') {E : Submodule (𝓞 K) V} (hE : E.FG) :
@@ -88,11 +88,11 @@ end Lattice
 variable {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp (𝓞 K))}
 
 /- English proof (translation)
-Establish `hb` using `F.basis`. Unfold `IsLieBasis at hb`. Establish `hf` using `F.fib`. Unfold `IsPolFibre at hf`. Take `⟨-, hpb, -⟩` from `hf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hwu⟩` from `existsUnique_isVecOver hpb.1 u`. Take `⟨c, hc, hcu⟩` from `hb.2 w (hw.isTangent hpb hu)`. Use `⟨c, ⟨hu, w, hw, hc⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨-, w', hw', hc'⟩`. Take `rfl` from `hwu w' hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hcu c' hc'`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_coord (F : GenFib P) {u : epsR (𝓞 K) ⟶ P.A} (hu : IsTangent u) : ∃! c, F.IsCoord u c := by
   have hb := F.basis
@@ -108,11 +108,11 @@ theorem existsUnique_coord (F : GenFib P) {u : epsR (𝓞 K) ⟶ P.A} (hu : IsTa
   exact hcu c' hc'
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨ht, -⟩` from `id hu`. Take `⟨c₀, hc₀, -⟩` from `existsUnique_coord F ht`. Use `⟨c₀, ⟨u, hc₀, hp⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hM u c₀ hc₀`. Rewrite `h1` using `[Category.comp_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(existsUnique_coord F' ht).unique h1 hu`. Introduce and unpack `⟨c₀, ⟨u, hu, hp⟩, rfl⟩`. Establish `h1` using `hM u c₀ hu`. Rewrite `h1` using `[Category.comp_id]`. Conclude with `⟨u, h1, hp⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_coord (F F' : GenFib P) {M : (Fin F.P₀.g → K) →ₗ[K] (Fin F'.P₀.g → K)} (hM : F.IsDiffOf F' (𝟙 P.A) M)
     (p : (epsR (𝓞 K) ⟶ P.A) → Prop) :
@@ -135,15 +135,13 @@ theorem image_coord (F F' : GenFib P) {M : (Fin F.P₀.g → K) →ₗ[K] (Fin F
     exact ⟨u, h1, hp⟩
 
 /- English proof (translation)
-Introduce `hU hL K _ _ P F F' h h' hh hh'`. Take `⟨⟨M, hM, -⟩, -⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P F' (𝟙 P.A) inferInstance`. Establish `hN : F.IsDiffOf F (𝟙 P.A) LinearMap.id` using `fun u c hc => by`. Rewrite using `[Category.comp_id]`. Conclude with `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlam : LamEq P.L (𝟙 P.A) (𝟙 P.A) P.L (𝟙 P.A) (𝟙 P.A)` using `GlobalTheory.PolBaseChange.lbIso_refl (GlobalTheory.LamCalc.cubeLB_isLB P.isLB _)`. Establish `hiso : ∀ s c c', h'.form s (M c) (M c') = h.form s c c'` using `fun s c c' => by`. Simplify using `using GlobalTheory.T.hermitianMetric_differential_eq_of_pairing_relation hU hL K P F P F' h h' (𝟙 P.A) (𝟙 P.A) M LinearMap.id hh hh' inferInstance inferInstance hlam hM hN s c c'`. Establish `hFG` using `(GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1`. Use `⟨?_, fun O _ act τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `image_coord F F' hM (fun _ => True)`. Simplify using `only [and_true] at e`. Establish `e' : F'.lieLat = F.lieLat.map (M.restrictScalars (𝓞 K))` using `e`. Rewrite using `[e']`. Apply the tactic sequence `exact deg_map_of_isometry h h' M hiso hFG`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `image_coord F F' hM (fun u => ∀ a, IsLieComb ![τ a] ![u] (u ≫ act.act a))`. Establish `hle : F.eigLat act τ ≤ F.lieLat` using `Submodule.span_mono fun c ⟨u, hu, _⟩ => ⟨u, hu⟩`. Establish `hFG' : (F.eigLat act τ).FG` using `hFG.of_le hle`. Establish `e' : F'.eigLat act τ = (F.eigLat act τ).map (M.restrictScalars (𝓞 K))` using `e`. Rewrite using `[e']`.
-
-Apply the tactic sequence `exact deg_map_of_isometry h h' M hiso hFG'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_lieLat_eq : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (F' : GenFib P) (h : HermFam K (Fin F.P₀.g → K)) (h' : HermFam K (Fin F'.P₀.g → K)), F.IsHerm h → F'.IsHerm h' → deg h F.lieLat = deg h' F'.lieLat ∧ ∀ (O : Type) [CommRing O] (act : OAct O P.A) (τ : O →+* 𝓞 K), deg h (F.eigLat act τ) = deg h' (F'.eigLat act τ) := by
   intro hU hL K _ _ P F F' h h' hh hh'

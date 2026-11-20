@@ -70,7 +70,7 @@ def PtBd : Prop :=
       0 ≤ M → 0 ≤ M' → Bd α g M → Bd β g M' → ‖ptIp χ G e α β g‖ ≤ B * M * M'
 
 /- English proof (translation)
-Simplify using `only [ptIp, AlternatingMap.sub_apply, map_sub, Pi.sub_apply, Matrix.mulVec_sub, dotProduct_sub, Finset.sum_sub_distrib, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptIp_sub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a} {q : ℕ} (χ : HChar E)
     (G : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) {n : ℕ} (e : Fin n → Herm E a) (α β β' : Co Ξ q) (g : GA E a) :
@@ -79,19 +79,19 @@ theorem ptIp_sub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : 
     Finset.sum_sub_distrib, mul_sub]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ U hUo hUc Ξ r χ G n e hD q β η hβ hη hR hδ hM`. Use `haveI := h7 E a μ`. Take `⟨N, C, hC, hA⟩` from `h5 E a ha U hUo hUc Ξ q η hη hM`. Take `⟨C', hC', hB⟩` from `(h4 E a Ξ (q + 1) β).2 hR (N + 1)`. Take `⟨B, hB0, hP⟩` from `h6 E a ha U hUo Ξ r χ G n e hD (q + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdη` using `(h3 E a U Ξ q η hη).1`. Establish `hq` using `(h2 E a).1`. Establish `key : ∀ R : ℝ, 0 < R → ‖pair μ χ G e β (dCo (smLie Ξ) η)‖ ≤ B * C' * C * (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ).real Set.univ / R` using `fun R hR0 => by`. Take `⟨ζ, hζ, hc, hc', hg⟩` from `hA R`. Establish `hdζ` using `(h3 E a U Ξ q ζ hζ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ` using `(h3 E a U Ξ (q + 1) _ hdη).2 _ hdζ`. Establish `i1` using `(h1 E a ha μ U hUo Ξ r χ G n e hD (q + 1)).1 β _ hβ hdη hR hM`. Establish `i2` using `((h1 E a ha μ U hUo Ξ r χ G n e hD (q + 1)).2.1 _ β hdζ hβ hc').2`. Establish `z : pair μ χ G e β (dCo (smLie Ξ) ζ) = 0`. Rewrite using `[(h1 E a ha μ U hUo Ξ r χ G n e hD q).2.2.2 β ζ hβ hζ (Or.inr hc), hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[pair, ptIp]`. Establish `e1 : pair μ χ G e β (dCo (smLie Ξ) η) = pair μ χ G e β (dCo (smLie Ξ) η - dCo (smLie Ξ) ζ)`. Rewrite using `[← sub_zero (pair μ χ G e β (dCo (smLie Ξ) η)), ← z]`. Simplify using `only [pair, ptIp_sub]`. Conclude with `(integral_sub i1 i2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, mul_div_right_comm]`. Use `norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `q1` using `hq x.out`. Establish `q0 : 0 < qht x.out` using `one_pos.trans_le q1`. Distinguish the cases in `hx : qht x.out ≤ R`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hP β _ hβ hγ x.out _ 0 (by positivity) le_rfl (hB _) ((hg _).1 hx)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_zero]`. Check the signs of the components of the expression. Use `(hP β _ hβ hγ x.out _ _ (by positivity) (by positivity) (hB _) (hg _).2).trans ?_` and prove the remaining obligations. Establish `e2 : B * (C' / qht x.out ^ (N + 1)) * (C * qht x.out ^ N) = B * C' * C / qht x.out`.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `div_le_div_of_nonneg_left (by positivity) hR0 (not_le.1 hx).le`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto (tendsto_const_nhds.div_atTop Filter.tendsto_id) ((Filter.eventually_gt_atTop 0).mono key))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstGeometricCondition_of_properties (h1 : PairFacts) (h2 : QhtFacts) (h3 : LevD) (h4 : BdGrowth) (h5 : Approx) (h6 : PtBd)
     (h7 : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure],

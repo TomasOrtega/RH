@@ -44,7 +44,7 @@ def lbOf (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : Submodule (𝓞 D.host.E) (F
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `v` and use `(Subgroup.map_comap_eq_self_of_surjective (f := (reGL (rankN D (i + 1) hi) _).toMonoidHom) (reGL (rankN D (i + 1) hi) _).surjective ((Fo.K β).lev.Uloc v)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameU_of (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : SameUlocJ hi (Fo.K β).lev (ulocOf Fo β) := fun v =>
   (Subgroup.map_comap_eq_self_of_surjective (f := (reGL (rankN D (i + 1) hi) _).toMonoidHom)
@@ -86,7 +86,7 @@ structure SiteD where
 variable {X0 u w hg M}
 
 /- English proof (translation)
-Rewrite using `[← rank_step D i hi, ht]`. Establish `h1` using `(X0.g u w hg).rk`. Generalize the expression as in `(i + 1) * (D.R.t + 1) = q`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_of (X0 : Formalism.L2.Herm.Herm0 D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (i : ℕ) (hi : i < D.R.m) :
     (D.gat u w hg).P.m + (i + 1) * (Fl.t + 1) + 1 = (D.sp.X (i + 1)).rank := by
@@ -105,7 +105,7 @@ def lv : Levels Fl :=
     (fun i hi => (Z.Fo i hi).Ch) (fun i hi β => (Z.S i hi).chart β)
 
 /- English proof (translation)
-The claim follows from `haveI := Z.chFin levelsG_empty _ _ _ _ _ _ _ j hj`.
+A detailed English derivation is pending.
 -/
 theorem lv_empty (j : ℕ) (hj : D.R.m < j) : IsEmpty ((Z.lv Fl ht).comp j) :=
   haveI := Z.chFin
@@ -145,13 +145,13 @@ Both sides reduce to the same expression.
 theorem loc_Lb (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).Lb = fun β => lbOf (Z.Fo i hi) β := rfl
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem frRat (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) : FrRatJ ((Z.loc Fl ht i hi).t β) (Z.loc Fl ht i hi).B :=
   fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `sameU_of (Z.Fo i hi) β`.
+A detailed English derivation is pending.
 -/
 theorem sameU (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) :
     SameUlocJ hi ((Z.Fo i hi).K β).lev ((Z.loc Fl ht i hi).Uloc β) := sameU_of (Z.Fo i hi) β

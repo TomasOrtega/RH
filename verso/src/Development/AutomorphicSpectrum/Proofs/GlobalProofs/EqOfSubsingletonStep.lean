@@ -22,21 +22,19 @@ variable {G H V Y Y' W₀ W₁ : Type} [Group G] [Group H] [AddCommGroup V] [Mod
   [AddCommGroup Y'] [Module ℂ Y'] [AddCommGroup W₀] [Module ℂ W₀] [AddCommGroup W₁] [Module ℂ W₁]
 
 /- English proof (translation)
-Establish `hv : ∀ v : V, v ∈ T.toSubmodule`. Substitute `hT` using the available equality. Introduce `v`. Conclude with `Submodule.mem_top`. Set `j : V →ₗ[ℂ] T.toSubmodule` to `LinearMap.codRestrict T.toSubmodule LinearMap.id hv`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L : V →ₗ[ℂ] Y` to `E.toIntertwiningMap.toLinearMap ∘ₗ (Submodule.mkQ _) ∘ₗ j`. Establish `hL : ∀ v, L v = E.toIntertwiningMap (Submodule.Quotient.mk (j v))` using `fun v => rfl`. Establish `hint : ∀ (g : G) (v : V), L (μ g v) = τ g (L v)`. Introduce `g v`. Rewrite using `[hL, hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (Representation.IntertwiningMap.isIntertwining _ _ E.toIntertwiningMap g _)` and prove the remaining obligations. Both sides reduce to the same expression. Use `⟨L.intertwiningMap_of_isIntertwiningMap μ τ hint, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (E.symm y)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(w : V), ?_⟩` and prove the remaining obligations. Use `show L w = y`. Rewrite using `[hL]`. Establish `hj : j w = w` using `Subtype.ext rfl`. Rewrite using `[hj, hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.apply_symm_apply y`. Introduce `v show L v = 0 ↔ v ∈ A.toSubmodule`. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : (Submodule.Quotient.mk (j v) : T.toSubmodule ⧸ A.toSubmodule.comap T.toSubmodule.subtype) = 0`. Rewrite using `[← E.symm_apply_apply (Submodule.Quotient.mk (j v))]`. Express the relevant statement in the definitionally equal form `E.symm (E.toIntertwiningMap (Submodule.Quotient.mk (j v))) = 0`. Rewrite using `[h0]`. Conclude with `map_zero E.symm.toIntertwiningMap`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `h1`. Introduce `h0`. Establish `h1 : (Submodule.Quotient.mk (j v) : T.toSubmodule ⧸ A.toSubmodule.comap T.toSubmodule.subtype) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
-
-Conclude with `h0`. Rewrite using `[h1]`. Conclude with `map_zero E.toIntertwiningMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quot_map {μ : Representation ℂ G V} {τ : Representation ℂ G Y}
     (A T : Subrepresentation μ) (hT : T = ⊤) (E : (subQuot T A).Equiv τ) :
@@ -82,13 +80,13 @@ theorem exists_quot_map {μ : Representation ℂ G V} {τ : Representation ℂ G
       exact map_zero E.toIntertwiningMap
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Set `m : X.toRepresentation.IntertwiningMap (subQuot X ⊥)` to `⟨Submodule.mkQ _, fun g => LinearMap.ext fun _ => rfl⟩`. Establish `hm : Function.Injective m`. Introduce `x y hxy`. Establish `h1 : x - y ∈ (⊥ : Subrepresentation μ).toSubmodule.comap X.toSubmodule.subtype` using `(Submodule.Quotient.eq _).1 hxy`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.mem_comap]`. Establish `h0 : ((x - y : X.toSubmodule) : V) = 0` using `(Submodule.mem_bot ℂ).1 h1`. Conclude with `sub_eq_zero.1 (Submodule.coe_eq_zero.1 h0)`. Establish `hms : Function.Surjective m` using `Submodule.Quotient.mk_surjective _`. Establish `hE : Function.Injective E.toIntertwiningMap`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Rewrite using `[← E.symm_apply_apply x, ← E.symm_apply_apply y]`. Conclude with `congrArg E.symm hxy`. Establish `hEs : Function.Surjective E.toIntertwiningMap` using `fun y => ⟨E.symm y, E.apply_symm_apply y⟩`. Set `f` to `E.toIntertwiningMap.comp m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `bij : Function.Bijective f` using `⟨hE.comp hm, hEs.comp hms⟩`. Conclude with `⟨Representation.Equiv.mk' f (Function.surjInv bij.2) (Function.leftInverse_surjInv bij) (Function.rightInverse_surjInv bij.2)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_equiv {μ : Representation ℂ G V} {τ : Representation ℂ G Y}
     (X B : Subrepresentation μ) (hB : B = ⊥) (E : (subQuot X B).Equiv τ) :
@@ -115,19 +113,17 @@ theorem exists_sub_equiv {μ : Representation ℂ G V} {τ : Representation ℂ 
     (Function.rightInverse_surjInv bij.2)⟩
 
 /- English proof (translation)
-Establish `hcomm : ∀ (g : G) (v : V), μ z (μ g v) = μ g (μ z v)`. Introduce `g v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hz g, map_mul, Module.End.mul_apply]`. Establish `hD : ∀ v : V, μ z v - c • v ∈ X.toSubmodule`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hq, map_sub, map_smul, Representation.IntertwiningMap.isIntertwining _ _ q, hc, sub_self]`. Set `P : V →ₗ[ℂ] X.toSubmodule` to `LinearMap.codRestrict X.toSubmodule (μ z - c • LinearMap.id) (fun v => hD v)`. Establish `hP : ∀ v, (P v : V) = μ z v - c • v` using `fun v => rfl`. Establish `hPg : ∀ (g : G) (v : V), P (μ g v) = X.toRepresentation g (P v)`. Introduce `g v`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hP]`. Use `show μ z (μ g v) - c • μ g v = μ g (P v : V)`. Rewrite using `[hP, map_sub, map_smul, hcomm]`. Set `φL : V →ₗ[ℂ] Y` to `a.toIntertwiningMap.toLinearMap ∘ₗ P`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ (g : G) (v : V), φL (μ g v) = τ g (φL v)`. Introduce `g v`. Use `show a.toIntertwiningMap (P (μ g v)) = τ g (a.toIntertwiningMap (P v))`. Rewrite using `[hPg]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ a.toIntertwiningMap g (P v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Distinguish the cases in `hex : ∃ v, φL v ≠ 0`. Take `⟨v, hv⟩` from `hex`. Conclude with `Or.inl ⟨φL.intertwiningMap_of_isIntertwiningMap μ τ hφ, v, hv⟩`. Use `push_neg at hex right`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : P v = 0`. Rewrite using `[← a.symm_apply_apply (P v)]`. Express the relevant statement in the definitionally equal form `a.symm (φL v) = 0`. Rewrite using `[hex v]`. Conclude with `map_zero a.symm.toIntertwiningMap`.
-
-Establish `h2 : (P v : V) = 0` using `by rw [h1]; rfl`. Rewrite `h2` using `[hP]`. Conclude with `sub_eq_zero.1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central_dichotomy {μ : Representation ℂ G V} {τ : Representation ℂ G Y} {ρ : Representation ℂ G Y'}
     (X : Subrepresentation μ) (a : X.toRepresentation.Equiv τ) (q : μ.IntertwiningMap ρ)
@@ -190,61 +186,51 @@ def imageSub (ψ : H →* G) (A : Representation ℂ H W₀) (μ : Representatio
     | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Use `haveI := hτ`. Use `haveI := hρ`. Set `W'` to `imageSub ψ A μ hdec`. Establish `hWspan : W'.toSubmodule = Submodule.span ℂ {u | ∃ (ι : A.IntertwiningMap (μ.comp ψ)) (w : W₀), ι w = u}` using `rfl`. Establish `hmemW : ∀ (ι : A.IntertwiningMap (μ.comp ψ)) (w : W₀), ι w ∈ W'.toSubmodule` using `fun ι w => Submodule.subset_span ⟨ι, w, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `P' : Subrepresentation τ` to `{ toSubmodule := W'.toSubmodule.comap (X.toSubmodule.subtype ∘ₗ a.symm.toIntertwiningMap.toLinearMap) apply_mem_toSubmodule := by`. Introduce `g y hy`. Rewrite `hy`, the goal using `[Submodule.mem_comap]`. Use `show ((a.symm.toIntertwiningMap (τ g y) : X.toSubmodule) : V) ∈ W'.toSubmodule`. Rewrite using `[Representation.IntertwiningMap.isIntertwining _ _ a.symm.toIntertwiningMap g y]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W'.apply_mem_toSubmodule g hy }`. Break down `eq_bot_or_eq_top P' with hP | hP` into its components or cases. Establish `hXW0 : ∀ x : V, x ∈ X.toSubmodule → x ∈ W'.toSubmodule → x = 0`. Introduce `x hx hxW`. Establish `h1 : a ⟨x, hx⟩ ∈ P'.toSubmodule`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap]`. Use `show ((a.symm (a ⟨x, hx⟩) : X.toSubmodule) : V) ∈ W'.toSubmodule`. Rewrite using `[a.symm_apply_apply]`. Conclude with `hxW`. Rewrite `h1` using `[hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : a ⟨x, hx⟩ = 0` using `(Submodule.mem_bot ℂ).1 h1`. Establish `h3 : (⟨x, hx⟩ : X.toSubmodule) = 0`. Rewrite using `[← a.symm_apply_apply ⟨x, hx⟩, h2]`. Conclude with `map_zero a.symm.toIntertwiningMap`. Conclude with `congrArg Subtype.val h3`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hqW : ∀ w1 w2 : V, w1 ∈ W'.toSubmodule → w2 ∈ W'.toSubmodule → q w1 = q w2 → w1 = w2`. Introduce `w1 w2 h1 h2 h12`. Establish `h3 : w1 - w2 ∈ X.toSubmodule` using `by rw [← hq, map_sub, h12, sub_self]`. Conclude with `sub_eq_zero.1 (hXW0 _ h3 (W'.toSubmodule.sub_mem h1 h2))`. Set `incl : W'.toRepresentation.IntertwiningMap μ` to `⟨W'.toSubmodule.subtype, fun g => LinearMap.ext fun _ => rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `r` to `q.comp incl`. Establish `hι : ∃ w, ι₀ w ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hι₀ (Representation.IntertwiningMap.ext (LinearMap.ext hcon))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0⟩` from `hι`. Establish `hrange : r.range = ⊤`. Break down `eq_bot_or_eq_top r.range with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hm : r ⟨ι₀ w0, hmemW ι₀ w0⟩ ∈ r.range.toSubmodule` using `LinearMap.mem_range_self r.toLinearMap _`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `hm` using `[h]`. Establish `h0 : q (ι₀ w0) = 0` using `(Submodule.mem_bot ℂ).1 hm`. Conclude with `hw0 (hXW0 _ ((hq _).1 h0) (hmemW ι₀ w0))`. Conclude with `h`. Establish `hrs : Function.Surjective r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `hy : y ∈ r.range.toSubmodule` using `by rw [hrange]; exact Submodule.mem_top`. Take `⟨x, hx⟩` from `LinearMap.mem_range.1 hy`. Conclude with `⟨x, hx⟩`. Establish `hri : Function.Injective r`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x1 x2 h12`. Conclude with `Subtype.ext (hqW _ _ x1.2 x2.2 h12)`. Set `e : W'.toSubmodule ≃ₗ[ℂ] Y'` to `LinearEquiv.ofBijective r.toLinearMap ⟨hri, hrs⟩`. Set `s : V →ₗ[ℂ] V` to `W'.toSubmodule.subtype ∘ₗ e.symm.toLinearMap ∘ₗ q.toLinearMap`. Establish `hsW : ∀ v, s v ∈ W'.toSubmodule` using `fun v => (e.symm (q v)).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hqs' : ∀ v, q (s v) = q v`. Introduce `v`. Use `show r (e.symm (q v)) = q v`. Conclude with `e.apply_symm_apply (q v)`. Establish `hsg : ∀ (g : G) (v : V), s (μ g v) = μ g (s v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g v`. Apply `hqW _ _ (hsW _) (W'.apply_mem_toSubmodule g (hsW v))` to reduce the goal to its premises. Rewrite using `[hqs', Representation.IntertwiningMap.isIntertwining _ _ q, Representation.IntertwiningMap.isIntertwining _ _ q, hqs']`. Establish `hPX : ∀ v, v - s v ∈ X.toSubmodule`. Introduce `v`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq, map_sub, hqs', sub_self]`. Set `P : V →ₗ[ℂ] X.toSubmodule` to `LinearMap.codRestrict X.toSubmodule (LinearMap.id - s) (fun v => hPX v)`. Set `φL : V →ₗ[ℂ] Y` to `a.toIntertwiningMap.toLinearMap ∘ₗ P`. Establish `hPg : ∀ (g : G) (v : V), P (μ g v) = X.toRepresentation g (P v)`. Introduce `g v`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show μ g v - s (μ g v) = μ g (v - s v)`. Rewrite using `[hsg, map_sub]`. Establish `hφ : ∀ (g : G) (v : V), φL (μ g v) = τ g (φL v)`. Introduce `g v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show a.toIntertwiningMap (P (μ g v)) = τ g (a.toIntertwiningMap (P v))`. Rewrite using `[hPg]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ a.toIntertwiningMap g (P v)`. Establish `hY : ∃ y : Y, y ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hcon`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[hcon y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Take `⟨y, hy⟩` from `hY`. Use `⟨φL.intertwiningMap_of_isIntertwiningMap μ τ hφ, ((a.symm y : X.toSubmodule) : V), ?_⟩` and prove the remaining obligations. Use `show a.toIntertwiningMap (P _) ≠ 0`. Establish `hq0 : q ((a.symm y : X.toSubmodule) : V) = 0` using `(hq _).2 (a.symm y).2`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hs0 : s ((a.symm y : X.toSubmodule) : V) = 0` using `by show ((e.symm (q _) : W'.toSubmodule) : V) = 0`. Rewrite using `[hq0, map_zero]`. Both sides reduce to the same expression. Establish `hP0 : P ((a.symm y : X.toSubmodule) : V) = a.symm y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((a.symm y : X.toSubmodule) : V) - s ((a.symm y : X.toSubmodule) : V) = ((a.symm y : X.toSubmodule) : V)`. Rewrite using `[hs0, sub_zero]`. Rewrite using `[hP0]`. Express the relevant statement in the definitionally equal form `a (a.symm y) ≠ 0`. Rewrite using `[a.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hy`. It suffices to derive a contradiction. Apply `hAB` to reduce the goal to its premises. Establish `hXW : ∀ x ∈ X.toSubmodule, x ∈ W'.toSubmodule`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `h1 : a ⟨x, hx⟩ ∈ P'.toSubmodule` using `by rw [hP]; exact Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_comap]`. Establish `h2 : ((a.symm (a ⟨x, hx⟩) : X.toSubmodule) : V) ∈ W'.toSubmodule` using `h1`. Rewrite `h2` using `[a.symm_apply_apply]`. Conclude with `h2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `f : τ.IntertwiningMap W'.toRepresentation` to `⟨LinearMap.codRestrict W'.toSubmodule (X.toSubmodule.subtype ∘ₗ a.symm.toIntertwiningMap.toLinearMap) (fun y => hXW _ (a.symm y).2), fun g => by`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a.symm.toIntertwiningMap (τ g y) : X.toSubmodule) : V) = μ g ((a.symm.toIntertwiningMap y : X.toSubmodule) : V)`. Rewrite using `[Representation.IntertwiningMap.isIntertwining _ _ a.symm.toIntertwiningMap g y]`.
-
-Use the proof step `rfl⟩`. Establish `hfi : Function.Injective f`. Introduce `y1 y2 h12`. Establish `h4 : ((f y1 : W'.toSubmodule) : V) = ((f y2 : W'.toSubmodule) : V)` using `congrArg Subtype.val h12`. Establish `h3 : a.symm y1 = a.symm y2` using `Subtype.ext h4`.
-
-Rewrite using `[← a.apply_symm_apply y1, ← a.apply_symm_apply y2, h3]`. Establish `hsub1 : IsSubquotient τ W'.toRepresentation` using `GlobalTheory.SmGL.IsSubquotient.of_injective f hfi`. Establish `hsub2` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_comp hsub1 ψ`. Establish `hsub3` using `GlobalTheory.SmGL.IsSubquotient.trans hBτ hsub2`. Establish `hspan : Submodule.span ℂ {u : W'.toSubmodule | ∃ (ι : A.IntertwiningMap (W'.toRepresentation.comp ψ)) (w : W₀), ι w = u} = ⊤`.
-
-Apply `Submodule.map_injective_of_injective W'.toSubmodule.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_subtype_top]`. Use `Eq.trans ?_ hWspan.symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `u`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', ⟨ι, w, rfl⟩, rfl⟩`. Use `⟨⟨W'.toSubmodule.subtype ∘ₗ ι.toLinearMap, fun g => LinearMap.ext fun w' => ?_⟩, w, rfl⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (Representation.IntertwiningMap.isIntertwining _ _ ι g w')`. Introduce and unpack `⟨ι, w, rfl⟩`.
-
-Use `⟨⟨ι w, hmemW ι w⟩, ⟨⟨LinearMap.codRestrict W'.toSubmodule ι.toLinearMap (fun w' => hmemW ι w'), fun g => LinearMap.ext fun w' => ?_⟩, w, rfl⟩, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ ι g w'`. Conclude with `GlobalTheory.LocGL.SupportUnique.isSubquotient_of_span hB hsub3 hspan`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_of_image (ψ : H →* G) {A : Representation ℂ H W₀} {B : Representation ℂ H W₁}
     (hB : B.IsIrreducible) (hAB : ¬ IsSubquotient B A) {μ : Representation ℂ G V} {τ : Representation ℂ G Y}
@@ -410,7 +396,7 @@ theorem exists_map_of_image (ψ : H →* G) {A : Representation ℂ H W₀} {B :
     exact GlobalTheory.LocGL.SupportUnique.isSubquotient_of_span hB hsub3 hspan
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) hBA` and prove the remaining obligations. Establish `h1 : (Submodule.Quotient.mk ⟨x, hx⟩ : A.toSubmodule ⧸ B.toSubmodule.comap A.toSubmodule.subtype) = 0` using `Subsingleton.elim _ _`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_subsingleton_step {μ : Representation ℂ G V} {A B : Subrepresentation μ} (hBA : B ≤ A)
     (h : Subsingleton (A.toSubmodule ⧸ B.toSubmodule.comap A.toSubmodule.subtype)) : A = B := by
@@ -421,13 +407,13 @@ theorem eq_of_subsingleton_step {μ : Representation ℂ G V} {A B : Subrepresen
   exact h1
 
 /- English proof (translation)
-Establish `hij' : i.val ≤ j.val` using `hij`. Establish `key : ∀ k : ℕ, ∀ hk : i.val + k < N + 1, i.val + k ≤ j.val → S i = S ⟨i.val + k, hk⟩`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hk _`. Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `hk hkj`. Establish `hk' : i.val + k < N` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ih (by omega) (by omega)]`. Establish `hst` using `h ⟨i.val + k, hk'⟩ (by rw [Fin.le_def]; exact Nat.le_add_right _ _) (by rw [Fin.le_def]; show i.val + k + 1 ≤ j.val; omega)`. Establish `e` using `eq_of_subsingleton_step (hS (Fin.castSucc_le_succ (⟨i.val + k, hk'⟩ : Fin N))) hst`. Conclude with `e.symm`. Rewrite using `[key (j.val - i.val) (by omega) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `show i.val + (j.val - i.val) = j.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_steps {μ : Representation ℂ G V} {N : ℕ} (S : Fin (N + 1) → Subrepresentation μ) (hS : Monotone S)
     (i j : Fin (N + 1)) (hij : i ≤ j)
@@ -455,11 +441,11 @@ theorem eq_of_steps {μ : Representation ℂ G V} {N : ℕ} (S : Fin (N + 1) →
   omega
 
 /- English proof (translation)
-Establish `htop : S t₀.succ = ⊤`. Rewrite using `[← hN]`. Apply `eq_of_steps S hS t₀.succ (Fin.last N) (Fin.le_last _)` to reduce the goal to its premises. Introduce `t ht1 _`. Apply `h t` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : t₀.val + 1 ≤ t.val` using `ht1`. Conclude with `(show t₀.val < t.val by omega)`. Take `⟨q, hqs, _⟩` from `exists_quot_map (S t₀.castSucc) (S t₀.succ) htop E`. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨v, rfl⟩` from `hqs y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, v, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_of_top {μ : Representation ℂ G V} {τ : Representation ℂ G Y} [Nontrivial Y] {N : ℕ}
     (S : Fin (N + 1) → Subrepresentation μ) (hS : Monotone S) (hN : S (Fin.last N) = ⊤) (t₀ : Fin N)

@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.DomainDens
 
 /- English proof (translation)
-Rewrite using `[← Matrix.reverse_charpoly, Polynomial.coeff_reverse, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, Polynomial.revAt_le le_rfl, Nat.sub_self, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, ← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_charpolyRev_card {R : Type} [CommRing R] [Nontrivial R] {p : ℕ} (M : Matrix (Fin p) (Fin p) R) :
     M.charpolyRev.coeff p = (-1) ^ p * M.det := by
@@ -26,13 +26,13 @@ theorem coeff_charpolyRev_card {R : Type} [CommRing R] [Nontrivial R] {p : ℕ} 
     ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]
 
 /- English proof (translation)
-Introduce `ι _ p q n h`. Establish `hc : ∀ τ : ι, chernPoly (fun u => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ))⁻¹) 0 p = C ((-1 : ℂ) ^ p) * (blockSym h τ).det`. Introduce `τ`. Rewrite using `[chernPoly, GlobalTheory.T.curvatureFormMatrix_boundedDomainModelMetric_at_zero ι p q n h τ, neg_neg, coeff_charpolyRev_card, map_pow, map_neg, map_one]`. Establish `hs : (algebraMap ℝ ℂ ((-1 : ℝ) ^ p)) * (-1 : ℂ) ^ p = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_neg, map_one, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`. Establish `ha : aeval (fun x : ι × ℕ => chernPoly (fun u => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) x.1))⁻¹) 0 x.2) (∏ τ : ι, (MvPolynomial.C ((-1 : ℝ) ^ p) * MvPolynomial.X (τ, p)) ^ q) = ∏ τ, (blockSym h τ).det ^ q`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_mul, aeval_X, aeval_C, hc τ, ← mul_assoc, MvPolynomial.algebraMap_apply, ← C_mul, hs, C_1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : n = Fintype.card ι * (p * q)`. Rewrite using `[← h]`. Simplify using `[Fintype.card_prod, Fintype.card_fin]`. Establish `h1 : Fintype.card (Unit × Fin p × Fin q) = p * q` using `by simp [Fintype.card_prod, Fintype.card_fin]`. Establish `e : (∏ i ∈ Finset.range p, (((q + i).factorial : ℂ) / i.factorial)) = ((∏ i ∈ Finset.range p, (((q + i).factorial : ℝ) / i.factorial) : ℝ) : ℂ)` using `by push_cast; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [chernTop]`. Rewrite using `[ha, GlobalTheory.T.topDegreeFormCoeff_prod_blockSymbol_det_pow ι p q n h h1, GlobalTheory.T.topDegreeFormCoeff_blockSymbolDet_pow_cayley p q h1, e, ← Complex.ofReal_pow, Complex.ofReal_re, GlobalTheory.TrueCx.grassConst, div_pow, hn, pow_mul', div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chernTop_model_origin : ∀ (ι : Type) [Fintype ι] (p q n : ℕ) (h : Fintype.card (ι × Fin p × Fin q) = n), GlobalTheory.GoodMetric.chernTop (m := fun _ : ι => p) (∏ τ : ι, (MvPolynomial.C ((-1 : ℝ) ^ p) * MvPolynomial.X (τ, p)) ^ q) (fun u τ => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ))⁻¹) 0 = GlobalTheory.TrueCx.grassConst p q ^ Fintype.card ι := by
   intro ι _ p q n h

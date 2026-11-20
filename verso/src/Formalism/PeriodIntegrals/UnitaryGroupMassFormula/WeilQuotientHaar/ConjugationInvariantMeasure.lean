@@ -8,7 +8,7 @@ open scoped ENNReal
 namespace QPK
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ennreal_eq_one_of_mul {a b : ℝ≥0∞} (h0 : b ≠ 0) (ht : b ≠ ⊤) (h : a * b = b) : a = 1 := by
   calc a = a * b / b := (ENNReal.mul_div_cancel_right h0 ht).symm
@@ -16,9 +16,9 @@ theorem ennreal_eq_one_of_mul {a b : ℝ≥0∞} (h0 : b ≠ 0) (ht : b ≠ ⊤)
     _ = 1 := ENNReal.div_self h0 ht
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `lift d to NNReal using hdt`. Use `lift M to NNReal using hM`. Establish `h1 : (1 : NNReal) < d` using `by exact_mod_cast hlt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `((tendsto_pow_atTop_atTop_of_one_lt h1).eventually_gt_atTop M).exists`. Establish `h2` using `h k`. Rewrite `h2` using `[← ENNReal.coe_pow, ENNReal.coe_le_coe]`. Conclude with `absurd h2 (not_le.mpr hk)`.
+A detailed English derivation is pending.
 -/
 theorem ennreal_le_one_of_pow_le {d M : ℝ≥0∞} (hdt : d ≠ ⊤) (hM : M ≠ ⊤)
     (h : ∀ k : ℕ, d ^ k ≤ M) : d ≤ 1 := by
@@ -37,12 +37,12 @@ variable {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-The claim follows from `((continuous_const.mul continuous_id).mul continuous_const).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_conj (h : G) : Measurable (fun x : G => h * x * h⁻¹) := ((continuous_const.mul continuous_id).mul continuous_const).measurable
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, mul_inv_rev]`. Use `group`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_comp (g h : G) :
     (fun x : G => g * x * g⁻¹) ∘ (fun x : G => h * x * h⁻¹) = fun x => (g * h) * x * (g * h)⁻¹ := by
@@ -51,17 +51,15 @@ theorem conj_comp (g h : G) :
   group
 
 /- English proof (translation)
-Take `⟨hsf, hne, hc, hinv⟩` from `hμ`. Use `haveI := hsf`. Establish `hm : Measurable (fun x : G => h * x * h⁻¹)` using `measurable_conj h`. Establish `hm' : Measurable (fun x : G => h⁻¹ * x * h⁻¹⁻¹)` using `measurable_conj h⁻¹`. Establish `hid : (fun x : G => h⁻¹ * x * h⁻¹⁻¹) ∘ (fun x : G => h * x * h⁻¹) = id`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conj_comp]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : SigmaFinite ((μ.map (fun x : G => h * x * h⁻¹)).map (fun x : G => h⁻¹ * x * h⁻¹⁻¹))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_map hm' hm, hid, Measure.map_id]`. Conclude with `hsf`. Conclude with `SigmaFinite.of_map _ hm'.aemeasurable h1`. Conclude with `(Measure.map_ne_zero_iff hm.aemeasurable).mpr hne`. Rewrite using `[Measure.map_apply hm hNc.measurableSet.compl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `measure_mono_null ?_ hc` and prove the remaining obligations. Introduce `x hx hxN`. Conclude with `hx (hn1 x hxN)`. Introduce `s hs`. Establish `hs' : h⁻¹ * s * h⁻¹⁻¹ ∈ N` using `hn2 s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hms : Measurable (fun x : G => s * x)` using `measurable_const_mul s`. Establish `hms' : Measurable (fun x : G => (h⁻¹ * s * h⁻¹⁻¹) * x)` using `measurable_const_mul _`. Rewrite using `[Measure.map_map hms hm]`. Establish `e : (fun x : G => s * x) ∘ (fun x : G => h * x * h⁻¹) = (fun x : G => h * x * h⁻¹) ∘ (fun x : G => (h⁻¹ * s * h⁻¹⁻¹) * x)`. Use function extensionality and compare the values at `x`.
-
-Simplify using `only [Function.comp_apply, inv_inv]`. Use `group`. Rewrite using `[e, ← Measure.map_map hm hms', hinv _ hs']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invOn_map_conj {N : Set G} (hNc : IsClosed N) (h : G)
     (hn1 : ∀ m ∈ N, h * m * h⁻¹ ∈ N) (hn2 : ∀ m ∈ N, h⁻¹ * m * h⁻¹⁻¹ ∈ N)
@@ -99,29 +97,27 @@ theorem invOn_map_conj {N : Set G} (hNc : IsClosed N) (h : G)
 end
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N H hN hH hGN hGH hnorm μ hμ hfin hpos h hh`. Use `haveI := hfin`. Establish `hinvH : ∀ g ∈ H, g⁻¹ ∈ H` using `hGH.2.2`. Establish `hinv : ∀ g ∈ H, InvOn (μ.map (fun x => g * x * g⁻¹)) N` using `fun g hg => invOn_map_conj hN g (hnorm g hg) (hnorm g⁻¹ (hinvH g hg)) hμ`. Establish `hd : ∀ g ∈ H, ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ μ.map (fun x => g * x * g⁻¹) = c • μ` using `fun g hg => haar_measure_uniqueness G N hN hGN _ _ (hinv g hg) hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose d hd0 hdt hdmap using hd`. Take `⟨K0, hK0c, hK0n⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hAi : μ (interior K0) ≠ 0` using `hpos _ isOpen_interior ⟨1, mem_interior_iff_mem_nhds.mpr hK0n, hGN.1⟩`. Establish `hK0pos : μ K0 ≠ 0` using `fun h0 => hAi (measure_mono_null interior_subset h0)`. Establish `hK0fin : μ K0 ≠ ⊤` using `hK0c.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hK0m : MeasurableSet K0` using `hK0c.isClosed.measurableSet`. Set `Bc : Set G` to `(fun p : G × G × G => p.1 * p.2.1 * p.2.2) '' (H ×ˢ (K0 ×ˢ H))`. Establish `hBc : IsCompact Bc` using `(hH.prod (hK0c.prod hH)).image (by fun_prop)`. Establish `hBcfin : μ Bc ≠ ⊤` using `hBc.measure_lt_top.ne`. Establish `hle : ∀ g (hg : g ∈ H), d g hg ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hpowmem : ∀ k : ℕ, g ^ k ∈ H`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hGH.1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ k ih => rw [pow_succ]`. Conclude with `hGH.2.1 _ ih _ hg`. Establish `hpow : ∀ k : ℕ, μ.map (fun x => g ^ k * x * (g ^ k)⁻¹) = d g hg ^ k • μ`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp [Measure.map_id']`. Consider the case `succ k ih`. Establish `e` using `conj_comp g (g ^ k)`. Rewrite `e` using `[← pow_succ']`. Rewrite using `[← e, ← Measure.map_map (measurable_conj g) (measurable_conj (g ^ k)), ih, Measure.map_smul, hdmap g hg, smul_smul, pow_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : ∀ k : ℕ, d g hg ^ k ≤ μ Bc / μ K0`. Introduce `k`. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hK0pos) (Or.inl hK0fin)]`. Establish `h1 : (μ.map (fun x => g ^ k * x * (g ^ k)⁻¹)) K0 = d g hg ^ k * μ K0`. Rewrite using `[hpow k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Rewrite using `[← h1, Measure.map_apply (measurable_conj _) hK0m]`. Apply `measure_mono` to reduce the goal to its premises. Introduce `x hx`. Use `⟨((g ^ k)⁻¹, (g ^ k * x * (g ^ k)⁻¹, g ^ k)), ⟨hinvH _ (hpowmem k), hx, hpowmem k⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Use `group`. Conclude with `ennreal_le_one_of_pow_le (hdt g hg) (ENNReal.div_ne_top hBcfin hK0pos) hbd`. Establish `hprod : d h hh * d h⁻¹ (hinvH h hh) = 1`. Establish `e` using `conj_comp h⁻¹ h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (fun x : G => (h⁻¹ * h) * x * (h⁻¹ * h)⁻¹) = id`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite `e` using `[e2]`. Establish `h1 : μ = (d h⁻¹ (hinvH h hh) * d h hh) • μ` using `by conv_lhs => rw [← Measure.map_id (μ := μ), ← e, ← Measure.map_map (measurable_conj h⁻¹) (measurable_conj h)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdmap h hh, Measure.map_smul, hdmap h⁻¹ (hinvH h hh), smul_smul, mul_comm]`. Establish `h2` using `congrArg (fun ν : Measure G => ν K0) h1`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h2`. Rewrite using `[mul_comm]`. Conclude with `ennreal_eq_one_of_mul hK0pos hK0fin h2.symm`.
-
-Establish `hone : d h hh = 1`. Apply `le_antisymm (hle h hh)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdmap h hh, hone, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjugation_invariant_measure : ConjInv := by
   intro G _ _ _ _ _ _ _ _ N H hN hH hGN hGH hnorm μ hμ hfin hpos h hh

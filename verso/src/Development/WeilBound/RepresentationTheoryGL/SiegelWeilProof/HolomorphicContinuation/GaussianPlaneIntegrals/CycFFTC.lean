@@ -24,17 +24,17 @@ def Th : PX m n ≃ₐ[ℂ] MvPolynomial (VV (Rw ε false) n) (PV (Rw ε true) (
 variable {ε}
 
 /- English proof (translation)
-Simplify using `[Th]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_X (k : Fin m × Fin n × Bool) : Th ε (X k) = sumAlgEquiv ℂ _ _ (X (eqv ε k)) := by
   simp [Th]
 
 /- English proof (translation)
-Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[emb, Th]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Establish `e : eqv ε (jv ε true v) = Sum.inr v` using `(eqv ε).apply_symm_apply (Sum.inr v)`. Establish `hx : Th ε (emb ε true (X v)) = C (X v)`. Simplify using `only [emb, rename_X]`. Rewrite using `[th_X, e]`. Conclude with `sumRingEquiv_X_inr ℂ _ _ v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hp, hx, C_mul]`.
+A detailed English derivation is pending.
 -/
 theorem th_embT (c : PV (Rw ε true) (Fin n) (Fin n)) : Th ε (emb ε true c) = C c := by
   induction c using MvPolynomial.induction_on with
@@ -50,11 +50,11 @@ theorem th_embT (c : PV (Rw ε true) (Fin n) (Fin n)) : Th ε (emb ε true c) = 
     rw [map_mul, map_mul, hp, hx, C_mul]
 
 /- English proof (translation)
-Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[emb, Th]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Establish `e : eqv ε (jv ε false v) = Sum.inl v` using `(eqv ε).apply_symm_apply (Sum.inl v)`. Establish `hx : Th ε (emb ε false (X v)) = X v`. Simplify using `only [emb, rename_X]`. Rewrite using `[th_X, e]`. Conclude with `sumRingEquiv_X_inl ℂ _ _ v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hp, hx, map_mul, map_X]`.
+A detailed English derivation is pending.
 -/
 theorem th_embF (t : PV (Rw ε false) (Fin n) (Fin n)) :
     Th ε (emb ε false t) = map (algebraMap ℂ (PV (Rw ε true) (Fin n) (Fin n))) t := by
@@ -71,14 +71,14 @@ theorem th_embF (t : PV (Rw ε false) (Fin n) (Fin n)) :
     rw [map_mul, map_mul, hp, hx, map_mul, map_X]
 
 /- English proof (translation)
-Rewrite using `[map_mul, th_embT, th_embF, map_monomial, map_one, C_mul_monomial, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_prod (c : PV (Rw ε true) (Fin n) (Fin n)) (μ : VV (Rw ε false) n →₀ ℕ) :
     Th ε (emb ε true c * emb ε false (monomial μ 1)) = monomial μ c := by
   rw [map_mul, th_embT, th_embF, map_monomial, map_one, C_mul_monomial, mul_one]
 
 /- English proof (translation)
-Apply `(Th ε).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Repeatedly rewrite using `[th_prod]`. Conclude with `(Th ε Q).as_sum`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp (Q : PX m n) :
     Q = ∑ μ ∈ (Th ε Q).support, emb ε true ((Th ε Q).coeff μ) * emb ε false (monomial μ 1) := by
@@ -88,11 +88,11 @@ theorem decomp (Q : PX m n) :
   exact (Th ε Q).as_sum
 
 /- English proof (translation)
-Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single μ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h'`. Conclude with `absurd h h'`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `: b ≠ μ` using `fun e => h (e ▸ hb)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_sum_monomial {σ R : Type*} [CommSemiring R] [DecidableEq σ] (S : Finset (σ →₀ ℕ)) (f : (σ →₀ ℕ) → R) (μ : σ →₀ ℕ) :
     coeff μ (∑ ν ∈ S, monomial ν (f ν)) = if μ ∈ S then f μ else 0 := by
@@ -111,11 +111,11 @@ theorem coeff_sum_monomial {σ R : Type*} [CommSemiring R] [DecidableEq σ] (S :
     simp [this]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (Th ε) h`. Rewrite `h2` using `[map_sum, map_zero]`. Rewrite `h2` using `[map_mul, th_embT, th_embF]`. Introduce `j`. Use extensionality with `μ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `h3` using `congrArg (coeff μ) h2`. Rewrite `h3` using `[coeff_sum, coeff_zero]`. Rewrite `h3` using `[coeff_C_mul, coeff_map]`. Establish `h4 : ∑ i, (coeff μ (t i)) • b i = 0`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Use `Fintype.linearIndependent_iff.1 hb _ h4 j` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem indep {J : Type} [Fintype J] (b : J → PV (Rw ε true) (Fin n) (Fin n)) (hb : LinearIndependent ℂ b)
     (t : J → PV (Rw ε false) (Fin n) (Fin n)) (h : ∑ j, emb ε true (b j) * emb ε false (t j) = 0) : ∀ j, t j = 0 := by

@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Matrix Filter Topology
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `k`. Simplify using `only [Finset.prod_empty]`. Conclude with `differentiableAt_const _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert a S ha ih`. Introduce `k`. Establish `ih'` using `ih (fun i hi => hP i (Finset.mem_insert_of_mem hi))`. Simplify using `only [Finset.prod_insert ha, Polynomial.coeff_mul]`. Conclude with `DifferentiableAt.fun_sum fun p _ => (hP a (Finset.mem_insert_self a S) p.1).mul (ih' p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_finset_prod_differentiableAt {d : ℕ} {ι : Type*} (S : Finset ι)
     (P : ι → (Fin d → ℂ) → Polynomial ℂ) (y₀ : Fin d → ℂ)
@@ -29,9 +29,9 @@ theorem coeff_finset_prod_differentiableAt {d : ℕ} {ι : Type*} (S : Finset ι
       (hP a (Finset.mem_insert_self a S) p.1).mul (ih' p.2)
 
 /- English proof (translation)
-Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Simplify using `using ha.neg`. Simplify using `only [hk, if_false]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `differentiableAt_const _`.
+A detailed English derivation is pending.
 -/
 theorem coeff_X_sub_C_differentiableAt {d : ℕ} (a : (Fin d → ℂ) → ℂ) (y₀ : Fin d → ℂ)
     (ha : DifferentiableAt ℂ a y₀) (k : ℕ) :
@@ -44,35 +44,29 @@ theorem coeff_X_sub_C_differentiableAt {d : ℕ} (a : (Fin d → ℂ) → ℂ) (
     exact differentiableAt_const _
 
 /- English proof (translation)
-Introduce `n d N A Z c Q O F hcov hO hF hXOF i y₀ hy₀`. Establish `hy₀' : eval y₀ Q ≠ 0` using `hy₀`. Take `⟨hfin, hcard, hsec⟩` from `hcov y₀ hy₀'`. Use `choose! U V g hU hyU hV hxV hg hgy hAg hZV using hsec`. Use `set T : Finset (Fin n → ℂ) := hfin.toFinset with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemT : ∀ x, x ∈ T ↔ x ∈ Z ∧ A *ᵥ x = y₀` using `fun x => by simp [T]`. Establish `hTcard : T.card = N` using `by rw [← hcard, Set.ncard_eq_toFinset_card _ hfin]`. Establish `hgd : ∀ x ∈ T, DifferentiableAt ℂ (g x) y₀` using `fun x hx => (hg x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2).differentiableAt ((hU x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2).mem_nhds (hyU x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2))`. Establish `hgc : ∀ x ∈ T, Tendsto (g x) (𝓝 y₀) (𝓝 x)` using `fun x hx => by`. Use `(hgd x hx).continuousAt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[ContinuousAt, hgy x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2]`. Conclude with `this`. Establish `hQopen : IsOpen {y : Fin d → ℂ | eval y Q ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval Q) continuous_const`. Establish `hev : ∀ᶠ w in 𝓝 y₀, eval w Q ≠ 0 ∧ (∀ x ∈ T, w ∈ U x) ∧ (∀ x ∈ T, ∀ x' ∈ T, x ≠ x' → g x w ≠ g x' w) ∧ (∀ x ∈ T, x ∈ O → g x w ∈ O) ∧ (∀ x ∈ T, x ∉ O → g x w ∉ F)`. Use `Filter.Eventually.and (hQopen.mem_nhds hy₀') (Filter.Eventually.and ?_ (Filter.Eventually.and ?_ (Filter.Eventually.and ?_ ?_)))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(eventually_all_finset T).2 fun x hx => (hU x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2).mem_nhds (hyU x ((hmemT x).1 hx).1 ((hmemT x).1 hx).2)`. Use `(eventually_all_finset T).2 fun x hx => (eventually_all_finset T).2 fun x' hx' => ?_` and prove the remaining obligations. Distinguish the cases in `hxx : x = x'`. Conclude with `Filter.Eventually.of_forall fun w h => absurd hxx h`. Conclude with `((hgc x hx).prodMk_nhds (hgc x' hx')).eventually ((isOpen_ne_fun continuous_fst continuous_snd).eventually_mem (show (x, x') ∈ {p : (Fin n → ℂ) × (Fin n → ℂ) | p.1 ≠ p.2} from hxx)) |>.mono fun w hw _ => hw`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(eventually_all_finset T).2 fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hxO : x ∈ O`. Conclude with `((hgc x hx).eventually (hO.eventually_mem hxO)).mono fun w hw _ => hw`. Conclude with `Filter.Eventually.of_forall fun w h => absurd h hxO`. Use `(eventually_all_finset T).2 fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `hxO : x ∈ O`. Conclude with `Filter.Eventually.of_forall fun w h => absurd hxO h`. Establish `hxF : x ∉ F`. Introduce `hxF`. Establish `hX : x ∈ {x | x ∈ Z ∧ eval (A *ᵥ x) Q ≠ 0} ∩ F` using `⟨⟨((hmemT x).1 hx).1, by rw [((hmemT x).1 hx).2]; exact hy₀'⟩, hxF⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hX` using `[← hXOF]`. Conclude with `hxO hX.2`. Conclude with `((hgc x hx).eventually (hF.isOpen_compl.eventually_mem hxF)).mono fun w hw _ => hw`. Establish `heq : (fun y => (∏ᶠ x ∈ {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}, (Polynomial.X - Polynomial.C (∑ j, c j * x j))).coeff i) =ᶠ[𝓝 y₀] (fun y => (∏ x ∈ T.filter (· ∈ O), (Polynomial.X - Polynomial.C (∑ j, c j * g x y j))).coeff i)` using `by filter_upwards [hev] with w ⟨hwQ, hwU, hwinj, hwO, hwF⟩`. Establish `hinj : Set.InjOn (fun x => g x w) T` using `fun x hx x' hx' h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hwinj x hx x' hx' hne h`. Establish `hgZ : ∀ x ∈ T, g x w ∈ Z ∧ A *ᵥ g x w = w` using `fun x hx => by`. Establish `h1` using `((hmemT x).1 hx).1`. Establish `h2` using `((hmemT x).1 hx).2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨?_, hAg x h1 h2 w (hwU x hx)⟩` and prove the remaining obligations. Establish `hmem : g x w ∈ g x '' U x` using `⟨w, hwU x hx, rfl⟩`. Rewrite `hmem` using `[← hZV x h1 h2]`. Conclude with `hmem.1`. Take `⟨hfinw, hcardw, -⟩` from `hcov w hwQ`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfull : ((T.image fun x => g x w : Finset _) : Set (Fin n → ℂ)) = {x | x ∈ Z ∧ A *ᵥ x = w}`. Apply `Set.eq_of_subset_of_ncard_le _ _ hfinw` to reduce the goal to its premises. Introduce `z hz`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hgZ x hx`. Rewrite using `[hcardw, Set.ncard_coe_finset, Finset.card_image_of_injOn hinj, hTcard]`. Establish `hset : {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = w} = (((T.filter (· ∈ O)).image fun x => g x w : Finset _) : Set (Fin n → ℂ))`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Finset.mem_coe, Finset.mem_image, Finset.mem_filter]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzZ, hzO, hzA⟩`. Establish `hz : z ∈ ((T.image fun x => g x w : Finset _) : Set (Fin n → ℂ))`. Rewrite using `[hfull]`. Conclude with `⟨hzZ, hzA⟩`.
-
-Simplify using `only [Finset.mem_coe, Finset.mem_image] at hz`. Take `⟨x, hx, rfl⟩` from `hz`. Use `⟨x, ⟨hx, ?_⟩, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxO`. Establish `hX : g x w ∈ {x | x ∈ Z ∧ eval (A *ᵥ x) Q ≠ 0} ∩ O` using `⟨⟨hzZ, by rw [hzA]; exact hwQ⟩, hzO⟩`.
-
-Rewrite `hX` using `[hXOF]`. Conclude with `hwF x hx hxO hX.2`. Introduce and unpack `⟨x, ⟨hx, hxO⟩, rfl⟩`. Conclude with `⟨(hgZ x hx).1, hwO x hx hxO, (hgZ x hx).2⟩`. Establish `key : (∏ᶠ x ∈ {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = w}, (Polynomial.X - Polynomial.C (∑ j, c j * x j))) = ∏ x ∈ T.filter (· ∈ O), (Polynomial.X - Polynomial.C (∑ j, c j * g x w j))`.
-
-Rewrite using `[hset, finprod_mem_coe_finset, Finset.prod_image (fun x hx x' hx' h => hinj (Finset.mem_filter.1 hx).1 (Finset.mem_filter.1 hx').1 h)]`. Conclude with `congrArg (fun p => Polynomial.coeff p i) key`. Establish `hd : DifferentiableAt ℂ (fun y => (∏ x ∈ T.filter (· ∈ O), (Polynomial.X - Polynomial.C (∑ j, c j * g x y j))).coeff i) y₀` using `coeff_finset_prod_differentiableAt _ _ _ (fun x hx k => coeff_X_sub_C_differentiableAt _ _ (DifferentiableAt.fun_sum fun j _ => (differentiableAt_pi.1 (hgd x (Finset.mem_filter.1 hx).1) j).const_mul (c j)) k) i`. Conclude with `(hd.congr_of_eventuallyEq heq).differentiableWithinAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PieceCoefficientsHolomorphic.proof : PieceCoefficientsHolomorphic.Statement := by
   classical

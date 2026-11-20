@@ -28,13 +28,13 @@ def AlgOver (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] : Prop :=
 variable {c c'}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem embK_incF (τ : E →+* ℂ) (a : 𝓞 E) : incF c c' hle (embK c τ a) = embK c' τ a :=
   Subtype.ext rfl
 
 /- English proof (translation)
-Unfold `sOf`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Conclude with `h ((IntermediateField.inclusion c.le).toRingHom x)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S) :
     sOf c' S = sOf c S := by
@@ -47,9 +47,9 @@ theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Al
 variable {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Establish `key : ∀ a : 𝓞 E, algebraMap c'.F S (embK c' τ a) = algebraMap c.F S (embK c τ a)`. Introduce `a`. Rewrite using `[← embK_incF hle τ a]`. Conclude with `h (embK c τ a)`. Unfold `IsEigAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`.
+A detailed English derivation is pending.
 -/
 theorem isEigAt_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S)
     (τ : E →+* ℂ) (v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :

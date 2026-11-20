@@ -33,7 +33,7 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
 
 omit [IsDomain R] [IsDomain R'] in
 /- English proof (translation)
-The claim follows from `((isGrpPullback_of_iso bc).comp (isGrpPullback_pullback G (specOf φ))).congr (Category.id_comp _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_bc (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc.hom) :
     IsGrpPullback G' G (specOf φ) (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) :=
@@ -47,7 +47,7 @@ def toGrpPull (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc
 
 omit [IsDomain R] [IsDomain R'] in
 /- English proof (translation)
-Take `⟨e, me, he⟩` from `grpPullback_iso ((isGrpPullback_iff p.cart).2 p.F_mul) (isGrpPullback_pullback G (specOf φ))`. Take `⟨F, cart, F₁, Fm⟩` from `p`. Simplify using `only at he`. Substitute `he` using the available equality. Conclude with `⟨e, me, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_toGrpPull_eq (p : GrpPull φ G G') :
     ∃ (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc.hom), toGrpPull bc hbc = p := by

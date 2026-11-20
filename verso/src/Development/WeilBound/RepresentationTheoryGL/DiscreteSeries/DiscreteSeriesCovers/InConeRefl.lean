@@ -15,7 +15,7 @@ def InCone (abelian₂ η : Fin n → ℝ) : Prop :=
   ∃ c : Fin n → Fin n → ℕ, (∀ a b, c a b ≠ 0 → a < b) ∧ η = abelian₂ + ∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inCone_refl (abelian₂ : Fin n → ℝ) : InCone abelian₂ abelian₂ := ⟨0, by simp, by simp⟩
 

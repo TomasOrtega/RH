@@ -6,27 +6,25 @@ namespace GlobalTheory.CompanionTheory.Dblock.CartanDVR
 open Matrix
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ n ϖ hϖ g hg`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun p : Fin n × Fin n => g p.1 p.2)`. Establish `hb0 : (b : R) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Use `choose A' hA' using hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => A' (i, j)`. Establish `hAg : A.map (algebraMap R K) = algebraMap R K (b : R) • g`. Use extensionality with `i j`. Simplify `hA' (i, j)` using `[A, Algebra.smul_def]`. Establish `hbK : algebraMap R K (b : R) ≠ 0` using `fun h => hb0 (hinj (by simpa using h))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : A.det ≠ 0`. Introduce `h`. Establish `h1 : (A.map (algebraMap R K)).det = 0`. Use `RingHom.map_det (algebraMap R K) A` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`. Rewrite `h1` using `[hAg, Matrix.det_smul]`. Conclude with `(mul_ne_zero (pow_ne_zero _ hbK) hg.ne_zero) h1`. Take `⟨P, Q, e, he, hPQ⟩` from `GroundTheory.Automorphic.Cartan.exists_eq_mul_diagonal_pow_mul hϖ A hA`. Take `⟨c, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖK : algebraMap R K ϖ ≠ 0` using `fun h => hϖ.ne_zero (hinj (by simpa using h))`. Establish `hwK : algebraMap R K (w : R) ≠ 0` using `fun h => w.ne_zero (hinj (by simpa using h))`. Establish `hPd : IsUnit (P : Matrix (Fin n) (Fin n) R).det` using `(Matrix.isUnit_iff_isUnit_det _).1 P.isUnit`. Establish `hQd : IsUnit (Q : Matrix (Fin n) (Fin n) R).det` using `(Matrix.isUnit_iff_isUnit_det _).1 Q.isUnit`. Use `⟨((w⁻¹ : Rˣ) : R) • (P : Matrix (Fin n) (Fin n) R), Q, fun i => (e i : ℤ) - c, ?_, hQd, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_smul]`. Conclude with `((Units.isUnit _).pow _).mul hPd`. Introduce `i j hij`. Use `he hij` as an intermediate fact. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hwinv : algebraMap R K ((w⁻¹ : Rˣ) : R) = (algebraMap R K (w : R))⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hdiag : Matrix.diagonal (fun i => (algebraMap R K ϖ) ^ ((e i : ℤ) - c)) = ((algebraMap R K ϖ) ^ c)⁻¹ • (Matrix.diagonal (fun i => ϖ ^ e i)).map (algebraMap R K)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[zpow_sub₀ hϖK, div_eq_mul_inv, mul_comm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Establish `hmap : A.map (algebraMap R K) = (P : Matrix (Fin n) (Fin n) R).map (algebraMap R K) * (Matrix.diagonal (fun i => ϖ ^ e i)).map (algebraMap R K) * (Q : Matrix (Fin n) (Fin n) R).map (algebraMap R K)`. Rewrite using `[hPQ]`. Simplify using `only [Matrix.map_mul]`. Establish `hsm : (((w⁻¹ : Rˣ) : R) • (P : Matrix (Fin n) (Fin n) R)).map (algebraMap R K) = (algebraMap R K (w : R))⁻¹ • (P : Matrix (Fin n) (Fin n) R).map (algebraMap R K)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[hwinv]`. Rewrite using `[hsm, hdiag, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, smul_smul, ← hmap, hAg, smul_smul, hw]`. Establish `: (algebraMap R K (w : R))⁻¹ * ((algebraMap R K ϖ) ^ c)⁻¹ * algebraMap R K ((w : R) * ϖ ^ c) = 1`. Rewrite using `[map_mul, map_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_exists : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] (n : ℕ) (ϖ : R), Irreducible ϖ →

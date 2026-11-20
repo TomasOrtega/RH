@@ -12,15 +12,13 @@ namespace Formalism.MainNotions.LetterSubstitution
 open Formalism.MainNotions.G Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideWords Formalism.MainNotions.Proposition5Numerics Formalism.MainNotions.PairMembershipBlocks
 
 /- English proof (translation)
-Introduce `R _ _ ι n _ LL S F hF`. Set `Good : Set (ι × Fin n)` to `{v | v.1 ∈ S → LL.vec v.1 = true}`. Establish `hmem : F ∈ supported R Good`. Rewrite using `[mem_supported]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hF v (Finset.mem_coe.1 hv)`. Use `clear hF`. Rewrite `hmem` using `[supported_eq_adjoin_X]`. Proceed by induction on `hmem using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, rfl⟩` from `hx`. Establish `h1` using `Formalism.MainNotions.TestSideWords.TwistedFiltration.G2.valS_X_mul_of LL S (1 : MvPolynomial (ι × Fin n) R) v hv`. Rewrite `h1` using `[mul_one]`. Use `le_trans ?_ h1` and prove the remaining obligations. Use `valS_C_nnR (n := n) LL S (1 : R)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `this` using `[C_1]`. Then use the resulting hypothesis. Consider the case `algebraMap c`. Conclude with `valS_C_nnR LL S c`. Consider the case `add x y _ _ hx hy`. Conclude with `le_trans (le_min hx hy) (Formalism.MainNotions.G.GLWeightTheory.mul_valS_add LL S x y)`.
-
-Consider the case `mul x y _ _ hx hy`. Conclude with `le_trans (add_nonneg hx hy) (Formalism.MainNotions.G.GLWeightTheory.flt_valS_mul_ge LL S x y)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valNN : ValNN := by
   intro R _ _ ι n _ LL S F hF
@@ -47,9 +45,9 @@ theorem valNN : ValNN := by
     exact le_trans (add_nonneg hx hy) (Formalism.MainNotions.G.GLWeightTheory.flt_valS_mul_ge LL S x y)
 
 /- English proof (translation)
-Introduce `R _ ι n F`. Use `⟨F.support.image (fun mo => multideg mo), ?_⟩` and prove the remaining obligations. Establish `key` using `Finset.sum_fiberwise_of_maps_to (s := F.support) (t := F.support.image fun mo => multideg mo) (g := fun mo => multideg mo) (fun mo hmo => Finset.mem_image_of_mem _ hmo) (fun mo => monomial mo (F.coeff mo))`. Rewrite `key` using `[F.support_sum_monomial_coeff]`. Use `conv_lhs => rw [← key]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun δ _ => ?_)` and prove the remaining obligations. Simplify using `only [homComp]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `mo`. Simplify using `only [Finset.mem_filter, funext_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homDec : HomDec := by
   intro R _ ι n F
@@ -65,19 +63,19 @@ theorem homDec : HomDec := by
   simp only [Finset.mem_filter, funext_iff]
 
 /- English proof (translation)
-Introduce `k hk`. Unfold `valS at hk`. Distinguish the cases in `hne : (sDegs LL S (lastIdx n) (∑ i ∈ s, f i)).Nonempty`. Take `⟨d, hd, he⟩` from `Finset.exists_mem_eq_inf _ hne (fun k : ℤ => (k : WithTop ℤ))`. Rewrite `hk` using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkd : d = k` using `WithTop.coe_injective hk`. Substitute `hkd` using the available equality. Simplify using `only [sDegs, Finset.mem_biUnion, map_sum, MvPolynomial.coeff_sum] at hd`. Take `⟨m, -, hdm⟩` from `hd`. Rewrite `hdm` using `[Finsupp.mem_support_iff]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdm' : ∑ i ∈ s, ((MvPolynomial.coeff m (twistSub LL S (lastIdx n) (f i))).coeff d) ≠ 0`. Simplify `hdm` using `[AddMonoidAlgebra.coeff, Finsupp.finset_sum_apply]`. Take `⟨i, hi, hne'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hdm'`. Establish `hmem : d ∈ sDegs LL S (lastIdx n) (f i)`. Simplify using `only [sDegs, Finset.mem_biUnion]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Apply `hne'` to reduce the goal to its premises. Rewrite using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Finsupp.mem_support_iff]`. Conclude with `hne'`. Establish `hle : valS LL S (f i) ≤ (d : WithTop ℤ)` using `Finset.inf_le (f := fun k : ℤ => (k : WithTop ℤ)) hmem`. Consider the cases of `hv : valS LL S (f i) with`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `top => rw [hv] at hle; exact absurd hle (by simp)`. Consider the case `coe k'`. Rewrite `hle` using `[hv]`. Establish `hk' : k' ≤ d` using `WithTop.coe_le_coe.1 hle`. Use `h i hi k' hv` as an intermediate fact.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.trans (by exact_mod_cast hk')`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Rewrite `hk` using `[hne, Finset.inf_empty]`. Conclude with `absurd hk (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geZ_sum {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) {κ : Type*}
     (s : Finset κ) (f : κ → MvPolynomial (ι × Fin n) R) (t : ℝ)

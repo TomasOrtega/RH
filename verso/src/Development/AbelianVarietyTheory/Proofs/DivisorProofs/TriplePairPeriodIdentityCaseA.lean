@@ -17,7 +17,7 @@ namespace GlobalTheory.ThK.HeisInvInf
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_sub_arch {κ : Type} [Fintype κ] (f f' : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f - f') φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ := by
@@ -25,7 +25,7 @@ theorem pure_sub_arch {κ : Type} [Fintype κ] (f f' : SInf F κ) (φ : ∀ v : 
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `GlobalTheory.ThK.EvNeZero.pure_ne_zero (f - f') (sub_ne_zero.2 hne) φ h0 hstd (by rw [pure_sub_arch, h, sub_self])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem arch_eq_of_pure_eq {κ : Type} [Fintype κ] {f f' : SInf F κ} {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ}
     (h0 : ∀ v, φ v ≠ 0) (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -38,13 +38,13 @@ end GlobalTheory.ThK.HeisInvInf
 open GlobalTheory.ThK.HeisInvInf GlobalTheory.ThK.EvUniqInf in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' _ hT hT₁ e he ei ev hev hpure y f g hg`. Establish `hM` using `hT.geo.hM`. Establish `hM₁` using `hT₁.geo.hM`. Use `set u := Matrix.vecMulVec y (incV F H'.x) with hu`. Establish `hmem : partInf F u ∈ isoA H H'` using `Or.inl ⟨realAd F 1 • y, by show realAd F 1 • Matrix.vecMulVec y (incV F H'.x) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_vecMulVec]⟩`. Establish `hR` using `rest_pure f G.M.vac (fun v => (hM.vac v).1) hM.std`. Establish `hΦ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f G.M.vac ∈ schA F _` using `hR.2`. Take `⟨hA, hloc⟩` from `locOpInf_rho G.M.co hT.base.std u f`. Establish `hgl : locOpInf (G.M.co.rho B.ψ (partInf F u)) f = g` using `DFunLike.coe_injective (by rw [hloc, hg]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : G.M.co.rho B.ψ (partInf F u) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f G.M.vac) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g G.M.vac`. Establish `h` using `hA _ hR`. Rewrite `h` using `[hgl]`. Conclude with `h`. Establish `h1` using `he.inv _ hmem _ hΦ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[e1, hpure g G.M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl), hpure f G.M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl)]`. Establish `hvac : (fun v => ev v (G.M.vac v)) = G₁.M.vac` using `funext fun v => (hev v).1`. Rewrite `h1` using `[hvac]`. Conclude with `arch_eq_of_pure_eq (fun v => (hM₁.vac v).2.1) hM₁.std h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.HeisInvInf.ei_schr_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

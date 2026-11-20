@@ -16,11 +16,9 @@ open ReciprocityTheory.Neutral.Bridge.HCFR Neutral.B1
 open Formalism.L2.Host (atInf)
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Use `⟨InfinitePlace.Completion.extensionEmbedding _, (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_, InfinitePlace.Completion.surjective_extensionEmbedding_of_isComplex hw, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.Completion.algebraMap_apply, InfinitePlace.Completion.extensionEmbedding_coe, h]`. Both sides reduce to the same expression. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding _).norm_map_of_map_zero (map_zero _) x`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(starRingEnd ℂ).comp (InfinitePlace.Completion.extensionEmbedding _), Complex.continuous_conj.comp (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, InfinitePlace.Completion.algebraMap_apply, InfinitePlace.Completion.extensionEmbedding_coe, h, ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_conj _`. Take `⟨x, hx⟩` from `InfinitePlace.Completion.surjective_extensionEmbedding_of_isComplex hw ((starRingEnd ℂ) y)`. Conclude with `⟨x, by rw [RingHom.comp_apply, hx, Complex.conj_conj]⟩`.
-
-Rewrite using `[RingHom.comp_apply, Complex.norm_conj]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding _).norm_map_of_map_zero (map_zero _) x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_surj {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) (hw : (InfinitePlace.mk φ).IsComplex) :
     ∃ e : (InfinitePlace.mk φ).Completion →+* ℂ, Continuous e ∧ (∀ k : L, e (algebraMap L _ k) = φ k) ∧
@@ -45,9 +43,9 @@ theorem exists_ext_surj {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) 
       exact (InfinitePlace.Completion.isometry_extensionEmbedding _).norm_map_of_map_zero (map_zero _) x
 
 /- English proof (translation)
-Use `⟨Complex.exp (((Real.pi / m : ℝ) : ℂ) * Complex.I), Complex.norm_exp_ofReal_mul_I _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.exp_int_mul]`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm`. Establish `hx : (m : ℂ) * (((Real.pi / m : ℝ) : ℂ) * Complex.I) = (Real.pi : ℂ) * Complex.I`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hx, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exists_norm_one_zpow_ne (m : ℤ) (hm : m ≠ 0) : ∃ ζ : ℂ, ‖ζ‖ = 1 ∧ ζ ^ m ≠ 1 := by
   refine ⟨Complex.exp (((Real.pi / m : ℝ) : ℂ) * Complex.I), Complex.norm_exp_ofReal_mul_I _, ?_⟩
@@ -60,9 +58,9 @@ theorem exists_norm_one_zpow_ne (m : ℤ) (hm : m ≠ 0) : ∃ ζ : ℂ, ‖ζ�
   norm_num
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Use `⟨InfinitePlace.Completion.extensionEmbedding _, (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.Completion.algebraMap_apply, InfinitePlace.Completion.extensionEmbedding_coe, h]`. Both sides reduce to the same expression. Use `⟨(starRingEnd ℂ).comp (InfinitePlace.Completion.extensionEmbedding _), Complex.continuous_conj.comp (InfinitePlace.Completion.isometry_extensionEmbedding _).continuous, fun k => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.comp_apply, InfinitePlace.Completion.algebraMap_apply, InfinitePlace.Completion.extensionEmbedding_coe, h, ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_conj _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) :
     ∃ c : (InfinitePlace.mk φ).Completion →+* ℂ, Continuous c ∧ ∀ k : L, c (algebraMap L _ k) = φ k := by
@@ -79,11 +77,11 @@ private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal {L : Type} [Fiel
     exact Complex.conj_conj _
 
 /- English proof (translation)
-Establish `hopen : IsOpenMap (Units.val : (InfiniteAdeleRing E)ˣ → InfiniteAdeleRing E)` using `Units.isOpenMap_val (R := (w : InfinitePlace E) → w.Completion)`. Establish `hd` using `InfiniteAdeleRing.denseRange_algebraMap E`. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `V hV ⟨u, hu⟩`. Take `⟨_, ⟨u', hu', rfl⟩, k, hk⟩` from `hd.inter_open_nonempty _ (hopen V hV) ⟨u, u, hu, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hk0 : k = 0`. Establish `h0 : (u' : InfiniteAdeleRing E) = 0` using `by rw [← hk, hk0, map_zero]`. Establish `h01 : (0 : InfiniteAdeleRing E) = 1` using `by rw [← u'.mul_inv, h0, zero_mul]`. Use `haveI := subsingleton_of_zero_eq_one h01`. Conclude with `⟨u', hu', 1, Units.ext (Subsingleton.elim _ _)⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨u', hu', Units.mk0 k hk0, Units.ext (by simpa using hk)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem denseRange_units_map_infiniteAdeleRing (E : Type) [Field E] [NumberField E] :
     DenseRange (Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom) := by
@@ -101,31 +99,29 @@ private theorem denseRange_units_map_infiniteAdeleRing (E : Type) [Field E] [Num
   · exact ⟨u', hu', Units.mk0 k hk0, Units.ext (by simpa using hk)⟩
 
 /- English proof (translation)
-Use `choose c₀ hc₀ hc₀' using fun j => exists_inclusion_mul_eq_mul_inclusion_of_normal (φ j)`. Set `c : ∀ j, (InfinitePlace.mk (φ j)).Completion →+* ℂ` to `Function.update c₀ i e`. Establish `hc : ∀ j, Continuous (c j)`. Introduce `j`. Distinguish the cases in `hj : j = i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify `hec` using `[c]`. Simplify `hc₀ j` using `[c, hj]`. Establish `hc' : ∀ j (k : E), c j (algebraMap E _ k) = φ j k`. Introduce `j k`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify `he k` using `[c]`. Simplify `hc₀' j k` using `[c, hj]`. Set `ι0 : InfiniteAdeleRing E →* NumberField.AdeleRing (NumberField.RingOfIntegers E) E` to `MonoidHom.inl (InfiniteAdeleRing E) (IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers E) E)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι0 : Continuous ι0` using `continuous_id.prodMk continuous_const`. Take `⟨hχc, -⟩` from `χ.2`. Set `Ψ : (InfiniteAdeleRing E)ˣ → ℂ` to `fun u => ((χ.1 (Units.map ι0 u) : ℂˣ) : ℂ)`. Set `Θ : (InfiniteAdeleRing E)ˣ → ℂ` to `fun u => ∏ j, (c j ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j))) / ((‖c j ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)))‖ : ℝ) : ℂ)) ^ n j`. Establish `hne : ∀ (j : I) (u : (InfiniteAdeleRing E)ˣ), c j ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j))) ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j u h0`. Establish `h1` using `congrArg (fun x : InfiniteAdeleRing E => x (InfinitePlace.mk (φ j))) u.mul_inv`. Establish `h2 : (u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)) = 0` using `(map_eq_zero (c j)).1 h0`. Express the relevant statement in the definitionally equal form `(u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)) * ((u⁻¹ : (InfiniteAdeleRing E)ˣ) : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)) = 1 at h1`. Rewrite `h1` using `[h2, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Establish `hΨ : Continuous Ψ` using `Units.continuous_val.comp (hχc.comp (Continuous.units_map ι0 hι0))`. Establish `hΘ : Continuous Θ`. Use `continuous_finsetProd _ fun j _ => ?_` and prove the remaining obligations. Establish `hcont : Continuous fun u : (InfiniteAdeleRing E)ˣ => c j ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)))` using `(hc j).comp ((continuous_apply (InfinitePlace.mk (φ j))).comp Units.continuous_val)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : ∀ u : (InfiniteAdeleRing E)ˣ, (((‖c j ((u : InfiniteAdeleRing E) (InfinitePlace.mk (φ j)))‖ : ℝ) : ℂ)) ≠ 0` using `fun u => Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (hne j u))`. Conclude with `(hcont.div (Complex.continuous_ofReal.comp (continuous_norm.comp hcont)) hn0).zpow₀ (n j) fun u => Or.inl (div_ne_zero (hne j u) (hn0 u))`. Establish `hkey : Ψ = Θ`. Use `Continuous.ext_on (denseRange_units_map_infiniteAdeleRing E) hΨ hΘ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hdiag : Units.map ι0 (Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k) = Formalism.L2.Host.infDiag k`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Formalism.L2.Host.infDiag, MonoidHom.coe_finsetProd, Finset.prod_apply, MonoidHom.coe_comp, Function.comp_apply, Units.coe_prod, Units.coe_map]`. Establish `hprod : (∏ w, (Pi.mulSingle (M` using `fun w : InfinitePlace E => w.Completion) w (algebraMap E w.Completion (k : E)) : InfiniteAdeleRing E)) = algebraMap E (InfiniteAdeleRing E) (k : E) := Finset.univ_prod_mulSingle (fun w : InfinitePlace E => algebraMap E w.Completion (k : E))`. Rewrite using `[Finset.prod_congr rfl fun w _ => (show ((infIdele E w (Formalism.L2.Host.atInf w k) : Neutral.B1.Ideles E) : NumberField.AdeleRing (NumberField.RingOfIntegers E) E) = ι0 (Pi.mulSingle (M := fun w : InfinitePlace E => w.Completion) w (algebraMap E w.Completion (k : E))) from rfl) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `]`. Conclude with `(congrArg ι0 hprod.symm).trans (map_prod ι0 _ _)`. Establish `hinf` using `hn k`. Simplify using `only [Formalism.L2.Host.HChar.inf, MonoidHom.coe_comp, Function.comp_apply] at hinf`. Use `show ((χ.1 (Units.map ι0 (Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k)) : ℂˣ) : ℂ) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hdiag]`. Use `hinf.trans (Finset.prod_congr rfl fun j _ => ?_)` and prove the remaining obligations. Use `show _ = (c j (algebraMap E _ (k : E)) / ((‖c j (algebraMap E _ (k : E))‖ : ℝ) : ℂ)) ^ n j`. Rewrite using `[hc' j]`. Establish `hz` using `congrFun hkey (Units.map (MonoidHom.mulSingle (fun w : InfinitePlace E => w.Completion) (InfinitePlace.mk (φ i))) z)`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hι : Units.map ι0 (Units.map (MonoidHom.mulSingle (fun w : InfinitePlace E => w.Completion) (InfinitePlace.mk (φ i))) z) = infIdele E _ z`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Simplify using `only [Ψ, Θ] at hz`. Rewrite `hz` using `[hι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, Finset.prod_eq_single i]`. Simplify using `[c]`. Introduce `j _ hj`. Establish `hw : InfinitePlace.mk (φ j) ≠ InfinitePlace.mk (φ i)` using `fun h => hj (hb.1 h)`. Simplify using `only [Units.coe_map, MonoidHom.coe_mulSingle, MonoidHom.mulSingle_apply]`.
-
-Rewrite using `[Pi.mulSingle_eq_of_ne hw]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_eq {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hb : Function.Bijective fun i => InfinitePlace.mk (φ i)) (χ : HChar E) {n : I → ℤ}
@@ -220,11 +216,11 @@ theorem comp_eq {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `show (IdeleGroup.infiniteModule (infIdele E w z) * IdeleGroup.finiteModule (infIdele E w z) : ℝ) = _`. Establish `hinf : IdeleGroup.infiniteModule (infIdele E w z : IdeleGroup E) = ‖(z : w.Completion)‖ ^ w.mult`. Unfold `IdeleGroup.infiniteModule`. Rewrite using `[Fintype.prod_eq_single w]`. Use `show ‖(Pi.mulSingle w (z : w.Completion) : ∀ w', w'.Completion) w‖ ^ w.mult = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Introduce `w' hw' show ‖(Pi.mulSingle w (z : w.Completion) : ∀ w', w'.Completion) w'‖ ^ w'.mult = 1`. Rewrite using `[Pi.mulSingle_eq_of_ne hw', norm_one, one_pow]`. Establish `hfin : IdeleGroup.finiteModule (infIdele E w z : IdeleGroup E) = 1`. Unfold `IdeleGroup.finiteModule`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Use `show ‖(1 : IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers E) E) v‖ = 1`. Simplify using the standard rewrite rules. Rewrite using `[hinf, hfin, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleModule_infIdele {E : Type} [Field E] [NumberField E] (w : InfinitePlace E)
     (z : (w.Completion)ˣ) :
@@ -247,15 +243,15 @@ theorem ideleModule_infIdele {E : Type} [Field E] [NumberField E] (w : InfiniteP
   rw [hinf, hfin, mul_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ hcm χ hu n hn hex hτex`. Take `⟨i, hi⟩` from `hex`. Take `⟨τ, hτ⟩` from `hτex`. Establish `hb` using `GlobalTheory.CMTypeCard.bijective_mk_of_isCMType hcm`. Establish `hw : (InfinitePlace.mk (φ i)).IsComplex` using `IsTotallyComplex.isComplex _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, hec, he, hes, hen⟩` from `exists_ext_surj (φ i) hw`. Take `⟨ζ, hζ1, hζm⟩` from `exists_norm_one_zpow_ne (n i) hi`. Take `⟨y, rfl⟩` from `hes ζ`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hζ1`. Establish `hy1 : ‖y‖ = 1` using `by rw [← hen]; exact hζ1`. Establish `h3` using `comp_eq hb χ hn i e hec he (Units.mk0 y hy0)`. Establish `h4` using `ideleModule_infIdele (InfinitePlace.mk (φ i)) (Units.mk0 y hy0)`. Establish `h5` using `hτ (infIdele E _ (Units.mk0 y hy0))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h5` using `[GlobalTheory.CompanionTheory.HeckeBridge.coe_toIdele]`. Apply `hζm` to reduce the goal to its premises. Simplify using `only [Units.val_mk0] at h3 h4`. Rewrite `h3` using `[hζ1, Complex.ofReal_one, div_one]`. Rewrite using `[← h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h5.trans ?_` and prove the remaining obligations. Rewrite using `[h4, hy1, one_pow, Complex.ofReal_one, Complex.one_cpow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_modulePow : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (χ : HChar E) (hu : IsUnitary χ) (n : I → ℤ), Formalism.L2.Host.HChar.HasInf χ φ n → (∃ i, n i ≠ 0) → ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E, ((toHecke χ hu).toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I) := by
   intro E _ _ _ I _ φ hcm χ hu n hn hex hτex

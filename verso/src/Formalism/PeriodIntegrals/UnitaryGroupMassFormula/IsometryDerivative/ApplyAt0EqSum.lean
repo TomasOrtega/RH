@@ -11,7 +11,7 @@ namespace PI.IsoDerivBFintype
 open PI.IsoDerivB
 
 /- English proof (translation)
-Simplify using `using Fintype.card_le_of_embedding J.toEmbedding`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_of_oe {h n : ℕ} (J : Fin h ↪o Fin n) : h ≤ n := by
   simpa using Fintype.card_le_of_embedding J.toEmbedding
@@ -23,9 +23,9 @@ variable {T : Type} [Fintype T] {N N' : ℕ} (Θ : VC T N N' → ℂ)
 def wt (α : Mono T N N') : ℂ := (α.prod fun _ n => (n.factorial : ℂ)) * taylor Θ α
 
 /- English proof (translation)
-Establish `e : ∀ α, MvPolynomial.coeff α P * wt Θ α = MvPolynomial.coeff α P * (α.prod fun _ n => (n.factorial : ℂ)) * taylor Θ α` using `fun α => by`. Unfold `wt`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Unfold `applyAt0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Apply `Finset.sum_subset hS` to reduce the goal to its premises. Introduce `α _ hα`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hα]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem applyAt0_eq_sum (P : MvPolynomial (Idx T N N') ℂ) (S : Finset (Mono T N N'))
     (hS : P.support ⊆ S) : applyAt0 P Θ = ∑ α ∈ S, MvPolynomial.coeff α P * wt Θ α := by
@@ -40,7 +40,7 @@ theorem applyAt0_eq_sum (P : MvPolynomial (Idx T N N') ℂ) (S : Finset (Mono T 
   ring
 
 /- English proof (translation)
-Rewrite using `[applyAt0_eq_sum Θ (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add, applyAt0_eq_sum Θ P (P.support ∪ Q.support) subset_union_left, applyAt0_eq_sum Θ Q (P.support ∪ Q.support) subset_union_right, ← sum_add_distrib]`. Conclude with `sum_congr rfl fun α _ => by rw [MvPolynomial.coeff_add]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem applyAt0_add (P Q : MvPolynomial (Idx T N N') ℂ) :
     applyAt0 (P + Q) Θ = applyAt0 P Θ + applyAt0 Q Θ := by
@@ -51,15 +51,13 @@ theorem applyAt0_add (P Q : MvPolynomial (Idx T N N') ℂ) :
   exact sum_congr rfl fun α _ => by rw [MvPolynomial.coeff_add]; ring
 
 /- English proof (translation)
-Simplify using `[applyAt0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem applyAt0_zero : applyAt0 (0 : MvPolynomial (Idx T N N') ℂ) Θ = 0 := by
   simp [applyAt0]
 
 /- English proof (translation)
-Rewrite using `[applyAt0_eq_sum Θ (MvPolynomial.C c * P) P.support ?_, applyAt0_eq_sum Θ P P.support subset_rfl, mul_sum]`. Conclude with `sum_congr rfl fun α _ => by rw [MvPolynomial.coeff_C_mul]; ring`. Introduce `α hα`. Rewrite `hα`, the goal using `[MvPolynomial.mem_support_iff]`. Rewrite `hα` using `[MvPolynomial.coeff_C_mul]`.
-
-Conclude with `right_ne_zero_of_mul hα`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem applyAt0_C_mul (c : ℂ) (P : MvPolynomial (Idx T N N') ℂ) :
     applyAt0 (MvPolynomial.C c * P) Θ = c * applyAt0 P Θ := by
@@ -73,14 +71,14 @@ theorem applyAt0_C_mul (c : ℂ) (P : MvPolynomial (Idx T N N') ℂ) :
     exact right_ne_zero_of_mul hα
 
 /- English proof (translation)
-Rewrite using `[mul_comm, applyAt0_C_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_mul_C (c : ℂ) (P : MvPolynomial (Idx T N N') ℂ) :
     applyAt0 (P * MvPolynomial.C c) Θ = applyAt0 P Θ * c := by
   rw [mul_comm, applyAt0_C_mul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [sum_empty, applyAt0_zero]`. Consider the case `insert a s ha ih => rw [sum_insert ha, sum_insert ha, applyAt0_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem applyAt0_sum {ι : Type*} (s : Finset ι) (P : ι → MvPolynomial (Idx T N N') ℂ) :
     applyAt0 (∑ i ∈ s, P i) Θ = ∑ i ∈ s, applyAt0 (P i) Θ := by
@@ -105,9 +103,9 @@ def mY (J : ColChoice N nu) : MvPolynomial (FrV T N) ℂ :=
     else 0)
 
 /- English proof (translation)
-Unfold `mY minY`. Rewrite using `[map_prod]`. Use `prod_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, frC, colsOf]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_mY (J : ColChoice N nu) (y : T → Matrix (Fin N) (Fin N) ℂ) :
     MvPolynomial.eval (fun k : FrV T N => y k.1 k.2.1 k.2.2) (mY tp nu J) = minY N nu J (frC tp y) := by
@@ -125,9 +123,9 @@ theorem eval_mY (J : ColChoice N nu) (y : T → Matrix (Fin N) (Fin N) ℂ) :
 variable [Fintype T]
 
 /- English proof (translation)
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Set `y : T → Matrix (Fin N) (Fin N) ℂ` to `fun τ => Matrix.of fun a b => x (τ, a, b)`. Establish `h1 : evFr Q y = MvPolynomial.eval x Q` using `rfl`. Establish `h2 : ∀ J, MvPolynomial.eval x (mY tp nu J) = minY N nu J (frC tp y)` using `fun J => eval_mY tp nu J y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, hQ, map_sum]`. Simplify using `only [map_mul, MvPolynomial.eval_C, h2]`. Unfold `canC prC hvC`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Q_eq (φ : LaC N nu) (Q : MvPolynomial (FrV T N) ℂ)
     (hQ : ∀ y, evFr Q y = canC φ (frC tp y)) :

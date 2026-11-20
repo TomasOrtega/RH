@@ -14,13 +14,13 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 open Complex in
 
 /- English proof (translation)
-Establish `hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`. Establish `h1 : HasDerivAt (fun s : ℝ => I * (s : ℂ)) I t`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := t)).const_mul I`. Establish `h2 : HasDerivAt (fun s : ℝ => I ^ n * cexp (I * s)) (I ^ n * (cexp (I * t) * I)) t` using `h1.cexp.const_mul _`. Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, fun n => ⟨0, 1, fun t => ?_⟩⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff)`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, hd n, norm_mul, norm_pow, Complex.norm_I, one_pow, mul_comm I, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tg_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
   have hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t) := by
@@ -60,11 +60,11 @@ def phz (p : (κ → AF F) × (κ → AF F)) (y : κ → mixedEmbedding.mixedSpa
     (∑ i, y i * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1) : ℝ) : ℂ))
 
 /- English proof (translation)
-Establish `hlin : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => ∑ i, y i * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1)`. Establish `hi : ∀ i, Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => y i * arc F p.2 i)` using `fun i => ((ContinuousLinearMap.mul ℝ (mixedEmbedding.mixedSpace F)).flip (arc F p.2 i) ∘L ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ => mixedEmbedding.mixedSpace F) i).hasTemperateGrowth`. Use `fun_prop`. Establish `hT : Function.HasTemperateGrowth (fun z : mixedEmbedding.mixedSpace F => Algebra.trace ℝ (mixedEmbedding.mixedSpace F) z)` using `(LinearMap.toContinuousLinearMap (Algebra.trace ℝ (mixedEmbedding.mixedSpace F))).hasTemperateGrowth`. Establish `hg : Function.HasTemperateGrowth (fun s : ℝ => Complex.exp (-(2 * Real.pi * Complex.I) * (s : ℂ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `tg_exp.comp (((-(2 * Real.pi)) • ContinuousLinearMap.id ℝ ℝ).hasTemperateGrowth)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul]`. Use `push_cast`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Conclude with `hg.comp (hT.comp hlin)`.
+A detailed English derivation is pending.
 -/
 theorem phz_tg (p : (κ → AF F) × (κ → AF F)) : (phz F p).HasTemperateGrowth := by
   have hlin : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F =>
@@ -86,17 +86,17 @@ theorem phz_tg (p : (κ → AF F) × (κ → AF F)) : (phz F p).HasTemperateGrow
   exact hg.comp (hT.comp hlin)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨-, -, hinf⟩` from `hψ`. Establish `hs1 : ∀ y z : κ → AF F, (y ⬝ᵥ z).1 = ∑ i, (y i).1 * (z i).1` using `fun y z => map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => y i * z i) Finset.univ`. Establish `hs2 : ∀ y z : κ → AF F, (y ⬝ᵥ z).2 = ∑ i, (y i).2 * (z i).2` using `fun y z => map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => y i * z i) Finset.univ`. Establish `hsnd : (fun i => ((x + p.1) i).2) = fun i => (x i).2`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `show (x i).2 + (p.1 i).2 = (x i).2`. Rewrite using `[(hp i).1, add_zero]`. Establish `hfst : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + p.1) i).1) = (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) + arc F p.1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1 (p.1 i).1`. Establish `ha2 : (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).2 = 0` using `by show (x ⬝ᵥ p.2).2 + (⅟(2 : AF F)).2 * (p.1 ⬝ᵥ p.2).2 = 0`. Rewrite using `[hs2, hs2]`. Simplify using `[(hp _).2]`. Establish `hat : At (evI F) (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(map_eq_zero_iff (InfiniteAdeleRing.ringEquiv_mixedSpace F) (RingEquiv.injective _)).mp hu`. Rewrite using `[smul_eq_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1 = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu1, zero_mul]`. Use `show u.2 * (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).2 = 0`. Rewrite using `[ha2, mul_zero]`. Establish `htr : evI F (x ⬝ᵥ p.2 + ⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)) = ∑ i, InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 * arc F p.2 i + InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x ⬝ᵥ p.2).1 + (⅟(2 : AF F) * (p.1 ⬝ᵥ p.2)).1) = _`. Rewrite using `[map_add, hs1, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, arc]`. Simplify using `only [schr, pureA]`. Rewrite using `[hinf _ hat, hsnd, hfst, htr]`. Simplify using `only [phz]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem schr_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (p : (κ → AF F) × (κ → AF F))
     (hp : ∀ i, (p.1 i).2 = 0 ∧ (p.2 i).2 = 0) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
@@ -142,11 +142,11 @@ theorem schr_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (p : (κ → AF F)
   ring
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨T0, hT0⟩` from `hl g hg`. Establish `htr : Function.HasTemperateGrowth (fun y : κ → mixedEmbedding.mixedSpace F => y + arc F p.1)` using `by fun_prop`. Establish `hanti : AntilipschitzWith 1 (fun y : κ → mixedEmbedding.mixedSpace F => y + arc F p.1)` using `(IsometryEquiv.addRight (arc F p.1)).isometry.antilipschitz`. Set `S : 𝓢(κ → mixedEmbedding.mixedSpace F, ℂ) →L[ℂ] 𝓢(κ → mixedEmbedding.mixedSpace F, ℂ)` to `(SchwartzMap.smulLeftCLM ℂ (phz F p)).comp (SchwartzMap.compCLMOfAntilipschitz ℂ htr hanti)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨T0.comp S, fun f => ?_⟩` and prove the remaining obligations. Establish `hf : (⇑(S f)) = fun y => phz F p y * f (y + arc F p.1)`. Use function extensionality and compare the values at `y`. Simplify using `[S, SchwartzMap.smulLeftCLM_apply_apply (phz_tg F p), smul_eq_mul]`. Rewrite using `[LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show l (schr ψ p (pureA F f g)) = _`. Rewrite using `[schr_pureA F ψ hψ p hp, ← hf, hT0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rho_adm (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ)
     (p : (κ → AF F) × (κ → AF F)) (hp : ∀ i, (p.1 i).2 = 0 ∧ (p.2 i).2 = 0) :

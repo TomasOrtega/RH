@@ -30,7 +30,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] 
   (C : ColIface K I) {P : PlDat K I} (R : RowArg C.toColObj)
 
 /- English proof (translation)
-Take `⟨J, rfl⟩` from `h`. Conclude with `hp J`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ColFacts.elim {C : ColObj K I} (h : ColFacts C) {p : ColObj K I → Prop}
     (hp : ∀ J : ColIface K I, p J.toColObj) : p C := by
@@ -53,14 +53,14 @@ open Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionCh
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {W : H → Type} [∀ u0, Fintype (W u0)] {m : ℕ}
 
 /- English proof (translation)
-Use `show (0 : ℝ) < (Fintype.card (Q.C.M u).ι : ℝ)`. Conclude with `h.elim (p := fun C => 0 < Fintype.card (C.M u).ι) (fun J => J.rank_pos u)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem Pt.du_pos {I : Type} (Q : Pt I) (h : ColFacts Q.C) (m : ℕ) (u : I) : 0 < (Q.fam m).du u := by
   show (0 : ℝ) < (Fintype.card (Q.C.M u).ι : ℝ)
   exact_mod_cast h.elim (p := fun C => 0 < Fintype.card (C.M u).ι) (fun J => J.rank_pos u)
 
 /- English proof (translation)
-The claim follows from `(h.du u).symm dM u := (h.dM u).symm T u := (h.T u).symm muN u := (h.muN u).symm muMaxN u := (h.muMaxN u).symm h u := (h.h u).symm muM u := (h.muM u).symm muMaxM u := (h.muMaxM u).symm EeJ u j := (h.EeJ u j).symm muCC := h.muCC.symm muMinCC := h.muMinCC.symm Fo := h.Fo.symm Ga := …`.
+A detailed English derivation is pending.
 -/
 theorem SameNumbers.symm {I : Type} [Fintype I] {m : ℕ} {F F' : Fam I m} (h : SameNumbers F F') : SameNumbers F' F where
   du u := (h.du u).symm
@@ -129,7 +129,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {num : S
 include T
 
 /- English proof (translation)
-Unfold `Fields.f`. Rewrite using `[Fintype.card_congr T.σ, Fintype.card_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_eq : X.f = (PhiSet (H := H)).card := by
   unfold Fields.f

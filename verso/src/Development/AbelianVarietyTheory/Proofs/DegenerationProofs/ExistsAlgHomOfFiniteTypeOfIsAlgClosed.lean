@@ -5,7 +5,7 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal C`. Set `` to `Ideal.Quotient.field m`. Use `finite_of_finite_type_of_isJacobsonRing K (C ⧸ m)` as an intermediate fact. Conclude with `⟨(IsAlgClosed.lift : (C ⧸ m) →ₐ[K] F).comp (Ideal.Quotient.mkₐ K m)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_algHom_of_finiteType_of_isAlgClosed (K C F : Type) [Field K] [CommRing C]
     [Nontrivial C] [Algebra K C] [Algebra.FiniteType K C] [Field F] [IsAlgClosed F]

@@ -15,7 +15,7 @@ def PlaceCentredSum.Statement : Prop :=
         ∑ᶠ w ∈ {w : FinitePlace L | AbsCentredAt O m fun u ↦ w u}, -Real.log (w t)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example : NumberField ℚ ∧ NumberField (CyclotomicField 4 ℚ) := ⟨inferInstance, inferInstance⟩
 

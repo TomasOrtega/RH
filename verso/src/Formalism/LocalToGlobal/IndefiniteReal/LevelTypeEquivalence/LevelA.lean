@@ -16,7 +16,7 @@ def kf (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) : Set (UI.instV fr).Gf :=
   {y | (y.1 : GL (Fin V.rank) (Lev.EAf D)) ∈ K}
 
 /- English proof (translation)
-Use `show UI.brg fr x ∈ GfC V ⊓ K.comap (Lev.finE V) ↔ _`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_comap, brg_mem_GfC, finE_brg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem brg_mem_levA (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (x : (UI.instV fr).GA) :
     UI.brg fr x ∈ Lev.levA V K ↔ x.1 = 1 ∧ x.2 ∈ kf fr K := by
@@ -25,13 +25,11 @@ theorem brg_mem_levA (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (x : (UI.instV
   rfl
 
 /- English proof (translation)
-Establish `hpre : kf fr K = jf fr ⁻¹' (Lev.levA V K : Set (GA D V))`. Use extensionality with `y`. Use `show y ∈ kf fr K ↔ UI.brg fr (1, y) ∈ Lev.levA V K`. Rewrite using `[brg_mem_levA]`. Conclude with `⟨fun h => ⟨rfl, h⟩, fun h => h.2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpre]`. Conclude with `(jf_isClosedEmbedding fr).isCompact_preimage hK.1`. Establish `hmem : ∀ y, jf fr y ∈ GfC V` using `fun y => (brg_mem_GfC fr (1, y)).mpr rfl`. Set `jc : (UI.instV fr).Gf → GfC V` to `fun y => ⟨jf fr y, hmem y⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjc : Continuous jc` using `(jf_isClosedEmbedding fr).continuous.subtype_mk _`. Establish `e : kf fr K = jc ⁻¹' (((Lev.levA V K).subgroupOf (GfC V)) : Set (GfC V))`. Rewrite using `[hpre]`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_subgroupOf, jc]`.
-
-Rewrite using `[e]`. Conclude with `hK.2.preimage hjc`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kf_isCompact_isOpen_of_levelA (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (hK : IsLevelA V K) :
     IsCompact (kf fr K) ∧ IsOpen (kf fr K) := by
@@ -61,9 +59,9 @@ variable (V) in
 def Kst : Subgroup (GL (Fin V.rank) (Lev.EAf D)) := KstI (UI.framesV D V)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨hx, fun y hy => ⟨_, Submodule.sub_mem _ ((hx y).mp hy) hy, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_smul, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Conclude with `hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabilizer_eq_level_subgroup : (UI.instV fr).Kset = {x : (UI.instV fr).Gf |
     (x : GL (Fin (UI.instV fr).n) ((UI.instV fr).E ⊗[(UI.instV fr).F] Formalism.MainNotions.S.Af (UI.instV fr).F)) ∈

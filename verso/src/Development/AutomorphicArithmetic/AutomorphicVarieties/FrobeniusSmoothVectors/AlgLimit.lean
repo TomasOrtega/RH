@@ -5,51 +5,45 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n S C _ _ _ D _ _ _ _ 𝔪 ρ hV hM`. Take `⟨f, hf1, hf2, hf3⟩` from `alg_family S C 𝔪 ρ hV hM`. Use `haveI : IsAdicComplete (maximalIdeal C) C := IsCO.complete (O := O)`. Establish `hsep : ∀ d d' : D, (∀ N : ℕ, Ideal.Quotient.mk (𝔪 ^ (N + 1)) d = Ideal.Quotient.mk (𝔪 ^ (N + 1)) d') → d = d'`. Introduce `d d' h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : d - d' ∈ ⨅ N, 𝔪 ^ N`. Use `(Submodule.mem_iInf _).2 fun N => ?_` and prove the remaining obligations. Consider the cases of `N with`. Consider the case `zero => simp`. Consider the case `succ N => exact Ideal.Quotient.eq.1 (h N)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hV.sep]`. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot _).1 hmem)`. Establish `hr : ∀ N g i j, f N (S.ρ.r g i j) = Ideal.Quotient.mk (𝔪 ^ (N + 1)) (ρ.r g i j)`. Introduce `N g i j`. Use `congrArg (fun σ => σ.r g i j) (hf1 N)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [NRep.map_r, AlgHom.coe_toRingHom]`. Establish `hψ : ∀ N v i g, f N ((S.ρ.ψ v i g : S.R)) = Ideal.Quotient.mk (𝔪 ^ (N + 1)) (ρ.ψ v i g : D)`. Introduce `N v i g`. Use `congrArg (fun σ => ((σ.ψ v i g : Units _) : D ⧸ 𝔪 ^ (N + 1))) (hf1 N)` as an intermediate fact. Simplify `this` using `only [NRep.map_ψ, AlgHom.coe_toRingHom]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `T' : Subalgebra O S.R` to `{ carrier := {x | ∃ c : C, ∀ N, Ideal.Quotient.mk (𝔪 ^ (N + 1)) (algebraMap C D c) = f N x} mul_mem' := by`. Introduce and unpack `a b ⟨c, hc⟩ ⟨c', hc'⟩`. Conclude with `⟨c * c', fun N => by simp only [map_mul, hc, hc']⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨c, hc⟩ ⟨c', hc'⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `⟨c + c', fun N => by simp only [map_add, hc, hc']⟩`. Use the proof step `algebraMap_mem' := fun a => ⟨algebraMap O C a, fun N => by`. Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Use the proof step `rfl⟩ }`. Set `T : Subalgebra O S.R` to `{ carrier := {x | ∃ d : D, ∀ N, Ideal.Quotient.mk (𝔪 ^ (N + 1)) d = f N x} mul_mem' := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a b ⟨c, hc⟩ ⟨c', hc'⟩`. Conclude with `⟨c * c', fun N => by simp only [map_mul, hc, hc']⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨c, hc⟩ ⟨c', hc'⟩`. Conclude with `⟨c + c', fun N => by simp only [map_add, hc, hc']⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `algebraMap_mem' := fun a => ⟨algebraMap O D a, fun N => by`. Rewrite using `[AlgHom.commutes]`. Use the proof step `rfl⟩ }`. Establish `hgen : Algebra.adjoin O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = ↑((S.ρ.ψ v i) g)}) ≤ T'`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `x (hx | ⟨v, i, g, rfl⟩)`. Take `⟨L, hL, rfl⟩` from `hx`. Take `⟨c, hc⟩` from `hM.mon _ ⟨L, hL, rfl⟩`. Use `⟨c, fun N => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_list_prod, map_list_prod, List.map_map, List.map_map]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `s _`. Simplify using `only [Function.comp, hr]`. Take `⟨c, hc, -⟩` from `hM.psi v i g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨c, fun N => by rw [hc, hψ]⟩`. Establish `hB : S.B ≤ T'`. Introduce `x hx`. Establish `hx' : ∀ N : ℕ, ∃ y ∈ Algebra.adjoin O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = ↑((S.ρ.ψ v i) g)}), x - y ∈ maximalIdeal S.R ^ N` using `hx`. Use `choose y hy hxy using hx'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose c hc using fun N => hgen (hy (N + 1))`. Establish `hfx : ∀ N M, N + 1 ≤ M → f N x = f N (y M)`. Introduce `N M hNM`. Establish `h0` using `hf3 N _ (Ideal.pow_le_pow_right hNM (hxy M))`. Rewrite `h0` using `[map_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `hcau : ∀ N : ℕ, algebraMap C D (c (N + 1) - c N) ∈ 𝔪 ^ (N + 1)`. Introduce `N`. Rewrite using `[map_sub]`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, hc, ← hfx N (N + 1 + 1) (by omega), ← hfx N (N + 1) le_rfl]`. Take `⟨z, hz⟩` from `alg_closed C 𝔪 hV c hcau`. Use `⟨z, fun N => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk (𝔪 ^ (N + 1)) (algebraMap C D z) = Ideal.Quotient.mk (𝔪 ^ (N + 1)) (algebraMap C D (c N))`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← map_sub]`. Conclude with `hz N`. Rewrite using `[h1, hc, ← hfx N (N + 1) le_rfl]`. Establish `hA : S.A ≤ T` using `by show Algebra.adjoin O ((S.B : Set S.R) ∪ {x | ∃ g i j, x = S.ρ.r g i j}) ≤ T`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `x (hx | ⟨g, i, j, rfl⟩)`. Take `⟨c, hc⟩` from `hB hx`. Conclude with `⟨algebraMap C D c, hc⟩`. Conclude with `⟨ρ.r g i j, fun N => (hr N g i j).symm⟩`. Take `⟨ξ, hξ⟩` from `alg_glue (A := S.A) 𝔪 hV.sep (fun N => (f N).comp S.A.val) (fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `hA a.2`. Conclude with `⟨d, fun N => by simpa using hd N⟩)`. Establish `hξ' : ∀ (a : S.A) N, Ideal.Quotient.mk (𝔪 ^ (N + 1)) (ξ a) = f N (a : S.R)`. Introduce `a N`. Simplify using `using hξ a N`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `φ` to `IsScalarTower.toAlgHom O C D`. Establish `hmem : ∀ b, (ξ.comp S.inc) b ∈ φ.range`. Introduce `b`. Take `⟨c, hc⟩` from `hB b.2`. Use `(AlgHom.mem_range φ).2 ⟨c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsep _ _ fun N => ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk (𝔪 ^ (N + 1)) (algebraMap C D c) = Ideal.Quotient.mk (𝔪 ^ (N + 1)) (ξ (S.inc b))`. Rewrite using `[hc, hξ']`. Both sides reduce to the same expression. Set `e` to `AlgEquiv.ofInjective φ hV.inj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨ξ, e.symm.toAlgHom.comp ((ξ.comp S.inc).codRestrict φ.range hmem), ?_, ?_⟩` and prove the remaining obligations. Use `NRep.ext ?_ ?_` and prove the remaining obligations. Use `MonoidHom.ext fun g => Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[NRep.map_r]`. Use `hsep _ _ fun N => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hr]`. Conclude with `hξ' _ N`. Use function extensionality and compare the values at `v i`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Rewrite using `[NRep.map_ψ]`.
-
-Use `hsep _ _ fun N => ?_` and prove the remaining obligations. Rewrite using `[← hψ]`. Conclude with `hξ' _ N`. Introduce `b`. Establish `h1 : ((e (e.symm ⟨ξ (S.inc b), hmem b⟩) : φ.range) : D) = φ (e.symm ⟨ξ (S.inc b), hmem b⟩)` using `AlgEquiv.ofInjective_apply _ _ _`.
-
-Rewrite `h1` using `[AlgEquiv.apply_symm_apply]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_limit :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (S : Space O F n) (C : Type) [CommRing C] [Algebra O C] [IsCO O C] {D : Type} [CommRing D] [Algebra O D] [Algebra C D] [IsScalarTower O C D] (𝔪 : Ideal D) (ρ : NRep F n D), IsVertexRing C 𝔪 → IsModel O C 𝔪 ρ → ∃ (ξ : S.A →ₐ[O] D) (β : S.B →ₐ[O] C), S.u.map (ξ : S.A →+* D) = ρ ∧ ∀ b, ξ (S.inc b) = algebraMap C D (β b) := by

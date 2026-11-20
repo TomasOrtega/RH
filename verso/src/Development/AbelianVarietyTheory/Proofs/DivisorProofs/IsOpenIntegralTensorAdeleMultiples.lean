@@ -15,13 +15,11 @@ variable {F : Type} [Field F] [NumberField F]
 variable (F) in
 
 /- English proof (translation)
-Set `S : AddSubgroup (Af F)` to `{ carrier := {c | ∃ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) ∧ c = M • a} zero_mem' := ⟨0, fun v => zero_mem _, (smul_zero M).symm⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, fun v => add_mem (ha v) (hb v), (smul_add M a b).symm⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨-a, fun v => neg_mem (ha v), (smul_neg M a).symm⟩ }`. Establish `hS : IsOpen (S : Set (Af F))` using `S.isOpen_of_mem_nhds (g := 0) (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F M hM)`. Establish `e : intF F M = Prod.snd ⁻¹' (S : Set (Af F))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc, e⟩`. Conclude with `⟨c, hc, e⟩`. Introduce and unpack `⟨c, hc, e⟩`. Conclude with `⟨c, hc, e⟩`. Rewrite using `[e]`.
-
-Conclude with `hS.preimage continuous_snd`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intF_isOpen (M : ℕ) (hM : 0 < M) : IsOpen (intF F M) := by
   let S : AddSubgroup (Af F) :=
@@ -46,9 +44,9 @@ theorem intF_isOpen (M : ℕ) (hM : 0 < M) : IsOpen (intF F M) := by
   exact hS.preimage continuous_snd
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hx`. Establish `hM' : (M : F) ≠ 0` using `Nat.cast_ne_zero.mpr hM.ne'`. Use `⟨algebraMap F (AF F) ((M : F)⁻¹) * x, ⟨c, hc, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (algebraMap F (AF F) ((M : F)⁻¹)).2 * x.2 = 1 • c`. Rewrite using `[e, one_smul, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (algebraMap F (AF F) ((M : F)⁻¹)).2 = algebraMap F (Af F) ((M : F)⁻¹)` using `rfl`. Rewrite using `[h2, ← mul_assoc, ← map_natCast (algebraMap F (Af F)) M, ← map_mul, inv_mul_cancel₀ hM', map_one, one_mul]`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap F (AF F)) M, ← map_mul, mul_inv_cancel₀ hM', map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intF_one_mul (M : ℕ) (hM : 0 < M) {x : AF F} (hx : x ∈ intF F M) :
     ∃ s ∈ intF F 1, (M : AF F) * s = x := by
@@ -64,23 +62,19 @@ theorem exists_intF_one_mul (M : ℕ) (hM : 0 < M) {x : AF F} (hx : x ∈ intF F
 end GlobalTheory.HeckeExtend
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ N hN`. Use `haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := IsModuleTopology.topologicalAddGroup (AF F) _`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `b₀` to `Module.finBasis F E`. Establish `hint : ∀ i, ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * b₀ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `: Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `: Algebra.IsAlgebraic ℤ E` using `Algebra.IsAlgebraic.trans ℤ ℚ E`. Take `⟨y, hy, h⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) (z := b₀ i) (Algebra.IsAlgebraic.isAlgebraic _)`. Use `⟨(y * y).natAbs, Int.natAbs_pos.2 (mul_ne_zero hy hy), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (((y * y).natAbs : ℕ) : E) = (y : E) * (y : E)`. Rewrite using `[← Int.cast_natCast, Int.natAbs_of_nonneg (mul_self_nonneg y), Int.cast_mul]`. Rewrite using `[h1, mul_assoc]`. Rewrite `h` using `[zsmul_eq_mul]`. Conclude with `(isIntegral_algebraMap (x := y)).mul h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose d hd hdint using hint`. Set `B` to `Algebra.TensorProduct.basis (AF F) b₀`. Set `U : Set (AF F ⊗[F] E)` to `⋂ i, (fun z => B.repr z i) ⁻¹' intF F (N * d i)`. Establish `hU : IsOpen U`. Use `isOpen_iInter_of_finite fun i => (intF_isOpen F _ (Nat.mul_pos hN (hd i))).preimage ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `IsModuleTopology.continuous_of_linearMap (B.coord i)`. Establish `h0 : (0 : AF F ⊗[F] E) ∈ U`. Use `Set.mem_iInter.2 fun i => ⟨0, fun v => zero_mem _, ?_⟩` and prove the remaining obligations. Use `show (B.repr 0 i).2 = (N * d i) • 0`. Rewrite using `[map_zero, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsub : U ⊆ (CE F E N : Set (AF F ⊗[F] E))`. Introduce `z hz`. Establish `hz' : ∀ i, B.repr z i ∈ intF F (N * d i)` using `fun i => Set.mem_iInter.1 hz i`. Use `choose s hs hsx using fun i => exists_intF_one_mul (N * d i) (Nat.mul_pos hN (hd i)) (hz' i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `mem_CE.2 ⟨∑ i, algebraMap (AF F) (AF F ⊗[F] E) (s i) * incAF F E ((⟨(d i : E) * b₀ i, hdint i⟩ : 𝓞 E) : E), sum_mem fun i _ => AddSubgroup.subset_closure ⟨s i, hs i, ⟨(d i : E) * b₀ i, hdint i⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `conv_rhs => rw [← B.sum_repr z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hsx i, Algebra.TensorProduct.basis_apply, nsmul_eq_mul, Algebra.smul_def]`.
-
-Establish `h1 : incAF F E ((d i : E) * b₀ i) = (d i : AF F ⊗[F] E) * (1 ⊗ₜ b₀ i)`. Rewrite using `[map_mul, map_natCast]`. Both sides reduce to the same expression. Establish `hc : ((⟨(d i : E) * b₀ i, hdint i⟩ : 𝓞 E) : E) = (d i : E) * b₀ i` using `rfl`. Rewrite using `[hc, h1, map_mul, map_natCast]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(CE F E N).isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset (hU.mem_nhds h0) hsub)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeExtend.CE_isOpen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (N : ℕ), 0 < N → IsOpen (CE F E N : Set (AF F ⊗[F] E)) := by

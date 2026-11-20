@@ -12,9 +12,9 @@ open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 namespace UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Use `⟨hB.card, fun y k hk => ?_, fun ϖ hϖ j hj y => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hv k hk]`. Establish `he` using `(hB.2 v hv hv0).2.2.2 ϖ hϖ j hj`. Set `ev : V →+ ℂ` to `{ toFun := fun ψ => l (ρ y ψ) map_zero' := by simp map_add' := fun _ _ => by simp }`. Establish `hs` using `ev.map_finsum (GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm E w a) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) ρ v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Eq.trans (finsum_congr fun c => ?_) (hs.symm.trans ((congrArg ev he).trans ?_))` and prove the remaining obligations. Simplify using `[ev, map_mul, Module.End.mul_apply]`. Simplify using `[ev]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem eig_of_hasSat {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {a : ℕ} {V : Type}
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V) {B : Multiset ℂˣ}
@@ -34,9 +34,9 @@ private theorem eig_of_hasSat {E : Type} [Field E] [NumberField E] (w : HeightOn
     · simp [ev]
 
 /- English proof (translation)
-Take `⟨hKeq, hu, hq, -⟩` from `UpperTheory.V.Af.Smo.sphDict E a w`. Establish `hTj` using `UpperTheory.V.Af.Smo.tjSet UpperTheory.V.Af.Smo.sphDict E a w`. Establish `hT : ∀ r ≤ a, minusculeHecke μ r ∈ eigenSubalgebra μ z f hf`. Introduce `r hr`. Use `GlobalTheory.HenQ.ShellOp.minuscule_mem_of z hf hr fun g => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hKeq, ← hTj r hr, hE.eig _ hu r hr g, hq r hr, GlobalTheory.HenQ.ShellOp.esymm_eq, GlobalTheory.LFun.satEig]`. Conclude with `eigenSubalgebra_eq_top z hf hT (GlobalTheory.HenQ.ShellOp.central_mem_of_top z hf (hT a le_rfl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eigen_top {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {a : ℕ}
     [MeasurableSpace (GL (Fin a) (w.adicCompletion E))] [BorelSpace (GL (Fin a) (w.adicCompletion E))]
@@ -56,23 +56,21 @@ end UpperTheory.Gal.Gen
 
 open GroundTheory.Automorphic in
 /- English proof (translation)
-Introduce `hR hP E _ _ w a`. Use `borelize (GL (Fin a) (w.adicCompletion E))`. Set `μ : Measure (GL (Fin a) (w.adicCompletion E))` to `Measure.haar`. Take `⟨C0, hC0⟩` from `hP (w.adicCompletion E) a μ`. Establish `hKeq` using `(UpperTheory.V.Af.Smo.sphDict E a w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m : ℝ, m = μ.real (GLnLocal.integralGL (w.adicCompletion E) a : Set (GL (Fin a) (w.adicCompletion E)))` from `⟨_, rfl⟩`. Use `⟨m ^ 2 * C0, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[← range_satakeTransform (μ := μ) (F := w.adicCompletion E) (n := a)]`. Take `⟨H, rfl⟩` from `(AlgHom.mem_range _).1 hp`. Take `⟨T, hT⟩` from `hR (w.adicCompletion E) a μ H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `h : GL (Fin a) (w.adicCompletion E) →₀ ℂ` to `Finsupp.onFinset T (fun g => if g ∈ T then (m : ℂ) * (H : HeckeAlgebra μ) g else 0) (fun g hg => by`. Assume the negation of the conclusion as `hgT`. Simplify using `[hgT] at hg)`. Establish `hsupp : h.support ⊆ T` using `Finsupp.support_onFinset_subset`. Establish `hval : ∀ g ∈ T, h g = (m : ℂ) * (H : HeckeAlgebra μ) g` using `fun g hg => by`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, hg]`. Use `⟨h, fun g hg g' hg' hk => hT.1 g (hsupp hg) g' (hsupp hg') (hKeq ▸ hk), ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval g hg, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Use `_ ≤ m ^ 2 * (C0 * ∫ θ : Fin a → UnitAddCircle, ‖evalAt (pt θ) (satakeTransform μ H)‖ ^ 2) := mul_le_mul_of_nonneg_left (hC0 H T hT) (by positivity)`. Use `_ = _ := by ring`. Introduce `σ z hz v hv`. Distinguish the cases in `hv0 : v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hv0` using the available equality. Simplify using `[opOf]`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => ?_` and prove the remaining obligations. Establish `hE` using `eig_of_hasSat w σ.ρ hz hv hv0 l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ g, ∀ k ∈ GLnLocal.integralGL (w.adicCompletion E) a, l (σ.ρ (g * k) v) = l (σ.ρ g v)`. Rewrite using `[hKeq]`. Conclude with `hE.inv`. Establish `h1 : H ∈ eigenSubalgebra μ z (fun g => l (σ.ρ g v)) hf` using `eigen_top w μ z hE hf ▸ Algebra.mem_top`. Establish `h2` using `h1 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul, map_one, Module.End.one_apply] at h2`. Establish `h3` using `hT.2 (fun g => l (σ.ρ g v)) hf`. Establish `h4 : l (opOf σ.ρ h v) = (m : ℂ) * ∑ g ∈ T, (H : HeckeAlgebra μ) g * l (σ.ρ g v)`. Rewrite using `[opOf, Finsupp.sum_of_support_subset h hsupp _ (by simp), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hval g hg, smul_eq_mul, mul_assoc]`. Rewrite using `[map_sub, map_smul, smul_eq_mul, h4, hm, ← h3, h2, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.locOp_pf :
     UpperTheory.Gal.Gen.RepsEx → UpperTheory.Gal.Gen.Planch → UpperTheory.Gal.Gen.LocOp := by

@@ -23,23 +23,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ d b n M N hN`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : IsUnit (N : Af F) := by`. Establish `h1 : IsUnit (algebraMap F (Af F) (N : F))` using `(IsUnit.mk0 _ hNF).map _`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hSo : IsOpen {y : Af F | ∃ z ∈ Oh F, y = (N : Af F) * z}`. Establish `hpre : {y : Af F | ∃ z ∈ Oh F, y = (N : Af F) * z} = (fun y => (↑u⁻¹ : Af F) * y) ⁻¹' Oh F`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ show (↑u⁻¹ : Af F) * ((N : Af F) * z) ∈ Oh F`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `hz`. Introduce `hy`. Conclude with `⟨(↑u⁻¹ : Af F) * y, hy, by rw [← hu, ← mul_assoc, Units.mul_inv, one_mul]⟩`. Rewrite using `[hpre]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(AfTop.isOpen_Oh F).preimage (continuous_const_mul _)`. Establish `hSc : IsCompact {y : Af F | ∃ z ∈ Oh F, y = (N : Af F) * z}`. Establish `himg : {y : Af F | ∃ z ∈ Oh F, y = (N : Af F) * z} = (fun z => (N : Af F) * z) '' Oh F`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Rewrite using `[himg]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(AfTop.isCompact_Oh F).image (continuous_const_mul _)`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Set `Bs` to `Algebra.TensorProduct.basis (Af F) b`. Set `e : (Af F ⊗[F] E) ≃ₜ (Fin d → Af F)` to `{ Bs.equivFun.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap Bs.equivFun.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap Bs.equivFun.symm.toLinearMap }`. Establish `hT : {x : Af F ⊗[F] E | InNOh b N x} = e ⁻¹' Set.univ.pi (fun _ => {y : Af F | ∃ z ∈ Oh F, y = (N : Af F) * z})`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[Set.mem_preimage, Set.mem_univ_pi]`. Conclude with `Iff.rfl`. Establish `hlat : (latN b n M N : Set (Fin n → Fin M → Af F ⊗[F] E)) = Set.univ.pi (fun _ => Set.univ.pi (fun _ => {x : Af F ⊗[F] E | InNOh b N x}))`. Use extensionality with `X`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_univ_pi]`. Conclude with `Iff.rfl`. Establish `hTo : IsOpen {x : Af F ⊗[F] E | InNOh b N x}`. Rewrite using `[hT]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hSo).preimage e.continuous`.
-
-Establish `hTc : IsCompact {x : Af F ⊗[F] E | InNOh b N x}`. Rewrite using `[hT]`. Conclude with `e.isCompact_preimage.mpr (isCompact_univ_pi fun _ => hSc)`. Rewrite using `[hlat]`. Conclude with `⟨isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hTo, isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hTc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latN_isOpen_isCompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M N : ℕ), 0 < N →

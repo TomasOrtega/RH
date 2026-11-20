@@ -17,7 +17,7 @@ namespace GlobalTheory.SplitCut
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : e * (1 - f) = e` using `by rw [mul_sub, mul_one, hef, sub_zero]`. Establish `h2 : (1 - e) * f = f` using `by rw [sub_mul, one_mul, hef, sub_zero]`. Establish `h3 : (1 - e) * (1 - f) = 1 - (e + f)` using `by linear_combination hef`. Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, Matrix.mul_one, Matrix.one_mul, hef, h1, h2, h3, zero_smul, zero_add]`. Rewrite using `[add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -30,37 +30,37 @@ theorem cut_mul {R : Type} [CommRing R] {n : ℕ} (e f : R) (hef : e * f = 0) (M
   rw [add_smul]; abel
 
 /- English proof (translation)
-Use `show (matHom V (x * y)).1 = (matHom V x).1 * (matHom V y).1`. Rewrite using `[map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_mul (V : HSp D) (x y : GA D V) : mt V (x * y) = mt V x * mt V y := by
   show (matHom V (x * y)).1 = (matHom V x).1 * (matHom V y).1
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Use `show (matHom V 1).1 = 1`. Rewrite using `[map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_one (V : HSp D) : mt V 1 = 1 := by
   show (matHom V 1).1 = 1
   rw [map_one, Units.val_one]
 
 /- English proof (translation)
-Introduce `x y h`. Conclude with `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mt_injective (V : HSp D) : Function.Injective (mt V) := by
   intro x y h
   exact Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) (D.sp.cm.sig)).toRingHom (a ⊗ₜ 1) = a ⊗ₜ 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_algebraMap (a : AF D.host.F) : cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
   show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) (D.sp.cm.sig)).toRingHom (a ⊗ₜ 1) = a ⊗ₜ 1
   simp
 
 /- English proof (translation)
-Use `set M := mt V g with hM`. Establish `hinv : M * ((matHom V g)⁻¹).1 = 1` using `(matHom V g).mul_inv`. Establish `hinv' : ((matHom V g)⁻¹).1 * M = 1` using `(matHom V g).inv_mul`. Set `K : GL (Fin V.rank) (AE D)` to `⟨ε • M + (1 - ε) • 1, ε • ((matHom V g)⁻¹).1 + (1 - ε) • 1, GlobalTheory.GfCut.idem_mul ε hεε _ _ hinv, GlobalTheory.GfCut.idem_mul ε hεε _ _ hinv'⟩`. Establish `hgU : Formalism.UG.cT (cA D) M * V.gram.map (incA D) * M = V.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig V.gram from g).2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKU : K ∈ HR (AF D.host.F) D.sp.cm.sig V.gram` using `GlobalTheory.GfCut.idem_unitary (cA D) ε hε hεε _ M hgU`. Conclude with `⟨(⟨K, hKU⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cut_exists (V : HSp D) (g : GA D V) (ε : AE D) (hεε : ε * ε = ε) (hε : cA D ε = ε) :
     ∃ k : GA D V, mt V k = ε • mt V g + (1 - ε) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
@@ -76,9 +76,9 @@ theorem cut_exists (V : HSp D) (g : GA D V) (ε : AE D) (hεε : ε * ε = ε) (
   exact ⟨(⟨K, hKU⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram), rfl⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ idOff D P) => x.1 i j) (show _ = (1 : GL _ _) from hg)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (idOff D P) (mt V g i j) = _ at h`. Establish `h2 : Ideal.Quotient.mk (idOff D P) (mt V g i j) = Ideal.Quotient.mk (idOff D P) ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)`. Apply the tactic sequence `rw [h, Units.val_one]; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `h4 : (mt V g - 1) i j ∈ idOff D P`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply]`. Conclude with `Ideal.Quotient.eq.mp h2`. Unfold `idOff at h4`. Rewrite `h4` using `[Ideal.mem_iInf]`. Conclude with `(RingHom.mem_ker).mp (h4 ⟨u, hu⟩)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem (V : HSp D) (P : Pl D → Prop) (g : GA D V) (hg : g ∈ grpOff V P) (i j : Fin V.rank) (u : Pl D) (hu : P u) :
     compAt D u ((mt V g - 1) i j) = 0 := by
@@ -95,9 +95,9 @@ theorem entry_mem (V : HSp D) (P : Pl D → Prop) (g : GA D V) (hg : g ∈ grpOf
 
 open GlobalTheory.LocWeil.PlaceIdem in
 /- English proof (translation)
-Take `⟨α, rfl, h1, h2⟩` from `h`. Unfold `eFin`. Use `congr 1`. Use `af_ext _ fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[h1, evalV_single_same]`. Rewrite using `[h2 u hu, evalV_single_ne _ hu]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eFin_of_placeIdem {v : Pl D} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) : ε = eFin D.host.F v := by
   obtain ⟨α, rfl, h1, h2⟩ := h
@@ -110,9 +110,9 @@ theorem eFin_of_placeIdem {v : Pl D} {ε : AF D.host.F} (h : IsPlaceIdem D v ε)
 
 open GlobalTheory.LocWeil.PlaceIdem in
 /- English proof (translation)
-Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `singleV D.host.F v 1 * singleV D.host.F v 1 = singleV D.host.F v 1`. Use `af_ext _ fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hu : u = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[evalV_single_same, mul_one]`. Rewrite using `[evalV_single_ne _ hu, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eFin_idem (v : Pl D) : eFin D.host.F v * eFin D.host.F v = eFin D.host.F v := by
   refine Prod.ext (mul_zero _) ?_
@@ -130,18 +130,18 @@ theorem compAt_eq (u : Pl D) (y : AE D) : compAt D u y = Algebra.TensorProduct.m
       (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) y) := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem baseAdele_ext_infinite_finite {a b : AF D.host.F} (h1 : fstA D.host.F a = fstA D.host.F b) (h2 : sndA D.host.F a = sndA D.host.F b) :
     a = b := Prod.ext h1 h2
 
 open GlobalTheory.LocWeil.PlaceIdem in
 /- English proof (translation)
-Establish `hf : ∀ w, fstA D.host.F (eFin D.host.F (v w)) = 0` using `fun w => rfl`. Establish `hs : ∀ w, sndA D.host.F (eFin D.host.F (v w)) = singleV D.host.F (v w) 1` using `fun w => rfl`. Establish `hp1 : fstA D.host.F (pairA D.host.F 1 0) = 1` using `rfl`. Establish `hp2 : sndA D.host.F (pairA D.host.F 1 0) = 0` using `rfl`. Use `baseAdele_ext_infinite_finite ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_zero, map_sub, map_sub, map_sum, map_one, hp1]`. Simplify using `[hf]`. Rewrite using `[map_mul, map_zero, map_sub, map_sub, map_sum, map_one, hp2]`. Simplify using `only [hs, sub_zero]`. Use `af_ext _ fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_zero, map_sub, map_one, map_sum]`. Distinguish the cases in `hu : u ∈ Set.range v`. Take `⟨w0, rfl⟩` from `hu`. Rewrite using `[Finset.sum_eq_single w0 (fun w _ hw => evalV_single_ne _ (fun e => hw (hv e).symm)) (by simp), evalV_single_same, sub_self, zero_mul]`. Rewrite using `[ha u hu, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem c_mul {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective v) (a : AF D.host.F)
     (ha : ∀ u, u ∉ Set.range v → evalV D.host.F u (sndA D.host.F a) = 0) :
@@ -165,7 +165,7 @@ theorem c_mul {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective v
     · rw [ha u hu, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.InfZeroFinSum.repr_map_id b f, ← GlobalTheory.InfZeroFinSum.repr_map_id b g, hy, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_zero2 {F E A A' A'' ι : Type} [Field F] [CommRing E] [Algebra F E] [CommRing A] [Algebra F A]
     [CommRing A'] [Algebra F A'] [CommRing A''] [Algebra F A''] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
@@ -175,7 +175,7 @@ theorem repr_zero2 {F E A A' A'' ι : Type} [Field F] [CommRing E] [Algebra F E]
   rw [← GlobalTheory.InfZeroFinSum.repr_map_id b f, ← GlobalTheory.InfZeroFinSum.repr_map_id b g, hy, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Use `(Algebra.TensorProduct.basis A b).ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply]`. Conclude with `hy k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_gen {F E A ι : Type} [Field F] [CommRing E] [Algebra F E] [CommRing A] [Algebra F A]
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E) (c : A) (y : A ⊗[F] E)
@@ -186,7 +186,7 @@ theorem key_gen {F E A ι : Type} [Field F] [CommRing E] [Algebra F E] [CommRing
 
 open GlobalTheory.LocWeil.PlaceIdem in
 /- English proof (translation)
-Use `key_gen (Module.finBasis D.host.F D.host.E) _ y fun k => c_mul v hv _ fun u hu => ?_` and prove the remaining obligations. Conclude with `repr_zero2 (Module.finBasis D.host.F D.host.E) (sndA D.host.F) (evalV D.host.F u) y ((compAt_eq u y).symm.trans (hy u hu)) k`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem key {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective v) (y : AE D)
     (hy : ∀ u, u ∉ Set.range v → compAt D u y = 0) :
@@ -195,9 +195,9 @@ theorem key {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective v) 
   exact repr_zero2 (Module.finBasis D.host.F D.host.E) (sndA D.host.F) (evalV D.host.F u) y ((compAt_eq u y).symm.trans (hy u hu)) k
 
 /- English proof (translation)
-Establish `h2 : E • (M * N) = E • (1 : Matrix (Fin n) (Fin n) R)`. Establish `h3` using `congrArg (fun X => E • X) h1`. Simplify using `only [Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul, hE] at h3`. Establish `h4 : E * (1 - E) = 0` using `by rw [mul_sub, mul_one, hE, sub_self]`. Rewrite `h3` using `[h4, zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Use `congrArg (fun X => X i j) h2` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.sub_apply, mul_sub, this, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_mul_entry_eq_zero_of_cut_inverse {R : Type} [CommRing R] {n : ℕ} (E : R) (hE : E * E = E) (M N : Matrix (Fin n) (Fin n) R)
     (h1 : (E • M + (1 - E) • (1 : Matrix (Fin n) (Fin n) R)) * N = 1) (i j : Fin n) : E * (M * N - 1) i j = 0 := by
@@ -212,7 +212,7 @@ theorem idempotent_mul_entry_eq_zero_of_cut_inverse {R : Type} [CommRing R] {n :
   rw [Matrix.sub_apply, mul_sub, this, sub_self]
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hE`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idempotent_mul_cut_sub_one_entry {R : Type} [CommRing R] {n : ℕ} (E : R) (hE : E * E = E) (M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     E * (E • M + (1 - E) • (1 : Matrix (Fin n) (Fin n) R) - 1) i j = (E • M + (1 - E) • (1 : Matrix (Fin n) (Fin n) R) - 1) i j := by
@@ -220,7 +220,7 @@ theorem idempotent_mul_cut_sub_one_entry {R : Type} [CommRing R] {n : ℕ} (E : 
   linear_combination (M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hE
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `hk i j` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.sub_apply] at this ⊢`. Take the linear combination `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_widePullback_of_iteratedLine {R : Type} [CommRing R] {n : ℕ} (t : R) (M : Matrix (Fin n) (Fin n) R)
     (hk : ∀ i j, (1 - t) * (M - 1) i j = 0) : M = t • M + (1 - t) • (1 : Matrix (Fin n) (Fin n) R) := by
@@ -230,7 +230,7 @@ theorem exists_widePullback_of_iteratedLine {R : Type} [CommRing R] {n : ℕ} (t
   linear_combination this
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [mt_one] | w :: l, hl => by rw [List.nodup_cons] at hl rw [List.map_cons, List.prod_cons, mt_mul, mt_list_prod V h E M hh horth l hl.2, hh, List.map_cons, List.sum_cons] apply cut_mul rw [← List.sum_map_mul_left] apply List.sum_eq_zero intro x hx obtain ⟨y, hy, …`.
+A detailed English derivation is pending.
 -/
 theorem mt_list_prod (V : HSp D) {W : Type} (h : W → GA D V) (E : W → AE D)
     (M : Matrix (Fin V.rank) (Fin V.rank) (AE D))
@@ -253,29 +253,25 @@ set_option maxHeartbeats 800000 in
 open GlobalTheory.LocWeil.PlaceIdem in
 
 /- English proof (translation)
-Introduce `D V W _ _ v e hv he g hg`. Use `set E : W → AE D := fun w => algebraMap (AF D.host.F) (AE D) (eFin D.host.F (v w)) with hEdef`. Establish `hE : ∀ w, e w + cA D (e w) = E w` using `fun w => by`. Take `⟨_, ε, hε, h⟩` from `he w`. Rewrite using `[h, eFin_of_placeIdem hε]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEE : ∀ w, E w * E w = E w` using `fun w => by`. Simplify using `only [hEdef, ← map_mul, eFin_idem]`. Establish `hEc : ∀ w, cA D (E w) = E w` using `fun w => cA_algebraMap _`. Establish `hEo : ∀ w w', w ≠ w' → E w * E w' = 0` using `fun w w' hww => by`. Simplify using `only [hEdef, ← map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eFin_mul_eFin _ (fun h => hww (hv h)), map_zero]`. Use `set r : AE D := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) with hrdef`. Establish `hrr : r * r = r`. Rewrite using `[hrdef, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `baseAdele_ext_infinite_finite (by rw [map_mul]; exact mul_one _) (by rw [map_mul]; exact mul_zero _)`. Establish `hrE : ∀ w, r * E w = 0` using `fun w => by`. Rewrite using `[hrdef, hEdef, ← map_mul]`. Establish `: pairA D.host.F 1 0 * eFin D.host.F (v w) = 0` using `baseAdele_ext_infinite_finite (by rw [map_mul, map_zero]; exact mul_zero _) (by rw [map_mul, map_zero]; exact zero_mul _)`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose h hh using fun w => cut_exists V g (E w) (hEE w) (hEc w)`. Take `⟨a, ha⟩` from `cut_exists V g r hrr (cA_algebraMap _)`. Use `set M := mt V g with hM`. Establish `hsum : (Finset.univ.toList.map E).sum = ∑ w, E w` using `Finset.sum_map_toList _ _`. Use `⟨a, ?_, h, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `show finHom V a = 1`. Establish `h0 : finPart D r = 0`. Rewrite using `[hrdef, finPart_algebraMap]`. Conclude with `TensorProduct.zero_tmul _ _`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(mt V a).map (finPart D) = 1`. Rewrite using `[ha, GlobalTheory.GfCut.map_idem, h0, zero_smul, zero_add, sub_zero, one_smul]`. Introduce `w i j`. Rewrite using `[hE w, hh w]`. Apply the tactic sequence `exact idempotent_mul_cut_sub_one_entry _ (hEE w) M i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w w' hww show h w * h w' = h w' * h w`. Apply `mt_injective` to reduce the goal to its premises. Rewrite using `[mt_mul, mt_mul, hh, hh, cut_mul _ _ (hEo w w' hww), cut_mul _ _ (hEo w' w (Ne.symm hww)), add_comm (E w)]`. Introduce `w show a * h w = h w * a`. Apply `mt_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mt_mul, mt_mul, hh, ha, cut_mul _ _ (hrE w), cut_mul _ _ (by rw [mul_comm]; exact hrE w), add_comm r]`. Apply `mt_injective` to reduce the goal to its premises. Rewrite using `[mt_mul, mt_list_prod V h E M hh hEo _ (Finset.nodup_toList _), ha, hsum]`. Establish `hrS : r * ∑ w, E w = 0`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun w _ => hrE w`. Rewrite using `[cut_mul _ _ hrS]`. Establish `hk : ∀ i j, (1 - r - ∑ w, E w) * (M - 1) i j = 0` using `fun i j => by`. Use `key v hv ((M - 1) i j) (fun u hu => entry_mem V _ g hg i j u hu)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_one, map_sum]`. Then use the resulting hypothesis.
-
-Conclude with `exists_widePullback_of_iteratedLine _ M fun i j => by rw [← sub_sub]; exact hk i j`. Introduce `w i j`. Rewrite using `[hE w]`. Establish `h1 : (E w • M + (1 - E w) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))) * mt V (h w)⁻¹ = 1`. Rewrite using `[← hh w, ← mt_mul, mul_inv_cancel, mt_one]`.
-
-Rewrite using `[mt_mul]`. Conclude with `idempotent_mul_entry_eq_zero_of_cut_inverse _ (hEE w) _ _ h1 i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_of_trivOff : ∀ (D : D7) (V : HSp D) (W : Type) [Fintype W] [DecidableEq W] (v : W → Pl D) (e : W → AE D),
     Function.Injective v → (∀ w, IsSplitIdem D (e w) ∧ ∃ ε, IsPlaceIdem D (v w) ε ∧

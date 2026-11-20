@@ -50,9 +50,9 @@ variable {u u' F0 what₂}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hrows γ Z hC F' hP p ψ hI hz`. Take `⟨ψ₀, hI₀, hz₀, hL, hι⟩` from `hE hrows γ Z hC F' hP p`. Take `⟨n1, n2, d1, d2, k1, k2⟩` from `hN hrows γ Z hC F' hP p`. Establish `h : ψ = ψ₀` using `psi_unique (H := locH Zd p) (tLoc Zd p γ) ⟨⊥, (tLoc Zd p γ).f, locF' Zd p F', (tLoc Zd p γ).T, (tLoc Zd p γ).T'⟩ (LinearEquiv.refl _ _) ψ ψ₀ n1 n2 d1 d2 k1 k2 hI hI₀ hz hz₀`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hL, hι⟩`.
+Supply the required witnesses or components.
 -/
 theorem lprPart_of (hE : LprExist Zd u u' F0 what₂) (hN : LprNondeg Zd u u' F0 what₂) : LprPart Zd u u' F0 what₂ := by
   intro hrows γ Z hC F' hP p ψ hI hz

@@ -7,15 +7,15 @@ namespace GlobalTheory.FieldExtHeight
 open ReciprocityTheory.CA TensorProduct
 
 /- English proof (translation)
-Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hc : Q.comap (algebraMap R S) = 𝔭`. Establish `hle : Ideal.map (algebraMap R S) 𝔭 ≤ Q` using `hQ.1.2`. Use `set q := Q.comap (algebraMap R S) with hq`. Establish `: q.IsPrime` using `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Q.LiesOver q` using `⟨rfl⟩`. Establish `hpq : 𝔭 ≤ q` using `Ideal.map_le_iff_le_comap.mp hle`. Take `⟨P, hPQ, hP, hPl⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := 𝔭) Q hpq`. Establish `hPext : Ideal.map (algebraMap R S) 𝔭 ≤ P`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hPl.over.le`. Establish `hQP : Q ≤ P` using `hQ.2 ⟨hP, hPext⟩ hPQ`. Establish `hPQe : P = Q` using `le_antisymm hPQ hQP`. Substitute `hPQe` using the available equality. Conclude with `hPl.over.symm`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Q.LiesOver 𝔭` using `⟨hc.symm⟩`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown 𝔭 Q]`. Establish `h0 : (Q.map (Ideal.Quotient.mk (𝔭.map (algebraMap R S)))).height = 0`. Establish `hQ'` using `hQ`. Rewrite `hQ'` using `[Ideal.minimalPrimes_eq_comap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q', hQ'm, hQ'e⟩` from `hQ'`. Establish `: Q'.IsPrime` using `hQ'm.1.1`. Rewrite using `[← hQ'e, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Conclude with `Ideal.height_eq_zero_iff.mpr hQ'm`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_eq_of_mem_minimalPrimes_map {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S] (𝔭 : Ideal R) [𝔭.IsPrime]
@@ -48,9 +48,9 @@ theorem height_eq_of_mem_minimalPrimes_map {R S : Type*} [CommRing R] [CommRing 
   rw [h0, add_zero]
 
 /- English proof (translation)
-Set `e` to `RingHom.quotientKerEquivOfSurjective hπ`. Establish `h : (q.comap π).map (Ideal.Quotient.mk (RingHom.ker π)) = q.comap e`. Establish `h1 : q.comap π = (q.comap e).comap (Ideal.Quotient.mk (RingHom.ker π))`. Use extensionality with `x`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[h1, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Rewrite using `[h, RingEquiv.height_comap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_map_mk_ker {R A : Type*} [CommRing R] [CommRing A] (π : R →+* A)
     (hπ : Function.Surjective π) (q : Ideal A) :
@@ -63,17 +63,15 @@ theorem height_map_mk_ker {R A : Type*} [CommRing R] [CommRing A] (π : R →+* 
   rw [h, RingEquiv.height_comap]
 
 /- English proof (translation)
-Use `haveI hpp : (RingHom.ker π).IsPrime := RingHom.ker_isPrime π`. Use `haveI : P.IsPrime := hP.1.1`. Use `haveI : Q.IsPrime := hQ.1.1`. Establish `hP' : P.comap ψ ∈ ((RingHom.ker π).map (algebraMap R S)).minimalPrimes`. Rewrite using `[← hker, RingHom.ker_eq_comap_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.minimalPrimes_comap_of_surjective hψ hP`. Take `⟨g, rfl⟩` from `hψ f`. Establish `hQ' : Q.comap ψ ∈ (P.comap ψ ⊔ Ideal.span {g}).minimalPrimes`. Establish `h1` using `Ideal.minimalPrimes_comap_of_surjective hψ hQ`. Establish `h2 : (P ⊔ Ideal.span {ψ g}).comap ψ = P.comap ψ ⊔ Ideal.span {g}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : P ⊔ Ideal.span {ψ g} = (P.comap ψ ⊔ Ideal.span {g}).map ψ`. Rewrite using `[Ideal.map_sup, Ideal.map_comap_of_surjective _ hψ, Ideal.map_span, Set.image_singleton]`. Rewrite using `[h3, Ideal.comap_map_of_surjective _ hψ]`. Conclude with `sup_eq_left.mpr (le_sup_of_le_left (Ideal.comap_mono bot_le))`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `height_eq_of_mem_minimalPrimes_map _ _ hP'`. Establish `e2` using `Ideal.map_height_le_one_of_mem_minimalPrimes hQ'`. Establish `hle : P.comap ψ ≤ Q.comap ψ` using `le_sup_left.trans hQ'.1.2`. Establish `e3` using `height_eq_add_of_isCM_localization (Q.comap ψ) (P.comap ψ) (hCM _) hle`. Establish `hq : (Q.comap ψ).comap (algebraMap R S) = (Q.comap ι).comap π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.comap_comap, Ideal.comap_comap, hcomm]`. Use `haveI : (Q.comap ψ).LiesOver ((Q.comap ι).comap π) := ⟨hq.symm⟩`. Establish `e4` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown ((Q.comap ι).comap π) (Q.comap ψ)`. Establish `e5` using `height_add_height_map_quotient_le (RingHom.ker π) ((Q.comap ι).comap π) (Ideal.comap_mono bot_le)`. Rewrite `e5` using `[height_map_mk_ker π hπ]`.
-
-Establish `hfin : (RingHom.ker π).height ≠ ⊤` using `Ideal.height_ne_top hpp.ne_top`. Establish `key : (RingHom.ker π).height + (Q.comap ι).height ≤ (RingHom.ker π).height + 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(ENat.add_le_add_iff_left hfin).mp key`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem height_comap_le_one {R S A B : Type*} [CommRing R] [CommRing S] [CommRing A] [CommRing B]
     [Algebra R S] [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S] [IsDomain A]

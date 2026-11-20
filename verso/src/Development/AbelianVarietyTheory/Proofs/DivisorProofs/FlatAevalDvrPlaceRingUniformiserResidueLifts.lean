@@ -22,7 +22,7 @@ instance isPrime_span_X_zero (m : ℕ) :
   (Ideal.span_singleton_prime (X_ne_zero 0)).2 X_prime
 
 /- English proof (translation)
-Take `⟨n, g, hg, e⟩` from `WfDvdMonoid.max_power_factor hf (X_prime (R := ℂ) (i := (0 : Fin (m + 1)))).irreducible`. Conclude with `⟨n, g, fun h => hg (Ideal.mem_span_singleton.1 h), e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_X_zero_pow_mul {m : ℕ} {f : MvPolynomial (Fin (m + 1)) ℂ} (hf : f ≠ 0) :
     ∃ (n : ℕ) (g : MvPolynomial (Fin (m + 1)) ℂ),
@@ -32,17 +32,15 @@ theorem exists_X_zero_pow_mul {m : ℕ} {f : MvPolynomial (Fin (m + 1)) ℂ} (hf
   exact ⟨n, g, fun h => hg (Ideal.mem_span_singleton.1 h), e⟩
 
 /- English proof (translation)
-Use `set q := Ideal.span {(X 0 : MvPolynomial (Fin (m + 1)) ℂ)}`. Use `set D := Localization.AtPrime q`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D (X 0), ?_, ?_⟩` and prove the remaining obligations. Establish `hmax : IsLocalRing.maximalIdeal D = Ideal.span {algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D (X 0)}`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D (X 0) ≠ 0`. Introduce `h`. Use `X_ne_zero (R := ℂ) (0 : Fin (m + 1)) ?_` and prove the remaining obligations. Conclude with `IsLocalization.injective D (M := q.primeCompl) (Ideal.primeCompl_le_nonZeroDivisors q) (h.trans (map_zero _).symm)`. Use `Prime.irreducible ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Ideal.span_singleton_prime h0, ← hmax]`. Use `infer_instance`. Introduce `x hx`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl x`. Establish `hf : f ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hx (IsLocalization.mk'_zero _)`. Take `⟨n, g, hg, rfl⟩` from `exists_X_zero_pow_mul hf`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hgu : IsUnit (algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D g)` using `IsLocalization.map_units D (⟨g, hg⟩ : q.primeCompl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsu : IsUnit (algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D s)` using `IsLocalization.map_units D s`. Establish `e : IsLocalization.mk' D (X 0 ^ n * g) s * algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D s = algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D (X 0) ^ n * algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D g`. Rewrite using `[IsLocalization.mk'_spec, map_mul, map_pow]`. Use `show Associated _ (IsLocalization.mk' D (X 0 ^ n * g) s)`. Use `(associated_mul_unit_left (algebraMap (MvPolynomial (Fin (m + 1)) ℂ) D (X 0) ^ n) _ hgu).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← e]`. Conclude with `associated_mul_unit_left _ _ hsu`.
+A detailed English derivation is pending.
 -/
 theorem isDVR_atPrime (m : ℕ) : IsDiscreteValuationRing
     (Localization.AtPrime (Ideal.span {(X 0 : MvPolynomial (Fin (m + 1)) ℂ)})) := by
@@ -86,7 +84,7 @@ open MvPolynomial
 variable {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ]
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (b := ⟨(y : K)⁻¹, (E.ord_nonneg_iff (inv_ne_zero hy)).1 (by rw [E.ord_inv, h0]; simp)⟩) (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_of_ord_eq_zero {E : Place (algebraMap ℂ K)} (y : E.ring) (hy : (y : K) ≠ 0)
     (h0 : E.ord y = 0) : IsUnit y := by
@@ -95,47 +93,41 @@ theorem isUnit_of_ord_eq_zero {E : Place (algebraMap ℂ K)} (y : E.ring) (hy : 
   simp [hy]
 
 /- English proof (translation)
-Introduce `hπ hc hord ht hind`. Use `set x : Fin (k + 1) → placeAlg E := Fin.cons (⟨(t : K), t.2⟩ : placeAlg E) (fun i => (⟨(zR i : K), hER _ (zR i).2⟩ : placeAlg E)) with hx`. Use `set φ := (MvPolynomial.aeval x : MvPolynomial (Fin (k + 1)) ℂ →ₐ[ℂ] placeAlg E)`. Use `set q := Ideal.span {(X 0 : MvPolynomial (Fin (k + 1)) ℂ)}`. Set `cR : ℂ →+* R` to `(algebraMap ℂ K).codRestrict R hc`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπc : π.comp cR = algebraMap ℂ κ` using `RingHom.ext fun a => hπ a (hc a)`. Establish `hC : ∀ g : MvPolynomial (Fin k) ℂ, φ ((finSuccEquiv ℂ k).symm (Polynomial.C g)) = aeval (fun i : Fin k => x i.succ) g`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[show (Polynomial.C (MvPolynomial.C a) : Polynomial (MvPolynomial (Fin k) ℂ)) = algebraMap ℂ _ a from rfl, AlgEquiv.commutes, AlgHom.commutes, aeval_C]`. Consider the case `add p r hp hr => rw [Polynomial.C_add, map_add, map_add, hp, hr, map_add]`. Consider the case `mul_X p i hp`. Rewrite using `[Polynomial.C_mul, map_mul, map_mul, hp, ← finSuccEquiv_X_succ, AlgEquiv.symm_apply_apply, map_mul, aeval_X, aeval_X]`. Establish `hX : φ ((finSuccEquiv ℂ k).symm Polynomial.X) = x 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← finSuccEquiv_X_zero, AlgEquiv.symm_apply_apply, aeval_X]`. Establish `key : ∀ f ∉ q, IsUnit (φ f)`. Introduce `f hf`. Use `set p := finSuccEquiv ℂ k f with hpdef`. Use `set g := p.coeff 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfp : f = (finSuccEquiv ℂ k).symm p` using `by simp [p]`. Establish `hp : p = Polynomial.X * p.divX + Polynomial.C g` using `(Polynomial.X_mul_divX_add p).symm`. Establish `hg : g ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfp, hp, h0, map_zero, add_zero, map_mul, ← finSuccEquiv_X_zero, AlgEquiv.symm_apply_apply]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Use `set wR : R := eval₂ cR zR g`. Establish `hwK : (wR : K) = (aeval (fun i : Fin k => x i.succ) g : placeAlg E)`. Establish `e1 : (wR : K) = eval₂ (algebraMap ℂ K) (fun i => (zR i : K)) g` using `eval₂_comp_left R.subtype cR zR g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `(comp_aeval (R := ℂ) (fun i : Fin k => x i.succ) (placeAlg E).val).symm`. Establish `e3` using `congrArg (fun F : MvPolynomial (Fin k) ℂ →ₐ[ℂ] K => F g) e2`. Simplify using `only [AlgHom.comp_apply] at e3`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `_ = (placeAlg E).val (aeval (fun i : Fin k => x i.succ) g)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e3]`. Simplify using `only [x, Fin.cons_succ]`. Both sides reduce to the same expression. Establish `hπw : π wR ≠ 0`. Establish `e : π wR = aeval (fun i => π (zR i)) g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[eval₂_comp_left π cR zR g, hπc]`. Both sides reduce to the same expression. Rewrite using `[e]`. Introduce `h0`. Conclude with `hg (hind (h0.trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hw0 : (wR : K) ≠ 0`. Introduce `h0`. Apply `hπw` to reduce the goal to its premises. Rewrite using `[show wR = 0 from Subtype.ext h0, map_zero]`. Establish `hwo : E.ord wR = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `(E.ord_nonneg_iff hw0).2 (hER _ wR.2)`. Establish `h2 : ¬ 0 < E.ord wR` using `fun h => hπw ((hord wR hw0).2 h)`. Use linear arithmetic over natural numbers and integers. Use `set u : placeAlg E := aeval (fun i : Fin k => x i.succ) g`. Use `set v : placeAlg E := φ ((finSuccEquiv ℂ k).symm p.divX)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hf' : φ f = x 0 * v + u`. Rewrite using `[hfp, hp, map_add, map_mul, map_add, map_mul, hX, hC]`. Set `uE : E.ring` to `⟨(u : K), u.2⟩`. Set `vE : E.ring` to `⟨(v : K), v.2⟩`. Establish `huE : IsUnit uE` using `isUnit_of_ord_eq_zero uE (by rw [← hwK] at *; simpa [uE, ← hwK] using hw0) (by simpa [uE, ← hwK] using hwo)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `yE : E.ring` to `⟨(φ f : K), (φ f).2⟩`. Establish `hyE : yE = t * vE + uE` using `Subtype.ext (by simp [yE, uE, vE, hf', x])`. Establish `hyu : IsUnit yE`. Assume the negation of the conclusion as `hn`. Establish `hy : yE ∈ IsLocalRing.maximalIdeal E.ring` using `hn`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htm : t ∈ IsLocalRing.maximalIdeal E.ring` using `ht.not_isUnit`. Establish `: uE ∈ IsLocalRing.maximalIdeal E.ring`. Use `sub_mem hy (Ideal.mul_mem_right vE _ htm)` as an intermediate fact. Rewrite `this` using `[hyE, add_sub_cancel_left]`. Then use the resulting hypothesis. Conclude with `this huE`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `toA : E.ring →+* placeAlg E` to `{ toFun := fun y => ⟨y, y.2⟩, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Conclude with `hyu.map toA`. Use `set D := Localization.AtPrime q`. Use `haveI : IsDiscreteValuationRing D := isDVR_atPrime k`. Establish `hunits : ∀ s : q.primeCompl, IsUnit (φ.toRingHom s)` using `fun s => key s.1 s.2`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ℓ : D →+* placeAlg E` to `IsLocalization.lift (M := q.primeCompl) hunits`. Establish `hcomp : ℓ.comp (algebraMap _ D) = φ.toRingHom` using `IsLocalization.lift_comp hunits`. Establish `hφ0 : ∀ f, f ≠ 0 → φ f ≠ 0`. Introduce `f hf`. Take `⟨n, g, hg, rfl⟩` from `exists_X_zero_pow_mul hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, map_pow]`. Use `mul_ne_zero (pow_ne_zero _ ?_) (key g hg).ne_zero` and prove the remaining obligations. Introduce `h`. Apply `ht.ne_zero` to reduce the goal to its premises. Establish `e : ((φ (X 0) : placeAlg E) : K) = t` using `by simp [φ, x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (by rw [← e, h]; rfl)`. Establish `hℓ : ℓ.Flat`. Use `letI := ℓ.toAlgebra`. Rewrite using `[RingHom.Flat, Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `a ha`.
-
-Take `⟨⟨d, hd⟩, hda⟩` from `(Submodule.mem_torsion_iff _).1 ha`. Rewrite using `[Submodule.mem_bot]`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl d`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`.
-
-Conclude with `nonZeroDivisors.ne_zero hd (IsLocalization.mk'_zero _)`. Establish `hℓd : ℓ (IsLocalization.mk' D f s) ≠ 0`. Introduce `h0`. Use `(IsLocalization.lift_mk'_spec hunits f 0 s).1 h0` as an intermediate fact. Conclude with `hφ0 f hf (by simpa using this)`.
-
-Simplify using `only [Submonoid.mk_smul, Algebra.smul_def, RingHom.algebraMap_toAlgebra] at hda`. Conclude with `(mul_eq_zero.1 hda).resolve_left hℓd`. Establish `h` using `(RingHom.flat_algebraMap_iff.2 (IsLocalization.flat D q.primeCompl)).comp hℓ`. Rewrite `h` using `[hcomp]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_aeval_placeAlg (k : ℕ) (R : Subring K)
     (π : R →+* κ) (E : Place (algebraMap ℂ K)) (hER : E.Contains R) (t : E.ring) (zR : Fin k → R) :

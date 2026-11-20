@@ -23,7 +23,7 @@ include hnS
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `(exists_isPrimitiveRoot_maxUnramifiedOutside K S n (NeZero.ne n) hnS).elim fun _ hz => Additive.ofMul.bijective.comp ((bijective_rootsOfUnityMapHom n ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom hz).comp Additive.toMul.bijective)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_gsRootsLocalMor_of_places (v : S) : Function.Bijective (gsRootsLocalMor S ιs n v).hom :=
   (exists_isPrimitiveRoot_maxUnramifiedOutside K S n (NeZero.ne n) hnS).elim fun _ hz =>
@@ -31,7 +31,7 @@ theorem bijective_gsRootsLocalMor_of_places (v : S) : Function.Bijective (gsRoot
       ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom hz).comp Additive.toMul.bijective)
 
 /- English proof (translation)
-Establish `e : ⇑(gsLocalInvRoots S ιs n v) = (localDualityHypotheses (Ksep` using `AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)).tTop ∘ (cohomologyMap (gsRootsLocalMor S ιs n v) 2).hom :=`. Use function extensionality and compare the values at `(gsLocalInvRoots_eq S ιs n v)`. Rewrite using `[e]`. Conclude with `(bijective_localDualityHypotheses_tTop S n v).comp (bijective_cohomologyMap_of_bijective _ (bijective_gsRootsLocalMor_of_places S ιs n hnS v) 2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_gsLocalInvRoots_of_places (v : S) : Function.Bijective (gsLocalInvRoots S ιs n v) := by
   have e : ⇑(gsLocalInvRoots S ιs n v) =
@@ -81,7 +81,7 @@ omit [Fintype S] [NeZero n] in
 include hnk hS in
 
 /- English proof (translation)
-Introduce `v hv h` and use `hv (mem_of_natCast_pow_mem S n ℓ k hnk hS v h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_not_mem_of_not_mem : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal :=
   fun v hv h => hv (mem_of_natCast_pow_mem S n ℓ k hnk hS v h)
@@ -90,11 +90,11 @@ set_option maxHeartbeats 3200000 in
 include hℓ hnk hS in
 
 /- English proof (translation)
-Establish `hnS` using `natCast_not_mem_of_not_mem S n ℓ k hnk hS`. Establish `: Nonempty S` using `nonempty_of_natCast_mem S ℓ hℓ hS`. Set `` to `fintypePlacesOver (L := L) S`. Establish `: Nonempty (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))` using `nonempty_placesOver_of_natCast_mem S hℓ hS`. Establish `hSL : ∀ w : HeightOneSpectrum (𝓞 L.1), ((ℓ : ℕ) : 𝓞 L.1) ∈ w.asIdeal → w ∈ placesOver S` using `fun w hw => mem_placesOver_of_natCast_mem hS hw`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμL : ∀ ζ : ℚ̄, ζ ^ n = 1 → ζ ∈ L.1` using `rootsOfUnity_mem_of_gsOpenSubgroup_le S n hL W₀ hW₀ hUW (NeZero.ne n) hnS`. Establish `hoddL : Odd n ∨ IsTotallyComplex L.1` using `hodd.imp id fun h => by`. Use `h` as an intermediate fact. Conclude with `isTotallyComplex_of_algebra K.1 L.1`. Establish `h3L` using `subsingleton_gsRoots_three (placesOver S) n ℓ k hnk hSL hoddL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPL` using `hP L (placesOver S) (gsMackeyEmbeddings hL ιs) hSL hμL hoddL h3L`. Establish `hsurj : GsCoresSurjective S ιs n (gsOpenSubgroup S hL) (gsCompactInv S ιs n hodd h3)` using `(surjective_gsCompactInv S n ιs hodd h3 fun v => (bijective_gsLocalInvRoots_of_places S ιs n hnS v).2).comp (hcores _)`. Introduce `r s h`. Conclude with `bijective_zmodCompactDualityMap_gsOpenSubgroup S ιs hL n _ (gsCompactInv (placesOver S) (gsMackeyEmbeddings hL ιs) n hoddL h3L) ⟨bijective_gsCompactInv_of_mem (placesOver S) n (gsMackeyEmbeddings hL ιs) ℓ k hℓ hnk hSL hμL hoddL h3L, fun h => bijective_gs_compactZmodDualityMap (pl …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gsBaseBijective_of_le (hP : GsPairingInput n ℓ)
     (hcores : ∀ U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),

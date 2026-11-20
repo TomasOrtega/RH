@@ -20,7 +20,7 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.FourierWhittaker GroundTh
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Unfold `GlobalTheory.IwaCell.tD`. Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Use extensionality with `i j`. Simplify using `[GlobalTheory.JSW.diagPow, Matrix.diagonal_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_eq_tD {K : Type} [Field K] {n : ℕ} (ϖ : Kˣ) (l : Fin n → ℕ) :
     GlobalTheory.JSW.diagPow ϖ l = GlobalTheory.IwaCell.tD ϖ (fun i => ((l i : ℕ) : ℤ)) := by
@@ -33,45 +33,39 @@ theorem diagPow_eq_tD {K : Type} [Field K] {n : ℕ} (ϖ : Kˣ) (l : Fin n → �
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Use `set t0 := GlobalTheory.CellDec.tl (m + 1) ϖ (GlobalTheory.RamShift.shift m T ϖ).1 with ht0`. Proceed by induction on `R using Finset.induction_on with`. Consider the case `empty`. Introduce `φ hφV hφ g hg hW`. Take `⟨k, hk1, hk2⟩` from `exists_outside E (m + 1) T (GeneralLinearGroup.map (pFin E) (t0⁻¹ * g))`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : act (.fin k) φ = φ` using `act_fin_eq_of_outside E (m + 1) φ (π.cusp φ hφV).1 T hφ k (fun w hw => by rw [hk1 w hw, map_pLoc_pFin]; exact hg w hw (Finset.notMem_empty w)) hk2`. Use `⟨φ, hφV, hφ, g * (finGL E (m + 1) k)⁻¹ * t0⁻¹, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Rewrite using `[comp_finGL, hk1 w hw, map_pLoc_pFin]`. Simplify using `only [map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Establish `e : g * (finGL E (m + 1) k)⁻¹ * t0⁻¹ * t0 = g * (finGL E (m + 1) k)⁻¹` using `by group`. Rewrite using `[e]`. Establish `e2 : g = g * (finGL E (m + 1) k)⁻¹ * finGL E (m + 1) k` using `by group`. Rewrite `hW` using `[e2, ← whit_act_fin, hinv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hW`. Consider the case `insert w R hwR ih`. Introduce `φ hφV hφ g hg hW`. Distinguish the cases in `hwT : w ∈ T`. Use `ih φ hφV hφ g (fun v hv hvR => hg v hv ?_) hW` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.mem_insert, not_or]`. Conclude with `⟨fun h => hv (h ▸ hwT), hvR⟩`. Set `gw` to `GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) g`. Take `⟨u, hu, N, l, k, hk, hdec⟩` from `local_decomp E (m + 1) w (ϖ w) (hϖ w) gw`. Set `z` to `GlobalTheory.JSW.diagPow (ϖ w)⁻¹ (fun _ : Fin (m + 1) => N)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d` to `GlobalTheory.JSW.diagPow (ϖ w) l`. Set `F : GL (Fin (m + 1)) (w.adicCompletion E) →* GA E (m + 1)` to `(finGL E (m + 1)).comp (locGL E (m + 1) w)`. Establish `hF : ∀ h, F h = finGL E (m + 1) (locGL E (m + 1) w h)` using `fun h => rfl`. Set `y` to `g * (F gw)⁻¹`. Establish `hyw : GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) y = 1` using `by show GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (g * (finGL E (m + 1) (locGL E (m + 1) w gw))⁻¹) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_inv, comp_finGL, pLoc_locGL]`. Conclude with `mul_inv_cancel _`. Establish `hyv : ∀ v, v ≠ w → GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) y = GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) g`. Introduce `v hv`. Use `show GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (g * (finGL E (m + 1) (locGL E (m + 1) w gw))⁻¹) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, map_inv, comp_finGL, pLoc_locGL_of_ne hv, inv_one, mul_one]`. Establish `hg' : g = y * F u * F z * F d * F k`. Establish `: F gw = F u * F z * F d * F k`. Rewrite using `[hdec, map_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcont : Continuous φ.1` using `(π.cusp _ hφV).1.continuous`. Establish `hleft : AutomorphicForm.IsLeftInvariant φ.1` using `fun γ x => by`. Rewrite using `[show AdelicGLn.diagonal E (m + 1) γ = ratGL E (m + 1) γ from Units.ext (Matrix.ext fun _ _ => rfl)]`. Conclude with `(π.cusp _ hφV).1.left γ x`. Establish `h1 : whit φ.1 (y * F u * F z * F d) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hW` using `[hg', hF k, ← whit_act_fin, hφ w hwT k hk]`. Conclude with `hW`. Establish `h2 : whit φ.1 (y * F z * F d) ≠ 0`. Establish `e : y * F u * F z * F d = F u * (y * F z * F d)`. Rewrite using `[hF u, commute_finGL_locGL w hyw u]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `group`. Rewrite `h1` using `[e, hF u, finGL_locGL_eq_uGL w hu, whit, whittaker_uGL_mul hcont hleft]`. Conclude with `right_ne_zero_of_mul h1`. Set `φ₁` to `act (.fin (locGL E (m + 1) w z)) φ`. Establish `hφ₁V : φ₁ ∈ π.V` using `π.stable _ φ hφV`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ₁ : ∀ v ∉ T, ∀ k' ∈ KGL v (m + 1), act (.fin (locGL E (m + 1) v k')) φ₁ = φ₁`. Introduce `v hv k' hk'`. Establish `hc : locGL E (m + 1) v k' * locGL E (m + 1) w z = locGL E (m + 1) w z * locGL E (m + 1) v k'`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← map_mul, ← map_mul, diagPow_const_comm]`. Conclude with `(GlobalTheory.CuspRep.LocSph.comm_locGL v (locGL E (m + 1) w z) (pLoc_locGL_of_ne hvw z) k').symm`. Simplify using `only [φ₁]`. Rewrite using `[← act_fin_mul, hc, act_fin_mul, hφ v hv k' hk']`. Establish `h3 : whit φ₁.1 (y * F d) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : y * F z * F d = y * F d * F z`. Rewrite using `[mul_assoc y (F z), mul_assoc y (F d), ← map_mul, ← map_mul, diagPow_const_comm]`. Rewrite `h2` using `[e, hF z, ← whit_act_fin]`. Conclude with `h2`. Set `e0 : ℤ` to `GlobalTheory.RamShift.condExp ϖ w`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Set `d0` to `GlobalTheory.IwaCell.tD (ϖ w) (fun i : Fin (m + 1) => e0 * ((m : ℤ) - ((i : ℕ) : ℤ)))`. Set `ν : Fin (m + 1) → ℤ` to `fun i => ((l i : ℕ) : ℤ) - e0 * ((m : ℤ) - ((i : ℕ) : ℤ))`. Establish `hν : 0 ≤ ν (Fin.last m)` using `by simp [ν]`. Establish `hloc` using `GlobalTheory.T.sphericalWhittaker_diagonalShift_ramifiedCharacter E m π w (α ⟨w, hwT⟩) (hα ⟨w, hwT⟩) φ₁ hφ₁V (hφ₁ w hwT) (ϖ w) (hϖ w) e0 (GlobalTheory.T.scaledLocalCharacter_unitConductor_conductorExponent E ϖ w (hϖ w)) y hyw ν hν`. Establish `htD : GlobalTheory.IwaCell.tD (ϖ w) (fun i : Fin (m + 1) => e0 * ((m : ℤ) - ((i : ℕ) : ℤ)) + ν i) = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [d, diagPow_eq_tD]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [ν]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : whit φ₁.1 (y * F d0) ≠ 0`. Establish `h3' : whit φ₁.1 (y * finGL E (m + 1) (locGL E (m + 1) w (GlobalTheory.IwaCell.tD (ϖ w) (fun i : Fin (m + 1) => e0 * ((m : ℤ) - ((i : ℕ) : ℤ)) + ν i)))) ≠ 0`. Rewrite using `[htD]`. Conclude with `h3`. Rewrite `h3'` using `[hloc]`.
-
-Conclude with `right_ne_zero_of_mul h3'`. Use `ih φ₁ hφ₁V hφ₁ (y * F d0) (fun v hv hvR => ?_) h4` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Establish `hc : GlobalTheory.CellDec.compV E (m + 1) v t0 = d0`.
-
-Rewrite using `[ht0, GlobalTheory.CellDec.compV_tl, GlobalTheory.RamShift.shift_apply_of_notMem m ϖ hv]`. Establish `hy1 : GlobalTheory.CellDec.compV E (m + 1) v y = 1` using `hyw`. Rewrite using `[map_mul, map_inv, map_mul, hc, hy1, hF, GlobalTheory.CellDec.compV_finGL_locGL_same, one_mul, inv_mul_cancel]`. Conclude with `one_mem _`. Establish `hyv' : GlobalTheory.CellDec.compV E (m + 1) v y = GlobalTheory.CellDec.compV E (m + 1) v g` using `hyv v hvw`.
-
-Establish `hgv` using `hg v hv (by rw [Finset.mem_insert, not_or]; exact ⟨hvw, hvR⟩)`. Rewrite using `[map_mul, map_mul, hyv', hF, GlobalTheory.CellDec.compV_finGL_locGL_ne hvw, mul_one, ← map_mul]`. Conclude with `hgv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_whittaker_ne_zero_induction_bad_places (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E (m + 1))
     (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin (m + 1) → ℂˣ)
@@ -197,13 +191,11 @@ namespace GlobalTheory.JSW.NzSphRam
 open GlobalTheory.JSW.NzSph
 
 /- English proof (translation)
-Introduce `E _ _ _ m T π α hα ϖ hϖ`. Set `B : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ` to `fun w => if h : w ∈ T then 0 else Finset.univ.val.map (α ⟨w, h⟩)`. Take `⟨φ₀, hφ₀V, hφ₀0, hφ₀K⟩` from `GlobalTheory.T.exists_global_spherical_vector_of_satake_family E (m + 1) π T B (fun w hw => by`. Simplify using `only [B, dif_neg hw]`. Conclude with `hα ⟨w, hw⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, whit φ₀.1 g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ₀0 (GlobalTheory.T.cusp_form_eq_zero_of_whittaker_vanishing E (m + 1) φ₀ (π.cusp φ₀ hφ₀V) h)`. Use `set t0 := GlobalTheory.CellDec.tl (m + 1) ϖ (GlobalTheory.RamShift.shift m T ϖ).1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin` using `finite_bad E (m + 1) (GeneralLinearGroup.map (pFin E) (t0⁻¹ * g))`. Use `exists_whittaker_ne_zero_induction_bad_places m T π α hα ϖ hϖ hfin.toFinset φ₀ hφ₀V hφ₀K g (fun w _ hwR => ?_) hg` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hwR (hfin.mem_toFinset.2 ?_)` and prove the remaining obligations. Use `show GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) (t0⁻¹ * g)) ∉ KGL w (m + 1)`.
-
-Rewrite using `[map_pLoc_pFin]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sph_whit_tl_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (π : CuspSub E (m + 1)) (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin (m + 1) → ℂˣ),

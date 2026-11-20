@@ -26,9 +26,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Unfold `Frame.d`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ (h v)`.
+A detailed English derivation is pending.
 -/
 private theorem sum_ge {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (F : Frame l k) (m : ℕ) (e : F.V → ℕ)
     (h : ∀ v, m ≤ e v) : m * F.d ≤ ∑ v, F.dv v * e v := by
@@ -40,7 +40,7 @@ private theorem sum_ge {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (F : Frame 
   exact Nat.mul_le_mul_left _ (h v)
 
 /- English proof (translation)
-Use `Finset.sum_le_card_nsmul Finset.univ e m (fun v _ => h v)` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_le {I : Type} [Fintype I] (m : ℕ) (e : I → ℕ) (h : ∀ v, e v ≤ m) :
     ∑ v, e v ≤ m * Fintype.card I := by
@@ -48,33 +48,31 @@ private theorem sum_le {I : Type} [Fintype I] (m : ℕ) (e : I → ℕ) (h : ∀
   simpa [mul_comm] using this
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hok S x L hx`. Take `⟨σ, hσ⟩` from `ep_inv hok S x L hx`. Establish `hbarL` using `pr_res hok (Or.inr rfl) S x L`. Take `⟨φ, hφ⟩` from `hbarL.1`. Establish `hgood` using `pr_good hok (Or.inr rfl) (ResidueField L.O') φ _ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2K : (2 : ResidueField L.O') ≠ 0` using `hgood.1.two`. Establish `h2 : IsUnit (2 : L.O')`. Apply `(IsLocalRing.residue_ne_zero_iff_isUnit _).mp` to reduce the goal to its premises. Rewrite using `[map_ofNat]`. Conclude with `h2K`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hloc` using `loc_rho hok (Or.inr rfl) S x L`. Establish `hU : NRep.Univ L.O' L.ρ` using `⟨hloc.1, fun C _ _ _ ρ' hc hb => def_iso hok (Or.inr rfl) S x L C ρ' hc hb⟩`. Take `⟨B₀, hB₀, hB₀c⟩` from `pr_box hok L.R (maximalIdeal L.R) L.ρ hloc.1 (fun v => flag hok (Or.inr rfl) S L.R (L.ι : S.A →+* L.R) v)`. Take `⟨B, π, hBo, hBr, hG⟩` from `ep_gbox L.O' h2 hok.del_c L.R σ hσ.sq L.ρ B₀ hB₀ hgood.1 hσ.ent (fun v i s => hσ.base (S.ψB v i s))`. Establish `hBc : Box.Cont (maximalIdeal L.R) B`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Box.Cont`. Rewrite using `[hBr]`. Conclude with `hB₀c`. Establish `hEv` using `ep_ev L.O' h2 L.R σ B π hG`. Establish `htan` using `ep_tan hok L.O' h2 L.R σ hσ.sq L.ρ B π hU hBo hBc hgood.1 hG hEv hgood.2.1 hgood.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, g, p, hsurj, hvar, hpart, hhom, hmin⟩` from `ep_vars L.O' h2 L.R σ hσ.sq`. Take `⟨κ, _, f, wf, hf, hker, hind⟩` from `ep_rels L.O' h2 (Fin a ⊕ Fin g) (Space.Loc.par a g) (RingHom.ker p) hhom`. Set `P : GPres L.O' σ` to `⟨a, g, p, κ, f, wf, hsurj, hvar, hpart, hhom, hmin, hf, hker, hind⟩`. Establish `hee : L.ρ.ee = Ideal.span (Set.range fun i => P.p (MvPowerSeries.X (Sum.inr i)))`. Rewrite using `[ep_ee hok S x L hx σ hσ, ep_odd L.O' L.R σ P]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBbOf : (Box.bar L.O' B).Of (NRep.bar L.O' L.ρ)` using `hBo.map _`. Establish `hdual` using `pr_dual hok (Or.inr rfl) (ResidueField L.O') φ (NRep.bar L.O' L.ρ) (Box.bar L.O' B) hBbOf hφ hbarL.2`. Establish `hprp` using `ep_prp h2K (Box.bar L.O' B) π hEv`. Establish `hopen` using `(pr_open hok L.O' L.R B hBc).2.1`. Establish `hopenj : ∀ j, IsOpen ((hEv.ad j).ker : Set F.Γ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Apply `Subgroup.isOpen_mono _ hopen` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `X`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Box.Ev.ad_apply, hs]`. Establish `hstab : ∀ j (v : F.V) (s : F.Gv v), ∀ X ∈ (Box.bar L.O' B).bp j v, (hEv.ad j (F.loc v s)) X ∈ (Box.bar L.O' B).bp j v`. Introduce `j v s X hX`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Box.bp, Submodule.mem_comap, Submodule.subtype_apply] at hX ⊢`. Rewrite using `[Box.Ev.ad_apply]`. Conclude with `pr_bstab _ _ v s _ hX`. Establish `EC` using `fun j => hok.ec (ResidueField L.O') (adp (ResidueField L.O') j) (hEv.ad j) ((Box.bar L.O' B).bp j) (hopenj j) (hstab j) (hprp.2 j _ hdual)`. Establish `hder` using `ep_der L.O' h2 L.R σ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdimb` using `ep_dimb h2K (Box.bar L.O' B) π hEv`. Establish `hcw` using `fun w => ep_cw h2K (Box.bar L.O' B) π hEv (F.cw w) (hok.cw_sq w) (hok.del_cw w)`. Use `ep_pad S x L σ hσ P ?_ ?_ hee` and prove the remaining obligations. Use `haveI := (EC 0).1`. Establish `hm` using `ep_mazur L.O' h2 L.R σ hσ.sq P 0 _ (ep_hasobs hok L.O' h2 L.R σ hσ.sq L.ρ B π hU hBo hBc hgood.1 hG hEv 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs1 : 4 * F.d ≤ ∑ v, F.dv v * Module.finrank (ResidueField L.O') ((Box.bar L.O' B).bp 0 v)` using `sum_ge F 4 _ (fun v => (hdimb v).1)`. Establish `hs2 : ∑ w, Module.finrank (ResidueField L.O') ((hEv.ad 0 (F.cw w)) - 1).ker ≤ 1 * Fintype.card F.Inf` using `sum_le 1 _ (fun w => (hcw w).1)`. Rewrite `hs2` using `[hok.card_inf]`. Establish `e` using `(EC 0).2`. Establish `t` using `htan.2`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d0` using `hder.2.1`. Use linear arithmetic over natural numbers and integers. Use `haveI := (EC 1).1`. Establish `hm` using `ep_mazur L.O' h2 L.R σ hσ.sq P 1 _ (ep_hasobs hok L.O' h2 L.R σ hσ.sq L.ρ B π hU hBo hBc hgood.1 hG hEv 1)`. Establish `hs1 : 2 * F.d ≤ ∑ v, F.dv v * Module.finrank (ResidueField L.O') ((Box.bar L.O' B).bp 1 v)` using `sum_ge F 2 _ (fun v => (hdimb v).2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : ∑ w, Module.finrank (ResidueField L.O') ((hEv.ad 1 (F.cw w)) - 1).ker ≤ 2 * Fintype.card F.Inf` using `sum_le 2 _ (fun w => (hcw w).2)`. Rewrite `hs2` using `[hok.card_inf]`. Establish `e` using `(EC 1).2`. Establish `t` using `htan.1 1`. Establish `d1` using `hder.2.2`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.epres :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), S.u.ee ≤ x → Nonempty L.EPres := by

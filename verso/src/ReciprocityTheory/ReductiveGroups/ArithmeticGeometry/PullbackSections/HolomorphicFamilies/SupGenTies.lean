@@ -8,11 +8,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 /- English proof (translation)
-Establish `h2 : IsCoprime (Ideal.span {(2 : R)}) I`. Rewrite using `[Ideal.isCoprime_iff_exists]`. Take `⟨k, hk⟩` from `hM`. Use `⟨-(2 * (k : R)), ?_, (M : R), hI, ?_⟩` and prove the remaining obligations. Conclude with `(Ideal.span {(2 : R)}).neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self 2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hJ : IsCoprime J I`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, sup_comm]`.
-
-Conclude with `hIJ`. Conclude with `IsCoprime.mul_left h2 hJ.pow_left`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_two_sq {R : Type*} [CommRing R] (I J : Ideal R) (M : ℕ) (hM : Odd M) (hI : (M : R) ∈ I)
     (hIJ : I ⊔ J = ⊤) : IsCoprime (Ideal.span {(2 : R)} * J ^ 2) I := by
@@ -27,9 +25,9 @@ theorem coprime_two_sq {R : Type*} [CommRing R] (I J : Ideal R) (M : ℕ) (hM : 
   exact IsCoprime.mul_left h2 hJ.pow_left
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 h`. Use `⟨a • x, Submodule.smul_mem_smul ha Submodule.mem_top, ?_⟩` and prove the remaining obligations. Establish `hx : a • x + b • x = x` using `by rw [← add_smul, hab, one_smul]`. Establish `e : a • x - x = -(b • x)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem_smul hb Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep {R N : Type*} [CommRing R] [AddCommGroup N] [Module R N] (A B : Ideal R) (h : IsCoprime A B)
     (x : N) : ∃ x2 : N, x2 ∈ A • (⊤ : Submodule R N) ∧ x2 - x ∈ B • (⊤ : Submodule R N) := by
@@ -43,7 +41,7 @@ theorem exists_rep {R N : Type*} [CommRing R] [AddCommGroup N] [Module R N] (A B
   exact Submodule.neg_mem _ (Submodule.smul_mem_smul hb Submodule.mem_top)
 
 /- English proof (translation)
-Establish `h1 : ((l.M : ℕ) : 𝓞 E) ∈ Ideal.span {((l.M : ℕ) : 𝓞 E)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[← l.prod]`. Conclude with `Ideal.mul_le_left h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem M_mem_Mb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     ((l.M : ℕ) : 𝓞 E) ∈ l.Mb := by
@@ -52,14 +50,14 @@ theorem M_mem_Mb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   exact Ideal.mul_le_left h1
 
 /- English proof (translation)
-The claim follows from `coprime_two_sq l.Mb _ l.M l.odd (M_mem_Mb l) l.coprime`.
+A detailed English derivation is pending.
 -/
 theorem coprime_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     IsCoprime (Ideal.span {(2 : 𝓞 E)} * (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) ^ 2) l.Mb :=
   coprime_two_sq l.Mb _ l.M l.odd (M_mem_Mb l) l.coprime
 
 /- English proof (translation)
-The claim follows from `exists_rep _ _ (coprime_level l) x`.
+A detailed English derivation is pending.
 -/
 theorem rep_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (l : Level H)
     (x : Dw.La) :

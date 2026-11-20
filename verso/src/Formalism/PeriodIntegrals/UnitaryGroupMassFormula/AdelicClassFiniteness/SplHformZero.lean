@@ -11,7 +11,7 @@ open Formalism.UG NumberField
 open scoped Matrix
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hΓ)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spl_ker {E : Type} [Field E] [StarRing E] {m k : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (V : Matrix (Fin m) (Fin k) E)
@@ -22,9 +22,9 @@ theorem spl_ker {E : Type} [Field E] [StarRing E] {m k : ℕ} (J : Matrix (Fin m
     Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hΓ)]
 
 /- English proof (translation)
-Establish `e1 : ∀ x y : Fin m → E, hform (starRingEnd E) J x y = (fun i => starRingEnd E (x i)) ⬝ᵥ (J *ᵥ y)`. Introduce `x y`. Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `e2 : (fun i => starRingEnd E ((V *ᵥ c) i)) = (V.map (starRingEnd E)) *ᵥ (fun k => starRingEnd E (c k))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Establish `h' : (V.map (starRingEnd E))ᵀ * J * U = 0` using `h`. Rewrite using `[e1, e2, dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h', Matrix.zero_mulVec, dotProduct_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spl_cross {E : Type} [Field E] [StarRing E] {m k n : ℕ} (J : Matrix (Fin m) (Fin m) E)
     (V : Matrix (Fin m) (Fin k) E) (U : Matrix (Fin m) (Fin n) E) (h : cT (starRingEnd E) V * J * U = 0)
@@ -42,49 +42,43 @@ theorem spl_cross {E : Type} [Field E] [StarRing E] {m k n : ℕ} (J : Matrix (F
   simp only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h', Matrix.zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ m k n d D J M V U hp hV hD hΓ hΓD hVJU hU hsurj`. Take `⟨hH, hdet, hfg, hsp, hint, hdual⟩` from `hp`. Establish `hD0 : (D : E) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `hR : ∀ x ∈ M, ∀ c : E, c ∈ (algebraMap (𝓞 E) E).range → c • x ∈ M`. Introduce and unpack `x hx c ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[algebraMap_smul]`. Conclude with `M.smul_mem a hx`. Establish `hVc : ∀ c : Fin k → E, (∀ i, c i ∈ (algebraMap (𝓞 E) E).range) → V *ᵥ c ∈ M`. Introduce `c hc`. Establish `e : V *ᵥ c = ∑ i, c i • (fun r => V r i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => hR _ (hV i) _ (hc i)`. Establish `dec : ∀ z ∈ M, ∃ c : Fin k → E, (∀ i, c i ∈ (algebraMap (𝓞 E) E).range) ∧ ∃ y : Fin n → E, U *ᵥ y ∈ M ∧ (D : E) • z = V *ᵥ c + U *ᵥ y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Use `set c := (cT (starRingEnd E) V * J * V)⁻¹ *ᵥ ((cT (starRingEnd E) V * J) *ᵥ ((D : E) • z)) with hc`. Establish `hci : ∀ i, c i ∈ (algebraMap (𝓞 E) E).range`. Introduce `i`. Establish `hg : ∀ j, ((cT (starRingEnd E) V * J) *ᵥ z) j ∈ (algebraMap (𝓞 E) E).range` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[cT_mulVec_apply]`. Conclude with `hint _ (hV j) _ hz`. Rewrite using `[hc, Matrix.mulVec_smul, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Generalize the expression as in `(cT (starRingEnd E) V * J) *ᵥ z = g at hg ⊢`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `Subring.mul_mem _ (hΓD i j) (hg j)`. Take `⟨y, hy⟩` from `hsurj _ (spl_ker J V hΓ ((D : E) • z))`. Establish `hDz : (D : E) • z ∈ M`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hz D`. Use `⟨c, hci, y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `M.sub_mem hDz (hVc c hci)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy]`. Normalize the expressions using the abelian group laws. Establish `hsplit : ∀ w : Fin m → E, ∃ c, ∃ y, w = V *ᵥ c + U *ᵥ y`. Introduce `w`. Take `⟨y, hy⟩` from `hsurj _ (spl_ker J V hΓ w)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, y, by rw [hy]; abel⟩`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, dec⟩` and prove the remaining obligations. Establish `hcc : cT (starRingEnd E) (cT (starRingEnd E) U) = U`. Use extensionality with `i j`. Simplify using `[cT]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `IsHerm at hH ⊢`. Rewrite using `[cT_mul, cT_mul, hH, hcc, Matrix.mul_assoc]`. Introduce `h0`. Take `⟨a, ha0, ha⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `orth : ∀ w, hform (starRingEnd E) J w (U *ᵥ a) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Take `⟨c, y, rfl⟩` from `hsplit w`. Rewrite using `[hform_add_left, spl_cross J V U hVJU, zero_add, hform_mulVec, hform_eq, ha, dotProduct_zero]`. Establish `hJa : J *ᵥ (U *ᵥ a) = 0`. Use extensionality with `i`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hform_single_left]`. Conclude with `orth _`. Establish `hUa : U *ᵥ a = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hdet (Matrix.exists_mulVec_eq_zero_iff.mp ⟨_, hne, hJa⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha0 (hU (by rw [hUa, Matrix.mulVec_zero]))`. Use `Submodule.fg_of_fg_map_injective (f := (Matrix.mulVecLin U).restrictScalars (𝓞 E)) (fun a b h => hU h) ?_` and prove the remaining obligations. Conclude with `Submodule.FG.of_le hfg (Submodule.map_comap_le _ _)`. Use `set W : Submodule E (Fin m → E) := LinearMap.range (Matrix.mulVecLin V) ⊔ (Submodule.span E (M.comap ((Matrix.mulVecLin U).restrictScalars (𝓞 E)) : Set (Fin n → E))).map (Matrix.mulVecLin U) with hW`. Establish `hMW : Submodule.span E (M : Set (Fin m → E)) ≤ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Take `⟨c, -, y, hyM, hz'⟩` from `dec z hz`. Use `Submodule.mem_sup.mpr ⟨V *ᵥ ((D : E)⁻¹ • c), ⟨_, rfl⟩, U *ᵥ ((D : E)⁻¹ • y), Submodule.mem_map_of_mem (Submodule.smul_mem _ _ (Submodule.subset_span hyM)), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, ← smul_add, ← hz', smul_smul, inv_mul_cancel₀ hD0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hMW` using `[hsp, top_le_iff]`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `y0`. Establish `h0 : U *ᵥ y0 ∈ W` using `by rw [hMW]; exact Submodule.mem_top`. Take `⟨a, ⟨c, rfl⟩, b, hb, hab⟩` from `Submodule.mem_sup.mp h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hb`. Simplify using `only [Matrix.mulVecLin_apply] at hab`. Establish `hP : ∀ v, (cT (starRingEnd E) V * J) *ᵥ (U *ᵥ v) = 0` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hVJU, Matrix.zero_mulVec]`. Establish `hc0 : c = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : (cT (starRingEnd E) V * J * V) *ᵥ c = 0`. Use `congrArg (fun v => (cT (starRingEnd E) V * J) *ᵥ v) hab` as an intermediate fact. Simplify using `only [Matrix.mulVec_add, hP, add_zero, Matrix.mulVec_mulVec] at this`. Conclude with `this`. Use `congrArg (fun v => (cT (starRingEnd E) V * J * V)⁻¹ *ᵥ v) e1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hΓ)]`. Rewrite `hab` using `[hc0, Matrix.mulVec_zero, zero_add]`. Establish `: y = y0` using `hU hab`. Rewrite using `[← this]`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y hy`. Rewrite using `[← hform_mulVec]`. Conclude with `hint _ hx _ hy`. Introduce `w hw`. Establish `h1 : (d : E) • ((D : E) • (U *ᵥ w)) ∈ M`.
-
-Use `hdual _ fun z hz => ?_` and prove the remaining obligations. Take `⟨c, -, y, hyM, hz'⟩` from `dec z hz`. Establish `e : hform (starRingEnd E) J z ((D : E) • (U *ᵥ w)) = hform (starRingEnd E) J ((D : E) • z) (U *ᵥ w)`. Establish `h1` using `hform_smul J 1 (D : E) z (U *ᵥ w)`. Establish `h2` using `hform_smul J (D : E) 1 z (U *ᵥ w)`.
-
-Rewrite `h1`, `h2` using `[one_smul]`. Rewrite using `[h1, h2, star_one, star_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hz', hform_add_left, spl_cross J V U hVJU, zero_add, hform_mulVec]`. Conclude with `hw y hyM`.
-
-Use `show U *ᵥ (((d * D : ℕ) : E) • w) ∈ M`. Rewrite using `[Nat.cast_mul, mul_smul, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem spLat : SpLat := by
   intro E _ _ _ m k n d D J M V U hp hV hD hΓ hΓD hVJU hU hsurj

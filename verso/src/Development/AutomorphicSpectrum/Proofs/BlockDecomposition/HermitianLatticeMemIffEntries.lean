@@ -20,7 +20,7 @@ section Loc
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coord {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d) F E) (x : R ⊗[F] E) :
     x = ∑ k, ((Algebra.TensorProduct.basis R b).repr x k) • ((1 : R) ⊗ₜ[F] b k) := by
@@ -29,9 +29,9 @@ theorem sum_coord {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Ba
   rw [Algebra.TensorProduct.basis_apply]
 
 /- English proof (translation)
-Establish `h : sigR R σ x = ∑ k, ((Algebra.TensorProduct.basis R b).repr x k) • ((1 : R) ⊗ₜ[F] σ (b k))` using `by conv_lhs => rw [sum_coord (R := R) b x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Simplify using `[sigR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_sig {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E)
     (x : R ⊗[F] E) (l : Fin d) :
@@ -52,7 +52,7 @@ theorem coord_sig {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (σ : E →ₐ
 variable [FiniteDimensional F E]
 
 /- English proof (translation)
-Use `conv_lhs => rw [sum_coord (R := R) b x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, GlobalTheory.LatVac.trace_tmul, one_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_coord {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d) F E) (x : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) x =
@@ -63,9 +63,9 @@ theorem trace_coord {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.
   rw [map_smul, GlobalTheory.LatVac.trace_tmul, one_mul, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, TensorProduct.add_tmul, hx, hy, map_add]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Consider the case `tmul a e`. Establish `h1 : (a * algebraMap F R (Algebra.trace F E e)) ⊗ₜ[F] (1 : E) = a ⊗ₜ[F] algebraMap F E (Algebra.trace F E e)`. Rewrite using `[mul_comm, ← Algebra.smul_def, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `h2 : sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `by simp [sigR]`. Rewrite using `[GlobalTheory.LatVac.trace_tmul, h1, hσ, TensorProduct.tmul_add, h2]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul_one {R : Type} [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     (hσ : ∀ e, algebraMap F E (Algebra.trace F E e) = e + σ e) (x : R ⊗[F] E) :
@@ -83,7 +83,7 @@ theorem trace_tmul_one {R : Type} [CommRing R] [Algebra F R] (σ : E →ₐ[F] E
     rw [GlobalTheory.LatVac.trace_tmul, h1, hσ, TensorProduct.tmul_add, h2]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul', trace_tmul_one σ hσ, hx, ← two_smul F x, smul_smul, one_div, inv_mul_cancel₀ h2, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_trace_tmul {R : Type} [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     (hσ : ∀ e, algebraMap F E (Algebra.trace F E e) = e + σ e) (h2 : (2 : F) ≠ 0) (x : R ⊗[F] E)
@@ -99,15 +99,13 @@ section Place
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hd, ho⟩ a i k`. Break down `lt_trichotomy a i with h | h | h` into its components or cases. Conclude with `ho a i h k`. Substitute `h` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e` using `half_trace_tmul (R := Fv F v) σ hσ h2 ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a) (Y.2 a a)`. Establish `e2 : (Algebra.TensorProduct.basis (Fv F v) b).repr ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a) k = (algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a)) * (Algebra.TensorProduct.basis (Fv F v) b).repr (( …` using `by conv_lhs => rw [← e]`. Establish `e3 : (algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a)) ⊗ₜ[F] (1 : E) = (algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a)) • ((1 : Fv …`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e3, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a a) k ∈ v.adicCompletionIntegers F`. Rewrite using `[e2]`. Conclude with `mul_mem (hd a) (h1 k)`. Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a i) k ∈ v.adicCompletionIntegers F`. Establish `e : sigR (Fv F v) σ ((Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) i a) = (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a i` using `Y.2 a i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, coord_sig]`. Conclude with `sum_mem fun l _ => mul_mem (ho i a h l) (hs l k)`. Introduce `h`. Use `⟨fun i => ?_, fun i j _ k => h i j k⟩` and prove the remaining obligations. Rewrite using `[trace_coord b]`.
-
-Conclude with `mul_mem hh (sum_mem fun l _ => mul_mem (h i i l) (ht l))`.
+A detailed English derivation is pending.
 -/
 theorem latH_iff_at {d : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ e, algebraMap F E (Algebra.trace F E e) = e + σ e)
     (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (n : ℕ)
@@ -158,11 +156,9 @@ theorem latH_iff_at {d : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ e, algebraMap F E 
 end Place
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n d b`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hCM.2.2.1`. Take `⟨I1, I2⟩` from `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b`. Establish `hT : ∀ k, ∀ᶠ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite, algebraMap F (Fv F v) (Algebra.trace F E (b k)) ∈ v.adicCompletionIntegers F`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : Algebra.trace F E (b k) = 0`. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`. Use `filter_upwards [I2 _ h0] with v hv`.
-
-Conclude with `hv.le`. Use `filter_upwards [I2 (1 / 2) (by norm_num), I1 1, Filter.eventually_all.2 fun i => I1 (σ (b i)), Filter.eventually_all.2 hT] with v hh h1 hs ht Y`. Conclude with `latH_iff_at σ (GlobalTheory.CMTrace.trace_eq hCM) b v n two_ne_zero hh.le h1 hs ht Y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latH_iff_latV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite, ∀ Y : HermR (Fv F v) σ n, Y ∈ GlobalTheory.CompanionTheory.SiegelND.Coef.latH σ b v n ↔ (fun a i => (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a i) ∈ (latV (M := n) (n := n) b v : Set (Fin n → Fin n → Fv F v ⊗[F] E)) := by
   intro F E _ _ _ _ _ σ hCM n d b

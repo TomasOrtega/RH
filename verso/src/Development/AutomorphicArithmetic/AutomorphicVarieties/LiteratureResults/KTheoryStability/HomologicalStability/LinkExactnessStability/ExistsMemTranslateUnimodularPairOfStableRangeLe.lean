@@ -7,9 +7,9 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one, ← hg]`. Rewrite using `[show g u = g (u.sum Finsupp.single) by rw [Finsupp.sum_single]]`. Rewrite using `[Finsupp.sum, map_sum]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (hK i)`.
+A detailed English derivation is pending.
 -/
 theorem finsupp_coord_ideal_eq_top {R : Type} [CommRing R] (u : ℕ →₀ R) (g : (ℕ →₀ R) →ₗ[R] R)
     (hg : g u = 1) (K : Ideal R) (hK : ∀ i, u i ∈ K) : K = ⊤ := by
@@ -21,9 +21,9 @@ theorem finsupp_coord_ideal_eq_top {R : Type} [CommRing R] (u : ℕ →₀ R) (g
   exact Ideal.mul_mem_right _ _ (hK i)
 
 /- English proof (translation)
-Establish `h1 : (1 : R) ∈ Ideal.span (Set.range fun i => u i)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp h1`. Use `⟨∑ i ∈ c.support, c i • Finsupp.lapply i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Simplify using `[Finsupp.sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsupp_exists_form_of_span {R : Type} [CommRing R] (u : ℕ →₀ R)
     (h : Ideal.span (Set.range fun i => u i) = ⊤) : ∃ g : (ℕ →₀ R) →ₗ[R] R, g u = 1 := by
@@ -36,9 +36,9 @@ theorem finsupp_exists_form_of_span {R : Type} [CommRing R] (u : ℕ →₀ R)
   simp [Finsupp.sum, LinearMap.sum_apply]
 
 /- English proof (translation)
-Establish `e : g w = ∑ i ∈ w.support, w i * g (Finsupp.single i 1)` using `by conv_lhs => rw [← Finsupp.sum_single w]`. Rewrite using `[Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_smul, smul_eq_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem linearMap_apply_mem_span_range_coeffs {R : Type} [CommRing R] (w : ℕ →₀ R)
     (g : (ℕ →₀ R) →ₗ[R] R) : g w ∈ Ideal.span (Set.range fun i => w i) := by
@@ -51,45 +51,43 @@ private theorem linearMap_apply_mem_span_range_coeffs {R : Type} [CommRing R] (w
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `R _ s hs n j hsn hnj v hv`. Take `⟨f, hf⟩` from `hv`. Take `⟨f0, hf0⟩ : ∃ f0 : (ℕ →₀ R) →ₗ[R] R, f0 v = 1` from `⟨f ⟨0, by simp⟩, by simpa using hf ⟨0, by simp⟩ ⟨0, by simp⟩⟩`. Set `a : ℕ → R` to `fun i => f0 (Finsupp.single i 1)`. Set `φ : (ℕ →₀ R) →ₗ[R] R` to `f0 - ∑ i ∈ Finset.range n, a i • Finsupp.lapply i - a j • Finsupp.lapply j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ w, φ w = f0 w - ∑ i ∈ Finset.range n, a i * w i - a j * w j`. Introduce `w`. Simplify using `[φ, LinearMap.sum_apply]`. Establish `hφs : ∀ k c, k < n → φ (Finsupp.single k c) = 0`. Introduce `k c hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : f0 (Finsupp.single k c) = c * a k`. Rewrite using `[← Finsupp.smul_single_one, map_smul, smul_eq_mul]`. Rewrite using `[hφ, h1, Finset.sum_eq_single k (fun b _ hb => by simp [Finsupp.single_apply, Ne.symm hb]) (fun h => absurd (Finset.mem_range.2 hk) h)]`. Simplify using `only [Finsupp.single_eq_same, Finsupp.single_apply, if_neg (show k ≠ j by omega), mul_zero, sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hφj : φ (Finsupp.single j 1) = 0`. Rewrite using `[hφ, Finset.sum_eq_zero (fun i hi => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Simplify using `[Finsupp.single_apply, show j ≠ i by omega])]`. Simplify using `[a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `b' : R` to `φ v + a j * v j`. Set `r : Fin (n + 1) → R` to `fun i => if (i : ℕ) < n then v i else b'`. Establish `hrc : ∀ i : Fin n, r i.castSucc = v i` using `fun i => by simp [r, i.isLt]`. Establish `hrl : r (Fin.last n) = b'` using `by simp [r]`. Establish `hr : Unimodular R r` using `by show Ideal.span (Set.range r) = ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `key : (1 : R) = ∑ i : Fin n, a i * r i.castSucc + 1 * r (Fin.last n)`. Simplify using `only [hrc, hrl, one_mul, b']`. Rewrite using `[hφ, ← hf0, ← Finset.sum_range (fun i => a i * v i)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, rfl⟩)) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, rfl⟩))`. Take `⟨t, ht⟩` from `hs n hsn r hr`. Establish `ht' : Ideal.span (Set.range fun i => r i.castSucc + t i * r (Fin.last n)) = ⊤` using `ht`. Set `y : ℕ →₀ R` to `∑ i : Fin n, Finsupp.single (i : ℕ) (-(t i * a j))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy0 : ∀ m, n ≤ m → y m = 0`. Introduce `m hm`. Simplify using `only [y, Finsupp.finset_sum_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by`. Use `i.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, show (i : ℕ) ≠ m by omega]`. Establish `hyi : ∀ i : Fin n, y i = -(t i * a j)`. Introduce `i`. Simplify using `only [y, Finsupp.finset_sum_apply]`. Rewrite using `[Finset.sum_eq_single i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Finsupp.single_apply, Fin.val_ne_of_ne hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : ℕ →₀ R` to `Finsupp.single j 1 + y`. Establish `hxj : x j = 1` using `by simp [x, hy0 j hnj]`. Establish `hxaff : x ∈ aff R n j`. Simplify using `only [aff, low, Set.mem_setOf_eq]`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[x, hy0 m hm]`. Establish `hφx : φ x = 0`. Simplify using `only [x, map_add, hφj, zero_add, y, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => hφs _ _ i.isLt`. Set `v' : ℕ →₀ R` to `v - v j • x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hv'i : ∀ i : Fin n, v' i = v i + v j * (t i * a j)`. Introduce `i`. Simplify using `only [v', x, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, Finsupp.add_apply, hyi, Finsupp.single_apply, if_neg (show j ≠ (i : ℕ) by have := i.isLt; omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφv' : φ v' = φ v` using `by simp [v', hφx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span (Set.range fun i => v' i) = ⊤`. Rewrite using `[eq_top_iff, ← ht', Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `he : r i.castSucc + t i * r (Fin.last n) = v' i + t i * φ v'`. Rewrite using `[hrc, hrl, hv'i, hφv']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [b']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [he]`. Conclude with `Ideal.add_mem _ (Ideal.subset_span ⟨(i : ℕ), rfl⟩) (Ideal.mul_mem_left _ _ (linearMap_apply_mem_span_range_coeffs v' φ))`. Take `⟨h, hh⟩` from `finsupp_exists_form_of_span v' hspan`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f1 : (ℕ →₀ R) →ₗ[R] R` to `h - h x • Finsupp.lapply j`. Set `f2 : (ℕ →₀ R) →ₗ[R] R` to `Finsupp.lapply j - v j • f1`. Establish `hvdec : v = v' + v j • x` using `by simp [v']`. Establish `hhv : h v = 1 + v j * h x` using `by conv_lhs => rw [hvdec]`. Rewrite using `[map_add, map_smul, hh, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf1x : f1 x = 0`. Simplify using `only [f1, LinearMap.sub_apply, LinearMap.smul_apply, Finsupp.lapply_apply, smul_eq_mul, hxj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf1v : f1 v = 1`. Simplify using `only [f1, LinearMap.sub_apply, LinearMap.smul_apply, Finsupp.lapply_apply, smul_eq_mul, hhv]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf2x : f2 x = 1`. Simplify using `only [f2, LinearMap.sub_apply, LinearMap.smul_apply, Finsupp.lapply_apply, smul_eq_mul, hf1x, hxj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf2v : f2 v = 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [f2, LinearMap.sub_apply, LinearMap.smul_apply, Finsupp.lapply_apply, smul_eq_mul, hf1v]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨x, hxaff, ?_⟩` and prove the remaining obligations. Simplify using `only [uniM, Set.mem_setOf_eq]`. Use `⟨![f1, f2], ?_⟩` and prove the remaining obligations.
-
-Introduce `p q`. Apply the tactic sequence `fin_cases p <;> fin_cases q <;> simp [hf1x, hf1v, hf2x, hf2v]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unimodular_partner_aff : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n j : ℕ), s ≤ n →
     n ≤ j → ∀ v : ℕ →₀ R, [v] ∈ uniM R (ℕ →₀ R) → ∃ x ∈ aff R n j, [v, x] ∈ uniM R (ℕ →₀ R) := by
@@ -206,7 +204,7 @@ end GlobalTheory
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.unimodular_partner_aff`. Consider the case `exact @GlobalTheory.finsupp_exists_form_of_span`. Consider the case `exact @GlobalTheory.finsupp_coord_ideal_eq_top`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_mem_translate_unimodular_pair_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n j : ℕ), s ≤ n → n ≤ j → ∀ v : ℕ →₀ R, [v] ∈ uniM R (ℕ →₀ R) → ∃ x ∈ aff R n j, [v, x] ∈ uniM R (ℕ →₀ R) := by
   first

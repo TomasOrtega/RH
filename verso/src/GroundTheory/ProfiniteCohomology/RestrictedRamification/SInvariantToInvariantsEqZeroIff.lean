@@ -30,7 +30,7 @@ def sUnitsSubmodule : Submodule (ULift.{u} ℤ) (galUnits.{u} F (maxUnramifiedOu
     exact zpow_mem hz _
 
 /- English proof (translation)
-Introduce `_ hz` and use `galUnitsHom_mem_sUnitsOf (S := S) σ hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sUnitsSubmodule_le_comap (σ : galUnramifiedOutside F Ω S) :
     sUnitsSubmodule F Ω S ≤ (sUnitsSubmodule F Ω S).comap
@@ -54,7 +54,7 @@ noncomputable def sUnitsQuotSequence :
           (Additive.toMul x).2))
 
 /- English proof (translation)
-Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨Additive.ofMul ⟨Additive.toMul (α := (maxUnramifiedOutside F Ω S)ˣ) x, (Submodule.Quotient.mk_eq_zero _).1 hx⟩, rfl⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 (sUnitsToUnits_injective S _)`. Use `epi_g := (Rep.epi_iff_surjective _).2 (Submodule.mkQ_surjective _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sUnitsQuotSequence_shortExact : (sUnitsQuotSequence F Ω S).ShortExact where
   exact := by
@@ -86,7 +86,7 @@ variable (S : Set (HeightOneSpectrum (𝓞 F)))
 omit [IsGalois F Ω] in
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => (Submodule.Quotient.eq _).trans Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem mk_mem_invariants_iff (x : (maxUnramifiedOutside F Ω S)ˣ) :
     (Rep.mkQ _ (sUnitsSubmodule F Ω S) (sUnitsSubmodule_le_comap F Ω S)).hom
@@ -105,7 +105,7 @@ noncomputable def sInvariantToInvariants :
 
 omit [IsGalois F Ω] in
 /- English proof (translation)
-Introduce and unpack `⟨q, hq⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `⟨Additive.ofMul ⟨Additive.toMul (α := (maxUnramifiedOutside F Ω S)ˣ) z, (mk_mem_invariants_iff S _).1 hq⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sInvariantToInvariants_surjective : Function.Surjective (sInvariantToInvariants (Ω := Ω) S) := by
   rintro ⟨q, hq⟩
@@ -115,7 +115,7 @@ theorem sInvariantToInvariants_surjective : Function.Surjective (sInvariantToInv
 
 omit [IsGalois F Ω] in
 /- English proof (translation)
-Rewrite using `[Subtype.ext_iff]`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sInvariantToInvariants_eq_zero_iff (x : Additive (sInvariantSubgroup Ω S)) :
     sInvariantToInvariants S x = 0 ↔
@@ -124,13 +124,13 @@ theorem sInvariantToInvariants_eq_zero_iff (x : Additive (sInvariantSubgroup Ω 
   exact Submodule.Quotient.mk_eq_zero _
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[divAbove_apply, Finsupp.coe_zero, Pi.zero_apply]`. Take `⟨L, hf, hL, y, hy, hyx⟩` from `exists_of_mem_sUnitsMax F Ω S hx`. Use `NumberField.of_module_finite F L` as an intermediate fact. Establish `hyL : (((x : (maxUnramifiedOutside F Ω S)ˣ) : maxUnramifiedOutside F Ω S) : Ω) ∈ L`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hyx]`. Conclude with `(y : L).2`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := L) v.1`. Establish `h1` using `valuation_eq_exp_ordAbove S x.2 hL hyL w (hw ▸ v.2)`. Establish `hyy : (⟨_, hyL⟩ : L) = (y : L)` using `Subtype.ext (congrArg (fun u : (maxUnramifiedOutside F Ω S)ˣ => ((u : maxUnramifiedOutside F Ω S) : Ω)) hyx).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(mem_sUnitsOf_iff_mem_unit S).1 hy w (fun h => (hw ▸ v.2) (mem_placesOver_iff.1 h))`. Rewrite `h1` using `[hyy, h2, hw]`. Use `congrArg WithZero.log h1` as an intermediate fact. Simplify using `only [WithZero.log_one, WithZero.log_exp] at this`. Simplify using `only [toMul_ofMul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem divAbove_eq_zero_of_mem {x : sInvariantSubgroup Ω S}
     (hx : (x : (maxUnramifiedOutside F Ω S)ˣ) ∈ sUnitsMax F Ω S) :
@@ -166,7 +166,7 @@ noncomputable def invariantsToSPic : (galUnitsModSUnits F Ω S).ρ.invariants �
       (sInvariantToInvariants_surjective (Ω := Ω) S)).symm.toAddMonoidHom
 
 /- English proof (translation)
-Establish `h : (QuotientAddGroup.quotientKerEquivOfSurjective _ (sInvariantToInvariants_surjective (Ω` using `Ω) S)).symm (sInvariantToInvariants S x) = (x : Additive (sInvariantSubgroup Ω S) ⧸ (sInvariantToInvariants (Ω := Ω) S).ker) := (AddEquiv.symm_apply_eq _).2 rfl`. Simplify using `only [invariantsToSPic, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem invariantsToSPic_apply (x : Additive (sInvariantSubgroup Ω S)) :
     invariantsToSPic S (sInvariantToInvariants S x) = sPicMk S (divAbove S x) := by
@@ -183,16 +183,16 @@ noncomputable def invariantsToH1 :
     (H0Iso (sUnitsQuotSequence F Ω S).X₃).inv.hom.toAddMonoidHom
 
 /- English proof (translation)
-Introduce `x` and use `exists_δ_H0Iso_inv_eq (sUnitsQuotSequence_shortExact F Ω S) (subsingleton_cohomology_one_galUnits (K := F) (L := maxUnramifiedOutside F Ω S)) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem invariantsToH1_surjective : Function.Surjective (invariantsToH1 (Ω := Ω) S) := fun x =>
   exists_δ_H0Iso_inv_eq (sUnitsQuotSequence_shortExact F Ω S)
     (subsingleton_cohomology_one_galUnits (K := F) (L := maxUnramifiedOutside F Ω S)) x
 
 /- English proof (translation)
-Use `(δ_H0Iso_inv_eq_zero_iff (sUnitsQuotSequence_shortExact F Ω S) q).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Take `⟨a, rfl⟩` from `unitsToInvariants_surjective F (maxUnramifiedOutside F Ω S) w`. Conclude with `⟨Additive.toMul a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨unitsToInvariants F (maxUnramifiedOutside F Ω S) (Additive.ofMul a), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem invariantsToH1_eq_zero_iff (q : (galUnitsModSUnits F Ω S).ρ.invariants) :
     invariantsToH1 S q = 0 ↔ ∃ a : Fˣ,
@@ -222,7 +222,7 @@ noncomputable def h1SUnitsToSPic :
       (invariantsToH1_surjective (Ω := Ω) S)).symm.toAddMonoidHom
 
 /- English proof (translation)
-Establish `h : (QuotientAddGroup.quotientKerEquivOfSurjective _ (invariantsToH1_surjective (Ω` using `Ω) S)).symm (invariantsToH1 S q) = (q : (galUnitsModSUnits F Ω S).ρ.invariants ⧸ (invariantsToH1 (Ω := Ω) S).ker) := (AddEquiv.symm_apply_eq _).2 rfl`. Simplify using `only [h1SUnitsToSPic, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem h1SUnitsToSPic_invariantsToH1 (q : (galUnitsModSUnits F Ω S).ρ.invariants) :
     h1SUnitsToSPic S (invariantsToH1 S q) = invariantsToSPic S q := by
@@ -234,18 +234,18 @@ theorem h1SUnitsToSPic_invariantsToH1 (q : (galUnitsModSUnits F Ω S).ρ.invaria
   rfl
 
 /- English proof (translation)
-Rewrite using `[h1SUnitsToSPic_invariantsToH1, invariantsToSPic_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h1SUnitsToSPic_apply (x : Additive (sInvariantSubgroup Ω S)) :
     h1SUnitsToSPic S (invariantsToH1 S (sInvariantToInvariants S x)) = sPicMk S (divAbove S x) := by
   rw [h1SUnitsToSPic_invariantsToH1, invariantsToSPic_apply]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun h hh => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `invariantsToH1_surjective (Ω := Ω) S h`. Take `⟨x, rfl⟩` from `sInvariantToInvariants_surjective (Ω := Ω) S q`. Rewrite `hh` using `[h1SUnitsToSPic_apply, sPicMk_eq_zero_iff]`. Take `⟨a, ha⟩` from `hh`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `y : Additive (sInvariantSubgroup Ω S)` to `Additive.ofMul ⟨_, map_algebraMap_mem_sInvariantSubgroup (Ω := Ω) S a⟩`. Establish `hxy : divAbove S (x - y) = 0`. Rewrite using `[map_sub, divAbove_algebraMap, ha, sub_self]`. Establish `hmem` using `mem_sUnitsMax_of_divAbove_eq_zero S (x := Additive.toMul (x - y)) hxy`. Establish `h0 : sInvariantToInvariants S (x - y) = 0` using `(sInvariantToInvariants_eq_zero_iff S _).2 hmem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0]`. Conclude with `(invariantsToH1_eq_zero_iff S _).2 ⟨a, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h1SUnitsToSPic_injective : Function.Injective (h1SUnitsToSPic (Ω := Ω) S) := by
   refine (injective_iff_map_eq_zero _).2 fun h hh => ?_
@@ -266,7 +266,7 @@ theorem h1SUnitsToSPic_injective : Function.Injective (h1SUnitsToSPic (Ω := Ω)
 variable [IsSepClosed Ω]
 
 /- English proof (translation)
-Take `⟨D, rfl⟩` from `QuotientAddGroup.mk'_surjective _ c`. Rewrite `hc` using `[← map_nsmul, sPicMk_eq_zero_iff]`. Take `⟨a, ha⟩` from `hc`. Take `⟨x, hx⟩` from `exists_divAbove_eq (Ω := Ω) S hN hNS D a ha`. Conclude with `⟨invariantsToH1 S (sInvariantToInvariants S (Additive.ofMul x)), by rw [h1SUnitsToSPic_apply, hx]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_h1SUnitsToSPic_eq {N : ℕ} (hN : N ≠ 0)
     (hNS : ∀ v ∉ S, ((N : ℕ) : 𝓞 F) ∉ v.asIdeal) (c : sPic S) (hc : N • c = 0) :
@@ -279,7 +279,7 @@ theorem exists_h1SUnitsToSPic_eq {N : ℕ} (hN : N ≠ 0)
     by rw [h1SUnitsToSPic_apply, hx]⟩
 
 /- English proof (translation)
-Use `exists_h1SUnitsToSPic_eq S (pow_ne_zero k hn) (fun v hv h => hnS v hv ?_) c hc` and prove the remaining obligations. Rewrite `h` using `[Nat.cast_pow]`. Conclude with `v.isPrime.mem_of_pow_mem k h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_h1SUnitsToSPic_eq_of_pow {n : ℕ} (hn : n ≠ 0)
     (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) (c : sPic S) (k : ℕ) (hc : n ^ k • c = 0) :
@@ -311,7 +311,7 @@ instance isDiscreteRep_sUnitsKummerSequence_X₃ :
 
 omit [IsGalois F Ω] [IsSepClosed Ω] [NeZero n] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(n • 𝟙 (galSUnits S (maxUnramifiedOutside F Ω S))).hom w.1 = _`. Rewrite using `[nsmul_id_hom_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem invariantsFunctor_map_nsmul_apply
     (w : (galSUnits S (maxUnramifiedOutside F Ω S)).ρ.invariants) :
@@ -336,11 +336,9 @@ noncomputable def kummerPicHom :
     (cohomologyMap (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).f 1).hom.toAddMonoidHom
 
 /- English proof (translation)
-Use `(δ_H0Iso_inv_eq_zero_iff (sUnitsKummerSequence_shortExact (Ω := Ω) S n hnS) _).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Take `⟨b, rfl⟩` from `sUnitsToInvariants_surjective S (maxUnramifiedOutside F Ω S) w`. Use `⟨b, sUnitsToInvariants_injective S (maxUnramifiedOutside F Ω S) ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_nsmul]`. Use `Eq.trans ?_ hw` and prove the remaining obligations. Conclude with `(invariantsFunctor_map_nsmul_apply (Ω := Ω) S n _).symm`. Introduce and unpack `⟨b, rfl⟩`. Use `⟨sUnitsToInvariants S (maxUnramifiedOutside F Ω S) b, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(invariantsFunctor_map_nsmul_apply (Ω := Ω) S n _).trans (map_nsmul _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kummerSUnitsHom_eq_zero_iff (a : Additive (S.unit F)) :
     kummerSUnitsHom (Ω := Ω) S n hnS a = 0 ↔ ∃ b, n • b = a := by
@@ -357,11 +355,11 @@ theorem kummerSUnitsHom_eq_zero_iff (a : Additive (S.unit F)) :
     exact (invariantsFunctor_map_nsmul_apply (Ω := Ω) S n _).trans (map_nsmul _ _ _).symm
 
 /- English proof (translation)
-Establish `hK` using `sUnitsKummerSequence_shortExact (Ω := Ω) S n hnS`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h0 : (cohomologyMap (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).f 1).hom y = 0` using `h1SUnitsToSPic_injective S (hy.trans (map_zero _).symm)`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hK 0 1 rfl) y h0`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `sUnitsToInvariants_surjective S (maxUnramifiedOutside F Ω S) ((H0Iso (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).X₃).hom.hom z)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(δ hK 0 1 rfl).hom ((H0Iso _).inv.hom (sUnitsToInvariants S _ b)) = y`. Rewrite using `[hb, H0Iso_inv_hom_apply]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, rfl⟩`. Establish `h0` using `congrArg (fun φ => φ.hom ((H0Iso (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).X₃).inv.hom (sUnitsToInvariants S (maxUnramifiedOutside F Ω S) a))) (δ_comp hK 0 1 rfl)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_zero, LinearMap.zero_apply] at h0`. Conclude with `(congrArg (h1SUnitsToSPic (Ω := Ω) S) h0).trans (map_zero _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kummerPicHom_eq_zero_iff (y : cohomology (galRootsOfUnity.{u} F (maxUnramifiedOutside F Ω S) n) 1) :
     kummerPicHom (Ω := Ω) S n y = 0 ↔ ∃ a, kummerSUnitsHom (Ω := Ω) S n hnS a = y := by
@@ -384,11 +382,11 @@ theorem kummerPicHom_eq_zero_iff (y : cohomology (galRootsOfUnity.{u} F (maxUnra
     exact (congrArg (h1SUnitsToSPic (Ω := Ω) S) h0).trans (map_zero _)
 
 /- English proof (translation)
-Establish `hK` using `sUnitsKummerSequence_shortExact (Ω := Ω) S n hnS`. Establish `hg : ∀ h : cohomology (galSUnits S (maxUnramifiedOutside F Ω S)) 1, (cohomologyMap (sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n).g 1).hom h = n • h` using `fun h => cohomologyMap_nsmul_id_apply (galSUnits S (maxUnramifiedOutside F Ω S)) n 1 h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `h1` using `cohomologyMap_g_cohomologyMap_f_apply (S := sUnitsKummerSequence S (maxUnramifiedOutside F Ω S) n) 1 y`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1'` using `(hg _).symm.trans h1`. Establish `h2` using `congrArg (h1SUnitsToSPic (Ω := Ω) S) h1'`. Conclude with `(map_nsmul (h1SUnitsToSPic (Ω := Ω) S) n _).symm.trans (h2.trans (map_zero _))`. Introduce `hc`. Take `⟨h, rfl⟩` from `exists_h1SUnitsToSPic_eq (Ω := Ω) S (NeZero.ne n) hnS c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh : n • h = 0` using `h1SUnitsToSPic_injective S (by rw [map_nsmul, hc, map_zero])`. Take `⟨y, hy⟩` from `exists_cohomologyMap_f_eq hK 1 h ((hg h).trans hh)`. Conclude with `⟨y, congrArg (h1SUnitsToSPic (Ω := Ω) S) hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_kummerPicHom_iff (c : sPic S) :
     (∃ y, kummerPicHom (Ω := Ω) S n y = c) ↔ n • c = 0 := by
@@ -417,13 +415,11 @@ variable {F L E : Type u} [Field F] [NumberField F] [Field L] [NumberField L] [F
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `f : S.integer F →+* (placesOver S : Set (HeightOneSpectrum (𝓞 L))).integer L` to `((algebraMap F L).comp (S.integer F).val.toRingHom).codRestrict _ fun r w hw => valuation_algebraMap_integer_le_one S hw r`. Conclude with `IsIntegral.map_of_comp_eq f (RingHom.id E) (by`. Use extensionality with `r`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsScalarTower.algebraMap_apply F L E (r : F)).symm) hx`. Introduce `hx`. Set `C` to `integralClosure (S.integer F) E`. Set `f : (placesOver S : Set (HeightOneSpectrum (𝓞 L))).integer L →+* C` to `((algebraMap L E).comp ((placesOver S : Set (HeightOneSpectrum (𝓞 L))).integer L).val.toRingHom).codRestrict C.toSubring fun c => by`. Establish `hc : IsIntegral (S.integer F) (c : L)` using `isIntegral_integer_of_valuation_le_one S fun w hw => c.2 w hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.map ((IsScalarTower.toAlgHom F L E).restrictScalars (S.integer F))`. Establish `hxC : IsIntegral C (RingHom.id E x)` using `IsIntegral.map_of_comp_eq f (RingHom.id E) (by ext c; rfl) hx`. Establish `hmem : x ∈ integralClosure C E` using `hxC`. Rewrite `hmem` using `[integralClosure_idem, Algebra.mem_bot]`. Take `⟨c, rfl⟩` from `hmem`.
-
-Conclude with `c.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_integer_iff_placesOver (x : E) :
     IsIntegral (S.integer F) x ↔
@@ -453,7 +449,7 @@ theorem isIntegral_integer_iff_placesOver (x : E) :
     exact c.2
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_sUnitsOf, mem_sUnitsOf, isIntegral_integer_iff_placesOver (L := L) S, isIntegral_integer_iff_placesOver (L := L) S]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem sUnitsOf_placesOver_eq :
     sUnitsOf (placesOver S : Set (HeightOneSpectrum (𝓞 L))) E = sUnitsOf S E := by

@@ -7,35 +7,33 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Take `⟨C₁, hC₁, hsP⟩` from `exists_primePowerSum_le_mul_log`. Establish `hK` using `dA_KC_pos`. Use `⟨3 * dA_KC + C₁, by positivity, ?_⟩` and prove the remaining obligations. Introduce `y hy N m₀ w hw hm`. Establish `hy0 : (0:ℝ) ≤ y` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlog : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Establish `hf0 : ∀ n, 0 ≤ cN y n` using `fun n => dA_cN_nonneg hy0 n`. Establish `hsplit : RR (cN y) m₀ N ≤ (∑ n ∈ Icc 1 N with IsPrimePow n ∧ Even (n.factorization n.minFac), cN y n) + ∑ n ∈ Icc 1 N with IsPrimePow n ∧ n.minFac ∣ m₀, cN y n`. Unfold `RR`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun n _ => ?_` and prove the remaining obligations. Use `hf0 n` as an intermediate fact. Apply the tactic sequence `by_cases h1 : IsPrimePow n <;> by_cases h2 : Even (n.factorization n.minFac) <;>`. Apply the tactic sequence `by_cases h3 : n.minFac ∣ m₀ <;> simp [h1, h2, h3, this]`. Establish `hA : (∑ n ∈ Icc 1 N with IsPrimePow n ∧ Even (n.factorization n.minFac), cN y n) ≤ 3 * dA_KC * Real.sqrt y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsub : (Icc 1 N).filter (fun n => IsPrimePow n ∧ Even (n.factorization n.minFac)) ⊆ (Icc 1 N).image (fun m => m ^ 2)`. Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hn`. Take `⟨⟨hn1, hnN⟩, hpp, hev⟩` from `hn`. Take `⟨p, k, hp, hk, rfl⟩` from `(isPrimePow_nat_iff _).1 hpp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hev` using `[Nat.pow_minFac hk.ne', hp.minFac_eq, Nat.factorization_pow_self hp]`. Take `⟨j, rfl⟩` from `hev`. Use `Finset.mem_image.2 ⟨p ^ j, ?_, by ring⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ p ^ j` using `Nat.one_le_pow _ _ hp.pos`. Establish `h2 : p ^ j ≤ p ^ (j + j)` using `Nat.pow_le_pow_right hp.pos (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.mem_Icc.2 ⟨h1, h2.trans hnN⟩`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [cN, ArithmeticFunction.vonMangoldt_apply_pow two_ne_zero, Nat.cast_pow]`. Use `_ ≤ dA_KC * ∑ m ∈ Icc 1 N, min 1 (y / (m:ℝ) ^ 2) := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `dA_vM_major _ (fun n => le_min zero_le_one (div_nonneg hy0 (by positivity))) ?_ N` and prove the remaining obligations. Introduce `n hn`. Apply `min_le_min_left` to reduce the goal to its premises. Apply `div_le_div_of_nonneg_left hy0 (pow_pos (Nat.cast_pos.mpr hn) 2)` to reduce the goal to its premises. Use `(Nat.cast_nonneg n : (0:ℝ) ≤ n)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ dA_KC * (3 * Real.sqrt y) := mul_le_mul_of_nonneg_left (dA_sum_min_sq y (by linarith) N) hK.le`. Use `_ = 3 * dA_KC * Real.sqrt y := by ring`. Establish `hB : (∑ n ∈ Icc 1 N with IsPrimePow n ∧ n.minFac ∣ m₀, cN y n) ≤ C₁ * w * Real.log y` using `by set P := (Icc 1 N).filter (fun p => p.Prime ∧ p ∣ m₀ ∧ (p:ℝ) ≤ w) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hmaps : ∀ n ∈ (Icc 1 N).filter (fun n => IsPrimePow n ∧ n.minFac ∣ m₀), n.minFac ∈ P`. Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hn`. Take `⟨⟨hn1, hnN⟩, hpp, hd⟩` from `hn`. Establish `hpr : n.minFac.Prime` using `Nat.minFac_prime hpp.ne_one`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hle : n.minFac ≤ N` using `(Nat.minFac_le (by omega)).trans hnN`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨hpr.one_lt.le, hle⟩, hpr, hd, hm _ hpr hd hle⟩`. Establish `hcard : (P.card : ℝ) ≤ w`. Establish `hs : P ⊆ Icc 1 ⌊w⌋₊`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `p hp`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_Icc] at hp ⊢`. Conclude with `⟨hp.1.1, Nat.le_floor hp.2.2.2⟩`. Establish `h1` using `Finset.card_le_card hs`. Rewrite `h1` using `[Nat.card_Icc, Nat.add_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations. Use `le_trans ?_ (hsP y hy N p)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Unfold `sP`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun n _ _ => hf0 n)` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Finset.mem_filter] at hn ⊢`. Conclude with `⟨hn.1.1, hn.1.2.1, hn.2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = P.card * (C₁ * Real.log y) := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ w * (C₁ * Real.log y) := mul_le_mul_of_nonneg_right hcard (mul_nonneg hC₁.le hlog)`. Use `_ = C₁ * w * Real.log y := by ring`. Establish `hsq : 0 ≤ Real.sqrt y` using `Real.sqrt_nonneg y`. Establish `hwl : 0 ≤ w * Real.log y` using `mul_nonneg (by linarith) hlog`.
-
-Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 3 * dA_KC) hwl, mul_nonneg hC₁.le hsq]`.
+A detailed English derivation is pending.
 -/
 theorem RR_le :
     ∃ C : ℝ, 0 < C ∧ ∀ y : ℝ, 3 ≤ y → ∀ (N m₀ : ℕ) (w : ℝ), 1 ≤ w →

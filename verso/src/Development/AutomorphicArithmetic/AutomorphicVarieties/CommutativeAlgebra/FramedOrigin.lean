@@ -4,27 +4,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O _ _ _ _ ι X _ _ _ w Φ h2 Γ _ _ _ rbar r0 hbar hr0 F L hN hLoc hL0 B _ _ _ ρ hρ WB hB hWB R _ _ _ i r α hU W τ e hWl hWr`. Establish `hHH1 : ∀ (S : Type) [CommRing S] [Algebra O S] [IsCO O S], Φ.HH (1 : Matrix ι ι S)`. Introduce `S _ _ _`. Use `⟨by simp, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (fun h => hab (h ▸ rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hF : IsFramed Φ r0.hom F L ρ (WB.origin hB) r0 (fun _ => (1 : Matrix ι ι O))`. Use `⟨fun s => ?_, fun q => hL0 q, fun v => hHH1 O, rfl, fun v s => ?_⟩` and prove the remaining obligations. Establish `hm : (r0.hom s⁻¹).map (algebraMap O O) = r0.hom s⁻¹`. Use extensionality with `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hm, ← map_mul, mul_inv_cancel, map_one]`. Conclude with `hHH1 O`. Use extensionality with `a b`. Simplify using `[Matrix.map_apply, hWB]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, ⟨hfi, hfr, hfα⟩, -⟩` from `hU.2 O (WB.origin hB) r0 (fun _ => 1) hF`. Establish `hz : ∀ s, f (W.z s) = 0`. Introduce `s`. Take `⟨s', rfl⟩` from `e.surjective s`. Break down `s' with s' | t` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hWl, ← AlgHom.comp_apply, hfi]`. Simplify using `[WPres.z, WPres.origin_π]`. Take `⟨a, b, ⟨s, hs⟩ | ⟨v, hv⟩⟩` from `hWr t`. Rewrite using `[hs, map_sub, AlgHom.commutes, ← Lift.map_hom, hfr]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hab` using `congrFun (congrFun (hfα v) a) b`. Rewrite `hab` using `[Matrix.map_apply]`. Rewrite using `[hv, Matrix.sub_apply, map_sub, hab, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hC : ∀ x : O, (C x : MvPowerSeries W.σ O) = algebraMap O (MvPowerSeries W.σ O) x`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `[MvPowerSeries.algebraMap_apply]`. Set `cc : MvPowerSeries W.σ O →ₐ[O] O` to `AlgHom.mk (MvPowerSeries.constantCoeff (R := O) (σ := W.σ)) (fun x => by simp [MvPowerSeries.algebraMap_apply])`. Establish `hcc : ∀ g, f (W.π g) = constantCoeff g`. Take `⟨G, -, huniq⟩` from `co_ev O O O W.σ (AlgHom.id O O) (fun _ => 0) (fun _ => Ideal.zero_mem _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f.comp W.π = G` using `huniq _ ⟨fun x => by`. Rewrite using `[AlgHom.comp_apply, hC, AlgHom.commutes, AlgHom.commutes]`. Use the proof step `rfl, fun s => hz s⟩`. Establish `h2' : cc = G` using `huniq _ ⟨fun x => by simp [cc], fun s => by simp [cc]⟩`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ g) (h1.trans h2'.symm)` as an intermediate fact. Simplify `this` using `[cc]`. Establish `hO : W.HasOrigin`. Introduce `g hg`. Rewrite using `[← hcc, hg, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `horig : W.origin hO = f`. Use extensionality with `x`. Take `⟨g, rfl⟩` from `W.surj x`. Rewrite using `[WPres.origin_π, hcc]`. Use `⟨hO, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[horig, hfr]`. Introduce `v`. Rewrite using `[horig, hfα]`. Rewrite using `[horig, hfi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.framed_origin :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (F : Frame Γ) (L : ∀ q, Cond O (rbar.comp (F.ψ q))), (∀ q, ∀ n ∈ F.N q, rbar (F.ψ q n) = 1) → (∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q)) → (∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) →

@@ -33,7 +33,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.hsDist`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.hsDist_nonneg (g : _root_.Formalism.BasicNotions.UpqT P Q) : 0 ≤ _root_.GlobalTheory.GaugeQuot.hsDist g := by
   unfold _root_.GlobalTheory.GaugeQuot.hsDist
@@ -43,7 +43,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Establish `hmat : Continuous (_root_.Formalism.BasicNotions.UpqT.mat : _root_.Formalism.BasicNotions.UpqT P Q → _)` using `_root_.GlobalTheory.UpqTopology.continuous_mat`. Unfold `_root_.GlobalTheory.GaugeQuot.hsDist`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply j).comp ((continuous_apply i).comp (hmat.sub continuous_const))).norm).pow 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.continuous_hsDist : Continuous (_root_.GlobalTheory.GaugeQuot.hsDist : _root_.Formalism.BasicNotions.UpqT P Q → ℝ) := by
   have hmat : Continuous (_root_.Formalism.BasicNotions.UpqT.mat : _root_.Formalism.BasicNotions.UpqT P Q → _) := _root_.GlobalTheory.UpqTopology.continuous_mat
@@ -56,7 +56,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.ptSq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.ptSq_nonneg (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) : 0 ≤ _root_.GlobalTheory.GaugeQuot.ptSq e y := by
@@ -67,7 +67,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.ptSq`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.continuous_ptSq (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
     Continuous (_root_.GlobalTheory.GaugeQuot.ptSq e) := by
@@ -78,7 +78,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.tanSq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.tanSq_nonneg (t : ℝ × _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P' Q') :
     0 ≤ _root_.GlobalTheory.GaugeQuot.tanSq t := by
@@ -89,7 +89,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.tanSq`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.continuous_tanSq :
     Continuous (_root_.GlobalTheory.GaugeQuot.tanSq : ℝ × _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P' Q' → ℝ) := by
@@ -100,7 +100,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.gaussSp`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.continuous_gaussSp :
     Continuous (_root_.GlobalTheory.GaugeQuot.gaussSp : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q → ℝ) := by
@@ -111,7 +111,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GaugeQuot.ballVol`. Rewrite using `[Measure.addHaar_ball_mul_of_pos _ _ ht, finrank_euclideanSpace_fin]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.ballVol_mul (d : ℕ) (t r : ℝ) (ht : 0 < t) (hr : 0 < r) :
     _root_.GlobalTheory.GaugeQuot.ballVol d (t * r) = ENNReal.ofReal (t ^ d) * _root_.GlobalTheory.GaugeQuot.ballVol d r := by
@@ -122,7 +122,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-The claim follows from `(Metric.measure_ball_pos volume _ hr).ne'`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.ballVol_ne_zero (d : ℕ) {r : ℝ} (hr : 0 < r) :
     _root_.GlobalTheory.GaugeQuot.ballVol d r ≠ 0 :=
@@ -132,7 +132,7 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 variable {P Q P' Q' : ℕ} in
 /- English proof (translation)
-The claim follows from `measure_ball_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeQuot.ballVol_ne_top (d : ℕ) (r : ℝ) : _root_.GlobalTheory.GaugeQuot.ballVol d r ≠ ⊤ :=
   measure_ball_lt_top.ne

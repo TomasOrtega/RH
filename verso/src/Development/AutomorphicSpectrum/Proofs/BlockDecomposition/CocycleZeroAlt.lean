@@ -18,21 +18,21 @@ variable {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {C : Type u} [Cate
   (F : C ⥤ ModuleCat.{w} R) (U : ι → ObjectProperty C) {Q : ObjectProperty C} (hQ : Cosieve Q)
 
 /- English proof (translation)
-Introduce `_ _ φ h` and use `⟨h.1.imp fun a ha => hU a φ ha, fun α hα => hU α φ (h.2 α hα)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cosieve_capU (hU : ∀ α, Cosieve (U α)) (S : Finset ι) : Cosieve (capU U S) := fun _ _ φ h =>
   ⟨h.1.imp fun a ha => hU a φ ha, fun α hα => hU α φ (h.2 α hα)⟩
 
 variable {U} in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.1, fun α hα => hX.2 α (h hα)⟩`.
+Supply the required witnesses or components.
 -/
 theorem capU_mono {S T : Finset ι} (h : S ⊆ T) {X : C} (hX : capU U T X) : capU U S X :=
   ⟨hX.1, fun α hα => hX.2 α (h hα)⟩
 
 variable {U} in
 /- English proof (translation)
-Use `⟨⟨a, ha⟩, fun α hα => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hα`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Conclude with `ha`. Conclude with `hi.2 _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem capU_cons {n : ℕ} {a : ι} {i : Fin n → ι} {T : C} (ha : U a T) (hi : capU U (ent i) T) :
     capU U (ent (Fin.cons (α := fun _ => ι) a i)) T := by
@@ -57,7 +57,7 @@ def evL (hU : ∀ α, Cosieve (U α)) {n : ℕ} (S : Finset ι) (s : ComposableA
 variable {F U hQ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem evL_congr (hU : ∀ α, Cosieve (U α)) {n p : ℕ} (f : ∀ i : Fin p → ι, (Tm F U hQ n).M (ent i))
     {i i' : Fin p → ι} (e : i = i') (s : ComposableArrows C n) (h : capU U (ent i) (s.obj 0))
@@ -65,7 +65,7 @@ theorem evL_congr (hU : ∀ α, Cosieve (U α)) {n p : ℕ} (f : ∀ i : Fin p �
   subst e; rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg ((evL F U hQ hU _ s h) ∘ₗ (LinearMap.proj (R := R) (φ := fun i : Fin (p + 2) → ι => (Tm F U hQ n).M (ent i)) i)) (Cos.d_apply (Tm F U hQ n).cech p y)`. Rewrite `e` using `[map_sum]`. Simplify using `only [map_zsmul] at e`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evL_d (hU : ∀ α, Cosieve (U α)) {p n : ℕ} (y : (Tm F U hQ n).cech.X p)
     (i : Fin (p + 2) → ι) (s : ComposableArrows C n) (h : capU U (ent i) (s.obj 0)) :
@@ -80,7 +80,7 @@ theorem evL_d (hU : ∀ α, Cosieve (U α)) {p n : ℕ} (y : (Tm F U hQ n).cech.
   exact e
 
 /- English proof (translation)
-Use `⟨⟨b, hb⟩, fun α hα => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hα`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem capU_const {b : ι} {T : C} (hb : U b T) : capU U (ent fun _ : Fin 1 => b) T := by
   refine ⟨⟨b, hb⟩, fun α hα => ?_⟩
@@ -88,7 +88,7 @@ theorem capU_const {b : ι} {T : C} (hb : U b T) : capU U (ent fun _ : Fin 1 => 
   exact hb
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[Function.comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cons_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
     (Fin.cons (α := fun _ => ι) a i : Fin (n + 2) → ι) ∘ (0 : Fin (n + 2)).succAbove = i := by
@@ -96,7 +96,7 @@ theorem cons_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
   simp [Function.comp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[Function.comp]`. Simplify using `[Function.comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cons_succ {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) (j : Fin (n + 1)) :
     (Fin.cons (α := fun _ => ι) a i : Fin (n + 2) → ι) ∘ j.succ.succAbove =
@@ -107,7 +107,7 @@ theorem cons_succ {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) (j : Fin (n + 1)) 
   · simp [Function.comp]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem M_ext (hU : ∀ α, Cosieve (U α)) {n : ℕ} {S : Finset ι} {x y : (Tm F U hQ n).M S}
     (h : ∀ t : ComposableArrows (capU U S).FullSubcategory n,
@@ -121,7 +121,7 @@ def mkM {n : ℕ} (S : Finset ι) (f : CH.Cn ((capU U S).ι ⋙ F) n)
   (⟨f, hf⟩ : relS ((capU U S).ι ⋙ F) (fun T => Q T.obj) n)
 
 /- English proof (translation)
-The claim follows from `x.2 (liftC U hU S s h) hs`.
+A detailed English derivation is pending.
 -/
 theorem evL_zero (hU : ∀ α, Cosieve (U α)) {n : ℕ} (S : Finset ι) (x : (Tm F U hQ n).M S)
     (s : ComposableArrows C n) (h : capU U S (s.obj 0)) (hs : Q (s.obj 0)) :
@@ -129,9 +129,9 @@ theorem evL_zero (hU : ∀ α, Cosieve (U α)) {n : ℕ} (S : Finset ι) (x : (T
   x.2 (liftC U hU S s h) hs
 
 /- English proof (translation)
-Establish `h'` using `capU_cons hb h`. Establish `e` using `evL_d hU y _ s h'`. Establish `z : evL F U hQ hU _ s h' ((Tm F U hQ n).cech.d (p + 1) y (Fin.cons (α` using `fun _ => ι) b i)) = 0 := by`. Rewrite using `[hy]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[z, Fin.sum_univ_succ]`. Establish `e0` using `evL_congr hU y (cons_zero b i) s (capU_mono (ent_comp _ _) h') h`. Establish `e1 : ∀ j : Fin (p + 2), evL F U hQ hU _ s (capU_mono (ent_comp _ j.succ.succAbove) h') (y ((Fin.cons (α` using `fun _ => ι) b i : Fin (p + 3) → ι) ∘ j.succ.succAbove)) = evL F U hQ hU _ s (capU_cons hb (capU_mono (ent_comp i j.succAbove) h)) (y (Fin.cons (α := fun _ => ι) b (i ∘ j.succAbove))) := fun j => evL_congr hU y (cons_succ _ i j) s _ _`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, e0, e1] at e`. Conclude with `add_neg_eq_zero.1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_eq (hU : ∀ α, Cosieve (U α)) {p n : ℕ} (y : (Tm F U hQ n).cech.X (p + 1))
     (hy : (Tm F U hQ n).cech.d (p + 1) y = 0) (i : Fin (p + 2) → ι) (s : ComposableArrows C n)
@@ -156,11 +156,9 @@ theorem cocycle_eq (hU : ∀ α, Cosieve (U α)) {p n : ℕ} (y : (Tm F U hQ n).
   exact add_neg_eq_zero.1 e.symm
 
 /- English proof (translation)
-Establish `h'` using `capU_cons hb h`. Establish `e` using `evL_d hU y _ s h'`. Establish `z : evL F U hQ hU _ s h' ((Tm F U hQ n).cech.d 0 y (Fin.cons (α` using `fun _ => ι) b i)) = 0 := by`. Rewrite using `[hy]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[z, Fin.sum_univ_two]`. Establish `e0` using `evL_congr hU y (cons_zero b i) s (capU_mono (ent_comp _ _) h') h`. Establish `e1` using `evL_congr hU y (i := (Fin.cons (α := fun _ => ι) b i : Fin 2 → ι) ∘ (1 : Fin 2).succAbove) (i' := fun _ => b) (funext fun k => by`. Take `rfl : k = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Use the proof step `rfl) s (capU_mono (ent_comp _ _) h') (capU_const hb)`.
-
-Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul, e0, e1] at e`. Conclude with `add_neg_eq_zero.1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_zero (hU : ∀ α, Cosieve (U α)) {n : ℕ} (y : (Tm F U hQ n).cech.X 0)
     (hy : (Tm F U hQ n).cech.d 0 y = 0) (i : Fin 1 → ι) (s : ComposableArrows C n)
@@ -187,17 +185,15 @@ def hh (hU : ∀ α, Cosieve (U α)) (a : ∀ T, (∃ b, U b T) → ι) (ha : �
     fun t ht => evL_zero hU _ _ _ _ ht
 
 /- English proof (translation)
-Establish `hc : ∀ T : C, ∀ h : ∃ b, U b T, ∃ b, U b T` using `fun _ h => h`. Use `choose a ha using hc`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun m y hy => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `M_ext hU fun t => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(evL_d hU _ i _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (map_zero (evL F U hQ hU _ _ _)).symm` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ 0 • evL F U hQ hU ∅ _ (capU_mono (Finset.empty_subset _) (t.obj 0).property) x + (-1 : ℤ) ^ 1 • evL F U hQ hU ∅ _ (capU_mono (Finset.empty_subset _) (t.obj 0).property) x = 0`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Use `M_ext hU fun t => ?_` and prove the remaining obligations. Establish `hb` using `ha _ (t.obj 0).property.1`. Establish `h1` using `congrArg (evL F U hQ hU _ (t ⋙ (capU U ∅).ι) (capU_const hb)) (congrFun hx fun _ => a _ (t.obj 0).property.1)`. Conclude with `(h1.trans (map_zero _)).trans (map_zero _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mkM ∅ (fun t => evL F U hQ hU _ (t ⋙ (capU U ∅).ι) (capU_const (ha _ (t.obj 0).property.1)) (y fun _ => a _ (t.obj 0).property.1)) fun t ht => evL_zero hU _ _ _ _ ht, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `i`. Use `M_ext hU fun t => ?_` and prove the remaining obligations. Conclude with `(cocycle_zero hU y hy i (t ⋙ (capU U (ent i)).ι) (t.obj 0).property _ (ha _ (t.obj 0).property.1)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨hh hU a ha y, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use function extensionality and compare the values at `i`. Use `M_ext hU fun t => ?_` and prove the remaining obligations. Use `(evL_d hU (hh hU a ha y) i (t ⋙ (capU U (ent i)).ι) (t.obj 0).property).trans ?_` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (cocycle_eq hU y hy i (t ⋙ (capU U (ent i)).ι) (t.obj 0).property _ (ha _ (t.obj 0).property.1)).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem desc (hU : ∀ α, Cosieve (U α)) (n : ℕ) : (Tm F U hQ n).Ex := by
   have hc : ∀ T : C, ∀ h : ∃ b, U b T, ∃ b, U b T := fun _ h => h
@@ -234,7 +230,7 @@ theorem desc (hU : ∀ α, Cosieve (U α)) (n : ℕ) : (Tm F U hQ n).Ex := by
     rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ hU n` and use `desc hU n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem covDesc : CovDesc := fun _ _ _ _ _ _ _ _ _ _ hU n => desc hU n
 

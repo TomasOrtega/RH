@@ -34,7 +34,7 @@ private theorem app_global_comp_apply {U V W' : Scheme.{0}} (f : U ⟶ V) (g : V
   rfl
 
 /- English proof (translation)
-Simplify using `only [SplitTorus.pull, RingHom.comp_apply, Over.comp_left, app_global_comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem splitTorus_pull_comp {B : CommRingCat.{0}} {s : Spec B ⟶ S}
     (g : Over.mk s ⟶ splitTorus S Y) (h : splitTorus S Y ⟶ splitTorus S X) (u : Γ((splitTorus S X).left, ⊤)) :
@@ -42,11 +42,11 @@ private theorem splitTorus_pull_comp {B : CommRingCat.{0}} {s : Spec B ⟶ S}
   simp only [SplitTorus.pull, RingHom.comp_apply, Over.comp_left, app_global_comp_apply]
 
 /- English proof (translation)
-Establish `key : ∀ hs, univPt Y t ≫ SplitTorus.torusMap S φ = ptOf (B` using `CommRingCat.of (AddMonoidAlgebra R Y)) t (mv φ) hs := by`. Introduce `hs`. Use `SplitTorus.pull_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[SplitTorus.pull_ptOf, splitTorus_pull_comp, SplitTorus.torusMap_appTop_chi]`. Express the relevant statement in the definitionally equal form `ev t _ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[SplitTorus.ev_chi, SplitTorus.ev_chi, mv_single]`. Establish `hs : Spec.map (CommRingCat.ofHom ((mv φ : AddMonoidAlgebra R X →+* AddMonoidAlgebra R Y).comp (algebraMap R (AddMonoidAlgebra R X)))) ≫ t = Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R Y))) ≫ t`. Use `congr 3`. Use extensionality with `r`. Simplify using `[mv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `pull (univPt Y t) _ = _`. Rewrite using `[← splitTorus_pull_comp, key hs, SplitTorus.pull_ptOf]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_torusMap (t : Spec R ⟶ S) (φ : X →+ Y) (u : Γ((splitTorus S X).left, ⊤)) :
     ev t ((SplitTorus.torusMap S φ).left.appTop.hom u) = mv φ (ev t u) := by
@@ -67,11 +67,11 @@ theorem ev_torusMap (t : Spec R ⟶ S) (φ : X →+ Y) (u : Γ((splitTorus S X).
   rw [← splitTorus_pull_comp, key hs, SplitTorus.pull_ptOf]
 
 /- English proof (translation)
-Establish `e : (univPt X t).left ≫ bcMap f X = (univPt X (t ≫ f)).left`. Use `splitTorus_left_hom_ext _ _ ?_ fun χ => ?_` and prove the remaining obligations. Simplify using `[SplitTorus.bcMap_hom]`. Establish `h0 : (Scheme.ΓSpecIso _).hom.hom (SplitTorus.val (univPt X t) χ) = (Scheme.ΓSpecIso _).hom.hom (SplitTorus.val (univPt X (t ≫ f)) χ)`. Rewrite using `[← SplitTorus.pull_chi, ← SplitTorus.pull_chi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(SplitTorus.ev_chi t χ).trans (SplitTorus.ev_chi (t ≫ f) χ).symm`. Establish `h1` using `congrArg (Scheme.ΓSpecIso _).inv.hom h0`. Simplify using `only [Iso.hom_inv_id_apply] at h1`. Rewrite `h1` using `[SplitTorus.val_eq, SplitTorus.val_eq]`. Rewrite using `[app_global_comp_apply, SplitTorus.charUnit_val, SplitTorus.bcMap_appTop_chi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h1`. Express the relevant statement in the definitionally equal form `pull (univPt X t) _ = pull (univPt X (t ≫ f)) u`. Simplify using `only [SplitTorus.pull, RingHom.comp_apply, ← e, app_global_comp_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_bcMap (f : S' ⟶ S) (t : Spec R ⟶ S') (u : Γ((splitTorus S X).left, ⊤)) :
     ev t ((bcMap f X).appTop.hom u) = ev (t ≫ f) u := by
@@ -91,7 +91,7 @@ theorem ev_bcMap (f : S' ⟶ S) (t : Spec R ⟶ S') (u : Γ((splitTorus S X).lef
   simp only [SplitTorus.pull, RingHom.comp_apply, ← e, app_global_comp_apply]
 
 /- English proof (translation)
-Introduce `u v h`. Use `SplitTorus.eq_of_ev fun B t => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩ : ∃ φ, Spec.map φ ≫ 𝟙 _ = t` from `⟨Spec.preimage t, by simp⟩`. Rewrite using `[SplitTorus.ev_comp, SplitTorus.ev_comp, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_injective : Function.Injective (ev (X := X) (𝟙 (Spec R))) := by
   intro u v h
@@ -100,9 +100,9 @@ theorem ev_injective : Function.Injective (ev (X := X) (𝟙 (Spec R))) := by
   rw [SplitTorus.ev_comp, SplitTorus.ev_comp, h]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pull (univPt X _) _ = _`. Establish `hw` using `Over.w (univPt X (𝟙 (Spec R)))`. Simplify using `only [SplitTorus.pull, RingHom.comp_apply]`. Rewrite using `[← app_global_comp_apply, hw]`. Use `erw [Category.comp_id]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `erw [SplitTorus.specMap_appTop_apply, Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem ev_base_apply (r : R) :
     ev (X := X) (𝟙 (Spec R)) ((splitTorus (Spec R) X).hom.appTop.hom ((Scheme.ΓSpecIso R).inv.hom r)) =
@@ -116,9 +116,9 @@ private theorem ev_base_apply (r : R) :
   rfl
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add p q hp hq`. Take `⟨a, rfl⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hq`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `single x r`. Use `⟨(splitTorus (Spec R) X).hom.appTop.hom ((Scheme.ΓSpecIso R).inv.hom r) * chi X x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, SplitTorus.ev_chi, ev_base_apply, AddMonoidAlgebra.single_mul_single, zero_add, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_surjective : Function.Surjective (ev (X := X) (𝟙 (Spec R))) := by
   intro w
@@ -141,7 +141,7 @@ variable {S : Scheme.{0}} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] {Z Z' V
 abbrev app {Z V : Scheme.{0}} (r : Z ⟶ V) : Γ(V, ⊤)ˣ →* Γ(Z, ⊤)ˣ := Units.map r.appTop.hom.toMonoidHom
 
 /- English proof (translation)
-Use `ext`. Conclude with `(app_global_comp_apply r s u.val).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem app_app {Z Z' V : Scheme.{0}} (r : Z' ⟶ Z) (s : Z ⟶ V) (u : Γ(V, ⊤)ˣ) : app r (app s u) = app (r ≫ s) u := by
   ext
@@ -151,7 +151,7 @@ def pt (x y u : Z ⟶ splitTorus S X) : Z ⟶ splitTorus S (X × X × X) :=
   ofVal ((valHom x).coprod ((valHom y).coprod (valHom u)))
 
 /- English proof (translation)
-Use `SplitTorus.hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[SplitTorus.val_comp_torusMap, pt, SplitTorus.val_ofVal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_p₁ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMap S p₁ = x := by
   refine SplitTorus.hom_ext fun a => ?_
@@ -159,7 +159,7 @@ theorem pt_p₁ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMa
   simp
 
 /- English proof (translation)
-Use `SplitTorus.hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[SplitTorus.val_comp_torusMap, pt, SplitTorus.val_ofVal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_p₂ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMap S p₂ = y := by
   refine SplitTorus.hom_ext fun a => ?_
@@ -167,7 +167,7 @@ theorem pt_p₂ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMa
   simp
 
 /- English proof (translation)
-Use `SplitTorus.hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[SplitTorus.val_comp_torusMap, pt, SplitTorus.val_ofVal]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_p₃ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMap S p₃ = u := by
   refine SplitTorus.hom_ext fun a => ?_
@@ -175,7 +175,7 @@ theorem pt_p₃ (x y u : Z ⟶ splitTorus S X) : pt x y u ≫ SplitTorus.torusMa
   simp
 
 /- English proof (translation)
-Use `SplitTorus.hom_ext fun p => ?_` and prove the remaining obligations. Take `⟨x, y, z⟩` from `p`. Rewrite using `[pt, SplitTorus.val_ofVal, SplitTorus.val_torusMap]`. Simplify using `only [AddMonoidHom.coprod_apply, toMul_add, Units.val_mul, SplitTorus.valHom_apply, SplitTorus.val_torusMap, tri]`. Rewrite using `[← SplitTorus.val_id, ← SplitTorus.val_id, ← SplitTorus.val_id, ← SplitTorus.val_id, SplitTorus.val_add, SplitTorus.val_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_torusMap (a b c : X →+ Y) : pt (SplitTorus.torusMap S a) (SplitTorus.torusMap S b) (SplitTorus.torusMap S c) = SplitTorus.torusMap S (tri a b c) := by
   refine SplitTorus.hom_ext fun p => ?_
@@ -191,7 +191,7 @@ def dif [GrpObj V] (g : Γ(V.left, ⊤)ˣ) (x y u : Z ⟶ V) : Γ(Z.left, ⊤)ˣ
     app (y * u).left g
 
 /- English proof (translation)
-Simplify using `only [dif, map_mul, map_div, app_app, ← Over.comp_left, Hom.mul_def, comp_lift_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem app_dif [GrpObj V] (g : Γ(V.left, ⊤)ˣ) (r : Z' ⟶ Z) (x y u : Z ⟶ V) :
     app r.left (dif g x y u) = dif g (r ≫ x) (r ≫ y) (r ≫ u) := by
@@ -207,9 +207,9 @@ abbrev ex : Γ((splitTorus (Spec (CommRingCat.of A)) X).left, ⊤)ˣ →* (AddMo
   Units.map (ev (X := X) (𝟙 (Spec (CommRingCat.of A)))).toMonoidHom
 
 /- English proof (translation)
-Establish `hi` using `ev_injective (R := CommRingCat.of A) (X := X)`. Establish `hs` using `ev_surjective (R := CommRingCat.of A) (X := X)`. Use `⟨fun u v h => Units.ext (hi (congrArg Units.val h)), fun w => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hs w.val`. Take `⟨b, hb⟩` from `hs w.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hab : a * b = 1` using `hi (by rw [map_mul, ha, hb, w.val_inv, map_one])`. Conclude with `⟨⟨a, b, hab, by rw [_root_.mul_comm, hab]⟩, Units.ext ha⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ex_bijective : Function.Bijective (ex (A := A) (X := X)) := by
   have hi := ev_injective (R := CommRingCat.of A) (X := X)
@@ -221,24 +221,24 @@ theorem ex_bijective : Function.Bijective (ex (A := A) (X := X)) := by
   exact ⟨⟨a, b, hab, by rw [_root_.mul_comm, hab]⟩, Units.ext ha⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (ev_torusMap (𝟙 _) φ u.val)`.
+A detailed English derivation is pending.
 -/
 theorem ex_app (φ : X →+ Y) (u : Γ((splitTorus (Spec (CommRingCat.of A)) X).left, ⊤)ˣ) :
     ex (app (SplitTorus.torusMap _ φ).left u) = um φ (ex u) := Units.ext (ev_torusMap (𝟙 _) φ u.val)
 
 /- English proof (translation)
-Simplify using `only [dif, del, map_mul, map_div, ← SplitTorus.torusMap_add, ex_app]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ex_dif (a b c : X →+ Y) (g : Γ((splitTorus (Spec (CommRingCat.of A)) X).left, ⊤)ˣ) :
     ex (dif g (SplitTorus.torusMap _ a) (SplitTorus.torusMap _ b) (SplitTorus.torusMap _ c)) = del (ex g) a b c := by
   simp only [dif, del, map_mul, map_div, ← SplitTorus.torusMap_add, ex_app]
 
 /- English proof (translation)
-Establish `key : ev (𝟙 _) ((bcMap (red J) X).appTop.hom u.val) = rd J (ev (𝟙 _) u.val)`. Rewrite using `[ev_bcMap, Category.id_comp, show red J = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ 𝟙 _ from (Category.comp_id _).symm, SplitTorus.ev_comp]`. Both sides reduce to the same expression. Rewrite using `[mem_cong, Units.ext_iff, Units.val_one]`. Express the relevant statement in the definitionally equal form `rd J (ev (𝟙 _) u.val) = 1 ↔ (bcMap (red J) X).appTop.hom u.val = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `ev_injective` to reduce the goal to its premises. Rewrite using `[key, h, map_one]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← key, h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_mem_cong (J : Ideal A) (u : Γ((splitTorus (Spec (CommRingCat.of A)) X).left, ⊤)ˣ) :
     ex u ∈ cong J ↔ app (bcMap (red J) X) u = 1 := by
@@ -259,11 +259,11 @@ theorem ex_mem_cong (J : Ideal A) (u : Γ((splitTorus (Spec (CommRingCat.of A)) 
 variable {J : Ideal A}
 
 /- English proof (translation)
-Establish `hcub : Cub (ex (A` using `A) (X := X × X × X) D) := by`. Use `⟨fun Y _ a b c => ?_, fun Y _ a b c => ?_, fun Y _ a b c d => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg ex (s₁ (splitTorus _ Y) (SplitTorus.torusMap _ a) (SplitTorus.torusMap _ b) (SplitTorus.torusMap _ c))`. Simplify `h1` using `only [pt_torusMap, ex_app]`. Establish `h1` using `congrArg ex (s₂ (splitTorus _ Y) (SplitTorus.torusMap _ a) (SplitTorus.torusMap _ b) (SplitTorus.torusMap _ c))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `only [pt_torusMap, ex_app]`. Establish `h1` using `congrArg ex (co (splitTorus _ Y) (SplitTorus.torusMap _ a) (SplitTorus.torusMap _ b) (SplitTorus.torusMap _ c) (SplitTorus.torusMap _ d))`. Simplify `h1` using `only [← SplitTorus.torusMap_add, pt_torusMap, map_mul, ex_app]`. Take `⟨g', hg', hD⟩` from `hcub.exists_del hJ ((ex_mem_cong J D).2 h)`. Take `⟨g, rfl⟩` from `(ex_bijective (A := A) (X := X)).2 g'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD' : D = dif g (SplitTorus.torusMap _ p₁) (SplitTorus.torusMap _ p₂) (SplitTorus.torusMap _ p₃)`. Apply `(ex_bijective (A := A) (X := X × X × X)).1` to reduce the goal to its premises. Rewrite using `[hD, ex_dif]`. Use `⟨g, (ex_mem_cong J g).1 hg', fun Z x y u => ?_⟩` and prove the remaining obligations. Rewrite using `[hD', app_dif, pt_p₁, pt_p₂, pt_p₃]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_dif (hJ : IsNilpotent J) (D : Γ((splitTorus (Spec (CommRingCat.of A)) (X × X × X)).left, ⊤)ˣ)
     (s₁ : ∀ (Z : Over (Spec (CommRingCat.of A))) (x y u : Z ⟶ splitTorus _ X),
@@ -295,7 +295,7 @@ theorem exists_dif (hJ : IsNilpotent J) (D : Γ((splitTorus (Spec (CommRingCat.o
   rw [hD', app_dif, pt_p₁, pt_p₂, pt_p₃]
 
 /- English proof (translation)
-Establish `h1 : ex g ∈ cong J` using `(ex_mem_cong J g).2 h`. Establish `h2 : del (ex g) p₁ p₂ p₃ = 1`. Rewrite using `[← ex_dif, hg, map_one]`. Apply `(ex_bijective (A := A) (X := X)).1` to reduce the goal to its premises. Rewrite using `[eq_one_of_del hJ h1 h2, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_one_of_dif (hJ : IsNilpotent J) (g : Γ((splitTorus (Spec (CommRingCat.of A)) X).left, ⊤)ˣ)
     (h : app (bcMap (red J) X) g = 1)

@@ -36,7 +36,7 @@ def pullForm (f : π.IntertwiningMap σ) : (contra σ).IntertwiningMap (contra �
     rw [f.isIntertwining])
 
 /- English proof (translation)
-Introduce `a b h` and use `Subtype.ext (LinearMap.ext fun y => by obtain ⟨v, rfl⟩ := hf y exact LinearMap.congr_fun (congrArg Subtype.val h) v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullForm_injective (f : π.IntertwiningMap σ) (hf : Function.Surjective f) :
     Function.Injective (pullForm f) := fun a b h => Subtype.ext (LinearMap.ext fun y => by
@@ -44,13 +44,13 @@ theorem pullForm_injective (f : π.IntertwiningMap σ) (hf : Function.Surjective
   exact LinearMap.congr_fun (congrArg Subtype.val h) v)
 
 /- English proof (translation)
-Set `q : (V ⧸ LinearMap.ker f.toLinearMap) →ₗ[ℂ] ℂ` to `(LinearMap.ker f.toLinearMap).liftQ l.1 (fun v hv => hl v hv)`. Set `l' : Module.Dual ℂ W` to `q ∘ₗ (f.toLinearMap.quotKerEquivOfSurjective hf).symm.toLinearMap`. Establish `hl' : ∀ v, l' (f v) = l.1 v` using `fun v => by`. Establish `: (f.toLinearMap.quotKerEquivOfSurjective hf).symm (f v) = Submodule.Quotient.mk v`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show q ((f.toLinearMap.quotKerEquivOfSurjective hf).symm (f v)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hs : l' ∈ smoothPart σ.dual` using `mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds l.2 (by show π.dual 1 l.1 = l.1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Use the proof step `rfl)) fun g hg => LinearMap.ext fun w => by`. Take `⟨v, rfl⟩` from `hf w`. Establish `h : π.dual g l.1 = l.1` using `hg`. Establish `h2` using `LinearMap.congr_fun h v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : π.dual g l.1 v = l.1 (π g⁻¹ v)` using `rfl`. Rewrite `h2` using `[h3]`. Use `show l' (σ g⁻¹ (f v)) = l' (f v)`. Rewrite using `[← f.isIntertwining, hl', hl', h2])`. Conclude with `⟨⟨l', hs⟩, Subtype.ext (LinearMap.ext fun v => hl' v)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_pullForm (f : π.IntertwiningMap σ) (hf : Function.Surjective f) (l : smoothPart π.dual)
     (hl : ∀ v, f v = 0 → l.1 v = 0) : l ∈ (pullForm f).range := by
@@ -77,7 +77,7 @@ theorem mem_range_pullForm (f : π.IntertwiningMap σ) (hf : Function.Surjective
   exact ⟨⟨l', hs⟩, Subtype.ext (LinearMap.ext fun v => hl' v)⟩
 
 /- English proof (translation)
-Introduce `l` and use `by have : {g : G | S.toRepresentation g l = l} = {g : G | contra π g l.1 = l.1} := by ext g exact Subtype.ext_iff rw [this] exact isSmooth_contra π l.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_subContra (S : Subrepresentation (contra π)) : IsSmooth S.toRepresentation := fun l => by
   have : {g : G | S.toRepresentation g l = l} = {g : G | contra π g l.1 = l.1} := by
@@ -103,17 +103,15 @@ def evalForms (hπ : IsSmooth π) (S : Subrepresentation (contra π)) : π.Inter
 end General
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA N V W _ _ _ _ σ π hπ _ hc`. Take `⟨hi, f, hf, hu⟩` from `hc`. Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k N`. Establish `hσ : IsSmooth σ` using `(IsSubquotient.of_surjective f hf).isSmooth hπ`. Establish `hci : (contra σ).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible hG (hA k N _ _ hσ hi) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hci, pullForm f, pullForm_injective f hf, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hSi` using `GlobalTheory.MaschkeForms.isIrreducible_of_isAtom hS`. Establish `hcS : (contra S.toRepresentation).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible hG (hA k N _ _ (isSmooth_subContra S) hSi) hSi`. Set `e` to `evalForms hπ S`. Establish `hr : e.range ≠ ⊥` using `fun h0 => hS.1 (eq_bot_iff.2 fun l hl => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `hv : e v ∈ (⊥ : Subrepresentation (contra S.toRepresentation))` using `h0 ▸ ⟨v, rfl⟩`. Establish `hv0 : e v = 0` using `hv`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val hv0) ⟨l, hl⟩)`. Establish `he : Function.Surjective e` using `fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ∈ e.range`. Establish `ht : e.range = ⊤` using `(eq_bot_or_eq_top _).resolve_left hr`. Rewrite using `[ht]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : e.ker = f.ker` using `hu _ (isCoatom_ker hcS e he)`. Establish `hle : S ≤ (pullForm f).range` using `fun l hl => mem_range_pullForm f hf l fun v hv => by`. Establish `hv' : v ∈ e.ker` using `hk ▸ hv`. Establish `hv0 : e v = 0` using `hv'`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val hv0) ⟨l, hl⟩`.
-
-Conclude with `((isAtom_range hci _ (pullForm_injective f hf)).le_iff.1 hle).resolve_left hS.1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSocle_contra_of_isCosocle : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) W) (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → HasFiniteLength π → IsCosocle σ π → IsSocle (contra σ) (contra π) := by
   intro k _ _ _ _ hA N V W _ _ _ _ σ π hπ _ hc

@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.ThetaEnlarge
 
 /- English proof (translation)
-Introduce `D S T ψ θ sS sT ΛS ΛT hS hT f₀ hvac e e' P P' he he' hsub Φ g hΦ hg`. Take `⟨b, rfl, hb, hab⟩` from `GlobalTheory.RowLocVec.exists_compl_idem hsub he he'`. Establish `ha` using `GlobalTheory.PlaceDatum.idemSum_mul_self he'`. Rewrite using `[add_sub_cancel_left]`. Conclude with `GlobalTheory.RowLocVec.isThetaAt_extend hvac.1 hS hT he ha hb hab hvac.2.lat hΦ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThetaAt_enlarge : ∀ {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

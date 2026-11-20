@@ -8,16 +8,16 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `Int.toNat_le_toNat (by have := h hab; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vt_nuOf_antitone {m : ℕ} {lam : Fin (m + 1) → ℤ} (h : Antitone lam) : Antitone (nuOf lam) := by
   intro a b hab
   exact Int.toNat_le_toNat (by have := h hab; omega)
 
 /- English proof (translation)
-Unfold `deltaLTw nablaLTw`. Apply `Submodule.map_mono` to reduce the goal to its premises. Unfold `deltaL nablaL`. Apply `Submodule.comap_mono` to reduce the goal to its premises. Apply `Submodule.map_mono` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `weylLeDual O (m + 1) (m + 1) le_rfl (nuOf lam) (vt_nuOf_antitone hlam)`.
+A detailed English derivation is pending.
 -/
 theorem vt_deltaLTw_le (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (hlam : Antitone lam) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) :
@@ -30,7 +30,7 @@ theorem vt_deltaLTw_le (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m :
   exact weylLeDual O (m + 1) (m + 1) le_rfl (nuOf lam) (vt_nuOf_antitone hlam)
 
 /- English proof (translation)
-Unfold `Dl0`. Rewrite using `[if_pos hlam]`. Conclude with `iInf₂_le g ⟨hg, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowest_invariant_le_delta {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (hlam : Antitone lam) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det) :
@@ -50,13 +50,11 @@ def vt_G (P : Places p O Kf) : GAtP p where
   e := 0
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hLv`. Establish `hle : HtenW O (P.lam0 v) (fun s => extO O (P.ι v) (P.σ v) s.val (colSpan (P.W v) g)) ≤ (Vsp Kf (P.lam0 v)).restrictScalars O`. Unfold `HtenW tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨F, fun s => ?_, rfl⟩` and prove the remaining obligations. Establish `hanti` using `kp_lamAt_antitone (P.lam0 v) (P.dom v) s`. Use `beta_reduce`. Rewrite using `[if_pos hanti]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hF s`. Use `beta_reduce at h1`. Establish `e : extO O (P.ι v) (P.σ v) s.val (colSpan (P.W v) g) = colSpan O (la_tw (P.ι v) (P.σ v) s.val g)` using `la_extO_G (vt_G P) v s.val g`. Rewrite `h1` using `[e]`. Establish `hd` using `la_tw_det (P.ι v) (P.σ v) s.val g hg`.
-
-Conclude with `la_nablaLTw_le _ _ _ hd _ (vt_deltaLTw_le O Kf _ _ hanti _ (lowest_invariant_le_delta _ _ hanti _ hd h1))`. Conclude with `fun z hz => hle hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem vt_HtenW_le (P : Places p O Kf) (v : Fin P.nV) (Lv : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v))
     (hLv : IsLattice (P.W v) Lv) :
@@ -82,9 +80,9 @@ theorem vt_HtenW_le (P : Places p O Kf) (v : Fin P.nV) (Lv : Submodule (P.W v) (
   exact fun z hz => hle hz
 
 /- English proof (translation)
-Establish `hle : P.HtupW L ≤ P.Vtup.restrictScalars O`. Unfold `Places.HtupW Places.tenV`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `Submodule.subset_span ⟨F, fun v => vt_HtenW_le P v (L v) (hL v) _ (hF v), rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun z hz => hle hz`.
+A detailed English derivation is pending.
 -/
 theorem vt_HtupW_le (P : Places p O Kf) (L : P.Tup) (hL : P.IsLatTup L) : ∀ z ∈ P.HtupW L, z ∈ P.Vtup := by
   have hle : P.HtupW L ≤ P.Vtup.restrictScalars O := by
@@ -104,11 +102,9 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
   Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Unfold `Sys.FQ at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `h` using `(mem_Int_iff X j x).1 hx`. Distinguish the cases in `hL : (X.Pj j).IsLatTup L`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `vt_HtupW_le (X.Pj j) L hL _ (h.1 c L hL)`. Rewrite using `[h.2.1 c L hL]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vt_FQ {p : ℕ} [Fact p.Prime] (X : Sys p) {j : ℕ} {F : X.Fm j} (hF : F ∈ X.FQ j) (c : X.Lv.comp j)
     (L : (X.Pj j).Tup) : F c L ∈ (X.Pj j).Vtup := by

@@ -7,15 +7,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 namespace GlobalTheory.SignedParTest
 
 /- English proof (translation)
-Take `⟨ha, q, hq, hS⟩` from `h`. Take `⟨ha', q', hq', hS'⟩` from `h'`. Establish `key : ∀ a, ∃ b, q' b = q a ∧ e' b = e a`. Introduce `a`. Establish `: (q a, e a) ∈ S` using `by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hS']`. Take `⟨b, -, hb⟩` from `Finset.mem_image.1 this`. Conclude with `⟨b, congrArg Prod.fst hb, congrArg Prod.snd hb⟩`. Establish `key' : ∀ a, ∃ b, q b = q' a`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (q' a, e' a) ∈ S` using `by rw [hS']; exact Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Rewrite `this` using `[hS]`. Take `⟨b, -, hb⟩` from `Finset.mem_image.1 this`. Conclude with `⟨b, congrArg Prod.fst hb⟩`. Establish `hr : Set.range l = Set.range l'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩; obtain ⟨b, hb, -⟩ := key a; exact ⟨b, by rw [hq, hq', hb]⟩`. Introduce and unpack `⟨a, rfl⟩; obtain ⟨b, hb⟩ := key' a; exact ⟨b, by rw [hq, hq', hb]⟩`. Establish `hl : l = l'` using `(ha.range_inj ha').1 hr`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨hl, funext fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, he⟩` from `key a`. Establish `: l' b = l' a` using `by rw [hq' b, hb, ← hq a, hl]`. Rewrite `he` using `[ha'.injective this]`. Conclude with `he.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEnum_unique {n : ℕ} {S : SPar} {l l' : Fin n → ℝ} {e e' : Fin n → Bool}
     (h : IsEnum S l e) (h' : IsEnum S l' e') : l = l' ∧ e = e' := by
@@ -45,7 +45,7 @@ theorem isEnum_unique {n : ℕ} {S : SPar} {l l' : Fin n → ℝ} {e e' : Fin n 
   exact he.symm
 
 /- English proof (translation)
-Take `⟨l, e, -, -, hp, hq⟩` from `h`. Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => e a = true)` as an intermediate fact. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem goodPar_add {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : p + q = n := by
   obtain ⟨l, e, -, -, hp, hq⟩ := h
@@ -54,9 +54,9 @@ theorem goodPar_add {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : p + q = n :
   omega
 
 /- English proof (translation)
-Use `⟨![1 / 2, -1 / 2], ![true, false], ⟨?_, ![1 / 2, -1 / 2], ?_, ?_⟩, ⟨?_, ?_⟩, by decide, by decide⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b; fin_cases a <;> fin_cases b <;> simp <;> norm_num`. Apply the tactic sequence `intro a; fin_cases a <;> simp`. Use extensionality with `x`. Simplify using `[Fin.exists_fin_two, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `intro a b; fin_cases a <;> fin_cases b <;> simp <;> norm_num`. Introduce `a`. Use `fin_cases a`. Conclude with `⟨0, by norm_num⟩`. Conclude with `⟨-1, by norm_num⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goodPar_ex : GoodPar 2 1 1 {(1 / 2, true), (-1 / 2, false)} := by
   refine ⟨![1 / 2, -1 / 2], ![true, false], ⟨?_, ![1 / 2, -1 / 2], ?_, ?_⟩, ⟨?_, ?_⟩, by decide, by decide⟩
@@ -69,11 +69,11 @@ theorem goodPar_ex : GoodPar 2 1 1 {(1 / 2, true), (-1 / 2, false)} := by
     · exact ⟨-1, by norm_num⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `R.k_even`. Establish `: ∃ z : ℤ, lamSH R P a = z`. Unfold `lamSH lamS`. Use `split_ifs with h h'`. Take `⟨z, hz⟩` from `P.v_int ⟨_, h⟩; exact ⟨z, by rw [hz]; simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `P.b_int ⟨_, h'⟩; exact ⟨-z, by rw [hz]; simp⟩`. Conclude with `⟨0, by simp⟩`. Take `⟨z, hz⟩` from `this`. Use `⟨z - R.rS - t, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ht]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamSH_int (R : Ranks) (P : HCParam R) (a : Fin (2 * R.rS + R.k + 1)) :
     ∃ m : ℤ, lamSH R P a - (((2 * R.rS + R.k + 1 : ℕ) : ℝ) - 1) / 2 = (m : ℝ) := by
@@ -89,9 +89,9 @@ theorem lamSH_int (R : Ranks) (P : HCParam R) (a : Fin (2 * R.rS + R.k + 1)) :
   rw [hz, ht]; push_cast; ring
 
 /- English proof (translation)
-Unfold `isoDef`. Rewrite using `[sSup_eq_bot]`. Introduce and unpack `W ⟨H, _, _, σ, lam, ε, P, T, ⟨-, q, -, hS⟩, -, -, hP, -⟩`. It suffices to derive a contradiction. Establish `he : ε 0 = false`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `: (q 0, ε 0) ∈ ({(x, false)} : SPar)` using `by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ 0)`. Conclude with `congrArg Prod.snd (Finset.mem_singleton.1 this)`. Use `congrArg Complex.re (congrFun (congrFun hP 0) 0)` as an intermediate fact. Simplify using `[Matrix.mul_apply, Formalism.REAL.Jm, he] at this`. Use polynomial arithmetic with `[mul_self_nonneg (P 0 0).re, mul_self_nonneg (P 0 0).im]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isoDef_wrong_sign {M : Type} [AddCommGroup M] [Module ℂ M]
     (π : Matrix (Fin 1) (Fin 1) ℂ → Module.End ℂ M) (x : ℚ) : isoDef 1 π {(x, false)} = ⊥ := by
@@ -107,7 +107,7 @@ theorem isoDef_wrong_sign {M : Type} [AddCommGroup M] [Module ℂ M]
   nlinarith [mul_self_nonneg (P 0 0).re, mul_self_nonneg (P 0 0).im]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [rhoOfIndex, Finset.card_filter, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_one] <;>`. Simplify using `[posC]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rho2C_two_one : rhoOfIndex (p := 2) (q := 1) (.inl 0) = 1 ∧ rhoOfIndex (p := 2) (q := 1) (.inl 1) = -1 ∧
     rhoOfIndex (p := 2) (q := 1) (.inr 0) = 0 := by
@@ -116,15 +116,13 @@ theorem rho2C_two_one : rhoOfIndex (p := 2) (q := 1) (.inl 0) = 1 ∧ rhoOfIndex
   simp [posC]
 
 /- English proof (translation)
-Establish `pos : ∀ a b : Ix p q, posC a b ↔ sameBlock a b ∧ lam b < lam a`. Introduce `a b`. Apply the tactic sequence `refine ⟨fun hh => ⟨by cases a <;> cases b <;> simp_all [posC, sameBlock], h.2.1 a b hh⟩, fun ⟨h1, h2⟩ => ?_⟩`. Assume the negation of the conclusion as `hn`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `(not_lt.1 hn).lt_or_eq with e | e` into its components or cases. Conclude with `lt_asymm h2 (h.2.1 (.inl b) (.inl a) e)`. Substitute `e` using the available equality. Conclude with `lt_irrefl _ h2`. Conclude with `h1`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `h1`. Break down `(not_lt.1 hn).lt_or_eq with e | e` into its components or cases. Conclude with `lt_asymm h2 (h.2.1 (.inr b) (.inr a) e)`. Substitute `e` using the available equality. Conclude with `lt_irrefl _ h2`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `sym : ∀ a b : Ix p q, sameBlock a b ↔ sameBlock b a`. Apply the tactic sequence `intro a b; cases a <;> cases b <;> simp [sameBlock]`. Simplify using `only [blattner, rhoNC, rhoOfIndex, Finset.card_filter, pos, sym _ a]`. Use `push_cast`. Simplify using `only [← Finset.sum_sub_distrib, Finset.sum_div, add_assoc, ← Finset.sum_add_distrib]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : sameBlock a b <;> by_cases h2 : lam b < lam a <;> by_cases h3 : lam a < lam b <;>`. Apply the tactic sequence `simp [h1, h2, h3] <;> norm_num`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem blattner_add_rho2C {p q : ℕ} {lam : Ix p q → ℚ} (h : IsParam lam) (a : Ix p q) :
     blattner lam a + rhoOfIndex a = lam a +
@@ -155,17 +153,17 @@ theorem blattner_add_rho2C {p q : ℕ} {lam : Ix p q → ℚ} (h : IsParam lam) 
     simp [h1, h2, h3] <;> norm_num
 
 /- English proof (translation)
-Establish `mono : ∀ {m : Ix p q → ℚ}, IsParam m → ∀ a b, m b < m a → blattner m b + rhoOfIndex b < blattner m a + rhoOfIndex a`. Introduce `m hm a b hab`. Rewrite using `[blattner_add_rho2C hm, blattner_add_rho2C hm]`. Establish `h1 : ((Finset.univ.filter fun c => m c < m b).card : ℚ) ≤ (Finset.univ.filter fun c => m c < m a).card`. Conclude with `Finset.card_le_card fun c hc => by` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at *`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((Finset.univ.filter fun c => m a < m c).card : ℚ) ≤ (Finset.univ.filter fun c => m b < m c).card`. Conclude with `Finset.card_le_card fun c hc => by` after adjusting the coercions. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at *`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `one : ∀ {m m' : Ix p q → ℚ}, IsParam m → IsParam m' → blattner m = blattner m' → ∀ a b, m b < m a → m' b < m' a`. Introduce `m m' hm hm' e a b hab`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `(not_lt.1 hn).lt_or_eq with x | x` into its components or cases. Use `mono hm a b hab` as an intermediate fact. Use `mono hm' b a x` as an intermediate fact. Rewrite `*` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab` using `[hm'.1 x]`. Conclude with `lt_irrefl _ hab`. Establish `ord : ∀ a b, l b < l a ↔ l' b < l' a` using `fun a b => ⟨one h h' e a b, one h' h e.symm a b⟩`. Use function extensionality and compare the values at `a`. Establish `x` using `blattner_add_rho2C h a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `y` using `blattner_add_rho2C h' a`. Simplify using `only [ord] at x`. Rewrite `x` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem blattner_inj {p q : ℕ} {l l' : Ix p q → ℚ} (h : IsParam l) (h' : IsParam l') (e : blattner l = blattner l') :
     l = l' := by
@@ -200,9 +198,9 @@ theorem blattner_inj {p q : ℕ} {l l' : Ix p q → ℚ} (h : IsParam l) (h' : I
 def rhoTwo : Ix 2 0 → ℚ := Sum.elim ![1 / 2, -1 / 2] Fin.elim0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Break down `a with a | a` into its components or cases. Apply the tactic sequence `fin_cases a <;>`. Apply the tactic sequence `simp only [blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_zero] <;>`. Apply the tactic sequence `simp [rhoTwo, sameBlock] <;> norm_num`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `a.elim0`.
+A detailed English derivation is pending.
 -/
 theorem blattner_sing : blattner (fun _ : Ix 2 0 => (0 : ℚ)) = blattner rhoTwo := by
   funext a
@@ -213,19 +211,19 @@ theorem blattner_sing : blattner (fun _ : Ix 2 0 => (0 : ℚ)) = blattner rhoTwo
   · exact a.elim0
 
 /- English proof (translation)
-Unfold `HasParam`. Rewrite using `[blattner_sing]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasParam_sing {T : GrpData 2 0} (R : DSRep T) : HasParam R (fun _ => 0) ↔ HasParam R rhoTwo := by
   unfold HasParam; rw [blattner_sing]
 
 /- English proof (translation)
-Use `⟨?_, fun μ v _ => by simp [vogan]⟩` and prove the remaining obligations. Use `haveI := R.nontriv`. Take `⟨x, hx⟩` from `exists_ne (0 : R.U.H)`. Establish `hfin : Finite T.G`. Establish `hinj : Function.Injective fun g : T.G => ((T.sq g : ℂˣ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h e`. Use `T.emb.injective (Prod.ext (Units.ext (Subsingleton.elim _ _)) (Units.ext e))` and prove the remaining obligations. Establish `hsub : Set.range (fun g : T.G => ((T.sq g : ℂˣ) : ℂ)) ⊆ {1, -1}`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `T.sq_sq g` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.det_isEmpty]`. Simplify using `using this`. Use `(Set.toFinite _).subset hsub` as an intermediate fact. Conclude with `Set.finite_univ_iff.1 (Set.Finite.of_finite_image (by rwa [Set.image_univ]) hinj.injOn)`. Take `⟨v, hv⟩` from `(R.ι_range x).2 (by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `KFin`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range _))`. Use `⟨v, fun h => hx (by rw [← hv, h, map_zero]), ?_⟩` and prove the remaining obligations. Simplify using `[hwSub, wtSub]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasParam_zero {T : GrpData 0 0} (R : DSRep T) (lam : Ix 0 0 → ℚ) : HasParam R lam := by
   refine ⟨?_, fun μ v _ => by simp [vogan]⟩

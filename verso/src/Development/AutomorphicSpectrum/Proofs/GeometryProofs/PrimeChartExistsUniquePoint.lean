@@ -15,7 +15,7 @@ def secVal (ξ : Spec (CommRingCat.of Ω) ⟶ X) (V : X.Opens) (hg : genPt ξ �
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ V (genPt ξ) hg f)`. Rewrite using `[← X.presheaf.germ_stalkSpecializes hp p.2]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_germ_eq (V : X.Opens) (hg : genPt ξ ∈ V) (p : Cpt ξ) (hp : p.1 ∈ V) (f : Γ(X, V)) :
     genMap ξ p (X.presheaf.germ V p.1 hp f) = secVal ξ V hg f := by
@@ -24,11 +24,11 @@ theorem genMap_germ_eq (V : X.Opens) (hg : genPt ξ ∈ V) (p : Cpt ξ) (hp : p.
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : IsUnit (genMap ξ p s)` using `h.map (genMap ξ p)`. Use `⟨h1.ne_zero, ⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(u⁻¹ : (X.presheaf.stalk p.1)ˣ), ?_⟩` and prove the remaining obligations. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h0, -, ⟨w, hw⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `IsUnit.of_mul_eq_one w (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hw, map_one]`. Conclude with `mul_inv_cancel₀ h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_unitAt (p : Cpt ξ) (hinj : Function.Injective (genMap ξ p))
     (s : X.presheaf.stalk p.1) : IsUnit s ↔ unitAt ξ p (genMap ξ p s) := by
@@ -47,7 +47,7 @@ theorem isUnit_iff_unitAt (p : Cpt ξ) (hinj : Function.Injective (genMap ξ p))
     exact mul_inv_cancel₀ h0
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `hU.fromSpec y ∈ (U : Set X)`. Rewrite using `[← hU.range_fromSpec]`. Conclude with `⟨y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fromSpec_mem {U : X.Opens} (hU : IsAffineOpen U) (y : PrimeSpectrum Γ(X, U)) :
     hU.fromSpec y ∈ U := by
@@ -56,15 +56,15 @@ theorem fromSpec_mem {U : X.Opens} (hU : IsAffineOpen U) (y : PrimeSpectrum Γ(X
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Set `ρ` to `secVal ξ U hg`. Set `I : Ideal Γ(X, U)` to `{ carrier := {r | ∃ f, ρ f = ρ r * a} add_mem' := by`. Introduce and unpack `r s ⟨f, hf⟩ ⟨g, hg⟩`. Conclude with `⟨f + g, by rw [map_add, map_add, hf, hg, add_mul]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `r s ⟨f, hf⟩`. Conclude with `⟨r * f, by rw [smul_eq_mul, map_mul, map_mul, hf, _root_.mul_assoc]⟩ }`. Distinguish the cases in `hI : I = ⊤`. Take `⟨f, hf⟩ : (1 : Γ(X, U)) ∈ I` from `hI ▸ Submodule.mem_top`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Conclude with `⟨f, by rw [hf, map_one, _root_.one_mul]⟩`. It suffices to derive a contradiction. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hI`. Set `q : PrimeSpectrum Γ(X, U)` to `⟨m, hm.isPrime⟩`. Establish `hq : hU.fromSpec q ∈ U` using `fromSpec_mem hU q`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp` using `hs _ hq`. Take `⟨σ, hσ⟩` from `ha _ hsp hq`. Establish `hloc` using `hU.isLocalization_stalk' q hq`. Take `⟨⟨r, s⟩, e⟩` from `@IsLocalization.surj _ _ _ _ _ (X.presheaf.algebra_section_stalk ⟨hU.fromSpec q, hq⟩) hloc σ`. Establish `e' : σ * X.presheaf.germ U _ hq s.1 = X.presheaf.germ U _ hq r` using `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (genMap ξ ⟨_, hsp⟩) e'`. Rewrite `e2` using `[map_mul, hσ, genMap_germ_eq U hg ⟨_, hsp⟩ hq s.1, genMap_germ_eq U hg ⟨_, hsp⟩ hq r]`. Conclude with `s.2 (hIm ⟨r, by rw [← e2, mul_comm]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_secVal_eq {U : X.Opens} (hU : IsAffineOpen U) (hg : genPt ξ ∈ U)
     (hs : ∀ q ∈ U, genPt ξ ⤳ q) (a : Ω)
@@ -98,7 +98,7 @@ theorem exists_secVal_eq {U : X.Opens} (hU : IsAffineOpen U) (hg : genPt ξ ∈ 
     exact s.2 (hIm ⟨r, by rw [← e2, mul_comm]⟩)
 
 /- English proof (translation)
-Rewrite using `[← X.mem_basicOpen f _ hq, ← PrimeSpectrum.mem_basicOpen]`. Establish `h` using `hU.fromSpec_preimage_basicOpen f`. Express the relevant statement in the definitionally equal form `_ ↔ y ∈ (hU.fromSpec ⁻¹ᵁ X.basicOpen f)`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem notMem_iff_isUnit_germ {U : X.Opens} (hU : IsAffineOpen U) (y : PrimeSpectrum Γ(X, U))
     (hq : hU.fromSpec y ∈ U) (f : Γ(X, U)) :
@@ -110,7 +110,7 @@ theorem notMem_iff_isUnit_germ {U : X.Opens} (hU : IsAffineOpen U) (y : PrimeSpe
   rfl
 
 /- English proof (translation)
-Use `⟨hc, fun j => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hξ.bij.2 (x j / x c)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Simplify using `only [genMap, TopCat.Presheaf.stalkSpecializes_refl]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -130,19 +130,17 @@ namespace GlobalTheory.CompanionTheory.Ar
 open ChartPrimes in
 
 /- English proof (translation)
-Introduce `X Ω _ ξ o _ _ κ x T c hc I hI`. Take `⟨U, hU, hmem⟩` from `T.affine c hc`. Establish `hg : genPt ξ ∈ U` using `(hmem _).2 ⟨specializes_rfl, inChart_genPt T.gen x c hc⟩`. Establish `hs : ∀ q ∈ U, genPt ξ ⤳ q` using `fun q hq => by`. Take `⟨h, -⟩` from `(hmem q).1 hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hin : ∀ (q : X) (h : genPt ξ ⤳ q), q ∈ U → InChart ξ x c ⟨q, h⟩` using `fun q h hq => by`. Take `⟨_, h'⟩` from `(hmem q).1 hq`. Conclude with `h'`. Set `ρ` to `secVal ξ U hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρA : ∀ f, ρ f ∈ Algebra.adjoin o (Set.range fun j => x j / x c)` using `fun f => (T.ring c hc _).2 fun p hp => ⟨_, genMap_germ_eq U hg p ((hmem _).2 ⟨p.2, hp⟩) f⟩`. Establish `hsurj : ∀ a ∈ Algebra.adjoin o (Set.range fun j => x j / x c), ∃ f, ρ f = a` using `fun a ha => exists_secVal_eq hU hg hs a fun q h hq => (T.ring c hc a).1 ha _ (hin q h hq)`. Set `ρ' : Γ(X, U) →+* Algebra.adjoin o (Set.range fun j => x j / x c)` to `ρ.codRestrict _ hρA`. Establish `hρ' : ∀ f, ((ρ' f : Algebra.adjoin o (Set.range fun j => x j / x c)) : Ω) = ρ f` using `fun _ => rfl`. Establish `key : ∀ (y : PrimeSpectrum Γ(X, U)) (h : genPt ξ ⤳ hU.fromSpec y) (f : Γ(X, U)), f ∉ y.asIdeal ↔ unitAt ξ ⟨hU.fromSpec y, h⟩ (ρ f)` using `fun y h f => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `fromSpec_mem hU y`. Rewrite using `[notMem_iff_isUnit_germ hU y hq f, ← genMap_germ_eq U hg ⟨_, h⟩ hq f]`. Conclude with `isUnit_iff_unitAt ⟨_, h⟩ (T.gen.inj _) _`. Set `y : PrimeSpectrum Γ(X, U)` to `⟨I.comap ρ', inferInstance⟩`. Establish `hy` using `fromSpec_mem hU y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨hU.fromSpec y, hs _ hy⟩, ⟨hin _ _ hy, fun s => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `hsurj s s.2`. Establish `hfs : ρ' f = s` using `Subtype.ext hf`. Use `key y (hs _ hy) f` as an intermediate fact. Rewrite `this` using `[hf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← this, ← hfs]`. Both sides reduce to the same expression. Introduce and unpack `⟨p, hp⟩ ⟨hpc, hpI⟩`. Establish `hpU : p ∈ U` using `(hmem p).2 ⟨hp, hpc⟩`. Take `⟨y', rfl⟩ : ∃ y', hU.fromSpec y' = p` from `⟨_, hU.fromSpec_primeIdealOf ⟨p, hpU⟩⟩`.
-
-Establish `hyy : y' = y` using `PrimeSpectrum.ext (Ideal.ext fun f => not_iff_not.1 ((key y' hp f).trans (hpI (ρ' f)).symm))`. Conclude with `Subtype.ext (congrArg (fun t => hU.fromSpec t) hyy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_point_of_prime : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (o : Type)
     [CommRing o] [Algebra o Ω] (κ : Type) (x : κ → Ω), CoordTie o ξ x → ∀ (c : κ), x c ≠ 0 →

@@ -18,21 +18,21 @@ noncomputable abbrev cen : S ⊗[ℚ] F →ₐ[S] S ⊗[ℚ] B :=
   Algebra.TensorProduct.map (AlgHom.id S S) (IsScalarTower.toAlgHom ℚ F B)
 
 /- English proof (translation)
-Use `haveI hcz : CharZero S := charZero_of_injective_algebraMap (algebraMap ℚ S).injective`. Take `rfl : ‹Algebra ℚ S› = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Take `⟨ι, _, L, _, _, _, Φ, ψ, hΦ1, hΦ2⟩` from `GlobalTheory.tensor_decomp_factorwise S F B`. Establish `key : ∀ i (j : Fin n), ψ (c j) i = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `K` to `L i`. Set `e : K ⊗[F] B` to `(1 : K) ⊗ₜ[F] x₀`. Set `hp : K[X]` to `∑ j : Fin n, C (ψ (c j) i) * X ^ (j : ℕ)`. Establish `hΦw : Φ (∑ j, cen S F B (c j) * ((1 : S) ⊗ₜ[ℚ] x₀) ^ (j : ℕ)) i = aeval e hp`. Simplify using `only [hp, map_sum, map_mul, map_pow, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply, hΦ2, hΦ1, aeval_C, aeval_X, e]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨m, hm⟩` from `h`. Establish `hnil : aeval e (hp ^ (m + 1)) = 0`. Rewrite using `[map_pow, ← hΦw, pow_succ]`. Use `congrArg (fun w => w i) (congrArg Φ hm)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_pow, map_zero, Pi.pow_apply, Pi.zero_apply] at this`. Rewrite using `[this, zero_mul]`. Establish `hmin : minpoly K e = (minpoly F x₀).map (algebraMap F K)` using `GlobalTheory.SkNoFactor.minpoly_one_tmul K x₀`. Establish `hd1 : minpoly K e ∣ hp ^ (m + 1)` using `minpoly.dvd K e hnil`. Rewrite `hd1` using `[hmin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd2 : (minpoly F x₀).map (algebraMap F K) ∣ hp` using `(hsep.map.squarefree.dvd_pow_iff_dvd (Nat.succ_ne_zero m)).1 hd1`. Establish `hdeglt : hp.degree < ((minpoly F x₀).map (algebraMap F K)).degree`. Establish `h1 : hp.degree < n` using `Polynomial.degree_sum_fin_lt _`. Rewrite using `[Polynomial.degree_map, Polynomial.degree_eq_natDegree (minpoly.ne_zero (IsIntegral.of_finite F x₀)), hdeg]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : hp = 0` using `Polynomial.eq_zero_of_dvd_of_degree_lt hd2 hdeglt`. Introduce `j`. Use `congrArg (fun q : K[X] => q.coeff (j : ℕ)) hz` as an intermediate fact. Simplify using `only [hp, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at this`. Rewrite `this` using `[Finset.sum_eq_single j]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Conclude with `fun h' => hb (Fin.ext h'.symm)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j`. Apply `ψ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[key i j]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isNilpotent (n : ℕ) (x₀ : B) (hsep : (minpoly F x₀).Separable)
     (hdeg : (minpoly F x₀).natDegree = n) (c : Fin n → S ⊗[ℚ] F)
@@ -95,7 +95,7 @@ noncomputable abbrev trL : S ⊗[ℚ] B →ₗ[S] S :=
   (LinearMap.trace S (S ⊗[ℚ] B)).comp (Algebra.lmul S (S ⊗[ℚ] B)).toLinearMap
 
 /- English proof (translation)
-Simplify using `only [trL, LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, map_mul]`. Rewrite using `[LinearMap.trace_mul_comm, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trL_conj (g : (S ⊗[ℚ] B)ˣ) (u : S ⊗[ℚ] B) :
     trL S B ((g : S ⊗[ℚ] B) * u * ((g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B)) = trL S B u := by
@@ -103,11 +103,11 @@ theorem trL_conj (g : (S ⊗[ℚ] B)ˣ) (u : S ⊗[ℚ] B) :
   rw [LinearMap.trace_mul_comm, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s f`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul s' b`. Simplify using `only [cen, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, IsScalarTower.coe_toAlgHom']`. Use `show (s ⊗ₜ[ℚ] algebraMap F B f) * (s' ⊗ₜ[ℚ] b) = (s' ⊗ₜ[ℚ] b) * (s ⊗ₜ[ℚ] algebraMap F B f)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_comm s s', Algebra.commutes]`. Consider the case `add a b ha hb => exact Commute.add_right ha hb`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Commute.add_left ha hb`.
+A detailed English derivation is pending.
 -/
 theorem cen_comm (z : S ⊗[ℚ] F) (y : S ⊗[ℚ] B) : Commute (cen S F B z) y := by
   induction z using TensorProduct.induction_on with
@@ -124,21 +124,19 @@ theorem cen_comm (z : S ⊗[ℚ] F) (y : S ⊗[ℚ] B) : Commute (cen S F B z) y
   | add a b ha hb => rw [map_add]; exact Commute.add_left ha hb
 
 /- English proof (translation)
-Use `haveI hcz : CharZero S := charZero_of_injective_algebraMap (algebraMap ℚ S).injective`. Take `rfl : ‹Algebra ℚ S› = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Use `haveI : Module.Finite ℚ B := Module.Finite.trans F B`. Use `GlobalTheory.SkNoFactor.exists_unit_conj_baseChange S F B n hn x₀ y hsep hdeg hP ?_` and prove the remaining obligations. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set e₀ : S ⊗[ℚ] B := (1 : S) ⊗ₜ[ℚ] x₀ with he₀`. Set `ev : S ⊗[ℚ] B → (S ⊗[ℚ] F)[X] →+* S ⊗[ℚ] B` to `fun u => Polynomial.eval₂RingHom' (cen S F B).toRingHom u (fun a => cen_comm S F B a u)`. Establish `hev : ∀ u (H : (S ⊗[ℚ] F)[X]), ev u H = ∑ k ∈ Finset.range (H.natDegree + 1), cen S F B (H.coeff k) * u ^ k`. Introduce `u H`. Use `show Polynomial.eval₂ _ u H = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.eval₂_eq_sum_range]`. Both sides reduce to the same expression. Establish `htr : ∀ H : (S ⊗[ℚ] F)[X], trL S B (ev y H) = trL S B (ev e₀ H)`. Introduce `H`. Rewrite using `[hev, hev, map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun k _ => hT _ k`. Set `R : (S ⊗[ℚ] F)[X]` to `∑ j : Fin n, C (c j) * X ^ (j : ℕ)`. Establish `hevR : ∀ u, ev u R = ∑ j : Fin n, cen S F B (c j) * u ^ (j : ℕ)`. Introduce `u`. Simplify using `only [R, map_sum, map_mul, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show Polynomial.eval₂ _ u (C (c j)) * Polynomial.eval₂ _ u X ^ (j : ℕ) = _`. Rewrite using `[Polynomial.eval₂_C, Polynomial.eval₂_X]`. Both sides reduce to the same expression. Establish `hyR : ev y R = 0` using `by rw [hevR]; exact hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set w := ev e₀ R with hw`. Establish `hpow : ∀ k, 1 ≤ k → LinearMap.trace S (S ⊗[ℚ] B) ((Algebra.lmul S (S ⊗[ℚ] B) w) ^ k) = 0`. Introduce `k hk`. Rewrite using `[← map_pow, hw, ← map_pow]`. Use `htr (R ^ k)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[map_pow, hyR, zero_pow (by omega), map_zero]`. Conclude with `this.symm`. Take `⟨m, hm⟩` from `GlobalTheory.UnipNormalTrace.isNilpotent_of_trace_pow_eq_zero _ hpow`. Establish `hwn : IsNilpotent w`. Use `⟨m, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg (fun f : Module.End S (S ⊗[ℚ] B) => f 1) hm` as an intermediate fact. Rewrite `this` using `[← map_pow]`. Simplify using `using this`. Rewrite `hwn` using `[hw, hevR]`. Conclude with `eq_zero_of_isNilpotent S F B n x₀ hsep hdeg c hwn`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_traces [Algebra.IsCentral F B] [IsSimpleRing B] (n : ℕ) (hn : Module.finrank F B = n ^ 2)
     (x₀ : B) (hsep : (minpoly F x₀).Separable) (hdeg : (minpoly F x₀).natDegree = n) (y : S ⊗[ℚ] B)
@@ -201,7 +199,7 @@ variable (S F B : Type) [Field S] [Algebra ℚ S] [Field F] [Algebra ℚ F] [Fin
   [Algebra F B] [Algebra ℚ B] [IsScalarTower ℚ F B] [FiniteDimensional F B]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_pow_eq_pow_val, conj_pow]`. Simplify using `[Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_val_pow (g e : (S ⊗[ℚ] B)ˣ) (i : ℕ) :
     (((g * e * g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B)) ^ i =
@@ -210,7 +208,7 @@ theorem conj_val_pow (g e : (S ⊗[ℚ] B)ˣ) (i : ℕ) :
   simp [Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, (cen_comm S F B z g).eq, mul_assoc (g : S ⊗[ℚ] B)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cen_mul_conj (z : S ⊗[ℚ] F) (g : (S ⊗[ℚ] B)ˣ) (u : S ⊗[ℚ] B) :
     cen S F B z * ((g : S ⊗[ℚ] B) * u * ((g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B)) =
@@ -218,29 +216,27 @@ theorem cen_mul_conj (z : S ⊗[ℚ] F) (g : (S ⊗[ℚ] B)ˣ) (u : S ⊗[ℚ] B
   rw [← mul_assoc, ← mul_assoc, (cen_comm S F B z g).eq, mul_assoc (g : S ⊗[ℚ] B)]
 
 /- English proof (translation)
-Simplify using `[cen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_tmul_eq_cen (f : F) : (1 : S) ⊗ₜ[ℚ] algebraMap F B f = cen S F B ((1 : S) ⊗ₜ[ℚ] f) := by
   simp [cen]
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (S ⊗[ℚ] B) := moduleTopology S (S ⊗[ℚ] B)`. Use `haveI : IsModuleTopology S (S ⊗[ℚ] B) := ⟨rfl⟩`. Use `haveI : Module.Finite ℚ B := Module.Finite.trans F B`. Use `haveI : IsTopologicalRing (S ⊗[ℚ] B) := IsModuleTopology.isTopologicalRing S (S ⊗[ℚ] B)`. Set `Pv : S ⊗[ℚ] B → S ⊗[ℚ] B` to `fun y => ∑ i ∈ Finset.range (n + 1), ((1 : S) ⊗ₜ[ℚ] algebraMap F B ((minpoly F x₀).coeff i)) * y ^ i`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPe : Pv (e : S ⊗[ℚ] B) = 0`. Establish `h0 : Polynomial.aeval x₀ (minpoly F x₀) = 0` using `minpoly.aeval F x₀`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range, hdeg]`. Establish `h1` using `congrArg (fun b : B => (1 : S) ⊗ₜ[ℚ] b) h0`. Simplify using `only [TensorProduct.tmul_zero, TensorProduct.tmul_sum] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Simplify using `only [Pv, he]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.tmul_pow, one_pow, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Set `b` to `Module.finBasis S (S ⊗[ℚ] B)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hset : {y : (S ⊗[ℚ] B)ˣ | ∃ g : (S ⊗[ℚ] B)ˣ, y = g * e * g⁻¹} = (⋂ i, {y : (S ⊗[ℚ] B)ˣ | b.coord i (Pv (y : S ⊗[ℚ] B)) = 0}) ∩ ⋂ (z : S ⊗[ℚ] F) (k : ℕ), {y : (S ⊗[ℚ] B)ˣ | trL S B (cen S F B z * (y : S ⊗[ℚ] B) ^ k) = trL S B (cen S F B z * (e : S ⊗[ℚ] B) ^ k)}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hPy : Pv ((g * e * g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B) = 0`. Establish `: Pv ((g * e * g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B) = (g : S ⊗[ℚ] B) * Pv (e : S ⊗[ℚ] B) * ((g⁻¹ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B)`. Simplify using `only [Pv, conj_val_pow, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_tmul_eq_cen, cen_mul_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hPe, mul_zero, zero_mul]`. Use `⟨fun i => by rw [hPy, map_zero], fun z k => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_val_pow, cen_mul_conj, trL_conj]`. Introduce and unpack `⟨hP, hT⟩`. Establish `hP' : Pv (y : S ⊗[ℚ] B) = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `b.forall_coord_eq_zero_iff.1` to reduce the goal to its premises. Conclude with `hP`. Rewrite `hT` using `[he]`. Take `⟨g, hg⟩` from `exists_conj_of_traces S F B n hn x₀ hsep hdeg (y : S ⊗[ℚ] B) hP' hT`. Use `⟨g, Units.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, he, hg, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[hset]`. Use `IsClosed.inter (isClosed_iInter fun i => ?_) (isClosed_iInter fun z => isClosed_iInter fun k => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun y : (S ⊗[ℚ] B)ˣ => b.coord i (Pv (y : S ⊗[ℚ] B))`. Use `(IsModuleTopology.continuous_of_linearMap (b.coord i)).comp ?_` and prove the remaining obligations.
-
-Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul (Units.continuous_val.pow j)`. Conclude with `isClosed_eq hc continuous_const`. Establish `hc : Continuous fun y : (S ⊗[ℚ] B)ˣ => trL S B (cen S F B z * (y : S ⊗[ℚ] B) ^ k)` using `(IsModuleTopology.continuous_of_linearMap (trL S B)).comp (continuous_const.mul (Units.continuous_val.pow k))`. Conclude with `isClosed_eq hc continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_conjClass [TopologicalSpace S] [IsTopologicalRing S] [T2Space S] [Algebra.IsCentral F B]
     [IsSimpleRing B] (n : ℕ) (hn : Module.finrank F B = n ^ 2) (x₀ : B) (hsep : (minpoly F x₀).Separable)

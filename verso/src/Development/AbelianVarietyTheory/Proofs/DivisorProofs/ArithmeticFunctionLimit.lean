@@ -42,15 +42,15 @@ def wtCls : wtSub p →+ IsomClass p :=
 variable {p}
 
 /- English proof (translation)
-The claim follows from `(icls_eq_iff.2 (isometric_tens_fnB M g.1 g.2.1 g.2.2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem icls_raise (M : HermLB p) (g : wtSub p) : (M.raise g.1 g.2.1 g.2.2).icls = M.icls + wtCls p g :=
   (icls_eq_iff.2 (isometric_tens_fnB M g.1 g.2.1 g.2.2)).symm
 
 /- English proof (translation)
-Use `choose u hu hc hi hf using h`. Set `g : ι → ℝ → wtSub p` to `fun i R => ⟨u i R, hu i R, hc i R⟩`. Set `G : ℝ → wtSub p` to `fun R => ∑ i, n i • g i R`. Use `⟨fun R => (G R).1, fun R => (G R).2.1, fun R => (G R).2.2, fun R => icls_eq_iff.1 ?_, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[icls_raise, icls_comb, icls_comb, map_sum, ← Finset.sum_add_distrib]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← smul_add, ← icls_raise, icls_eq_iff.2 (hi i R)]`. Establish `H` using `(famAt_pi (w := fun R z i => u i R σ z) (w₀ := fun _ _ => 0) fun i => hf i σ y).comp_contDiff (Ψ := fun v : ι → ℝ => ∑ i, (n i : ℝ) * v i) (ContDiff.sum fun i _ => contDiff_const.mul (contDiff_apply ℝ ℝ i))`. Use `H.congr (.of_forall fun x => ?_) (.of_forall fun z => by simp)` and prove the remaining obligations. Simplify using `[G, g, AddSubgroup.val_finset_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lFam_comb {t : ℝ → ℝ} {ι : Type} [Fintype ι] {L : ℝ → ι → HermLB p} {L₀ : ι → HermLB p}
     (h : ∀ i, LFam t (fun R => L R i) (L₀ i)) (n : ι → ℤ) : LFam t (fun R => comb (L R) n) (comb L₀ n) := by
@@ -70,9 +70,7 @@ theorem lFam_comb {t : ℝ → ℝ} {ι : Type} [Fintype ι] {L : ℝ → ι →
 end Cls
 
 /- English proof (translation)
-Set `S : Submodule ℝ (MvPolynomial ι ℝ)` to `{ carrier := {P | Tendsto (fun R => Φ R P) atTop (𝓝 (Φ₀ P))} add_mem' := fun {a b} ha hb => by simpa only [Set.mem_setOf_eq, map_add] using Tendsto.add ha hb zero_mem' := by simpa only [Set.mem_setOf_eq, map_zero] using tendsto_const_nhds smul_mem' := fun c a ha => by simpa only …`. Establish `hS : S = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hle⟩` from `S.exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 hne)`. Conclude with `hf (ArInt.Model.eq_zero_of_pow d f (fun n => hle (h n)) fun P e he hP => hle (h' P e he hP))`.
-
-Conclude with `(hS.ge Submodule.mem_top : P ∈ S)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tendsto_of_pow {ι : Type} [Fintype ι] (d : ℕ) (Φ : ℝ → MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (Φ₀ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (h : ∀ n : ι → ℤ, Tendsto (fun R => Φ R (ArInt.lin (fun i => (n i : ℝ)) ^ d)) atTop
@@ -92,7 +90,7 @@ theorem tendsto_of_pow {ι : Type} [Fintype ι] (d : ℕ) (Φ : ℝ → MvPolyno
   exact (hS.ge Submodule.mem_top : P ∈ S)
 
 /- English proof (translation)
-Introduce `H k _ X _ p D hX hG t ht ι _ L L₀ hL Φ Φ₀ hΦ hΦ₀`. Use `tendsto_of_pow (D + 1) Φ Φ₀ (fun n => ?_) fun P e he hP => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.self_intersection_continuous_limit H k X p D hX hG t ht _ _ (lFam_comb hL n) _ _ (fun R => (hΦ R).1 n) (hΦ₀.1 n)`. Simplify using `only [fun R => (hΦ R).2 P e he hP, hΦ₀.2 P e he hP]`. Conclude with `tendsto_const_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_isArFun : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (ι : Type) [Fintype ι] (L : ℝ → ι → HermLB p) (L₀ : ι → HermLB p), (∀ i, LFam t (fun R => L R i) (L₀ i)) → ∀ (Φ : ℝ → MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (Φ₀ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), (∀ R, IsArFun (L R) D (Φ R)) → IsArFun L₀ D Φ₀ → ∀ P, Tendsto (fun R => Φ R P) atTop (𝓝 (Φ₀ P)) := by
   intro H k _ X _ p D hX hG t ht ι _ L L₀ hL Φ Φ₀ hΦ hΦ₀

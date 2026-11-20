@@ -15,7 +15,7 @@ namespace GlobalTheory.SemiAbExtDomain
 variable {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.semiAbelianHomExtension_holds.fractionField R K G H hG hH f`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_hom_extension_generic (K : Type) [Field K] [Algebra R K] [IsFractionRing R K]
     (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
@@ -25,7 +25,7 @@ theorem existsUnique_hom_extension_generic (K : Type) [Field K] [Algebra R K] [I
   GlobalTheory.semiAbelianHomExtension_holds.fractionField R K G H hG hH f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.semiAbelianHomExtension_holds.generic_existsUnique_iso (GlobalTheory.IsNormalScheme.pred _) (.fractionField R K) hG hH e`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_extension_generic (K : Type) [Field K] [Algebra R K] [IsFractionRing R K]
     (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)

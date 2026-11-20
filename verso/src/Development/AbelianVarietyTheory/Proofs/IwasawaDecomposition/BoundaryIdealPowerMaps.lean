@@ -14,9 +14,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y BY k ρ hρ hamp _`. Take `⟨n, hn, hg⟩` from `GlobalTheory.GenPow.gen_pow_ideal E H D l Xo c X Y BY k ρ hρ hamp`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.GenPush.isProper_of_jQ X Y ρ hρ` as an intermediate fact. Rewrite using `[Scheme.IdealSheafData.map_comp, Scheme.IdealSheafData.comap_comp, GlobalTheory.LocClosure.comap_map_pullback_fst_localization (nonZeroDivisors (𝓞 c.F)) X.X X.s]`. Conclude with `GlobalTheory.IdealPush.comap_map_eq_of_locally_generated ρ _ (GlobalTheory.GenPush.main E H D l Xo c X Y ρ hρ) hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relGen_multiple : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : GlobalTheory.EffCartierData Y.X) (k : ℕ) (ρ : gen Y ⟶ gen X),

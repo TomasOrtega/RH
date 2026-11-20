@@ -18,25 +18,21 @@ noncomputable section
 namespace GlobalTheory.SeesawReduced
 
 /- English proof (translation)
-Introduce `R _ _ X f M hM hSm hPr hGI hPB hD p`. Use `haveI := hPr`. Use `haveI := hGI`. Establish `hP : Nonempty (Perf f M)` using `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj R X f hSm hPB M hM`. Establish `hQ : Nonempty (Perf f (pw M (-1)))` using `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj R X f hSm hPB _ (isLB_pw hM (-1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `GlobalTheory.TrivLocus.isClosed_trivLocus R X f M hM hP hQ hPr hGI`. Establish `hAll` using `hD.closure_eq.symm.trans hC.closure_eq`. Establish `hmem : ∀ q : PrimeSpectrum R, q ∈ {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) ∧ Triv (M.pull π)}`. Introduce `q`. Rewrite using `[← hAll]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_univ q`. Take `⟨K, _, g, X₁, π₁, f₁, hk, hpb, htr⟩` from `hmem p`. Take `⟨K₀, _, g₀, X₀, π₀, f₀, hk₀, hpb₀, hbij, htr₀⟩` from `GlobalTheory.GeomFibre.exists_field_pullback_appTop_bijective_and_triv R X f M hM hPr hGI K g X₁ π₁ f₁ hpb htr`. Take `⟨r, I, hr, -, hI⟩` from `GlobalTheory.AbLaw.Seesaw.seesaw R X f M hM hP inferInstance inferInstance K₀ g₀ X₀ π₀ f₀ hpb₀ hbij htr₀`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `hrp`. Apply `hr` to reduce the goal to its premises. Establish `hrk : r ∈ RingHom.ker g₀` using `by rw [hk₀, hk]; exact hrp`. Conclude with `RingHom.mem_ker.1 hrk`. Establish `hvan : ∀ x ∈ I, x * r = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Apply `IsReduced.eq_zero` to reduce the goal to its premises. Rewrite using `[← mem_nilradical, nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `J hJ`. Set `q : PrimeSpectrum R` to `⟨J, hJ⟩`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hrJ : r ∈ J`. Conclude with `J.mul_mem_left x hrJ`. Apply `J.mul_mem_right r` to reduce the goal to its premises. Take `⟨L, _, gq, Xq, πq, fq, hkq, hpbq, htrq⟩` from `hmem q`. Establish `hu : IsUnit (gq r)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hrk : r ∈ RingHom.ker gq` using `RingHom.mem_ker.2 h0`. Rewrite `hrk` using `[hkq]`. Conclude with `hrJ hrk`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((hI L gq Xq πq fq hpbq hu).1 htrq) hx` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker]`. Use `show x ∈ q.asIdeal`. Rewrite using `[← hkq]`. Conclude with `this`.
-
-Introduce `R' _ g' X' π f' hpb' hu'`. Use `(hI R' g' X' π f' hpb' hu').2 ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[RingHom.mem_ker]`. Establish `h0 : g' x * g' r = 0` using `by rw [← map_mul, hvan x hx, map_zero]`.
-
-Conclude with `(hu'.mul_left_eq_zero).1 h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem triv_locally_of_dense : ∀ (R : Type) [CommRing R] [IsReduced R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB → Smooth f → IsProper f → GeometricallyIntegral f → IsProjBy f → Dense {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) ∧ Triv (M.pull π)} → ∀ p : PrimeSpectrum R, ∃ r : R, r ∉ p.asIdeal ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R')), IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) → IsUnit (g r) → Triv (M.pull π) := by
   intro R _ _ X f M hM hSm hPr hGI hPB hD p

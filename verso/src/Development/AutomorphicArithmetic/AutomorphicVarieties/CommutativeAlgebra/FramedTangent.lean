@@ -15,7 +15,7 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommRing R] [Algebr
   {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (i : B →ₐ[O] R)
 
 /- English proof (translation)
-The claim follows from `(co_res O).1 res O (ResidueField O) x = x := by haveI := (co_res O).1 obtain ⟨a, rfl⟩ := residue_surjective x exact (res O (ResidueField O)).commutes a`.
+A detailed English derivation is pending.
 -/
 private theorem res_k (x : ResidueField O) :
     haveI := (co_res O).1
@@ -25,7 +25,7 @@ private theorem res_k (x : ResidueField O) :
   exact (res O (ResidueField O)).commutes a
 
 /- English proof (translation)
-The claim follows from `(co_res O).2 res O (DualNumber (ResidueField O)) x = x.fst := by haveI := (co_res O).1 haveI := (co_res O).2 rw [← res_map (TrivSqZeroExt.fstHom O (ResidueField O) (ResidueField O)), res_k] rfl`.
+A detailed English derivation is pending.
 -/
 private theorem res_dual (x : DualNumber (ResidueField O)) :
     haveI := (co_res O).2
@@ -36,35 +36,33 @@ private theorem res_dual (x : DualNumber (ResidueField O)) :
   rfl
 
 /- English proof (translation)
-Use `haveI := (co_res O).2`. Rewrite using `[← res_dual, res_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fst_map (f : R →ₐ[O] DualNumber (ResidueField O)) (y : R) : (f y).fst = res O R y := by
   haveI := (co_res O).2
   rw [← res_dual, res_map]
 
 /- English proof (translation)
-Rewrite using `[map_mul, DualNumber.snd_mul, fst_map, fst_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem snd_mul (f : R →ₐ[O] DualNumber (ResidueField O)) (y z : R) :
     (f (y * z)).snd = res O R y * (f z).snd + (f y).snd * res O R z := by
   rw [map_mul, DualNumber.snd_mul, fst_map, fst_map]
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem snd_alg (f : R →ₐ[O] DualNumber (ResidueField O)) (a : O) : (f (algebraMap O R a)).snd = 0 := by
   rw [AlgHom.commutes]; rfl
 
 /- English proof (translation)
-Establish `: Ideal.span S ⊔ (maximalIdeal B).map i ⊔ maximalIdeal R ^ 2 ≤ RingHom.ker f`. Use `sup_le (sup_le (Ideal.span_le.2 fun s hs => ?_) (Ideal.map_le_iff_le_comap.2 fun b hb => ?_)) ?_` and prove the remaining obligations. Use `show f s = 0`. Use `ext`. Rewrite using `[fst_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(res_eq_zero_iff O R s).2 (hS hs)`. Conclude with `h s hs`. Use `show f (i b) = 0`. Use `ext`. Rewrite using `[fst_map, res_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(res_eq_zero_iff O B b).2 hb`. Conclude with `hf b`. Rewrite using `[sq, Ideal.mul_le]`. Introduce `a ha b hb`. Use `show f (a * b) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[← res_eq_zero_iff O]`. Use `ext`. Rewrite using `[fst_map, map_mul, ha, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[snd_mul, ha, hb]`.
-
-Simplify using the standard rewrite rules. Establish `h2 : f y = 0` using `this hy`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem snd_zero (f : R →ₐ[O] DualNumber (ResidueField O)) (hf : ∀ b, (f (i b)).snd = 0) (S : Set R)
     (hS : S ⊆ maximalIdeal R) (h : ∀ s ∈ S, (f s).snd = 0) (y : R)
@@ -90,19 +88,13 @@ private theorem snd_zero (f : R →ₐ[O] DualNumber (ResidueField O)) (hf : ∀
   rw [h2]; rfl
 
 /- English proof (translation)
-Use `co_span O R B i S hS fun f f' h1 h2 => ?_` and prove the remaining obligations. Set `g : R →ₐ[O] DualNumber (ResidueField O)` to `{ toFun := fun y => (res O R y, (f y).snd - (f' y).snd) map_one' := by`. Use `ext`. Conclude with `map_one (res O R)`. Use `show (f 1).snd - (f' 1).snd = 0`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun y z => by`. Use `ext`. Conclude with `map_mul (res O R) y z`. Use `show (f (y * z)).snd - (f' (y * z)).snd = res O R y * ((f z).snd - (f' z).snd) + ((f y).snd - (f' y).snd) * res O R z`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[snd_mul, snd_mul]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_zero' := by`. Use `ext`. Conclude with `map_zero (res O R)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (f 0).snd - (f' 0).snd = 0`. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun y z => by`. Use `ext`. Conclude with `map_add (res O R) y z`.
-
-Use `show (f (y + z)).snd - (f' (y + z)).snd = ((f y).snd - (f' y).snd) + ((f z).snd - (f' z).snd)`. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `commutes' := fun a => by`. Use `ext`.
-
-Conclude with `(res O R).commutes a`. Use `show (f (algebraMap O R a)).snd - (f' (algebraMap O R a)).snd = 0`. Rewrite using `[snd_alg, snd_alg, sub_zero] }`. Use `H g (fun b => by show (f (i b)).snd - (f' (i b)).snd = 0` as an intermediate fact. Rewrite using `[show f (i b) = f' (i b) from DFunLike.congr_fun h1 b, sub_self])`.
-
-Use `fun s hs => by show (f s).snd - (f' s).snd = 0`. Rewrite using `[h2 s hs, sub_self]`. Use extensionality with `y`. Rewrite using `[fst_map, fst_map]`. Conclude with `sub_eq_zero.1 (this y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_of (S : Set R) (hS : S ⊆ maximalIdeal R)
     (H : ∀ f : R →ₐ[O] DualNumber (ResidueField O), (∀ b, (f (i b)).snd = 0) → (∀ s ∈ S, (f s).snd = 0) →
@@ -148,15 +140,13 @@ private theorem span_of (S : Set R) (hS : S ⊆ maximalIdeal R)
   · exact sub_eq_zero.1 (this y)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional k H := FiniteDimensional.of_injective (LinearMap.pi l) ((injective_iff_map_eq_zero _).2 fun x hx => hl x fun s => congrFun hx s)`. Take `⟨κ, a, ha, h1, h2⟩` from `exists_linearIndependent' k l`. Establish `h3 : Submodule.span k (Set.range l) = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span k (Set.range l))]`. Establish `: (Submodule.span k (Set.range l)).dualCoannihilator = ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_dualCoannihilator]`. Conclude with `hl x fun s => hx _ (Submodule.subset_span ⟨s, rfl⟩)`. Rewrite using `[this, Submodule.dualAnnihilator_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : Module.Basis κ k (Module.Dual k H)` to `Module.Basis.mk h2 (by rw [h1, h3])`. Establish `hb : ∀ t, b t = l (a t)` using `fun t => Module.Basis.mk_apply _ _ t`. Use `⟨κ, a, ha, ?_, fun x hx => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← Subspace.dual_finrank_eq, Module.finrank_eq_nat_card_basis b]`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ`. Establish `: Module.Dual.eval k H x = 0` using `b.ext fun t => by rw [hb]; exact hx t`. Conclude with `DFunLike.congr_fun this φ`. Take `⟨x, hx⟩` from `(Module.evalEquiv k H).surjective (b.coord t)`. Establish `: ∀ t', l (a t') x = b.coord t (b t')` using `fun t' => by rw [← hx, hb]; rfl`.
-
-Use `⟨x, by simp [this], fun t' h => ?_⟩` and prove the remaining obligations. Simplify using `[this, Finsupp.single_apply, h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dual_basis {k H S : Type} [Field k] [AddCommGroup H] [Module k H] [Finite S]
     (l : S → Module.Dual k H) (hl : ∀ x, (∀ s, l s x = 0) → x = 0) :
@@ -189,29 +179,27 @@ private theorem dual_basis {k H S : Type} [Field k] [AddCommGroup H] [Module k H
     simp [this, Finsupp.single_apply, h]
 
 /- English proof (translation)
-Establish `h1` using `span_of i (Set.range z) (by rintro _ ⟨s, rfl⟩; exact hz s) fun f h h' => he f h fun s => h' _ ⟨s, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨S0, hS0⟩ : ∃ S0 : Finset S, maximalIdeal R ≤ Ideal.span (z '' S0) ⊔ (maximalIdeal B).map i ⊔ maximalIdeal R ^ 2 := by`. Establish `hfg : (Ideal.span (Set.range z)).FG` using `IsNoetherian.noetherian _`. Take `⟨T, hT, hT'⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Choose the witnesses or unpack the hypotheses as in `⟨S0, rfl⟩ : ∃ S0 : Finset S, T = S0.image z := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hT` using `[← Set.image_univ]`. Take `⟨S0, -, h⟩` from `Finset.subset_set_image_iff.1 hT`. Conclude with `⟨S0, h.symm⟩`. Use `⟨S0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.coe_image]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans (le_of_eq (by rw [Ideal.span, hT']))`. Establish `h2 : ∀ j x, (∀ s : {s : S0 // wt s = j}, l j s.1 x = 0) → x = 0` using `fun j x hx => by`. Take `⟨f, hf, hf'⟩` from `hc j x`. Use `hb j x fun s => ?_` and prove the remaining obligations. Rewrite using `[← hf']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `snd_zero i f hf _ ?_ ?_ _ (hS0 (hz s))` and prove the remaining obligations. Introduce and unpack `_ ⟨s, -, rfl⟩`. Conclude with `hz s`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Rewrite using `[hf']`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : wt s = j`. Conclude with `hx ⟨⟨s, hs⟩, e⟩`. Conclude with `ha j s x e`. Use `choose κ a a1 a2 a3 a4 using fun j => dual_basis (fun s : {s : S0 // wt s = j} => l j s.1) (h2 j)`. Use `haveI : Finite (Σ j, κ j) := by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finite.of_injective (fun t : Σ j, κ j => (a t.1 t.2).1) ?_` and prove the remaining obligations. Introduce and unpack `⟨j, t⟩ ⟨j', t'⟩ e`. Establish `e' : (a j t).1 = (a j' t').1` using `e`. Take `rfl : j = j'` from `by rw [← (a j t).2, ← (a j' t').2, e']`. Rewrite using `[a1 j (Subtype.ext e')]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Σ j, κ j, Fintype.ofFinite _, fun t => (a t.1 t.2).1, ?_, fun c hcm t => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `span_of i _ (by rintro _ ⟨s, rfl⟩; exact hz _) fun f h h' => he f h fun s => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hd f h (wt s)`. Establish `: x = 0` using `a3 _ x fun t => (hx _ (a _ t).2).trans (h' _ ⟨⟨_, t⟩, rfl⟩)`. Rewrite using `[← hx s rfl, this, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, t⟩` from `t`. Take `⟨x, x1, x2⟩` from `a4 j t`. Take `⟨f, hf, hf'⟩` from `hc j x`. Establish `h3` using `snd_zero i f hf ∅ (Set.empty_subset _) (by simp) _ (by`. Rewrite using `[sup_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `Ideal.mem_sup_right hcm)`. Rewrite `h3` using `[map_sum, TrivSqZeroExt.snd_sum, Finset.sum_eq_single ⟨j, t⟩]`. Rewrite `h3` using `[map_smul, TrivSqZeroExt.snd_smul, Function.comp_apply, hf', x1, Algebra.smul_def, mul_one]`. Conclude with `(residue_eq_zero_iff _).1 h3`. Introduce and unpack `⟨j', t'⟩ - e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, TrivSqZeroExt.snd_smul, Function.comp_apply, hf']`. Distinguish the cases in `e' : j' = j`. Substitute `e'` using the available equality. Rewrite using `[x2 t' fun n => e (by rw [n]), smul_zero]`. Rewrite using `[ha j _ x (by rw [(a j' t').2]; exact e'), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using the standard rewrite rules. Rewrite using `[← a2]`. Use `(Nat.card_congr (Equiv.ofBijective (fun t : κ j => ⟨⟨j, t⟩, (a j t).2⟩) ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `t t' e`. Simplify using `using e`.
-
-Introduce and unpack `⟨⟨j', t⟩, e⟩`. Take `rfl : j' = j` from `(a j' t).2.symm.trans e`. Conclude with `⟨t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem abstract {S X : Type} (z : S → R) (hz : ∀ s, z s ∈ maximalIdeal R) (wt : S → X) (H : X → Type)
     [∀ j, AddCommGroup (H j)] [∀ j, Module (ResidueField O) (H j)]
@@ -311,7 +299,7 @@ private theorem snd_mk (A B : Matrix ι ι k) : (mk A B).map snd = B := rfl
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `congrFun (congrFun h1 a) b`. Conclude with `congrFun (congrFun h2 a) b`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem mext {M M' : Matrix ι ι (DualNumber k)} (h1 : M.map fst = M'.map fst) (h2 : M.map snd = M'.map snd) :
     M = M' := by
@@ -321,7 +309,7 @@ private theorem mext {M M' : Matrix ι ι (DualNumber k)} (h1 : M.map fst = M'.m
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mfst_mul (M M' : Matrix ι ι (DualNumber k)) : (M * M').map fst = M.map fst * M'.map fst := by
   ext a b
@@ -329,7 +317,7 @@ private theorem mfst_mul (M M' : Matrix ι ι (DualNumber k)) : (M * M').map fst
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, snd_sum, Finset.sum_add_distrib, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem msnd_mul (M M' : Matrix ι ι (DualNumber k)) :
     (M * M').map snd = M.map fst * M'.map snd + M.map snd * M'.map fst := by
@@ -338,7 +326,7 @@ private theorem msnd_mul (M M' : Matrix ι ι (DualNumber k)) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mfst_one : (1 : Matrix ι ι (DualNumber k)).map fst = 1 := by
   ext a b
@@ -346,7 +334,7 @@ private theorem mfst_one : (1 : Matrix ι ι (DualNumber k)).map fst = 1 := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem msnd_one : (1 : Matrix ι ι (DualNumber k)).map snd = 0 := by
   ext a b
@@ -354,9 +342,9 @@ private theorem msnd_one : (1 : Matrix ι ι (DualNumber k)).map snd = 0 := by
 
 omit [Fintype ι] [DecidableEq ι] [CommRing k] in
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `: ∀ᶠ y in nhds x, ∀ a b, c y a b = c x a b`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun a b => (IsLocallyConstant.iff_eventually_eq _).1 (h a b) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `this.mono fun y hy => Matrix.ext hy`.
+A detailed English derivation is pending.
 -/
 private theorem lc_mat [Finite ι] {Γ : Type} [TopologicalSpace Γ] {c : Γ → Matrix ι ι k}
     (h : ∀ a b, IsLocallyConstant fun s => c s a b) : IsLocallyConstant c := by
@@ -374,7 +362,7 @@ private def mask (j : X) (Y : Matrix ι ι k) : Matrix ι ι k := Matrix.of fun 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases e : w a - w b = j <;> simp [mask, e]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mask_add (j : X) (Y Z : Matrix ι ι k) : mask w j (Y + Z) = mask w j Y + mask w j Z := by
   ext a b
@@ -382,7 +370,7 @@ private theorem mask_add (j : X) (Y Z : Matrix ι ι k) : mask w j (Y + Z) = mas
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases e : w a - w b = j <;> simp [mask, e]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mask_sub (j : X) (Y Z : Matrix ι ι k) : mask w j (Y - Z) = mask w j Y - mask w j Z := by
   ext a b
@@ -390,7 +378,7 @@ private theorem mask_sub (j : X) (Y Z : Matrix ι ι k) : mask w j (Y - Z) = mas
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mask]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mask_zero (j : X) : mask w j (0 : Matrix ι ι k) = 0 := by
   ext a b
@@ -398,11 +386,11 @@ private theorem mask_zero (j : X) : mask w j (0 : Matrix ι ι k) = 0 := by
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mask, Matrix.mul_apply, of_apply]`. Use `split_ifs with e`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `n : w c = w b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by rw [n, e])]`. Simplify using `[hA c b n]`. Use `(Finset.sum_eq_zero fun c _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `n : w c = w b`. Rewrite using `[if_neg (by rw [n]; exact e), zero_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hA c b n]`.
+A detailed English derivation is pending.
 -/
 private theorem mask_mul (j : X) (Y : Matrix ι ι k) {A : Matrix ι ι k} (hA : ∀ a b, w a ≠ w b → A a b = 0) :
     mask w j (Y * A) = mask w j Y * A := by
@@ -420,11 +408,11 @@ private theorem mask_mul (j : X) (Y : Matrix ι ι k) {A : Matrix ι ι k} (hA :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mask, Matrix.mul_apply, of_apply]`. Use `split_ifs with e`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `n : w a = w c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by rw [← n, e])]`. Simplify using `[hA a c n]`. Use `(Finset.sum_eq_zero fun c _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `n : w a = w c`. Rewrite using `[if_neg (by rw [← n]; exact e), mul_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hA a c n]`.
+A detailed English derivation is pending.
 -/
 private theorem mul_mask (j : X) (Y : Matrix ι ι k) {A : Matrix ι ι k} (hA : ∀ a b, w a ≠ w b → A a b = 0) :
     mask w j (A * Y) = A * mask w j Y := by
@@ -443,7 +431,7 @@ private theorem mul_mask (j : X) (Y : Matrix ι ι k) {A : Matrix ι ι k} (hA :
 variable {O : Type} [CommRing O] [Algebra O k] {w} (Φ : FormData O w)
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `e : w a - w b = j`. Simplify using `[mask, e]`. Simplify using `[mask, e, hY.2 a b e]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mask_fix {j : X} {Y : Matrix ι ι k} (hY : Y ∈ Φ.gw k j) : mask w j Y = Y := by
   ext a b
@@ -452,15 +440,15 @@ private theorem mask_fix {j : X} {Y : Matrix ι ι k} (hY : Y ∈ Φ.gw k j) : m
   · simp [mask, e, hY.2 a b e]
 
 /- English proof (translation)
-Use `⟨⟨?_, fun a b e => by simp [mask, hY.2 a b e]⟩, fun a b e => by simp [mask, e]⟩` and prove the remaining obligations. Establish `hJ : ∀ a b, w a + w b ≠ Φ.c → Φ.JR k a b = 0` using `fun a b e => by`. Establish `: Φ.J a b = 0` using `by_contra fun n => e (Φ.hw a b n)`. Simplify using `[FormData.JR, this]`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `h` using `congrFun (congrFun hY.1 a) b`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, transpose_apply, Matrix.zero_apply, mask, of_apply] at h ⊢`. Distinguish the cases in `e : Φ.c - w a - w b = j`. Rewrite using `[← h]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun c _ => ?_`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `n : w c + w b = Φ.c`. Rewrite using `[if_pos (by rw [← e, ← n]; abel)]`. Simplify using `[hJ _ _ n]`. Distinguish the cases in `n : w a + w c = Φ.c`. Rewrite using `[if_pos (by rw [← e, ← n]; abel)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hJ _ _ n]`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero]`. Introduce `c _`. Distinguish the cases in `n : w a + w c = Φ.c`. Rewrite using `[if_neg (fun m => e (by rw [← m, ← n]; abel)), mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hJ _ _ n]`. Introduce `c _`. Distinguish the cases in `n : w c + w b = Φ.c`. Rewrite using `[if_neg (fun m => e (by rw [← m, ← n]; abel)), zero_mul]`. Simplify using `[hJ _ _ n]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mask_mem (j : X) {Y : Matrix ι ι k} (hY : Y ∈ Φ.g k) : mask w j Y ∈ Φ.gw k j := by
   refine ⟨⟨?_, fun a b e => by simp [mask, hY.2 a b e]⟩, fun a b e => by simp [mask, e]⟩
@@ -499,13 +487,13 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {ι X : Type} [Fintype ι] [Dec
   (Φ : FormData O w) [IsCO O (ResidueField O)] [IsCO O (DualNumber (ResidueField O))]
 
 /- English proof (translation)
-Establish `e0 : h.map (res O _) = h.map fst` using `by ext a b; exact res_dual _`. Establish `e1 : (Φ.JR (DualNumber (ResidueField O))).map fst = Φ.JR (ResidueField O)` using `rfl`. Establish `e2 : (Φ.JR (DualNumber (ResidueField O))).map snd = 0` using `rfl`. Establish `e3 : h.map fst = 1 → (hᵀ * Φ.JR _ * h).map snd = (h.map snd)ᵀ * Φ.JR (ResidueField O) + Φ.JR (ResidueField O) * h.map snd` using `fun e => by`. Rewrite using `[msnd_mul, msnd_mul, mfst_mul, transpose_map, transpose_map, e, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Rewrite using `[FormData.HH, e0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a1, a2, a3⟩`. Use `⟨a3, ?_, fun a b e => by simp [a2 a b e]⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e3 a3, a1, e2]`. Introduce and unpack `⟨a1, a2, a3⟩`. Use `⟨mext ?_ ?_, fun a b e => ?_, a1⟩` and prove the remaining obligations. Rewrite using `[mfst_mul, mfst_mul, transpose_map, a1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3 a1, a2, e2]`. Use `ext`. Conclude with `(congrFun (congrFun a1 a) b).trans (Matrix.one_apply_ne fun n => e (by rw [n]))`. Conclude with `a3 a b e`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem hh_iff (h : Matrix ι ι (DualNumber (ResidueField O))) :
     Φ.HH h ↔ h.map fst = 1 ∧ h.map snd ∈ Φ.g (ResidueField O) := by
@@ -533,7 +521,7 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] {rbar : Γ →* Matrix ι 
 
 omit [IsCO O (ResidueField O)] in
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[← r.red, res_dual]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem lift_fst (r : Lift O rbar (DualNumber (ResidueField O))) (s : Γ) : (r.hom s).map fst = rbar s := by
   ext a b
@@ -541,9 +529,9 @@ private theorem lift_fst (r : Lift O rbar (DualNumber (ResidueField O))) (s : Γ
 
 omit [IsCO O (ResidueField O)] in
 /- English proof (translation)
-Use `lc_mat fun a b => IsLocallyConstant.desc _ _ (r.cont a b 2) ?_` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, sq, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[← res_eq_zero_iff O, res_dual]`. Rewrite using `[Ideal.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [hx, hy]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lift_lc (r : Lift O rbar (DualNumber (ResidueField O))) : IsLocallyConstant r.hom := by
   refine lc_mat fun a b => IsLocallyConstant.desc _ _ (r.cont a b 2) ?_
@@ -557,7 +545,7 @@ variable [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (r0 : Lift O r
 
 omit [IsCO O (ResidueField O)] [IsCO O (DualNumber (ResidueField O))] in
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[← r0.red]`. Conclude with `((res O O).commutes _).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tangent_representation_reduction (s : Γ) : ((r0.hom s).map (algebraMap O (DualNumber (ResidueField O)))).map fst = rbar s := by
   ext a b
@@ -565,7 +553,7 @@ private theorem tangent_representation_reduction (s : Γ) : ((r0.hom s).map (alg
   exact ((res O O).commutes _).symm
 
 /- English proof (translation)
-Use `forall_congr' fun s => ?_` and prove the remaining obligations. Establish `e : ((r0.hom s⁻¹).map (algebraMap O (DualNumber (ResidueField O)))).map snd = 0` using `rfl`. Rewrite using `[hh_iff, mfst_mul, msnd_mul, tangent_representation_reduction, lift_fst, e, ← map_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inH_iff (r : Lift O rbar (DualNumber (ResidueField O))) :
     Φ.InH r0.hom _ r ↔ ∀ s, (r.hom s).map snd * rbar s⁻¹ ∈ Φ.g (ResidueField O) := by
@@ -575,13 +563,13 @@ private theorem inH_iff (r : Lift O rbar (DualNumber (ResidueField O))) :
   simp
 
 /- English proof (translation)
-Establish `e : ∀ s, ((r0.map (Algebra.ofId O (DualNumber (ResidueField O)))).hom s).map snd = 0` using `fun s => rfl`. Establish `h1 : L _ (r0.map (Algebra.ofId O (DualNumber (ResidueField O))))`. Take `⟨I, hI⟩` from `hL.closed O r0 fun s => by`. Rewrite using `[show (r0.hom s⁻¹).map (algebraMap O O) = r0.hom s⁻¹ from rfl, ← map_mul, mul_inv_cancel, map_one]`. Conclude with `⟨by simp, fun a b hab => Matrix.one_apply_ne fun e => hab (by rw [e]), by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `(hI _ _).2 fun x hx => ?_` and prove the remaining obligations. Establish `: x = 0` using `(hI O (AlgHom.id O O)).1 h0 x hx`. Rewrite using `[this, map_zero]`. Rewrite using `[hL.tangent _ _ (fstHom O (ResidueField O) (ResidueField O)) (fun x => ⟨inl x, rfl⟩) ?_ _ r ((inH_iff Φ r0 _).2 fun s => by rw [e, zero_mul]; exact zero_mem _) hr ?_ h1]`. Use `forall₂_congr fun n _ => ⟨fun h => by rw [h, e], fun h => mext ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lift_fst, lift_fst]`. Rewrite using `[h, e]`. Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx` using `[← res_eq_zero_iff O, res_dual]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy']`. Use `Lift.ext (MonoidHom.ext fun s => ?_)` and prove the remaining obligations. Conclude with `(lift_fst _ s).trans (lift_fst r s).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem loc_iff {N : Subgroup Γ} {L : Cond O rbar} (hL : Φ.IsLocCond r0.hom N L) (h0 : L O r0)
     (r : Lift O rbar (DualNumber (ResidueField O))) (hr : Φ.InH r0.hom _ r) :
@@ -622,11 +610,11 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {ι X : Type} [Fintype ι] [Dec
   {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (ρ : ∀ v, Lift O (rbar.comp (F.φ v)) B)
 
 /- English proof (translation)
-Establish `e1 : ∀ v s, (((ρ v).hom s).map i).map fst = rbar (F.φ v s)` using `fun v s => lift_fst ((ρ v).map i) s`. Establish `e2 : ∀ v s, (((ρ v).hom s).map i).map snd = 0` using `fun v s => by ext a b; exact hi _`. Rewrite using `[IsFramed, ← inH_iff Φ r0]`. Use `and_congr_right fun h1 => and_congr (forall_congr' fun q => ?_) ?_` and prove the remaining obligations. Conclude with `loc_iff Φ (r0.comap (F.ψ q) (F.hψ q)) (hL q) (h0 q) _ fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1 (F.ψ q s)` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis. Simplify using `only [hh_iff]`. Use `and_congr_right fun h2 => and_congr ⟨fun h => by rw [h, msnd_one], fun h => mext ?_ ?_⟩ (forall₂_congr fun v s => ⟨fun h => ?_, fun h => mext ?_ ?_⟩)` and prove the remaining obligations. Rewrite using `[(h2 _).1, mfst_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, msnd_one]`. Use `congrArg (fun M => M.map snd) h` as an intermediate fact. Simplify `this` using `only [msnd_mul, lift_fst, (h2 v).1, e1, e2, mul_one, mul_zero, zero_add]`. Rewrite using `[mfst_mul, mfst_mul, lift_fst, e1, (h2 v).1, mul_one, one_mul]`. Simplify `h` using `only [msnd_mul, lift_fst, (h2 v).1, e1, e2, mul_one, mul_zero, zero_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem framed_iff (hL : ∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q))
     (h0 : ∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) (i : B →ₐ[O] DualNumber (ResidueField O))
@@ -668,7 +656,7 @@ private def ell (j : X) : (Γ × ι × ι) ⊕ (F.T × ι × ι) →
 
 include r0 in
 /- English proof (translation)
-Use `(lift_lc (r0.map (Algebra.ofId O (DualNumber (ResidueField O))))).comp fun M => M.map fst` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Conclude with `(lift_fst _ s).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem rbar_lc : IsLocallyConstant rbar := by
   have := (lift_lc (r0.map (Algebra.ofId O (DualNumber (ResidueField O))))).comp fun M => M.map fst
@@ -702,49 +690,39 @@ end UpperTheory.V.Alg.FramedTangent
 
 open UpperTheory.V.Alg.FramedTangent TrivSqZeroExt in
 /- English proof (translation)
-Introduce `O _ _ _ _ ι X _ _ _ w Φ _ Γ _ _ _ rbar r0 hbar _ F L _ hL h0 B _ _ _ ρ _ R _ _ _ i r α ⟨hF, hU⟩`. Use `haveI := (co_res O).1`. Use `haveI := (co_res O).2`. Set `z : (Γ × ι × ι) ⊕ (F.T × ι × ι) → R` to `Sum.elim (fun p => r.hom p.1 p.2.1 p.2.2 - algebraMap O R (r0.hom p.1 p.2.1 p.2.2)) fun p => (α p.1 - 1) p.2.1 p.2.2`. Set `wt : (Γ × ι × ι) ⊕ (F.T × ι × ι) → X` to `Sum.elim (fun p => w p.2.1 - w p.2.2) fun p => w p.2.1 - w p.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z1 : ∀ (f : R →ₐ[O] DualNumber (ResidueField O)) s a b, (f (z (.inl (s, a, b)))).snd = ((r.map f).hom s).map snd a b` using `fun f s a b => by show (f (_ - _)).snd = _`. Rewrite using `[map_sub, snd_sub, snd_alg, sub_zero]`. Both sides reduce to the same expression. Establish `z2 : ∀ (f : R →ₐ[O] DualNumber (ResidueField O)) v a b, (f (z (.inr (v, a, b)))).snd = ((α v).map f).map snd a b` using `fun f v a b => by show (f (α v a b - (1 : Matrix ι ι R) a b)).snd = (f (α v a b)).snd`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmap : ∀ f : R →ₐ[O] DualNumber (ResidueField O), IsFramed Φ r0.hom F L ρ (f.comp i) (r.map f) fun v => (α v).map f` using `fun f => by`. Take `⟨a1, a2, a3, a4, a5⟩` from `hF`. Establish `hm : ∀ A A' : Matrix ι ι R, (A * A').map f = A.map f * A'.map f` using `fun A A' => Matrix.map_mul (f := (f : R →+* DualNumber (ResidueField O)))`. Use `⟨fun s => ?_, fun q => ?_, fun v => (hh_group O ι X w Φ R).2.2.2.1 _ f _ (a3 v), by simp [a4], fun v s => ?_⟩` and prove the remaining obligations. Use `(hh_group O ι X w Φ R).2.2.2.1 _ f _ (a1 s)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hm, show ((r0.hom s⁻¹).map (algebraMap O R)).map f = (r0.hom s⁻¹).map (algebraMap O _) from Matrix.ext fun a b => f.commutes _]`. Then use the resulting hypothesis. Take `⟨I, hI⟩` from `(hL q).closed R (r.comap (F.ψ q) (F.hψ q)) fun s => by`. Use `a1 (F.ψ q s)` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis. Use `(hI _ f).2 fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = 0` using `(hI R (AlgHom.id O R)).1 (a2 q) x hx`. Rewrite using `[this, map_zero]`. Use `congrArg (fun M => M.map f) (a5 v s)` as an intermediate fact. Simplify using `only [hm] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `i0 : B →ₐ[O] DualNumber (ResidueField O)` to `(inlAlgHom O (ResidueField O) (ResidueField O)).comp (res O B)`. Establish `inv1 : ∀ s, rbar s⁻¹ * rbar s = 1` using `fun s => by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `inv2 : ∀ s, rbar s * rbar s⁻¹ = 1` using `fun s => by rw [← map_mul, mul_inv_cancel, map_one]`. Use `Exists.elim (abstract (O := O) i z ?_ wt (fun j => F.H1c (FormData.adRep hbar j)) (ell F hbar) ?_ ?_ ?_ ?_ ?_) ?_` and prove the remaining obligations. Use `rotate_right`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `τ ⟨hτ, u, u1, u2, u3⟩`. Use `⟨τ, hτ, z ∘ u, wt ∘ u, fun t => ?_, u1, u2, u3⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Break down `u t with ⟨s, a, b⟩ | ⟨v, a, b⟩` into its components or cases. Conclude with `⟨a, b, rfl, .inl ⟨s, rfl⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, b, rfl, .inr ⟨v, rfl⟩⟩`. Apply the tactic sequence `rintro (⟨s, a, b⟩ | ⟨v, a, b⟩) <;> rw [← res_eq_zero_iff O]`. Use `show res O R (_ - _) = 0`. Rewrite using `[map_sub, r.red, ← r0.red, AlgHom.commutes, sub_eq_zero]`. Conclude with `(res O O).commutes _`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show res O R (α v a b - (1 : Matrix ι ι R) a b) = 0`. Rewrite using `[map_sub, show res O R (α v a b) = (1 : Matrix ι ι _) a b from congrFun (congrFun (hF.2.2.1 v).2.2 a) b]`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`. Introduce and unpack `j (⟨s, a, b⟩ | ⟨v, a, b⟩) x e`. Use `show ((x.1.1 s).1 * rbar s) a b = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mask_fix Φ (x.1.1 s).2, ← mask_mul w j _ (hbar.2.2 s)]`. Conclude with `if_neg e`. Conclude with `neg_eq_zero.2 ((x.1.2 v).2.2 a b e)`. Introduce `j x hx`. Use `Subtype.ext (Prod.ext (funext fun s => Subtype.ext ?_) (funext fun v => Subtype.ext ?_))` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: (x.1.1 s).1 * rbar s = 0` using `Matrix.ext fun a b => hx (.inl (s, a, b)) show (x.1.1 s).1 = 0`. Rewrite using `[← mul_one (x.1.1 s).1, ← inv2 s, ← mul_assoc, this, zero_mul]`. Conclude with `Matrix.ext fun a b => neg_eq_zero.1 (hx (.inr (v, a, b)))`. Introduce `j x`. Establish `e : ∀ s, ((liftOf r0 F hbar j x).hom s).map snd = (x.1.1 s).1 * rbar s` using `fun s => rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Exists.elim (hU _ i0 (liftOf r0 F hbar j x) (fun v => mk 1 (-(x.1.2 v).1)) ((framed_iff Φ r0 F L ρ hL h0 i0 (fun _ => rfl) _ _).2 ⟨fun s => ?_, fun q n hn => ?_, fun v => ⟨rfl, neg_mem (x.1.2 v).2.1⟩, ?_, fun v s => ?_⟩)) ?_` and prove the remaining obligations. Use `rotate_right`. Introduce and unpack `f ⟨⟨f1, f2, f3⟩, -⟩`. Use `⟨f, fun b => by rw [show f (i b) = i0 b from DFunLike.congr_fun f1 b]; rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨s, a, b⟩ | ⟨v, a, b⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[z1, f2]`. Both sides reduce to the same expression. Rewrite using `[z2, f3]`. Both sides reduce to the same expression. Rewrite using `[e, mul_assoc, inv2, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(x.1.1 s).2.1`. Rewrite using `[e, x.2.2.2.1 q n hn]`. Simplify using the standard rewrite rules. Use `show -(x.1.2 F.v0).1 = 0`. Rewrite using `[x.2.2.2.2.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h : (x.1.1 (F.φ v s)).1 = rbar (F.φ v s) * (x.1.2 v).1 * rbar (F.φ v s)⁻¹ - (x.1.2 v).1` using `congrArg Subtype.val (x.2.2.2.2.1 v s)`. Rewrite using `[e, FramedTangent.snd_mk, h, sub_mul, mul_assoc, inv1, mul_one, mul_neg, neg_mul]`. Normalize the expressions using the abelian group laws. Introduce `f hf j`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b1, b2, b3, b4, b5⟩` from `(framed_iff Φ r0 F L ρ hL h0 (f.comp i) hf _ _).1 (hmap f)`. Use `⟨⟨(fun s => ⟨_, mask_mem Φ j (b1 s)⟩, fun v => ⟨_, mask_mem Φ j (neg_mem (b3 v).2)⟩), ?_, fun s t => Subtype.ext ?_, fun q n hn => Subtype.ext ?_, fun v s => Subtype.ext ?_, Subtype.ext ?_⟩, ?_⟩` and prove the remaining obligations. Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations. Conclude with `((lift_lc (r.map f)).prodMk ((rbar_lc r0).comp_continuous continuous_inv)).comp fun p => mask w j (p.1.map snd * p.2)`. Use `show mask w j _ = mask w j _ + rbar s * mask w j _ * rbar s⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_mask w j _ (hbar.2.2 s), ← mask_mul w j _ (hbar.2.2 s⁻¹), ← mask_add, map_mul, msnd_mul, lift_fst, lift_fst, mul_inv_rev, map_mul, add_mul, mul_assoc _ (rbar t), ← mul_assoc (rbar t), inv2, one_mul, add_comm]`. Simplify using `only [mul_assoc]`. Use `show mask w j _ = 0`. Rewrite using `[b2 q n hn, zero_mul, mask_zero]`. Use `show mask w j _ = rbar (F.φ v s) * mask w j _ * rbar (F.φ v s)⁻¹ - mask w j _`.
-
-Rewrite using `[← mul_mask w j _ (hbar.2.2 _), ← mask_mul w j _ (hbar.2.2 _), ← mask_sub, eq_sub_of_add_eq' (b5 v s), sub_mul, mul_assoc, inv2]`. Use `congr 1`. Simplify using `only [mul_neg, neg_mul, mul_one]`. Normalize the expressions using the abelian group laws. Use `show mask w j _ = 0`.
-
-Rewrite using `[b4, neg_zero, mask_zero]`. Introduce and unpack `(⟨s, a, b⟩ | ⟨v, a, b⟩) e`. Use `show (mask w j (((r.map f).hom s).map snd * rbar s⁻¹) * rbar s) a b = _`. Rewrite using `[z1, ← mask_mul w j _ (hbar.2.2 s), mul_assoc, inv1, mul_one]`. Conclude with `if_pos e`.
-
-Use `show -(mask w j _ a b) = _`. Rewrite using `[z2, neg_eq_iff_eq_neg]`. Conclude with `if_pos e`. Introduce `f hf hz y`. Set `f0 : R →ₐ[O] DualNumber (ResidueField O)` to `(inlAlgHom O (ResidueField O) (ResidueField O)).comp (res O R)`.
-
-Establish `key : ∀ y, (f y).snd = 0 → f0 y = f y` using `fun y hy => by`. Use `ext`. Rewrite using `[FramedTangent.fst_map, FramedTangent.fst_map]`. Conclude with `hy.symm`. Use `(hU _ _ _ _ (hmap f)).unique (y₁ := f0) (y₂ := f) ⟨AlgHom.ext fun b => key _ (hf b), ?_, fun v => ?_⟩ ⟨rfl, rfl, fun _ => rfl⟩` as an intermediate fact.
-
-Rewrite using `[← this]`. Both sides reduce to the same expression. Conclude with `Lift.ext (MonoidHom.ext fun s => Matrix.ext fun a b => key _ ((z1 f s a b).symm.trans (hz _)))`. Conclude with `Matrix.ext fun a b => key _ ((z2 f v a b).symm.trans (hz _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.framed_tangent :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (F : Frame Γ) (L : ∀ q, Cond O (rbar.comp (F.ψ q))), (∀ q, ∀ n ∈ F.N q, rbar (F.ψ q n) = 1) → (∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q)) → (∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) →

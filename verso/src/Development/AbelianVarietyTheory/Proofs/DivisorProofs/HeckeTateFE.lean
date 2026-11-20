@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeTateF
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HeckeTateFunctionalEquation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.HeckeFE.heckeTateFunctionalEquation`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Top.heckeTateFE : GlobalTheory.Published.HeckeTateFunctionalEquation :=
   GlobalTheory.CompanionTheory.HeckeFE.heckeTateFunctionalEquation

@@ -17,7 +17,7 @@ open Opposite
 namespace GlobalTheory.EndLoc.HomFixGlue
 
 /- English proof (translation)
-Establish `h1` using `mem_pull.1 (mem_pull.1 hy)`. Establish `e : F (G (h y)) = F' (G' y)`. Use `congrArg (fun k => k y) hc` as an intermediate fact. Simplify using `using this.symm`. Conclude with `mem_pull.2 (mem_pull.2 (by rw [e]; exact h1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pullPull_mem {X Y Z Y' Z' : Scheme.{0}} (M : LB X) (F : Y ⟶ X) (G : Z ⟶ Y) (F' : Y' ⟶ X) (G' : Z' ⟶ Y')
     (h : Z' ⟶ Z) (hc : G' ≫ F' = h ≫ G ≫ F) (J : PUnit → PUnit → M.ι) (y : Z')

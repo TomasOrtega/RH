@@ -8,15 +8,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ hmu`. Take `⟨-, h2, h3, -⟩` from `muQ L Ω l`. Establish `hq` using `h3.1 hmu`. Establish `hr` using `cycRange L Ω l hmu`. Take `⟨p1, p2, p3⟩` from `princGen l _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ∀ g, cycZ L Ω l g ∈ KStar.TotallyRealRoots.princ l (cZero l L)` using `fun g => hr ▸ ⟨g, rfl⟩`. Establish `hU : ∀ n, Un L Ω l n = (KStar.TotallyRealRoots.princ l n).comap (cycZ L Ω l)` using `fun n => Subgroup.ext fun g => ⟨fun h => h.2, fun h => ⟨trivial, h⟩⟩`. Establish `h1 : 1 ≤ cZero l L`. Use `le_trans ?_ hq` and prove the remaining obligations. Unfold `qExp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> omega`. Use `⟨fun m => ?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[layU, hU, Subgroup.index_comap, hr, p3]`. Establish `hn : cycZ L Ω l γ ∉ KStar.TotallyRealRoots.princ l (cZero l L + 1)`. Use `(p1 _ (h0 γ)).1 ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hr, MonoidHom.range_eq_map]`. Conclude with `hγ.2`. Take `⟨q1, q2⟩` from `p2 _ (h0 γ) hn`. Use `⟨q1, ?_, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: γ ∈ Un L Ω l 1` using `by rw [(h2 1).2 h1]; trivial`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[layU, hU, Subgroup.mem_comap, map_pow]`. Conclude with `(q2 m).1`. Rewrite using `[layU, hU, map_pow]`. Conclude with `(Subgroup.map_comap_le _ _).trans (((princGen l (cZero l L + m) (hq.trans (Nat.le_add_right _ _))).1 _ (q2 m).1).2 (q2 m).2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.layerGen :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime], HasMuQ l L → (∀ m, (layU l L Ω m).index = l ^ m) ∧

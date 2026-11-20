@@ -18,46 +18,46 @@ namespace GlobalTheory.Amp.FibreVolume
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_unit : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1
 
 /- English proof (translation)
-The claim follows from `(uHGroup _ _ hpk_unit).1`.
+A detailed English derivation is pending.
 -/
 theorem GG_one : (1 : Mat k r) ∈ GG k r := (uHGroup _ _ hpk_unit).1
 
 /- English proof (translation)
-The claim follows from `(uHGroup _ _ hpk_unit).2.1 a ha b hb`.
+A detailed English derivation is pending.
 -/
 theorem GG_mul {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r :=
   (uHGroup _ _ hpk_unit).2.1 a ha b hb
 
 /- English proof (translation)
-The claim follows from `((uHGroup _ _ hpk_unit).2.2 a ha).1`.
+A detailed English derivation is pending.
 -/
 theorem GG_unit {a : Mat k r} (ha : a ∈ GG k r) : IsUnit a.det := ((uHGroup _ _ hpk_unit).2.2 a ha).1
 
 /- English proof (translation)
-The claim follows from `((uHGroup _ _ hpk_unit).2.2 a ha).2`.
+A detailed English derivation is pending.
 -/
 theorem GG_inv {a : Mat k r} (ha : a ∈ GG k r) : a⁻¹ ∈ GG k r := ((uHGroup _ _ hpk_unit).2.2 a ha).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, ⟨GG_one, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩, n, hn, (one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem N_sub_S (z : Fin (2 * r + k + 1) → ℂ) {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, ⟨GG_one, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩, n, hn, (one_mul n).symm⟩
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mul (continuous_id (X := Mat k r))).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_two (a b : Mat k r) : Continuous (fun x : Mt k r => (a * Matrix.of x * b : Mat k r)) :=
   (continuous_const.matrix_mul (continuous_id (X := Mat k r))).matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `Continuous.measurable (α := Mt k r) (γ := Mt k r) (continuous_two a b)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_two (a b : Mat k r) :
     Measurable (fun x : Mt k r => (Matrix.of.symm (a * Matrix.of x * b) : Mt k r)) :=
@@ -78,7 +78,7 @@ def twoEquiv (a b : Mat k r) (ha : IsUnit a.det) (hb : IsUnit b.det) : Mt k r �
   measurable_invFun := measurable_two _ _
 
 /- English proof (translation)
-Establish `h1 : Measurable (lmulM a : Mt k r → Mt k r)` using `Continuous.measurable (α := Mt k r) (γ := Mt k r) (continuous_const.matrix_mul (continuous_id (X := Mat k r)))`. Establish `h2 : Measurable (rmulM b : Mt k r → Mt k r)` using `(continuous_rmulM b).measurable`. Establish `: (twoEquiv a b ha hb : Mt k r → Mt k r) = rmulM b ∘ lmulM a` using `rfl`. Rewrite using `[this, ← Measure.map_map h2 h1, hl, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_twoEquiv {μ : Measure (Mt k r)} {a b : Mat k r} (ha : IsUnit a.det) (hb : IsUnit b.det)
     (hl : μ.map (lmulM a) = μ) (hr : μ.map (rmulM b) = μ) : μ.map (twoEquiv a b ha hb) = μ := by
@@ -90,11 +90,11 @@ theorem map_twoEquiv {μ : Measure (Mt k r)} {a b : Mat k r} (ha : IsUnit a.det)
   rw [this, ← Measure.map_map h2 h1, hl, hr]
 
 /- English proof (translation)
-Establish `h1 : herm (Hpk k r) (g *ᵥ z') (g *ᵥ z') = herm (Hpk k r) z' z'`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']`. Establish `h2 : herm (Hpk k r) (c • z) (c • z) = herm (Hpk k r) z z`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc : star c * c = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hc]`. Simplify using the standard rewrite rules. Unfold `herm`. Rewrite using `[star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_smul, hcc, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Tz`. Rewrite using `[← h1, h, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tz_eq {z z' : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} {c : ℂ} (hg : g ∈ GG k r) (hc : ‖c‖ = 1)
     (h : g *ᵥ z' = c • z) : Tz k r z' = Tz k r z := by
@@ -111,39 +111,35 @@ theorem Tz_eq {z z' : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} {c : ℂ} (hg :
   rw [← h1, h, h2]
 
 /- English proof (translation)
-Introduce `k r j hj z z' γ De s μR h1 h2 hDe hs hN g₁ hg₁`. Take `⟨hz, hz', hT, n₁, hn₁, n₂, hn₂, g₀, β, c, hg₀, rfl, rfl⟩` from `hN`. Take `⟨n₀, hn₀, a, ha, m, hm, κ, hκ, hg⟩` from `GlobalTheory.T.iwasawa_decomposition_isotropic_flag k r g₁ hg₁`. Establish `hT' : 0 < Tz k r z'` using `by rw [Tz_eq hg₀.1 hg₀.2.1 hg₀.2.2.1]; exact hT`. Establish `hDe₀ : DeOK k r z z' g₀ De`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hDe.1, fun l hl => ?_⟩` and prove the remaining obligations. Use `hDe.2 l hl` as an intermediate fact. Rewrite `this` using `[dInv k r z z' hz hz' n₁ (N_sub_S z hn₁) n₂ (N_sub_S z' hn₂)]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.T.flagUnipotent_gramNull_and_fibreVolume_normalForm k r j hj z z' g₀ β c hz hz' hT hg₀ h1 h2 De hDe₀ m hm a ha`. Use `set A : Mat k r := uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m with hA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : g₁ = n₀ * A * κ` using `by rw [hg, hA]; simp only [Matrix.mul_assoc]`. Use `clear_value A`. Establish `u₀` using `GG_unit hn₀.1`. Establish `u₂` using `GG_unit hn₂.1`. Establish `uκ` using `GG_unit hκ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAG : A ∈ GG k r`. Establish `: A = n₀⁻¹ * g₁ * κ⁻¹`. Rewrite using `[hg', ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ u₀, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ uκ]`. Rewrite using `[this]`. Conclude with `GG_mul (GG_mul (GG_inv hn₀.1) hg₁) (GG_inv hκ.1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `GlobalTheory.T.flagUnipotentLebesgueMeasure_isHaarOn k r`. Establish `hU` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT (lebN k r)).2.1 hH).1`. Use `set T := twoEquiv n₂ n₀ u₂ u₀ with hTdef`. Establish `hmap : (lebN k r).map T = lebN k r` using `map_twoEquiv u₂ u₀ (hH.2.2.2 _ hn₂) (hU.1 _ hn₀)`. Establish `hae : ∀ᵐ n ∂(lebN k r), Matrix.of n ∈ Nset k r` using `hH.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTof : ∀ n, (Matrix.of (T n) : Mat k r) = n₂ * Matrix.of n * n₀` using `fun n => rfl`. Establish `hγ : n₁ * g₀ * n₂ ∈ GG k r` using `GG_mul (GG_mul hn₁.1 hg₀.1) hn₂.1`. Establish `hY : ∀ n : Mt k r, Matrix.of n ∈ Nset k r → Yj k r hj z z' (n₁ * g₀ * n₂) (Matrix.of n * g₁) = Yj k r hj z z' g₀ (Matrix.of (T n) * A)`. Introduce `n hn`. Rewrite using `[(GlobalTheory.T.flagGramNumberNormalized_invariance k r j hj z z' g₀ hz hz' hg₀.1 _ (GG_mul hn.1 hg₁)).2.1 n₁ hn₁ n₂ hn₂, hTof, ← (GlobalTheory.T.flagGramNumberNormalized_invariance k r j hj z z' g₀ hz hz' hg₀.1 _ (GG_mul (GG_mul (GG_mul hn₂.1 hn.1) hn₀.1) hAG)).1 κ hκ, hg']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `⟨?_, fun φ hφ R₀ y hR hy => ?_⟩` and prove the remaining obligations. Establish `h0` using `key.1`. Rewrite `h0` using `[← hmap, MeasurableEquiv.map_apply]`. Rewrite using `[← h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `measure_congr` to reduce the goal to its premises. Use `filter_upwards [hae] with n hn`. Use `show (Yj k r hj z z' (n₁ * g₀ * n₂) (Matrix.of n * g₁) = 0) = (Yj k r hj z z' g₀ (Matrix.of (T n) * A) = 0)`. Rewrite using `[hY n hn]`. Establish `hE : ∀ n : Mt k r, Matrix.of n ∈ Nset k r → (rmulM g₁ n ∈ Eset0 k r hj z z' (n₁ * g₀ * n₂) R₀ y ↔ rmulM A (T n) ∈ Eset0 k r hj z z' g₀ R₀ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hx : Matrix.of (T n) * A ∈ GG k r` using `GG_mul (GG_mul (GG_mul hn₂.1 hn.1) hn₀.1) hAG`. Establish `e1 : Sg2 k r z' (Matrix.of n * g₁) = Sg2 k r z' (Matrix.of (T n) * A)`. Rewrite using `[← (GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z' hz' hT').2.1 _ hx n₂⁻¹ (N_sub_S z' ((nSubgroup k r).2.2 _ hn₂)) κ hκ, hTof, hg']`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ u₂, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : Sg2 k r z (n₁ * g₀ * n₂ * (Matrix.of n * g₁)) = Sg2 k r z (g₀ * (Matrix.of (T n) * A))`. Rewrite using `[← (GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z hz hT).2.1 _ (GG_mul hg₀.1 hx) n₁ (N_sub_S z hn₁) κ hκ, hTof, hg']`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [Eset0, Set.mem_setOf_eq, of_rmulM]`. Rewrite using `[e1, e2, hY n hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `and_congr_left fun _ => iff_of_true (GG_mul hn.1 hg₁) hx`. Use `set ψ : Mt k r → ℝ≥0∞ := fun x => ENNReal.ofReal s * φ (Matrix.of.symm (n₂⁻¹ * Matrix.of x * (n₀⁻¹ * g₁))) with hψ`. Establish `hψT : ∀ n, ψ (T n) = ENNReal.ofReal s * φ (rmulM g₁ n)`. Introduce `n`. Establish `: n₂⁻¹ * Matrix.of (T n) * (n₀⁻¹ * g₁) = Matrix.of n * g₁`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hTof]`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ u₂, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ u₀]`. Simplify using `only [hψ, this]`. Both sides reduce to the same expression. Establish `hsub : SubCut (Nset k r) (lebR0 k r j β) ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hφ.1.comp (measurable_two _ _)).const_mul _, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hw : n₂⁻¹ * Matrix.of x * (n₀⁻¹ * g₁) ∈ GG k r` using `GG_mul (GG_mul (GG_inv hn₂.1) hx.1) (GG_mul (GG_inv hn₀.1) hg₁)`. Establish `h` using `hφ.2 (Matrix.of.symm (n₂⁻¹ * Matrix.of x * (n₀⁻¹ * g₁))) hw`. Establish `hc : (conjM n₂⁻¹ : Mt k r → Mt k r) = twoEquiv n₂⁻¹ n₂⁻¹⁻¹ (GG_unit (GG_inv hn₂.1)) (GG_unit (GG_inv (GG_inv hn₂.1)))` using `rfl`. Rewrite `h` using `[hc, lintegral_map_equiv, lintegral_smul_measure, smul_eq_mul, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_eq_of_le (lintegral_congr fun ρ => ?_) h` and prove the remaining obligations. Establish `: n₂⁻¹ * (Matrix.of ρ * Matrix.of x) * (n₀⁻¹ * g₁) = n₂⁻¹ * Matrix.of ρ * n₂⁻¹⁻¹ * (n₂⁻¹ * Matrix.of x * (n₀⁻¹ * g₁))`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ u₂]`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ u₂]`. Conclude with `congrArg (fun w : Mat k r => ENNReal.ofReal s * φ (Matrix.of.symm w)) this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `key.2 ψ hsub R₀ y hR hy`. Rewrite `h` using `[← hmap, lintegral_map_equiv]`. Establish `h' : ENNReal.ofReal s * ∫⁻ n, φ (rmulM g₁ n) * (Eset0 k r hj z z' (n₁ * g₀ * n₂) R₀ y).indicator 1 (rmulM g₁ n) ∂(lebN k r) ≤ ENNReal.ofReal (fibVol0 k r j R₀ De y)`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_of_eq_of_le (lintegral_congr_ae ?_) h` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with n hn`. Rewrite using `[hψT, ← mul_assoc]`. Use `congrArg (fun t => ENNReal.ofReal s * φ (rmulM g₁ n) * t) ?_` and prove the remaining obligations. Distinguish the cases in `hm : rmulM g₁ n ∈ Eset0 k r hj z z' (n₁ * g₀ * n₂) R₀ y`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem ((hE n hn).1 hm)]`.
-
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm ((hE n hn).2 h))]`. Rewrite using `[ENNReal.ofReal_div_of_pos hs, ENNReal.le_div_iff_mul_le (Or.inl (by simpa using hs)) (Or.inl ENNReal.ofReal_ne_top), mul_comm]`. Conclude with `h'`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_volume : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ (γ : Mat k r) (De s : ℝ) (μR : Measure (Mt k r)), 1 ≤ j → j + 2 ≤ k → DeOK k r z z' γ De → 0 < s → IsNormalFormStabilizerMeasure k r hj z z' γ s μR → ∀ g₁ ∈ GG k r, lebN k r {n | Yj k r hj z z' γ (Matrix.of n * g₁) = 0} = 0 ∧ ∀ φ, SubCut (GG k r) μR φ → ∀ R₀ y : ℝ, 1 ≤ R₀ → 0 < y → ∫⁻ n, φ (rmulM g₁ n) * (Eset0 k r hj z z' γ R₀ y).indicator 1 (rmulM g₁ n) ∂(lebN k r) ≤ ENNReal.ofReal (fibVol0 k r j R₀ De y / s) := by
   intro k r j hj z z' γ De s μR h1 h2 hDe hs hN g₁ hg₁

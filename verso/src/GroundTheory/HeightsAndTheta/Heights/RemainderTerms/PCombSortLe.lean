@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Equiv
 
 /- English proof (translation)
-Introduce `m u l σ hl hul hu k`. Choose the witnesses or unpack the hypotheses as in `⟨j, hjk, hkj⟩ : ∃ j : Fin m, j ≤ k ∧ k ≤ σ j := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hcard : (Iic k).card ≤ (Iio k).card`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `card_le_card_of_injOn σ ?_ σ.injective.injOn` and prove the remaining obligations. Introduce `j hj`. Simplify using `only [coe_Iic, coe_Iio, Set.mem_Iic, Set.mem_Iio] at hj ⊢`. Conclude with `h j hj`. Rewrite `hcard` using `[Fin.card_Iic, Fin.card_Iio]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem CombSortLe.proof : CombSortLe.Statement := by
   intro m u l σ hl hul hu k

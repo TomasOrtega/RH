@@ -4,11 +4,11 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ f Y C c f₀ hs Φ hΦ q α w R hc hw`. Use `⟨Real.exp (|C| * (1 + |R|)), fun X g hg => ?_⟩` and prove the remaining obligations. Establish `hf : R < f g`. Assume the negation of the conclusion as `hle`. Establish `hle' : f g ≤ R` using `not_lt.1 hle`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : |C| * (1 + |R|) < Real.log (qht g)` using `(Real.lt_log_iff_exp_lt ((Real.exp_pos _).trans hg)).2 hg`. Establish `h0` using `hs.f_nonneg g`. Establish `h2 : C * (1 + f g) ≤ |C| * (1 + |R|)` using `mul_le_mul (le_abs_self C) (by linarith [le_abs_self R]) (by linarith) (abs_nonneg C)`. Combine the linear relations using `[hs.le_f g]`. Take `⟨y, x, rfl⟩ : ∃ y x, infGL E a y * finGL E a x = g` from `⟨_, _, infGL_mul_finGL g⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `hw (x : GL (Fin a) (Af E) ⧸ U) _ (sand_mem_cone y hOne_mem_cone) (by rw [hΦ y x]; exact hf)`. Establish `h` using `hc y x X`. Rewrite `h` using `[hz]`. Establish `h2` using `congrArg (fun z => Ξ.mat y⁻¹ *ᵥ z) h`. Simplify `h2.symm` using `only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, ContinuousAlternatingMap.coe_zero, Pi.zero_apply, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.supp :
     UpperTheory.V.Lit.Geo.Cs.Supp := by

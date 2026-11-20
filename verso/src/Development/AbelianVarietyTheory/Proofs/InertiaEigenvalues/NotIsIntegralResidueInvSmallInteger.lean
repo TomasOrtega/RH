@@ -6,11 +6,11 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.NotIntegral
 
 /- English proof (translation)
-Introduce `K B a ha m hint`. Take `⟨ha0, hmax, -⟩` from `ha`. Use `haveI : m.asIdeal.IsMaximal := m.isMaximal`. Use `letI : Field (B.A ⧸ m.asIdeal) := Ideal.Quotient.field m.asIdeal`. Set `f : K.E →ₐ[K.O] (B.A ⧸ m.asIdeal)` to `IsScalarTower.toAlgHom K.O K.E (B.A ⧸ m.asIdeal)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `(algebraMap K.E (B.A ⧸ m.asIdeal)).injective`. Establish `hE : IsIntegral K.O (algebraMap K.O K.E a)⁻¹` using `(isIntegral_algHom_iff f hf).1 hint`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hE`. Establish `hne : algebraMap K.O K.E a ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective K.O K.E)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha0`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Rewrite using `[map_mul, hb, map_one, mul_inv_cancel₀ hne]`. Conclude with `(IsLocalRing.mem_maximalIdeal a).1 hmax ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_small_not_integral : ∀ (K : UQ) (B : InvAlg K) (a : K.O), K.Small a → ∀ m : MaximalSpectrum B.A, ¬ IsIntegral K.O (algebraMap K.E (B.A ⧸ m.asIdeal) (algebraMap K.O K.E a)⁻¹) := by
   intro K B a ha m hint

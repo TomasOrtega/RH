@@ -5,13 +5,11 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.CompanionTheory.Conv
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable g0 ν` using `aestronglyMeasurable_of_tendsto_ae atTop (fun k => (hi k).aestronglyMeasurable) hlim`. Establish `hnn0 : ∀ᵐ y ∂ν, 0 ≤ g0 y` using `by filter_upwards [ae_all_iff.2 hnn, hlim] with y h1 h2`. Conclude with `ge_of_tendsto' h2 h1`. Establish `hc0 : 0 ≤ c` using `(integral_nonneg_of_ae (hnn 0)).trans (hc 0)`. Establish `hk : ∀ k, ∫⁻ y, ENNReal.ofReal (g k y) ∂ν ≤ ENNReal.ofReal c` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hi k) (hnn k)]`. Conclude with `ENNReal.ofReal_le_ofReal (hc k)`. Establish `hle : ∫⁻ y, ENNReal.ofReal (g0 y) ∂ν ≤ ENNReal.ofReal c`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hlim] with y hy`. Conclude with `((ENNReal.continuous_ofReal.tendsto _).comp hy).liminf_eq.symm`. Use `_ ≤ liminf (fun k => ∫⁻ y, ENNReal.ofReal (g k y) ∂ν) atTop := lintegral_liminf_le' (fun k => (hi k).aestronglyMeasurable.aemeasurable.ennreal_ofReal)`. Use `_ ≤ ENNReal.ofReal c := liminf_le_of_frequently_le' (Frequently.of_forall hk)`. Establish `hint : Integrable g0 ν` using `⟨hm, (hasFiniteIntegral_iff_ofReal hnn0).2 (hle.trans_lt ENNReal.ofReal_lt_top)⟩`.
-
-Use `⟨hint, ?_⟩` and prove the remaining obligations. Use `hle` as an intermediate fact. Rewrite `this` using `[← ofReal_integral_eq_lintegral_ofReal hint hnn0]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff hc0).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fatou_real {α : Type} [MeasurableSpace α] {ν : Measure α} {g : ℕ → α → ℝ} {g0 : α → ℝ}
     {c : ℝ} (hi : ∀ k, Integrable (g k) ν) (hnn : ∀ k, ∀ᵐ y ∂ν, 0 ≤ g k y)
@@ -44,9 +42,9 @@ lemma fatou_real {α : Type} [MeasurableSpace α] {ν : Measure α} {g : ℕ →
   exact (ENNReal.ofReal_le_ofReal_iff hc0).1 this
 
 /- English proof (translation)
-Establish `hb : ∀ᵐ y ∂μ.restrict S, ‖Γ y * ρ y‖ ≤ a * (L y * ρ y)`. Rewrite using `[ae_restrict_iff' hS]`. Use `filter_upwards [hρ, hΓ] with y h1 h2 hy`. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_nonneg h1, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (h2 (hSE hy)) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : Integrable (fun y => a * (L y * ρ y)) (μ.restrict S)` using `Integrable.const_mul hi a`. Use `⟨Integrable.mono' hi' (hΓm.mul hρm).restrict hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma tail_bound {α : Type} [MeasurableSpace α] {μ : Measure α} {S E0 : Set α}
     (hS : MeasurableSet S) (hSE : S ⊆ E0ᶜ) {L ρ Γ : α → ℝ} {a c : ℝ} (ha : 0 ≤ a)
@@ -67,39 +65,33 @@ lemma tail_bound {α : Type} [MeasurableSpace α] {μ : Measure α} {S E0 : Set 
     _ ≤ a * c := mul_le_mul_of_nonneg_left hc ha
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_seq_tendsto l`. Take `⟨K, hK⟩` from `eventually_atTop.1 (hu.eventually hev)`. Establish `hv : Tendsto (fun k => u (k + K)) atTop l` using `(tendsto_add_atTop_iff_nat K).2 hu`. Establish `hG` using `fun k => hK (k + K) (Nat.le_add_left K k)`. Establish `hpt : ∀ᵐ y ∂μ, Tendsto (fun k => ρ (u (k + K)) y) atTop (𝓝 (ρ0 y)) ∧ Tendsto (fun k => Γ (u (k + K)) y) atTop (𝓝 (Γ0 y))` using `by filter_upwards [hcov] with y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hy`. Conclude with `⟨((hρ n).tendsto_at hn).comp hv, ((hΓ n).tendsto_at hn).comp hv⟩`. Establish `hρ0m : AEStronglyMeasurable ρ0 μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun k => (hG k).1) (hpt.mono fun _ h => h.1)`. Establish `hΓ0m : AEStronglyMeasurable Γ0 μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun k => (hG k).2.1) (hpt.mono fun _ h => h.2)`. Establish `hρ0nn : ∀ᵐ y ∂μ, 0 ≤ ρ0 y` using `by filter_upwards [ae_all_iff.2 (fun k => (hG k).2.2.1), hpt] with y h1 h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ge_of_tendsto' h2.1 h1`. Establish `hΓ0b : ∀ᵐ y ∂μ, y ∉ E 0 → |Γ0 y| ≤ a * L y` using `by filter_upwards [ae_all_iff.2 (fun k => (hG k).2.2.2.1), hpt] with y h1 h2 hy`. Conclude with `le_of_tendsto' h2.2.abs (fun k => h1 k hy)`. Establish `htail0 : ∀ n, IntegrableOn (fun y => L y * ρ0 y) (E n)ᶜ μ ∧ ∫ y in (E n)ᶜ, L y * ρ0 y ∂μ ≤ b n` using `fun n => fatou_real (g := fun k y => L y * ρ (u (k + K)) y) (fun k => ((hG k).2.2.2.2 n).1) (fun k => ae_restrict_of_ae (by filter_upwards [hL, (hG k).2.2.1] with y h1 h2`. Conclude with `mul_nonneg h1 h2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(ae_restrict_of_ae (by filter_upwards [hpt] with y h`. Conclude with `h.1.const_mul (L y)))`. Use the proof step `(fun k => ((hG k).2.2.2.2 n).2)`. Establish `hsub : ∀ n, (E n)ᶜ ⊆ (E 0)ᶜ` using `fun n => Set.compl_subset_compl.2 (hmono (Nat.zero_le n))`. Establish `htailLim : ∀ n, IntegrableOn (fun y => Γ0 y * ρ0 y) (E n)ᶜ μ ∧ |∫ y in (E n)ᶜ, Γ0 y * ρ0 y ∂μ| ≤ a * b n` using `fun n => tail_bound (hEm n).compl (hsub n) ha hρ0m hΓ0m hρ0nn hΓ0b (htail0 n).1 (htail0 n).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htailT : ∀ᶠ t in l, ∀ n, IntegrableOn (fun y => Γ t y * ρ t y) (E n)ᶜ μ ∧ |∫ y in (E n)ᶜ, Γ t y * ρ t y ∂μ| ≤ a * b n` using `hev.mono fun t h n => tail_bound (hEm n).compl (hsub n) ha h.1 h.2.1 h.2.2.1 h.2.2.2.1 (h.2.2.2.2 n).1 (h.2.2.2.2 n).2`. Establish `hB : ∀ n, ∃ C : ℝ, (∀ y ∈ E n, |Γ0 y * ρ0 y| ≤ C) ∧ ∀ᶠ t in l, ∀ y ∈ E n, |Γ t y * ρ t y| ≤ C`. Introduce `n`. Take `⟨M, hM'⟩` from `hM n`. Establish `hC : (0 : ℝ) ≤ |M| + 1` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ x z : ℝ, |x| ≤ |M| + 1 → |z| ≤ |M| + 1 → |x * z| ≤ (|M| + 1) * (|M| + 1)`. Introduce `x z h1 h2`. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul h1 h2 (abs_nonneg _) hC`. Establish `near : ∀ x z : ℝ, |z| ≤ M → dist z x < 1 → |x| ≤ |M| + 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x z h1 h2`. Rewrite `h2` using `[Real.dist_eq]`. Establish `h3` using `abs_sub_abs_le_abs_sub x z`. Rewrite `h3` using `[abs_sub_comm x z]`. Establish `h4` using `le_abs_self M`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(|M| + 1) * (|M| + 1), fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h4` using `le_abs_self M`. Conclude with `key _ _ (by linarith [(hM' y hy).2]) (by linarith [(hM' y hy).1])`. Use `filter_upwards [Metric.tendstoUniformlyOn_iff.1 (hρ n) 1 one_pos, Metric.tendstoUniformlyOn_iff.1 (hΓ n) 1 one_pos] with t h1 h2 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `key _ _ (near _ _ (hM' y hy).2 (h2 y hy)) (near _ _ (hM' y hy).1 (h1 y hy))`. Establish `hhead0 : ∀ n, IntegrableOn (fun y => Γ0 y * ρ0 y) (E n) μ`. Introduce `n`. Take `⟨C, hC, -⟩` from `hB n`. Conclude with `Measure.integrableOn_of_bounded (hfin n).ne (hΓ0m.mul hρ0m) (M := C) (ae_restrict_of_forall_mem (hEm n) hC)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hheadT : ∀ n, ∀ᶠ t in l, IntegrableOn (fun y => Γ t y * ρ t y) (E n) μ`. Introduce `n`. Take `⟨C, -, hC⟩` from `hB n`. Use `filter_upwards [hev, hC] with t h1 h2`. Conclude with `Measure.integrableOn_of_bounded (hfin n).ne (h1.2.1.mul h1.1) (M := C) (ae_restrict_of_forall_mem (hEm n) h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : ∀ f : α → ℝ, IntegrableOn f (E 0) μ → IntegrableOn f (E 0)ᶜ μ → Integrable f μ`. Introduce `f h1 h2`. Use `h1.union h2` as an intermediate fact. Rewrite `this` using `[Set.union_compl_self, integrableOn_univ]`. Then use the resulting hypothesis. Establish `hI0 : Integrable (fun y => Γ0 y * ρ0 y) μ` using `hU _ (hhead0 0) (htailLim 0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIT : ∀ᶠ t in l, Integrable (fun y => Γ t y * ρ t y) μ` using `by filter_upwards [htailT, hheadT 0] with t h1 h2`. Conclude with `hU _ h2 (h1 0).1`. Use `⟨hI0, hIT, ?_⟩` and prove the remaining obligations. Establish `hconv : ∀ n, Tendsto (fun t => ∫ y in E n, Γ t y * ρ t y ∂μ) l (𝓝 (∫ y in E n, Γ0 y * ρ0 y ∂μ))`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, -, hC⟩` from `hB n`. Use `haveI : IsFiniteMeasure (μ.restrict (E n)) := ⟨by simpa using hfin n⟩`. Use `tendsto_integral_filter_of_dominated_convergence (fun _ => C) ?_ ?_ (integrable_const C) ?_` and prove the remaining obligations. Conclude with `hev.mono fun t h => (h.2.1.mul h.1).restrict`. Conclude with `hC.mono fun t h => ae_restrict_of_forall_mem (hEm n) h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ae_restrict_of_forall_mem (hEm n) fun y hy => ((hΓ n).tendsto_at hy).mul ((hρ n).tendsto_at hy)`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `hbn : Tendsto (fun n => a * |b n|) atTop (𝓝 0)`.
-
-Simplify using `using hb.abs.const_mul a`. Take `⟨n, hn⟩` from `(hbn.eventually (Iio_mem_nhds hε3)).exists`. Establish `hn' : a * |b n| < ε / 3` using `hn`. Establish `hab : a * b n ≤ a * |b n|` using `mul_le_mul_of_nonneg_left (le_abs_self _) ha`. Use `filter_upwards [Metric.tendsto_nhds.1 (hconv n) (ε / 3) hε3, htailT, hIT] with t h1 h2 h3`.
-
-Establish `e1 : ∫ y in E n, Γ t y * ρ t y ∂μ + ∫ y in (E n)ᶜ, Γ t y * ρ t y ∂μ = ∫ y, Γ t y * ρ t y ∂μ` using `integral_add_compl (hEm n) h3`. Establish `e2 : ∫ y in E n, Γ0 y * ρ0 y ∂μ + ∫ y in (E n)ᶜ, Γ0 y * ρ0 y ∂μ = ∫ y, Γ0 y * ρ0 y ∂μ` using `integral_add_compl (hEm n) hI0`. Establish `A` using `(h2 n).2`. Establish `B` using `(htailLim n).2`. Rewrite `h1`, the goal using `[Real.dist_eq]`.
-
-Rewrite using `[← e1, ← e2]`. Rewrite `h1`, the goal using `[abs_lt]`. Rewrite `A`, `B` using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, A.1, A.2, B.1, B.2]`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_integral_of_exhaustion {α : Type} [MeasurableSpace α] (μ : Measure α)
     (l : Filter ℝ) [l.NeBot] [l.IsCountablyGenerated] (E : ℕ → Set α) (L : α → ℝ)

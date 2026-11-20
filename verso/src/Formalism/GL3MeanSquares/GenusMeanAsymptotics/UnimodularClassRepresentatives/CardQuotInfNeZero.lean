@@ -12,7 +12,7 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `IA.exists_pow_smul h𝔭 hM₁ hM₂`. Rewrite using `[IA.card_eq_relIndex h𝔭 hr]`. Conclude with `IA.relIndex_ne_zero hM₁ hM₂ 𝔭`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_inf_ne_zero {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLattice K M₁)
     (hM₂ : Submodule.IsLattice K M₂) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -22,15 +22,15 @@ theorem card_quot_inf_ne_zero {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submod
   exact IA.relIndex_ne_zero hM₁ hM₂ 𝔭
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `IA.exists_pow_smul h𝔭 hM hN`. Establish `h0 : 𝔭 ≠ ⊥` using `fun h0 => NumberField.RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.2 (h0 ▸ h𝔭))`. Establish `hne : 𝔭 ^ r ≠ ⊥`. Rewrite `h0`, the goal using `[← Ideal.zero_eq_bot]`. Conclude with `pow_ne_zero r h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `set c : K := algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) a) with hc_def`. Establish `hc : c ≠ 0`. Introduce `hc0`. Apply `ha0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `NumberField.RingOfIntegers.algebraMap.injective F K` to reduce the goal to its premises. Apply `NumberField.RingOfIntegers.coe_injective (K := K)` to reduce the goal to its premises. Simplify `hc0` using `[hc_def]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hM` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsNoetherian (𝓞 K) ↥(M ⊓ locF 𝔭 N)` using `isNoetherian_of_le inf_le_left`. Rewrite using `[← Module.Finite.iff_fg]`. Use `infer_instance`. Rewrite using `[eq_top_iff, ← hM.2, Submodule.span_le]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : algebraMap (𝓞 F) (𝓞 K) a • y ∈ M ⊓ locF 𝔭 N` using `⟨M.smul_mem _ hy, hr a ha y hy⟩`. Establish `ey : y = c⁻¹ • (algebraMap (𝓞 F) (𝓞 K) a • y)`. Rewrite using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) a) y, ← hc_def, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[SetLike.mem_coe, ey]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLattice_inf_locF_of_isLattice {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {M N : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) (hN : Submodule.IsLattice K N) :
@@ -64,11 +64,11 @@ private theorem isLattice_inf_locF_of_isLattice {𝔭 : Ideal (𝓞 F)} (h𝔭 :
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Take `⟨r₁, hr₁⟩` from `IA.exists_pow_smul h𝔭 hM₁ hM₂`. Take `⟨r₂, hr₂⟩` from `IA.exists_pow_smul h𝔭 hM₂ hM₁`. Establish `e₁` using `IA.card_eq_relIndex h𝔭 hr₁`. Establish `e₂` using `IA.card_eq_relIndex h𝔭 hr₂`. Rewrite `e₂` using `[inf_comm (locF 𝔭 M₂) (locF 𝔭 M₁)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAi : Formalism.HermitianLatticesTheory.IsIntegralLat h (M₁ ⊓ locF 𝔭 M₂)` using `fun x hx y hy => hM₁i x hx.1 y hy.1`. Establish `hBi : Formalism.HermitianLatticesTheory.IsIntegralLat h (M₂ ⊓ locF 𝔭 M₁)` using `fun x hx y hy => hM₂i x hx.1 y hy.1`. Establish `hvA` using `vd_locF hK hF hs hd (isLattice_inf_locF_of_isLattice h𝔭 hM₁ hM₂) hAi h𝔭`. Establish `hvB` using `vd_locF hK hF hs hd (isLattice_inf_locF_of_isLattice h𝔭 hM₂ hM₁) hBi h𝔭`. Rewrite `hvA`, `hvB` using `[IA.locF_inf 𝔭 h𝔭.isPrime]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAB : vd h (M₁ ⊓ locF 𝔭 M₂) 𝔭 = vd h (M₂ ⊓ locF 𝔭 M₁) 𝔭`. Rewrite using `[← hvA, ← hvB, inf_comm]`. Rewrite using `[e₁, e₂, vd_locF hK hF hs hd hM₁ hM₁i h𝔭, vd_locF hK hF hs hd hM₂ hM₂i h𝔭, IA.vd_mul hF hK hs hd hM₁ hM₁i hM₂ h𝔭, IA.vd_mul hF hK hs hd hM₂ hM₂i hM₁ h𝔭, hAB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quot_inf_mul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)

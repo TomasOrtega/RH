@@ -8,7 +8,7 @@ noncomputable def chr {N : ℕ} (μ : Fin N → ℝ) (t : Fin N → ℝ) : ℂ :
   Complex.exp (2 * Real.pi * Complex.I * ∑ j, (μ j : ℂ) * (t j : ℂ))
 
 /- English proof (translation)
-Unfold `chr`. Establish `: 2 * Real.pi * Complex.I * ∑ j, (μ j : ℂ) * (t j : ℂ) = ((2 * Real.pi * ∑ j, μ j * t j : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_chr {N : ℕ} (μ t : Fin N → ℝ) : ‖chr μ t‖ = 1 := by
   unfold chr
@@ -18,7 +18,7 @@ lemma norm_chr {N : ℕ} (μ t : Fin N → ℝ) : ‖chr μ t‖ = 1 := by
   rw [this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Unfold `chr`. Rewrite using `[← Complex.exp_sub]`. Use `congr 1`. Simplify using `only [Pi.sub_apply, Complex.ofReal_sub, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma chr_sub {N : ℕ} (a b t : Fin N → ℝ) : chr (a - b) t = chr a t / chr b t := by
   unfold chr
@@ -28,13 +28,13 @@ lemma chr_sub {N : ℕ} (a b t : Fin N → ℝ) : chr (a - b) t = chr a t / chr 
   ring
 
 /- English proof (translation)
-Unfold `chr`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma continuous_chr {N : ℕ} (μ : Fin N → ℝ) : Continuous (chr μ) := by
   unfold chr; fun_prop
 
 /- English proof (translation)
-Unfold `chr`. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma chr_eq_prod {N : ℕ} (μ t : Fin N → ℝ) :
     chr μ t = ∏ j, Complex.exp (2 * Real.pi * Complex.I * ((μ j : ℂ) * (t j : ℂ))) := by
@@ -45,21 +45,21 @@ noncomputable def avg (R m : ℝ) : ℂ :=
   (R⁻¹ : ℂ) * ∫ s in (0:ℝ)..R, Complex.exp (2 * Real.pi * Complex.I * ((m : ℂ) * (s : ℂ)))
 
 /- English proof (translation)
-Simplify using `[avg, hR]`.
+Simplify using the standard rewrite rules.
 -/
 lemma avg_zero {R : ℝ} (hR : R ≠ 0) : avg R 0 = 1 := by
   simp [avg, hR]
 
 /- English proof (translation)
-Use `set c : ℂ := 2 * Real.pi * Complex.I * (m : ℂ) with hcdef`. Establish `hc : c ≠ 0`. Simplify using `[hcdef, Real.pi_ne_zero, hm, Complex.I_ne_zero]`. Establish `hI : ∫ s in (0:ℝ)..R, Complex.exp (2 * Real.pi * Complex.I * ((m : ℂ) * (s : ℂ))) = (Complex.exp (c * R) - Complex.exp (c * (0:ℝ))) / c`. Rewrite using `[← integral_exp_mul_complex hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `s`. Rewrite using `[hcdef]`. Put the polynomial expressions in normal form. Establish `hnum : ‖Complex.exp (c * R) - Complex.exp (c * (0:ℝ))‖ ≤ 2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖Complex.exp (c * R)‖ = 1`. Establish `: c * (R : ℂ) = ((2 * Real.pi * m * R : ℝ) : ℂ) * Complex.I`. Rewrite using `[hcdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Combine the equalities or inequalities in the displayed calculation. Establish `hden : ‖c‖ = 2 * Real.pi * |m|`. Simplify using `[hcdef, Complex.norm_real, abs_of_pos Real.pi_pos]`. Establish `hRn : ‖(R⁻¹ : ℂ)‖ = R⁻¹`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hR]`. Establish `hpm : 0 < Real.pi * |m|` using `mul_pos Real.pi_pos (abs_pos.mpr hm)`. Rewrite using `[avg, hI, norm_mul, norm_div, hden, hRn]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma norm_avg_le {R m : ℝ} (hR : 0 < R) (hm : m ≠ 0) :
     ‖avg R m‖ ≤ 1 / (Real.pi * |m|) * R⁻¹ := by
@@ -90,11 +90,9 @@ lemma norm_avg_le {R m : ℝ} (hR : 0 < R) (hm : m ≠ 0) :
 noncomputable def lim0 (m : ℝ) : ℂ := if m = 0 then 1 else 0
 
 /- English proof (translation)
-Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using `only [lim0, if_true]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with R hR`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[avg_zero hR.ne']`. Simplify using `only [lim0, hm, if_false]`. Establish `h0 : Tendsto (fun R : ℝ => 1 / (Real.pi * |m|) * R⁻¹) atTop (𝓝 0)`. Simplify using `using tendsto_inv_atTop_zero.const_mul (1 / (Real.pi * |m|))`. Use `squeeze_zero_norm' ?_ h0` and prove the remaining obligations.
-
-Use `filter_upwards [eventually_gt_atTop 0] with R hR`. Conclude with `norm_avg_le hR hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma tendsto_avg (m : ℝ) : Tendsto (fun R => avg R m) atTop (𝓝 (lim0 m)) := by
   by_cases hm : m = 0
@@ -114,7 +112,7 @@ noncomputable def rho (R : ℝ) : Measure ℝ :=
   (ENNReal.ofReal R)⁻¹ • volume.restrict (Set.Ioc (0:ℝ) R)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[rho, Measure.smul_apply, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Real.volume_Ioc, sub_zero, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel (by simpa using hR) ENNReal.ofReal_ne_top`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rho_prob {R : ℝ} (hR : 0 < R) : IsProbabilityMeasure (rho R) := by
   constructor
@@ -123,7 +121,7 @@ lemma rho_prob {R : ℝ} (hR : 0 < R) : IsProbabilityMeasure (rho R) := by
   exact ENNReal.inv_mul_cancel (by simpa using hR) ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Rewrite using `[rho, integral_smul_measure, intervalIntegral.integral_of_le hR.le, ENNReal.toReal_inv, ENNReal.toReal_ofReal hR.le, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 lemma integral_rho {R : ℝ} (hR : 0 < R) (f : ℝ → ℂ) :
     ∫ s, f s ∂(rho R) = (R⁻¹ : ℂ) * ∫ s in (0:ℝ)..R, f s := by
@@ -132,9 +130,9 @@ lemma integral_rho {R : ℝ} (hR : 0 < R) (f : ℝ → ℂ) :
   push_cast; rfl
 
 /- English proof (translation)
-Use `haveI := rho_prob hR`. Repeatedly rewrite using `[chr_eq_prod]`. Rewrite using `[integral_fintype_prod_eq_prod (fun j (s : ℝ) => Complex.exp (2 * Real.pi * Complex.I * ((μ j : ℂ) * (s : ℂ))))]`. Use `congr 1`. Use extensionality with `j`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_rho hR]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma integral_chr {N : ℕ} {R : ℝ} (hR : 0 < R) (μ : Fin N → ℝ) :
     ∫ t, chr μ t ∂(Measure.pi (fun _ : Fin N => rho R)) = ∏ j, avg R (μ j) := by
@@ -145,7 +143,7 @@ lemma integral_chr {N : ℕ} {R : ℝ} (hR : 0 < R) (μ : Fin N → ℝ) :
   congr 1; ext j; rw [integral_rho hR]; rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[lim0]`. Take `⟨j, hj⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by simpa [lim0] using hj)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma prod_indicator_zero_eq_ite {N : ℕ} (μ : Fin N → ℝ) : ∏ j, lim0 (μ j) = if μ = 0 then 1 else 0 := by
   split_ifs with h
@@ -154,25 +152,23 @@ lemma prod_indicator_zero_eq_ite {N : ℕ} (μ : Fin N → ℝ) : ∏ j, lim0 (�
     exact Finset.prod_eq_zero (Finset.mem_univ j) (by simpa [lim0] using hj)
 
 /- English proof (translation)
-Introduce `N Ξ lam c hinj hc hsum ξ₀`. Set `g : Ξ → (Fin N → ℝ) → ℂ` to `fun ξ t => c ξ * chr (lam ξ - lam ξ₀) t`. Establish `hg0 : ∀ t, ∑' ξ, g ξ t = 0`. Introduce `t`. Establish `h : ∑' ξ, c ξ * chr (lam ξ) t = 0` using `hsum t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [g, chr_sub, ← mul_div_assoc]`. Rewrite using `[tsum_div_const, h, zero_div]`. Establish `hcn : Summable (fun ξ => ‖c ξ‖)` using `summable_norm_iff.mpr hc`. Establish `hgn : ∀ ξ t, ‖g ξ t‖ = ‖c ξ‖`. Introduce `ξ t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[g, norm_mul, norm_chr]`. Establish `hgs : ∀ t, Summable (fun ξ => g ξ t)` using `fun t => Summable.of_norm (by simpa [hgn] using hcn)`. Use `norm_le_zero_iff.mp (le_of_forall_gt_imp_ge_of_dense fun ε hε => ?_)` and prove the remaining obligations. Take `⟨F, hF, hF0⟩ : ∃ F : Finset Ξ, ∑' ξ : {x // x ∉ F}, ‖c ξ‖ < ε ∧ {ξ₀} ≤ F` from `(((tendsto_tsum_compl_atTop_zero (fun ξ => ‖c ξ‖)).eventually (gt_mem_nhds hε)).and (eventually_ge_atTop {ξ₀})).exists`. Establish `hξ₀F : ξ₀ ∈ F` using `Finset.singleton_subset_iff.mp hF0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbound : ∀ t, ‖∑ ξ ∈ F, g ξ t‖ ≤ ε`. Introduce `t`. Establish `h` using `(hgs t).sum_add_tsum_subtype_compl F`. Rewrite `h` using `[hg0 t]`. Rewrite using `[eq_neg_of_add_eq_zero_left h, norm_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Summable (fun ξ : {x // x ∉ F} => ‖g ξ t‖)`. Establish `h' : Summable (fun ξ : {x // x ∉ F} => ‖c ξ‖)` using `hcn.comp_injective Subtype.val_injective`. Simplify using `only [hgn]`. Conclude with `h'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hA : ∀ R : ℝ, 0 < R → ‖∑ ξ ∈ F, c ξ * ∏ j, avg R ((lam ξ - lam ξ₀) j)‖ ≤ ε`. Introduce `R hR`. Use `haveI := rho_prob hR`. Establish `hint : ∫ t, ∑ ξ ∈ F, g ξ t ∂(Measure.pi fun _ : Fin N => rho R) = ∑ ξ ∈ F, c ξ * ∏ j, avg R ((lam ξ - lam ξ₀) j)`. Rewrite using `[integral_finset_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Simplify using `only [g]`. Rewrite using `[integral_const_mul, integral_chr hR]`. Introduce `ξ _`. Conclude with `Integrable.of_bound ((continuous_const.mul (continuous_chr _)).aestronglyMeasurable) ‖c ξ‖ (Eventually.of_forall fun t => (hgn ξ t).le)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← hint]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto (fun R : ℝ => ∑ ξ ∈ F, c ξ * ∏ j, avg R ((lam ξ - lam ξ₀) j)) atTop (𝓝 (c ξ₀))`. Use `tendsto_finset_sum F fun ξ _ => (tendsto_finset_prod Finset.univ fun j _ => tendsto_avg ((lam ξ - lam ξ₀) j)).const_mul (c ξ)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[prod_indicator_zero_eq_ite]`. Rewrite using `[Finset.sum_eq_single ξ₀]`. Simplify using the standard rewrite rules. Introduce `ξ _ hξ`. Rewrite using `[if_neg (sub_ne_zero.mpr (hinj.ne hξ)), mul_zero]`.
-
-Introduce `h`. Conclude with `absurd hξ₀F h`. Conclude with `le_of_tendsto hlim.norm (by filter_upwards [eventually_gt_atTop 0] with R hR using hA R hR)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero : ∀ (N : ℕ) (Ξ : Type) (lam : Ξ → Fin N → ℝ) (c : Ξ → ℂ),
     Function.Injective lam → Summable c →

@@ -14,15 +14,13 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨V, hV, hV0, hVK, hc, htop⟩` from `cf_datum_of_copies hDS hgap (fun V hV hVK => casOnDatum_of_isDS hDS hgap hD hV hVK)`. Establish `hM : ∀ x ∈ genSub (smE ε σ) V, Formalism.REAL.qdet (smE ε σ) (Y + ((n : ℂ) - 1) / 2) x = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • x` using `fun x hx => capelli_data hgap hσ hD hV hc hVK hV0 hP hcap Y x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hCM, hC⟩` from `anyCap_adj hU V (Y + ((n : ℂ) - 1) / 2)`. Establish `hCv : ∀ x ∈ genSub (smE ε σ) V, C x = starRingEnd ℂ (Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y) • x`. Introduce `x hx`. Establish `hmem : C x - starRingEnd ℂ (Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y) • x ∈ genSub (smE ε σ) V` using `sub_mem (hCM x hx) (Submodule.smul_mem _ _ hx)`. Establish `h0 : inner ℂ (C x - starRingEnd ℂ (Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y) • x) (C x - starRingEnd ℂ (Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y) • x) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inner_sub_left, ← hC, hM _ hmem, inner_smul_right, inner_smul_left, starRingEnd_self_apply, sub_self]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h0)`. Rewrite using `[← sub_eq_zero]`. Establish `hperp : ((Formalism.REAL.qdet (smE ε σ) (Y + ((n : ℂ) - 1) / 2) v - Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • v : smD ε σ) : H) ∈ ((genSub (smE ε σ) V).map (smD ε σ).subtype)ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hw`. Rewrite using `[Submodule.subtype_apply, ← Submodule.coe_inner, inner_sub_right, hC, hCv x hx, inner_smul_left, inner_smul_right, starRingEnd_self_apply, sub_self]`. Establish `htop' : ((genSub (smE ε σ) V).map (smD ε σ).subtype).topologicalClosure = ⊤` using `htop`. Rewrite `hperp` using `[Submodule.topologicalClosure_eq_top_iff.1 htop']`.
-
-Conclude with `Subtype.ext ((Submodule.mem_bot ℂ).1 hperp)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anyCap (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ)
     (hcap : ∀ (Y : ℂ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →

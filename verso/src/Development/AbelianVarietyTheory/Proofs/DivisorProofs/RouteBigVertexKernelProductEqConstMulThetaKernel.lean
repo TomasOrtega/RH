@@ -25,13 +25,13 @@ namespace GlobalTheory.RouteSeesaw
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger GlobalTheory.MixModel
 
 /- English proof (translation)
-Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, -, φ₁, φ₂, hloc, -⟩, rfl, -⟩` from `hΘ`. Introduce `d hd`. Establish `hsupp` using `Finsupp.support_sum hd`. Simplify using `only [Finset.mem_biUnion] at hsupp`. Take `⟨P, -, hP⟩` from `hsupp`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hsupp2` using `Finsupp.support_sum hP`. Simplify using `only [Finset.mem_biUnion] at hsupp2`. Take `⟨d', hd', hd'2⟩` from `hsupp2`. Establish `hdd` using `Finset.mem_singleton.1 (Finsupp.support_single_subset hd'2)`. Substitute `hdd` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨h1, h2⟩` from `hloc d' hd'`. Establish `v1` using `(ρ.vX_is (i : ℕ) ((j : ℕ) + 1) i.2 j.2).2.theta`. Establish `v2` using `(ρ.vT_is t ((i : ℕ) + 1) (j : ℕ) i.2 j.2).2.theta`. Establish `t1` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h1.2 v1`. Establish `t2` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h2.2 v2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _, GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem data_theta {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) {Θ : TotT G (routeBig t i j)} {Θ' : TotT G (routeSmall t i j)}
@@ -58,20 +58,20 @@ theorem data_theta {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDa
     GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t2 _⟩
 
 /- English proof (translation)
-Simplify using `[dagger]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dagger_zero {D : D7} (S T : HSp D) : dagger S T 0 = 0 := by
   simp [dagger]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hχ.1.mul hν.1, fun x => by rw [MonoidHom.mul_apply, hχ.2, hν.2, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hecke_mul' {D : D7} {χ ν : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hν : IsHeckeChar D ν) :
     IsHeckeChar D (χ * ν) :=
   ⟨hχ.1.mul hν.1, fun x => by rw [MonoidHom.mul_apply, hχ.2, hν.2, mul_one]⟩
 
 /- English proof (translation)
-Simplify using `only [splitFacO, MonoidHom.inv_apply, inv_inv, Circle.coe_mul, Circle.coe_inv]`. Establish `h1 : ((c x : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `h2 : ((b y : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem splitFac_ratio {D : D7} (a b c : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
     (splitFacO a c⁻¹ x y : ℂ) * (splitFacO b⁻¹ c⁻¹ x y : ℂ)⁻¹ = ((a y * b y : Circle) : ℂ) := by
@@ -81,17 +81,15 @@ theorem splitFac_ratio {D : D7} (a b c : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) 
   field_simp
 
 /- English proof (translation)
-Establish `hη : ∃ η, GlobalTheory.WeilParts.IsEtaTilde D η` using `(GlobalTheory.Mem.EtaTilde.exists_etaTilde D).imp fun _ h => ⟨h.1, h.2.2.2, h.2.2.1, h.2.1⟩`. Establish `H2b : IsWeilDatumO ψ (negSp Wo) V₁ c2T⁻¹ c2S⁻¹ (conjSource (conjAdjoint ω₂))` using `GlobalTheory.ConjWeil.weil_conjSource D ψ Wo V₁ _ _ _ (GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint D ψ V₁ Wo _ _ ω₂ H2)`. Take `⟨ω₂c, H2c⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ (negSp Wo) V₁ c1S c2S⁻¹ hη H1.hecS (GlobalTheory.ConjWeil.hecke_inv H2.hecS) H1.resS (resEta_inv H2.resS)`. Take `⟨ω', H'⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ (negSp Wo) (GlobalTheory.Doubling.hsum V V₁) c1S (c1T * c2S⁻¹) hη H1.hecS (hecke_mul' H1.hecT (GlobalTheory.ConjWeil.hecke_inv H2.hecS)) H1.resS (resEta_mul H1.resT (resEta_inv H2.resS))`. Use `set o := GlobalTheory.OrthSumExists.orthDecHsum D V V₁ with ho`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `TT` using `GlobalTheory.TensorTargetRule.tensorTarget D ψ hψ (GlobalTheory.Doubling.hsum V V₁) V V₁ o (negSp Wo)`. Establish `hF₂ : IsThetaFunO ψ (negSp Wo) V₁ (cj id (cj (dagger Wo V₁) f₂))`. Establish `h1 : IsThetaFunO ψ Wo V₁ (cj (dagger Wo V₁) f₂)` using `((GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ V₁ Wo).2.2.1 f₂).2 hf₂`. Establish `I` using `GlobalTheory.CjNeg.theta_heis_neg D ψ hψ Wo V₁`. Conclude with `((I.1 _).2).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D V₁ g₁`. Set `ω : WRep Wo (GlobalTheory.Doubling.hsum V V₁)` to `ω'.comp ((negGA Wo).toMonoidHom.prodMap (MonoidHom.id _))`. Establish `hω : ω.toSgn true = ω'` using `MonoidHom.ext fun p => rfl`. Use `⟨GlobalTheory.Doubling.hsum V V₁, c1S, c1T * c2S⁻¹, ω, ?_, rfl, o.boxT (negSp Wo) f₁ (cj id (cj (dagger Wo V₁) f₂)), TT.box_theta _ _ hf₁ hF₂, o.emb (g, g₁), ((c1S y * c2T y : Circle) : ℂ)⁻¹, fun u => ?_⟩` and prove the remaining obligations. Use `show IsWeilDatumO ψ (sgn true Wo) _ _ _ (ω.toSgn true)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hω]`. Conclude with `H'`. Take `⟨x, hx⟩` from `GlobalTheory.RecDict.exists_isDetRoot D (negSp Wo) (negGA Wo u)`. Establish `k1` using `TT.om_box c1S c1T c2S⁻¹ ω' ω₁ ω₂c H' H1 H2c (negGA Wo u) g g₁ f₁ _ hf₁ hF₂`. Establish `k2` using `GlobalTheory.WeilChange.weilData_differ_by_splitFac D ψ (negSp Wo) V₁ c2T⁻¹ c2S⁻¹ c1S c2S⁻¹ _ ω₂c H2b H2c (negGA Wo u) g₁ x y hx hy _ hF₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k3 : conjSource (conjAdjoint ω₂) (negGA Wo u, g₁) (cj id (cj (dagger Wo V₁) f₂)) 0 = ω₂ (g₁, u) f₂ 0`. Rewrite using `[GlobalTheory.ConjWeil.conjSource_apply]`. Simplify using `only [MulEquiv.symm_apply_apply, GlobalTheory.ConjWeil.cj_id_cj_id]`. Rewrite using `[GlobalTheory.TensorTargetRule.conjAdjoint_cj]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_zero]`.
-
-Use `show _ = _ * ω' (negGA Wo u, o.emb (g, g₁)) (o.boxT (negSp Wo) f₁ (cj id (cj (dagger Wo V₁) f₂))) 0`. Rewrite using `[k1, OrthDec.boxT_zero, k2, Pi.smul_apply, smul_eq_mul, k3, splitFac_ratio]`. Establish `h0 : ((c1S y * c2T y : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem seesaw_product {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {Wo V V₁ : HSp D}
     {c1S c1T c2S c2T : (AE D)ˣ →* Circle}
@@ -147,9 +145,9 @@ end GlobalTheory.RouteSeesaw
 open GlobalTheory.RouteSeesaw in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j hT M hM Θ Θ' hΘ d hd g g₁`. Take `⟨hf₁, hf₂⟩` from `data_theta W B ρ t i j hΘ d hd`. Establish `hp1 : (Pair.chi (i : ℕ) ((j : ℕ) + 1) : Pair T).InRange D.R.m` using `⟨by omega, by omega⟩`. Establish `hp2 : (Pair.mu t ((i : ℕ) + 1) (j : ℕ)).InRange D.R.m` using `⟨by omega, by omega⟩`. Take `⟨X, χ, χ', ω, hω, hX, Φ, hΦ, h, c, hc⟩` from `seesaw_product W.ψ_std (W.om_is _ hp1) (W.om_is _ hp2) hf₁ hf₂ g g₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨true, X, χ, χ', ω, hω, hX, Φ, hΦ, h, c, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FunObj.routeBig_kernel_product_eq_theta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hT : SquareTriple W t i j)

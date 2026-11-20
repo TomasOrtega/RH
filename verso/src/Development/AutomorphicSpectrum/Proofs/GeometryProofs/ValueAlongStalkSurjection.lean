@@ -7,11 +7,11 @@ open Topology
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ValLift
 
 /- English proof (translation)
-Introduce `X₀ X' Ω R _ _ _ ξ ξ' π z a r hξ hsurj hv`. Substitute `hξ` using the available equality. Take `⟨h', s', hs'a, hs'r⟩` from `hv`. Take `⟨s, hs⟩` from `hsurj s'`. Establish `hsp : genPt (ξ' ≫ π) ⤳ centre (z ≫ π)` using `h'.map π.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hsp, s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs'a, ← hs]`. Establish `key : X₀.presheaf.stalkSpecializes hsp ≫ AlgebraicGeometry.Scheme.stalkClosedPointTo (ξ' ≫ π) = π.stalkMap (centre z) ≫ X'.presheaf.stalkSpecializes h' ≫ AlgebraicGeometry.Scheme.stalkClosedPointTo ξ'`. Rewrite using `[AlgebraicGeometry.Scheme.stalkClosedPointTo_comp]`. Conclude with `AlgebraicGeometry.Scheme.Hom.stalkSpecializes_stalkMap_assoc π (genPt ξ') (centre z) h' (AlgebraicGeometry.Scheme.stalkClosedPointTo ξ')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (CommRingCat.Hom.hom (X₀.presheaf.stalkSpecializes hsp ≫ AlgebraicGeometry.Scheme.stalkClosedPointTo (ξ' ≫ π))) s = _`. Rewrite using `[key]`. Both sides reduce to the same expression. Rewrite using `[← hs'r, ← hs, AlgebraicGeometry.Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valAt_of_stalkMap_surjective : ∀ (X₀ X' : Scheme.{0}) (Ω R : Type) [Field Ω] [CommRing R] [IsLocalRing R]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X₀) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (π : X' ⟶ X₀)

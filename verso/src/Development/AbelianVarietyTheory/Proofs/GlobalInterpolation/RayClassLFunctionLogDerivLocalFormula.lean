@@ -9,9 +9,9 @@ open scoped Classical
 namespace GlobalTheory.HkLocal
 
 /- English proof (translation)
-Unfold `analyticOrderNatAt`. Use `congr 1`. Establish `hd : HasDerivAt (fun z : ℂ => c + ρ * z) ρ w`. Simplify using `using ((hasDerivAt_id w).const_mul ρ).const_add c`. Establish `h` using `analyticOrderAt_comp_of_deriv_ne_zero (f := g) (g := fun z : ℂ => c + ρ * z) (z₀ := w) (by fun_prop) (by rw [hd.deriv]; exact hρ)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem analyticOrderNatAt_comp_affine (g : ℂ → ℂ) (c ρ w : ℂ) (hρ : ρ ≠ 0) :
     analyticOrderNatAt (fun z => g (c + ρ * z)) w = analyticOrderNatAt g (c + ρ * w) := by
@@ -24,57 +24,53 @@ theorem analyticOrderNatAt_comp_affine (g : ℂ → ℂ) (c ρ w : ℂ) (hρ : �
   exact h
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `GlobalTheory.LogDerivZeros.main (5/7) (6/7) (by norm_num) (by norm_num) (by norm_num)`. Use `⟨12 * C, by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ t`. Take `⟨han, hLS, hgr, -⟩` from `GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ`. Use `set c : ℂ := 5 / 4 + t * I with hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcre : c.re = 5 / 4` using `by simp [hc]`. Establish `hcn : ‖c‖ ≤ 5 / 4 + |t|`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hB : 4 ≤ 𝓕.B` using `𝓕.B_ge`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 0 ≤ |t|` using `abs_nonneg t`. Use `set ρ : ℂ := 7 / 10 with hρ`. Establish `hρ0 : ρ ≠ 0` using `by rw [hρ]; norm_num`. Establish `hρn : ‖ρ‖ = 7 / 10` using `by simp [hρ]`. Establish `hre : ∀ z ∈ Metric.closedBall (0 : ℂ) 1, 11 / 20 ≤ (c + ρ * z).re ∧ ‖ρ * z‖ ≤ 7 / 10`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hz1 : ‖z‖ ≤ 1` using `by simpa using hz`. Establish `h1 : ‖ρ * z‖ ≤ 7 / 10` using `by rw [norm_mul, hρn]; linarith`. Use `(abs_le.1 ((Complex.abs_re_le_norm _).trans h1)).1` as an intermediate fact. Use `⟨?_, h1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[add_re, hcre]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : AnalyticOnNhd ℂ (fun z => 𝓕.F χ (c + ρ * z)) (Metric.closedBall 0 1)`. Introduce `z hz`. Establish `h1 : AnalyticAt ℂ (𝓕.F χ) (c + ρ * z)` using `han _ (show 1 / 2 < (c + ρ * z).re by linarith [(hre z hz).1])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `AnalyticAt.comp (g := 𝓕.F χ) (f := fun z => c + ρ * z) h1 (by fun_prop)`. Establish `hlow : 1 / 100 ≤ ‖𝓕.F χ (c + ρ * 0)‖`. Establish `h1 : 1 < c.re` using `by rw [hcre]; norm_num`. Establish `h2` using `(GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ c h1).2.1`. Rewrite `h2` using `[hcre]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_zero, add_zero, (hLS c h1).2, norm_mul]`. Establish `h3 : 1 / 4 ≤ ‖(if χ = 1 then c - 1 else 1 : ℂ)‖` using `by split_ifs`. Use `(le_abs_self _).trans (Complex.abs_re_le_norm (c - 1))` as an intermediate fact. Rewrite `this` using `[sub_re, hcre, one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Evaluate the numerical expressions. Establish `h4 : 1 / 25 ≤ ‖LSeries (𝓕.aChi χ) c‖` using `le_trans (by norm_num) h2`. Combine the equalities or inequalities in the displayed calculation. Establish `hf0 : 𝓕.F χ (c + ρ * 0) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hlow` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : ∀ z ∈ Metric.closedBall (0 : ℂ) 1, ‖𝓕.F χ (c + ρ * z)‖ ≤ 300 * 𝓕.B * (|t| + 3) ^ 2`. Introduce `z hz`. Take `⟨h1, h2⟩` from `hre z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn : ‖c + ρ * z‖ + 1 ≤ |t| + 3`. Use `norm_add_le c (ρ * z)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hgr _ h1).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨⟨hfin, hcnt⟩, hb⟩` from `H _ _ hf hf0 hM`. Establish `hset : {w : ℂ | ‖w - c‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0} = (fun z => c + ρ * z) '' {w : ℂ | ‖w‖ ≤ 6 / 7 ∧ 𝓕.F χ (c + ρ * w) = 0}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : c + ρ * ((w - c) / ρ) = w` using `by field_simp; ring`. Use `⟨(w - c) / ρ, ⟨?_, by rw [e]; exact h2⟩, e⟩` and prove the remaining obligations. Rewrite using `[norm_div, hρn, div_le_iff₀ (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨z, ⟨h1, h2⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Simplify using `only [add_sub_cancel_left, norm_mul, hρn]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj : Set.InjOn (fun z => c + ρ * z) {w : ℂ | ‖w‖ ≤ 6 / 7 ∧ 𝓕.F χ (c + ρ * w) = 0}` using `fun a _ b _ h => mul_left_cancel₀ hρ0 (add_left_cancel h)`. Establish `hlog : 1 + Real.log (300 * 𝓕.B * (|t| + 3) ^ 2 / ‖𝓕.F χ (c + ρ * 0)‖) ≤ 8 * 𝓕.ell t ∧ 0 ≤ 𝓕.ell t`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `LFam.ell`. Use `set X : ℝ := 𝓕.B * (|t| + 2) with hX`. Establish `hX8 : 8 ≤ X` using `by rw [hX]; nlinarith`. Establish `hl1 : 1 ≤ Real.log X`. Rewrite using `[Real.le_log_iff_exp_le (show 0 < X by linarith)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hp : 0 < ‖𝓕.F χ (c + ρ * 0)‖` using `norm_pos_iff.2 hf0`. Establish `h8 : 300 * 𝓕.B * (|t| + 3) ^ 2 / ‖𝓕.F χ (c + ρ * 0)‖ ≤ X ^ 7`. Rewrite using `[div_le_iff₀ hp]`. Establish `hX0 : 0 ≤ X` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (8 : ℝ) ^ 5 ≤ X ^ 5` using `by gcongr`. Establish `h6 : 4 * (𝓕.B * (|t| + 2) ^ 2) ≤ X ^ 2`. Rewrite using `[hX, mul_pow, pow_two 𝓕.B, mul_assoc]`. Use `gcongr`. Establish `h7 : (|t| + 3) ^ 2 ≤ (9 / 4) * (|t| + 2) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h9 : 𝓕.B * (|t| + 3) ^ 2 ≤ 𝓕.B * ((9 / 4) * (|t| + 2) ^ 2)` using `by gcongr`. Establish `h10 : 0 ≤ X ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h9` using `Real.log_le_log (by positivity) h8`. Rewrite `h9` using `[Real.log_pow]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h9`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨hlog, hell⟩` from `hlog`. Establish `hCl : C * (1 + Real.log (300 * 𝓕.B * (|t| + 3) ^ 2 / ‖𝓕.F χ (c + ρ * 0)‖)) ≤ C * (8 * 𝓕.ell t)` using `by gcongr`. Establish `hCe : 0 ≤ C * 𝓕.ell t` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hset]`. Use `⟨hfin.image _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_mem_image hinj]`. Simplify using `only [analyticOrderNatAt_comp_affine _ _ _ _ hρ0] at hcnt`. Use `hcnt.trans (hCl.trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs hLs`. Establish `e : c + ρ * ((s - c) / ρ) = s` using `by field_simp; ring`. Establish `hz : ‖(s - c) / ρ‖ ≤ 5 / 7`. Rewrite using `[norm_div, hρn, div_le_iff₀ (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb'` using `hb ((s - c) / ρ) hz (by simpa only [e] using hLs)`. Establish `hsre : 1 / 2 < s.re`. Use `(hre ((s - c) / ρ) (by simpa only [mem_closedBall_zero_iff] using hz.trans (by norm_num))).1` as an intermediate fact. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hder : deriv (fun z => 𝓕.F χ (c + ρ * z)) ((s - c) / ρ) = ρ * deriv (𝓕.F χ) s`. Establish `hd : HasDerivAt (fun z : ℂ => c + ρ * z) ρ ((s - c) / ρ)`. Simplify using `using ((hasDerivAt_id ((s - c) / ρ)).const_mul ρ).const_add c`. Establish `h1 : HasDerivAt (𝓕.F χ) (deriv (𝓕.F χ) s) (c + ρ * ((s - c) / ρ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(han s hsre).differentiableAt.hasDerivAt`. Use `(HasDerivAt.comp ((s - c) / ρ) h1 hd).deriv` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[finsum_mem_image hinj]`. Simplify using `only [analyticOrderNatAt_comp_affine _ _ _ _ hρ0, hder, e] at hb'`. Rewrite `hb'`, the goal using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `e2 : ∀ w : ℂ, (analyticOrderNatAt (𝓕.F χ) (c + ρ * w) : ℂ) / ((s - c) / ρ - w) = ρ * ((analyticOrderNatAt (𝓕.F χ) (c + ρ * w) : ℂ) / (s - (c + ρ * w)))`. Introduce `w`.
-
-Establish `: s - (c + ρ * w) = ρ * ((s - c) / ρ - w)` using `by field_simp; ring`. Rewrite using `[this, ← mul_div_assoc, mul_div_mul_left _ _ hρ0]`. Simplify using `only [e2] at hb'`. Rewrite `hb'` using `[← Finset.mul_sum, mul_div_assoc, ← mul_sub, norm_mul, hρn]`. Use `hb'.trans hCl` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem logDeriv_local : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (t : ℝ), {w : ℂ | ‖w - (5 / 4 + t * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0}.Finite ∧ (∑ᶠ w ∈ {w : ℂ | ‖w - (5 / 4 + t * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0}, (analyticOrderNatAt (𝓕.F χ) w : ℝ)) ≤ C * 𝓕.ell t ∧ ∀ s : ℂ, ‖s - (5 / 4 + t * I)‖ ≤ 1 / 2 → 𝓕.F χ s ≠ 0 → ‖deriv (𝓕.F χ) s / 𝓕.F χ s - ∑ᶠ w ∈ {w : ℂ | ‖w - (5 / 4 + t * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0}, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)‖ ≤ C * 𝓕.ell t := by
   obtain ⟨C, hC, H⟩ := GlobalTheory.LogDerivZeros.main (5/7) (6/7) (by norm_num) (by norm_num) (by norm_num)

@@ -10,15 +10,15 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open GlobalTheory.Cont
 
 /- English proof (translation)
-Introduce `U _ hU`. Take `⟨⟨σ, hσ⟩, hR⟩` from `hU`. Use `isPreconnected_of_forall (((σ + 1 : ℝ)) : ℂ) fun y hy => ?_` and prove the remaining obligations. Establish `hx : (((σ + 1 : ℝ)) : ℂ) ∈ rightOf σ` using `by show σ < (((σ + 1 : ℝ)) : ℂ).re`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set T : ℝ := |y.re| + |σ| + 1 with hTdef`. Establish `hT : (y + (T : ℂ)) ∈ rightOf σ` using `by show σ < (y + (T : ℂ)).re`. Simplify using `only [Complex.add_re, Complex.ofReal_re, hTdef]`. Combine the linear relations using `[neg_abs_le y.re, le_abs_self σ]`. Establish `hconv : Convex ℝ (rightOf σ)` using `convex_halfSpace_re_gt σ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨segment ℝ y (y + (T : ℂ)) ∪ segment ℝ (y + (T : ℂ)) (((σ + 1 : ℝ)) : ℂ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Set.union_subset ?_ ((hconv.segment_subset hT hx).trans hσ)` and prove the remaining obligations. Introduce and unpack `z ⟨a, b, ha, hb, hab, rfl⟩`. Establish `hab' : (a : ℂ) + (b : ℂ) = 1` using `by exact_mod_cast hab`. Establish `heq : a • y + b • (y + (T : ℂ)) = y + ((b * T : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.real_smul]`. Use `push_cast`. Take the linear combination `y * hab'`. Rewrite using `[heq]`. Conclude with `hR y hy _ (mul_nonneg hb (by positivity))`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inr (right_mem_segment _ _ _)`. Conclude with `Or.inl (left_mem_segment _ _ _)`. Conclude with `IsPreconnected.union (y + (T : ℂ)) (right_mem_segment _ _ _) (left_mem_segment _ _ _) (convex_segment _ _).isPreconnected (convex_segment _ _).isPreconnected`.
+A detailed English derivation is pending.
 -/
 theorem rightConn : RightConn := by
   intro U _ hU
@@ -49,17 +49,15 @@ theorem rightConn : RightConn := by
       (convex_segment _ _).isPreconnected (convex_segment _ _).isPreconnected
 
 /- English proof (translation)
-Introduce `U f h σ s₀ hUo hU hs₀ hfm hfa hσU hhd hfh`. Take `⟨H, hH⟩ : ∃ H : ℂ → ℂ, ∀ w, H w = if σ + 1 < w.re then h w else f w` from `⟨_, fun _ => rfl⟩`. Establish `hHf : ∀ z, H =ᶠ[𝓝[≠] z] f`. Introduce `z`. Distinguish the cases in `hz : σ < z.re`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hfh z hz] with w hw`. Rewrite using `[hH]`. Use `split_ifs`. Conclude with `hw.symm`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : z.re < σ + 1` using `by linarith [not_lt.1 hz]`. Establish `hn : {w : ℂ | w.re < σ + 1} ∈ 𝓝 z` using `Complex.continuous_re.continuousAt.preimage_mem_nhds (Iio_mem_nhds hlt)`. Use `filter_upwards [nhdsWithin_le_nhds hn] with w hw`. Rewrite using `[hH, if_neg (not_lt.2 (le_of_lt hw))]`. Establish `hmer : IsMerExt h U H`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hU, fun z hz => (hfm z hz).congr (hHf z).symm, σ + 1, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hH, if_pos (show σ + 1 < z.re from hz)]`. Establish `hext : IsExtAt h s₀ (Function.update H s₀ (f s₀))` using `(hmer.isExtAt hs₀).update _`. Use `⟨_, hext, ?_, by simp⟩` and prove the remaining obligations. Apply `hfa.congr` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2` using `eventually_nhdsWithin_iff.1 (hHf s₀)`. Use `filter_upwards [h2] with w hw`. Distinguish the cases in `hw0 : w = s₀`. Substitute `hw0` using the available equality. Simplify using the standard rewrite rules.
-
-Rewrite using `[Function.update_of_ne hw0]`. Conclude with `(hw hw0).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue : Glue := by
   intro U f h σ s₀ hUo hU hs₀ hfm hfa hσU hhd hfh

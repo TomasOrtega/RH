@@ -47,9 +47,9 @@ def pullSec {Y' : Scheme.{0}} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Se
       simp only [trF, Category.assoc] }
 
 /- English proof (translation)
-Establish `hm1` using `hJ.mem (fun k => h ≫ φ k) r`. Establish `hm2` using `hJ.mem φ (r ≫ h)`. Simplify using `only [Category.assoc] at hm2`. Unfold `sval`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `(gs_res r z _ hm1 _).trans (gs_pull r h z _ hm2 _)`.
+A detailed English derivation is pending.
 -/
 theorem sval_pullSec {Y' : Scheme.{0}} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -87,7 +87,7 @@ def mulSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε'
       rfl }
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (Sum.elim φ φ') r`. Unfold `sval`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res r z _ hm _) (gs_res r z _ hm _))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sval_mulSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (t : LB.Sec (LB.LinComb L φ' ε')) (r : Z ⟶ Y) (z : Z)
@@ -122,9 +122,7 @@ def powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : I
       rw [Fintype.prod_prod_type] }
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (fun p : I × K => φ p.2) r`. Unfold `sval`. Simplify using `only [powSec]`. Use `(gs_eq r z _ hm _).trans ?_` and prove the remaining obligations. Use `erw [map_prod, map_prod]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => (gs_eq r z _ hm _).symm.trans (gs_res r z _ hm _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sval_powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : I → LB.Sec (LB.LinComb L φ ε))
     (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -138,7 +136,7 @@ theorem sval_powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → �
   exact Finset.prod_congr rfl fun i _ => (gs_eq r z _ hm _).symm.trans (gs_res r z _ hm _)
 
 /- English proof (translation)
-Establish `h1` using `sec_trans s (𝟙 Y) y (j' := fun k => J (𝟙 Y ≫ φ k)) hy (hJ.mem φ (𝟙 Y))`. Use `erw [gs_eq (𝟙 Y) y _ hy] at h1`. Unfold `sval`. Rewrite using `[← h1]`. Apply the tactic sequence `first | rfl | simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_eq_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (y : Y)
     {J : (Y ⟶ X) → L.ι} (hJ : Good L y J) (j : K → L.ι) (hy : y ∈ LB.wchart L φ j) :
@@ -151,9 +149,9 @@ theorem germ_eq_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.Lin
   first | rfl | simp
 
 /- English proof (translation)
-Establish `hkU : r z ∈ LB.wchart L φ k` using `Y.basicOpen_le _ hk`. Establish `hm` using `hJ.mem φ r`. Unfold `sval`. Rewrite using `[sec_trans s r z hm hkU]`. Use `(Units.isUnit _).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [gs_eq r z _ hkU]`. Establish `hz : z ∈ Z.basicOpen ((r.app _).hom (s.f k))`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hk`. Conclude with `(Z.mem_basicOpen _ z hkU).1 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (k : (LB.LinComb L φ ε).ι) (hk : r z ∈ Y.basicOpen (s.f k)) :

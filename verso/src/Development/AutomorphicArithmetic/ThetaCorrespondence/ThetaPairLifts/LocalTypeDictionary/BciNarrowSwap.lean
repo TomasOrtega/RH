@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.BaseChangeIdentities
 /- English proof (translation)
-Introduce `h` and use `bcSpeh_of ascComp h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_change_speh_narrow_swap : DefiniteN → GlobalTheory.BcSpeh.BcSpeh :=
   fun h => bcSpeh_of ascComp h

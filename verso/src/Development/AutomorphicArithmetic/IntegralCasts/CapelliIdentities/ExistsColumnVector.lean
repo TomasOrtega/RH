@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k _ n v hv`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hv`. Establish `hi' : v i ≠ 0` using `hi`. Establish `h1 : ((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol i v).det = v i`. Rewrite using `[← Matrix.cramer_apply, Matrix.cramer_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : (((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol i v).submatrix id (Equiv.swap 0 i)).det ≠ 0`. Rewrite using `[Matrix.det_permute', h1]`. Use `mul_ne_zero ?_ hi'` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap 0 i)) with h | h <;> simp [h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ h2, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[Matrix.mulVec_single_one, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.ExistsColumnVector.ex_col :
     ∀ {k : Type} [inst : Field k] {n : ℕ} (v : Fin (n + (1 : ℕ)) → k),

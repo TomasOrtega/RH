@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.MdRay
 
 /- English proof (translation)
-Establish `hw : w.IsReal` using `hF.isReal w`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Set `ρ : ℝ →+* ℝ` to `(e : w.Completion →+* ℝ).comp ((Pi.evalRingHom _ w).comp θ)`. Establish `hρ : ρ ε = ε`. Establish `: ρ = RingHom.id ℝ` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hnorm : ‖θ ε w‖ = ‖e (θ ε w)‖`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnorm]`. Express the relevant statement in the definitionally equal form `‖ρ ε‖ = |ε|`. Rewrite using `[hρ, Real.norm_eq_abs]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_theta {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F)
     (ε : ℝ) (w : InfinitePlace F) : ‖θ ε w‖ = |ε| := by
@@ -32,11 +32,11 @@ theorem norm_theta {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (
   rw [hρ, Real.norm_eq_abs]
 
 /- English proof (translation)
-Introduce `F _ _ hF θ _ r hr`. Use `⟨norm_theta hF θ, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hr δ hδ`. Establish `hmd : md (r δ) = (∏ w : InfinitePlace F, ‖(r δ : AF F).1 w‖ ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : AF F).2 v‖` using `IdeleGroup.ideleModule_eq _`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(r δ : AF F).2 v‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `norm_one`. Rewrite using `[hmd, hfin, mul_one, h1]`. Simplify using `only [norm_theta hF θ δ, abs_of_pos hδ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`.
+A detailed English derivation is pending.
 -/
 theorem norm_md_ray : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F,
     Continuous θ → ∀ r, IsRay θ r → (∀ (ε : ℝ) (w : InfinitePlace F), ‖θ ε w‖ = |ε|) ∧

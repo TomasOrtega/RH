@@ -25,13 +25,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
 /- English proof (translation)
-Take `⟨e₁, f₀, hf₀, hj, hN₁⟩` from `E.one_e`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hf₀ ▸ Submodule.mem_top : t ∈ Submodule.span O {f₀})`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 (hf₀ ▸ Submodule.mem_top : u ∈ Submodule.span O {f₀})`. Establish `he : e = c • e₁`. Apply `E.jD_inj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_smul, hj, ht, ← hc, TensorProduct.tmul_smul]`. Establish `h1 : e₁ ∈ Submodule.span (LetA O n) {e}`. Rewrite using `[← hN, hN₁]`. Conclude with `Submodule.mem_span_singleton_self e₁`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (algebraMap O (LetA O n) c * a - 1) • e = 0`. Rewrite using `[sub_smul, one_smul, mul_smul, ha, algebraMap_smul, ← he, sub_self]`. Establish `h3` using `congrArg (fun x : LetA O n => PowerSeries.constantCoeff (x 0)) (hfree _ h2)`. Establish `h4 : c * PowerSeries.constantCoeff (a 0) = 1`. Simplify `h3` using `[sub_eq_zero, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d * PowerSeries.constantCoeff (a 0), ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, smul_smul, mul_assoc, mul_comm _ c, h4, mul_one, hd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Prune.bk_gen (E : EtTie W RA RW inclR φR gR πA) (e : W.DD W.one)
     (hN : W.N W.one = Submodule.span (LetA O n) {e})
@@ -57,13 +57,13 @@ private theorem UpperTheory.Prune.bk_gen (E : EtTie W RA RW inclR φR gR πA) (e
   rw [← hc, smul_smul, mul_assoc, mul_comm _ c, h4, mul_one, hd]
 
 /- English proof (translation)
-Take `⟨f, lam₀, hTf, hlf, hlam₀⟩` from `LiftingTheory.lext_lam W`. Take `⟨o, ho⟩` from `ht ⟨f, by rw [hTf]; exact Submodule.mem_span_singleton_self f⟩`. Establish `ho' : f = o • (t : W.one.V)` using `congrArg Subtype.val ho`. Set `lam : W.one.V →ₗ[LL] LL` to `algebraMap O LL o • lam₀`. Establish `hlt : lam t = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `algebraMap O LL o • lam₀ t = 1`. Rewrite using `[← map_smul, algebraMap_smul, ← ho', hlf]`. Establish `hlam : ∀ y ∈ W.one.L.T, ∃ o : O, lam y = algebraMap O LL o`. Introduce `y hy`. Take `⟨o', h'⟩` from `hlam₀ y hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨o * o', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O LL o • lam₀ y = _`. Rewrite using `[h', map_mul, smul_eq_mul]`. Take `⟨x₀, hx₀⟩` from `hc.2.2`. Use `⟨LiftingTheory.lext_Tp T W.one lam c hc.1 hlam, LiftingTheory.lext_ι T W.one lam c hc.1 hlam, LiftingTheory.lext_π T W.one lam c hc.1 hlam W.one_triv, LiftingTheory.lext_ses T W.one lam c hc.1 hlam W.one_triv, LiftingTheory.lext_crys T.ρ W.one.ρ _ lam c W.one_triv (fun g z => rfl …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(c g, (0 : W.one.V)) = (T.ρ g 0 + lam t • c g, (t : W.one.V)) - (0, (t : W.one.V))`. Simplify using `[hlt]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Prune.bk_ext [IsTopologicalRing LL] [FiniteDimensional Qp LL]
     (h1 : IsCrys PD W.one.ρ) (t : ↥W.one.L.T) (ht : ∀ u : ↥W.one.L.T, ∃ o : O, u = o • t)
@@ -93,19 +93,19 @@ private theorem UpperTheory.Prune.bk_ext [IsTopologicalRing LL] [FiniteDimension
   simp [hlt]
 
 /- English proof (translation)
-Introduce `T hT w hw`. Take `⟨c, hc, hcf, hcw⟩` from `(LiftingTheory.liftb_mem_H1fT PD T _).1 hw`. Take `⟨t, ht⟩` from `hker (E.jD W.one e) (by rw [← E.jD_φ, hφ])`. Take `⟨Y, ι, π, hs, hY, x, hx, hcx⟩` from `UpperTheory.Prune.bk_ext h1 t (UpperTheory.Prune.bk_gen E e hN hfree t ht) T hT c hcf`. Take `⟨hi, hsu, hex⟩` from `hF.2.1 T Y W.one ι π hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Y, ι, π, hs, ⟨Y.fdim, Y.mtop, Y.cont, hY⟩, hi, hex, ?_⟩` and prove the remaining obligations. Take `⟨E₁, hE₁⟩` from `hsu e`. Set `E₀` to `LiftingTheory.lifta_avg W Y d E₁`. Establish `hΔ : ∀ δ ∈ W.DelF, W.γD Y δ E₀ = E₀` using `LiftingTheory.lifta_avg_inv W Y d E₁`. Establish `hπ : W.map π E₀ = e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LiftingTheory.lifta_avg_map, hE₁, LiftingTheory.lifta_avg_fix W _ d hd e (fun δ _ => hγ δ)]`. Take `⟨y, hy⟩` from `(hex (W.φD Y E₀ - E₀)).1 (by rw [map_sub, W.map_φ, hπ, hφ, sub_self])`. Take `⟨z, hz⟩` from `(hex (W.γD Y W.gamK E₀ - E₀)).1 (by rw [map_sub, W.map_γ, hπ, hγ, sub_self])`. Establish `hp : (y, z) ∈ W.wachCocyclesDelta T`. Use `(LiftingTheory.lifta_mem_Z1DΔ W T y z).2 ⟨GlobalTheory.HerrClass.mem_herrCocycles_of_eq _ _ y z (hi ?_), fun δ hδ => ⟨hi ?_, hi ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_sub, W.map_γ, W.map_φ, hy, hz, map_sub, map_sub, W.φγ_comm]`. Normalize the expressions using the abelian group laws. Rewrite using `[W.map_γ, hy, map_sub, ← W.φγ_comm, hΔ δ hδ]`. Rewrite using `[W.map_γ, hz, map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hΔ δ hδ]`. Take `⟨c', hc', hcx'⟩` from `hX.2 T Y ι π hs x t hx E₀ hΔ (by rw [hπ, ht]) ⟨(y, z), hp⟩ hy hz`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcc : c' = ⟨c, hc⟩` using `Subtype.ext (funext fun g => hs.1 (by rw [hcx', hcx]))`. Establish `h0 : W.clK T (w - (⟨(y, z), hp⟩ : ↥(W.wachCocyclesDelta T)) : ↥(W.wachCocyclesDelta T)) = 0` using `(map_sub (W.clK T) w ⟨(y, z), hp⟩).trans (sub_eq_zero.2 (hcw.symm.trans ((congrArg _ hcc.symm).trans hc')))`. Take `⟨m, hm, hmw⟩` from `hH T _ h0`. Establish `e1 : (w : W.DD T × W.DD T).1 - y = W.φD T m - m` using `congrArg Prod.fst hmw`. Establish `e2 : (w : W.DD T × W.DD T).2 - z = W.γD T W.gamK m - m` using `congrArg Prod.snd hmw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨E₀ + W.map ι m, fun δ hδ => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hΔ δ hδ, ← W.map_γ, hm δ hδ]`. Rewrite using `[map_add, hπ, (hex _).2 ⟨m, rfl⟩, add_zero]`. Rewrite using `[sub_eq_iff_eq_add.1 e1, map_add, map_sub, hy, map_add, W.map_φ]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[sub_eq_iff_eq_add.1 e2, map_add, map_sub, hz, map_add, W.map_γ]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem UpperTheory.Prune.bk_core [IsTopologicalRing LL] [FiniteDimensional Qp LL]
     (E : EtTie W RA RW inclR φR gR πA) (h1 : IsCrys PD W.one.ρ)
@@ -157,11 +157,9 @@ private theorem UpperTheory.Prune.bk_core [IsTopologicalRing LL] [FiniteDimensio
 end Generic
 
 /- English proof (translation)
-Introduce `D HW F h9 hFont l _ K LL h h5 e he`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `hc` using `GlobalTheory.TorsionCard.card_torsion_mul_finrank (D.loc l) K LL ((HW l).W K 1 LL h.2.2) h.2.1 h.2.2.2.2.1`. Establish `hu : IsUnit (((l - 1 : ℕ)) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 (Nat.not_dvd_of_pos_of_lt (by omega) (by omega))`. Establish `hu'` using `hu.map (algebraMap ℤ_[l] ↥(OL LL))`. Rewrite `hu'` using `[map_natCast, ← hc, Nat.cast_mul]`. Take `⟨d, hd⟩` from `(isUnit_of_mul_isUnit_left hu').exists_left_inv`. Establish `hH` using `(GlobalTheory.HerrClass.herr_a D HW F h9 l K 1 LL h.2.2).1 (fun h2 => absurd (((D.loc l).PD_p K).symm.trans h2) h.2.1)`.
-
-Conclude with `UpperTheory.Prune.bk_core ((F l).E K 1 LL h.2.2).tie (Formalism.MainNotions.LiftingTheory.lone_HOne0_holds D HW F l K 1 LL h.2.2).1 ((h9 l K 1 LL h.2.2).1 _).2.1 (hFont l K LL h) (GlobalTheory.ExtDict.extension_rule D HW F l K LL h) (fun T pr h0 => ((hH T).2.1 pr).1 h0) d hd e he …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Prune.bkExt_holds :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)

@@ -15,13 +15,13 @@ variable {N : ℕ}
 namespace ProjFS
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (contDiff_chartVec_apply ℂ i j).continuous continuous_const`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_chartVec_ne (i j : Fin (N + 1)) : IsOpen {z : Fin N → ℂ | chartVec i z j ≠ 0} :=
   isOpen_ne_fun (contDiff_chartVec_apply ℂ i j).continuous continuous_const
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `chartCoord i (chartInv j (chartCoord j (chartInv i z))) = z`. Rewrite using `[chartInv_chartCoord j (show chartInv i z ∈ chartDomain j from hz), chartCoord_chartInv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma transition_transition {i j : Fin (N + 1)} {z : Fin N → ℂ} (hz : chartVec i z j ≠ 0) :
     transition j i (transition i j z) = z := by
@@ -29,18 +29,16 @@ lemma transition_transition {i j : Fin (N + 1)} {z : Fin N → ℂ} (hz : chartV
   rw [chartInv_chartCoord j (show chartInv i z ∈ chartDomain j from hz), chartCoord_chartInv]
 
 /- English proof (translation)
-Rewrite using `[chartVec_transition i j hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma chartVec_transition_apply {i j : Fin (N + 1)} {z : Fin N → ℂ} (hz : chartVec i z j ≠ 0)
     (m : Fin (N + 1)) : chartVec j (transition i j z) m = (chartVec i z j)⁻¹ * chartVec i z m := by
   rw [chartVec_transition i j hz]; rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `chartVec j (transition 0 j z) 0 ≠ 0`. Rewrite using `[chartVec_transition_apply hz, chartVec_self, mul_one]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_ne_zero hz`. Introduce `hy`. Use `⟨transition j 0 y, ?_, transition_transition hy⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `chartVec 0 (transition j 0 y) j ≠ 0`. Rewrite using `[chartVec_transition_apply hy, chartVec_self, mul_one]`.
-
-Conclude with `inv_ne_zero hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma image_transition (j : Fin (N + 1)) :
     transition 0 j '' {z : Fin N → ℂ | chartVec 0 z j ≠ 0} = {y | chartVec j y 0 ≠ 0} := by
@@ -57,16 +55,16 @@ lemma image_transition (j : Fin (N + 1)) :
     exact inv_ne_zero hy
 
 /- English proof (translation)
-Introduce `z hz z' hz' h` and use `by rw [← transition_transition hz, h, transition_transition hz']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma injOn_transition (i j : Fin (N + 1)) :
     Set.InjOn (transition i j) {z : Fin N → ℂ | chartVec i z j ≠ 0} := fun z hz z' hz' h => by
   rw [← transition_transition hz, h, transition_transition hz']
 
 /- English proof (translation)
-Take `h | ⟨k, hk⟩` from `Fin.eq_self_or_eq_succAbove j 0`. Conclude with `Filter.Eventually.of_forall fun y => by rw [h, chartVec_self]; exact one_ne_zero`. Rewrite using `[ae_iff]`. Establish `hset : {y : Fin N → ℂ | ¬ chartVec j y 0 ≠ 0} = Function.eval k ⁻¹' {0}`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [ne_eq, not_not, mem_setOf_eq, mem_preimage, Function.eval, mem_singleton_iff]`. Rewrite using `[hk, chartVec_succAbove]`. Rewrite using `[hset, volume_pi]`. Conclude with `Measure.pi_eval_preimage_null _ (measure_singleton 0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ae_chartVec_ne (j : Fin (N + 1)) : ∀ᵐ y : Fin N → ℂ, chartVec j y 0 ≠ 0 := by
   obtain h | ⟨k, hk⟩ := Fin.eq_self_or_eq_succAbove j 0
@@ -80,13 +78,11 @@ lemma ae_chartVec_ne (j : Fin (N + 1)) : ∀ᵐ y : Fin N → ℂ, chartVec j y 
     exact Measure.pi_eval_preimage_null _ (measure_singleton 0)
 
 /- English proof (translation)
-Establish `hD : MeasurableSet (chartDomain (N` using `N) j) := (isOpen_chartDomain j).measurableSet`. Rewrite using `[fsMeasure, setLIntegral_map hD hg (measurable_chartInv 0), fsChartMeasure, setLIntegral_withDensity_eq_setLIntegral_mul _ (measurable_fsVolumeDensity 0).ennreal_ofReal (show Measurable (fun x => g (chartInv 0 x)) from hg.comp (measurable_chartInv 0)) (hD.preimage (measurable_cha …`. Establish `hW : chartInv 0 ⁻¹' chartDomain j = {z : Fin N → ℂ | chartVec 0 z j ≠ 0}` using `rfl`. Rewrite using `[hW]`. Establish `hae : (Set.univ : Set (Fin N → ℂ)) =ᵐ[volume] transition 0 j '' {z : Fin N → ℂ | chartVec 0 z j ≠ 0}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[image_transition]`. Use `filter_upwards [ae_chartVec_ne j] with y hy`. Conclude with `propext ⟨fun _ => hy, fun _ => trivial⟩`. Use `conv_rhs => rw [← setLIntegral_univ]`. Rewrite using `[setLIntegral_congr hae, lintegral_image_eq_lintegral_normSq_det_mul (transition 0 j) _ (isOpen_chartVec_ne 0 j) (fun z hz => analyticAt_transition 0 j hz) (injOn_transition 0 j)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `setLIntegral_congr_fun (isOpen_chartVec_ne 0 j).measurableSet fun z hz => ?_` and prove the remaining obligations. Establish `h1 : chartInv j (transition 0 j z) = chartInv 0 z` using `chartInv_chartCoord j (show chartInv 0 z ∈ chartDomain j from hz)`. Establish `h2 : fsVolumeDensity 0 z = Complex.normSq (jacC (transition 0 j) z).det * fsVolumeDensity j (transition 0 j z)`. Rewrite using `[fsVolumeDensity_transition 0 j hz, det_fderiv_real_eq_normSq _ z (differentiableAt_transition 0 j hz), abs_of_nonneg (Complex.normSq_nonneg _)]`. Simplify using `only [Pi.mul_apply]`.
-
-Rewrite using `[h1, h2, ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem setLIntegral_fsMeasure_chartDomain (j : Fin (N + 1)) (g : CP N → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ x in chartDomain j, g x ∂fsMeasure N =

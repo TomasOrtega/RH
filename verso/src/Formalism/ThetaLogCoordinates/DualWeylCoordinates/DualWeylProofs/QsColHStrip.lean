@@ -10,15 +10,13 @@ variable {n : ℕ} [NeZero n]
 
 omit [NeZero n] in
 /- English proof (translation)
-Introduce `x y hxy`. Break down `eq_or_lt_of_le hxy with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `hy : y.1 - 1 < n` using `by have := y.2; omega`. Establish `h1 : (⟨y.1 - 1, hy⟩ : Fin n).1 + 1 < n`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `y.2` as an intermediate fact. Use `Fin.lt_def.1 hlt` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hs.2.1 ⟨y.1 - 1, hy⟩ h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (⟨(⟨y.1 - 1, hy⟩ : Fin n).1 + 1, h1⟩ : Fin n) = y`. Apply `Fin.ext` to reduce the goal to its premises. Use `Fin.lt_def.1 hlt` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Establish `h4 : lam ⟨y.1 - 1, hy⟩ ≤ lam x` using `hl (by`. Apply `Fin.le_def.2` to reduce the goal to its premises. Use `Fin.lt_def.1 hlt` as an intermediate fact. Simplify using `only`.
-
-Use the proof step `omega)`. Conclude with `h2.trans (h4.trans (hs.1 x))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qs_dom_up {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hs : HStrip lam kap b) : Dominant kap := by
   intro x y hxy
@@ -37,11 +35,9 @@ lemma qs_dom_up {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hs : HS
 
 omit [NeZero n] in
 /- English proof (translation)
-Introduce `x y hxy`. Break down `eq_or_lt_of_le hxy with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `h1 : x.1 + 1 < n` using `by have := y.2; have := Fin.lt_def.1 hlt; omega`. Establish `h2` using `hs.2.1 x h1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : kap y ≤ kap ⟨x.1 + 1, h1⟩` using `hk (by`. Apply `Fin.le_def.2` to reduce the goal to its premises. Use `Fin.lt_def.1 hlt` as an intermediate fact. Simplify using `only`. Use the proof step `omega)`.
-
-Conclude with `(hs.1 y).trans (h4.trans h2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qs_dom_down {lam kap : Fin n → ℤ} {b : ℕ} (hk : Dominant kap) (hs : HStrip lam kap b) : Dominant lam := by
   intro x y hxy
@@ -54,11 +50,11 @@ lemma qs_dom_down {lam kap : Fin n → ℤ} {b : ℕ} (hk : Dominant kap) (hs : 
     exact (hs.1 y).trans (h4.trans h2)
 
 /- English proof (translation)
-Establish `h1 : colH lam c ≤ colH kap c`. Assume the negation of the conclusion as `hcon`. Establish `hlt : colH kap c < n` using `lt_of_lt_of_le (not_le.1 hcon) (colH_le lam c)`. Establish `h2` using `(qb_lt_colH_iff hl c ⟨colH kap c, hlt⟩).1 (not_le.1 hcon)`. Establish `h3` using `(qb_lt_colH_iff hk c ⟨colH kap c, hlt⟩).2 (h2.trans (hs.1 _))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ h3`. Establish `h2 : colH kap c ≤ colH lam c + 1`. Assume the negation of the conclusion as `hcon`. Establish `hlt : colH lam c + 1 < n` using `lt_of_lt_of_le (not_le.1 hcon) (colH_le kap c)`. Establish `h2` using `(qb_lt_colH_iff hk c ⟨colH lam c + 1, hlt⟩).1 (not_le.1 hcon)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hs.2.1 ⟨colH lam c, by omega⟩ hlt`. Establish `h4` using `(qb_lt_colH_iff hl c ⟨colH lam c, by omega⟩).2 (h2.trans h3)`. Conclude with `lt_irrefl _ h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qs_colH_strip {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b)
     (c : ℤ) : colH kap c = colH lam c ∨ colH kap c = colH lam c + 1 := by
@@ -81,14 +77,14 @@ def qs_D (lam kap : Fin n → ℤ) : Finset ℤ :=
   (Finset.Ioc (lam (lastIdx n)) (kap 0)).filter fun c => colH kap c = colH lam c + 1
 
 /- English proof (translation)
-The claim follows from `Finset.filter_subset _ _`.
+A detailed English derivation is pending.
 -/
 lemma qs_D_sub (lam kap : Fin n → ℤ) : qs_D lam kap ⊆ Finset.Ioc (lam (lastIdx n)) (kap 0) := Finset.filter_subset _ _
 
 /- English proof (translation)
-Simplify using `only [qs_D, mem_filter, mem_Ioc, and_iff_right_iff_imp]`. Introduce `h`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hcon`. Use `qs_colH_low hl (not_lt.1 hcon)` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `colH_le kap c` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hcon`. Use `qs_colH_high hk (not_le.1 hcon)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qs_mem_D {lam kap : Fin n → ℤ} (hl : Dominant lam) (hk : Dominant kap) (c : ℤ) :
     c ∈ qs_D lam kap ↔ colH kap c = colH lam c + 1 := by
@@ -107,13 +103,13 @@ def qs_mc (lam kap : Fin n → ℤ) : ↥(qs_D lam kap) → Fin n := fun c =>
   ⟨colH lam c.1, by have := (Finset.mem_filter.1 c.2).2; have := colH_le kap c.1; omega⟩
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun c : ↥(qs_D lam kap) => qs_mc lam kap c = x).map (Function.Embedding.subtype _) = Finset.Ioc (lam x) (kap x)`. Use extensionality with `c`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Function.Embedding.coe_subtype, Subtype.exists, exists_and_right, exists_eq_right, mem_Ioc]`. Establish `e1` using `qb_lt_colH_iff hl c x`. Establish `e2` using `qb_lt_colH_iff hk c x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hx⟩`. Establish `h3` using `(qs_mem_D hl hk c).1 hc`. Establish `h4 : colH lam c = x.1` using `congrArg Fin.val hx`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Assume the negation of the conclusion as `hcon`. Use `e1.2 (not_lt.1 hcon)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `e2.1 (by omega)`. Introduce and unpack `⟨h3, h4⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h5` using `e2.2 h4`. Establish `h6 : ¬ x.1 < colH lam c` using `fun h => absurd (e1.1 h) (not_le.2 h3)`. Establish `h7` using `qs_colH_strip hl hk hs c`. Conclude with `⟨(qs_mem_D hl hk c).2 (by omega), Fin.ext (by simp only [qs_mc]; omega)⟩`. Rewrite using `[qs_cnt, ← Finset.card_map (Function.Embedding.subtype _), h1, Int.card_Ioc, Int.toNat_of_nonneg (by have := hs.1 x; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qs_cnt_mc {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b)
     (x : Fin n) : ((qs_cnt (qs_mc lam kap) x : ℕ) : ℤ) = kap x - lam x := by
@@ -140,9 +136,9 @@ lemma qs_cnt_mc {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Do
     Int.toNat_of_nonneg (by have := hs.1 x; omega)]
 
 /- English proof (translation)
-Establish `h1` using `qs_sum_cnt (qs_mc lam kap)`. Establish `h2 : ((∑ x, qs_cnt (qs_mc lam kap) x : ℕ) : ℤ) = (b : ℤ)`. Rewrite using `[← hs.2.2]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun x _ => qs_cnt_mc hl hk hs x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma qs_card_D {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b) :
     Fintype.card ↥(qs_D lam kap) = b := by
@@ -155,7 +151,7 @@ lemma qs_card_D {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Do
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `: (qs_ini h : Finset (Fin n)).filter ((⟨h, hh⟩ : Fin n) < ·) = ∅`. Use extensionality with `x`. Simplify using `only [qs_ini, mem_filter, mem_univ, true_and, notMem_empty, iff_false, not_and, not_lt]`. Introduce `hx; exact Fin.le_def.2 (by simp only; omega)`. Rewrite using `[qs_sg, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -167,7 +163,7 @@ lemma qs_sg_ini (h : ℕ) (hh : h < n) : qs_sg (qs_ini h) (⟨h, hh⟩ : Fin n) 
 
 omit [NeZero n] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [qs_ini, mem_erase, mem_filter, mem_univ, true_and, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qs_ini_erase (h : ℕ) (hh : h < n) : (qs_ini (h + 1) : Finset (Fin n)).erase ⟨h, hh⟩ = qs_ini h := by
   ext x
@@ -175,17 +171,17 @@ lemma qs_ini_erase (h : ℕ) (hh : h < n) : (qs_ini (h + 1) : Finset (Fin n)).er
   omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use function extensionality and compare the values at `c`. Establish `h3` using `h1 c`. Establish `h4` using `congrFun h2 c.1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `(qs_mem_D hl hk c.1).1 c.2`. Rewrite `h4` using `[qs_rem_mem, qs_ext_can hl, qs_ext_can hk]`. Rewrite `h3` using `[qs_ext_can hk]`. Establish `h6 : m c ∉ (qs_ini (colH lam c.1) : Finset (Fin n))` using `by rw [h4]; simp`. Simplify using `only [qs_ini, mem_filter, mem_univ, true_and] at h3 h6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Fin.ext (by simp only [qs_mc]; omega)`. Introduce and unpack `rfl`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Establish `h5` using `(qs_mem_D hl hk c.1).1 c.2`. Rewrite using `[qs_ext_can hk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [qs_ini, qs_mc, mem_filter, mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ qs_D lam kap`. Establish `h5` using `(qs_mem_D hl hk c).1 hc`.
+Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `qs_rem_mem (qs_D lam kap) (qs_ext kap (canT kap)) (qs_mc lam kap) ⟨c, hc⟩`. Simplify using `only at h6`. Rewrite using `[h6, qs_ext_can hl, qs_ext_can hk, h5]`. Conclude with `(qs_ini_erase _ _).symm`. Rewrite using `[qs_rem_not _ _ _ hc, qs_ext_can hl, qs_ext_can hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `qs_colH_strip hl hk hs c`. Establish `h8` using `(qs_mem_D hl hk c).not.1 hc`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qs_can_iff {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b)
     (m : ↥(qs_D lam kap) → Fin n) :
@@ -220,9 +216,9 @@ lemma qs_can_iff {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : D
         congr 1; omega
 
 /- English proof (translation)
-Distinguish the cases in `hc : c ∈ qs_D lam kap`. Establish `h5` using `(qs_mem_D hl hk c).1 hc`. Establish `h6` using `qs_rem_mem (qs_D lam kap) K m ⟨c, hc⟩`. Simplify using `only at h6`. Rewrite using `[h6, Finset.card_erase_of_mem (hm ⟨c, hc⟩), hK, h5]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[qs_rem_not _ _ _ hc, hK]`. Establish `h7` using `qs_colH_strip hl hk hs c`. Establish `h8` using `(qs_mem_D hl hk c).not.1 hc`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qs_rem_card {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b)
     (K : ℤ → Finset (Fin n)) (hK : ∀ c, (K c).card = colH kap c) (m : ↥(qs_D lam kap) → Fin n)
@@ -238,9 +234,9 @@ lemma qs_rem_card {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : 
     omega
 
 /- English proof (translation)
-Distinguish the cases in `hc : c ∈ qs_D lam kap`. Establish `h5` using `(qs_mem_D hl hk c).1 hc`. Establish `h6` using `qs_add_mem (qs_D lam kap) J a ⟨c, hc⟩`. Simplify using `only at h6`. Rewrite using `[h6, Finset.card_insert_of_notMem (ha ⟨c, hc⟩), hJ, h5]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qs_add_not _ _ _ hc, hJ]`. Establish `h7` using `qs_colH_strip hl hk hs c`. Establish `h8` using `(qs_mem_D hl hk c).not.1 hc`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qs_add_card {lam kap : Fin n → ℤ} {b : ℕ} (hl : Dominant lam) (hk : Dominant kap) (hs : HStrip lam kap b)
     (J : ℤ → Finset (Fin n)) (hJ : ∀ c, (J c).card = colH lam c) (a : ↥(qs_D lam kap) → Fin n)

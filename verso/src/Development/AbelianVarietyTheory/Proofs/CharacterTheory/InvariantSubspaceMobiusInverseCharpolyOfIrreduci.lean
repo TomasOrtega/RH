@@ -5,9 +5,9 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `hsub : Subsingleton V` using `Module.finrank_zero_iff.mp h`. Establish `h1 : LinearMap.charpoly g = 1`. Apply `(LinearMap.charpoly_monic g).natDegree_eq_zero.mp` to reduce the goal to its premises. Rewrite using `[LinearMap.charpoly_natDegree, h]`. Establish `h0 : s 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hs 1 1 monic_one monic_one` as an intermediate fact. Rewrite `this` using `[one_mul]`. Take the linear combination `-this`. Establish `: IsEmpty {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W}` using `⟨fun W => W.2.1 (Subsingleton.elim _ _)⟩`. Rewrite using `[psi_eq, h1, h0, finsum_of_isEmpty, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_of_finrank_eq_zero {F : Type} [Field F] (s : F[X] → ℂ) (hs : IsAdditive s)
     (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (g : Module.End F V)
@@ -25,7 +25,7 @@ theorem psi_of_finrank_eq_zero {F : Type} [Field F] (s : F[X] → ℂ) (hs : IsA
   rw [psi_eq, h1, h0, finsum_of_isEmpty, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on generalizing x with`. Consider the case `C a => simp [Module.algebraMap_end_apply]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul (aeval g), aeval_X, aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -41,11 +41,11 @@ theorem coe_aeval_restrict_apply {F : Type} [Field F] {V : Type} [AddCommGroup V
     rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Establish `hnt : Nontrivial W` using `Module.nontrivial_of_finrank_pos (R := F) (Nat.pos_of_ne_zero h0)`. Use `set f : Module.End F W := g.restrict hW with hf`. Establish `hz : aeval f (LinearMap.charpoly g) = 0`. Use extensionality with `x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, coe_aeval_restrict_apply, LinearMap.aeval_self_charpoly]`. Simplify using the standard rewrite rules. Establish `hd : minpoly F f ∣ LinearMap.charpoly g` using `minpoly.dvd F f hz`. Establish `hnu : ¬ IsUnit (minpoly F f)` using `minpoly.not_isUnit F f`. Establish `hd' : LinearMap.charpoly g ∣ minpoly F f` using `((hg.dvd_iff.mp hd).resolve_left hnu).dvd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd'' : LinearMap.charpoly g ∣ LinearMap.charpoly f` using `hd'.trans (LinearMap.minpoly_dvd_charpoly f)`. Establish `hle` using `natDegree_le_of_dvd hd'' (LinearMap.charpoly_monic f).ne_zero`. Rewrite `hle` using `[LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree]`. Use `Submodule.finrank_lt hne` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_eq_zero_of_irreducible_charpoly {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (g : Module.End F V) (hg : Irreducible (LinearMap.charpoly g))
@@ -67,7 +67,7 @@ theorem finrank_eq_zero_of_irreducible_charpoly {F : Type} [Field F] {V : Type} 
   omega
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ s hs g hg`. Rewrite using `[psi_eq, finsum_eq_zero_of_forall_eq_zero, sub_zero]`. Introduce `W`. Conclude with `psi_of_finrank_eq_zero s hs _ _ (finrank_eq_zero_of_irreducible_charpoly g hg W.1 W.2.1 W.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psi_of_irreducible_charpoly : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (s : F[X] → ℂ), IsAdditive s → ∀ g : Module.End F V, Irreducible (LinearMap.charpoly g) → psi s V g = s (LinearMap.charpoly g) := by
   intro F _ _ V _ _ _ s hs g hg

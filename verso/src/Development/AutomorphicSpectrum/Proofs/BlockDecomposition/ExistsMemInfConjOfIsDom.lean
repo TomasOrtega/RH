@@ -6,11 +6,11 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 namespace GlobalTheory.CompanionTheory.Casselman
 
 /- English proof (translation)
-Introduce `G _ _ _ D t ht y hy`. Take `⟨c, hc, b, hb, a, ha, rfl⟩` from `D.fact_up y hy`. Establish `hb' : b ∈ D.J` using `(Subgroup.mem_inf.1 hb).1`. Establish `ha' : a ∈ D.J` using `(Subgroup.mem_inf.1 ha).1`. Establish `hbt : (t : G)⁻¹ * b * t ∈ D.J` using `(Subgroup.mem_inf.1 (ht.2.2 b hb).2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat : (t : G)⁻¹ * a * t ∈ D.J` using `(Subgroup.mem_inf.1 (ht.2.1 a ha)).1`. Establish `he : c⁻¹ * (c * b * a) = b * a` using `by group`. Use `⟨c, hc, Subgroup.mem_inf.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `D.J.mul_mem hb' ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, Subgroup.mem_map]`. Use `⟨((t : G)⁻¹ * b * t) * ((t : G)⁻¹ * a * t), D.J.mul_mem hbt hat, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_inf_conj_of_isDom : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (D : PositivityTheory.SphericalProduct.CassData G), ∀ t : D.T, D.IsDom t → ∀ y ∈ D.J,

@@ -10,13 +10,13 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 /- English proof (translation)
-Set `a : (Fin r → ℂ) × ℂ` to `(q.1, 0)`. Set `L : ℂ →L[ℝ] (Fin r → ℂ) × ℂ` to `ContinuousLinearMap.inr ℝ (Fin r → ℂ) ℂ`. Set `G : (Fin r → ℂ) × ℂ → V` to `fun p => F (a + p)`. Set `s' : Set ((Fin r → ℂ) × ℂ)` to `(fun p => a + p) ⁻¹' s`. Establish `hs' : IsOpen s'` using `hs.preimage (continuous_const.add continuous_id)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) G s'` using `hF.comp ((contDiff_const.add contDiff_id).contDiffOn) (fun p hp => hp)`. Establish `hslice : (fun ζ : ℂ => F (q.1, ζ)) = G ∘ L`. Use function extensionality and compare the values at `ζ`. Simplify using `[G, a, L]`. Establish `hq' : L q.2 ∈ s'` using `by show a + L q.2 ∈ s`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `hq` using `[a, L]`. Establish `hpre : IsOpen (L ⁻¹' s')` using `hs'.preimage L.continuous`. Establish `hmem : q.2 ∈ L ⁻¹' s'` using `hq'`. Rewrite using `[hslice, ← iteratedFDerivWithin_of_isOpen j hpre hmem, L.iteratedFDerivWithin_comp_right hG hs'.uniqueDiffOn hpre.uniqueDiffOn hq' (by exact_mod_cast (le_top : ((j : ℕ∞)) ≤ ⊤)), iteratedFDerivWithin_of_isOpen j hs' hq']`. Establish `hGq : iteratedFDeriv ℝ j G (L q.2) = iteratedFDeriv ℝ j F q` using `by show iteratedFDeriv ℝ j (fun p => F (a + p)) (L q.2) = _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[iteratedFDeriv_comp_add_left']`. Use `show iteratedFDeriv ℝ j F (a + L q.2) = _`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [a, L]`. Rewrite using `[hGq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcl_slice_iter {r : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (F : (Fin r → ℂ) × ℂ → V) (s : Set ((Fin r → ℂ) × ℂ)) (hs : IsOpen s)
@@ -51,13 +51,13 @@ theorem gcl_slice_iter {r : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace 
   rw [hGq]
 
 /- English proof (translation)
-Take `⟨n, A, hA, hT'⟩` from `hT`. Establish `hmem : ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))) (NF.QR P.k P.r Bs.z Bs.z')` using `fun Φ => (Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB Φ Φ.2).1`. Establish `hopen : IsOpen (NF.QR P.k P.r Bs.z Bs.z')`. Establish `h1 : IsOpen (Formalism.QuantumDeterminants.OmX P.r)`. Establish `h2 : Formalism.QuantumDeterminants.OmX P.r = ⋂ l, {x : Fin P.r → ℂ | x l ≠ 0}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Formalism.QuantumDeterminants.OmX]`. Rewrite using `[h2]`. Conclude with `isOpen_iInter_of_finite (fun l => isOpen_ne_fun (continuous_apply l) continuous_const)`. Conclude with `(h1.preimage continuous_fst).inter (isOpen_lt continuous_const (Complex.continuous_normSq.comp continuous_snd))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨n, fun j q => (A j q.2).comp (ContinuousMultilinearMap.compContinuousLinearMapL (fun _ : Fin j => ContinuousLinearMap.inr ℝ (Fin P.r → ℂ) ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `hA' : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun q : (Fin P.r → ℂ) × ℂ => A j q.2) (NF.QR P.k P.r Bs.z Bs.z')` using `(hA j).comp contDiff_snd.contDiffOn (fun q hq => hq.2)`. Conclude with `hA'.clm_comp contDiffOn_const`. Introduce `Φ q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT' Φ q hq]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[gcl_slice_iter _ _ hopen (hmem Φ) q hq j]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousMultilinearMap.compContinuousLinearMapL_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gcl_isRadDiff {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)

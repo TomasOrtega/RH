@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ ρ' θ hρ hc U W _ hUW hθ ho hu 𝒟 h𝒟`. Establish `h1` using `(selTwist R G M ρ ρ' θ hρ U hθ 𝒟 h𝒟).2 W 1`. Take `⟨hi, hr⟩` from `selUnit R G M ρ' hc U W hUW ho hu 𝒟 h𝒟`. Establish `e : θ.comp W.subtype * (1 : W →* Rˣ) = θ.comp W.subtype` using `mul_one _`. Rewrite `h1` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, ← hr]`. Conclude with `(LinearEquiv.ofInjective _ hi).length_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selEigBase :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

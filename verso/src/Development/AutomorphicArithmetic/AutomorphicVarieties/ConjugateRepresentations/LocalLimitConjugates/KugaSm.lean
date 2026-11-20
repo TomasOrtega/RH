@@ -9,7 +9,7 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Simplify using `only [cas, map_sum, map_sub, map_mul, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem kugaSm_map {E : Type} [Field E] {a n : ℕ} (e : Fin n → Herm E a) {A A' : Type} [Ring A] [Module ℝ A]
     [Ring A'] [Module ℝ A'] (f : A →+* A') (L : Lie E a →ₗ[ℝ] A) (L' : Lie E a →ₗ[ℝ] A') (h : ∀ X, L' X = f (L X)) :
@@ -17,7 +17,7 @@ private theorem kugaSm_map {E : Type} [Field E] {a n : ℕ} (e : Fin n → Herm 
   simp only [cas, map_sum, map_sub, map_mul, h]
 
 /- English proof (translation)
-Use `kugaSm_map e (Module.End.rTensorAlgHom ℂ (Sm E a) (Fin Ξ.d → ℂ)).toRingHom _ _ fun X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (Module.End.rTensorAlgHom ℂ (Sm E a) (Fin Ξ.d → ℂ)) _`. Rewrite using `[shift_apply, shift_apply, map_add, ← algebraMap_smul ℂ (r * ell E a X) (1 : Module.End ℂ (Sm E a)), map_smul, map_one, algebraMap_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem kugaSm_A {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n : ℕ} (e : Fin n → Herm E a)
     (Ξ : AlgRep E a) (r : ℝ) :
@@ -29,9 +29,9 @@ private theorem kugaSm_A {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   rfl
 
 /- English proof (translation)
-Set `f : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ →ₐ[ℂ] Module.End ℂ (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))` to `(Module.End.lTensorAlgHom ℂ (Fin Ξ.d → ℂ) (Sm E a)).comp (Matrix.toLinAlgEquiv' : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ ≃ₐ[ℂ] _).toAlgHom`. Establish `h1 : cas (shift (smB Ξ) (-r)) e = f (cas (shift Ξ.dmat (-r)) e)`. Use `kugaSm_map e f.toRingHom _ _ fun X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = f _`. Rewrite using `[shift_apply, shift_apply, map_add, ← algebraMap_smul ℂ (-r * ell E a X) (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ), map_smul, map_one, algebraMap_smul, smB_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, show cas (shift Ξ.dmat (-r)) e = _ from h, map_smul, map_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kugaSm_B {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n : ℕ} (e : Fin n → Herm E a)
     (Ξ : AlgRep E a) (r c : ℝ) (h : HasCas Ξ r c e) :
@@ -48,17 +48,15 @@ private theorem kugaSm_B {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   rw [h1, show cas (shift Ξ.dmat (-r)) e = _ from h, map_smul, map_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he Ξ r c hc`. Take `⟨a1, b1, hab, -, -, hinf⟩` from `smAB E a Ξ`. Take `⟨-, -, -, l4⟩` from `ellFacts E a`. Establish `hA` using `l4 _ _ r a1`. Establish `hB` using `l4 _ _ (-r) b1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : shift (smA Ξ) r + shift (smB Ξ) (-r) = smLie Ξ`. Rewrite using `[shift_add_shift]`. Conclude with `LinearMap.ext fun X => add_sub_cancel (smA Ξ X) (smLie Ξ X)`. Establish `hcom : ∀ X Y, Commute (shift (smA Ξ) r X) (shift (smB Ξ) (-r) Y)` using `fun X Y => by`. Rewrite using `[shift_apply, shift_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hab X Y).add_right ((Commute.one_right _).smul_right _)).add_left ((Commute.one_left _).smul_left _)`. Establish `hcas : cas (shift (smB Ξ) (-r)) e - cas (shift (smA Ξ) r) e = -(casA r c e).rTensor (Fin Ξ.d → ℂ)`. Rewrite using `[kugaSm_A, kugaSm_B e Ξ r c hc, casA, LinearMap.rTensor_sub, LinearMap.rTensor_smul, neg_sub, Module.End.one_eq_id, Module.End.one_eq_id, LinearMap.rTensor_id]`. Establish `hdel : ∀ (q : ℕ) (X : Fin q → Herm E a), del (shift (smB Ξ) (-r) - shift (smA Ξ) r) e (0 : Co Ξ (q + 1)) X = 0` using `fun q X => by`. Simplify using `[del_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun ω hω hd => ?_, fun q ω hω hd => ?_⟩` and prove the remaining obligations. Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Establish `h` using `kugaZero E a n e _ _ _ hcom ω (by rw [hsum]; exact hinf _ ω hω) X`. Rewrite `h` using `[hsum, hd, hdel, hcas, LinearMap.neg_apply]`. Rewrite using `[app_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `neg_eq_zero.1 h.symm`. Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Establish `h` using `kugaSucc E a n e he _ _ _ hA hB hcom q ω (by rw [hsum]; exact hinf _ ω hω) X`. Rewrite `h` using `[hsum, hd, hdel, hcas, LinearMap.neg_apply, add_zero]`. Rewrite using `[app_apply, AlternatingMap.neg_apply]`.
-
-Conclude with `(neg_eq_iff_eq_neg.1 h.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.kugaSm :
     UpperTheory.V.Cj.H.KugaSm := by

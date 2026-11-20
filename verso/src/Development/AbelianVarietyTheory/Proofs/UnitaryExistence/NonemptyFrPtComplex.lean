@@ -19,11 +19,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hN hT E _ _ _ H Dw l Xo c h σ`. Take `⟨L, _, _, j, x, hx⟩` from `GlobalTheory.T.xoNumPt_of_p_add_q_pos hN E H Dw l Xo c h`. Set `_ : Algebra c.F L` to `j.toAlgebra`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Establish `: Algebra.IsAlgebraic c.F L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower ℚ c.F L` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Conclude with `Algebra.IsAlgebraic.tower_top (K := ℚ) c.F`. Set `φ : L →ₐ[c.F] ℂ` to `IsAlgClosed.lift`. Set `_ : Algebra L ℂ` to `φ.toRingHom.toAlgebra`. Take `⟨_, y, _⟩` from `gfp_frPt_gen (Xo := Xo) (c := c) (L := L) (L' := ℂ) hT (fun r => (φ.commutes r).symm) x hx (fun τ i j => if i = j then 1 else 0) (fun τ i => by simp) (fun τ i j hij => by simp [hij.ne'])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_frPt_complex : N1c → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ σ : c.F →+* ℂ, Nonempty (FrPt Xo c (CAt σ)) := by
   intro hN hT E _ _ _ H Dw l Xo c h σ

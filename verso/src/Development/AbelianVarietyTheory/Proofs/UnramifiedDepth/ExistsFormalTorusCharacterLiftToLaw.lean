@@ -26,7 +26,7 @@ section Subst
 variable {R : Type} [CommRing R] {m n d e : ℕ}
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => ha q.1 q.2)`.
+A detailed English derivation is pending.
 -/
 private theorem hasSub (a : Fin m → Fin d → PS R n e) (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) :
     MvPowerSeries.HasSubst (fun q : Fin m × Fin d => a q.1 q.2) :=
@@ -37,7 +37,7 @@ private noncomputable def subA (a : Fin m → Fin d → PS R n e)
   MvPowerSeries.substAlgHom (hasSub a ha)
 
 /- English proof (translation)
-Unfold `subA sub`. Rewrite using `[MvPowerSeries.coe_substAlgHom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem subA_apply (a : Fin m → Fin d → PS R n e)
     (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (f : PS R m d) : subA a ha f = sub a f := by
@@ -45,7 +45,7 @@ private theorem subA_apply (a : Fin m → Fin d → PS R n e)
   rw [MvPowerSeries.coe_substAlgHom]
 
 /- English proof (translation)
-Unfold `sub`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSub a ha) (hasSub b hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sub_sub {n' e' : ℕ} (a : Fin m → Fin d → PS R n e)
     (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (b : Fin n → Fin e → PS R n' e')
@@ -55,7 +55,7 @@ private theorem sub_sub {n' e' : ℕ} (a : Fin m → Fin d → PS R n e)
   rw [MvPowerSeries.subst_comp_subst_apply (hasSub a ha) (hasSub b hb)]
 
 /- English proof (translation)
-Unfold `sub`. Rewrite using `[MvPowerSeries.subst_X (hasSub a ha)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sub_X (a : Fin m → Fin d → PS R n e)
     (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (i : Fin m) (j : Fin d) :
@@ -64,7 +64,7 @@ private theorem sub_X (a : Fin m → Fin d → PS R n e)
   rw [MvPowerSeries.subst_X (hasSub a ha)]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (hasSub a ha) (fun q => ha q.1 q.2) hf`.
+A detailed English derivation is pending.
 -/
 private theorem const_sub (a : Fin m → Fin d → PS R n e)
     (ha : ∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) (f : PS R m d)
@@ -77,9 +77,9 @@ Both sides reduce to the same expression.
 private theorem ev_eq_sub (a : Fin m → Pt R n d) (f : PS R m d) : ev a f = sub a f := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `addOf ev`. Establish `h : (fun q : Fin 2 × Fin d => (![pt R (n` using `2) d 0, pt R (n := 2) d 1] : Fin 2 → Pt R 2 d) q.1 q.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `⟨a, b⟩`. Apply the tactic sequence `fin_cases a <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem addOf_pt (F : Fin d → PS R 2 d) :
     addOf F (pt R (n := 2) d 0) (pt R (n := 2) d 1) = F := by
@@ -93,7 +93,7 @@ private theorem addOf_pt (F : Fin d → PS R 2 d) :
   rfl
 
 /- English proof (translation)
-Introduce `i j`. Use `fin_cases i`. Conclude with `hφ j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem const_one (φ : Fin d → PS R n e) (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) :
     ∀ (i : Fin 1) j, MvPowerSeries.constantCoeff ((![φ] : Fin 1 → Fin d → PS R n e) i j) = 0 := by
@@ -102,22 +102,20 @@ private theorem const_one (φ : Fin d → PS R n e) (hφ : ∀ j, MvPowerSeries.
   exact hφ j
 
 /- English proof (translation)
-Introduce `j`. Simplify using `[pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem const_pt (k : Fin n) : ∀ j, MvPowerSeries.constantCoeff (pt R d k j) = 0 := by
   intro j
   simp [pt]
 
 /- English proof (translation)
-Take `⟨Φ, h0, h1, h2⟩` from `h`. Establish `hb : ∀ (i : Fin 2) j, MvPowerSeries.constantCoeff ((![fun i => ev (n` using `2) ![pt R d 0] (J i), fun i => ev (n := 2) ![pt R d 1] (J i)] : Fin 2 → Fin e → PS R 2 d) i j) = 0 := by`. Introduce `i j`. Use `fin_cases i`. Conclude with `const_sub _ (const_one _ (const_pt 0)) _ (hJ.1 j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `const_sub _ (const_one _ (const_pt 1)) _ (hJ.1 j)`. Use `⟨Φ.comp (subA _ hb), fun f => ?_, fun f => ?_, fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, subA_apply]`. Rewrite using `[← h0, ev_eq_sub _ f, ev_eq_sub _ (sub _ f), sub_sub _ (const_one _ (const_pt 0)) _ hb, sub_sub _ (const_one J hJ.1) _ (const_one _ (const_pt 0))]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i j`. Use `fin_cases i`. Conclude with `sub_X _ hb 0 j`. Simplify using `only [AlgHom.comp_apply, subA_apply]`. Rewrite using `[← h1, ev_eq_sub _ f, ev_eq_sub _ (sub _ f), sub_sub _ (const_one _ (const_pt 1)) _ hb, sub_sub _ (const_one J hJ.1) _ (const_one _ (const_pt 1))]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `i j`. Use `fin_cases i`. Conclude with `sub_X _ hb 1 j`. Simplify using `only [AlgHom.comp_apply, subA_apply]`.
-
-Rewrite using `[← h2, ev_eq_sub _ f, ev_eq_sub _ (sub _ f), sub_sub _ (const_one _ hF') _ hb, sub_sub _ (const_one J hJ.1) _ (const_one _ hF)]`. Use `congr 2`. Use function extensionality and compare the values at `i j`. Use `fin_cases i`. Conclude with `(hJ.2 j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem isSum_comp (F : Fin d → PS R 2 d) (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0)
     (F' : Fin e → PS R 2 e) (hF' : ∀ j, MvPowerSeries.constantCoeff (F' j) = 0)
@@ -156,7 +154,7 @@ private theorem isSum_comp (F : Fin d → PS R 2 d) (hF : ∀ j, MvPowerSeries.c
     exact (hJ.2 j).symm
 
 /- English proof (translation)
-Take `⟨Φ, h0, h1, h2⟩` from `h`. Establish `h3` using `hu.2`. Rewrite `h3` using `[addOf_pt]`. Rewrite using `[← h2, ← h0, ← h1, h3, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isCh_sum (F : Fin d → PS R 2 d) (u : PS R 1 d) (hu : IsCh F u) (φ φ' ψ : PS R 1 d →ₐ[R] R)
     (h : IsSum F φ φ' ψ) : ψ u = φ u * φ' u := by
@@ -168,25 +166,25 @@ private theorem isCh_sum (F : Fin d → PS R 2 d) (u : PS R 1 d) (hu : IsCh F u)
 end Subst
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ d r F hFH J A' hJ hA i`. Take `⟨⟨Gl, hGl⟩, hch, -⟩` from `GlobalTheory.ChF.gmLaw_chars_mul O r`. Take `⟨hchi, hdl⟩` from `hch i`. Establish `hFHG : FH p Gl.F` using `hGl ▸ GlobalTheory.T.multiplicativeFormalGroupLawPower_pTorsion_finiteFree p C v O hv r`. Rewrite `hJ`, `hchi` using `[← hGl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨instF, hsF, h0F, hkF⟩` from `GlobalTheory.T.exists_addCommMonoid_algHom_powerSeries_fgLaw p C v O hv d F`. Take `⟨instG, hsG, h0G, hkG⟩` from `GlobalTheory.T.exists_addCommMonoid_algHom_powerSeries_fgLaw p C v O hv r Gl`. Take `⟨hchain, -, -⟩` from `GlobalTheory.ChF.chain_rule_lin O r d J hJ.1`. Establish `hsurj` using `GlobalTheory.ChF.sub_surjective_of_lin_leftInverse O d r J A' hJ.1 hA`. Set `j : (PS O 1 r →ₐ[O] O) →+ (PS O 1 d →ₐ[O] O)` to `{ toFun := fun φ => φ.comp (subA ![J] (const_one J hJ.1)) map_zero' := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `AlgHom.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, subA_apply, h0F, h0G, (hchain f).2]`. Use the proof step `map_add' := fun φ φ' => (hsF _ _ _).1 (isSum_comp Gl.F Gl.const F.F F.const J hJ φ φ' _ ((hsG _ _ _).2 rfl)) }`. Establish `hj : ∀ φ f, j φ f = φ (sub ![J] f)` using `fun φ f => by show φ (subA ![J] (const_one J hJ.1) f) = _`. Rewrite using `[subA_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective j`. Introduce `φ φ' h`. Use `AlgHom.ext fun g => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `hsurj g`. Rewrite using `[← hj, ← hj, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (1 + MvPowerSeries.X ((0 : Fin 1), i) : PS O 1 r)`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, hchi.1]`. Conclude with `isUnit_one`. Set `χ : (PS O 1 r →ₐ[O] O) → Cˣ` to `fun φ => ((hunit.map φ).map (algebraMap O C)).unit`. Establish `hχ : ∀ φ, (χ φ : C) = algebraMap O C (φ (1 + MvPowerSeries.X ((0 : Fin 1), i)))` using `fun φ => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχm : ∀ a b, χ (a + b) = χ a * χ b`. Introduce `a b`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hχ, hχ, hχ, isCh_sum Gl.F _ hchi a b _ ((hsG _ _ _).2 rfl), map_mul]`. Take `⟨κ, hκm, hκ0, hκj⟩` from `GlobalTheory.CharExt.exists_extension _ _ j hinj C p (Fact.out : p.Prime).ne_zero χ hχm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu, huκ⟩` from `GlobalTheory.T.exists_isCh_eq_character_on_torsion p C v O hv d F hFH (fun φ => (κ φ : C)) (by`. Introduce and unpack `φ φ' ψ ⟨k, hk⟩ ⟨k', hk'⟩ hs`. Rewrite using `[(hsF _ _ _).1 hs, hκm φ φ' ⟨k, (hkF _ _).2 hk⟩ ⟨k', (hkF _ _).2 hk'⟩, Units.val_mul])`. Use the proof step `(by`. Introduce `φ hφ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: φ = 0` using `AlgHom.ext fun f => by rw [hφ, h0F]`. Use `show (κ φ : C) = 1`. Rewrite using `[this, hκ0, Units.val_one])`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `heq : sub ![J] u - (1 + MvPowerSeries.X ((0 : Fin 1), i)) = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(GlobalTheory.T.formalGroup_series_separated_by_torsion p C v O hv r Gl hFHG).2` to reduce the goal to its premises. Introduce and unpack `φ ⟨k, hk⟩`. Establish `h1 : p ^ k • φ = 0` using `(hkG _ _).2 hk`. Establish `h2 : p ^ k • j φ = 0` using `by rw [← map_nsmul, h1, map_zero]`. Establish `h3` using `huκ (j φ) ⟨k, (hkF _ _).1 h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[← hj, h3, ← hχ, ← hκj φ ⟨k, h1⟩]`. Rewrite using `[← (hchain u).1, sub_eq_zero.1 heq, hdl]`.
+A detailed English derivation is pending.
 -/
 theorem exists_char_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (d r : ℕ) (F : FGLaw O d), FH p F.F → ∀ (J : Fin d → PS O 1 r) (A' : Matrix (Fin r) (Fin d) O), IsHomF (gmF O r) F.F J → A' * lin J = 1 → ∀ i : Fin r, ∃ u : PS O 1 d, IsCh F.F u ∧ (lin J)ᵀ *ᵥ dl u = Pi.single i 1 := by
   intro p _ C _ _ _ v O _ _ hv _ _ d r F hFH J A' hJ hA i

@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.HtEx
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_isClosed]`. Introduce `F hF`. Establish `hQF : IsClosed ((Subtype.val : Q → Γ) '' (δ ⁻¹' F))` using `hQ.isClosedMap_subtype_val _ (hF.preimage hδ)`. Establish `heq : H ⁻¹' F = Set.image2 (· * ·) ((Subtype.val : Q → Γ) '' (δ ⁻¹' F)) C`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨p, hp, k, hk, rfl⟩` from `hI g`. Use `Set.mem_image2.mpr ⟨p, ⟨⟨p, hp⟩, ?_, rfl⟩, k, hk, rfl⟩` and prove the remaining obligations. Establish `h1` using `hH ⟨p, hp⟩ k hk`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage] at hg ⊢`. Rewrite using `[← h1]`. Conclude with `hg`. Introduce `hg`. Take `⟨x, ⟨q, hq, rfl⟩, k, hk, rfl⟩` from `Set.mem_image2.mp hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage] at hq ⊢`. Rewrite using `[hH q k hk]`. Conclude with `hq`. Rewrite using `[heq]`. Conclude with `hQF.mul_right_of_isCompact hC`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_decomp {Γ X : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace X]
     {Q : Subgroup Γ} (hQ : IsClosed (Q : Set Γ)) {C : Set Γ} (hC : IsCompact C) (H : Γ → X) (δ : Q → X)
@@ -55,21 +55,21 @@ def delta : P D n →* ℝ≥0 :=
   (absA D).comp (Matrix.GeneralLinearGroup.det.comp HeightExists.leviBlock)
 
 /- English proof (translation)
-Establish `hA : Continuous (absA D)` using `GlobalTheory.Doubling.continuous_absE`. Conclude with `hA.comp (HeightExists.continuous_detGL.comp HeightExists.continuous_leviBlock)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_delta : Continuous (delta (D := D) (n := n)) := by
   have hA : Continuous (absA D) := GlobalTheory.Doubling.continuous_absE
   exact hA.comp (HeightExists.continuous_detGL.comp HeightExists.continuous_leviBlock)
 
 /- English proof (translation)
-Establish `h : absA D u * absA D u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `pos_iff_ne_zero.mpr (left_ne_zero_of_mul_eq_one h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absA_pos (u : (AE D)ˣ) : 0 < absA D u := by
   have h : absA D u * absA D u⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact pos_iff_ne_zero.mpr (left_ne_zero_of_mul_eq_one h)
 
 /- English proof (translation)
-Establish `hl : HeightExists.leviBlock (⟨p, hp⟩ : P D n) = a` using `by ext1`. Conclude with `ha`. Use `show absA D (Matrix.GeneralLinearGroup.det (HeightExists.leviBlock (⟨p, hp⟩ : P D n))) = _`. Rewrite using `[hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_eq {p : G D n} (hp : p ∈ P D n) {a : GL (Fin n) (AE D)} (ha : blkA (mat p) = a.1) :
     delta (⟨p, hp⟩ : P D n) = absA D (Matrix.GeneralLinearGroup.det a) := by
@@ -80,7 +80,7 @@ theorem delta_eq {p : G D n} (hp : p ∈ P D n) {a : GL (Fin n) (AE D)} (ha : bl
   rw [hl]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `LeftInvSect.exists_blkA p.2`. Rewrite using `[hH p p.2 a ha k hk, ← delta_eq p.2 ha]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_eq {H : G D n → ℝ≥0} (hH : IsHeight H) (p : P D n) {k : G D n} (hk : k ∈ K D n) :
     H ((p : G D n) * k) = delta p := by
@@ -88,11 +88,9 @@ theorem height_eq {H : G D n → ℝ≥0} (hH : IsHeight H) (p : P D n) {k : G D
   rw [hH p p.2 a ha k hk, ← delta_eq p.2 ha]
 
 /- English proof (translation)
-Use `⟨continuous_of_decomp HeightExists.isClosed_P HeightExists.isCompact_K H delta continuous_delta (Iwasawa.exists_mul D n) (fun p k hk => height_eq hH p hk), ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨p, hp, k, hk, rfl⟩` from `Iwasawa.exists_mul D n g`. Rewrite using `[height_eq hH ⟨p, hp⟩ hk]`. Take `⟨a, ha⟩` from `LeftInvSect.exists_blkA hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[delta_eq hp ha]`. Conclude with `absA_pos _`. Introduce `q hq a ha g`. Take `⟨p, hp, k, hk, rfl⟩` from `Iwasawa.exists_mul D n g`. Rewrite using `[← mul_assoc, height_eq hH ⟨q * p, (P D n).mul_mem hq hp⟩ hk, height_eq hH ⟨p, hp⟩ hk, ← delta_eq hq ha]`.
-
-Conclude with `map_mul delta (⟨q, hq⟩ : P D n) ⟨p, hp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHt_of_isHeight {H : G D n → ℝ≥0} (hH : IsHeight H) : PositivityTheory.Rg.Rsw.IsHt H := by
   refine ⟨continuous_of_decomp HeightExists.isClosed_P HeightExists.isCompact_K H delta continuous_delta
@@ -110,9 +108,9 @@ theorem isHt_of_isHeight {H : G D n → ℝ≥0} (hH : IsHeight H) : PositivityT
     exact map_mul delta (⟨q, hq⟩ : P D n) ⟨p, hp⟩
 
 /- English proof (translation)
-Introduce `D n`. Use `⟨?_, (K D n : Set (G D n)), HeightExists.isCompact_K, fun g => ?_⟩` and prove the remaining obligations. Take `⟨H, hH⟩` from `exists_height D n`. Conclude with `⟨H, isHt_of_isHeight hH⟩`. Take `⟨p, hp, k, hk, rfl⟩` from `Iwasawa.exists_mul D n g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, hp, k, hk, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem htExist : PositivityTheory.Rg.Rsw.HtExist := by
   intro D n

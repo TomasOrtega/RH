@@ -76,7 +76,7 @@ def cocP (Γ : Subgroup SL(2, ℤ)) (F : ℂ → MvPolynomial (Fin 2) ℂ) : Γ 
   deh (slP ((γ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) (F (mob (ofSL γ) Complex.I)) - F Complex.I)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨differentiableOn_const 1, differentiableOn_const 1, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRoot_one (X : Tower Ω ε) (m : ℕ) (h : ((fun _ => 1 : ℂ → ℂ) : Mero) ≠ 0) :
     IsRoot X m 1 (fun _ => 1) (fun _ => 1) :=

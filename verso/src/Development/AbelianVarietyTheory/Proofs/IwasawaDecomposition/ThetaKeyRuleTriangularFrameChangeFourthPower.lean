@@ -14,7 +14,7 @@ open scoped Matrix TensorProduct
 namespace GlobalTheory.KeyFourth
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_submatrix_equiv_self, ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal', Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun τ _ => Matrix.det_of_lowerTriangular _ fun i j hij => hz τ i j hij`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_blocks_lower {S J : Type} [CommRing S] [Fintype J] [DecidableEq J] (m : J → ℕ)
     (g : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) S) (hz : ∀ τ i j, i < j → g τ i j = 0) {n : ℕ}
@@ -24,11 +24,11 @@ theorem det_blocks_lower {S J : Type} [CommRing S] [Fintype J] [DecidableEq J] (
   exact Finset.prod_congr rfl fun τ _ => Matrix.det_of_lowerTriangular _ fun i j hij => hz τ i j hij
 
 /- English proof (translation)
-Take `⟨N, _, _, v, ρ, -, htan, hcomb, -, -⟩` from `GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo S x`. Use `choose b hb using fun τ i => (htan (u τ i)).1 (hu τ i)`. Take `rfl : u = fun τ i => v (b τ i)` from `by funext τ i; exact (hb τ i).symm`. Rewrite `h`, the goal using `[hcomb]`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[e.sum_comp (fun p : Σ τ : J, Fin (m τ) => Matrix.blockDiagonal' g (e i) p • b p.1 p.2), Fintype.sum_sigma]`. Generalize the expression as in `e i = p`. Take `⟨a, k⟩` from `p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [Matrix.blockDiagonal'_apply_eq]`. Introduce `σ _ hσ`. Simplify using `only [Matrix.blockDiagonal'_apply_ne _ _ _ hσ.symm, zero_smul, Finset.sum_const_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCombAt_blocks {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X}
@@ -54,23 +54,21 @@ theorem isCombAt_blocks {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   · simp
 
 /- English proof (translation)
-Introduce `κ hH hF E _ _ _ H Dw l Xo c g e K _ _ _ t y y' Φ Φ' hb hT hT'`. Take `⟨M, hz, hd, hx, hc, hs⟩` from `(GlobalTheory.Frames.frBor_iff_frChg y y' t).1 hb`. Take `⟨x, xo, u, tan, eig, bas, s, gen⟩` from `y`. Take `⟨x', xo', u', tan', eig', bas', s', gen'⟩` from `y'`. Simplify using `only at hx hc hs Φ Φ' hT hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hx` using the available equality. Take `⟨h1, hg, hv⟩` from `hT`. Take `⟨h1', hg', hv'⟩` from `hT'`. Substitute `hg'` using the available equality. Establish `hid : x' = spMap (RingHom.id K) ≫ x'` using `by rw [GlobalTheory.Frames.SecCalc.spMap_id', Category.id_comp]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `did : spMap (dualMap (RingHom.id K)) = 𝟙 _`. Apply the tactic sequence `have hd : dualMap (RingHom.id K) = RingHom.id _ := RingHom.ext fun x => by ext <;> simp [dualMap]`. Rewrite using `[hd]`. Conclude with `Spec.map_id _`. Take `⟨th, hth⟩` from `(GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo K x' Φ'.T.t Φ'.m).2.1 s`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne` using `((GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo K x' Φ'.T.t Φ'.m).2.2 th s hth).2.1 (((GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo K x' Φ.T.t Φ.m).2.2 Φ.th s h1).2.2 Φ.th_ne)`. Establish `hss : GlobalTheory.Frames.SecBC (RingHom.id K) 1 x' x' s s` using `((GlobalTheory.Frames.SecCalc.sec_calc E H Dw l Xo K K K _ _ x' x' x' hid hid).2.1 1 s s).2 fun i => by`. Rewrite using `[GlobalTheory.Frames.SecCalc.scal_one', _root_.one_mul]`. Take `⟨hg2, v, hvb, hpb, hvv⟩` from `fibKey_keyPB E H Dw l Xo K K (RingHom.id K) x' x' Φ { Φ' with th := th, th_ne := hne } s s hid h1 hth hss`. Establish `hvu : ∀ i : Fin Φ'.T.g, (v i).left ≫ Φ'.m.φ = u (e i).1 (e i).2` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hvv i).trans ?_` and prove the remaining obligations. Rewrite using `[did, Category.id_comp]`. Conclude with `hv _`. Establish `e1` using `hF K K (RingHom.id K) _ _ hpb`. Establish `hsc` using `((TieCalc.secTie_calc E H Dw l Xo K x' Φ'.T.t Φ'.m th s hth).1 _ x' s' Φ'.th rfl hs).1 h1'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomb : ∀ i, IsLieComb ((Matrix.blockDiagonal' M).submatrix e e i) v (Φ'.v i)` using `fun i => by`. Establish `h2` using `isCombAt_blocks u tan M e i _ (hc (e i).1 (e i).2)`. Rewrite `h2` using `[← funext hvu]`. Take `⟨w, hw, hw'⟩` from `(GlobalTheory.MetricChange.lift_comb Φ'.m.cart).2 _ _ v _ h2`. Establish `: w = Φ'.v i` using `Over.OverMorphism.ext (Φ'.m.cart.1.hom_ext (hw.trans (hv' i).symm) ((Over.w _).trans (Over.w _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this ▸ hw'`. Establish `e2` using `hH K Φ'.T.pol Φ'.g_pos Φ'.T.t.PP.rig Φ'.T.t.PP.rigGen th hne v hvb Φ'.th Φ'.th_ne Φ'.v Φ'.basis (t none : K) _ hsc hcomb`. Establish `e3` using `(det_blocks_lower (fun τ => Dw.mult τ) M hz e).trans (Finset.prod_congr rfl fun x _ => hd x.1 x.2)`. Establish `e4 : ((t none : K)) ^ 8 * (κ K Φ'.key : K) = (∏ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), (t (some x) : K)) ^ 4 * (κ K Φ.key : K)`. Use `e2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (fun a b : K => a ^ 4 * b) e3 e1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h0 : (t none : K) ≠ 0` using `Units.ne_zero _`. Rewrite using `[kch_eq]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Units.coe_prod]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `e4`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rule_frBor : ∀ κ : GlobalTheory.KeyCl.Rule, GlobalTheory.KeyCl.Homog (fun _ => 1) κ → GlobalTheory.KeyCl.Funct κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (K : Type) [Field K] [CharZero K] [Algebra c.F K] (t : Ix Dw → Kˣ) (y y' : FrPt Xo c K) (Φ : FibKey Xo K y.x) (Φ' : FibKey Xo K y'.x), FrBor t y y' → Tied e y.s y.u Φ → Tied e y'.s y'.u Φ' → κ K Φ'.key = kch t ^ 4 * κ K Φ.key := by
   classical

@@ -21,7 +21,7 @@ namespace GlobalTheory.ThK.SiegelAbs
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1` using `Formalism.UG.P.fIwasawa_ordL_mul (1 : L) 1 one_ne_zero one_ne_zero`. Establish `h2` using `Formalism.UG.P.fIwasawa_ordL_mul x y (left_ne_zero_of_mul_eq_one h) (right_ne_zero_of_mul_eq_one h)`. Rewrite `h1` using `[mul_one]`. Rewrite `h2` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_eq_neg {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x y : L} (h : x * y = 1) :
     Formalism.UG.ordL y = -Formalism.UG.ordL x := by
@@ -34,7 +34,7 @@ theorem ordL_eq_neg {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_conj (u : Pl F) (z : AE F E) : compFin F E u (sigR _ σ z) = sigR _ σ (compFin F E u z) := by
   induction z using TensorProduct.induction_on with
@@ -43,9 +43,9 @@ theorem compFin_conj (u : Pl F) (z : AE F E) : compFin F E u (sigR _ σ z) = sig
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hN : Algebra.norm (Fv F v) x.1 = splitProj t x.1 * splitProj (t.comp σ) x.1`. Use `congrArg (splitProj t) (algebraMap_norm_eq hcm x.1)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes, map_mul, ← splitProj_comp]`. Conclude with `this`. Establish `hq0 : (qV F v : ℝ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `NumberField.HeightOneSpectrum.one_lt_absNorm v` as an intermediate fact. Unfold `qV`. Conclude with `(by omega)` after adjusting the coercions. Rewrite using `[← splitProj_comp, absEv_apply, coe_nnnorm, hN, norm_mul, neg_add, zpow_add₀ hq0, AbsSplit.norm_eq_zpow v (x.isUnit.map (splitProj t)).ne_zero, AbsSplit.norm_eq_zpow v (x.isUnit.map (splitProj (t.comp σ))).ne_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absEv_eq (hcm : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) (x : (Fv F v ⊗[F] E)ˣ) :
     (absEv F E v x : ℝ) =
@@ -63,9 +63,9 @@ theorem absEv_eq (hcm : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) (x :
     AbsSplit.norm_eq_zpow v (x.isUnit.map (splitProj (t.comp σ))).ne_zero]
 
 /- English proof (translation)
-Establish `e : M.map f = 1`. Rewrite using `[← Matrix.map_one f (map_zero f) (map_one f)]`. Use extensionality with `i j`. Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_sub, map_one, RingHom.map_det, RingHom.mapMatrix_apply, ← leviMat_map, e, ← blkMat_one (finSumFinEquiv (m := n) (n := n)), leviMat_blkMat, Matrix.det_one, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_det_levi {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     (M : Matrix (Fin (n + n)) (Fin (n + n)) A) (h : ∀ i j, f ((M - 1) i j) = 0) :
@@ -79,13 +79,11 @@ theorem map_det_levi {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (f : A →
     ← blkMat_one (finSumFinEquiv (m := n) (n := n)), leviMat_blkMat, Matrix.det_one, sub_self]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J X₂ hJ hX v t p hat hp`. Use `set a := aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype ⟨p, hp⟩ with ha`. Establish `hv : (a : AE F E) = (leviMat finSumFinEquiv (mat p)).det` using `val_aOf _`. Establish `hent : ∀ i j, At (evFin F v) ((mat p - 1) i j)` using `fun i j u hu => congrFun (congrFun (hat u hu) i) j`. Establish `hmem : a ∈ idelesAt E (evFin F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_idelesAt, hv]`. Conclude with `at_evFin_iff.2 ⟨fun w => map_det_levi (compInf F E w) _ fun i j => (at_evFin_iff.1 (hent i j)).1 w, fun w hw => map_det_levi (compFin F E w) _ fun i j => (at_evFin_iff.1 (hent i j)).2 w hw⟩`. Establish `hT : X₂.Jᵀ = dblGram finSumFinEquiv Jᵀ` using `by rw [hX, GlobalTheory.DblIwasawa.transpose_dblGram]`. Establish `hq : sigR (AF F) σ (quotMat finSumFinEquiv (mat p)).det * (a : AE F E) = 1` using `sigR_det_quot_mul_aH (R := AF F) (σ := σ) hT (by rwa [Matrix.det_transpose]) ⟨(GlobalTheory.IwLine.ofGAd σ X₂.J).symm p, hp⟩`. Establish `hq'` using `congrArg (fun z => piW t (sigR (AF F) σ z)) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_one, sigR_invol (cm_conj_conj hcm)] at hq'`. Establish `e1 : splitProj t (unitFin F E v a).1 = (leviMat finSumFinEquiv ((mat p).map (piW t))).det`. Rewrite using `[leviMat_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← hv]`. Both sides reduce to the same expression. Establish `e2 : splitProj t (sigR _ σ (unitFin F E v a).1) = piW t (sigR (AF F) σ (a : AE F E))` using `(congrArg (splitProj t) (compFin_conj v (a : AE F E))).symm`.
-
-Rewrite using `[absE_of_mem hmem, absEv_eq hcm t, e1, e2, ordL_eq_neg hq', DblSplit.quotMat_map, ← RingHom.mapMatrix_apply (piW t) (quotMat _ _), ← RingHom.map_det, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_aOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (X₂ : Spc F E (n + n)), J.det ≠ 0 → X₂.J = dblGram finSumFinEquiv J → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (p : UA σ X₂.J), p ∈ UAt σ X₂ (evFin F v) → ∀ hp : p ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype, ((absE F E (aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype ⟨p, hp⟩) : ℝ≥0) : ℝ) = (qV F v : ℝ) ^ (-(Formalism.UG.ordL (leviMat finSumFinEquiv ((mat p).map (piW t))).det - Formalism.UG.ordL (quotMat finSumFinEquiv ((mat p).map (piW t))).det)) := by
   intro F E _ _ _ _ _ σ hcm n J X₂ hJ hX v t p hat hp

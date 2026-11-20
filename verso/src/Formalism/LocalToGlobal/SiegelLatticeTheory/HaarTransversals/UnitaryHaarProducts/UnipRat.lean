@@ -16,13 +16,13 @@ variable {E : Type*} [Field E] [NumberField E] [StarRing E]
 variable {α β γ : Type*} [Fintype β]
 
 /- English proof (translation)
-Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ E z))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isInt_intCast (z : ℤ) : IsIntegral ℤ (z : E) := by
   simpa using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ E z))
 
 /- English proof (translation)
-Simplify using `using isInt_intCast (E := E) (d : ℤ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isInt_natCast (d : ℕ) : IsIntegral ℤ (d : E) := by
   simpa using isInt_intCast (E := E) (d : ℤ)
@@ -30,13 +30,13 @@ theorem isInt_natCast (d : ℕ) : IsIntegral ℤ (d : E) := by
 def IntDiv (c : ℕ) (M : Matrix α β E) : Prop := ∃ A : Matrix α β E, (∀ i j, IsIntegral ℤ (A i j)) ∧ M = (c : E) • A
 
 /- English proof (translation)
-Conclude with `⟨0, fun _ _ => isIntegral_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intDiv_zero (c : ℕ) : IntDiv c (0 : Matrix α β E) := by
   exact ⟨0, fun _ _ => isIntegral_zero, by simp⟩
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Take `⟨B, hB, rfl⟩` from `hN`. Use `⟨A + B, fun i j => ?_, by rw [smul_add]⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply]`. Conclude with `(hA i j).add (hB i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_add {c : ℕ} {M N : Matrix α β E} (hM : IntDiv c M) (hN : IntDiv c N) : IntDiv c (M + N) := by
   obtain ⟨A, hA, rfl⟩ := hM
@@ -46,7 +46,7 @@ theorem intDiv_add {c : ℕ} {M N : Matrix α β E} (hM : IntDiv c M) (hN : IntD
   exact (hA i j).add (hB i j)
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Use `⟨-A, fun i j => ?_, by rw [smul_neg]⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply]`. Conclude with `(hA i j).neg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_neg {c : ℕ} {M : Matrix α β E} (hM : IntDiv c M) : IntDiv c (-M) := by
   obtain ⟨A, hA, rfl⟩ := hM
@@ -55,16 +55,16 @@ theorem intDiv_neg {c : ℕ} {M : Matrix α β E} (hM : IntDiv c M) : IntDiv c (
   exact (hA i j).neg
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `intDiv_add hM (intDiv_neg hN)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_sub {c : ℕ} {M N : Matrix α β E} (hM : IntDiv c M) (hN : IntDiv c N) : IntDiv c (M - N) := by
   rw [sub_eq_add_neg]
   exact intDiv_add hM (intDiv_neg hN)
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Take `⟨B, hB, rfl⟩` from `hN`. Use `⟨A * B, fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_induction _ (IsIntegral ℤ) (fun _ _ ha hb => ha.add hb) isIntegral_zero (fun j _ => (hA i j).mul (hB j k))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Nat.cast_mul]`.
+A detailed English derivation is pending.
 -/
 theorem intDiv_mul {c d : ℕ} {M : Matrix α β E} {N : Matrix β γ E} (hM : IntDiv c M) (hN : IntDiv d N) :
     IntDiv (c * d) (M * N) := by
@@ -77,7 +77,7 @@ theorem intDiv_mul {c d : ℕ} {M : Matrix α β E} {N : Matrix β γ E} (hM : I
   · rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Nat.cast_mul]
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Use `⟨(d : E) • A, fun i j => ?_, by rw [smul_smul, ← Nat.cast_mul]⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `(isInt_natCast d).mul (hA i j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_dvd {c d : ℕ} {M : Matrix α β E} (hM : IntDiv (c * d) M) : IntDiv c M := by
   obtain ⟨A, hA, rfl⟩ := hM
@@ -86,14 +86,14 @@ theorem intDiv_dvd {c d : ℕ} {M : Matrix α β E} (hM : IntDiv (c * d) M) : In
   exact (isInt_natCast d).mul (hA i j)
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Conclude with `⟨A, hA, by rw [smul_smul, Nat.cast_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intDiv_smul_nat {c : ℕ} (d : ℕ) {M : Matrix α β E} (hM : IntDiv c M) : IntDiv (d * c) ((d : E) • M) := by
   obtain ⟨A, hA, rfl⟩ := hM
   exact ⟨A, hA, by rw [smul_smul, Nat.cast_mul]⟩
 
 /- English proof (translation)
-Use `⟨1, fun i j => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_one_one [DecidableEq α] [Fintype α] : IntDiv 1 (1 : Matrix α α E) := by
   refine ⟨1, fun i j => ?_, by simp⟩
@@ -103,7 +103,7 @@ theorem intDiv_one_one [DecidableEq α] [Fintype α] : IntDiv 1 (1 : Matrix α �
   · exact isIntegral_zero
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hM`. Use `⟨Aᴴ, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply]`. Conclude with `hst _ (hA j i)`. Rewrite using `[Matrix.conjTranspose_smul, star_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiv_conjTranspose (hst : ∀ a : E, IsIntegral ℤ a → IsIntegral ℤ (star a)) {c : ℕ} {M : Matrix α β E}
     (hM : IntDiv c M) : IntDiv c Mᴴ := by
@@ -114,9 +114,9 @@ theorem intDiv_conjTranspose (hst : ∀ a : E, IsIntegral ℤ a → IsIntegral �
   · rw [Matrix.conjTranspose_smul, star_natCast]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `intDiv_one_one`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `intDiv_mul ih hM`.
+A detailed English derivation is pending.
 -/
 theorem intDiv_pow [DecidableEq α] [Fintype α] {c : ℕ} {M : Matrix α α E} (hM : IntDiv c M) (j : ℕ) :
     IntDiv (c ^ j) (M ^ j) := by
@@ -129,20 +129,18 @@ theorem intDiv_pow [DecidableEq α] [Fintype α] {c : ℕ} {M : Matrix α α E} 
     exact intDiv_mul ih hM
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction _ (IntDiv c) (fun _ _ ha hb => intDiv_add ha hb) (intDiv_zero c) h`.
+A detailed English derivation is pending.
 -/
 theorem intDiv_sum {ι : Type*} {s : Finset ι} {c : ℕ} {M : ι → Matrix α β E} (h : ∀ i ∈ s, IntDiv c (M i)) :
     IntDiv c (∑ i ∈ s, M i) := by
   exact Finset.sum_induction _ (IntDiv c) (fun _ _ ha hb => intDiv_add ha hb) (intDiv_zero c) h
 
 /- English proof (translation)
-Use `choose m hm0 hmi using hm`. Use `set P : ℤ := ∏ p : α × β, m (A p.1 p.2) with hPdef`. Establish `hP : P ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p _ => hm0 _`. Establish `hint : ∀ i j, IsIntegral ℤ ((P : E) * A i j)`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩ : m (A i j) ∣ P` from `Finset.dvd_prod_of_mem (fun p : α × β => m (A p.1 p.2)) (Finset.mem_univ (i, j))`. Establish `e : ((m (A i j) * q : ℤ) : E) * A i j = (q : E) * ((m (A i j) : E) * A i j)` using `by push_cast; ring`. Rewrite using `[hq, e]`. Conclude with `(isInt_intCast q).mul (hmi _)`. Use `⟨P.natAbs, Int.natAbs_pos.mpr hP, (P.natAbs : E) • A, fun i j => ?_, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Establish `hc : ((P.natAbs : ℕ) : E) = ((|P| : ℤ) : E)` using `by rw [Int.abs_eq_natAbs, Int.cast_natCast]`. Rewrite using `[hc]`. Apply the tactic sequence `rcases abs_choice P with h | h <;> rw [h]`. Conclude with `hint i j`.
-
-Rewrite using `[Int.cast_neg, neg_mul]`. Conclude with `(hint i j).neg`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den [Fintype α] (hm : ∀ x : E, ∃ m : ℤ, m ≠ 0 ∧ IsIntegral ℤ ((m : E) * x)) (A : Matrix α β E) :
     ∃ d : ℕ, 0 < d ∧ IntDiv 1 ((d : E) • A) := by
@@ -173,15 +171,15 @@ section CayInv
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [Invertible (2 : K)]
 
 /- English proof (translation)
-Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add_half' (M : Matrix ι ι K) : (⅟2 : K) • M + (⅟2 : K) • M = M := by
   rw [← add_smul, invOf_two_add_invOf_two, one_smul]
 
 /- English proof (translation)
-Establish `hg : geo N ((⅟2 : K) • Z) = 1 + (⅟2 : K) • Z * geo N ((⅟2 : K) • Z)`. Establish `h1` using `mul_neg_geom_sum ((⅟2 : K) • Z) N`. Rewrite `h1` using `[hN, sub_zero, sub_mul, one_mul]`. Rewrite using `[add_comm]`. Conclude with `sub_eq_iff_eq_add'.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `cay`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, add_assoc]`. Use `_ = geo N ((⅟2 : K) • Z) + (⅟2 : K) • Z * geo N ((⅟2 : K) • Z) := by rw [← hg]`. Use `_ = (1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) := by rw [add_mul, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) :
     cay N Z = (1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) := by
@@ -199,11 +197,11 @@ theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) 
     _ = (1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) := by rw [add_mul, one_mul]
 
 /- English proof (translation)
-Establish `hN' : ((⅟2 : K) • -Z) ^ N = 0` using `by rw [smul_neg, neg_pow, hN, mul_zero]`. Rewrite using `[cay_eq hN', cay_eq hN, smul_neg]`. Establish `h1 : geo N (-((⅟2 : K) • Z)) * (1 + (⅟2 : K) • Z) = 1`. Use `geom_sum_mul_neg (-((⅟2 : K) • Z)) N` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, neg_pow, hN, mul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2 : (1 - (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) = 1`. Use `mul_neg_geom_sum ((⅟2 : K) • Z) N` as an intermediate fact. Rewrite `this` using `[hN, sub_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_eq_add_neg]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cay_neg_mul {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) : cay N (-Z) * cay N Z = 1 := by
   have hN' : ((⅟2 : K) • -Z) ^ N = 0 := by rw [smul_neg, neg_pow, hN, mul_zero]
@@ -242,7 +240,7 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 abbrev N0 (D : D7) : ℕ := 2 * D.R.rS + 2
 
 /- English proof (translation)
-Use `lvk_le X k` as an intermediate fact. Unfold `N0`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lvk_lt (k : Kap X) : lvk X k < N0 D := by
   have := lvk_le X k
@@ -250,9 +248,9 @@ theorem lvk_lt (k : Kap X) : lvk X k < N0 D := by
   omega
 
 /- English proof (translation)
-Establish `hP` using `inPat_pow (inPat_smul c hY) (N0 D)`. Use extensionality with `i j`. Establish `h1` using `lvk_lt X j`. Establish `h2 : N0 D ≤ k * N0 D`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hP i j (Nat.lt_of_lt_of_le h1 (le_trans h2 (Nat.le_add_left _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem nil_of_pat {K : Type*} [CommRing K] {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) K}
     (hY : InPat (lvk X) k Y) (c : K) : (c • Y) ^ N0 D = 0 := by
@@ -268,7 +266,7 @@ def gE (Y : Matrix (Kap X) (Kap X) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n)
   Bm X * cay (N0 D) Y * Bm' X
 
 /- English proof (translation)
-Establish `hN : ((⅟2 : X.B.I.E) • Y) ^ N0 D = 0` using `nil_of_pat X hk hY _`. Unfold `gE`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [Bm'_mul_Bm, Matrix.mul_one, cay_neg_mul hN, Matrix.mul_one, Bm_mul_Bm']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X (-Y) * gE X Y = 1 := by
@@ -280,7 +278,7 @@ theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY
     _ = 1 := by rw [Bm'_mul_Bm, Matrix.mul_one, cay_neg_mul hN, Matrix.mul_one, Bm_mul_Bm']
 
 /- English proof (translation)
-Establish `hY' : InPat (lvk X) k (-Y)` using `fun i j h => by rw [Matrix.neg_apply, hY i j h, neg_zero]`. Use `gE_mul X hk hY'` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X Y * gE X (-Y) = 1 := by
@@ -290,7 +288,7 @@ theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
   exact this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.conjTranspose_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cT_eq (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Formalism.UG.cT (starRingEnd X.B.I.E) M = Mᴴ := by
   ext i j
@@ -298,9 +296,9 @@ theorem cT_eq (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Formalism.UG.cT
   rfl
 
 /- English proof (translation)
-Establish `hN : ((⅟2 : X.B.I.E) • Y) ^ N0 D = 0` using `nil_of_pat X hk hY _`. Establish `hC` using `cay_unitary hYs hN`. Rewrite `hC` using `[JB_eq]`. Unfold `gE`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Bm X * Bm' X)ᴴ * X.B.I.J * (Bm X * Bm' X) := by`. Rewrite using `[hC]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = X.B.I.J := by rw [Bm_mul_Bm', Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gE_unitary {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gE X Y)ᴴ * X.B.I.J * gE X Y = X.B.I.J := by
@@ -321,7 +319,7 @@ def gGL {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPa
   ⟨gE X Y, gE X (-Y), gE_mul' X hk hY, gE_mul X hk hY⟩
 
 /- English proof (translation)
-Use `show Formalism.UG.cT (starRingEnd X.B.I.E) (gE X Y) * X.B.I.J * gE X Y = X.B.I.J`. Rewrite using `[cT_eq]`. Conclude with `gE_unitary X hk hY hYs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gGL_mem {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gGL X hk hY ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
@@ -330,13 +328,13 @@ theorem gGL_mem {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
   exact gE_unitary X hk hY hYs
 
 /- English proof (translation)
-Conclude with `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem sig_eq : (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) = starRingEnd X.B.I.E := by
   exact RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-Unfold `gE Bv Bv'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cay_map]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E) :
     (X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v =
@@ -346,9 +344,9 @@ theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hc : (Y.map (X.B.I.φ v))ᴴ = (Yᴴ).map (X.B.I.φ v)`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, phi_star]`. Establish `hm : (JB X).map (X.B.I.φ v) * Y.map (X.B.I.φ v) = (JB X * Y).map (X.B.I.φ v)` using `Matrix.map_mul.symm`. Unfold `JBv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hc, ← Matrix.map_mul, hYs, hm]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, map_neg]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem skew_map (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -363,9 +361,9 @@ theorem skew_map (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E
   simp only [Matrix.map_apply, Matrix.neg_apply, map_neg]
 
 /- English proof (translation)
-Rewrite using `[gE_real]`. Unfold `Formalism.REAL.inUJ`. Establish `hc` using `cay_unitary (skew_map X v hYs) (nil_of_pat X hk (inPat_map (X.B.I.φ v) hY) (⅟2 : ℂ))`. Establish `hh : (Bv' X v)ᴴ * (Bv X v)ᴴ = 1` using `by rw [← conjTranspose_mul, Bv_mul_Bv', conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [hh, Bv_mul_Bv', Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_real {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -390,7 +388,7 @@ def gA {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat
       ⟨gGL X hk hY, by rw [sig_eq]; exact gGL_mem X hk hY hYs⟩)
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.AutInst.GFset, Set.mem_setOf_eq]`. Use `⟨gGL X hk hY, gGL_mem X hk hY hYs, fun v => uMat_mkUJ _ _ _, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem gA_GF {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gA X hk hY hYs ∈ X.B.I.GFset := by
@@ -399,9 +397,9 @@ theorem gA_GF {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY 
   rfl
 
 /- English proof (translation)
-Establish `hu : uMat ((gA X hk hY hYs).1 v) = (X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v` using `uMat_mkUJ _ _ _`. Unfold `Mv`. Rewrite using `[hu, gE_real]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [Bv'_mul_Bv, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -416,11 +414,11 @@ theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (
     _ = _ := by rw [Bv'_mul_Bv, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.NinfU, Formalism.L2.SG.HidaSetting.Ninf, Set.mem_setOf_eq]`. Introduce `v`. Establish `hYv : InPat (lvk X) k (Y.map (X.B.I.φ v))` using `fun i j h => by`. Rewrite using `[Matrix.map_apply, hY i j h, map_zero]`. Establish `hk'` using `cay_sub_one (N0 D) hYv`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `inN_of_pat` to reduce the goal to its premises. Establish `hM` using `Mv_gA X hk v hY hYs`. Unfold `Mv at hM`. Rewrite using `[hM]`. Introduce `i j h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk' i j (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem gA_ninf {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gA X hk hY hYs).1 ∈ X.NinfU u := by

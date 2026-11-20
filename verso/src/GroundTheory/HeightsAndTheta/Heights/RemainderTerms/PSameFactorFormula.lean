@@ -15,13 +15,13 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : (r + a) * (r + a - 1) = r * (r - 1) + a * (a - 1) + 2 * (r * a)`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Take `⟨a', rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Rewrite using `[show r' + 1 + (a' + 1) - 1 = r' + a' + 1 by omega, Nat.add_sub_cancel, Nat.add_sub_cancel]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨x, hx⟩` from `Nat.even_mul_pred_self r`. Take `⟨y, hy⟩` from `Nat.even_mul_pred_self a`. Generalize the expression as in `r * (r - 1) = A at h1 hx ⊢`. Generalize the expression as in `a * (a - 1) = B at h1 hy ⊢`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `r * a = P at h1 ⊢`. Generalize the expression as in `(r + a) * (r + a - 1) = T at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tri_add (r a : ℕ) :
     (r + a) * (r + a - 1) / 2 = r * (r - 1) / 2 + a * (a - 1) / 2 + r * a := by
@@ -43,7 +43,7 @@ theorem tri_add (r a : ℕ) :
   omega
 
 /- English proof (translation)
-Use `(isHomogeneous_C (Fin f × Fin (r + a)) c.sign).mul (isHomogeneous_X ℚ (yIndex f r a c τ i))` as an intermediate fact. Simplify `this` using `[yRoot]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_yRoot (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (i : Fin r) :
     (yRoot f r a c τ i).IsHomogeneous 1 := by
@@ -51,21 +51,21 @@ theorem isHomogeneous_yRoot (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (i : Fin
   simpa [yRoot] using this
 
 /- English proof (translation)
-The claim follows from `isHomogeneous_X ℚ _`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_zRoot (f r a : ℕ) (c : SmallBlock) (τ : Fin f) (i : Fin a) :
     (zRoot f r a c τ i).IsHomogeneous 1 :=
   isHomogeneous_X ℚ _
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun τ _ => IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_yRoot f r a c τ i`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_smallBlockMu (f r a : ℕ) (c : SmallBlock) :
     (smallBlockMu f r a c).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun τ _ => IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_yRoot f r a c τ i
 
 /- English proof (translation)
-Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_yRoot f r a c τ i).pow k`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_smallPowerSum (f r a : ℕ) (c : SmallBlock) (k : ℕ) (τ : Fin f) :
     (smallPowerSum f r a c k τ).IsHomogeneous k := by
@@ -73,7 +73,7 @@ theorem isHomogeneous_smallPowerSum (f r a : ℕ) (c : SmallBlock) (k : ℕ) (τ
   simpa using (isHomogeneous_yRoot f r a c τ i).pow k
 
 /- English proof (translation)
-Establish `h` using `IsHomogeneous.prod (Finset.univ : Finset (Fin f)) (fun τ => vandermondeOf (yRoot f r a c τ) * vandermondeOf (zRoot f r a c τ)) (fun _ => r * (r - 1) / 2 + a * (a - 1) / 2) (fun τ _ => (hV _ ℚ r _ (isHomogeneous_yRoot f r a c τ)).mul (hV _ ℚ a _ (isHomogeneous_zRoot f r a c τ)))`. Simplify `h` using `[fibreClass, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHomogeneous_fibreClass (hV : VandermondeOfHomogeneous.Statement) (f r a : ℕ)
     (c : SmallBlock) :
@@ -86,7 +86,7 @@ theorem isHomogeneous_fibreClass (hV : VandermondeOfHomogeneous.Statement) (f r 
   simpa [fibreClass, Finset.sum_const, Finset.card_univ, Fintype.card_fin] using h
 
 /- English proof (translation)
-Establish `h` using `((isHomogeneous_smallBlockMu f r a c).pow (f * (r * a))).mul (isHomogeneous_fibreClass hV f r a c)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[topDegree, tri_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isHomogeneous_mu_pow_fib (hV : VandermondeOfHomogeneous.Statement) (f r a : ℕ)
     (c : SmallBlock) :
@@ -99,7 +99,7 @@ theorem isHomogeneous_mu_pow_fib (hV : VandermondeOfHomogeneous.Statement) (f r 
   ring
 
 /- English proof (translation)
-Establish `h` using `Nat.multinomial_spec (Finset.univ : Finset (Fin f)) (fun _ => x)`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.sum_const, smul_eq_mul] at h`. Establish `hx : (x.factorial : ℚ) ^ f ≠ 0` using `pow_ne_zero _ (by exact_mod_cast Nat.factorial_ne_zero x)`. Rewrite using `[eq_div_iff hx, mul_comm]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multinomial_const (f x : ℕ) :
     (Nat.multinomial Finset.univ (fun _ : Fin f => x) : ℚ) =
@@ -112,9 +112,9 @@ theorem multinomial_const (f x : ℕ) :
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[blockCoeff, if_pos rfl, if_neg hra]`. Establish `h` using `hCI r (rectangle r a) (fun _ _ _ => le_rfl)`. Establish `hs : ∑ i, rectangle r a i = r * a`. Simplify using `[rectangle, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite `h` using `[hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem blockCoeff_rect_eq (hCI : CharacterAtIdentity.Statement) (r a : ℕ) (hra : r * a ≠ 0) :
     blockCoeff 0 (r * a) (rectangle r a) = numStandardTable (rectangle r a) := by
@@ -126,7 +126,7 @@ theorem blockCoeff_rect_eq (hCI : CharacterAtIdentity.Statement) (r a : ℕ) (hr
   exact h
 
 /- English proof (translation)
-Establish `: ((r.factorial : ℚ) * a.factorial) ≠ 0` using `by positivity`. Apply the tactic sequence `rcases h with h | h <;> rw [h]`. Conclude with `this`. Conclude with `neg_ne_zero.mpr this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem kappa_ne_zero {r a : ℕ} {κ : ℚ}
     (h : κ = (r.factorial : ℚ) * a.factorial ∨ κ = -((r.factorial : ℚ) * a.factorial)) : κ ≠ 0 := by
@@ -136,9 +136,9 @@ theorem kappa_ne_zero {r a : ℕ} {κ : ℚ}
   · exact neg_ne_zero.mpr this
 
 /- English proof (translation)
-Establish `hra : r * a ≠ 0` using `Nat.mul_ne_zero (by omega) (by omega)`. Establish `hH : gmf f r a c 0 (f * (r * a)) = smallBlockMu f r a c ^ (f * (r * a)) * fibreClass f r a c`. Simplify using `[gmf, extraFactor]`. Establish `hdd` using `dividedDifference_eq_of_hasDD (hasDD_gmf hF f r a c κ hκ 0 (f * (r * a)))`. Rewrite `hdd` using `[hH, gmfOut_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hInt _ (isHomogeneous_mu_pow_fib hV f r a c)`. Rewrite `h` using `[hdd, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply ℚ (RootRing f (r + a)) (FractionRing (RootRing f (r + a))), ← map_mul]`. Establish `h2` using `(algebraMap ℚ (FractionRing (RootRing f (r + a)))).injective h`. Rewrite using `[fibreDegree, h2, multinomial_const, blockCoeff_rect_eq hCI r a hra]`. Establish `hx : ((r * a).factorial : ℚ) ^ f ≠ 0` using `pow_ne_zero _ (by exact_mod_cast Nat.factorial_ne_zero _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -171,14 +171,14 @@ theorem fibreDegree_eq (hF : FrobeniusCharacterFormula.Statement) (hCI : Charact
   ring
 
 /- English proof (translation)
-Simplify using `[extraFactor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extraFactor_zero (r : ℕ) : extraFactor r 0 = 1 := by simp [extraFactor]
 
 /- English proof (translation)
-Rewrite using `[gmf, restPolynomial]`. Establish `: ∏ σ, blockEmb f (r + a) σ (yEval r a c (extraFactor r (if σ = τ then k - 1 else 0))) = smallPowerSum f r a c (k - 1) τ`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Rewrite using `[Finset.prod_eq_one (fun σ hσ => by`. Rewrite using `[if_neg (Finset.ne_of_mem_erase hσ), extraFactor_zero, map_one, map_one])]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, extraFactor, if_neg (by omega), blockEmb_yEval_psum, mul_one]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smallPowerSum_mul_restPolynomial (f r a : ℕ) (c : SmallBlock) (k : ℕ) (hk : 2 ≤ k)
     (τ : Fin f) :
@@ -196,7 +196,7 @@ theorem smallPowerSum_mul_restPolynomial (f r a : ℕ) (c : SmallBlock) (k : ℕ
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ τ), Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_erase_const (f : ℕ) (τ : Fin f) (x : ℕ) :
     ∑ _σ ∈ Finset.univ.erase τ, x = (f - 1) * x := by
@@ -212,37 +212,33 @@ open Top MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Introduce `f r a c hf hr ha`. Take `⟨κ, hκpm, hκ⟩` from `hasDD_schur hB r a c`. Take `⟨c0, hc0, hInt, hMain⟩` from `hA f (r + a)`. Establish `hκ0` using `kappa_ne_zero hκpm`. Establish `hra : r * a ≠ 0` using `Nat.mul_ne_zero (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfR : (numStandardTable (rectangle r a) : ℚ) ≠ 0` using `by exact_mod_cast (hRP r a).ne'`. Use `⟨c0 * κ ^ f, mul_ne_zero hc0 (pow_ne_zero _ hκ0), fibreDegree_eq hF hCI hV f r a c hr ha κ hκ c0 hInt, ?_⟩` and prove the remaining obligations. Introduce `Q hQ k hk2 hkN τ`. Use `set q : Fin f → ℕ := fun σ => if σ = τ then k - 1 else 0 with hqdef`. Establish `hGF` using `smallPowerSum_mul_restPolynomial f r a c k hk2 τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, -, S', hS', hI⟩` from `hMain _ Q hQ k (by omega) hkN τ _ (by simpa using isHomogeneous_smallPowerSum f r a c (k - 1) τ)`. Establish `hPeq : P = gmfOut f r a c κ q (f * (r * a) + 1)`. Apply `IsFractionRing.injective (RootRing f (r + a)) (FractionRing (RootRing f (r + a)))` to reduce the goal to its premises. Rewrite using `[hP, hGF, dividedDifference_eq_of_hasDD (hasDD_gmf hF f r a c κ hκ q _)]`. Establish `hsum : ∑ σ' ∈ Finset.univ.erase τ, (r * a - q σ') = (f - 1) * (r * a)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← sum_erase_const f τ (r * a)]`. Conclude with `Finset.sum_congr rfl fun σ hσ => by simp [hqdef, Finset.ne_of_mem_erase hσ]`. Establish `hle : (f - 1) * (r * a) ≤ f * (r * a) + 1` using `(Nat.mul_le_mul_right _ (Nat.sub_le f 1)).trans (Nat.le_succ _)`. Establish `hres` using `restrict_gmfOut f r a c κ q (f * (r * a) + 1) τ (fun σ hσ => by simp [hqdef, hσ]) (by rw [hsum]; exact hle)`. Establish `hmτ : mstar f r a q (f * (r * a) + 1) τ τ = r * a + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mstar, if_true, hsum]`. Take `⟨f', rfl⟩ : ∃ f', f = f' + 1` from `⟨f - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers. Establish `hms : mstar f r a q (f * (r * a) + 1) τ = fun σ => if σ = τ then r * a + 1 else r * a`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Rewrite using `[hmτ, if_pos rfl]`. Simplify using `[mstar, hσ, hqdef]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hqτ : q τ = k - 1` using `by simp [hqdef]`. Rewrite `hres` using `[hmτ, hqτ, toN_blockOut r a c κ (k - 1) (r * a + 1) k (by omega)]`. Establish `hprod : ∏ σ ∈ Finset.univ.erase τ, (blockCoeff (q σ) (r * a - q σ) (rectangle r a) * κ) = ((numStandardTable (rectangle r a) : ℚ) * κ) ^ (f - 1)`. Rewrite using `[Finset.prod_congr rfl fun σ hσ => by`. Rewrite using `[show q σ = 0 by simp [hqdef, Finset.ne_of_mem_erase hσ], Nat.sub_zero, blockCoeff_rect_eq hCI r a hra]]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ τ), Finset.card_univ, Fintype.card_fin]`. Establish `hmult : (Nat.multinomial Finset.univ (mstar f r a q (f * (r * a) + 1) τ) : ℚ) = ((f * (r * a) + 1).factorial : ℚ) / (((r * a + 1).factorial : ℚ) * ((r * a).factorial : ℚ) ^ (f - 1))`. Establish `hp : ∏ σ, (mstar f r a q (f * (r * a) + 1) τ σ).factorial = (r * a + 1).factorial * (r * a).factorial ^ (f - 1)`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), hmτ]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_congr rfl (fun σ hσ => show (mstar f r a q (f * (r * a) + 1) τ σ).factorial = (r * a).factorial by`. Simplify using `only [hms, if_neg (Finset.ne_of_mem_erase hσ)]), Finset.prod_const,`. Use the proof step `Finset.card_erase_of_mem (Finset.mem_univ τ), Finset.card_univ, Fintype.card_fin]`. Establish `hs'` using `(Finset.mem_piAntidiag.mp (mstar_mem f r a q (f * (r * a) + 1) τ (by rw [hsum]; exact hle))).1`. Establish `h` using `Nat.multinomial_spec (Finset.univ : Finset (Fin f)) (mstar f r a q (f * (r * a) + 1) τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hp, hs']`. Establish `hden : ((r * a + 1).factorial : ℚ) * ((r * a).factorial : ℚ) ^ (f - 1) ≠ 0` using `by positivity`. Rewrite using `[eq_div_iff hden, ← h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K : ℚ := (Nat.multinomial Finset.univ (mstar f r a q (f * (r * a) + 1) τ) : ℚ) * ((numStandardTable (rectangle r a) : ℚ) * κ) ^ (f - 1) * κ with hK`. Establish `hmultpos : (Nat.multinomial Finset.univ (mstar f r a q (f * (r * a) + 1) τ) : ℚ) ≠ 0`. Conclude with `(Nat.multinomial_pos _ _).ne'` after adjusting the coercions. Establish `hK0 : K ≠ 0`. Rewrite using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (mul_ne_zero hmultpos (pow_ne_zero _ (mul_ne_zero hfR hκ0))) hκ0`. Use `set T := ∑ nu ∈ partitionsOf r k, C (symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1)) * aeval (fun i : Fin (r + a) => C c.sign * X i) (schur (Fin (r + a)) nu) with hT`. Establish `hTeq : ∑ nu ∈ partitionsOf r k, C (blockCoeff (k - 1) (r * a + 1) (fun i => a + nu i)) * aeval (fun i : Fin (r + a) => C c.sign * X i) (schur (Fin (r + a)) nu) = T`. Rewrite using `[hT]`. Use `Finset.sum_congr rfl fun nu _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[blockCoeff, if_neg (by omega)]`. Rewrite `hres` using `[hTeq, hprod]`. Establish `hPS : powerSumHom (r + a) S' = K • T`. Rewrite using `[hS', hPeq, hres, hK, smul_eq_C_mul, smul_eq_C_mul]`. Simplify using `only [map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨K⁻¹ • S', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hPS, smul_smul, inv_mul_cancel₀ hK0, one_smul]`. Rewrite using `[restTerm, hI, coeff_smul, smul_eq_mul]`. Rewrite using `[hK, hmult]`.
-
-Establish `hden : ((r * a + 1).factorial : ℚ) * ((r * a).factorial : ℚ) ^ (f - 1) ≠ 0` using `by positivity`. Establish `hnum : ((f * (r * a) + 1).factorial : ℚ) ≠ 0` using `by positivity`. Take `⟨f', rfl⟩ : ∃ f', f = f' + 1` from `⟨f - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel] at hden ⊢`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SameFactorFormula.proof (hA : LemmaA.Statement) (hB : LemmaB.Statement)
     (hF : FrobeniusCharacterFormula.Statement) (hCI : CharacterAtIdentity.Statement)

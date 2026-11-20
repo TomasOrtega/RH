@@ -21,20 +21,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_zero {m n : ℕ} (p : Place D) : wAt p (0 : Mx D m n) = 0 := by
   rw [wAt_eq_smul, smul_zero]
 
 /- English proof (translation)
-Establish `hq : idem D q * idem D q = idem D q` using `(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 q`. Rewrite using `[wAt_eq_smul, wAt_eq_smul, smul_neg, smul_smul, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_neg_wAt_self {m n : ℕ} (q : Place D) (w : Mx D m n) : wAt q (-(wAt q w)) = -(wAt q w) := by
   have hq : idem D q * idem D q = idem D q := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 q
   rw [wAt_eq_smul, wAt_eq_smul, smul_neg, smul_smul, hq]
 
 /- English proof (translation)
-Establish `hpq' : idem D p * idem D q = 0` using `(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q hpq`. Rewrite using `[wAt_eq_smul, wAt_eq_smul, smul_neg, smul_smul, hpq', zero_smul, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_neg_wAt_ne {m n : ℕ} {p q : Place D} (hpq : p ≠ q) (w : Mx D m n) : wAt p (-(wAt q w)) = 0 := by
   have hpq' : idem D p * idem D q = 0 := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q hpq
@@ -48,7 +48,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {f₀ : WO S T → ℂ} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
 /- English proof (translation)
-Establish `hself : ipO μ 𝓕 f₀ f₀ = (nrm2 μ 𝓕 f₀ : ℂ)` using `(GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 (base_std hb) hμ f₀ f₀ (base_theta hb) (base_theta hb)).2.2.2.2.1`. Rewrite using `[hself, restrictedTensorBasePoint_norm_sq hb hμ, Complex.ofReal_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_base (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ratL T S) μ 𝓕) : ipO μ 𝓕 f₀ f₀ = 1 := by
   have hself : ipO μ 𝓕 f₀ f₀ = (nrm2 μ 𝓕 f₀ : ℂ) :=
@@ -56,7 +56,7 @@ theorem ip_base (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ra
   rw [hself, restrictedTensorBasePoint_norm_sq hb hμ, Complex.ofReal_one]
 
 /- English proof (translation)
-Use `(h₁.2.union h₂.2).subset fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `hout`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hout`. Conclude with `hp (by rw [hout.1, hout.2]; exact ip_base hb hμ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_ip (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ratL T S) μ 𝓕)
     {x₁ x₂ : Place D → WO S T → ℂ} (h₁ : IsRestricted ψ θ S T sS sT ΛS ΛT f₀ x₁)
@@ -70,32 +70,30 @@ theorem finite_mulSupport_ip (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : I
   exact hp (by rw [hout.1, hout.2]; exact ip_base hb hμ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[heisO, symplOH, symplO, hO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem heisO_zero_twisted_operators (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext u
   simp [heisO, symplOH, symplO, hO]
 
 /- English proof (translation)
-Establish `hθ₀ : IsThetaFunO ψ S T f₀` using `base_theta hb`. Establish `hsymm : ∀ f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ipO μ 𝓕 g f = (starRingEnd ℂ) (ipO μ 𝓕 f g)` using `fun f g hf hg => (GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 (base_std hb) hμ f g hf hg).2.1`. Establish `hadj : ∀ f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∀ w, ipO μ 𝓕 (heisO ψ S T w f) g = ipO μ 𝓕 f (heisO ψ S T (-w) g)` using `fun f g hf hg w => ((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 (base_std hb) hμ f g hf hg).2.2.2.2.2.2.1 w).2`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Introduce `x₁ x₂ f₁ f₂ hx h₁ h₂`. Establish `hx₁ : x₁ = fun _ => f₀` using `funext fun p => hx p (by simp)`. Substitute `hx₁` using the available equality. Establish `hf₁ : f₁ = f₀` using `(GlobalTheory.T.existsUnique_pureTensor_restrictedFamily D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ _ h₁.1).unique h₁ (GlobalTheory.T.isPureTensor_base_vector_and_local_factor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ).1`. Substitute `hf₁` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨hfin, hprod⟩` from `h₂.2.2 0`. Simplify using `only [wAt_zero, heisO_zero_twisted_operators] at hfin hprod`. Rewrite using `[hsymm f₂ f₁ h₂.2.1 hθ₀, hprod, map_finprod _ hfin]`. Conclude with `finprod_congr fun p => (hsymm (x₂ p) f₁ (h₂.1.1 p).1 hθ₀).symm`. Consider the case `insert q s hq ih`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x₁ x₂ f₁ f₂ hx h₁ h₂`. Establish `hres : IsRestricted ψ θ S T sS sT ΛS ΛT f₀ (Function.update x₁ q f₀)`. Use `⟨fun p => ?_, h₁.1.2.subset fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `base_isLocal hb p`. Rewrite using `[Function.update_of_ne hpq]`. Conclude with `h₁.1.1 p`. Distinguish the cases in `hpq : p = q`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hpq` using the available equality. Simplify using `at hp`. Simplify `hp` using `[Function.update_of_ne hpq]`. Establish `hoff : ∀ p, p ∉ s → Function.update x₁ q f₀ p = f₀`. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Conclude with `Function.update_self _ _ _`. Rewrite using `[Function.update_of_ne hpq]`. Conclude with `hx p (by simp [hpq, hp])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨g₁, hg₁, -⟩` from `GlobalTheory.T.existsUnique_pureTensor_restrictedFamily D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ _ hres`. Take `⟨f', hf', hc⟩` from `GlobalTheory.T.pureTensor_update_factor_from_base_vector D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ (Function.update x₁ q f₀) x₁ g₁ q hg₁ (Function.update_self _ _ _) (fun p hp => (Function.update_of_ne hp _ _).symm) (h₁.1.1 q)`. Establish `hf'₁ : f' = f₁` using `(GlobalTheory.T.existsUnique_pureTensor_restrictedFamily D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ _ h₁.1).unique hf' h₁`. Substitute `hf'₁` using the available equality. Establish `hθq : IsThetaFunO ψ S T (x₂ q)` using `(h₂.1.1 q).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key` using `hc f₂ (x₂ q) (∏ᶠ (p) (_ : p ≠ q), ipO μ 𝓕 (x₁ p) (x₂ p)) h₂.2.1 hθq (fun w => by`. Rewrite using `[hadj g₁ f₂ hg₁.2.1 h₂.2.1]`. Establish `hpw` using `GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ x₂ f₂ h₂ (-(wAt q w))`. Rewrite using `[ih _ _ _ _ hoff hg₁ hpw, ← mul_finprod_cond_ne q (finite_mulSupport_ip hb hμ hres hpw.1), Function.update_self, wAt_neg_wAt_self, ← hadj f₀ (x₂ q) hθ₀ hθq, mul_comm]`. Use `congr 1`.
-
-Use `finprod_congr fun p => finprod_congr fun hp => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hp, wAt_neg_wAt_ne hp, heisO_zero_twisted_operators])`. Rewrite using `[key, mul_comm]`. Conclude with `mul_finprod_cond_ne q (finite_mulSupport_ip hb hμ h₁.1 h₂.1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureTensor_innerProduct_eq_finprod_local_of_finset (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ratL T S) μ 𝓕) (s : Finset (Place D)) :
     ∀ (x₁ x₂ : Place D → WO S T → ℂ) (f₁ f₂ : WO S T → ℂ), (∀ p, p ∉ s → x₁ p = f₀) →
@@ -166,7 +164,7 @@ theorem pureTensor_innerProduct_eq_finprod_local_of_finset (hb : IsBase ψ θ S 
 end
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ x₁ x₂ f₁ f₂ h₁ h₂`. Use `⟨finite_mulSupport_ip hb hμ h₁.1 h₂.1, ?_⟩` and prove the remaining obligations. Conclude with `pureTensor_innerProduct_eq_finprod_local_of_finset hb hμ h₁.1.2.toFinset x₁ x₂ f₁ f₂ (fun p hp => by simpa [Set.Finite.mem_toFinset] using hp) h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ip_pure_eq_finprod : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x₁ x₂ : Place D → WO S T → ℂ) (f₁ f₂ : WO S T → ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x₁ f₁ → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x₂ f₂ → (Function.mulSupport fun p => ipO μ 𝓕 (x₁ p) (x₂ p)).Finite ∧ ipO μ 𝓕 f₁ f₂ = ∏ᶠ p, ipO μ 𝓕 (x₁ p) (x₂ p) := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ x₁ x₂ f₁ f₂ h₁ h₂

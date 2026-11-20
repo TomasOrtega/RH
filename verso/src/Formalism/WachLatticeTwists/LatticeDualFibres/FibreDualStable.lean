@@ -48,9 +48,9 @@ Both sides reduce to the same expression.
 variable {G : Type u} [Group G]
 
 /- English proof (translation)
-Introduce `g f hf x hx`. Establish `hx' : ρ g⁻¹ x ∈ T` using `hT g⁻¹ x hx`. Establish `ex : x = ρ g (ρ g⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `show b x (ρ' g f) ∈ (1 : Submodule O (FractionRing O))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex, hb]`. Conclude with `Submodule.smul_mem _ _ (hf _ hx')`.
+A detailed English derivation is pending.
 -/
 theorem dualLat_stable {V V' : Type u} [AddCommGroup V] [Module O V] [AddCommGroup V']
     [Module O V'] {ε : G →* Oˣ} {ρ : Representation O G V} {ρ' : Representation O G V'}
@@ -65,7 +65,7 @@ theorem dualLat_stable {V V' : Type u} [AddCommGroup V] [Module O V] [AddCommGro
   exact Submodule.smul_mem _ _ (hf _ hx')
 
 /- English proof (translation)
-Introduce and unpack `g ⟨y, t⟩ ⟨hy, hyt⟩`. Conclude with `(show ∃ h : ρY g y ∈ Y, φ ⟨ρY g y, h⟩ = Submodule.Quotient.mk (ρT g t) from ⟨hY g y hy, hφ g ⟨y, hy⟩ (hY g y hy) t hyt⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fibre_stable {VY VT : Type u} [AddCommGroup VY] [Module O VY] [AddCommGroup VT]
     [Module O VT] {ρY : Representation O G VY} {ρT : Representation O G VT} {Y : Submodule O VY}
@@ -76,11 +76,11 @@ theorem fibre_stable {VY VT : Type u} [AddCommGroup VY] [Module O VY] [AddCommGr
     ⟨hY g y hy, hφ g ⟨y, hy⟩ (hY g y hy) t hyt⟩)
 
 /- English proof (translation)
-Introduce and unpack `g ⟨f', y'⟩ ⟨hf', hp'⟩`. Use `(show ρT' g f' ∈ dualLat bT T ∧ ∀ (y : Y) (x : VT), φ y = Submodule.Quotient.mk x → bY y (ρY' g y') - bT x (ρT' g f') ∈ (1 : Submodule O (FractionRing O)) from ⟨dualLat_stable hT hbT g f' hf', ?_⟩)` and prove the remaining obligations. Introduce `y x hyx`. Establish `hy0 : ρY g⁻¹ (y : VY) ∈ Y` using `hY g⁻¹ _ y.2`. Establish `h0` using `hp' ⟨_, hy0⟩ (ρT g⁻¹ x) (hφ g⁻¹ y hy0 x hyx)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ey : (y : VY) = ρY g (ρY g⁻¹ (y : VY))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `ex : x = ρT g (ρT g⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[ey, ex, hbY, hbT, ← smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ h0`.
+A detailed English derivation is pending.
 -/
 theorem fibreDual_stable {VY VT VY' VT' : Type u} [AddCommGroup VY] [Module O VY]
     [AddCommGroup VT] [Module O VT] [AddCommGroup VY'] [Module O VY'] [AddCommGroup VT']
@@ -114,19 +114,19 @@ variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Top
   [ContinuousSMul O (FractionRing O)]
 
 /- English proof (translation)
-The claim follows from `continuous_quot_mk`.
+A detailed English derivation is pending.
 -/
 theorem toKO_cont : Continuous (toKO O) := continuous_quot_mk
 
 /- English proof (translation)
-Rewrite using `[twist_apply, twist_apply, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toKO_equiv {G : Type u} [Group G] (ε : G →* Oˣ) (g : G) (m : FractionRing O) :
     toKO O (twist ε (FractionRing O) g m) = twist ε (KO O) g (toKO O m) := by
   rw [twist_apply, twist_apply, map_smul]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : G × L => ρ p.1 (p.2 : V))` using `h.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))`. Conclude with `Continuous.subtype_mk hc _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_contAction {G V : Type u} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module O V]
     [TopologicalSpace V] {ρ : Representation O G V} (h : ContAction ρ) (L : Submodule O V)
@@ -136,9 +136,9 @@ theorem sub_contAction {G V : Type u} [Group G] [TopologicalSpace G] [AddCommGro
   exact Continuous.subtype_mk hc _
 
 /- English proof (translation)
-Establish `hm : IsOpenQuotientMap T.mkQ` using `by first`. Consider the case `exact Submodule.isOpenQuotientMap_mkQ T`. Consider the case `exact QuotientAddGroup.isOpenQuotientMap_mk`. Consider the case `exact QuotientAddGroup.isOpenQuotientMap_mk (N := T.toAddSubgroup)`. Establish `hq : IsOpenQuotientMap (Prod.map T.mkQ (id : dualLat b T → dualLat b T))` using `hm.prodMap IsOpenQuotientMap.id`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hq.isQuotientMap.continuous_iff]`. Conclude with `toKO_cont.comp (hb.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairKO_cont {V V' : Type u} [AddCommGroup V] [Module O V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [AddCommGroup V'] [Module O V'] [TopologicalSpace V']
@@ -196,7 +196,7 @@ def InvCompat : Prop :=
 abbrev T' : Submodule O VT' := dualLat D.bT D.T
 
 /- English proof (translation)
-The claim follows from `dualLat_stable D.stT D.eqT`.
+A detailed English derivation is pending.
 -/
 theorem stT' : StableUnder D.ρT' D.T' := dualLat_stable D.stT D.eqT
 
@@ -213,7 +213,7 @@ def j' : H1 D.ρTl' →ₗ[O] H1 D.ρT' :=
   mapH1 D.ρTl' D.ρT' D.T'.subtype continuous_subtype_val (fun _ _ => rfl)
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x => show toKO O (D.bT (D.ρT g x) (D.ρT' g f)) = twist D.ε (KO O) g (toKO O (D.bT x f))`. Rewrite using `[D.eqT, twist_apply, map_smul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairKO_equiv (g : G) (x : VT ⧸ D.T) (f : D.T') :
     pairKO D.bT D.T (D.ρA g x) (D.ρTl' g f) = twist D.ε (KO O) g (pairKO D.bT D.T x f) := by
@@ -295,7 +295,7 @@ def prLb : E.Lb →ₗ[O] D.T' :=
   LinearMap.codRestrict D.T' (LinearMap.fst O VT' E.VY' ∘ₗ E.Lb.subtype) (fun p => p.2.1)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Submodule.mkQ_surjective _ (E.φ y)`. Establish `h` using `E.eqφ g y (E.stY g y y.2) x hx.symm`. Use `show E.φ ⟨E.ρY g y, E.stY g y y.2⟩ = D.ρA g (E.φ y)`. Rewrite using `[h, ← hx]`. Apply the tactic sequence `try rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φ_equiv (g : G) (y : E.Y) : E.φ (E.ρYl g y) = D.ρA g (E.φ y) := by
   obtain ⟨x, hx⟩ := Submodule.mkQ_surjective _ (E.φ y)

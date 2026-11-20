@@ -10,25 +10,25 @@ namespace Formalism.L2.S.Pv.Chart
 variable {n r : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_add (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_smul (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_zero, dotProduct_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_zero (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   simp only [hJ, Matrix.mulVec_zero, dotProduct_zero]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, hJ_zero]`. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, hJ_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sum {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (g : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, g i) = ∑ i ∈ s, hJ ε x (g i) := by
@@ -43,15 +43,15 @@ variable (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
 include hdual
 
 /- English proof (translation)
-Unfold `spanLt at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, hd, rfl⟩` from `hx`. Rewrite `hd` using `[Set.mem_setOf_eq]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, fun c hc => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hdual, ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ d (fun c => e c), if_pos (Finset.mem_univ d)]`. Rewrite using `[hdual, if_neg]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Consider the case `zero`. Use `⟨?_, fun c _ => hJ_zero ε _⟩` and prove the remaining obligations. Repeatedly rewrite using `[hJ_zero, zero_smul, Finset.sum_const_zero]`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Use `⟨?_, fun c hc => by rw [hJ_add, hx.2 c hc, hy.2 c hc, add_zero]⟩` and prove the remaining obligations. Repeatedly rewrite using `[hJ_add, add_smul]`. Rewrite using `[Finset.sum_add_distrib, ← hx.1, ← hy.1]`. Consider the case `smul a x _ hx`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `⟨?_, fun c hc => by rw [hJ_smul, hx.2 c hc, mul_zero]⟩` and prove the remaining obligations. Repeatedly rewrite using `[hJ_smul, mul_smul]`. Rewrite using `[← Finset.smul_sum, ← hx.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_expand (b : ℕ) (v : Fin n → ℂ) (hv : v ∈ spanLt e b) :
     v = ∑ c, hJ ε (f c) v • e c ∧ ∀ c : Fin r, b ≤ c.1 → hJ ε (f c) v = 0 := by
@@ -82,9 +82,9 @@ theorem span_expand (b : ℕ) (v : Fin n → ℂ) (hv : v ∈ spanLt e b) :
 include hfz
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp only [fam, Fin.snoc_last]`. Conclude with `hfz c`. Consider the case `cast b'`. Simplify using `only [fam, Fin.snoc_castSucc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdual, if_neg]`. Introduce `h`. Substitute `h` using the available equality. Simplify using `at hcb`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hJ_fam (c : Fin r) (b : Fin (r + 1)) (hcb : c.1 < b.1) : hJ ε (f c) (fam e z b) = 0 := by
   induction b using Fin.lastCases with
@@ -97,7 +97,7 @@ theorem hJ_fam (c : Fin r) (b : Fin (r + 1)) (hcb : c.1 < b.1) : hJ ε (f c) (fa
     simp at hcb
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa only [fam, Fin.snoc_last, Fin.val_last] using hg.2`. Consider the case `cast b' => simpa only [fam, Fin.snoc_castSucc, Fin.coe_castSucc] using hg.1 b'`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sub_mem_spanLt {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (b : Fin (r + 1)) :
     (g - 1) *ᵥ fam e z b ∈ spanLt e b.1 := by
@@ -106,11 +106,9 @@ theorem sub_mem_spanLt {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (b : Fi
   | cast b' => simpa only [fam, Fin.snoc_castSucc, Fin.coe_castSucc] using hg.1 b'
 
 /- English proof (translation)
-Take `⟨hw, hw0⟩` from `span_expand ε e f hdual b.1 _ (sub_mem_spanLt ε e f z hdual hfz hg b)`. Establish `hgw : g *ᵥ fam e z b = fam e z b + (g - 1) *ᵥ fam e z b`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `hc : ∀ c : Fin r, (if c.1 < b.1 then hJ ε (f c) (g *ᵥ fam e z b) else 0) = hJ ε (f c) ((g - 1) *ᵥ fam e z b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `c`. Use `split_ifs with h`. Rewrite using `[hgw, hJ_add, hJ_fam ε e f z hdual hfz c b h, zero_add]`. Conclude with `(hw0 c (not_lt.mp h)).symm`. Repeatedly rewrite using `[hc]`.
-
-Rewrite using `[← hw]`. Conclude with `hgw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (b : Fin (r + 1)) :
     g *ᵥ fam e z b = fam e z b + ∑ c : Fin r, (if c.1 < b.1 then hJ ε (f c) (g *ᵥ fam e z b) else 0) • e c := by
@@ -129,7 +127,7 @@ theorem expand {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (b : Fin (r + 1
   exact hgw
 
 /- English proof (translation)
-Establish `hw0` using `(span_expand ε e f hdual a.1 _ (hg.1 a)).2 a le_rfl`. Establish `hgw : g *ᵥ e a = e a + (g - 1) *ᵥ e a`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hgw, hJ_add, hw0, hdual, if_pos rfl, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_diag {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a : Fin r) :
     hJ ε (f a) (g *ᵥ e a) = 1 := by
@@ -140,7 +138,7 @@ theorem coef_diag {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a : Fin r) 
   rw [hgw, hJ_add, hw0, hdual, if_pos rfl, add_zero]
 
 /- English proof (translation)
-Establish `hw0` using `(span_expand ε e f hdual c.1 _ (hg.1 c)).2 a h.le`. Establish `hgw : g *ᵥ e c = e c + (g - 1) *ᵥ e c`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hgw, hJ_add, hw0, hdual, if_neg (fun h' => by subst h'; exact lt_irrefl _ h), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_low {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a c : Fin r) (h : c.1 < a.1) :
     hJ ε (f a) (g *ᵥ e c) = 0 := by
@@ -151,11 +149,11 @@ theorem coef_low {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a c : Fin r)
   rw [hgw, hJ_add, hw0, hdual, if_neg (fun h' => by subst h'; exact lt_irrefl _ h), add_zero]
 
 /- English proof (translation)
-Establish `hx` using `expand ε e f z hdual hfz h₂ b`. Use `conv_lhs => rw [← Matrix.mulVec_mulVec, hx]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_sum, hJ_add, hJ_sum]`. Repeatedly rewrite using `[Matrix.mulVec_smul, hJ_smul]`. Rewrite using `[add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ _ (Finset.mem_univ a), if_pos hab, coef_diag ε e f z hdual hfz h₁ a, mul_one, if_neg (by omega), zero_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hca : c ≠ a` using `Finset.ne_of_mem_erase hc`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne (fun h' : c.1 = a.1 => hca (Fin.ext h')) with h | h` into its components or cases. Rewrite using `[coef_low ε e f z hdual hfz h₁ a c h, mul_zero, if_neg (by omega)]`. Distinguish the cases in `hcb : c.1 < b.1`. Rewrite using `[if_pos hcb, if_pos ⟨h, hcb⟩, mul_comm]`. Rewrite using `[if_neg hcb, if_neg (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_mul {g₁ g₂ : Matrix (Fin n) (Fin n) ℂ} (h₁ : InS e z g₁) (h₂ : InS e z g₂) (a : Fin r)
     (b : Fin (r + 1)) (hab : a.1 < b.1) :

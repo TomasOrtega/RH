@@ -21,7 +21,7 @@ section Chain
 variable {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, h => by show k n ∘ₗ chainTo k n = k' n ∘ₗ chainTo k' n rw [h n (Nat.lt_succ_self n), chainTo_congr k k' n fun j hj => h j (Nat.lt_succ_of_lt hj)]`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_congr (k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)) : ∀ n, (∀ j < n, k j = k' j) → chainTo k n = chainTo k' n
   | 0, _ => rfl
@@ -30,7 +30,7 @@ theorem chainTo_congr (k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)) : ∀ n, (∀ j 
     rw [h n (Nat.lt_succ_self n), chainTo_congr k k' n fun j hj => h j (Nat.lt_succ_of_lt hj)]
 
 /- English proof (translation)
-The claim follows from `| 0, hn => absurd hn (Nat.not_lt_zero _) | n + 1, hn => by show k'' n ∘ₗ chainTo k'' n = k n ∘ₗ chainTo k n + k' n ∘ₗ chainTo k' n rcases Nat.lt_succ_iff_lt_or_eq.1 hn with hlt | rfl · have hn' : n ≠ j₀ := Nat.ne_of_gt hlt rw [chainTo_add k k' k'' j₀ h h₀ n hlt, (h n hn').1, (h n …`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_add (k k' k'' : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ) (h : ∀ j, j ≠ j₀ → k' j = k j ∧ k'' j = k j)
     (h₀ : k'' j₀ = k j₀ + k' j₀) : ∀ n, j₀ < n → chainTo k'' n = chainTo k n + chainTo k' n
@@ -45,7 +45,7 @@ theorem chainTo_add (k k' k'' : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ) (
       rw [e1, e2, h₀, LinearMap.add_comp]
 
 /- English proof (translation)
-The claim follows from `| 0, hn => absurd hn (Nat.not_lt_zero _) | n + 1, hn => by show k' n ∘ₗ chainTo k' n = c • (k n ∘ₗ chainTo k n) rcases Nat.lt_succ_iff_lt_or_eq.1 hn with hlt | rfl · rw [chainTo_smul k k' j₀ c h h₀ n hlt, h n (Nat.ne_of_gt hlt), LinearMap.comp_smul] · rw [chainTo_congr k' k _ fun …`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_smul (k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ) (c : ℂ) (h : ∀ j, j ≠ j₀ → k' j = k j)
     (h₀ : k' j₀ = c • k j₀) : ∀ n, j₀ < n → chainTo k' n = c • chainTo k n
@@ -67,9 +67,9 @@ def thSub (W : G.Weil) (p : Pair T) : Submodule ℂ (WO (G.pS p) (G.pT p) → �
   smul_mem' := fun c _ hg => GlobalTheory.OrientedHeis.theta_smul c hg
 
 /- English proof (translation)
-Establish `ht : jetTab W B p (c • f + g) x y = c • jetTab W B p f x y + jetTab W B p g x y`. Use function extensionality and compare the values at `k`. Simplify using `only [jetTab, kerFin, fockIn, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.FockFiniteHeis.pureTensorO_lin _ _ _ _ W.ψ_std W.θ_is _ _ _ _ c hf hg]`. Simplify using `only [GridData.Weil.ker, thetaKO, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(GlobalTheory.JetIdentity.jetOpL (K := ℂ) (wt G p.small) (wt G p.big) (nuEnd G p)).map_add (c • jetTab W B p f x y) (jetTab W B p g x y)` as an intermediate fact. Rewrite `this` using `[LinearMap.map_smul]`. Unfold `fockComp`. Rewrite using `[ht]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockComp_lin (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G p.small) (y : FinPt G p.big) (c : ℂ)
     {f g : WO (G.pS p) (G.pT p) → ℂ} (hf : IsThetaFunO W.ψ _ _ f) (hg : IsThetaFunO W.ψ _ _ g) :
@@ -87,7 +87,7 @@ theorem fockComp_lin (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G
   exact this
 
 /- English proof (translation)
-Use `fockComp_lin W B p x y (-1) GlobalTheory.OrientedHeis.theta_zero GlobalTheory.OrientedHeis.theta_zero` as an intermediate fact. Rewrite `this` using `[smul_zero, add_zero, neg_one_smul, neg_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fockComp_zero (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G p.small) (y : FinPt G p.big) :
     fockComp W B p 0 x y = 0 := by
@@ -112,9 +112,9 @@ def tOp (W : G.Weil) {U : Set T} {N : Std G U} (Z : Normal W N) (p : Pair T) (e 
     (latO (G.pS p) (G.pT p) (N.latS p : Set _) (N.latT p : Set _) fun _ => True) 1 (Z.vac p))
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hd`. Substitute `he` using the available equality. Establish `h1 : f = tOp W Z p d.e d.fn` using `hf.2 _ (Classical.epsilon_spec hf.1)`. Establish `h2 : Z.vec d = f`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf, hz]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show W.om p 1 f = f`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Conclude with `⟨h2.trans h1, h1 ▸ GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is hf (Z.vac_is p hp).2.theta⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vec_eq_tOp {W : G.Weil} {U : Set T} {N : Std G U} (Z : Normal W N) {t : T} {p : Pair T} (hp : DefPair D.R.m p)
     {e : AE D} {d : FinDatum G t p} (he : d.e = e) (hz : d.z = 1) (hd : Z.HasVec d) :
@@ -134,7 +134,7 @@ variable (D) in
 def pr (t : T) : Fin D.R.m ⊕ Fin D.R.m → Pair T := Sum.elim (fun j => .top t j) (fun i => .chi i D.R.m)
 
 /- English proof (translation)
-Break down `k with j | i` into its components or cases. Conclude with `j.2`. Conclude with `⟨i.2, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pr_def (t : T) (k : Fin D.R.m ⊕ Fin D.R.m) : DefPair D.R.m (pr D t k) := by
   rcases k with j | i
@@ -180,7 +180,7 @@ section Upd
 variable [DecidableEq (Fin D.R.m ⊕ Fin D.R.m)] (S : GridChoice W U) (t : T) (e : AE D) (g : ∀ k, aSub S t e k)
 
 /- English proof (translation)
-Unfold `colOf`. Use `congrArg (fun F => F ∘ₗ _) (chainTo_congr _ _ _ fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Apply the tactic sequence `all_goals (try rw [Function.update_of_ne (by simp)])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colOf_inr (i₀ : Fin D.R.m) (v : aSub S t e (.inr i₀)) (x : ∀ j, FinPt G (.top j)) :
     colOf S t e (Function.update g (.inr i₀) v) x = colOf S t e g x := by
@@ -190,7 +190,7 @@ theorem colOf_inr (i₀ : Fin D.R.m) (v : aSub S t e (.inr i₀)) (x : ∀ j, Fi
   all_goals (try rw [Function.update_of_ne (by simp)])
 
 /- English proof (translation)
-Unfold `rowOf`. Use `congrArg (fun F => F ∘ₗ _) (chainTo_congr _ _ _ fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Apply the tactic sequence `all_goals (try rw [Function.update_of_ne (by simp)])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rowOf_inl (j₀ : Fin D.R.m) (v : aSub S t e (.inl j₀)) (y : ∀ i, FinPt G (.grid i D.R.m)) :
     rowOf S t e (Function.update g (.inl j₀) v) y = rowOf S t e g y := by
@@ -200,11 +200,11 @@ theorem rowOf_inl (j₀ : Fin D.R.m) (v : aSub S t e (.inl j₀)) (y : ∀ i, Fi
   all_goals (try rw [Function.update_of_ne (by simp)])
 
 /- English proof (translation)
-Take `⟨j₀, hj₀⟩` from `j₀`. Unfold `colOf`. Rewrite using `[← LinearMap.add_comp]`. Use `congr 1`. Use `chainTo_add _ _ _ j₀ (fun j hj => ⟨?_, ?_⟩) ?_ D.R.m hj₀` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Establish `hne : (Sum.inl ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inl ⟨j₀, hj₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inl_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Use `split_ifs with h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (Sum.inl ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inl ⟨j₀, hj₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inl_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Rewrite using `[dif_pos hj₀, dif_pos hj₀, dif_pos hj₀, Function.update_self, Function.update_self, Function.update_self, map_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOf_add (j₀ : Fin D.R.m) (a b : aSub S t e (.inl j₀)) (x : ∀ j, FinPt G (.top j)) :
     colOf S t e (Function.update g (.inl j₀) (a + b)) x =
@@ -227,9 +227,9 @@ theorem colOf_add (j₀ : Fin D.R.m) (a b : aSub S t e (.inl j₀)) (x : ∀ j, 
   · rw [dif_pos hj₀, dif_pos hj₀, dif_pos hj₀, Function.update_self, Function.update_self, Function.update_self, map_add]
 
 /- English proof (translation)
-Take `⟨j₀, hj₀⟩` from `j₀`. Unfold `colOf`. Rewrite using `[← LinearMap.smul_comp]`. Use `congr 1`. Use `chainTo_smul _ _ j₀ c (fun j hj => ?_) ?_ D.R.m hj₀` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Establish `hne : (Sum.inl ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inl ⟨j₀, hj₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inl_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Rewrite using `[dif_pos hj₀, dif_pos hj₀, Function.update_self, Function.update_self, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOf_smul (j₀ : Fin D.R.m) (c : ℂ) (a : aSub S t e (.inl j₀)) (x : ∀ j, FinPt G (.top j)) :
     colOf S t e (Function.update g (.inl j₀) (c • a)) x = c • colOf S t e (Function.update g (.inl j₀) a) x := by
@@ -246,11 +246,11 @@ theorem colOf_smul (j₀ : Fin D.R.m) (c : ℂ) (a : aSub S t e (.inl j₀)) (x 
   · rw [dif_pos hj₀, dif_pos hj₀, Function.update_self, Function.update_self, map_smul]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `i₀`. Unfold `rowOf`. Rewrite using `[← LinearMap.add_comp]`. Use `congr 1`. Use `chainTo_add _ _ _ i₀ (fun j hj => ⟨?_, ?_⟩) ?_ D.R.m hi₀` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Establish `hne : (Sum.inr ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inr ⟨i₀, hi₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inr_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Use `split_ifs with h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (Sum.inr ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inr ⟨i₀, hi₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inr_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Rewrite using `[dif_pos hi₀, dif_pos hi₀, dif_pos hi₀, Function.update_self, Function.update_self, Function.update_self, map_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOf_add (i₀ : Fin D.R.m) (a b : aSub S t e (.inr i₀)) (y : ∀ i, FinPt G (.grid i D.R.m)) :
     rowOf S t e (Function.update g (.inr i₀) (a + b)) y =
@@ -273,9 +273,9 @@ theorem rowOf_add (i₀ : Fin D.R.m) (a b : aSub S t e (.inr i₀)) (y : ∀ i, 
   · rw [dif_pos hi₀, dif_pos hi₀, dif_pos hi₀, Function.update_self, Function.update_self, Function.update_self, map_add]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `i₀`. Unfold `rowOf`. Rewrite using `[← LinearMap.smul_comp]`. Use `congr 1`. Use `chainTo_smul _ _ i₀ c (fun j hj => ?_) ?_ D.R.m hi₀` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Establish `hne : (Sum.inr ⟨j, h⟩ : Fin D.R.m ⊕ Fin D.R.m) ≠ .inr ⟨i₀, hi₀⟩` using `fun h' => hj (congrArg Fin.val (Sum.inr_injective h'))`. Rewrite using `[Function.update_of_ne hne, Function.update_of_ne hne]`. Both sides reduce to the same expression. Rewrite using `[dif_pos hi₀, dif_pos hi₀, Function.update_self, Function.update_self, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOf_smul (i₀ : Fin D.R.m) (c : ℂ) (a : aSub S t e (.inr i₀)) (y : ∀ i, FinPt G (.grid i D.R.m)) :
     rowOf S t e (Function.update g (.inr i₀) (c • a)) y = c • rowOf S t e (Function.update g (.inr i₀) a) y := by
@@ -298,28 +298,28 @@ variable {M N P Q : Type} [AddCommMonoid M] [Module ℂ M] [AddCommMonoid N] [Mo
   [AddCommMonoid Q] [Module ℂ Q] (B : M →ₗ[ℂ] N →ₗ[ℂ] ℂ)
 
 /- English proof (translation)
-Use extensionality with `u v`. Simplify using `[LinearMap.compl₁₂_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compl₁₂_add_left (f f' : P →ₗ[ℂ] M) (g : Q →ₗ[ℂ] N) : B.compl₁₂ (f + f') g = B.compl₁₂ f g + B.compl₁₂ f' g := by
   ext u v
   simp [LinearMap.compl₁₂_apply]
 
 /- English proof (translation)
-Use extensionality with `u v`. Simplify using `[LinearMap.compl₁₂_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compl₁₂_add_right (f : P →ₗ[ℂ] M) (g g' : Q →ₗ[ℂ] N) : B.compl₁₂ f (g + g') = B.compl₁₂ f g + B.compl₁₂ f g' := by
   ext u v
   simp [LinearMap.compl₁₂_apply]
 
 /- English proof (translation)
-Use extensionality with `u v`. Simplify using `[LinearMap.compl₁₂_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compl₁₂_smul_left (c : ℂ) (f : P →ₗ[ℂ] M) (g : Q →ₗ[ℂ] N) : B.compl₁₂ (c • f) g = c • B.compl₁₂ f g := by
   ext u v
   simp [LinearMap.compl₁₂_apply]
 
 /- English proof (translation)
-Use extensionality with `u v`. Simplify using `[LinearMap.compl₁₂_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compl₁₂_smul_right (c : ℂ) (f : P →ₗ[ℂ] M) (g : Q →ₗ[ℂ] N) : B.compl₁₂ f (c • g) = c • B.compl₁₂ f g := by
   ext u v
@@ -351,7 +351,7 @@ def gd (S : GridChoice W U) (t : T) (e : AE D) (d : PureDat G t) (k : Fin D.R.m 
   if h : (intersection_update_fsHerm_neg_one d k).fn ∈ aSub S t e k then ⟨(intersection_update_fsHerm_neg_one d k).fn, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[gd, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gd_coe {S : GridChoice W U} {t : T} {e : AE D} {d : PureDat G t} {k : Fin D.R.m ⊕ Fin D.R.m}
     (h : (intersection_update_fsHerm_neg_one d k).fn ∈ aSub S t e k) : ((gd S t e d k : aSub S t e k) : _ → ℂ) = (intersection_update_fsHerm_neg_one d k).fn := by
@@ -364,7 +364,7 @@ theorem rOp_coe (S : GridChoice W U) (t : T) (e : AE D) (k : Fin D.R.m ⊕ Fin D
     ((rOp S t e k g : thSub W (pr D t k)) : _ → ℂ) = tOp W S.Z (pr D t k) e g := rfl
 
 /- English proof (translation)
-Use `show _ = Z.scal 1 p • fockComp W N.frC p v (x * N.u _) (y * N.u _)`. Rewrite using `[hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kkMap_eq_kLin {N : Std G U} (Z : Normal W N) {t : T} {p : Pair T} (d : FinDatum G t p) (x : FinPt G p.small)
     (y : FinPt G p.big) (v : thSub W p) (hv : (v : _ → ℂ) = Z.vec d) : Z.kkMap 1 d x y = kLin W Z p x y v := by
@@ -373,7 +373,7 @@ theorem kkMap_eq_kLin {N : Std G U} (Z : Normal W N) {t : T} {p : Pair T} (d : F
   rfl
 
 /- English proof (translation)
-Unfold `GridChoice.colMap colOf`. Use `congrArg (fun F => F ∘ₗ _) (chainTo_congr _ _ _ fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[dif_pos hj, dif_pos hj]`. Take `⟨h1, h2⟩` from `h (.inl ⟨j, hj⟩)`. Conclude with `kkMap_eq_kLin S.Z (d.1 ⟨j, hj⟩) (x j) (x (j + 1)) (rOp S t e (.inl ⟨j, hj⟩) (gd S t e d (.inl ⟨j, hj⟩))) (by rw [rOp_coe, gd_coe h2]; exact h1.symm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem colMap_eq (S : GridChoice W U) (t : T) (e : AE D) (d : PureDat G t)
     (h : ∀ k, S.Z.vec (intersection_update_fsHerm_neg_one d k) = tOp W S.Z (pr D t k) e (intersection_update_fsHerm_neg_one d k).fn ∧ (intersection_update_fsHerm_neg_one d k).fn ∈ aSub S t e k)
@@ -386,7 +386,7 @@ theorem colMap_eq (S : GridChoice W U) (t : T) (e : AE D) (d : PureDat G t)
     (by rw [rOp_coe, gd_coe h2]; exact h1.symm)
 
 /- English proof (translation)
-Unfold `GridChoice.rowMap rowOf`. Use `congrArg (fun F => F ∘ₗ _) (chainTo_congr _ _ _ fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[dif_pos hj, dif_pos hj]`. Take `⟨h1, h2⟩` from `h (.inr ⟨j, hj⟩)`. Conclude with `kkMap_eq_kLin S.Z (d.2 ⟨j, hj⟩) (y j) (y (j + 1)) (rOp S t e (.inr ⟨j, hj⟩) (gd S t e d (.inr ⟨j, hj⟩))) (by rw [rOp_coe, gd_coe h2]; exact h1.symm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowMap_eq (S : GridChoice W U) (t : T) (e : AE D) (d : PureDat G t)
     (h : ∀ k, S.Z.vec (intersection_update_fsHerm_neg_one d k) = tOp W S.Z (pr D t k) e (intersection_update_fsHerm_neg_one d k).fn ∧ (intersection_update_fsHerm_neg_one d k).fn ∈ aSub S t e k)
@@ -403,31 +403,29 @@ end GlobalTheory.FunObj.PairIndep
 open GlobalTheory.FunObj.PairIndep in
 
 /- English proof (translation)
-Introduce `D T L sc G W U S μ₀ hL t ht Φ`. Establish `hv : ∀ (k : Fin D.R.m ⊕ Fin D.R.m) (d : FinDatum G t (pr D t k)), S.Z.HasVec d` using `fun k d => hasVec G W μ₀ hL U S.N S.Z t ht _ (pr_def t k) d`. Use `⟨fun β τ _ d _ => ⟨fun j => hv (.inl j) (d.1 j), fun i => hv (.inr i) (d.2 i)⟩, fun β τ τ' hτ hτ' c => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hs, hx⟩` from `hτ`. Take `⟨e', he', hs', hx'⟩` from `hτ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hee : e' = e` using `GlobalTheory.BaseKernelUniq.idemSum_unique (G.V (.top 0)) he' he`. Rewrite `hs'`, `hx'` using `[hee]`. Establish `hposition : ∀ d ∈ τ.support ∪ τ'.support, ∀ k, (intersection_update_fsHerm_neg_one d k).e = e ∧ (intersection_update_fsHerm_neg_one d k).z = 1`. Introduce `d hd k`. Break down `Finset.mem_union.1 hd with hd | hd` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `k with j | i` into its components or cases. Conclude with `⟨((hs d hd).1 j).2.1, ((hs d hd).1 j).2.2⟩`. Conclude with `⟨((hs d hd).2 i).2.1, ((hs d hd).2 i).2.2⟩`. Break down `k with j | i` into its components or cases. Conclude with `⟨((hs' d hd).1 j).2.1, ((hs' d hd).1 j).2.2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨((hs' d hd).2 i).2.1, ((hs' d hd).2 i).2.2⟩`. Establish `hk : ∀ d ∈ τ.support ∪ τ'.support, ∀ k, S.Z.vec (intersection_update_fsHerm_neg_one d k) = tOp W S.Z (pr D t k) e (intersection_update_fsHerm_neg_one d k).fn ∧ (intersection_update_fsHerm_neg_one d k).fn ∈ aSub S t e k` using `fun d hd k => vec_eq_tOp S.Z (pr_def t k) (hposition d hd k).1 (hposition d hd k).2 (hv k _)`. Establish `hP : ∀ τ₀ : PureDat G t →₀ ℂ, τ₀.support ⊆ τ.support ∪ τ'.support → S.pairAt τ₀ c = ∑ d ∈ τ.support ∪ τ'.support, τ₀ d • pairML S t e (S.ptTop c) (S.ptRow c) (gd S t e d)`. Introduce `τ₀ hτ₀`. Unfold `GridChoice.pairAt`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finsupp.sum_of_support_subset τ₀ hτ₀]`. Use `Finset.sum_congr rfl fun d hd => congrArg (τ₀ d • ·) ?_` and prove the remaining obligations. Rewrite using `[colMap_eq S t e d (hk d hd), rowMap_eq S t e d (hk d hd)]`. Both sides reduce to the same expression. Introduce `d _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_smul _ _`. Rewrite using `[hP τ Finset.subset_union_left, hP τ' Finset.subset_union_right, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[← sub_smul]`. Use `GlobalTheory.T.sum_smul_multilinear_eq_zero_of_prod_vanish (aSub S t e) (pairML S t e (S.ptTop c) (S.ptRow c)) _ (fun d => τ d - τ' d) (gd S t e) fun x => ?_` and prove the remaining obligations. Establish `hq : ∀ d ∈ τ.support ∪ τ'.support, ∏ k, ((gd S t e d k : aSub S t e k) : _ → ℂ) (x k) = (∏ j, (d.1 j).fn (x (.inl j))) * ∏ i, (d.2 i).fn (x (.inr i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Rewrite using `[Fintype.prod_sum_type]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [gd_coe (hk d hd _).2]; rfl`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [gd_coe (hk d hd _).2]; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun d hd => by rw [hq d hd]]`. Repeatedly rewrite using `[sub_mul]`. Rewrite using `[Finset.sum_sub_distrib, sub_eq_zero]`. Establish `hsum : ∀ τ₀ : PureDat G t →₀ ℂ, τ₀.support ⊆ τ.support ∪ τ'.support → ∑ d ∈ τ.support ∪ τ'.support, τ₀ d * ((∏ j, (d.1 j).fn (x (.inl j))) * ∏ i, (d.2 i).fn (x (.inr i))) = τ₀.sum fun d a => a * (∏ j, (d.1 j).fn (x (.inl j))) * ∏ i, (d.2 i).fn (x (.inr i))`. Introduce `τ₀ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.sum_of_support_subset τ₀ h]`. Simplify using `only [mul_assoc]`. Introduce `d _`. Rewrite using `[zero_mul, zero_mul]`. Rewrite using `[hsum τ Finset.subset_union_left, hsum τ' Finset.subset_union_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hh : (∀ j, IsHalf e (x (.inl j))) ∧ ∀ i, IsHalf e (x (.inr i))`. Conclude with `(hx (fun j => x (.inl j)) (fun i => x (.inr i)) hh.1 hh.2).trans (hx' (fun j => x (.inl j)) (fun i => x (.inr i)) hh.1 hh.2).symm`. Establish `hz : ∀ d ∈ τ.support ∪ τ'.support, (∏ j, (d.1 j).fn (x (.inl j))) * ∏ i, (d.2 i).fn (x (.inr i)) = 0`. Introduce `d hd`. Break down `not_and_or.1 hh with h1 | h1` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `not_forall.1 h1`. Use `mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ j) ?_) _` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `(d.1 j).sb.1 _ hne` as an intermediate fact. Rewrite `this` using `[show (d.1 j).e = e from (hposition d hd (.inl j)).1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hj this`. Take `⟨i, hi⟩` from `not_forall.1 h1`. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ i) ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `(d.2 i).sb.1 _ hne` as an intermediate fact.
-
-Rewrite `this` using `[show (d.2 i).e = e from (hposition d hd (.inr i)).1]`. Conclude with `hi this`. Establish `h0 : ∀ τ₀ : PureDat G t →₀ ℂ, τ₀.support ⊆ τ.support ∪ τ'.support → (τ₀.sum fun d a => a * (∏ j, (d.1 j).fn (x (.inl j))) * ∏ i, (d.2 i).fn (x (.inr i))) = 0` using `fun τ₀ h => Finset.sum_eq_zero fun d hd => by simp only [mul_assoc, hz d (h hd), mul_zero]`. Rewrite using `[h0 τ Finset.subset_union_left, h0 τ' Finset.subset_union_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FunObj.sumOK_vec_indep : ∀ (D : D7) (T : Type) (L : LevCh D T) (sc : GlobalTheory.ChiGrid.Consts) (G : GridData L sc) (W : G.Weil) (U : Set T) (S : GridChoice W U) (μ₀ : T), L.Is μ₀ → ∀ t ∈ U, ∀ Φ : G.Datum, (∀ β τ, S.IsExpansion t Φ β τ → ∀ d ∈ τ.support, (∀ j, S.Z.HasVec (d.1 j)) ∧ ∀ i, S.Z.HasVec (d.2 i)) ∧ ∀ β τ τ', S.IsExpansion t Φ β τ → S.IsExpansion t Φ β τ' → ∀ c : S.Classes t Φ β, S.pairAt τ c = S.pairAt τ' c := by
   intro D T L sc G W U S μ₀ hL t ht Φ

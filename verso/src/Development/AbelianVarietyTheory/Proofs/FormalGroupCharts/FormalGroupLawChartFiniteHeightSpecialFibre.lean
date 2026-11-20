@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FiniteHeight
 
 /- English proof (translation)
-Establish `h1 : (ObjPull.pushEquiv h G' (𝟙 G')).left = φ` using `Category.id_comp _`. Establish `h2 : ObjPull.pushEquiv h G' (𝟙 G' ^ N) = ObjPull.pushEquiv h G' (𝟙 G') ≫ 𝟙 G ^ N`. Rewrite using `[map_pow, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[← ObjPull.pushEquiv_left h, h2, Over.comp_left, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem id_pow_left_proj {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (N : ℕ) :
@@ -30,9 +30,9 @@ theorem id_pow_left_proj {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : O
   rw [← ObjPull.pushEquiv_left h, h2, Over.comp_left, h1]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Set `e` to `ObjPull.pushEquiv h (Over.mk t)`. Use `Finite.of_injective (β := {x : Over.mk (t ≫ f) ⟶ G // x ^ N = 1}) (fun x => ⟨e x.1, ?_⟩) ?_` and prove the remaining obligations. Establish `hx : x.1 ^ N = 1`. Use `x.2` as an intermediate fact.
+Substitute using the available equality. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis. Establish `: (e x.1) ^ N = 1` using `by rw [← map_pow, hx, map_one]`. Conclude with `this`. Introduce `x y hxy`. Conclude with `Subtype.ext (e.injective (congrArg Subtype.val hxy))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_torsion_pull {S S' Z : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (t : Z ⟶ S') (r : Z ⟶ S) (hr : t ≫ f = r) (N : ℕ)
@@ -51,13 +51,13 @@ theorem finite_torsion_pull {S S' Z : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G
     exact Subtype.ext (e.injective (congrArg Subtype.val hxy))
 
 /- English proof (translation)
-Introduce `T _ _ _ G _ _ D A U d F x hx N hN`. Take `⟨x0, hu, hρ⟩` from `GlobalTheory.T.isUniversalChart_of_formalGroupChart T G U.smooth d F x hx`. Establish `hlaw` using `GlobalTheory.T.isFormalGroupLawOfChart_of_jetChart T G d F x hx x0 hu hρ`. Establish `hmap` using `GlobalTheory.T.isSeriesOfMorphismInCharts_pow_mulFormalGroupLaw T G d x0 hu F.F hlaw N`. Establish `hp` using `isGrpPullback_pullback G (Spec.map (CommRingCat.ofHom (residue T)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x', hu', -, hm, -⟩` from `GlobalTheory.ChartBaseChange.chartBaseChange GlobalTheory.JetSer.jetAlg (GlobalTheory.JetSer.serSt_of_jetAlgSt GlobalTheory.JetSer.jetAlg) T (ResidueField T) (residue T) G _ _ hp d x0 hu`. Establish `hm'` using `hm _ _ _ (id_pow_left_proj hp N) hmap`. Establish `hsm` using `U.smooth`. Establish `: LocallyOfFiniteType ((Over.pullback (Spec.map (CommRingCat.ofHom (residue T)))).obj G).hom` using `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) hp.1 inferInstance`. Take `⟨M, hM⟩` from `GlobalTheory.JetSer.exists_pow_le_span_sup_pow_succ (ResidueField T) _ _ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Establish `: η[(Over.pullback (Spec.map (CommRingCat.ofHom (residue T)))).obj G] = 1`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[this, one_pow]) (fun Ω _ _ t => by`. Take `⟨b, rfl⟩` from `Spec.map_surjective t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `finite_torsion_pull hp _ (Geo.Tor.spMap (b.hom.comp (residue T))) ?_ N (GlobalTheory.finite_torsion_special_fibre_of_unif T G D A U Ω _ (fun a ha => ?_) N hN)` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, (residue_eq_zero_iff a).2 ha, map_zero]) d x' hu' _ hm'`. Conclude with `⟨M, (GlobalTheory.pow_span_X_le_and_finite_quotient_of_le_sup_pow_succ _ _ _ M hM).1⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_pow_span_X_le_span_map_residue_mulF : ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] (G : Over (Sp T)) [GrpObj G] [IsCommMonObj G] (D : Out.DegData T (maximalIdeal T)) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing T)))) (_ : Out.UnifPre (maximalIdeal T) D A G) (d : ℕ) (F : FGLaw T d) (x : ∀ m : ℕ, algOver T (JetR T (Fin 1 × Fin d) m) ⟶ G), IsChartJ G F x → ∀ N : ℕ, 1 ≤ N → ∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : Fin 1 × Fin d → PS (ResidueField T) 1 d)) ^ M ≤ Ideal.span (Set.range fun j => MvPowerSeries.map (residue T) (mulF F.F N j)) := by
   intro T _ _ _ G _ _ D A U d F x hx N hN

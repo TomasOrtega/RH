@@ -15,9 +15,9 @@ def nc_Size (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (Y : Formalism.M
     ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j s : ℝ) ≤ (2 * L.sc.a) ^ 4)
 
 /- English proof (translation)
-Establish `hx : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hL : 0 ≤ L.sc.L`. Simplify using `only [Formalism.BasicNotions.Scale.L]`. Conclude with `Real.rpow_nonneg (by linarith) _`. Establish `hb : 1 ≤ L.sc.b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.Scale.b]`. Conclude with `Real.one_le_exp hL`. Simplify using `only [Formalism.BasicNotions.Scale.a]`. Conclude with `one_le_mul_of_one_le_of_one_le hx.le hb`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nc_a_ge : (1 : ℝ) ≤ L.sc.a := by
   have hx : 1 < L.sc.x := L.sc.one_lt_alt
@@ -31,19 +31,19 @@ theorem nc_a_ge : (1 : ℝ) ≤ L.sc.a := by
   exact one_le_mul_of_one_le_of_one_le hx.le hb
 
 /- English proof (translation)
-Establish `hp : 2 ≤ D.what₂.places.resChar w` using `hg.1.two_le`. Establish `hA : (1 : ℝ) ≤ 2 * L.sc.a` using `by have := nc_a_ge (L := L); linarith`. Establish `hmt` using `(hL u w hg)`. Establish `ht : (Y.Fl u w hg).t = D.R.t` using `hmt.2.1`. Establish `hk` using `hT.gat_k u w hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjm : j ≤ D.R.m` using `(Finset.mem_Icc.1 hj).2`. Establish `hN1 : (NN (D.gat u w hg).P.m (Y.Fl u w hg).t j : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Unfold `NN Ranks.N`. Rewrite using `[ht]`. Establish `: (D.gat u w hg).P.m + 1 + j * (D.R.t + 1) ≤ D.R.k + D.R.m * (D.R.t + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hjm) _`. Conclude with `this` after adjusting the coercions. Establish `hN0 : (NN (D.gat u w hg).P.m (Y.Fl u w hg).t (j - 1) : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Unfold `NN Ranks.N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht]`. Establish `: (D.gat u w hg).P.m + 1 + (j - 1) * (D.R.t + 1) ≤ D.R.k + D.R.m * (D.R.t + 1)`. Rewrite using `[hk]; exact Nat.add_le_add_left (Nat.mul_le_mul_right _ (by omega)) _`. Conclude with `this` after adjusting the coercions. Establish `hde` using `nc_de_le (D.what₂.places.resChar w) (Y.Fl u w hg).t _ _ _ j hp (2 * L.sc.a) (D.R.N D.R.m : ℝ) hA hlog hN1 hN0 hS.1 hS.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hinj` using `nc_iota_inj X Y hT hL u w hg t0 ht0`. Establish `hNv : (Formalism.MainNotions.G.Nv X (D.what₂.places.resChar w) t0 : ℝ) = ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).card`. Unfold `Formalism.MainNotions.G.Nv`. Rewrite using `[nc_topsOn X Y hT hL u w hg t0 ht0, Finset.card_image_of_injective _ hinj]`. Establish `hnP : (Formalism.MainNotions.G.nP D (D.what₂.places.resChar w) : ℝ) = ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℕ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.G.nP`. Rewrite using `[if_neg (nc_notSg hg), nc_n_eq X Y hT hL u w hg t0 ht0]`. Unfold `nc_De Formalism.MainNotions.G.dl Formalism.MainNotions.G.Nm`. Rewrite using `[hNv, hnP]`. Establish `hl0 : 0 ≤ Real.logb (D.what₂.places.resChar w) (2 * L.sc.a)` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hc1 : (0 : ℝ) ≤ ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℕ) * (D.R.N D.R.m : ℝ) ^ 2 * Real.logb (D.what₂.places.resChar w) (2 * L.sc.a)` using `by positivity`. Establish `hc2 : (0 : ℝ) ≤ (((Y.Fl u w hg).TT (Y.vOf u w hg t0)).card : ℝ) * Real.logb (D.what₂.places.resChar w) (2 * L.sc.a) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem nc_de (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (hT : GatTies D)
     (hL : Formalism.MainNotions.G.LatTied hT X Y) (u : D.what₂.Word) (w : D.what₂.places.Pl)

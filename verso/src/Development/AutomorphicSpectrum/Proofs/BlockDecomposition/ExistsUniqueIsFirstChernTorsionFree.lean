@@ -29,11 +29,11 @@ variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} {γ 
   {q : X ⟶ Spec (CommRingCat.of O)} {l s : ℕ}
 
 /- English proof (translation)
-Establish `h1 : T.δ.dpow (k + 1) x ∈ T.pdPow s`. Rewrite using `[pdPow_eq]`. Use `Ideal.subset_span ⟨[(k + 1, x)], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Rewrite `hz` using `[List.mem_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `hx`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hT.1]`. Rewrite using `[(Ideal.mem_bot.1 h1), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpow_vanish {T : Thick (nlFun γ 0 X q (κA O I))} (hT : TF l s T) (k : ℕ) (hk : s ≤ k) (x : T.B) (hx : x ∈ T.J) :
     (k.factorial : T.B) * T.δ.dpow (k + 1) x = 0 := by
@@ -51,9 +51,9 @@ theorem dpow_vanish {T : Thick (nlFun γ 0 X q (κA O I))} (hT : TF l s T) (k : 
   rw [(Ideal.mem_bot.1 h1), mul_zero]
 
 /- English proof (translation)
-Take `⟨V, ⟨σ, hσ⟩, hV⟩` from `h`. Establish `hr : Set.range (pt T) ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hV (show x ∈ (⊤ : Scheme.Opens _) from trivial)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsOpenImmersion.lift V.ι (pt T) hr ≫ σ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, IsOpenImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_of_mem (D : E.LineData X) (T : Thick (nlFun γ 0 X q (κA O I))) (h : ∃ V ∈ 𝒱D D, InU V T) :
     ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = pt T := by
@@ -68,19 +68,19 @@ theorem lifts_of_mem (D : E.LineData X) (T : Thick (nlFun γ 0 X q (κA O I))) (
 end Main
 
 /- English proof (translation)
-Introduce `O A _ _ _ I γ X q l s D hD`. Establish `hle : St (TF l s) (𝒱D D) ≤ TS γ q l s {⊤}` using `fun T h => ⟨h.1, ⊤, rfl, fun _ _ => trivial⟩`. Establish `hU : Used (TF l s : ObjectProperty (Thick (nlFun γ 0 X q (κA O I))))` using `Or.inl ⟨rfl, l, s, rfl⟩`. Establish `hb` using `(GlobalTheory.T.cech_refinement_cohomology_bijective (TF l s) hU (𝒱D D) {⊤} hle (by rintro W rfl; rw [hD]) 2).2.2`. Set `Q : ObjectProperty (Thick (nlFun γ 0 X q (κA O I)))` to `TS γ q l s {⊤}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Q' : ObjectProperty (Thick (nlFun γ 0 X q (κA O I)))` to `St (TF l s) (𝒱D D)`. Set `G₀ : Q'.FullSubcategory ⥤ Thick ((B.schFn q).cr (nlBase A I γ 0) rfl (κA O I))` to `Q'.ι`. Take `⟨Λ₀⟩` from `GlobalTheory.T.exists_crystalline_lift (q := q) (b := nlBase A I γ 0) (ht := rfl) (κ := κA O I) G₀ D (fun T => lifts_of_mem D T.obj T.property.2)`. Establish `hz₀` using `(GlobalTheory.T.crystalline_cocycle_closed G₀ D (RingHom.id A) s (fun T k hk x hx => dpow_vanish T.property.1 k hk x hx)).1 Λ₀`. Take `⟨x, hx⟩` from `hb.2 ((CH.cx _).cls _ hz₀)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce `C _ G hG Λ₁`. Set `G₁ : C ⥤ Thick ((B.schFn q).cr (nlBase A I γ 0) rfl (κA O I))` to `G ⋙ Q.ι`. Establish `hcl` using `GlobalTheory.T.crystalline_cocycle_closed G₁ D (RingHom.id A) s (fun T k hk x hx => dpow_vanish (G.obj T).property.1 k hk x hx)`. Set `G' : C ⥤ Q'.FullSubcategory` to `Q'.lift (G ⋙ Q.ι) fun T => ⟨(G.obj T).property.1, hG T⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Λ' : B.CLift G₁ D` to `precomp Λ₀ G'`. Use `⟨hcl.1 Λ₁, ?_⟩` and prove the remaining obligations. Use `(hcl.2 Λ₁ Λ' (hcl.1 Λ₁) (hcl.1 Λ')).trans ?_` and prove the remaining obligations. Establish `e1 : (CH.Mor.restrict (CH.modF (sP Q).A) G).pull 2 x = (CH.Mor.restrict (CH.modF (sP Q').A) G').pull 2 ((incl hle).o.pull 2 x)`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[e1, hx]`. Both sides reduce to the same expression. Introduce `y hy`. Apply `hb.1` to reduce the goal to its premises.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h1, h2⟩` from `hy _ (ObjectProperty.ιOfLE hle) (fun T => T.property.2) Λ₀`. Establish `e : (incl hle).o.pull 2 y = (CH.Mor.restrict (CH.modF (sP Q).A) (ObjectProperty.ιOfLE hle)).pull 2 y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression. Rewrite using `[hx, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isFirstChernTorsionFree : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ : DividedPowers I) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (D : E.LineData X), sSup (𝒱D D) = ⊤ → ∃! z, IsFirstChernThickening (TS γ q l s {⊤}) D s z := by

@@ -17,18 +17,16 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K a v).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq (a : 𝓞 K) (v : V) : a • v = (a : K) • v := (algebraMap_smul K a v).symm
 
 /- English proof (translation)
-Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJ`. Take `⟨J', hJ'⟩ : J ∣ Ideal.span {c}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hc)`. Establish `h1 : J • Submodule.span (𝓞 K) {v} ≤ J • M`. Use `Submodule.smul_le.2 fun a ha x hx => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ (h a ha)`. Establish `h2 : Ideal.span {c} • Submodule.span (𝓞 K) {v} ≤ Ideal.span {c} • M`. Rewrite using `[hJ', mul_comm, Submodule.mul_smul, Submodule.mul_smul]`. Conclude with `Submodule.smul_mono le_rfl h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `h2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self c) (Submodule.mem_span_singleton_self v))`. Rewrite `h3` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨m, hm, hmv⟩` from `h3`. Rewrite `hmv` using `[smul_eq, smul_eq]`. Establish `hc1 : (c : K) ≠ 0` using `by exact_mod_cast hc0`.
-
-Rewrite using `[← smul_right_injective V hc1 hmv]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cancel {J : Ideal (𝓞 K)} (hJ : J ≠ ⊥) {M : Submodule (𝓞 K) V} {v : V}
     (h : ∀ a ∈ J, a • v ∈ J • M) : v ∈ M := by
@@ -52,9 +50,9 @@ theorem cancel {J : Ideal (𝓞 K)} (hJ : J ≠ ⊥) {M : Submodule (𝓞 K) V} 
   rwa [← smul_right_injective V hc1 hmv]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem`. Consider the case `exact _root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem`. Consider the case `(apply _root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ExistsSmulMemLattice.exists_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_mul {M : Submodule (𝓞 K) V} {v : V} (hv : v ∈ Submodule.span K (M : Set V)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • v ∈ M := by
@@ -71,7 +69,7 @@ variable [StarRing K]
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-The claim follows from `(Subgroup.closure_le (isomGrp H)).2 (fun t ht => (mem_isomGrp H t).2 ht.1.1) hs`.
+A detailed English derivation is pending.
 -/
 theorem isom_of_mem {H : HermSpace K V} {r : ℕ} {F F' : FlagD H r} {s : V ≃ₗ[K] V}
     (hs : s ∈ Subgroup.closure {s : V ≃ₗ[K] V | F.InN (s : V →ₗ[K] V) ∧ F'.InN (s : V →ₗ[K] V)}) :
@@ -81,7 +79,7 @@ theorem isom_of_mem {H : HermSpace K V} {r : ℕ} {F F' : FlagD H r} {s : V ≃�
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_perp_iff]`. Introduce `y hy`. Rewrite using `[← H.herm, (mem_perp_iff H S y).1 hy x hx, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_perp_perp (H : HermSpace K V) (S : Submodule K V) : S ≤ perp H (perp H S) := by
   intro x hx
@@ -94,35 +92,31 @@ end GlobalTheory.DegCnt.Stab
 open GlobalTheory.DegCnt.Stab in
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ 𝔠 h0 h1 h2 h3 e hsp hn s hs hcong`. Establish `hkill` using `(GlobalTheory.T.hermFramePair_ideal_kills_discriminantModules K V H hK r N g Λ hg hΛ 𝔠 h0 h1 h2 h3).1`. Establish `hcompl : IsCompl N.Wt N.Pi` using `(GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N).2.2.1`. Establish `hiso` using `(mem_isomGrp H s).1 (isom_of_mem hs.1)`. Establish `hfix : ∀ w ∈ N.Wt, s w = w` using `fun w hw => (mem_fixingSubgroup_iff (V ≃ₗ[K] V)).1 hs.2 w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdual : dual H Λ = Λ` using `hΛ.1.1.2`. Establish `hspan : Submodule.span K (Λ : Set V) = ⊤` using `hΛ.1.1.1.2`. Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)` using `fun x hx => ((mem_dual_iff H Λ x).1 (hdual.symm ▸ hx)).2`. Establish `hIP : II N.F N.F' ≤ N.Pi` using `(inf_le_left.trans (le_sup_left.trans (le_sup_left.trans le_sup_left))).trans (le_perp_perp H (V0 N.F N.F' ⊔ N.Ist))`. Establish `hle : ∀ x ∈ Λ, s x ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨w, hw, p, hp, rfl⟩` from `Submodule.mem_sup.1 (hcompl.sup_eq_top ▸ Submodule.mem_top : x ∈ N.Wt ⊔ N.Pi)`. Establish `hpw : ∀ y ∈ N.Wt, H.B p y = 0` using `(mem_perp_iff H N.Wt p).1 hp`. Establish `hwd : w ∈ dual H (latTh N.F N.F' Λ)`. Rewrite using `[hsp, mem_dual_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨d, hd, hdw⟩` from `exists_mul (M := Λ) (v := w) (hspan ▸ Submodule.mem_top)`. Establish `hd1 : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `hw' : w = (d : K)⁻¹ • (d • w)` using `by rw [smul_eq, smul_smul, inv_mul_cancel₀ hd1, one_smul]`. Rewrite using `[hw']`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left ⟨hdw, (rs (𝓞 K) N.Wt).smul_mem d hw⟩`. Introduce `y hy`. Take `⟨θ, hθ, i, hi, rfl⟩` from `Submodule.mem_sup.1 hy`. Establish `e1 : H.B w i = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← H.herm, (mem_perp_iff H N.Wt i).1 (hIP hi) w hw, star_zero]`. Establish `e2` using `hint _ hx θ hθ.1`. Rewrite `e2` using `[map_add, LinearMap.add_apply, hpw θ hθ.2, add_zero]`. Rewrite using `[map_add, e1, add_zero]`. Conclude with `e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hap : ∀ a ∈ 𝔠 ^ 3, a • p ∈ Λ ⊓ rs (𝓞 K) N.Pi`. Introduce `a ha`. Use `hkill (Submodule.smul_mem_smul ha hwd)` as an intermediate fact. Rewrite `this` using `[hsp]`. Take `⟨θ, hθ, i, hi, h⟩` from `Submodule.mem_sup.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiW : i ∈ N.Wt`. Establish `: i = a • w - θ` using `by rw [← h]; abel`. Rewrite using `[this]`. Conclude with `(rs (𝓞 K) N.Wt).sub_mem ((rs (𝓞 K) N.Wt).smul_mem a hw) hθ.2`. Establish `hi0 : i = 0` using `(Submodule.disjoint_def.1 hcompl.disjoint) i hiW (hIP hi)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, (rs (𝓞 K) N.Pi).smul_mem a hp⟩` and prove the remaining obligations. Establish `: a • p = a • (w + p) - θ` using `by rw [smul_add, ← h, hi0]; abel`. Rewrite using `[this]`. Conclude with `Λ.sub_mem (Λ.smul_mem a hx) hθ.1`. Establish `hbp : ∀ b ∈ 𝔠 ^ (e + 3), b • p ∈ N.P0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Rewrite `hb` using `[pow_add]`. Use `Submodule.mul_induction_on hb (fun m hm n hn' => ?_) (fun m n hm hn' => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `hn.2 (Submodule.smul_mem_smul hm (hap n hn'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[add_smul]`. Conclude with `N.P0.add_mem hm hn'`. Establish `hsp' : s p - p ∈ 𝔠 ^ e • N.P0`. Use `cancel (pow_ne_zero (e + 3) h0) fun b hb => ?_` and prove the remaining obligations. Use `hcong _ (hbp b hb)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[smul_eq, map_smul, ← smul_sub, ← smul_eq]`. Rewrite using `[← Submodule.mul_smul, ← pow_add]`. Conclude with `Submodule.smul_mono (Ideal.pow_le_pow_right (by omega)) le_rfl this`. Establish `: s (w + p) = (w + p) + (s p - p)` using `by rw [map_add, hfix w hw]; abel`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Λ.add_mem hx (hn.1 hsp').1`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists y s Λ).1 hy`. Conclude with `hle x hx`.
-
-Introduce `x hx`. Use `(Submodule.mem_smul_pointwise_iff_exists x s Λ).2 ⟨s.symm x, ?_, s.apply_symm_apply x⟩` and prove the remaining obligations. Rewrite using `[← hdual, mem_dual_iff]`. Use `⟨hspan ▸ Submodule.mem_top, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hiso, s.apply_symm_apply]`.
-
-Conclude with `hint x hx _ (hle y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DegCnt.stab_of_deep_congruence : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∀ 𝔠 : Ideal (𝓞 K), 𝔠 ≠ ⊥ → (∀ x ∈ 𝔠, ∃ y ∈ 𝔠, (y : K) = star (x : K)) → (∀ x ∈ 𝔠, (N.T : 𝓞 K) ∣ x) → (∀ (l : ℕ) (hl : l ≤ r + 1), l ≤ N.j → Dl N.F N.F' l hl ≠ 0 → ∀ x ∈ 𝔠, ∀ y ∈ ipow N.𝔡 (2 * ∑ a ∈ Finset.range l, ((r : ℤ) - a)), (x : K) * y / Dl N.F N.F' l hl ∈ (1 : Submodule (𝓞 K) K) ∧ (x : K) * y / star (Dl N.F N.F' l hl) ∈ (1 : Submodule (𝓞 K) K)) → ∀ e : ℕ, N.Split Λ → N.Near (𝔠 ^ e) Λ → ∀ s ∈ N.Rs, (∀ x ∈ N.P0, s x - x ∈ 𝔠 ^ (3 * e + 10) • N.P0) → s • Λ = Λ := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ 𝔠 h0 h1 h2 h3 e hsp hn s hs hcong

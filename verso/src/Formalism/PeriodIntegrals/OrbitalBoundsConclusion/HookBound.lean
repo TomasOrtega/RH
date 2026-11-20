@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.Assembl
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.CapelliOps
 
 /- English proof (translation)
-The claim follows from `PI.HookSteps.hookBound_of PI.HookSteps.Cap.capelli_determinant_identity`.
+A detailed English derivation is pending.
 -/
 theorem hook_length_bound : PI.HookBound := PI.HookSteps.hookBound_of PI.HookSteps.Cap.capelli_determinant_identity

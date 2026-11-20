@@ -22,7 +22,7 @@ variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {L : _root_.Pos
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Act.C6.N.normalize_k h hγ hn`.
+A detailed English derivation is pending.
 -/
 theorem normalize_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {γ : d.G} (hγ : γ ∈ rat2 σ d.Y) (hn : ¬ _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L γ) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (w₁⁻¹ * (p * γ)) :=

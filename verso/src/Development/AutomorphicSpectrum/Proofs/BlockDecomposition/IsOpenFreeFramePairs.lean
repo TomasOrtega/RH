@@ -9,27 +9,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FreeFrames
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `z₀ ⟨L₁, L₂, h11, h12, h21, h22⟩`. Set `L : Matrix (Fin r ⊕ Fin t) (Fin a) R` to `Matrix.fromRows L₁ L₂`. Set `Z : Matrix (Fin a) (Fin r) R × Matrix (Fin a) (Fin t) R → Matrix (Fin a) (Fin r ⊕ Fin t) R` to `fun z => Matrix.fromCols (e • z.1) (e • z.2)`. Set `C : Matrix (Fin a) (Fin r) R × Matrix (Fin a) (Fin t) R → Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R` to `fun z => L * Z z + (1 - e) • (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hone : (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R) = Matrix.fromBlocks 1 0 0 1` using `Matrix.fromBlocks_one.symm`. Establish `hLZ : L * Z z₀ = e • (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R)`. Simplify using `only [L, Z]`. Rewrite using `[Matrix.fromRows_mul_fromCols, h11, h12, h21, h22, hone, Matrix.fromBlocks_smul]`. Simplify using `only [smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hC0 : C z₀ = 1`. Simplify using `only [C]`. Rewrite using `[hLZ, ← add_smul]`. Simplify using the standard rewrite rules. Establish `hZc : Continuous Z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `inl j`. Establish `h : Continuous fun z : Matrix (Fin a) (Fin r) R × Matrix (Fin a) (Fin t) R => e * z.1 i j` using `Continuous.mul continuous_const (continuous_fst.matrix_elem i j)`. Simplify `h` using `[Z]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `inr j`. Establish `h : Continuous fun z : Matrix (Fin a) (Fin r) R × Matrix (Fin a) (Fin t) R => e * z.2 i j` using `Continuous.mul continuous_const (continuous_snd.matrix_elem i j)`. Simplify `h` using `[Z]`. Establish `hCc : Continuous C`. Conclude with `(continuous_const.matrix_mul hZc).add continuous_const`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Continuous fun z => (C z).det` using `hCc.matrix_det`. Establish `hnhds : (fun z => (C z).det) ⁻¹' U ∈ 𝓝 z₀`. Use `(hU.preimage hd).mem_nhds ?_` and prove the remaining obligations. Simplify `h1` using `[Set.mem_preimage, hC0]`. Use `Filter.mem_of_superset hnhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨b, hb'⟩` from `hb _ hz`. Establish `hLz : L * Z z = C z - (1 - e) • (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R)`. Simplify using `only [C, add_sub_cancel_right]`. Establish `hee : e * (1 - e) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ((e * b) • ((C z).adjugate * L)) * Z z = e • (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) R)`. Rewrite using `[Matrix.smul_mul, Matrix.mul_assoc, hLz, Matrix.mul_sub, Matrix.adjugate_mul, Matrix.mul_smul, Matrix.mul_one, smul_sub, smul_smul, smul_smul]`. Establish `h2 : e * b * (1 - e) = 0`. Rewrite using `[mul_right_comm, hee, zero_mul]`. Establish `h3 : e * b * (C z).det = e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_comm b, hb', he]`. Rewrite using `[h2, h3, zero_smul, sub_zero]`. Use `set L' := (e * b) • ((C z).adjugate * L) with hL'`. Establish `key' : Matrix.fromBlocks (L'.toRows₁ * (e • z.1)) (L'.toRows₁ * (e • z.2)) (L'.toRows₂ * (e • z.1)) (L'.toRows₂ * (e • z.2)) = Matrix.fromBlocks (e • 1) 0 0 (e • 1)`. Rewrite using `[← Matrix.fromRows_mul_fromCols, Matrix.fromRows_toRows]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `key` as an intermediate fact. Simplify using `only [Z] at this`. Rewrite using `[this, hone, Matrix.fromBlocks_smul]`. Simplify using `only [smul_zero]`. Take `⟨a1, a2, a3, a4⟩` from `Matrix.fromBlocks_inj.1 key'`.
-
-Conclude with `⟨L'.toRows₁, L'.toRows₂, a1, a2, a3, a4⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_free_frame_pairs {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     (r t a : ℕ) (e : R) (he : e * e = e) (U : Set R) (hU : IsOpen U) (h1 : (1 : R) ∈ U)
@@ -99,7 +97,7 @@ theorem isOpen_free_frame_pairs {R : Type*} [CommRing R] [TopologicalSpace R] [I
   exact ⟨L'.toRows₁, L'.toRows₂, a1, a2, a3, a4⟩
 
 /- English proof (translation)
-Introduce and unpack `D r t a e he ⟨U, hU, h1, hb⟩`. Conclude with `isOpen_free_frame_pairs r t a e he U hU h1 hb`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isOpen_free : ∀ (D : D7) (r t a : ℕ) (e : AE D), e * e = e →
     (∃ U : Set (AE D), IsOpen U ∧ 1 ∈ U ∧ ∀ x ∈ U, ∃ b, x * b = e) →

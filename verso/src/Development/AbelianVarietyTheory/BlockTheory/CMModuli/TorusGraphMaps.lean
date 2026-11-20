@@ -54,7 +54,7 @@ def PsiGenOn (D : DegPre R) (χ : D.X) (U : Set (Spec (CommRingCat.of R))) : Pro
       (r : Γ(Spec (CommRingCat.of R), V)ˣ), pullU (jK R) V r = res h ((D.psi χ).s j)
 
 /- English proof (translation)
-Introduce `x hx` and use `h x (hU hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma PsiGenOn.mono {D : DegPre R} {χ : D.X} {U U' : Set (Spec (CommRingCat.of R))}
     (h : PsiGenOn D χ U) (hU : U' ⊆ U) : PsiGenOn D χ U' := fun x hx => h x (hU hx)
@@ -104,7 +104,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `H.bar_eq (H.bar a)`. Rewrite `h1` using `[H.bar_eq a, IsCMField.complexConj_apply_apply]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply Subtype.ext

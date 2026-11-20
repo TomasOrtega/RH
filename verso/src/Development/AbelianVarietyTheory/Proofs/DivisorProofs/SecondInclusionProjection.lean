@@ -14,7 +14,7 @@ abbrev prP (M : ℕ) (A : Type) [CommRing A] : P M A ⟶ sp A := pullback.fst _ 
 abbrev lineP (M : ℕ) (A : Type) [CommRing A] : P M A ⟶ ofCat (glCat 1) := pullback.snd _ _ ≫ PGL.line M
 
 /- English proof (translation)
-Use extensionality with `n U x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem comp_trivV (M : ℕ) {E E' : Spc} (f : E ⟶ E') : f ≫ trivV M E' = trivV M E := by
   ext n U x
@@ -24,7 +24,7 @@ def TU (M : ℕ) (p : ∀ {B : Type} [CommRing B], (Fin M → B) → Prop) (B : 
   {v : Um M B // p v.1}
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Rewrite using `[smul_smul, Units.val_mul, mul_comm]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem TU.comp_aux {M : ℕ} {B : Type} [CommRing B] (x y z : Fin M → B) (u u' : Bˣ) (h1 : x = (u : B) • y)
     (h2 : y = (u' : B) • z) : x = ((u' * u : Bˣ) : B) • z := by
@@ -77,7 +77,7 @@ def tuToPgl (M : ℕ) (p : ∀ {B : Type} [CommRing B], (Fin M → B) → Prop)
     exact Subtype.ext (Prod.ext (map_one (Matrix.GeneralLinearGroup.map f.hom)).symm rfl)
 
 /- English proof (translation)
-Use extensionality with `n U x`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tuToPgl_pr (M : ℕ) (p : ∀ {B : Type} [CommRing B], (Fin M → B) → Prop)
     (hp : ∀ {B C : Type} [CommRing B] [CommRing C] (f : B →+* C) (v : Fin M → B), p v → p (f ∘ v)) :
@@ -94,7 +94,7 @@ def toP {M : ℕ} {C : CommRingCat.{0} ⥤ Cat.{0,0}} (ρ : C ⟶ pglCat M) (hρ
 def lastU (N : ℕ) : ∀ {B : Type} [CommRing B], (Fin (N + 1) → B) → Prop := fun v => IsUnit (v (Fin.last N))
 
 /- English proof (translation)
-Introduce `h` and use `h.map f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lastU_map (N : ℕ) {B C : Type} [CommRing B] [CommRing C] (f : B →+* C) (v : Fin (N + 1) → B) :
     lastU N v → lastU N (f ∘ v) := fun h => h.map f
@@ -103,7 +103,7 @@ def headU (N : ℕ) : ∀ {B : Type} [CommRing B], (Fin (N + 1) → B) → Prop 
   fun v => Ideal.span (Set.range fun k : Fin N => v k.castSucc) = ⊤
 
 /- English proof (translation)
-Introduce `h`. Express the relevant statement in the definitionally equal form `Ideal.span (Set.range fun k : Fin N => f (v k.castSucc)) = ⊤`. Rewrite using `[show (fun k : Fin N => f (v k.castSucc)) = f ∘ (fun k : Fin N => v k.castSucc) from rfl, Set.range_comp, ← Ideal.map_span, h, Ideal.map_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem headU_map (N : ℕ) {B C : Type} [CommRing B] [CommRing C] (f : B →+* C) (v : Fin (N + 1) → B) :
     headU N v → headU N (f ∘ v) := by
@@ -115,7 +115,7 @@ theorem headU_map (N : ℕ) {B C : Type} [CommRing B] [CommRing C] (f : B →+* 
 def trivialCondition (M : ℕ) : ∀ {B : Type} [CommRing B], (Fin M → B) → Prop := fun _ => True
 
 /- English proof (translation)
-Introduce `_` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem allU_map (M : ℕ) {B C : Type} [CommRing B] [CommRing C] (f : B →+* C) (v : Fin M → B) :
     trivialCondition M v → trivialCondition M (f ∘ v) := fun _ => trivial
@@ -137,7 +137,7 @@ def headNat (N : ℕ) : tuCat (N + 1) (headU N) (headU_map N) ⟶ tuCat N (trivi
   naturality _ _ _ := rfl
 
 /- English proof (translation)
-Use extensionality with `n U x`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem headNat_pr (N : ℕ) : ofCatMap (headNat N ≫ tuToPgl N (trivialCondition N) (allU_map N)) ≫ PGL.pr N =
     trivV N (ofCat (tuCat (N + 1) (headU N) (headU_map N))) := by

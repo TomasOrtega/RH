@@ -7,9 +7,9 @@ open MvPolynomial Finset GlobalTheory.FlagHook Formalism.DegreeFormula
 namespace GlobalTheory.FlagHook.HookPow
 
 /- English proof (translation)
-Unfold `altCoeff`. Rewrite using `[mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft π) _ _ fun σ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, Pi.mul_apply, Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (π t)) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem altCoeff_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (π : ι → Equiv.Perm (Fin N)) (P : MvPolynomial (ι × Fin N) ℝ) :
@@ -27,9 +27,9 @@ theorem altCoeff_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : �
   rcases Int.units_eq_one_or (Equiv.Perm.sign (π t)) with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `h` using `altCoeff_perm n (Function.update 1 τ π) P`. Rewrite `h` using `[Finset.prod_eq_single τ (by intro b _ hb; simp [Function.update_of_ne hb]) (by simp)]`. Simplify using `only [Function.update_self] at h`. Rewrite using `[← h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t c`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem altCoeff_perm_one {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (τ : ι) (π : Equiv.Perm (Fin N)) (P : MvPolynomial (ι × Fin N) ℝ) :
@@ -46,11 +46,11 @@ theorem altCoeff_perm_one {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n
   · simp [Function.update_of_ne ht]
 
 /- English proof (translation)
-Establish `h1` using `altCoeff_perm_one n τ (Equiv.swap a b) P`. Establish `h2 : (fun c => n τ (Equiv.swap a b c)) = n τ`. Use function extensionality and compare the values at `c`. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h]`. Rewrite using `[h4, h]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, Function.update_eq_self, Equiv.Perm.sign_swap hab]`. Simplify using `at h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem altCoeff_eq_zero {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (τ : ι) (a b : Fin N) (hab : a ≠ b) (h : n τ a = n τ b) (P : MvPolynomial (ι × Fin N) ℝ) :
@@ -68,15 +68,15 @@ theorem altCoeff_eq_zero {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n 
   linarith
 
 /- English proof (translation)
-Establish `key : ∀ σ : ι → Equiv.Perm (Fin N), (pw N τ k * G).coeff (Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => n x.1 (σ x.1 x.2))) = ∑ c : Fin N, if k ≤ n τ c then G.coeff (Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => (Function.update n τ (Function.update (n τ) c (n τ c - k …`. Introduce `σ`. Unfold `pw`. Rewrite using `[Finset.sum_mul, coeff_sum]`. Use `Fintype.sum_equiv (σ τ) _ _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul', one_mul]`. Use `if_congr (by simp [Finsupp.single_le_iff]) ?_ rfl` and prove the remaining obligations. Use `congr 1`. Use extensionality with `⟨t, j⟩`. Distinguish the cases in `ht : t = τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Establish `: σ t j ≠ σ t i` using `fun h => hj ((σ t).injective h)`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Function.update_of_ne this, Finsupp.single_apply, Ne.symm hj]`. Simplify using `[Function.update_of_ne ht, Finsupp.single_apply, Ne.symm ht]`. Unfold `altCoeff`. Repeatedly rewrite using `[key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem altCoeff_pw_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     (τ : ι) (k : ℕ) (G : MvPolynomial (ι × Fin N) ℝ) :
@@ -108,25 +108,25 @@ theorem altCoeff_pw_mul {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `by omega`. Rewrite using `[altCoeff_pw_mul, Finset.sum_eq_single (⟨0, hN⟩ : Fin N)]`. Simplify using `only [if_true]`. Rewrite using `[if_pos (by simp [hookRho]; omega)]`. Establish `h` using `altCoeff_perm_one (Function.update (fun τ' => if τ' = τ then hookRho N k r else rho N) τ (Function.update (hookRho N k r) ⟨0, hN⟩ (hookRho N k r ⟨0, hN⟩ - k))) τ (Fin.cycleRange (⟨r, by omega⟩ : Fin N)) G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Function.update_idem, Function.update_self, Fin.sign_cycleRange]`. Establish `e : (Function.update (fun τ' => if τ' = τ then hookRho N k r else rho N) τ (fun c => Function.update (hookRho N k r) ⟨0, hN⟩ (hookRho N k r ⟨0, hN⟩ - k) (Fin.cycleRange (⟨r, by omega⟩ : Fin N) c))) = fun _ => rho N`. Use function extensionality and compare the values at `t c`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Function.update_self, Function.update_apply]`. Establish `hc` using `c.2`. Break down `lt_trichotomy c (⟨r, by omega⟩ : Fin N) with h1 | h1 | h1` into its components or cases. Establish `h2` using `Fin.coe_cycleRange_of_lt h1`. Establish `h3 : (c : ℕ) < r` using `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.ext_iff, hookRho, rho, h2]`. Apply the tactic sequence `split_ifs <;> first | omega | contradiction`. Establish `h2` using `Fin.coe_cycleRange_of_le h1.le`. Rewrite `h2` using `[if_pos h1]`. Establish `h3 : (c : ℕ) = r` using `congrArg Fin.val h1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.ext_iff, hookRho, rho, h2, if_true, h3]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : r < (c : ℕ)` using `h1`. Simplify using `only [Fin.ext_iff, hookRho, rho, Fin.cycleRange_of_gt h1]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Function.update_of_ne ht, ht]`. Rewrite `h` using `[e, altCoeff_rho]`. Rewrite using `[h, ← mul_assoc]`. Simplify using `[← mul_pow]`. Introduce `c _ hc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_true]`. Use `split_ifs with hkc`. Establish `hc0 : (c : ℕ) ≠ 0` using `fun h => hc (Fin.ext h)`. Establish `hcN` using `c.2`. Distinguish the cases in `hcr : (c : ℕ) ≤ r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hookRho, if_neg hc0, if_pos hcr] at hkc`. Distinguish the cases in `hk1 : k = 1`. Use linear arithmetic over natural numbers and integers. Use `altCoeff_eq_zero _ τ c ⟨c + k - 1, by omega⟩ (by simp [Fin.ext_iff]; omega) ?_ _` and prove the remaining obligations. Rewrite using `[Function.update_self, Function.update_self, Function.update_of_ne (by simp [Fin.ext_iff]; omega)]`.
+Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hookRho]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [hookRho, if_neg hc0, if_neg hcr] at hkc`. Use `altCoeff_eq_zero _ τ c ⟨c + k, by omega⟩ (by simp [Fin.ext_iff]; omega) ?_ _` and prove the remaining obligations. Rewrite using `[Function.update_self, Function.update_self, Function.update_of_ne (by simp [Fin.ext_iff]; omega)]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hookRho]`. Apply the tactic sequence `split_ifs <;> omega`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem altCoeff_hook_pw {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
     (τ : ι) (k r : ℕ) (hr : r < k) (hk : k ≤ N) (G : MvPolynomial (ι × Fin N) ℝ) :
@@ -189,9 +189,9 @@ theorem altCoeff_hook_pw {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
   · simp
 
 /- English proof (translation)
-Unfold `hookFl`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => degFl ι N G)]`. Establish `: (k : ℝ) ≠ 0` using `by positivity`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `r hr`. Rewrite using `[altCoeff_hook_pw τ k r (Finset.mem_range.mp hr) hk, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hookFl_pw_mul' {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι) (k : ℕ)
     (G : MvPolynomial (ι × Fin N) ℝ) (h1 : 1 ≤ k) (hk : k ≤ N) :
@@ -206,7 +206,7 @@ theorem hookFl_pw_mul' {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ :
     simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ τ k G h1 hk _` and use `hookFl_pw_mul' τ k G h1 hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hookFl_pw_mul : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (τ : ι) (k : ℕ)
     (G : MvPolynomial (ι × Fin N) ℝ), 1 ≤ k → k ≤ N → G.IsHomogeneous (dimFl ι N) →

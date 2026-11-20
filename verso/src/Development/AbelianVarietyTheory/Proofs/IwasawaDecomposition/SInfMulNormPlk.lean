@@ -11,7 +11,7 @@ namespace GlobalTheory.FlagEmb.GradedNorm
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `W.toSubring.sum_mem fun σ _ => W.toSubring.mul_mem (intCast_mem W.toSubring _) (W.toSubring.prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {C : Type} [Field C] (W : ValuationSubring C) {k : ℕ} (A : Matrix (Fin k) (Fin k) C)
     (h : ∀ i j, A i j ∈ W) : A.det ∈ W := by
@@ -20,13 +20,13 @@ theorem det_mem {C : Type} [Field C] (W : ValuationSubring C) {k : ℕ} (A : Mat
     W.toSubring.mul_mem (intCast_mem W.toSubring _) (W.toSubring.prod_mem fun i _ => h _ _)
 
 /- English proof (translation)
-Establish `h1 : (Matrix.of fun l l' => c (Fin.castLE hk l) (plE M k q l'))ᵀ = u.submatrix (plE M k q) (Fin.castLE hk) * b.submatrix (Fin.castLE hk) (Fin.castLE hk)`. Use extensionality with `l' l`. Establish `h2` using `congrFun (congrFun hc (plE M k q l')) (Fin.castLE hk l)`. Simplify using `only [transpose_apply, of_apply] at h2 ⊢`. Rewrite using `[h2, mul_apply, mul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hk) (Fin.castLE_injective hk) _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `j hj`. Establish `: b j (Fin.castLE hk l) = 0`. Apply `hb` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hlt`. Establish `hle : (j : ℕ) ≤ l` using `Fin.le_def.mp (not_lt.mp hlt)`. Conclude with `hj ⟨⟨j, lt_of_le_of_lt hle l.2⟩, rfl⟩`. Rewrite using `[this, mul_zero]`. Establish `h3 : (b.submatrix (Fin.castLE hk) (Fin.castLE hk)).BlockTriangular id` using `fun i j hij => hb hij`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `plk`. Rewrite using `[← det_transpose, h1, det_mul, Matrix.det_of_isUpperTriangular h3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem plk_eq {C : Type} [Field C] {M n : ℕ} (c : Fin n → Fin (M + 1) → C)
     (u : Matrix (Fin (M + 1)) (Fin n) C) (b : Matrix (Fin n) (Fin n) C) (hb : b.BlockTriangular id)
@@ -54,9 +54,9 @@ theorem plk_eq {C : Type} [Field C] {M n : ℕ} (c : Fin n → Fin (M + 1) → C
   rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[plk_eq c u b hb hc hk, norm_mul, norm_prod]`. Conclude with `mul_le_of_le_one_left (Finset.prod_nonneg fun _ _ => norm_nonneg _) ((hW _).1 (det_mem W _ fun _ _ => huW _ _))`. Use `le_trans (le_of_eq ?_) (hq ((plE M k).symm (ι ∘ Fin.castLE hk)))` and prove the remaining obligations. Rewrite using `[plk_eq c u b hb hc hk, Equiv.apply_symm_apply, norm_mul, norm_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMt : (u.submatrix (ι ∘ Fin.castLE hk) (Fin.castLE hk)).BlockTriangular OrderDual.toDual` using `fun i j hij => hu0 _ _ hij`. Rewrite using `[Matrix.det_of_isLowerTriangular _ hMt]`. Simplify using `[hu1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_plk_max {C : Type} [NontriviallyNormedField C] (W : ValuationSubring C)
     (hW : ∀ x, x ∈ W ↔ ‖x‖ ≤ 1) {M n : ℕ} (c : Fin n → Fin (M + 1) → C) (ι : Fin n → Fin (M + 1))
@@ -77,11 +77,9 @@ theorem norm_plk_max {C : Type} [NontriviallyNormedField C] (W : ValuationSubrin
     simp [hu1]
 
 /- English proof (translation)
-Proceed by induction on `i using WellFoundedLT.induction with`. Consider the case `ind i ih`. Establish `h1 : y i = (u *ᵥ y) (ι i) - ∑ j ∈ Finset.univ.erase i, u (ι i) j * y j`. Rewrite using `[mulVec, dotProduct, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), hu1]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1]`. Use `W.toSubring.sub_mem (hy _) (W.toSubring.sum_mem fun j hj => ?_)` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hj) with h | h` into its components or cases. Conclude with `W.toSubring.mul_mem (huW _ _) (ih j h)`. Rewrite using `[hu0 _ _ h, zero_mul]`.
-
-Conclude with `W.toSubring.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mulVec {C : Type} [Field C] (W : ValuationSubring C) {m n : ℕ} (ι : Fin n → Fin m)
     (u : Matrix (Fin m) (Fin n) C) (huW : ∀ i j, u i j ∈ W)
@@ -100,23 +98,23 @@ theorem mem_of_mulVec {C : Type} [Field C] (W : ValuationSubring C) {m n : ℕ} 
       exact W.toSubring.zero_mem
 
 /- English proof (translation)
-Introduce `C _ _ M n c i q₀ q₁ hne h₀ h₁`. Set `W : ValuationSubring C` to `(NormedField.valuation (K := C)).valuationSubring`. Establish `hW : ∀ x, x ∈ W ↔ ‖x‖ ≤ 1` using `fun x => by`. Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]`. Conclude with `Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hli : LinearIndependent C (Matrix.of c)ᵀᵀ`. Take `⟨q, hq⟩` from `Function.ne_iff.mp hne`. Establish `h2` using `Matrix.linearIndependent_rows_of_det_ne_zero (A := Matrix.of fun l l' => c l (plE M n q l')) hq`. Conclude with `LinearIndependent.of_comp (LinearMap.funLeft C C (plE M n q)) h2`. Take `⟨ι, u, b, huW, hu0, hu1, hb, hbd, hc⟩` from `GlobalTheory.exists_integral_pivot_decomposition C W _ _ _ hli`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : ∀ cf : Fin n → C, ∑ j, cf j • c j = u *ᵥ (b *ᵥ cf)` using `fun cf => by`. Rewrite using `[mulVec_mulVec, ← hc]`. Use function extensionality and compare the values at `s`. Simplify using `[mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hdiag : ∀ cf : Fin n → C, (∀ k, i < k → cf k = 0) → (b *ᵥ cf) i = b i i * cf i` using `fun cf hcf => by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hb h, zero_mul]`. Rewrite using `[hcf j h, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbdet : IsUnit b.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hb]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun i _ => hbd i).isUnit`. Establish `hleast : IsLeast {r : ℝ | ∃ cf : Fin n → C, cf i ≠ 0 ∧ (∀ k, i < k → cf k = 0) ∧ (∀ s, ‖(∑ j, cf j • c j) s‖ ≤ 1) ∧ r = ‖cf i‖⁻¹} ‖b i i‖`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := b.invertibleOfIsUnitDet hbdet`. Establish `hinv : (b⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hb`. Establish `hz : ∀ k, i < k → (b⁻¹ *ᵥ Pi.single i 1 : Fin n → C) k = 0` using `fun k hk => by`. Rewrite using `[mulVec_single_one]`. Conclude with `hinv hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbb : b *ᵥ (b⁻¹ *ᵥ Pi.single i 1) = Pi.single i 1`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hbdet, one_mulVec]`. Establish `h1` using `hdiag _ hz`. Rewrite `h1` using `[hbb, Pi.single_eq_same]`. Use `⟨b⁻¹ *ᵥ Pi.single i 1, right_ne_zero_of_mul (h1 ▸ one_ne_zero), hz, fun s => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hsum, hbb, mulVec_single_one]`. Conclude with `(hW _).1 (huW _ _)`. Rewrite using `[eq_inv_of_mul_eq_one_left h1.symm, norm_inv]`. Introduce and unpack `r ⟨cf, hcf, hz, hint, rfl⟩`. Establish `h1` using `(hW _).1 (mem_of_mulVec W ι u huW hu0 hu1 (b *ᵥ cf) (fun s => (hW _).2 (hsum cf ▸ hint s)) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[hdiag cf hz, norm_mul]`. Rewrite using `[← one_div, le_div_iff₀ (norm_pos_iff.2 hcf)]`. Conclude with `h1`. Rewrite using `[hleast.csInf_eq, norm_plk_max W hW c ι u b huW hu0 hu1 hb hc _ q₀ h₀, norm_plk_max W hW c ι u b huW hu0 hu1 hb hc _ q₁ h₁, Fin.prod_univ_castSucc, mul_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sInf_mul_norm_plk : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (M n : ℕ) (c : Fin n → Fin (M + 1) → C) (i : Fin n) (q₀ : Fin (plN M i + 1)) (q₁ : Fin (plN M (i + 1) + 1)), plk c id ≠ 0 → (∀ q, ‖plk c (Fin.castLE i.2.le) q‖ ≤ ‖plk c (Fin.castLE i.2.le) q₀‖) → (∀ q, ‖plk c (Fin.castLE (Nat.succ_le_of_lt i.2)) q‖ ≤ ‖plk c (Fin.castLE (Nat.succ_le_of_lt i.2)) q₁‖) → sInf {r : ℝ | ∃ cf : Fin n → C, cf i ≠ 0 ∧ (∀ k, i < k → cf k = 0) ∧ (∀ s, ‖(∑ j, cf j • c j) s‖ ≤ 1) ∧ r = ‖cf i‖⁻¹} * ‖plk c (Fin.castLE i.2.le) q₀‖ = ‖plk c (Fin.castLE (Nat.succ_le_of_lt i.2)) q₁‖ := by
   intro C _ _ M n c i q₀ q₁ hne h₀ h₁

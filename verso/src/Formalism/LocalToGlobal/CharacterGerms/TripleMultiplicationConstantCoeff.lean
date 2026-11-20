@@ -17,14 +17,14 @@ variable {C : Type} [Field C] [CharZero C] {dd : ℕ} {V : VF C} {O : Type} [Com
 abbrev p3 (k : Fin 3) : Pt C 3 dd := pt C (n := 3) dd k
 
 /- English proof (translation)
-Introduce `j`. Simplify using `[p3, pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem z0p3 (k : Fin 3) : ∀ j, constantCoeff ((p3 k : Pt C 3 dd) j) = 0 := by
   intro j
   simp [p3, pt]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 3 × Fin dd => a p.1 p.2) (fun p => ha p.1 p.2) f q, Fintype.sum_prod_type, Fin.sum_univ_three]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_eval_triple {n : ℕ} {a : Fin 3 → Pt C n dd} (ha : Z0 a) (f : PS C 3 dd) (q : Fin n × Fin dd) :
     pderiv C q (ev a f) = ∑ j, ev a (pderiv C ((0 : Fin 3), j) f) * pderiv C q (a 0 j) +
@@ -35,11 +35,9 @@ theorem pderiv_eval_triple {n : ℕ} {a : Fin 3 → Pt C n dd} (ha : Z0 a) (f : 
     Fintype.sum_prod_type, Fin.sum_univ_three]
 
 /- English proof (translation)
-Establish `hz : Z0 (![p3 0, B] : Fin 2 → Pt C 3 dd)` using `fun k j => by fin_cases k`. Conclude with `z0p3 0 j`. Conclude with `hB j`. Rewrite using `[pderiv_eval_pair hz]`. Use `(congrArg₂ (· + ·) ?_ (Finset.sum_eq_zero fun j _ => ?_)).trans (add_zero _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by show _ * pderiv C _ (pt C (n := 3) dd 0 j) = 0`. Rewrite using `[LiftedCoordinateEvaluation.pderiv_pt_same, if_neg hj, mul_zero]) (fun h => absurd (Finset.mem_univ i) h)]`. Use `show _ * pderiv C _ (pt C (n := 3) dd 0 i) = _`. Rewrite using `[LiftedCoordinateEvaluation.pderiv_pt_same, if_pos rfl, mul_one]`. Use `show _ * pderiv C _ (B j) = 0`.
-
-Rewrite using `[hd j, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_ev_keep {f : PS C 2 dd} {B : Pt C 3 dd} (hB : ∀ j, constantCoeff (B j) = 0) (i : Fin dd)
     (hd : ∀ j, pderiv C ((0 : Fin 3), i) (B j) = 0) :
@@ -59,7 +57,7 @@ theorem d_ev_keep {f : PS C 2 dd} {B : Pt C 3 dd} (hB : ∀ j, constantCoeff (B 
     rw [hd j, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `zero => rfl`. Consider the case `succ L ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, d_ev_keep hB i hd]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_ev_keep_iter {f : PS C 2 dd} {B : Pt C 3 dd} (hB : ∀ j, constantCoeff (B j) = 0) (i : Fin dd)
     (hd : ∀ j, pderiv C ((0 : Fin 3), i) (B j) = 0) (L : ℕ) :
@@ -73,21 +71,19 @@ theorem d_ev_keep_iter {f : PS C 2 dd} {B : Pt C 3 dd} (hB : ∀ j, constantCoef
 def SS (G : FGLaw C dd) : Pt C 3 dd := addOf G.F (p3 1) (p3 2)
 
 /- English proof (translation)
-The claim follows from `const_ev (z0_pp 1 2) (G.const j)`.
+A detailed English derivation is pending.
 -/
 theorem triple_sum_constantCoeff (G : FGLaw C dd) (j : Fin dd) : constantCoeff (SS G j) = 0 :=
   const_ev (z0_pp 1 2) (G.const j)
 
 /- English proof (translation)
-The claim follows from `intS_ev (z0_pp 1 2) (fun k m => by fin_cases k <;> exact intS_X _) (hF j)`.
+A detailed English derivation is pending.
 -/
 theorem SS_int (G : FGLaw C dd) (hF : ∀ i, IntS V (G.F i)) (j : Fin dd) : IntS V (SS G j) :=
   intS_ev (z0_pp 1 2) (fun k m => by fin_cases k <;> exact intS_X _) (hF j)
 
 /- English proof (translation)
-Use `show pderiv C ((0 : Fin 3), i) (ev (n := 3) ![p3 1, p3 2] (G.F j)) = 0`. Rewrite using `[pderiv_eval_pair (z0_pp 1 2)]`. Use `(congrArg₂ (· + ·) (Finset.sum_eq_zero fun m _ => ?_) (Finset.sum_eq_zero fun m _ => ?_)).trans (add_zero 0)` and prove the remaining obligations. Use `show _ * pderiv C _ (pt C (n := 3) dd 1 m) = 0`. Rewrite using `[LiftedCoordinateEvaluation.pderiv_pt_ne _ _ _ (by decide : (1 : Fin 3) ≠ 0), mul_zero]`.
-
-Use `show _ * pderiv C _ (pt C (n := 3) dd 2 m) = 0`. Rewrite using `[LiftedCoordinateEvaluation.pderiv_pt_ne _ _ _ (by decide : (2 : Fin 3) ≠ 0), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SS_d (G : FGLaw C dd) (i j : Fin dd) : pderiv C ((0 : Fin 3), i) (SS G j) = 0 := by
   show pderiv C ((0 : Fin 3), i) (ev (n := 3) ![p3 1, p3 2] (G.F j)) = 0
@@ -100,7 +96,7 @@ theorem SS_d (G : FGLaw C dd) (i j : Fin dd) : pderiv C ((0 : Fin 3), i) (SS G j
     rw [LiftedCoordinateEvaluation.pderiv_pt_ne _ _ _ (by decide : (2 : Fin 3) ≠ 0), mul_zero]
 
 /- English proof (translation)
-Simplify using `[p3, pt, MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff, Ne.symm hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem triple_point_pderiv_first_zero (k : Fin 3) (hk : k ≠ 0) (i j : Fin dd) : pderiv C ((0 : Fin 3), i) ((p3 k : Pt C 3 dd) j) = 0 := by
   simp [p3, pt, MvPowerSeries.pderiv_X, Pi.single_apply, Prod.ext_iff, Ne.symm hk]
@@ -108,13 +104,13 @@ theorem triple_point_pderiv_first_zero (k : Fin 3) (hk : k ≠ 0) (i j : Fin dd)
 def m3 (G : FGLaw C dd) (n : ℕ) : Pt C 3 dd := fun k => ev ![(p3 0 : Pt C 3 dd)] (mulL G.F n k)
 
 /- English proof (translation)
-The claim follows from `const_ev (z0_1 _ (z0p3 0)) (multiplication_constantCoeff_zero G n k)`.
+A detailed English derivation is pending.
 -/
 theorem triple_multiplication_constantCoeff (G : FGLaw C dd) (n : ℕ) (k : Fin dd) : constantCoeff (m3 G n k) = 0 :=
   const_ev (z0_1 _ (z0p3 0)) (multiplication_constantCoeff_zero G n k)
 
 /- English proof (translation)
-The claim follows from `intS_ev (z0_1 _ (z0p3 0)) (fun k' m => by fin_cases k'; exact intS_X _) (mulL_int G hF n k)`.
+A detailed English derivation is pending.
 -/
 theorem triple_multiplication_integral (G : FGLaw C dd) (hF : ∀ i, IntS V (G.F i)) (n : ℕ) (k : Fin dd) : IntS V (m3 G n k) :=
   intS_ev (z0_1 _ (z0p3 0)) (fun k' m => by fin_cases k'; exact intS_X _) (mulL_int G hF n k)
@@ -124,7 +120,7 @@ def UU (Y : FBChart C V O dd) (w : Pt C 3 dd) : PS C 3 dd := ev (n := 3) ![p3 0,
 def QQ (Y : FBChart C V O dd) : PS C 3 dd := ev (n := 3) ![m3 Y.B.G V.l, p3 1, p3 2] Y.B.ph2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [ex_zero]`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, ex_add _ _ (by simp [hf]) hf, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_nsmul {σ : Type} (f : MvPowerSeries σ C) (hf : constantCoeff f = 0) (n : ℕ) :
     ex (n • f) = ex f ^ n := by
@@ -134,11 +130,9 @@ theorem ex_nsmul {σ : Type} (f : MvPowerSeries σ C) (hf : constantCoeff f = 0)
     rw [succ_nsmul, ex_add _ _ (by simp [hf]) hf, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h0` using `Y.gauge.ax0`. Establish `hz : Z0 (![(0 : Pt C 1 dd), pt C (n` using `1) dd 0] : Fin 2 → Pt C 1 dd) := fun k j => by fin_cases k`. Conclude with `map_zero _`. Conclude with `z0_pt 0 j`. Establish `h1` using `congrArg (ev ![W]) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[ev_ev hz (z0_1 W hW), ev_zero (z0_1 W hW)]`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`.
-
-Conclude with `(ev_zero (z0_1 W hW)).symm`. Conclude with `(ev_X (z0_1 W hW) 0 j).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem height_at_zero_first (Y : FBChart C V O dd) {n : ℕ} (W : Pt C n dd) (hW : ∀ j, constantCoeff (W j) = 0) :
     ev (n := n) ![0, W] Y.h = 0 := by
@@ -157,9 +151,9 @@ theorem height_at_zero_first (Y : FBChart C V O dd) {n : ℕ} (W : Pt C n dd) (h
   · exact (ev_X (z0_1 W hW) 0 j).symm
 
 /- English proof (translation)
-Unfold `m3`. Rewrite using `[ev_ev (z0_1 _ (z0p3 0)) (constant_zero_restrict_points 2)]`. Establish `e : (fun k m => ev (rz (C` using `C) (dd := dd) 2) ((![(p3 0 : Pt C 3 dd)] : Fin 1 → Pt C 3 dd) k m)) = ![(0 : Pt C 2 dd)] := by`. Use function extensionality and compare the values at `k m`. Use `fin_cases k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ev_X (constant_zero_restrict_points 2) 0 m`. Rewrite using `[e, ev_zero_pt, multiplication_constantCoeff_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem restrict_triple_multiplication (G : FGLaw C dd) (n : ℕ) (j : Fin dd) : ev (rz 2) (m3 G n j) = 0 := by
   unfold m3
@@ -172,7 +166,7 @@ theorem restrict_triple_multiplication (G : FGLaw C dd) (n : ℕ) (j : Fin dd) :
   rw [e, ev_zero_pt, multiplication_constantCoeff_zero, map_zero]
 
 /- English proof (translation)
-Introduce `i j`. Use `fin_cases i`. Conclude with `hP j`. Conclude with `hw j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem constant_zero_two_points {w : Pt C 3 dd} (P : Pt C 3 dd) (hP : ∀ j, constantCoeff (P j) = 0)
     (hw : ∀ j, constantCoeff (w j) = 0) : Z0 (![P, w] : Fin 2 → Pt C 3 dd) := by
@@ -182,20 +176,18 @@ theorem constant_zero_two_points {w : Pt C 3 dd} (P : Pt C 3 dd) (hP : ∀ j, co
   · exact hw j
 
 /- English proof (translation)
-Rewrite using `[ev_eq_alg ha, map_smul, ← ev_eq_alg ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_smulC {m n : ℕ} {a : Fin m → Pt C n dd} (ha : Z0 a) (c : C) (f : PS C m dd) :
     ev a (c • f) = c • ev a f := by
   rw [ev_eq_alg ha, map_smul, ← ev_eq_alg ha]
 
 /- English proof (translation)
-Establish `hz` using `constant_zero_two_points (p3 0) (z0p3 0) hw`. Establish `hE0 : constantCoeff (gg Y V.l - (V.l : C) • Y.h) = 0`. Rewrite using `[map_sub, show (V.l : C) • Y.h = ((V.l : ℕ) : PS C 2 dd) * Y.h by`. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul], map_mul, h_const, mul_zero, sub_zero]`. Conclude with `height_multiple_constantCoeff Y V.l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `UU`. Rewrite using `[show Y.u1 = ex (gg Y V.l - (V.l : C) • Y.h) from rfl, ev_ex hz _ hE0, ev_sub hz, ev_smulC hz]`. Use `congr 2`. Unfold `gg`. Rewrite using `[ev_ev (constant_zero_double_multiplication_pair Y V.l) hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Use `show ev ![p3 0, w] (ev ![pt C (n := 2) dd 0] (mulL Y.B.G.F V.l j)) = m3 Y.B.G V.l j`. Rewrite using `[ev_ev (z0_1 _ (fun j => z0_pt 0 j)) hz]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `k' m`. Use `fin_cases k'`. Conclude with `ev_X hz 0 m`. Conclude with `ev_X hz 1 j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UU_eq (Y : FBChart C V O dd) (w : Pt C 3 dd) (hw : ∀ j, constantCoeff (w j) = 0) :
     UU Y w = ex (ev (n := 3) ![m3 Y.B.G V.l, w] Y.h - (V.l : C) • ev (n := 3) ![p3 0, w] Y.h) := by
@@ -221,7 +213,7 @@ theorem UU_eq (Y : FBChart C V O dd) (w : Pt C 3 dd) (hw : ∀ j, constantCoeff 
   · exact ev_X hz 1 j
 
 /- English proof (translation)
-Use `Y.gauge.ph2` as an intermediate fact. Rewrite `this` using `[toK_self, FK_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hph2 (Y : FBChart C V O dd) : Y.B.ph2 = ex (ev (n := 3) ![p3 0, p3 1] Y.h + ev (n := 3) ![p3 0, p3 2] Y.h -
     ev (n := 3) ![p3 0, SS Y.B.G] Y.h) := by
@@ -229,26 +221,20 @@ theorem hph2 (Y : FBChart C V O dd) : Y.B.ph2 = ex (ev (n := 3) ![p3 0, p3 1] Y.
   rwa [toK_self, FK_self] at this
 
 /- English proof (translation)
-The claim follows from `const_ev (constant_zero_two_points P hP hw) (h_const Y)`.
+A detailed English derivation is pending.
 -/
 theorem eval_height_constantCoeff (Y : FBChart C V O dd) {P w : Pt C 3 dd} (hP : ∀ j, constantCoeff (P j) = 0)
     (hw : ∀ j, constantCoeff (w j) = 0) : constantCoeff (ev (n := 3) ![P, w] Y.h) = 0 :=
   const_ev (constant_zero_two_points P hP hw) (h_const Y)
 
 /- English proof (translation)
-Establish `ha : Z0 (![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd)` using `fun k j => by fin_cases k`. Conclude with `triple_multiplication_constantCoeff _ _ j`. Conclude with `z0p3 1 j`. Conclude with `z0p3 2 j`. Establish `hE0 : constantCoeff (ev (n` using `3) ![p3 0, p3 1] Y.h + ev (n := 3) ![p3 0, p3 2] Y.h - ev (n := 3) ![p3 0, SS Y.B.G] Y.h) = 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_sub, map_add, eval_height_constantCoeff Y (z0p3 0) (z0p3 1), eval_height_constantCoeff Y (z0p3 0) (z0p3 2), eval_height_constantCoeff Y (z0p3 0) (triple_sum_constantCoeff _)]`. Simplify using the standard rewrite rules. Unfold `QQ`. Rewrite using `[hph2, ev_ex ha _ hE0, ev_sub ha, ev_add ha, ev_ev (constant_zero_two_points _ (z0p3 0) (z0p3 1)) ha, ev_ev (constant_zero_two_points _ (z0p3 0) (z0p3 2)) ha, ev_ev (constant_zero_two_points _ (z0p3 0) (triple_sum_constantCoeff _)) ha]`. Establish `e1 : (fun k j => ev ![m3 Y.B.G V.l, p3 1, p3 2] ((![p3 0, p3 1] : Fin 2 → Pt C 3 dd) k j)) = ![m3 Y.B.G V.l, p3 1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X ha 0 j`. Conclude with `ev_X ha 1 j`. Establish `e2 : (fun k j => ev ![m3 Y.B.G V.l, p3 1, p3 2] ((![p3 0, p3 2] : Fin 2 → Pt C 3 dd) k j)) = ![m3 Y.B.G V.l, p3 2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X ha 0 j`. Conclude with `ev_X ha 2 j`. Establish `e3 : (fun k j => ev ![m3 Y.B.G V.l, p3 1, p3 2] ((![p3 0, SS Y.B.G] : Fin 2 → Pt C 3 dd) k j)) = ![m3 Y.B.G V.l, SS Y.B.G]`.
-
-Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X ha 0 j`. Use `show ev ![m3 Y.B.G V.l, p3 1, p3 2] (ev (n := 3) ![p3 1, p3 2] (Y.B.G.F j)) = SS Y.B.G j`. Rewrite using `[ev_ev (z0_pp 1 2) ha]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `k' m`. Use `fin_cases k'`. Conclude with `ev_X ha 1 m`. Conclude with `ev_X ha 2 m`.
-
-Rewrite using `[e1, e2, e3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QQ_eq (Y : FBChart C V O dd) : QQ Y = ex (ev (n := 3) ![m3 Y.B.G V.l, p3 1] Y.h +
     ev (n := 3) ![m3 Y.B.G V.l, p3 2] Y.h - ev (n := 3) ![m3 Y.B.G V.l, SS Y.B.G] Y.h) := by
@@ -287,15 +273,13 @@ theorem QQ_eq (Y : FBChart C V O dd) : QQ Y = ex (ev (n := 3) ![m3 Y.B.G V.l, p3
   rw [e1, e2, e3]
 
 /- English proof (translation)
-Establish `hm` using `triple_multiplication_constantCoeff Y.B.G V.l`. Use `set a := ev (n := 3) ![m3 Y.B.G V.l, SS Y.B.G] Y.h with ha`. Use `set b1 := ev (n := 3) ![m3 Y.B.G V.l, p3 1] Y.h with hb1`. Use `set b2 := ev (n := 3) ![m3 Y.B.G V.l, p3 2] Y.h with hb2`. Use `set c0 := ev (n := 3) ![p3 0, SS Y.B.G] Y.h with hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c1 := ev (n := 3) ![p3 0, p3 1] Y.h with hc1`. Use `set c2 := ev (n := 3) ![p3 0, p3 2] Y.h with hc2`. Establish `za : constantCoeff a = 0` using `eval_height_constantCoeff Y hm (triple_sum_constantCoeff _)`. Establish `zb1 : constantCoeff b1 = 0` using `eval_height_constantCoeff Y hm (z0p3 1)`. Establish `zb2 : constantCoeff b2 = 0` using `eval_height_constantCoeff Y hm (z0p3 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `zc0 : constantCoeff c0 = 0` using `eval_height_constantCoeff Y (z0p3 0) (triple_sum_constantCoeff _)`. Establish `zc1 : constantCoeff c1 = 0` using `eval_height_constantCoeff Y (z0p3 0) (z0p3 1)`. Establish `zc2 : constantCoeff c2 = 0` using `eval_height_constantCoeff Y (z0p3 0) (z0p3 2)`. Establish `zs : ∀ (c : C) (f : PS C 3 dd), constantCoeff f = 0 → constantCoeff (c • f) = 0` using `fun c f hf => by`. Rewrite using `[show c • f = MvPowerSeries.C c * f from (MvPowerSeries.smul_eq_C_mul f c), map_mul, hf, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `zE : constantCoeff (c1 + c2 - c0) = 0` using `by rw [map_sub, map_add, zc1, zc2, zc0]; simp`. Rewrite using `[UU_eq _ _ (triple_sum_constantCoeff _), UU_eq _ _ (z0p3 1), UU_eq _ _ (z0p3 2), QQ_eq, hph2, ← hc0, ← hc1, ← hc2, ← ha, ← hb1, ← hb2, ← ex_nsmul _ zE V.l, ← ex_add _ _ (by rw [map_sub, za, zs _ _ zc0, sub_zero]) (by rw [map_sub, map_add, zb1, zb2, za]; simp), ← ex_add _ _ (by rw …`. Use `congr 1`. Rewrite using `[Nat.cast_smul_eq_nsmul C, Nat.cast_smul_eq_nsmul C, Nat.cast_smul_eq_nsmul C]`. Simplify using `only [nsmul_sub, nsmul_add]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem ident (Y : FBChart C V O dd) :
     UU Y (SS Y.B.G) * QQ Y = UU Y (p3 1) * UU Y (p3 2) * Y.B.ph2 ^ V.l := by

@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β I R _ ω Z C u φ DZ BD hopen hj hsab hcov hcomap hphi`. Introduce `W _ _ _ hW ϖ hϖ χ t m P hgen be hbe hmon`. Take `⟨i, hi⟩` from `hcov (χ (IsLocalRing.closedPoint W))`. Establish `hrange : Set.range χ ⊆ Set.range (u i)`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hsp : χ x ⤳ χ (IsLocalRing.closedPoint W)` using `(IsLocalRing.specializes_closedPoint x).map χ.continuous`. Conclude with `hsp.mem_open (u i).isOpenEmbedding.isOpen_range hi`. Take `⟨χ', rfl⟩ : ∃ χ', χ' ≫ u i = χ` from `⟨IsOpenImmersion.lift (u i) χ hrange, IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨mi⟩` from `hsab i`. Take `⟨m', -⟩` from `(GlobalTheory.PullCalcTest.existsUnique_cancel mi m).exists`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen' : Set.range (Out.jK W ≫ χ') ⊆ Set.range (C i).j`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, hz⟩` from `hgen ⟨y, rfl⟩`. Use `⟨z, (u i).isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hj i, hz]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Scheme.Hom.comp_apply]`. Take `⟨n, hn, hid⟩` from `hphi i W hW ϖ hϖ χ' t m' P hgen' be hbe hmon`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← idlAlong_comap, hcomap i, hid]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiDiv_of_openCover : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {I : Type} {R : I → Type} [∀ i, CommRing (R i)] {ω : ∀ i, R i →+* c.F} (Z : Model Xo c β) (C : ∀ i, Model Xo c (ω i)) (u : ∀ i, (C i).X ⟶ Z.X) (φ : InvFun (𝓞 E)) (DZ : EffCartierData Z.X) (BD : ∀ i, EffCartierData (C i).X), (∀ i, IsOpenImmersion (u i)) → (∀ i, (C i).j ≫ u i = Z.j) → (∀ i, Nonempty (SABMap (C i).t Z.t (u i))) → (∀ x : Z.X, ∃ i, x ∈ Set.range (u i)) → (∀ i, DZ.idealSheaf.comap (u i) = (BD i).idealSheaf) → (∀ i, IsPhiDiv φ (C i) (BD i)) → IsPhiDiv φ Z DZ := by
   intro E _ _ _ H D l Xo c O _ β I R _ ω Z C u φ DZ BD hopen hj hsab hcov hcomap hphi

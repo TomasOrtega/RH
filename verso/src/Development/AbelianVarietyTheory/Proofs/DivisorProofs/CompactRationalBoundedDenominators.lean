@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.DenAway.den_bounded_of_isCompact) | (exact GlobalTheory.DenAway.den_bounded_of_isCompact) | (intros; apply GlobalTheory.DenAway.den_bounded_of_isCompact <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.compact_rational_bounded_denominators : ∀ (p : ℕ) [Fact p.Prime] (Ω : Set (AfP p)), IsCompact Ω → ∃ M : ℕ, 0 < M ∧ ∀ q : ℚ, algebraMap ℚ (AfP p) q ∈ Ω → ∃ (k : ℤ) (e : ℕ), q * ((M : ℚ) * (p : ℚ) ^ e) = k := by
   first | (exact @GlobalTheory.DenAway.den_bounded_of_isCompact) | (exact GlobalTheory.DenAway.den_bounded_of_isCompact) | (intros; apply GlobalTheory.DenAway.den_bounded_of_isCompact <;> assumption)

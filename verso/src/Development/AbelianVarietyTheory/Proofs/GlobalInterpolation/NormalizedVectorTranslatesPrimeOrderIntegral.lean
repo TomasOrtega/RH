@@ -18,9 +18,9 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.MomN
 
 /- English proof (translation)
-Establish `hH : ContDiff ℂ ⊤ fun z : VC D N N' => Hf D T z t`. Unfold `Hf`. Use `ContDiff.div_const ?_ _` and prove the remaining obligations. Use `ContDiff.sum fun τ _ => ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Use `ContDiff.mul ?_ contDiff_const` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_prop`. Unfold `U`. Use `ContDiff.mul (hG.comp (contDiff_id.add contDiff_const)) ?_` and prove the remaining obligations. Conclude with `ContDiff.cexp ((contDiff_const.mul hH).sub contDiff_const)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_U {D : D7} {N N' : ℕ} (T : Tor D) (t : VC D N N') {G : VC D N N' → ℂ} (hG : ContDiff ℂ ⊤ G) :
     ContDiff ℂ ⊤ (U D T t G) := by
@@ -35,19 +35,19 @@ theorem contDiff_U {D : D7} {N N' : ℕ} (T : Tor D) (t : VC D N N') {G : VC D N
   exact ContDiff.cexp ((contDiff_const.mul hH).sub contDiff_const)
 
 /- English proof (translation)
-Introduce `hEq D cc δ B hcc hδ q _ hq2 hsplit hcop ι δ₀ θ Ω hPer χ hχ N N' L L' hA t ht`. Use `letI := D.host.cmStar`. Take `⟨γ, γ', M, M', hAM, hE, hE', rfl, rfl⟩` from `GlobalTheory.T.weakApproximation_unitaryLattices_splitPrime D q hq2 hsplit N N' L L' hA`. Take `⟨hN, hN', hSM, hSM'⟩` from `id hAM`. Establish `hcov : pull D B.tor (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (B.eNat χ N N' M M') = B.eNat χ N N' (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) M) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) M')` using `(hEq D cc δ B χ hcc hδ hχ).1 N N' ⟨M, hSM⟩ ⟨M', hSM'⟩ hN hN' γ γ'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, hU⟩` from `GlobalTheory.T.unitaryPairPullback_lattices_translates D cc δ N N' γ γ' M M'`. Establish `ht' : TorsPrime D q (La D B.tor M M') (g t)`. Take `⟨n, hn, hc, hm⟩` from `ht`. Use `⟨n, hn, hc, ?_⟩` and prove the remaining obligations. Use `hg _ hm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_nsmul]`. Then use the resulting hypothesis. Set `lam : Qbar →+* ℂ_[q]` to `(ι : ℂ →+* ℂ_[q]).comp (algebraMap Qbar ℂ)`. Take `⟨m, c, s, hc, hs, heq⟩` from `GlobalTheory.T.translate_normalized_vector_integral_comb_tensor_power D cc δ B hcc hδ χ hχ q lam N N' M M' hAM hE hE' (g t) ht'`. Establish `hzero : ∀ k, LatInt ι (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (U D B.tor (s k) (B.thZero N N'))` using `fun k => GlobalTheory.T.cm_base_theta_tensor_power_translates_integral D cc δ B hcc hδ q hq2 hsplit hcop ι δ₀ θ Ω hPer N N' (s k) (hs k)`. Establish `hd : ContDiff ℂ ⊤ (B.thZero N N')` using `AnalyticOnNhd.contDiff (B.thZeroMem (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) N N').1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ k, ContDiff ℂ ⊤ (U D B.tor (s k) (B.thZero N N'))` using `fun k => contDiff_U _ _ hd`. Establish `hcn : ∀ k, ‖ι (c k)‖ ≤ 1`. Introduce `k`. Take `⟨h1, h2⟩` from `hc k`. Establish `e : lamC lam (c k) = ι (c k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `lamC`. Rewrite using `[dif_pos h1]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `(GlobalTheory.T.latticeJetsAreBoundedMoments_prod_and_sum q ι (VC D N N') (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))).2 (Fin m) Finset.univ c (fun k => U D B.tor (s k) (B.thZero N N')) (fun k _ => hsm k) (fun k _ => hcn k) (fun k _ => h …`. Establish `hGs : ContDiff ℂ ⊤ fun z => ∑ k, c k * U D B.tor (s k) (B.thZero N N') z` using `ContDiff.sum fun k _ => contDiff_const.mul (hsm k)`. Take `⟨a, ha, hsM, hMs⟩` from `hE`. Take `⟨b, hb, hsM', hMs'⟩` from `hE'`. Establish `hpull` using `GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι (VC D N N') (VC D N N') (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (La D B.tor (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) M) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N' …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcov, show U D B.tor t (pull D B.tor (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (B.eNat χ N N' M M')) = fun z => U D B.tor (g t) (B.eNat χ N N' M M') (g z) from hU t _, heq]`. Conclude with `hpull`.
+A detailed English derivation is pending.
 -/
 theorem transPrime_int : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → B.EqP χ) → ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (q : ℕ) [Fact q.Prime], q ≠ 2 → jacobiSym (-(D.host.d : ℤ)) q = 1 → Nat.Coprime (Ideal.absNorm cc) q → ∀ (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]), Per D.host.d ι δ₀ θ Ω → ∀ χ : IdE D → ℂ, IsChi D χ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → ∀ t : VC D N N', TorsPrime D q (La D B.tor L L') t → LatInt ι (Ω / ι δ₀) (La D B.tor L L') (U D B.tor t (B.eNat χ N N' L L')) := by
   intro hEq D cc δ B hcc hδ q _ hq2 hsplit hcop ι δ₀ θ Ω hPer χ hχ N N' L L' hA t ht

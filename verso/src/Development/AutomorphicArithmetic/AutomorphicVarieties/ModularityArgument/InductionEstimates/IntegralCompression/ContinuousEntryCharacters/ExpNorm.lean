@@ -7,19 +7,17 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Establish `hm : Monotone ((fun i => -ν i) ∘ Tuple.sort (fun i => -ν i))` using `Tuple.monotone_sort _`. Take `⟨τ, hτ⟩ : ∃ τ : Equiv.Perm (Fin (2 + 2)), Monotone ((fun i => -ν i) ∘ τ)` from `⟨_, hm⟩`. Take `⟨s, hs⟩ : ∃ s : Equiv.Perm (Fin (2 + 2)), s = τ * π⁻¹` from `⟨_, rfl⟩`. Establish `hanti : Antitone ((fun i => ν (s i)) ∘ π)`. Introduce `a b hab`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hτ hab` as an intermediate fact. Simplify using `only [Function.comp, neg_le_neg_iff] at this`. Simplify `this` using `[hs, Equiv.Perm.mul_apply]`. Establish `h1` using `h s⁻¹ (fun i => ν (s i)) hanti`. Establish `h2 : ∑ i, ν i * ν (s (s⁻¹ i)) = ∑ i, ν i ^ 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[sq]`. Rewrite `h1` using `[h2]`. Establish `h3 : ∑ i, ν (s i) ^ 2 = ∑ i, ν i ^ 2` using `Equiv.sum_comp s fun i => ν i ^ 2`. Establish `h4` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ μ fun i => ν (s i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h3]`. Establish `hA : 0 ≤ ∑ i, ν i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Establish `hB : 0 ≤ ∑ i, μ i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Take `⟨A, hAe⟩ : ∃ A, A = ∑ i, ν i ^ 2` from `⟨_, rfl⟩`. Take `⟨B, hBe⟩ : ∃ B, B = ∑ i, μ i ^ 2` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hCe⟩ : ∃ C, C = ∑ i, μ i * ν (s i)` from `⟨_, rfl⟩`. Rewrite `h1` using `[← hAe, ← hCe]`. Rewrite `h4` using `[← hAe, ← hBe, ← hCe]`. Rewrite `hA` using `[← hAe]`. Rewrite `hB` using `[← hBe]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hAe, ← hBe]`. Break down `hA.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `hB`. Establish `h5 : A * A ≤ B * A` using `by nlinarith`.
-
-Conclude with `le_of_mul_le_mul_right h5 h0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma sq_sum_le_of_dom (π : Equiv.Perm (Fin (2 + 2))) (μ ν : Fin (2 + 2) → ℤ)
     (h : ∀ (w : Equiv.Perm (Fin (2 + 2))) (y : Fin (2 + 2) → ℤ), Antitone (y ∘ π) →
@@ -57,9 +55,9 @@ private lemma sq_sum_le_of_dom (π : Equiv.Perm (Fin (2 + 2))) (μ ν : Fin (2 +
     exact le_of_mul_le_mul_right h5 h0
 
 /- English proof (translation)
-Introduce `π ψ μ h`. Take `⟨J, hJ, j₀, a, b, ν, hc, he, ha, hb, hν, hw, hg, hg'⟩` from `h`. Use `⟨J, hJ, j₀, a, b, ν, hc, he, ha, hb, hν, hw, fun j => sq_sum_le_of_dom π μ (ν j) (hg j), ?_⟩` and prove the remaining obligations. Introduce `j hj hEq`. Use `hg' j hj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hEq]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.expNorm :
     ∀ π ψ μ, OExp π ψ μ → WExp ψ μ := by

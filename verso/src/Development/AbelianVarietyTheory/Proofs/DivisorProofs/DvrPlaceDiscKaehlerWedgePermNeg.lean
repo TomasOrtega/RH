@@ -12,9 +12,9 @@ namespace GlobalTheory.FieldPair.Place
 variable {k K : Type} [Field k] [Field K] {c : k →+* K} (E : Place c) {n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Simplify using `[hf]`. Establish `h1 : ((-1 : E.ring) : K) = -1` using `rfl`. Establish `hu : IsUnit (-1 : E.ring)` using `isUnit_one.neg`. Establish `h0 : E.ord (-1) = 0` using `by rw [← h1]; exact E.ord_eq_zero hu`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[neg_eq_neg_one_mul, E.ord_mul (by norm_num) hf, h0, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_neg (f : K) : E.ord (-f) = E.ord f := by
   by_cases hf : f = 0
@@ -25,9 +25,9 @@ theorem ord_neg (f : K) : E.ord (-f) = E.ord f := by
   rw [neg_eq_neg_one_mul, E.ord_mul (by norm_num) hf, h0, zero_add]
 
 /- English proof (translation)
-Establish `key : ∀ η : Forms c n, E.IsFormOrd η a → E.IsFormOrd (-η) a`. Introduce and unpack `η ⟨ω, hω, f, rfl, hf⟩`. Use `⟨ω, hω, -f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_neg, neg_smul]`. Rewrite using `[Units.val_neg, E.ord_neg, hf]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => by simpa using key _ h, key η⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFormOrd_neg_iff (η : Forms c n) (a : ℤ) : E.IsFormOrd (-η) a ↔ E.IsFormOrd η a := by
   have key : ∀ η : Forms c n, E.IsFormOrd η a → E.IsFormOrd (-η) a := by
@@ -38,7 +38,7 @@ theorem isFormOrd_neg_iff (η : Forms c n) (a : ℤ) : E.IsFormOrd (-η) a ↔ E
   exact ⟨fun h => by simpa using key _ h, key η⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ a, E.IsFormOrd η a`. Take `⟨a, ha⟩` from `h`. Rewrite using `[((E.isFormOrd_neg_iff η a).2 ha).formOrd_eq, ha.formOrd_eq]`. Establish `h' : ¬ ∃ a, E.IsFormOrd (-η) a` using `fun ⟨a, ha⟩ => h ⟨a, (E.isFormOrd_neg_iff η a).1 ha⟩`. Rewrite using `[formOrd, formOrd, dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formOrd_neg (η : Forms c n) : E.formOrd (-η) = E.formOrd η := by
   by_cases h : ∃ a, E.IsFormOrd η a
@@ -48,7 +48,7 @@ theorem formOrd_neg (η : Forms c n) : E.formOrd (-η) = E.formOrd η := by
     rw [formOrd, formOrd, dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Rewrite using `[disc, disc, formOrd_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_neg (η : Forms c n) (φ : K →₀ ℚ) : E.disc (-η) φ = E.disc η φ := by
   rw [disc, disc, formOrd_neg]
@@ -58,7 +58,7 @@ end GlobalTheory.FieldPair.Place
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Rewrite using `[dForm_eq, dForm_eq]`. Conclude with `(exteriorPower.ιMulti K n).map_perm (fun i => dFun c (x i)) σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dForm_comp_perm {k K : Type} [Field k] [Field K] (c : k →+* K) {n : ℕ} (x : Fin n → K)
     (σ : Equiv.Perm (Fin n)) : dForm c (x ∘ σ) = Equiv.Perm.sign σ • dForm c x := by
@@ -66,7 +66,7 @@ theorem dForm_comp_perm {k K : Type} [Field k] [Field K] (c : k →+* K) {n : �
   exact (exteriorPower.ιMulti K n).map_perm (fun i => dFun c (x i)) σ
 
 /- English proof (translation)
-Use `⟨?_, E.disc_neg _ φ⟩` and prove the remaining obligations. Rewrite using `[dForm_comp_perm]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Rewrite using `[h, Units.neg_smul, one_smul, E.disc_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem disc_dForm_perm_neg {k K : Type} [Field k] [CharZero k] [Field K] (c : k →+* K) (n : ℕ)
     (x : Fin n → K) (σ : Equiv.Perm (Fin n)) (E : Place c) (φ : K →₀ ℚ) :

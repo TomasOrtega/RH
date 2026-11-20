@@ -10,7 +10,7 @@ namespace PI.GalTorsConj.W
 open Polynomial Formalism.L2.Th1.F
 
 /- English proof (translation)
-Introduce `ω hω`. Rewrite using `[← nsmul_eq_mul]`. Conclude with `nsmul_mem hω n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulStable_nat (L : PeriodPair) (n : ℕ) : MulStable L (n : ℂ) := by
   intro ω hω
@@ -18,9 +18,9 @@ theorem mulStable_nat (L : PeriodPair) (n : ℕ) : MulStable L (n : ℂ) := by
   exact nsmul_mem hω n
 
 /- English proof (translation)
-Establish `hα : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨S, hS⟩` from `kerRepsExist L (n : ℂ) hα (mulStable_nat L n)`. Use `(S.finite_toSet.image L.weierstrassP).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨s, h1, h2, rfl⟩`. Take `⟨P, hP, hsP⟩` from `hS.2.2 s h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `e : s = P + (s - P)` using `by ring`. Rewrite using `[e, wp_add_mem L P hsP]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tors_vals_finite (L : PeriodPair) (n : ℕ) (hn : 0 < n) :
     {v : ℂ | ∃ s, (n : ℂ) * s ∈ L.lattice ∧ s ∉ L.lattice ∧ L.weierstrassP s = v}.Finite := by
@@ -34,13 +34,13 @@ theorem tors_vals_finite (L : PeriodPair) (n : ℕ) (hn : 0 < n) :
   rw [e, wp_add_mem L P hsP]
 
 /- English proof (translation)
-Establish `hk : Transcendental M (x + k)`. Introduce `halg`. Apply `hx` to reduce the goal to its premises. Establish `h2 : IsIntegral M (k : ℂ)`. Simplify using `using (isIntegral_algebraMap (R := M) (A := ℂ) (x := (k : M)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (halg.isIntegral.sub h2).isAlgebraic`. Establish `hφ : nonZeroDivisors M[X] ≤ (nonZeroDivisors ℂ).comap (aeval (x + k) : M[X] →ₐ[M] ℂ)`. Introduce `p hp`. Simplify using `only [Submonoid.mem_comap, mem_nonZeroDivisors_iff_ne_zero] at hp ⊢`. Introduce `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk ⟨p, hp, h0⟩`. Use `⟨(RatFunc.liftAlgHom (aeval (x + k) : M[X] →ₐ[M] ℂ) hφ).comp (RatFunc.algEquivOfTranscendental x hx).symm.toAlgHom, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply]`. Express the relevant statement in the definitionally equal form `RatFunc.liftAlgHom _ hφ ((RatFunc.algEquivOfTranscendental x hx).symm _) = _`. Rewrite using `[RatFunc.algEquivOfTranscendental_symm_gen]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `RatFunc.liftAlgHom_apply_div (aeval (x + k) : M[X] →ₐ[M] ℂ) hφ X 1` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem shift_emb (M : IntermediateField ℚ ℂ) (x : ℂ) (hx : Transcendental M x) (k : ℕ) :
     ∃ σ : IntermediateField.adjoin M {x} →ₐ[M] ℂ,
@@ -74,9 +74,9 @@ def rsHom (M : IntermediateField ℚ ℂ) (E : IntermediateField M ℂ) (σ : E 
       map_add' := fun a b => σ.map_add ⟨a, a.2⟩ ⟨b, b.2⟩ }
 
 /- English proof (translation)
-Establish `hx'` using `mem_algebraicClosure_iff.mpr hx`. Establish `ha'` using `mem_algebraicClosure_iff.mpr ha`. Establish `hb'` using `mem_algebraicClosure_iff.mpr hb`. Establish `h4 : (4 : ℂ) ∈ algebraicClosure F ℂ`. Use `natCast_mem (algebraicClosure F ℂ) 4` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hw : 4 * x ^ 3 - a * x - b ∈ algebraicClosure F ℂ` using `sub_mem (sub_mem (mul_mem h4 (pow_mem hx' 3)) (mul_mem ha' hx')) hb'`. Rewrite `hw` using `[← hsq]`. Conclude with `IsAlgebraic.of_pow two_pos (mem_algebraicClosure_iff.mp hw)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_of_sq {F : Type*} [Field F] [Algebra F ℂ] {x y a b : ℂ}
     (hsq : y ^ 2 = 4 * x ^ 3 - a * x - b)
@@ -93,23 +93,21 @@ theorem alg_of_sq {F : Type*} [Field F] [Algebra F ℂ] {x y a b : ℂ}
   exact IsAlgebraic.of_pow two_pos (mem_algebraicClosure_iff.mp hw)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `htr`. Apply `(tors_vals_finite L n hn).not_infinite` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => L.weierstrassP t + k) ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Simplify using `only at hab`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `add_left_cancel hab` after adjusting the coercions. Introduce `k`. Take `⟨σ, hσ⟩` from `shift_emb M (L.weierstrassP t) htr k`. Set `Mx : IntermediateField ℚ ℂ` to `(IntermediateField.adjoin M {L.weierstrassP t}).restrictScalars ℚ`. Establish `hMx : ∀ z ∈ M, z ∈ Mx` using `fun z hz => (IntermediateField.adjoin M {L.weierstrassP t}).algebraMap_mem ⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxMx : L.weierstrassP t ∈ Mx` using `IntermediateField.mem_adjoin_simple_self M _`. Set `M₂ : IntermediateField ℚ ℂ` to `(algebraicClosure Mx ℂ).restrictScalars ℚ`. Establish `hle : Mx ≤ M₂` using `fun z hz => by show z ∈ algebraicClosure Mx ℂ`. Conclude with `mem_algebraicClosure_iff.mpr (isAlgebraic_algebraMap (⟨z, hz⟩ : Mx))`. Establish `halg₂ : ∀ z ∈ M₂, IsAlgebraic Mx z` using `fun z hz => mem_algebraicClosure_iff.mp hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ₂, hρ₂⟩` from `extRho Mx M₂ hle halg₂ (rsHom M _ σ)`. Establish `hg2₂ : L.g₂ ∈ M₂` using `hle (hMx _ hg2)`. Establish `hg3₂ : L.g₃ ∈ M₂` using `hle (hMx _ hg3)`. Establish `hx₂ : L.weierstrassP t ∈ M₂` using `hle hxMx`. Establish `hy₂ : L.derivWeierstrassP t ∈ M₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : L.derivWeierstrassP t ^ 2 = 4 * L.weierstrassP t ^ 3 - L.g₂ * L.weierstrassP t - L.g₃`. Establish `e` using `L.derivWeierstrassP_sq t ht`. Take the linear combination `e`. Use `show L.derivWeierstrassP t ∈ algebraicClosure Mx ℂ`. Conclude with `mem_algebraicClosure_iff.mpr (alg_of_sq hsq (isAlgebraic_algebraMap (⟨_, hxMx⟩ : Mx)) (isAlgebraic_algebraMap (⟨_, hMx _ hg2⟩ : Mx)) (isAlgebraic_algebraMap (⟨_, hMx _ hg3⟩ : Mx)))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ z (hz : z ∈ M) (hz₂ : z ∈ M₂), ρ₂ ⟨z, hz₂⟩ = z`. Introduce `z hz hz₂`. Establish `e1 : (⟨z, hz₂⟩ : M₂) = IntermediateField.inclusion hle ⟨z, hMx z hz⟩` using `rfl`. Rewrite using `[e1, hρ₂]`. Conclude with `σ.commutes ⟨z, hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρx : ρ₂ ⟨_, hx₂⟩ = L.weierstrassP t + k`. Establish `e1 : (⟨_, hx₂⟩ : M₂) = IntermediateField.inclusion hle ⟨_, hxMx⟩` using `rfl`. Rewrite using `[e1, hρ₂]`. Conclude with `hσ`. Establish `hg2' : L.g₂ = ρ₂ ⟨_, hg2₂⟩` using `(hfix _ hg2 hg2₂).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hg3' : L.g₃ = ρ₂ ⟨_, hg3₂⟩` using `(hfix _ hg3 hg3₂).symm`. Take `⟨t₂, hst⟩` from `st_exists (L := L) (L' := L) (M := M₂) (ρ := ρ₂) pOnto hg2₂ hg3₂ hg2' hg3' t (Or.inr ⟨hx₂, hy₂⟩)`. Establish `hn₂` using `(st_mem_iff (st_nsmul addLaw dblLaw hg2₂ hg2' hst n)).mp hnt`. Break down `hst with ⟨h1, -⟩ | ⟨-, h2, hx', hy', e1, -⟩` into its components or cases. Conclude with `absurd h1 ht`.
-
-Use `⟨t₂, hn₂, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hρx`.
+A detailed English derivation is pending.
 -/
 theorem wp_isAlgebraic (L : PeriodPair) (M : IntermediateField ℚ ℂ) (hg2 : L.g₂ ∈ M)
     (hg3 : L.g₃ ∈ M) (n : ℕ) (t : ℂ) (hn : 0 < n) (hnt : (n : ℂ) * t ∈ L.lattice)

@@ -25,7 +25,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `g`. Establish `h` using `dCMul k V 3 d d' hd hd' g`. Establish `hm : dg (d * d') = dg d * dg d'` using `map_mul _ _ _`. Simplify using `only [Lev.DC, hm] at h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem uf_dg (V : Lev k) (d d' : Fin 3 → kˣ) (hd : Dom d) (hd' : Dom d') :
     UF (V.J 3) (dg d) (dg d') := by
@@ -36,7 +36,7 @@ private theorem uf_dg (V : Lev k) (d d' : Fin 3 → kˣ) (hd : Dom d) (hd' : Dom
   exact h
 
 /- English proof (translation)
-Use `Subgroup.mem_sup_left (Subgroup.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `⟨d, by simpa [Subgroup.mem_pi] using hd, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 private theorem dg_mem (V : Lev k) (d : Fin 3 → kˣ) (hd : ∀ i, d i ∈ V.H) : dg d ∈ V.J 3 := by
   refine Subgroup.mem_sup_left (Subgroup.mem_sup_right ?_)
@@ -47,19 +47,19 @@ end Local
 variable {F : Type} [Field F] [NumberField F] {Δ : F}
 
 /- English proof (translation)
-Simplify using `[Dat.Jv, SD.dat, h, Lev.data]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem jv_in (A : SD Δ) {v : Pl F} (h : v ∈ A.Sg) :
     A.dat.Jv v = ((A.V v).J 3).comap (eU (A.hs v h)) := by
   simp [Dat.Jv, SD.dat, h, Lev.data]
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 private theorem jv_off (A : SD Δ) {v : Pl F} (h : v ∉ A.Sg) : A.dat.Jv v = KU (Ov v) _ := if_neg h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `(datOk F Δ A hA).2.2.1 v h`. Conclude with `(eU_facts (Kv v) (Ov v) h1 h2 (cv v Δ) (A.s v) (A.hs v h) h3).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem eU_bij (A : SD Δ) (hA : A.Ok) {v : Pl F} (h : v ∈ A.Sg) :
     Function.Bijective (eU (A.hs v h)) := by
@@ -67,11 +67,11 @@ private theorem eU_bij (A : SD Δ) (hA : A.Ok) {v : Pl F} (h : v ∈ A.Sg) :
   exact (eU_facts (Kv v) (Ov v) h1 h2 (cv v Δ) (A.s v) (A.hs v h) h3).1
 
 /- English proof (translation)
-Set `P` to `rpg (fun v => U3 ((cv v) Δ)) (fun v => KU (Ov v) ((cv v) Δ))`. Establish `hpv : ∀ (x : GA Δ) v, P.p v x = (x : (v : Pl F) → U3 ((cv v) Δ)) v` using `fun _ _ => rfl`. Establish `hout : ∀ v ∉ A.Sg, P.p v g ∈ A.dat.Jv v`. Introduce `v hv`. Rewrite using `[jv_off A hv, hpv, hg.2 v hv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `hbox` using `uFBox (Pl F) (GA Δ) (fun v => U3 ((cv v) Δ)) (fun v => KU (Ov v) ((cv v) Δ)) A.dat.Jv P A.Sg (fun v hv => jv_off A hv) g hout`. Use `hbox.2.1 (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[jv_in A hv]`. Establish `dm` using `dcMap _ _ ℂ (eU (A.hs v hv)) (eU_bij A hA hv) ((A.V v).J 3) (P.p v g) (P.p v g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dm.2.1, hpv, hg.1 v hv]`. Conclude with `((finFacts (Kv v) (A.V v)).2.2.2.2.2 3).1 _`.
+A detailed English derivation is pending.
 -/
 private theorem finOrb_G (A : SD Δ) (hA : A.Ok) (g : GA Δ) (d : ParN F 3) (hg : A.IsElG g d) :
     AlgebraTools.FinOrb A.dat.UG A.dat.UG g := by
@@ -91,11 +91,11 @@ private theorem finOrb_G (A : SD Δ) (hA : A.Ok) (g : GA Δ) (d : ParN F 3) (hg 
   exact ((finFacts (Kv v) (A.V v)).2.2.2.2.2 3).1 _
 
 /- English proof (translation)
-Set `P` to `rpg (fun v => U3 ((cv v) Δ)) (fun v => KU (Ov v) ((cv v) Δ))`. Establish `hpv : ∀ (x : GA Δ) v, P.p v x = (x : (v : Pl F) → U3 ((cv v) Δ)) v` using `fun _ _ => rfl`. Establish `hout : ∀ (x : GA Δ) (e : ParN F 3), A.IsElG x e → ∀ v ∉ A.Sg, P.p v x ∈ A.dat.Jv v`. Introduce `x e hx v hv`. Rewrite using `[jv_off A hv, hpv, hx.2 v hv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `hbox` using `uFBox (Pl F) (GA Δ) (fun v => U3 ((cv v) Δ)) (fun v => KU (Ov v) ((cv v) Δ)) A.dat.Jv P A.Sg (fun v hv => jv_off A hv) g (hout g d hg)`. Use `hbox.2.2 g' (hout g' d' hg') (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[jv_in A hv]`. Establish `dm` using `dcMap _ _ ℂ (eU (A.hs v hv)) (eU_bij A hA hv) ((A.V v).J 3) (P.p v g) (P.p v g')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dm.2.2.1, hpv, hpv, hg.1 v hv, hg'.1 v hv]`. Conclude with `uf_dg (A.V v) (d v) (d' v) (hd v hv) (hd' v hv)`.
+A detailed English derivation is pending.
 -/
 private theorem uf_G (A : SD Δ) (hA : A.Ok) (g g' : GA Δ) (d d' : ParN F 3) (hg : A.IsElG g d)
     (hg' : A.IsElG g' d') (hd : A.DomS d) (hd' : A.DomS d') : UF A.dat.UG g g' := by
@@ -117,29 +117,27 @@ private theorem uf_G (A : SD Δ) (hA : A.Ok) (g g' : GA Δ) (d d' : ParN F 3) (h
 end UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA V _ _ ch B s hB`. Take `⟨hG, -, hmul, -, -⟩` from `elEx F Δ A hA`. Establish `hF` using `hecke_operators_on_twisted_base_function F Δ A hA V ch B s hB`. Set `gd : ParN F 3 → GA Δ` to `fun d => (hG d).exists.choose`. Establish `hgd : ∀ d, A.IsElG (gd d) d` using `fun d => (hG d).exists.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `huniq : ∀ d g, A.IsElG g d → g = gd d` using `fun d g h => (hG d).unique h (hgd d)`. Set `u : ParN F 3 → Module.End ℂ ↥B.Forms` to `fun d => (Base.Tw.one B).R fun y => one (y ∈ DC B.U (gd d))`. Establish `hω` using `hB.ω`. Establish `hU` using `hB.U`. Establish `hfin : ∀ d, AlgebraTools.FinOrb A.dat.UG A.dat.UG (gd d)` using `fun d => finOrb_G A hA _ d (hgd d)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hop : ∀ d, ∀ φ : ↥B.Forms, ((u d φ : ↥B.Forms) : GA Δ → V) = dcF A.dat.UG (gd d) φ`. Introduce `d φ`. Establish `h` using `(opDc _ _ _ B hω (gd d) (by rw [hU]; exact hfin d)).2 φ`. Conclude with `h.trans (by rw [hU])`. Establish `hinv : ∀ φ : ↥B.Forms, ∀ x ∈ A.dat.UG, ∀ g, (φ : GA Δ → V) (g * x) = (φ : GA Δ → V) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ x hx g`. Establish `h` using `φ.2.2 g ⟨x, by rw [hU]; exact hx⟩`. Rewrite `h` using `[hω]`. Simplify using `using h`. Use `⟨u, s.R (A.F0 1), ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d g hd hg φ`. Rewrite using `[huniq d g hg]`. Conclude with `hop d φ`. Introduce `d d' hd hd'`. Establish `he : gd (d * d') = gd d * gd d'` using `(huniq _ _ (hmul _ _ _ _ (hgd d) (hgd d'))).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Module.End.mul_apply, hop]`. Rewrite using `[he]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(uFMul _ V A.dat.UG (gd d) (gd d') (hfin d) (hfin d') (by rw [← he]; exact hfin _) (uf_G A hA _ _ d d' (hgd d) (hgd d') hd hd') (φ : GA Δ → V) (hinv φ)).symm`. Introduce `d hd`. Establish `hmem : gd d ∈ A.dat.UG` using `by show gd d ∈ (rpg (fun v => U3 ((cv v) Δ)) (fun v => KU (Ov v) ((cv v) Δ))).box A.dat.Jv`. Simplify using `only [RPG.box, Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ A.Sg`. Rewrite using `[jv_in A hv, Subgroup.mem_comap] show eU (A.hs v hv) ((gd d : (v : Pl F) → U3 ((cv v) Δ)) v) ∈ _`. Rewrite using `[(hgd d).1 v hv]`. Conclude with `dg_mem (A.V v) (d v) (hd v hv)`. Rewrite using `[jv_off A hv] show ((gd d : (v : Pl F) → U3 ((cv v) Δ)) v) ∈ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[(hgd d).2 v hv]`. Conclude with `one_mem _`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hop, (dcBasic _ V A.dat.UG (gd d) (hfin d) (φ : GA Δ → V) (hinv φ)).2.2.2.1 hmem]`. Both sides reduce to the same expression. Introduce `d hd`. Establish `f1` using `((hF.1 (SD.sg d) (gd (SD.sg d)) (hgd _))).2.1`. Establish `f2` using `((hF.1 d (gd d) (hgd d))).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f2.symm.trans f1`. Introduce `t ht`. Rewrite using `[hF.2 t ht]`. Establish `hl` using `Tf.rLin _ _ _ B s _ A.Ys (fun _ => 1) (fun y => A.F0 (A.dG t y)) (fun y _ => (hF.1 _ _ (hgd _)).1)`. Simplify using `only [one_mul, one_smul] at hl`.
-
-Rewrite using `[hl.2]`. Conclude with `Finset.sum_congr rfl fun y _ => (hF.1 _ _ (hgd _)).2.1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.gOpsEx :
     UpperTheory.V.Z.Sym.So.GOpsEx := by

@@ -15,15 +15,15 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
   [IsFractionRing R K]
 
 /- English proof (translation)
-Establish `hAopen : ∀ v : HeightOneSpectrum R, IsOpen (v.adicCompletionIntegers K : Set (v.adicCompletion K))` using `fun v => Valued.isOpen_valuationSubring _`. Set `z0 : ∀ v : HeightOneSpectrum R, (v.adicCompletionIntegers K : Set (v.adicCompletion K))` to `fun v => ⟨0, (v.adicCompletionIntegers K).zero_mem⟩`. Set `t' : Set (RestrictedProduct (fun v : HeightOneSpectrum R => v.adicCompletion K) (fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) Filter.cofinite)` to `t`. Establish `h1' : t' ∈ nhds (RestrictedProduct.structureMap (fun v : HeightOneSpectrum R => v.adicCompletion K) (fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) Filter.cofinite z0)` using `ht`. Rewrite `h1'` using `[RestrictedProduct.nhds_eq_map_structureMap hAopen, Filter.mem_map, nhds_pi, Filter.mem_pi']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨I, u, hu, hIu⟩` from `h1'`. Establish `hW : ∀ v, ∃ W : Set (v.adicCompletion K), W ∈ nhds (0 : v.adicCompletion K) ∧ ∀ y : v.adicCompletion K, (hy : y ∈ (v.adicCompletionIntegers K : Set (v.adicCompletion K))) → y ∈ W → (⟨y, hy⟩ : (v.adicCompletionIntegers K : Set (v.adicCompletion K))) ∈ u v`. Introduce `v`. Take `⟨W, hW, hWu⟩` from `(mem_nhds_subtype _ (z0 v) (u v)).mp (hu v)`. Conclude with `⟨W, hW, fun y hy hyW => hWu hyW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose W hW0 hWu using hW`. Take `⟨r, hr, hsmall⟩` from `PI.UnipApproxD.IntegersDenseFiniteAdeles.exists_small_finset (R := R) (K := K) I W (fun v _ => hW0 v)`. Use `⟨r, hr, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ v : HeightOneSpectrum R, y v ∈ (v.adicCompletionIntegers K : Set (v.adicCompletion K))`. Introduce `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, mem_adicCompletionIntegers]`. Conclude with `(hy v).trans (v.intValuation_le_one r)`. Set `z : ∀ v : HeightOneSpectrum R, (v.adicCompletionIntegers K : Set (v.adicCompletion K))` to `fun v => ⟨y v, hint v⟩`. Establish `hz : z ∈ Set.pi (↑I) u` using `fun v hv => hWu v _ (hint v) (hsmall v hv _ (hy v))`. Establish `hmem` using `hIu hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : RestrictedProduct.structureMap (fun v : HeightOneSpectrum R => v.adicCompletion K) (fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) Filter.cofinite z = y`. Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hmem`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small_of_mem_nhds {t : Set (FiniteAdeleRing R K)}
     (ht : t ∈ nhds (0 : FiniteAdeleRing R K)) :
@@ -75,13 +75,13 @@ namespace GlobalTheory.OpenSubAdele
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 
 /- English proof (translation)
-Take `⟨r, hr, h⟩` from `exists_small_of_mem_nhds (R := 𝓞 F) (K := F) ht`. Establish `hc` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) (I := Ideal.span {r}) hr (Ideal.mem_span_singleton_self r) (Algebra.IsIntegral.isIntegral r)`. Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Rewrite `hm` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Establish `hdvd : r ∣ ((m.natAbs : ℕ) : 𝓞 F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hm.trans ((map_dvd (algebraMap ℤ (𝓞 F)) (Int.dvd_natAbs.mpr dvd_rfl)).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `hdvd`. Use `⟨m.natAbs, Int.natAbs_pos.mpr hm0, fun b hb => h _ fun v => ?_⟩` and prove the remaining obligations. Establish `hb' : evalV F v b ∈ v.adicCompletionIntegers F` using `Subring.mem_iInf.mp hb v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Valued.v (evalV F v ((m.natAbs : Af F) * b)) ≤ _`. Establish `e : ((m.natAbs : ℕ) : Fv F v) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F (r * c))`. Rewrite using `[← hc]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_natCast, e, Valuation.map_mul, PI.UnipApproxD.IntegersDenseFiniteAdeles.val_R, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_nat_mul_mem_of_mem_nhds {F : Type} [Field F] [NumberField F] {t : Set (Af F)}
     (ht : t ∈ nhds (0 : Af F)) :
@@ -120,13 +120,11 @@ noncomputable def singleEntry (D : D7) (V W : HSp D) (i : Fin W.rank) (j : Fin V
     pairA D.host.F 0 c ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k else 0 else 0
 
 /- English proof (translation)
-Establish `hp : Continuous (fun c : Af D.host.F => pairA D.host.F 0 c)`. Unfold `pairA`. Use `fun_prop`. Establish `ht : Continuous (fun c : Af D.host.F => (pairA D.host.F 0 c ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k : AE D))`. Establish `e : (fun c : Af D.host.F => (pairA D.host.F 0 c ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k : AE D)) = fun c => pairA D.host.F 0 c • ((1 : AF D.host.F) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k : AE D)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`. Conclude with `hp.smul (continuous_const (y := ((1 : AF D.host.F) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k : AE D)))`. Unfold `singleEntry`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_pi fun i' => continuous_pi fun j' => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `ht`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_singleEntry (D : D7) (V W : HSp D) (i : Fin W.rank) (j : Fin V.rank)
     (k : Fin (Module.finrank D.host.F D.host.E)) : Continuous (singleEntry D V W i j k) := by
@@ -150,7 +148,7 @@ theorem continuous_singleEntry (D : D7) (V W : HSp D) (i : Fin W.rank) (j : Fin 
   · exact continuous_const
 
 /- English proof (translation)
-Use extensionality with `i' j'`. Establish `h0 : pairA D.host.F 0 0 = 0` using `rfl`. Simplify using `[singleEntry, h0]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem singleEntry_zero (D : D7) (V W : HSp D) (i : Fin W.rank) (j : Fin V.rank)
     (k : Fin (Module.finrank D.host.F D.host.E)) : singleEntry D V W i j k 0 = 0 := by
@@ -159,11 +157,11 @@ theorem singleEntry_zero (D : D7) (V W : HSp D) (i : Fin W.rank) (j : Fin V.rank
   simp [singleEntry, h0]
 
 /- English proof (translation)
-Introduce `D V W U hU`. Apply the tactic sequence `have hnhds : (⋂ x : Fin W.rank × Fin V.rank × Fin (Module.finrank D.host.F D.host.E), singleEntry D V W x.1 x.2.1 x.2.2 ⁻¹' (U : Set (WO V W))) ∈ nhds (0 : Af D.host.F) := by`. Use `Filter.iInter_mem.mpr fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `refine (continuous_singleEntry D V W x.1 x.2.1 x.2.2).continuousAt.preimage_mem_nhds ?_`. Rewrite using `[singleEntry_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU.mem_nhds U.zero_mem`. Take `⟨M₀, hM₀, hM⟩` from `exists_nat_mul_mem_of_mem_nhds hnhds`. Use `⟨M₀, hM₀, fun a ha => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hsum : (Matrix.of fun i j => ∑ k, pairA D.host.F 0 ((M₀ : Af D.host.F) * a i j k) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k : WO V W) = ∑ i, ∑ j, ∑ k, singleEntry D V W i j k ((M₀ : Af D.host.F) * a i j k) := by`. Use extensionality with `i' j'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[singleEntry, Matrix.sum_apply]`. Rewrite using `[hsum]`. Use `U.sum_mem fun i _ => U.sum_mem fun j _ => U.sum_mem fun k _ => ?_` and prove the remaining obligations. Use `hM _ (ha i j k)` as an intermediate fact. Conclude with `Set.mem_iInter.mp this (i, j, k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_openAddSubgroup : ∀ (D : D7) (V W : HSp D) (U : AddSubgroup (WO V W)),
     IsOpen (U : Set (WO V W)) → ∃ M₀ : ℕ, 0 < M₀ ∧

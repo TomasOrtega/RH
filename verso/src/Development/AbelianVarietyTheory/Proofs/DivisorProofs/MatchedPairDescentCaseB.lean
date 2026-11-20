@@ -29,7 +29,7 @@ open Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl
 namespace GlobalTheory.FockInclCyc
 
 /- English proof (translation)
-Rewrite using `[tensHarm, Submodule.map_span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun w => polIncl P Q r₀ s₀ (f w), fun w => halg P Q R S r₀ s₀ (x w) ⟨f w, hf w, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[tensIncl, PiTensorProduct.map_tprod]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensHarm_map_le' (halg : ∀ (P Q R S : ℕ) (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (x : ℚ),
     (harmTy P Q R S x).map (polIncl P Q r₀ s₀).toLinearMap ≤ harmTy P Q (R + 1) (S + 1) x) (F : Type) [Field F] [NumberField F] (P Q R S : ℕ) (r₀ : Fin (R + 1))
@@ -42,29 +42,27 @@ theorem tensHarm_map_le' (halg : ∀ (P Q R S : ℕ) (r₀ : Fin (R + 1)) (s₀ 
   simp [tensIncl, PiTensorProduct.map_tprod]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨P, Q, R₀, S₀, A, C₁, C, Φ₁, Φ, r₀, s₀, hD₁, hD, hAd, hCo⟩` from `GlobalTheory.T.configuration_b_local_zeta_identity hKP F E σ B a b G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hLow₁` using `GlobalTheory.T.matched_harmonic_polynomial_integral hKP F E σ B a b G₁ X om₁ om₁' R₁ Rf₁ hM₁ P Q R₀ S₀ A C₁ Φ₁ hD₁`. Establish `hLow` using `GlobalTheory.T.matched_harmonic_polynomial_integral hKP F E σ B a (b + 2) G X om om' R Rf hM P Q (R₀ + 1) (S₀ + 1) A C Φ hD`. Establish `hC₁` using `GlobalTheory.T.matched_harmonic_polynomial_decomposition hKP F E σ B a b G₁ X om₁ om₁' R₁ Rf₁ hM₁ P Q R₀ S₀ A C₁ Φ₁ hD₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `GlobalTheory.T.matched_harmonic_polynomial_decomposition hKP F E σ B a (b + 2) G X om om' R Rf hM P Q (R₀ + 1) (S₀ + 1) A C Φ hD`. Establish `hS₁` using `GlobalTheory.T.matched_harmonic_polynomial_vanishing hKP F E σ B a b G₁ X om₁ om₁' R₁ Rf₁ hM₁ P Q R₀ S₀ A C₁ Φ₁ hD₁`. Establish `hE` using `GlobalTheory.T.configuration_b_global_integral hKP F E σ B a b G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ P Q R₀ S₀ A C₁ C Φ₁ Φ r₀ s₀ hD₁ hD hAd hCo`. Establish `hQ` using `GlobalTheory.T.configuration_b_archimedean_integral hKP F E σ B a b G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ P Q R₀ S₀ A C₁ C Φ₁ Φ r₀ s₀ hD₁ hD hAd hCo`. Establish `hA` using `tensHarm_map_le' GlobalTheory.T.harmonic_polynomials_inclusion_le F P Q R₀ S₀ r₀ s₀ (halfKap B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ₁ : Function.Injective Φ₁` using `hD₁.2.1`. Establish `hΦ : Function.Injective Φ` using `hD.2.1`. Take `⟨T, hT, hT0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hLow₁.2`. Establish `hTi : tensIncl F P Q r₀ s₀ T ∈ tensHarm F P Q (R₀ + 1) (S₀ + 1) (halfKap B)` using `hA ⟨T, hT, rfl⟩`. Establish `hf₀deg : Φ (tensIncl F P Q r₀ s₀ T) ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p)` using `hLow.1 ⟨_, hTi, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₀pol : Φ (tensIncl F P Q r₀ s₀ T) ∈ G.M.Pol B.ψ B.emb` using `fockDeg_le_pol _ _ _ _ hf₀deg`. Use `⟨Φ₁ T, hLow₁.1 ⟨T, hT, rfl⟩, Φ (tensIncl F P Q r₀ s₀ T), hf₀pol, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨_, hf₀deg, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `k hk t ht f hf f₁ hff₁ hpf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f', hf', hpf'⟩ : ∃ f' ∈ G.M'.Pol B.ψ B.emb, R.p' f' = R.p f := by`. Establish `hmem : R.p f ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `hM.real.quot'.onto ▸ Submodule.mem_top`. Take `⟨f', hf', e⟩` from `hmem`. Conclude with `⟨f', hf', e⟩`. Take `⟨Aop, hAop⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V' G.W G.M' om' X.α (X.α / X.β) hM.triple.base hM.triple.geo.hM' hM.triple.weil' k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hM.real.cpt k hk f hf f' hf' f₁ (Aop f') hff₁ (hAop f') hpf'.symm`. Establish `h2` using `hM.real.cpt k hk _ hf₀pol f' hf' _ (Aop f') (hE k hk t ht T) (hAop f') (hpf'.trans hpf).symm`. Rewrite using `[h1, ← h2, map_smul]`. Introduce `h0`. Apply `hT0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : Φ (tensIncl F P Q r₀ s₀ T) = 0` using `hC _ ⟨_, hTi, rfl⟩ h0`. Apply `tensIncl_injective F P Q r₀ s₀` to reduce the goal to its premises. Apply `hΦ` to reduce the goal to its premises. Rewrite using `[h1, map_zero, map_zero]`. Introduce `ι s c k k₁ g f hyp hsum`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ i ∈ s, ∃ Ti ∈ tensHarm F P Q R₀ S₀ (halfKap B), Φ₁ Ti = g i`. Introduce `i hi`. Take `⟨hk, hk₁, hL, hg, hf⟩` from `hyp i hi`. Take `⟨Ti, hTi, e⟩` from `hS₁ (k₁ i) hk₁ (Φ₁ T) ⟨T, hT, rfl⟩ (g i) hg`. Conclude with `⟨Ti, hTi, e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose! Tf hTf hgT using hg`. Establish `hfT : ∀ i ∈ s, f i = Φ (tensIncl F P Q r₀ s₀ (Tf i))`. Introduce `i hi`. Take `⟨hk, hk₁, hL, hg, hf⟩` from `hyp i hi`. Establish `h1` using `hQ (k₁ i) hk₁ (k i) hk hL T (Tf i) (by rw [hgT i hi]; exact hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.RealLift.actsLaws F _ _ (f i) _).2.2.2.1 _ hf h1`. Establish `hsumT : ∑ i ∈ s, c i • Tf i = 0`. Establish `hmem : ∑ i ∈ s, c i • g i ∈ (tensHarm F P Q R₀ S₀ (halfKap B)).map Φ₁` using `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (by rw [← hgT i hi]; exact ⟨Tf i, hTf i hi, rfl⟩)`. Establish `h0 : R₁.p (∑ i ∈ s, c i • g i) = 0` using `by simpa [map_sum, map_smul] using hsum`. Establish `h2` using `hC₁ _ hmem h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hΦ₁` to reduce the goal to its premises. Rewrite using `[map_sum, map_zero, ← h2]`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [map_smul, hgT i hi]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul]`.
-
-Conclude with `Finset.sum_congr rfl fun i hi => by rw [hfT i hi]`. Use `_ = 0 := by rw [hsumT, map_zero, map_zero, map_zero]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cyclic_pair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

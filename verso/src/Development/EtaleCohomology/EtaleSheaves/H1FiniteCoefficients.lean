@@ -8,15 +8,15 @@ namespace LateralTheory.E.NoetherianChartOverlapFiniteComplement
 variable {A K : Type} [CommRing A] [Field K] [Algebra A K]
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with hx | hx` into its components or cases. Conclude with `⟨0, by simpa using hx⟩`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hx` using the available equality. Conclude with `⟨1, by rw [pow_one, inv_mul_cancel₀ hu]; exact S.one_mem⟩`. Consider the case `algebraMap r => exact ⟨0, by simpa using S.algebraMap_mem r⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨n, hn⟩` from `ihx`.
+Substitute using the available equality. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `ihy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: u⁻¹ ^ (n + m) * (x + y) = u⁻¹ ^ m * (u⁻¹ ^ n * x) + u⁻¹ ^ n * (u⁻¹ ^ m * y)` using `by ring`. Rewrite using `[this]`. Conclude with `S.add_mem (S.mul_mem (S.pow_mem hv _) hn) (S.mul_mem (S.pow_mem hv _) hm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul x y _ _ ihx ihy`. Take `⟨n, hn⟩` from `ihx`. Take `⟨m, hm⟩` from `ihy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: u⁻¹ ^ (n + m) * (x * y) = (u⁻¹ ^ n * x) * (u⁻¹ ^ m * y)` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `S.mul_mem hn hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (S : Subalgebra A K) (u : K) (hu : u ≠ 0) (hv : u⁻¹ ∈ S) {x : K}
     (hx : x ∈ Algebra.adjoin A ((S : Set K) ∪ {u})) : ∃ n : ℕ, u⁻¹ ^ n * x ∈ S := by
@@ -42,9 +42,9 @@ theorem exists_pow_mul_mem (S : Subalgebra A K) (u : K) (hu : u ≠ 0) (hv : u�
     rw [this]; exact S.mul_mem hn hm
 
 /- English proof (translation)
-Break down `le_or_gt n j with h | h` into its components or cases. Use `left`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel_left, pow_add, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ ht, one_pow, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `right`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h.le`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel_left, pow_add, mul_comm (t⁻¹ ^ j), mul_assoc, ← mul_pow, inv_mul_cancel₀ ht, one_pow, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_inv_mul_pow (t : K) (ht : t ≠ 0) (n j : ℕ) :
     (n ≤ j ∧ t⁻¹ ^ n * t ^ j = t ^ (j - n)) ∨ (j < n ∧ t⁻¹ ^ n * t ^ j = t⁻¹ ^ (n - j)) := by
@@ -60,49 +60,41 @@ theorem pow_inv_mul_pow (t : K) (ht : t ≠ 0) (n j : ℕ) :
       one_pow, mul_one]
 
 /- English proof (translation)
-Introduce `A _ _ _ K _ _ B C t hc hB _`. Take `⟨S, hS⟩` from `hB`. Use `set R := Algebra.adjoin A ({t} : Set K)`. Establish `hfg : (Algebra.adjoin R (S : Set K)).toSubmodule.FG` using `fg_adjoin_of_finite S.finite_toSet (fun x hx => hc.intB x (hS ▸ Algebra.subset_adjoin hx))`. Take `⟨G, hG⟩` from `hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hRB : ∀ r : R, (r : K) ∈ B`. Introduce `r`. Establish `: R ≤ B` using `Algebra.adjoin_le (by simpa using hc.tB)`. Conclude with `this r.2`. Establish `hAB : ∀ y ∈ Algebra.adjoin R (S : Set K), y ∈ B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hS ▸ Algebra.subset_adjoin hx`. Consider the case `algebraMap r => exact hRB r`. Consider the case `add x y _ _ hx hy => exact B.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul x y _ _ hx hy => exact B.mul_mem hx hy`. Establish `hGB : ∀ g ∈ G, g ∈ B`. Introduce `g hg`. Establish `: g ∈ (Algebra.adjoin R (S : Set K)).toSubmodule` using `hG ▸ Submodule.subset_span hg`. Conclude with `hAB g this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hBR : ∀ x ∈ B, x ∈ Submodule.span R (G : Set K)`. Introduce `x hx`. Rewrite using `[hG]`. Rewrite `hx` using `[← hS]`. Use `show x ∈ Algebra.adjoin R (S : Set K)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact Algebra.subset_adjoin hy`. Consider the case `algebraMap a => exact ((Algebra.adjoin R (S : Set K)).restrictScalars A).algebraMap_mem a`. Consider the case `add x y _ _ hx hy => exact Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => exact Subalgebra.mul_mem _ hx hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLex : ∀ g ∈ G, ∃ n : ℕ, t⁻¹ ^ n * g ∈ C`. Introduce `g hg`. Establish `: g ∈ Algebra.adjoin A ((C : Set K) ∪ {t})`. Rewrite using `[← hc.glue]`. Conclude with `Algebra.subset_adjoin (Or.inl (hGB g hg))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `exists_pow_mul_mem C t hc.ne hc.tC this`. Set `Lf : K → ℕ` to `fun g => if h : ∃ n : ℕ, t⁻¹ ^ n * g ∈ C then Classical.choose h else 0`. Set `L` to `G.sup Lf`. Establish `hL : ∀ g ∈ G, t⁻¹ ^ L * g ∈ C`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hLex g hg`. Establish `hle : Lf g ≤ L` using `Finset.le_sup hg`. Establish `hspec : t⁻¹ ^ Lf g * g ∈ C`. Simplify using `only [Lf, dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hk, pow_add, mul_comm (t⁻¹ ^ Lf g), mul_assoc]`. Conclude with `C.mul_mem (C.pow_mem hc.tC _) hspec`. Set `N : Submodule A K` to `Submodule.span A ↑((G ×ˢ Finset.range L).image (fun p => t⁻¹ ^ p.2 * p.1))`. Use `⟨N, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `set T := Subalgebra.toSubmodule B ⊔ Subalgebra.toSubmodule C ⊔ N with hT`. Establish `hCT : ∀ x ∈ C, x ∈ T` using `fun x hx => Submodule.mem_sup_left (Submodule.mem_sup_right hx)`. Establish `hBT : ∀ x ∈ B, x ∈ T` using `fun x hx => Submodule.mem_sup_left (Submodule.mem_sup_left hx)`. Establish `core : ∀ g ∈ G, ∀ m : ℕ, t⁻¹ ^ m * g ∈ T`. Introduce `g hg m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_ge m L with h | h` into its components or cases. Use `Submodule.mem_sup_right (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨(g, m), Finset.mem_product.mpr ⟨hg, Finset.mem_range.mpr h⟩, rfl⟩)`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[hk, pow_add, mul_comm (t⁻¹ ^ L), mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hCT _ (C.mul_mem (C.pow_mem hc.tC _) (hL g hg))`. Establish `core2 : ∀ g ∈ G, ∀ n j : ℕ, t⁻¹ ^ n * t ^ j * g ∈ T`. Introduce `g hg n j`. Break down `pow_inv_mul_pow t hc.ne n j with ⟨_, h⟩ | ⟨_, h⟩` into its components or cases. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hBT _ (B.mul_mem (B.pow_mem hc.tB _) (hGB g hg))`. Rewrite using `[h]`. Conclude with `core g hg _`. Establish `hspan : ∀ x ∈ Submodule.span R (G : Set K), ∀ n j : ℕ, t⁻¹ ^ n * t ^ j * x ∈ T`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg => exact core2 g hg`. Consider the case `zero => intro n j`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro n j`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[mul_add]`. Conclude with `T.add_mem (hx n j) (hy n j)`. Consider the case `smul r x _ hx`. Introduce `n j`. Establish `hr : (r : K) ∈ (Polynomial.aeval (R` using `A) t).range := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval A t]`. Conclude with `r.2`. Take `⟨p, hp⟩` from `hr`. Establish `hp' : Polynomial.aeval t p = (r : K)` using `hp`. Establish `this : r • x = (r : K) * x` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, ← hp']`. Use `clear hp hp' this`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp' hq'`. Rewrite using `[map_add, add_mul, mul_add]`.
-
-Conclude with `T.add_mem hp' hq'`. Consider the case `monomial i a`. Rewrite using `[Polynomial.aeval_monomial]`. Establish `: t⁻¹ ^ n * t ^ j * (algebraMap A K a * t ^ i * x) = a • (t⁻¹ ^ n * t ^ (j + i) * x)`. Rewrite using `[Algebra.smul_def, pow_add]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `T.smul_mem a (hx n (j + i))`. Introduce `x hx`. Establish `hx' : x ∈ Algebra.adjoin A ((B : Set K) ∪ {t⁻¹})` using `hx`.
-
-Take `⟨n, hn⟩` from `exists_pow_mul_mem B t⁻¹ (inv_ne_zero hc.ne) (by rw [inv_inv]; exact hc.tB) hx'`. Rewrite `hn` using `[inv_inv]`. Use `hspan _ (hBR _ hn) n 0` as an intermediate fact. Establish `e : t⁻¹ ^ n * t ^ 0 * (t ^ n * x) = x`. Rewrite using `[pow_zero, mul_one, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hc.ne, one_pow, one_mul]`.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem noetherian_local_chart_overlap_finite_complement : LateralTheory.E.LZIdemSumNoetherian.NoetherianLocalChartOverlapFiniteComplement := by
   intro A _ _ _ K _ _ B C t hc hB _

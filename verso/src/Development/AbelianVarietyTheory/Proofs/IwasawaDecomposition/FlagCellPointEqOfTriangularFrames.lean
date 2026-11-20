@@ -9,20 +9,18 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp_spMap_same {R S U : Type} [CommRing R] [CommRing S] [CommRing U] (f : R →+* S) (g : S →+* U) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Establish `hO : ψ.comp ((MvPolynomial.C : _ →+* CR m (V b)).comp ((α b).comp β)) = ψ'.comp ((MvPolynomial.C : _ →+* CR m (V b')).comp ((α b').comp β))`. Establish `e` using `congrArg (· ≫ s) hb`. Simplify using `only [cbase, Category.assoc, hc.ovr, spMap_comp_spMap_same] at e`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Use `hp.ext _ _ _ ?_ fun en => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hp.base, hp.base, hb]`. Take `⟨hu, e⟩` from `hp.plk b w en`. Take `⟨hu', e'⟩` from `hp.plk b' w' en`. Rewrite using `[Category.assoc, Category.assoc, e, e', spMap_pt, spMap_pt]`. Establish `hu2` using `span_range_comp_eq_top _ hu' ψ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (f g : O →+* k) (v v' : Fin (plN M en.1 + 1) → k) hv hv', f = g → (∃ u : kˣ, v' = u • v) → pt f v hv = pt g v' hv'`. Introduce and unpack `f g v v' hv hv' rfl hh`. Conclude with `(pt_eq_pt_iff f hv hv').2 hh`. Use `key _ _ _ _ _ _ hO ⟨Units.mk0 (∏ l, d (en.2.1 l)) (Finset.prod_ne_zero_iff.2 fun l _ => hd _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_plk, map_plk, GlobalTheory.T.pluckerVector_blockTriangular_frame_change T m k M _ _ d en.1 en.2.1 ht en.2.2]`.
-
-Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cell_pt_eq_of_tri (O K : Type) [CommRing O] [Field K] (β : O →+* K) (X : Scheme.{0}) (s : X ⟶ Sp O) (T : Type)
     [Finite T] (m : T → ℕ) (M : ℕ) (B : Type) (V : B → X.affineOpens) (α : ∀ b, K →+* Γ(X, (V b).1))

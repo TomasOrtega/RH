@@ -11,7 +11,7 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
   [Algebra E Ω] [Algebra E' Ω] [IsScalarTower E E' Ω] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[mem_Dec]`. Use `Eq.trans ?_ hσ` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `Iff.rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem res_mem_Dec {σ : G E' Ω} (hσ : σ ∈ Dec (F := E') A) :
     AlgEquiv.restrictScalars E σ ∈ Dec (F := E) A := by
@@ -22,14 +22,14 @@ theorem res_mem_Dec {σ : G E' Ω} (hσ : σ ∈ Dec (F := E') A) :
   exact Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨res_mem_Dec hσ.1, hσ.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_mem_Ine {σ : G E' Ω} (hσ : σ ∈ Ine (F := E') A) :
     AlgEquiv.restrictScalars E σ ∈ Ine (F := E) A :=
   ⟨res_mem_Dec hσ.1, hσ.2⟩
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use `⟨res_mem_Dec hσ.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, pow_mul]`. Conclude with `hσ.2 x hx`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_actsAs {q q' n a b : ℕ} (hq : q' = q ^ n) {σ : G E' Ω} (hσ : ActsAs A q' σ a b) :
     ActsAs A q (AlgEquiv.restrictScalars E σ) (n * a) (n * b) := by
@@ -54,11 +54,11 @@ def resI : Ine (F := E') A →* Ine (F := E) A where
   map_mul' _ _ := Subtype.ext (AlgEquiv.ext fun _ => rfl)
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one (AlgEquiv.restrictScalarsHom E : G E' Ω →* G E Ω) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Take `⟨L, hL, hLU⟩` from `(krullTopology_mem_nhds_one_iff E Ω U).mp hU`. Set `b` to `Module.finBasis E L`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `S : Set Ω` to `Set.range fun i => (b i : Ω)`. Establish `: Finite S` using `(Set.finite_range _).to_subtype`. Establish `: Algebra.IsAlgebraic E' Ω` using `IsAlgClosure.isAlgebraic`. Rewrite using `[Filter.mem_map]`. Use `(krullTopology_mem_nhds_one_iff E' Ω _).mpr ⟨IntermediateField.adjoin E' S, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, fun σ hσ => hLU ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ'` using `(IntermediateField.mem_fixingSubgroup_iff _ σ).mp hσ`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).mpr fun x hx => ?_` and prove the remaining obligations. Establish `hlin : (AlgEquiv.restrictScalarsHom E σ).toLinearMap ∘ₗ L.val.toLinearMap = L.val.toLinearMap` using `b.ext fun i => hσ' _ (IntermediateField.subset_adjoin E' S ⟨i, rfl⟩)`. Conclude with `LinearMap.congr_fun hlin ⟨x, hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_res : Continuous (AlgEquiv.restrictScalarsHom E : G E' Ω →* G E Ω) := by
   refine continuous_of_continuousAt_one (AlgEquiv.restrictScalarsHom E : G E' Ω →* G E Ω) ?_

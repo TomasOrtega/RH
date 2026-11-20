@@ -10,11 +10,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `A B _ _ f hf M _ _ _ _ N _ _ u h`. Take `⟨n, p, s, -, -, hps⟩` from `Module.Finite.exists_comp_eq_id_of_projective A M`. Set `v : M →ₛₗ[f] (Fin n → B)` to `{ toFun := fun x i => f (s x i) map_add' := fun x y => by ext i; simp map_smul' := fun a x => by ext i; simp }`. Take `⟨S, hS, -⟩` from `h _ v`. Rewrite using `[← LinearMap.ker_eq_bot (τ₁₂ := f), LinearMap.ker_eq_bot']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h1 : v x = 0` using `by rw [← hS, hx, map_zero]`. Establish `h2 : s x = 0`. Use function extensionality and compare the values at `i`. Apply `hf` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrFun h1 i`. Establish `h3 : x = p (s x)`. Rewrite using `[← LinearMap.comp_apply, hps, LinearMap.id_apply]`. Rewrite using `[h3, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiBC_injective_of_injective : ∀ (A B : Type) [CommRing A] [CommRing B] (f : A →+* B),
     Function.Injective f → ∀ (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M]

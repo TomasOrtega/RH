@@ -11,7 +11,7 @@ open MeasureTheory Topology Filter Formalism.BasicNotions Formalism.L2.SG.HidaSe
 open scoped TensorProduct
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d i`. Simplify using `only [rmulT, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmulT_rmulT {D : D7} (X : HidaSetting D) (a b : MfI X) (Y : TupI X) :
     rmulT X b (rmulT X a Y) = rmulT X (a * b) Y := by
@@ -21,7 +21,7 @@ theorem rmulT_rmulT {D : D7} (X : HidaSetting D) (a b : MfI X) (Y : TupI X) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b i`. Express the relevant statement in the definitionally equal form `Matrix.mulVec (HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g).1 (rmulT X a Y b) i = ∑ c, a c b * Matrix.mulVec (HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g).1 (Y c) i`. Simplify using `only [rmulT, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_rmulT {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (a : MfI X)
     (Y : TupI X) : g • rmulT X a Y = rmulT X a (g • Y) := by
@@ -76,13 +76,13 @@ def LocRatio : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (�
         ((νinf (W n)).toReal * (X.measG.μGinf (TubeG X u' (V n))).toReal)) atTop (𝓝 (KVal X u')⁻¹)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T₁, hT₁, g', hg', e⟩`. Establish `hG : T = T₁`. Apply `Subtype.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `congrArg (gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) e`. Rewrite `h2` using `[gramR_smul, gramR_smul, hC.2.2.2 T (hW hTW), hC.2.2.2 T₁ (hW hT₁)]`. Conclude with `h2`. Substitute `hG` using the available equality. Use `⟨g', hg', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hU T hTW`. Rewrite `e` using `[smul_rmulT, smul_rmulT]`. Establish `h3` using `congrArg (rmulT X (↑w⁻¹ : MfI X)) e`. Rewrite `h3` using `[rmulT_rmulT, rmulT_rmulT, ← hw, Units.mul_inv, rmulT_one, rmulT_one]`. Then use the resulting hypothesis. Introduce and unpack `⟨g', hg', e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, hTW, g', hg', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_rmulT, smul_rmulT, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_box {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     (hT : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i) =
@@ -111,41 +111,37 @@ theorem pre_box {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     rw [smul_rmulT, smul_rmulT, e]
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid`. Take `⟨V, W, hVW, hsh, hlim⟩` from `hR X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n`. Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hP`. Use `set L : ℕ → ENNReal := fun n => μinf (BoxT X u' a (V n) (W n)) with hL`. Use `set B : ℕ → ENNReal := fun n => νinf (W n) with hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set M : ℕ → ENNReal := fun n => X.measG.μGinf (TubeG X u' (V n)) with hM`. Use `set A : ℕ → ENNReal := fun n => ∫⁻ T in W n, c₀ * ENNReal.ofReal (J T) ∂νinf with hA`. Establish `key : ∀ n, L n = A n * M n`. Introduce `n`. Take `⟨hWm, hWs, -, -, hU, hBm, hBI, -, hTm, -, hMt⟩` from `hVW n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hid ((BoxT X u' a (V n) (W n)).indicator 1) (measurable_one.indicator hBm) (W n) hWs hWm`. Establish `hsub : BoxT X u' a (V n) (W n) ⊆ gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ⁻¹' (Subtype.val '' (W n)) ∩ IndI X`. Introduce `y hy`. Use `⟨?_, hBI hy⟩` and prove the remaining obligations. Take `⟨T, hTW, g, -, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨T, hTW, ?_⟩` and prove the remaining obligations. Rewrite using `[gramR_smul, hC.2.2.2 T (hΩ₂ (hWs hTW))]`. Rewrite `h` using `[lintegral_indicator_one hBm, Measure.restrict_apply hBm, Set.inter_eq_left.2 hsub]`. Establish `hin : ∀ T ∈ W n, ∫⁻ g, (BoxT X u' a (V n) (W n)).indicator 1 (g • rmulT X (a T) (Y0 X u')) ∂X.measG.μGinf = M n`. Introduce `T hTW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hs` using `pre_box X u' hT hC (V n) (hWs.trans hΩ₂) hU T hTW`. Establish `e : (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => (BoxT X u' a (V n) (W n)).indicator (1 : TupI X → ENNReal) (g • rmulT X (a T) (Y0 X u'))) = (TubeG X u' (V n)).indicator 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ TubeG X u' (V n)`. Establish `h4 : g • rmulT X (a T) (Y0 X u') ∈ BoxT X u' a (V n) (W n)` using `by rw [← hs] at hg; exact hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem h4]`. Both sides reduce to the same expression. Establish `h4 : g • rmulT X (a T) (Y0 X u') ∉ BoxT X u' a (V n) (W n)` using `by rw [← hs] at hg; exact hg`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem h4]`. Rewrite using `[e, lintegral_indicator_one hTm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[setLIntegral_congr_fun hWm (fun T hT' => by rw [hin T hT'])]`. Rewrite `h` using `[lintegral_mul_const' _ _ hMt.ne]`. Conclude with `h`. Establish `bounds : ∀ ε : ℝ, 0 < ε → ε < 1 → ∀ᶠ n in atTop, c₀ * ENNReal.ofReal (1 - ε) * B n ≤ A n ∧ A n ≤ c₀ * ENNReal.ofReal (1 + ε) * B n`. Introduce `ε hε0 hε1`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hU : J ⁻¹' Set.Ioo (1 - ε) (1 + ε) ∈ 𝓝 (TI X u' hT)` using `hJc (Ioo_mem_nhds (by rw [hJ1]; linarith) (by rw [hJ1]; linarith))`. Use `filter_upwards [hsh _ hU] with n hn`. Establish `hWm` using `(hVW n).1`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc₀ : c₀ ≠ ⊤`. Introduce `htop`. Take `⟨n, hn1, -⟩` from `(bounds (1 / 2) (by norm_num) (by norm_num)).exists`. Take `⟨-, -, hB0, -, -, -, -, hLt, -, hM0, -⟩` from `hVW n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAt : A n = ⊤`. Use `top_le_iff.1 (le_trans (le_of_eq ?_) hn1)` and prove the remaining obligations. Rewrite using `[htop, ENNReal.top_mul (ENNReal.ofReal_pos.2 (by norm_num)).ne', ENNReal.top_mul hB0.ne']`. Establish `: L n = ⊤` using `by rw [key n, hAt, ENNReal.top_mul hM0.ne']`. Conclude with `absurd this hLt.ne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℝ := c₀.toReal with hc`. Establish `pinch : ∀ ε : ℝ, 0 < ε → ε < 1 → ∀ᶠ n in atTop, c * (1 - ε) ≤ (L n).toReal / ((B n).toReal * (M n).toReal) ∧ (L n).toReal / ((B n).toReal * (M n).toReal) ≤ c * (1 + ε)`. Introduce `ε hε0 hε1`. Use `filter_upwards [bounds ε hε0 hε1] with n hn`. Take `⟨-, -, hB0, hBt, -, -, -, -, -, hM0, hMt⟩` from `hVW n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBr : 0 < (B n).toReal` using `ENNReal.toReal_pos hB0.ne' hBt.ne`. Establish `hMr : 0 < (M n).toReal` using `ENNReal.toReal_pos hM0.ne' hMt.ne`. Establish `hup : c₀ * ENNReal.ofReal (1 + ε) * B n ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top hc₀ ENNReal.ofReal_ne_top) hBt.ne`. Establish `hAt : A n ≠ ⊤` using `ne_top_of_le_ne_top hup hn.2`. Establish `e1 : (L n).toReal / ((B n).toReal * (M n).toReal) = (A n).toReal / (B n).toReal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key n, ENNReal.toReal_mul]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : (c₀ * ENNReal.ofReal (1 - ε) * B n).toReal = c * (1 - ε) * (B n).toReal`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Establish `e3 : (c₀ * ENNReal.ofReal (1 + ε) * B n).toReal = c * (1 + ε) * (B n).toReal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Rewrite using `[e1]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[le_div_iff₀ hBr, ← e2]`. Conclude with `ENNReal.toReal_mono hAt hn.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hBr, ← e3]`. Conclude with `ENNReal.toReal_mono hup hn.2`. Establish `hlim' : Tendsto (fun n => (L n).toReal / ((B n).toReal * (M n).toReal)) atTop (𝓝 (KVal X u')⁻¹)` using `hlim`. Establish `lo : ∀ ε : ℝ, 0 < ε → ε < 1 → c * (1 - ε) ≤ (KVal X u')⁻¹` using `fun ε h0 h1 => ge_of_tendsto hlim' ((pinch ε h0 h1).mono fun _ h => h.1)`. Establish `hi : ∀ ε : ℝ, 0 < ε → ε < 1 → (KVal X u')⁻¹ ≤ c * (1 + ε)` using `fun ε h0 h1 => le_of_tendsto hlim' ((pinch ε h0 h1).mono fun _ h => h.2)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε < 1` using `Filter.mem_of_superset (Ioo_mem_nhdsGT (by norm_num : (0 : ℝ) < 1)) fun ε h => h`. Establish `t1 : Tendsto (fun ε : ℝ => c * (1 - ε)) (𝓝[>] 0) (𝓝 c)`. Establish `: Tendsto (fun ε : ℝ => c * (1 - ε)) (𝓝 0) (𝓝 (c * (1 - 0)))` using `(continuous_const.mul (continuous_const.sub continuous_id)).tendsto 0`. Simplify using `using this.mono_left nhdsWithin_le_nhds`. Establish `t2 : Tendsto (fun ε : ℝ => c * (1 + ε)) (𝓝[>] 0) (𝓝 c)`.
-
-Establish `: Tendsto (fun ε : ℝ => c * (1 + ε)) (𝓝 0) (𝓝 (c * (1 + 0)))` using `(continuous_const.mul (continuous_const.add continuous_id)).tendsto 0`. Simplify using `using this.mono_left nhdsWithin_le_nhds`. Establish `hcle : c ≤ (KVal X u')⁻¹` using `le_of_tendsto t1 (hev.mono fun ε h => lo ε h.1 h.2)`. Establish `hcge : (KVal X u')⁻¹ ≤ c` using `ge_of_tendsto t2 (hev.mono fun ε h => hi ε h.1 h.2)`. Establish `hceq : c = (KVal X u')⁻¹` using `le_antisymm hcle hcge`.
-
-Rewrite using `[← ENNReal.ofReal_toReal hc₀, ← hc, hceq, ENNReal.ofReal_inv_of_pos hK0]`.
+A detailed English derivation is pending.
 -/
 theorem jacOneFor_of {Pr : ChartPred} (hK : KPos) (hR : LocRatioFor Pr) : JacOneFor Pr := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid
@@ -274,17 +270,15 @@ def SplitAsymFor (Pr : ChartPred) : Prop := ∀ {D : D7} (X : HidaSetting D) (u'
         (𝓝 (Tw u' ^ (D.R.k * Fintype.card (NumberField.InfinitePlace X.B.I.F))))
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n`. Take `⟨V, W, p, hVW, hsh, hG, hTup⟩` from `hS X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n`. Establish `hK0 : 0 < KVal X u'` using `hK X u' ψ hT μinf νinf fibInf hP`. Use `⟨V, W, fun n => ?_, hsh, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, -⟩` from `hVW n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩`. Use `set g0 : ℝ := Formalism.MainNotions.S.AutInst.gaugeU X.B.I * Formalism.MainNotions.S.UnitaryVolumeMass.volU D.R.k ^ Fintype.card (NumberField.InfinitePlace X.B.I.F) with hg0`. Use `set t0 : ℝ := Tw u' ^ (D.R.k * Fintype.card (NumberField.InfinitePlace X.B.I.F)) with ht0`. Establish `hKe : KVal X u' = g0 * t0⁻¹`. Simplify using `only [KVal, hg0, ht0, zpow_neg, zpow_natCast]`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg0ne : g0 ≠ 0`. Introduce `h`. Rewrite `hK0` using `[hKe, h, zero_mul]`. Conclude with `lt_irrefl _ hK0`. Establish `ht0ne : t0 ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hK0` using `[hKe, h, inv_zero, mul_zero]`. Conclude with `lt_irrefl _ hK0`. Establish `hlim` using `hTup.div hG hg0ne`. Establish `hval : t0 / g0 = (KVal X u')⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hKe, mul_inv, inv_inv, div_eq_mul_inv, mul_comm]`. Rewrite `hlim` using `[hval]`. Use `hlim.congr fun n => ?_` and prove the remaining obligations. Take `⟨-, -, hB0, hBt, -, -, -, -, -, hM0, hMt, hp⟩` from `hVW n`. Establish `hBr : 0 < (νinf (W n)).toReal` using `ENNReal.toReal_pos hB0.ne' hBt.ne`.
-
-Establish `hMr : 0 < (X.measG.μGinf (TubeG X u' (V n))).toReal` using `ENNReal.toReal_pos hM0.ne' hMt.ne`. Simplify using `only [Pi.div_apply]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem locRatioFor_of {Pr : ChartPred} (hK : KPos) (hS : SplitAsymFor Pr) : LocRatioFor Pr := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC hPr Ω₂ hΩ₂ hΩ₂n
@@ -316,7 +310,7 @@ theorem locRatioFor_of {Pr : ChartPred} (hK : KPos) (hS : SplitAsymFor Pr) : Loc
 def TrivialChartCondition : ChartPred := fun _ _ _ _ _ _ => True
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid`. Conclude with `jacOneFor_of (Pr := TrivialChartCondition) hK (fun X u' ψ hT μinf νinf fibInf hP Ω a hC _ => hR X u' ψ hT μinf νinf fibInf hP Ω a hC) X u' ψ hT μinf νinf fibInf hP Ω a hC trivial J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jacOne_of (hK : KPos) (hR : LocRatio) : JacOne := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid

@@ -11,21 +11,21 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `h` using `congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coe_rt_sq (H : Host E) : (H.rt : E) ^ 2 = -(H.d : E) := by
   have h := congrArg (algebraMap (𝓞 E) E) H.rt_sq
   simpa using h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gc4.conj_embedding_rt H τ`.
+A detailed English derivation is pending.
 -/
 theorem conj_embedding_rt (H : Host E) (τ : E →+* ℂ) :
     starRingEnd ℂ (τ (H.rt : E)) = -τ (H.rt : E) :=
   _root_.UpperTheory.Reformulated.B.Gc4.conj_embedding_rt H τ
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Establish `h` using `IsCMField.complexEmbedding_complexConj E τ (H.rt : E)`. Rewrite using `[H.bar_eq, h, conj_embedding_rt]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -38,14 +38,14 @@ Simplify using the standard rewrite rules.
   simp
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Establish `h` using `congrArg H.bar H.two_weight_eq_one_add_root`. Rewrite `h` using `[map_mul, map_add, bar_rt, map_one, map_ofNat]`. Apply `mul_left_cancel₀ (two_ne_zero : (2 : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Rewrite using `[h, mul_sub, H.two_weight_eq_one_add_root]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 @[simp] theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
   have h := congrArg H.bar H.two_weight_eq_one_add_root
@@ -54,20 +54,20 @@ Establish `h` using `congrArg H.bar H.two_weight_eq_one_add_root`. Rewrite `h` u
   rw [h, mul_sub, H.two_weight_eq_one_add_root]; ring
 
 /- English proof (translation)
-Rewrite using `[H.two_weight_eq_one_add_root]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rt_eq (H : Host E) : H.rt = 2 * H.w0 - 1 := by
   rw [H.two_weight_eq_one_add_root]; ring
 
 /- English proof (translation)
-Rewrite using `[rt_eq]`. Conclude with `sub_mem (mul_mem (ofNat_mem _ 2) (Algebra.self_mem_adjoin_singleton ℤ _)) (one_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_mem_adjoin (H : Host E) : H.rt ∈ Algebra.adjoin ℤ {H.w0} := by
   rw [rt_eq]
   exact sub_mem (mul_mem (ofNat_mem _ 2) (Algebra.self_mem_adjoin_singleton ℤ _)) (one_mem _)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `H.rt_sq`. Rewrite `h2` using `[h]`. Establish `: (H.d : 𝓞 E) = 0` using `by simpa using h2.symm`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rt_ne_zero (H : Host E) : H.rt ≠ 0 := by
   intro h
@@ -77,7 +77,7 @@ theorem rt_ne_zero (H : Host E) : H.rt ≠ 0 := by
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
 /- English proof (translation)
-Establish `h` using `H.rt_sq`. Use `push_cast`. Take the linear combination `-h`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem two_sub_rt_mul_two_add_rt (H : Host E) : (2 - H.rt) * (2 + H.rt) = ((H.d + 4 : ℕ) : 𝓞 E) := by
   have h := H.rt_sq
@@ -85,7 +85,7 @@ theorem two_sub_rt_mul_two_add_rt (H : Host E) : (2 - H.rt) * (2 + H.rt) = ((H.d
   linear_combination -h
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `H.bar (2 - H.rt) = _`. Rewrite using `[map_sub, bar_rt, map_ofNat, sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_bar_span_two_sub_rt (H : Host E) :
     (Ideal.span {2 - H.rt}).map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {2 + H.rt} := by
@@ -95,9 +95,9 @@ theorem map_bar_span_two_sub_rt (H : Host E) :
   rw [map_sub, bar_rt, map_ofNat, sub_neg_eq_add]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, H.d = 4 * k + 3` from `⟨H.d / 4, by have := H.d_mod; omega⟩`. Establish `h` using `H.rt_sq`. Rewrite `h` using `[hk]`. Move the coercions through the operations in `at h`. Use `⟨(k : 𝓞 E) + 2 - (2 + H.rt), (k : 𝓞 E) + 2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isCoprime_two_sub_rt_two_add_rt (H : Host E) : IsCoprime (2 - H.rt) (2 + H.rt) := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d = 4 * k + 3 := ⟨H.d / 4, by have := H.d_mod; omega⟩
@@ -145,9 +145,9 @@ Both sides reduce to the same expression.
 @[simp] theorem level_A (H : Host E) (A : ℕ) (hA : 0 < A) : (level H A hA).A = A := rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `hp` using `l.prod`. Rewrite `hp` using `[h, Ideal.map_top, Ideal.top_mul, eq_comm, Ideal.span_singleton_eq_top]`. Establish `h1 : IsUnit ((l.M : ℤ))`. Establish `hint : Algebra.IsIntegral ℤ (𝓞 E)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isUnit_map_iff (algebraMap ℤ (𝓞 E)) (l.M : ℤ)).mp (by simpa using hp)` as an intermediate fact. Conclude with `this`. Establish `h3` using `l.three_le`. Apply the tactic sequence `rcases Int.isUnit_iff.mp h1 with h2 | h2 <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Mb_ne_top {H : Host E} (l : Level H) : l.Mb ≠ ⊤ := by
   intro h
@@ -161,7 +161,7 @@ theorem Mb_ne_top {H : Host E} (l : Level H) : l.Mb ≠ ⊤ := by
   rcases Int.isUnit_iff.mp h1 with h2 | h2 <;> omega
 
 /- English proof (translation)
-Unfold `Level.GoodAt`. Rewrite using `[level_M, Nat.factorization_eq_zero_of_not_dvd hp]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem level_goodAt (H : Host E) (A : ℕ) (hA : 0 < A) {p : ℕ} (hp : ¬ p ∣ H.d + 4) :
     (level H A hA).GoodAt p := by
@@ -172,14 +172,14 @@ theorem level_goodAt (H : Host E) (A : ℕ) (hA : 0 < A) {p : ℕ} (hp : ¬ p �
 instance instNonemptyLevel (H : Host E) : Nonempty (Level H) := ⟨level H 1 one_pos⟩
 
 /- English proof (translation)
-Simplify using `only [Level.M', level_M, level_A, h]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 -/
 example (H : Host E) (h : H.d = 7) : (level H 5 (by norm_num)).M' = 55 := by
   simp only [Level.M', level_M, level_A, h]
   decide
 
 /- English proof (translation)
-Rewrite using `[bar_rt]`. Introduce `h`. Apply `rt_ne_zero H` to reduce the goal to its premises. Establish `: (2 : 𝓞 E) * H.rt = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.mp this).resolve_left two_ne_zero`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example (H : Host E) : H.bar H.rt ≠ H.rt := by
   rw [bar_rt]
@@ -189,7 +189,7 @@ example (H : Host E) : H.bar H.rt ≠ H.rt := by
   exact (mul_eq_zero.mp this).resolve_left two_ne_zero
 
 /- English proof (translation)
-Introduce `h`. Use `(level H A hA).coprime` as an intermediate fact. Rewrite `this` using `[h, sup_idem]`. Conclude with `Mb_ne_top _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (H : Host E) (A : ℕ) (hA : 0 < A) :
     (level H A hA).Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≠ (level H A hA).Mb := by
@@ -199,7 +199,7 @@ example (H : Host E) (A : ℕ) (hA : 0 < A) :
   exact Mb_ne_top _ this
 
 /- English proof (translation)
-The claim follows from `level_goodAt H 1 one_pos (by have := H.d_mod; omega)`.
+A detailed English derivation is pending.
 -/
 example (H : Host E) : (level H 1 one_pos).GoodAt 2 :=
   level_goodAt H 1 one_pos (by have := H.d_mod; omega)

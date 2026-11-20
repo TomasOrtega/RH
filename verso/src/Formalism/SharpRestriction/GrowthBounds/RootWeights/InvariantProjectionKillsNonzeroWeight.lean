@@ -9,15 +9,13 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `hs` using `gl_rep_shifts_weights hE`. Establish `htop` using `sum_isotypic_top_of_weight_data D h2 E hE hs (findim_weights_bounded E) (weight_projections_integral_findim E)`. Establish `hinv` using `trivial_isotypic_invariant_holds hE`. Establish `hle : ∀ mu, isoSub E mu ≤ LinearMap.ker (Inv * E a b)`. Introduce `mu y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker, Module.End.mul_apply]`. Distinguish the cases in `hmu : mu = 0`. Substitute `hmu` using the available equality. Take `⟨hy0, hyr⟩` from `hinv y hy`. Establish `: E a b y = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `hyr a b h`. Substitute `h` using the available equality. Use `(mem_weightSpace_iff_diagonal_eigen E 0 y).1 hy0 a` as an intermediate fact. Simplify using `using this`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `weight_zero_lowering_kills_raising hE hy0 b a (ne_of_lt h) (hyr b a h)`. Rewrite using `[this, map_zero]`. Conclude with `hInv.2 mu hmu _ (isotypic_stable_under_gl_operator E mu a b y hy)`. Establish `: (⊤ : Submodule K V) ≤ LinearMap.ker (Inv * E a b)`. Rewrite using `[← htop]`.
-
-Conclude with `iSup_le hle`. Establish `h3` using `this (Submodule.mem_top (x := x))`. Rewrite `h3` using `[LinearMap.mem_ker, Module.End.mul_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem invariant_projection_kills_operator (D : Formalism.BasicNotions.D7) (h2 : adm2 D) {K V : Type} [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E)
@@ -47,9 +45,9 @@ theorem invariant_projection_kills_operator (D : Formalism.BasicNotions.D7) (h2 
   rwa [LinearMap.mem_ker, Module.End.mul_apply] at h3
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, μ a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hμ (funext h)`. Establish `h1` using `(mem_weightSpace_iff_diagonal_eigen E μ x).1 hx a`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : (μ a : K) ≠ 0` using `by exact_mod_cast ha`. Establish `h3 : x = E a a (((μ a : K))⁻¹ • x)`. Rewrite using `[map_smul, h1, smul_smul, inv_mul_cancel₀ h2', one_smul]`. Rewrite using `[h3]`. Conclude with `invariant_projection_kills_operator D h2 E hE Inv hInv a a _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_projection_kills_nonzero_weight (D : Formalism.BasicNotions.D7) (h2 : adm2 D) {K V : Type} [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E)
@@ -67,13 +65,11 @@ theorem invariant_projection_kills_nonzero_weight (D : Formalism.BasicNotions.D7
   exact invariant_projection_kills_operator D h2 E hE Inv hInv a a _
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `findim_weights_bounded E`. Use `set box : Finset (Fin n → ℤ) := Fintype.piFinset fun _ => Finset.Icc (-(m : ℤ)) m with hbox`. Establish `hb : ∀ ν, weightSp E ν ≠ ⊥ → ν ∈ box`. Introduce `ν hν`. Rewrite using `[hbox, Fintype.mem_piFinset]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[Finset.mem_Icc]`. Conclude with `abs_le.1 (hm ν hν a)`. Establish `hsum` using `sum_weight_projections_eq_self E hE Θ hΘ box hb x`. Establish `h0 : (0 : Fin n → ℤ) ∈ box`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbox, Fintype.mem_piFinset]`. Introduce `a`. Rewrite using `[Finset.mem_Icc]`. Apply the tactic sequence `constructor <;> simp`. Use `conv_lhs => rw [← hsum]`.
-
-Rewrite using `[map_sum, Finset.sum_eq_single_of_mem 0 h0]`. Introduce `μ _ hμ`. Conclude with `invariant_projection_kills_nonzero_weight D h2 E hE Inv hInv μ hμ _ (weight_projection_mem_weightSpace E hE Θ hΘ μ x)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariant_projection_through_zero_weight (D : Formalism.BasicNotions.D7) (h2 : adm2 D) {K V : Type} [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E)

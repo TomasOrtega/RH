@@ -2,21 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open IsLocalRing in
 /- English proof (translation)
-Introduce `X _ M hTI hG x R _ _ _ f hC L hLT hLG hConcl`. Establish `eG : ∀ P, P ∈ L.Good ↔ f P ∈ M.Good` using `fun P => by rw [hLG]; rfl`. Establish `eT : ∀ P, P ∈ L.TI ↔ f P ∈ M.TI` using `fun P => by rw [hLT]; rfl`. Establish `hsub : ∀ P : PrimeSpectrum R, f P ∈ M.Good → closure {f P} ⊆ M.Good` using `fun P h => hG.closure_subset_iff.mpr (Set.singleton_subset_iff.mpr h)`. Establish `hmeet : ∀ P : PrimeSpectrum R, (closure {f P} ∩ M.TI).Nonempty → f P ∈ M.TI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `P ⟨y, hy, hyT⟩`. Take `⟨z, hzT, hz⟩` from `mem_closure_iff.mp hy _ hTI hyT`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[← hz]`. Conclude with `hzT`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hD Y Y' hY hY' hxY hxY' hYg`. Take `⟨P, hPm, rfl⟩` from `hC.onto Y hY.1 hxY`. Take `⟨P', hP'm, rfl⟩` from `hC.onto Y' hY'.1 hxY'`. Establish `hPG : P ∈ L.Good` using `(eG P).mpr (hYg (subset_closure (Set.mem_singleton _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPT : P ∈ L.TI` using `(eT P).mpr (hmeet P hY.2)`. Establish `h'` using `hConcl P hPG hPT (hD P hPm) P' ((eT P').mpr (hmeet P' hY'.2)) hP'm`. Conclude with `hsub P' ((eG P').mp h')`. Introduce `hall`. Use `⟨irreducibleComponent x, ⟨irreducibleComponent_mem_irreducibleComponents x, ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hPm, hPY⟩` from `hC.onto _ (irreducibleComponent_mem_irreducibleComponents x) mem_irreducibleComponent`. Use `⟨f P, ?_, (eT P).mp (hall P hPm)⟩` and prove the remaining obligations. Rewrite using `[← hPY]`. Conclude with `subset_closure (Set.mem_singleton _)`. Introduce and unpack `⟨I, hIG, hIT, hID⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨p, hpm, hpI⟩` from `Ideal.exists_minimalPrimes_le (J := I.asIdeal) (bot_le : (⊥ : Ideal R) ≤ I.asIdeal)`. Use `haveI hpp : p.IsPrime := hpm.1.1`. Set `P : PrimeSpectrum R` to `⟨p, hpp⟩`. Establish `hPmin : P.asIdeal ∈ minimalPrimes R` using `hpm`. Establish `hopen : IsOpen L.TI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hLT]`. Conclude with `hTI.preimage hC.cont`. Establish `hPT : P ∈ L.TI`. Establish `hcl : I ∈ closure ({P} : Set (PrimeSpectrum R))` using `(PrimeSpectrum.le_iff_mem_closure P I).mp hpI`. Take `⟨z, hzT, hz⟩` from `mem_closure_iff.mp hcl _ hopen hIT`.
-
-Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[← hz]`. Conclude with `hzT`. Establish `hPG` using `hConcl I hIG hIT hID P hPT hPmin`. Conclude with `⟨closure {f P}, ⟨hC.min P hPmin, f P, subset_closure (Set.mem_singleton _), (eT P).mp hPT⟩, hsub P ((eG P).mp hPG)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.globOfCharts :
     UpperTheory.V.Pr.GlobOfCharts := by

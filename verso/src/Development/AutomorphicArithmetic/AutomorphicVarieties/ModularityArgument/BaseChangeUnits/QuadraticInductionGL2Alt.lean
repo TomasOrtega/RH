@@ -53,7 +53,7 @@ def IndWeakQd : Prop :=
     ∃ P : TR.CuspSub ℚ (2 * 2), IndFin P π
 
 /- English proof (translation)
-Introduce `E _ _ _ h2 π hm _` and use `h E h2 π hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IndWeakQ.d (h : IndWeakQ) : IndWeakQd := fun E _ _ _ h2 π hm _ => h E h2 π hm
 

@@ -10,7 +10,7 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam.RowsSummed
 
 /- English proof (translation)
-Unfold `ch`. Rewrite using `[Complex.norm_exp]`. Simplify using `[Complex.div_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_ch (N : ℕ) (j : ZMod N) : ‖ch N j‖ = 1 := by
   unfold ch
@@ -18,9 +18,9 @@ theorem norm_ch (N : ℕ) (j : ZMod N) : ‖ch N j‖ = 1 := by
   simp [Complex.div_re]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp, show (1 : ℝ) = Real.exp 0 from Real.exp_zero.symm, Real.exp_lt_exp]`. Establish `hN : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hτ` using `τ.im_pos`. Establish `: ((2 * (Real.pi : ℂ) * Complex.I) * τ / N).re = -(2 * Real.pi * τ.im) / N`. Simplify using `[Complex.div_re, Complex.mul_re, Complex.mul_im]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Apply `div_neg_of_neg_of_pos _ hN` to reduce the goal to its premises. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_q_lt (N : ℕ) [NeZero N] (τ : ℍ) :
     ‖Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N)‖ < 1 := by
@@ -36,33 +36,31 @@ theorem norm_q_lt (N : ℕ) [NeZero N] (τ : ℍ) :
   nlinarith
 
 /- English proof (translation)
-Introduce `N _ e τ x S he hS`. Use `set q : ℂ := Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) with hq`. Use `set K : ℂ := (-(2 * (Real.pi : ℂ) * Complex.I)) ^ (e + 1) / (e.factorial : ℂ)`. Use `set R : ℤ → ℂ := fun k => ∑' m : ℤ, 1 / (((k : ℂ) * τ + ((x 1).val : ℂ)) / N + m) ^ (e + 1) with hR`. Establish `hN : (N : ℂ) ≠ 0` using `by exact_mod_cast NeZero.ne N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hfR : (fun n : ℤ => ∑' m : ℤ, 1 / (tors N τ x + n * (τ : ℂ) + m) ^ (e + 1)) = fun n : ℤ => R (((x 0).val : ℤ) + n * N)`. Use function extensionality and compare the values at `n`. Simplify using `only [hR]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `congr 3`. Unfold `tors`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hS` using `[hfR]`. Establish `hsplit` using `GlobalTheory.T.tsum_residueClass_split_by_sign N (x 0) R hS.summable`. Set `c₁ : ℕ → ℕ → ℂ` to `fun d m => if ((d : ℕ) : ZMod N) = x 0 then ch N ((m : ZMod N) * x 1) else 0`. Set `c₂ : ℕ → ℕ → ℂ` to `fun d m => if ((d : ℕ) : ZMod N) = -x 0 then ch N (-((m : ZMod N) * x 1)) else 0`. Establish `hq1 : ‖q‖ < 1` using `norm_q_lt N τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hc₁ : ∀ d m, ‖c₁ d m‖ ≤ 1`. Introduce `d m`. Simplify using `only [c₁]`. Use `split_ifs`. Rewrite using `[norm_ch]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hc₂ : ∀ d m, ‖c₂ d m‖ ≤ 1`. Introduce `d m`. Simplify using `only [c₂]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_ch]`. Simplify using the standard rewrite rules. Establish `h₁` using `GlobalTheory.T.hasSum_lambert_double_series_divisors e q c₁ hq1 hc₁`. Establish `h₂` using `GlobalTheory.T.hasSum_lambert_double_series_divisors e q c₂ hq1 hc₂`. Use `set T₁ := ∑' d : ℕ+, ∑' m : ℕ+, ((m : ℕ) : ℂ) ^ e * c₁ d m * q ^ ((d : ℕ) * (m : ℕ))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set T₂ := ∑' d : ℕ+, ∑' m : ℕ+, ((m : ℕ) : ℂ) ^ e * c₂ d m * q ^ ((d : ℕ) * (m : ℕ))`. Use `⟨T₁ + (-1) ^ (e + 1) * T₂, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `h₁.add (h₂.mul_left ((-1) ^ (e + 1)))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cSum, c₁, c₂]`. Rewrite using `[show ∀ A B C D : ℂ, A * D + C * (B * D) = (A + C * B) * D from fun A B C D => by ring]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hS.tsum_eq, hsplit]`. Establish `hpos : ∀ d : ℕ+, (if ((d : ℕ) : ZMod N) = x 0 then R ((d : ℕ) : ℤ) else 0) = K * ∑' m : ℕ+, ((m : ℕ) : ℂ) ^ e * c₁ d m * q ^ ((d : ℕ) * (m : ℕ))`. Introduce `d`. Simplify using `only [c₁]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hd`. Use `(GlobalTheory.T.torsionPoint_rowSum_eq_qExpansion_series N e τ (x 1) d he).1` as an intermediate fact. Simplify using `only [hR]`. Use `push_cast`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hneg : ∀ d : ℕ+, (if ((d : ℕ) : ZMod N) = -x 0 then R (-((d : ℕ) : ℤ)) else 0) = K * ((-1) ^ (e + 1) * ∑' m : ℕ+, ((m : ℕ) : ℂ) ^ e * c₂ d m * q ^ ((d : ℕ) * (m : ℕ)))`. Introduce `d`. Simplify using `only [c₂]`. Use `split_ifs with hd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.T.torsionPoint_rowSum_eq_qExpansion_series N e τ (x 1) d he).2` as an intermediate fact. Simplify using `only [hR]`. Use `push_cast`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[tsum_congr hpos, tsum_congr hneg, tsum_mul_left, tsum_mul_left, tsum_mul_left]`. Establish `h0 : R 0 = ∑' m : ℤ, 1 / ((((x 1).val : ℂ)) / N + m) ^ (e + 1)`. Simplify using `[hR]`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N] (e : ℕ) (τ : ℍ) (x : Fin 2 → ZMod N) (S : ℂ), 1 ≤ e → HasSum (fun n : ℤ => ∑' m : ℤ, 1 / (tors N τ x + n * (τ : ℂ) + m) ^ (e + 1)) S → ∃ T : ℂ, HasSum (fun k : ℕ => cSum N e ((-1) ^ (e + 1)) x k * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) ^ k) T ∧ S = (if x 0 = 0 then ∑' m : ℤ, 1 / ((((x 1).val : ℂ)) / N + m) ^ (e + 1) else 0) + (-(2 * (Real.pi : ℂ) * Complex.I)) ^ (e + 1) / (e.factorial : ℂ) * T := by
   intro N _ e τ x S he hS

@@ -23,25 +23,25 @@ def gramForm (β : V →+ V →+ U) (p : I → W →ₗ[O] V) (g : I → I → O
 variable {β : V →+ V →+ U} {p : I → W →ₗ[O] V} {g : I → I → O} {br : O ≃+* O}
 
 /- English proof (translation)
-Simplify using `only [gramForm, map_add, smul_add, AddMonoidHom.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramForm_add_left (x y z : W) : gramForm β p g (x + y) z = gramForm β p g x z + gramForm β p g y z := by
   simp only [gramForm, map_add, smul_add, AddMonoidHom.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [gramForm, map_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramForm_add_right (x y z : W) : gramForm β p g x (y + z) = gramForm β p g x y + gramForm β p g x z := by
   simp only [gramForm, map_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[gramForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramForm_zero (y : W) : gramForm β p g 0 y = 0 := by
   simp [gramForm]
 
 /- English proof (translation)
-Simplify using `only [gramForm, map_smul]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_comm, ha]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramForm_adj (ha : ∀ c x y, β (c • x) y = β x (br c • y)) (c : O) (x y : W) :
     gramForm β p g (c • x) y = gramForm β p g x (br c • y) := by
@@ -49,7 +49,7 @@ theorem gramForm_adj (ha : ∀ c x y, β (c • x) y = β x (br c • y)) (c : O
   exact Finset.sum_congr rfl fun k _ => by rw [smul_comm, ha]
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_equiv (Equiv.prodComm I I) _ _ fun k => by rw [ha, hs, ← hg] rfl`.
+A detailed English derivation is pending.
 -/
 theorem gramForm_comm (hs : ∀ x y, β x y = β y x) (ha : ∀ c x y, β (c • x) y = β x (br c • y))
     (hg : ∀ i j, g j i = br (g i j)) (x y : W) : gramForm β p g x y = gramForm β p g y x :=
@@ -58,7 +58,7 @@ theorem gramForm_comm (hs : ∀ x y, β x y = β y x) (ha : ∀ c x y, β (c •
     rfl
 
 /- English proof (translation)
-Establish `e : gramForm β p g x y = gramForm β p g x (w • y) + gramForm β p g y (w • x)`. Rewrite using `[gramForm_comm hs ha hg y, gramForm_adj ha, ← gramForm_add_right, ← add_smul, hw, one_smul]`. Rewrite using `[e, gramForm_zero, smul_add, gramForm_add_left, gramForm_add_right, gramForm_add_right]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gramForm_polar (hs : ∀ x y, β x y = β y x) (ha : ∀ c x y, β (c • x) y = β x (br c • y))
     (hg : ∀ i j, g j i = br (g i j)) {w : O} (hw : w + br w = 1) (x y : W) :
@@ -70,7 +70,7 @@ theorem gramForm_polar (hs : ∀ x y, β x y = β y x) (ha : ∀ c x y, β (c �
   abel
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_smul, map_sum, AddMonoidHom.finset_sum_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hx, hy, mul_smul (br _), ha (br _), hb, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramForm_pure (ha : ∀ c x y, β (c • x) y = β x (br c • y)) (hb : ∀ c, br (br c) = c)
     {x y : W} {u v : V} {s s' : I → O} (hx : ∀ i, p i x = s i • u) (hy : ∀ i, p i y = s' i • v) :
@@ -79,9 +79,9 @@ theorem gramForm_pure (ha : ∀ c x y, β (c • x) y = β x (br c • y)) (hb :
   exact Finset.sum_congr rfl fun k _ => by rw [hx, hy, mul_smul (br _), ha (br _), hb, mul_smul]
 
 /- English proof (translation)
-Establish `sm : ∀ c x y, h x (c • y) = br c * h x y` using `fun c x y => by`. Rewrite using `[hh (c • y) x, map_smul, AddMonoidHom.smul_apply, smul_eq_mul, map_mul, ← hh]`. Rewrite using `[map_sum h, AddMonoidHom.finset_sum_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sm, map_smul, AddMonoidHom.smul_apply, smul_eq_mul, mul_comm (s i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_expand {M : Type} [AddCommGroup M] [Module O M] (h : M →ₗ[O] M →+ O)
     (hh : ∀ x y, h y x = br (h x y)) (e : I → M) (s s' : I → O) :
@@ -119,7 +119,7 @@ def prodCls (L : LB G.left) (f f' : I → (A ⟶ G)) {Y : Scheme.{0}} (ψ : Y �
 
 omit [GrpObj A] [IsCommMonObj A] in
 /- English proof (translation)
-Rewrite using `[prodCls, Fintype.prod_prod_type]`. Conclude with `Finset.prod_congr rfl fun k _ => prod_square x (f k) (f' k) (cls L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodCls_left (f f' : I → (A ⟶ G)) {T : Over S} (x : T ⟶ A) :
     prodCls L f f' x.left = ∏ k, diff₂ (ptCls L T) (x ≫ f k) (x ≫ f' k) := by
@@ -129,25 +129,23 @@ theorem prodCls_left (f f' : I → (A ⟶ G)) {T : Over S} (x : T ⟶ A) :
 end Geometry
 
 /- English proof (translation)
-Introduce `S O _ G A _ _ _ _ a b M _ _ t br w L h _ _ hw hb hh hL hT ha`. Take `⟨P⟩` from `Summand.nonempty O M`. Set `c : Fin P.n → M →ₗ[O] O` to `fun i => LinearMap.proj i ∘ₗ P.incl`. Set `e : Fin P.n → M` to `fun i => P.proj (Pi.single i 1)`. Establish `he : ∀ m, ∑ i, c i m • e i = m` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ∑ i, P.incl m i • (Pi.single i 1 : Fin P.n → O) = P.incl m`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Simplify using `only [e, ← map_smul, ← map_sum]`. Conclude with `(congrArg P.proj this).trans congr($(P.proj_incl) m)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `π : Fin P.n → (A ⟶ G)` to `fun i => t.mapLeft (IsTensor.self a) (c i)`. Establish `hπ : ∀ i, IsLinearHom b a (π i)` using `fun i => t.isLinearHom_mapLeft _ _`. Set `g : Fin P.n → Fin P.n → O` to `fun i j => h (e i) (e j)`. Set `f : Fin P.n × Fin P.n → (A ⟶ G)` to `fun k => π k.1 ≫ a.act (g k.1 k.2)`. Set `f' : Fin P.n × Fin P.n → (A ⟶ G)` to `fun k => b.act w ≫ π k.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : ∀ T : Over S, Pts b T → Pts b T → Additive (PullClass L T.left)` to `fun T => gramForm (lamForm a hL hT T) (fun i => Pts.post (hπ i) T) g`. Establish `hs : ∀ (T : Over S) x y, lamForm a hL hT T x y = lamForm a hL hT T y x` using `fun T x y => congrArg Additive.ofMul (diff₂_comm _ _)`. Establish `hadj : ∀ (T : Over S) (r : O) x y, lamForm a hL hT T (r • x) y = lamForm a hL hT T x (br r • y)` using `fun T r x y => by`. Use `ha r` as an intermediate fact. Unfold `LamEq at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Category.comp_id, Category.comp_id]`. Conclude with `congrArg Additive.ofMul (diff₂_ptCls_adj hL this x.hom y.hom)`. Establish `hq : ∀ (T : Over S) (x : T ⟶ A), prodCls L f f' x.left = (B T (Pts.mk b x) (w • Pts.mk b x)).toMul` using `fun T x => by`. Rewrite using `[prodCls_left]`. Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (toMul_sum _ _).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [f, f', ← Category.assoc]`. Both sides reduce to the same expression. Establish `h₂ : ∀ (T : Over S) (x y : T ⟶ A), diff₂ (fun q : T ⟶ A => prodCls L f f' q.left) x y = (B T (Pts.mk b x) (Pts.mk b y)).toMul` using `fun T x y => by`. Simplify using `only [diff₂, hq]`. Conclude with `congrArg Additive.toMul (gramForm_polar (hs T) (hadj T) (fun i j => hh _ _) hw (Pts.mk b x) (Pts.mk b y))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LB.LinComb L (prodMap f f') prodExp, DVR.linComb_isLB _ hL _ _, ?_, ?_, fun m m' => ?_⟩` and prove the remaining obligations. Use `hasGen_nested (K' := PUnit) hL _ _ (fun _ => eSec A) (fun _ => 1) ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(hq _ η[A]).trans ?_` and prove the remaining obligations. Establish `e : η[A] = (1 : 𝟙_ (Over S) ⟶ A)` using `by simp [Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `congrArg Additive.toMul (gramForm_zero _)`. Use `hasGen_nested hL _ _ (thφ A (x3 A)) thε ((GlobalTheory.AbLaw.Cube.prod_theta (prodCls L f f')).trans ((prod_cub _ _ _ (prodCls L f f')).trans ?_))` and prove the remaining obligations. Establish `e` using `diff₂_mul_left_eq (m := fun q : G3 A ⟶ A => prodCls L f f' q.left) (x3 A 0) (x3 A 1) (x3 A 2)`. Rewrite `e` using `[h₂, h₂, h₂, Pts.mk_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_eq_right.1 (e.symm.trans (congrArg Additive.toMul (gramForm_add_left _ _ _)))`. Use `lbIso_nested hL _ _ _ _ _ _ ((prod_square_id _ _ (prodCls L f f')).trans (Eq.trans ?_ (prod_square_id _ _ (cls L)).symm))` and prove the remaining obligations. Establish `k : ∀ (u : G ⊗ G ⟶ G) (m : M) i, Pts.post (hπ i) _ (Pts.mk b (u ≫ t.tmul m)) = c i m • Pts.mk a u` using `fun u m i => Pts.ext (by`. Simplify using `only [Pts.hom_post, Pts.hom_mk, Pts.hom_smul, π, Category.assoc, IsTensor.tmul_mapLeft, IsTensor.self_tmul])`. Rewrite using `[h₂, Category.comp_id]`.
-
-Use `congrArg Additive.toMul ((gramForm_pure (hadj _) hb (k _ m) (k _ m')).trans ?_)` and prove the remaining obligations. Rewrite using `[(hermitian_expand h hh e (fun i => c i m) fun i => c i m' : ∑ k : Fin P.n × Fin P.n, br (c k.2 m') * (g k.1 k.2 * c k.1 m) = _), he, he]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_tensor_bundle : ∀ (S : Scheme.{0}) (O : Type) [CommRing O] (G A : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A] (a : OAct O G) (b : OAct O A) (M : Type) [AddCommGroup M] [Module O M] (t : Serre.IsTensor A b G a M) (br : O ≃+* O) (w : O) (L : LB G.left) (h : M →ₗ[O] M →+ O), Module.Finite O M → Module.Projective O M → w + br w = 1 → (∀ c, br (br c) = c) → (∀ x y, h y x = br (h x y)) → L.IsLB → (∃ t : LB.Gen (Theta G L), t.IsGen) → (∀ c, LamEq L (a.act c) (𝟙 G) L (𝟙 G) (a.act (br c))) →
   ∃ N : LB A.left, N.IsLB ∧ Out.Rigidified A N ∧ (∃ t : LB.Gen (Theta A N), t.IsGen) ∧ ∀ m m', LamEq N (t.tmul m) (t.tmul m') L (a.act (h m m')) (𝟙 G) := by

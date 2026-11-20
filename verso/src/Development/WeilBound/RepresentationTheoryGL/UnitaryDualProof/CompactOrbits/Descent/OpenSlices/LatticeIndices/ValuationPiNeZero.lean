@@ -32,7 +32,7 @@ def Lat (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) : AddSubgroup (M
       exact hx2 i j
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Lat {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {m : ℕ} {x : Matrix (Fin n) (Fin n) k} :
     x ∈ Lat Z m ↔ x ∈ Bz Z ∧ ∀ i j, valuation k (x i j) ≤ valuation k (pi k) ^ m := Iff.rfl
@@ -54,21 +54,21 @@ Both sides reduce to the same expression.
 @[simp] theorem conjA_apply (g : GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) : conjA g x = g.val * x * g⁻¹.val := rfl
 
 /- English proof (translation)
-The claim follows from `GLnLocal.valuation_uniformizer_ne_zero k`.
+A detailed English derivation is pending.
 -/
 theorem valuation_pi_ne_zero : valuation k (pi k) ≠ 0 := GLnLocal.valuation_uniformizer_ne_zero k
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1, fun i j => (hx.2 i j).trans (pow_le_pow_right_of_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Lat_anti (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m m' : ℕ} (h : m ≤ m') : Lat Z m' ≤ Lat Z m :=
   fun _ hx => ⟨hx.1, fun i j => (hx.2 i j).trans
     (pow_le_pow_right_of_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le h)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Conclude with `⟨0, by simp [hc]⟩`. Establish `hv : valuation k c ≠ 0` using `(Valuation.ne_zero_iff _).mpr hc`. Take `⟨N, hN⟩` from `exists_pow_lt₀ (GLnLocal.valuation_uniformizer_lt_one k) (Units.mk0 _ (inv_ne_zero hv))`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : valuation k (pi k) ^ N ≤ (valuation k c)⁻¹` using `by simpa using hN.le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_scale (c : k) : ∃ N : ℕ, valuation k (pi k) ^ N * valuation k c ≤ 1 := by
   by_cases hc : c = 0
@@ -81,7 +81,7 @@ theorem exists_scale (c : k) : ∃ N : ℕ, valuation k (pi k) ^ N * valuation k
     _ = 1 := inv_mul_cancel₀ hv
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `mul_le_mul' (hA i l) (hB l j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_le {A B : Matrix (Fin n) (Fin n) k} {α β : ValueGroupWithZero k}
     (hA : ∀ i j, valuation k (A i j) ≤ α) (hB : ∀ i j, valuation k (B i j) ≤ β) (i j : Fin n) :
@@ -92,7 +92,7 @@ theorem val_mul_le {A B : Matrix (Fin n) (Fin n) k} {α β : ValueGroupWithZero 
   exact mul_le_mul' (hA i l) (hB l j)
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hh.1 a ha, mul_assoc, hx.1 a ha, mul_assoc]`. Simplify using `using val_mul_le hh.2 hx.2 i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_mem_Lat {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {h x : Matrix (Fin n) (Fin n) k}
     (hh : h ∈ Lat Z 0) {m : ℕ} (hx : x ∈ Lat Z m) : h * x ∈ Lat Z m := by
@@ -101,7 +101,7 @@ theorem mul_mem_Lat {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {h x : Matrix 
   · simpa using val_mul_le hh.2 hx.2 i j
 
 /- English proof (translation)
-Use `choose N hN using fun p : Fin n × Fin n => exists_scale (A p.1 p.2)`. Use `⟨Finset.univ.sup N + 1, by omega, fun i j => ?_⟩` and prove the remaining obligations. Establish `hle : N (i, j) ≤ Finset.univ.sup N + 1` using `(Finset.le_sup (f := N) (Finset.mem_univ (i, j))).trans (Nat.le_succ _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem exists_mat_scale (A : Matrix (Fin n) (Fin n) k) :
     ∃ a : ℕ, 1 ≤ a ∧ ∀ i j, valuation k (pi k) ^ a * valuation k (A i j) ≤ 1 := by
@@ -115,7 +115,7 @@ private theorem exists_mat_scale (A : Matrix (Fin n) (Fin n) k) :
     _ ≤ 1 := hN (i, j)
 
 /- English proof (translation)
-Establish `hp : valuation k (pi k) ^ a ≠ 0` using `pow_ne_zero _ valuation_pi_ne_zero`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hp, one_mul]`. Use `_ ≤ (valuation k (pi k) ^ a)⁻¹ * 1 := mul_le_mul' le_rfl h`. Use `_ = _ := mul_one _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_inv_of_scale {a : ℕ} {y : ValueGroupWithZero k}
     (h : valuation k (pi k) ^ a * y ≤ 1) : y ≤ (valuation k (pi k) ^ a)⁻¹ := by
@@ -126,9 +126,9 @@ private theorem le_inv_of_scale {a : ℕ} {y : ValueGroupWithZero k}
     _ = _ := mul_one _
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1` using `hu a ha`. Establish `h2 : a * u⁻¹.val = u⁻¹.val * a` using `(GzS Z).inv_mem (x := u) hu a ha`. Establish `h3` using `hx a ha`. Simplify using `only [conjA_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem conj_mem_Bz {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {u : GL (Fin n) k} (hu : u ∈ Gz Z)
     {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z) : conjA u x ∈ Bz Z := by
@@ -143,9 +143,9 @@ private theorem conj_mem_Bz {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {u : G
     _ = u.val * x * u⁻¹.val * a := by rw [h2]; simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hpa : valuation k (pi k) ^ a ≠ 0` using `pow_ne_zero _ valuation_pi_ne_zero`. Establish `hpb : valuation k (pi k) ^ b ≠ 0` using `pow_ne_zero _ valuation_pi_ne_zero`. Establish `h1` using `val_mul_le (A := u.val) (fun i j => le_inv_of_scale (hu i j)) hx`. Establish `h2` using `val_mul_le h1 (fun i j => le_inv_of_scale (hu' i j)) i l`. Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_add, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem conj_val_le (u : GL (Fin n) k) {a b t : ℕ}
     (hu : ∀ i j, valuation k (pi k) ^ a * valuation k (u i j) ≤ 1)
@@ -165,9 +165,9 @@ private theorem conj_val_le (u : GL (Fin n) k) {a b t : ℕ}
     _ = valuation k (pi k) ^ t := by rw [inv_mul_cancel₀ hpa, mul_inv_cancel₀ hpb, mul_one, mul_one]
 
 /- English proof (translation)
-Take `⟨a, ha1, ha⟩` from `exists_mat_scale (g.val)`. Take `⟨b, -, hb⟩` from `exists_mat_scale ((g⁻¹ : GL (Fin n) k).val)`. Establish `hg' : g⁻¹ ∈ Gz Z` using `(GzS Z).inv_mem (x := g) hg`. Use `⟨a + b, by omega, fun t x hx => ⟨⟨conj_mem_Bz hg hx.1, ?_⟩, ⟨conj_mem_Bz hg' hx.1, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `conj_val_le g ha hb hx.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `conj_val_le (a := b) (b := a) g⁻¹ hb (by simpa using ha) (fun i l => ?_)` and prove the remaining obligations. Rewrite using `[add_comm b a]`. Conclude with `hx.2 i l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_shift (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) (hg : g ∈ Gz Z) :
     ∃ c : ℕ, 1 ≤ c ∧ ∀ j : ℕ, ∀ x ∈ Lat Z (j + c), conjA g x ∈ Lat Z j ∧ conjA g⁻¹ x ∈ Lat Z j := by
@@ -180,13 +180,13 @@ theorem exists_shift (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin 
     rw [add_comm b a]; exact hx.2 i l
 
 /- English proof (translation)
-Establish `hc : pi k ^ m ≠ 0` using `pow_ne_zero _ (by`. Introduce `h; exact valuation_pi_ne_zero (k := k) (by rw [h, map_zero]))`. Establish `hvc : valuation k (pi k ^ m) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hc`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2⟩`. Use `⟨(pi k ^ m)⁻¹ • x, ⟨fun a ha => ?_, fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hx1 a ha]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Valuation.map_mul, map_inv₀]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_pow, pow_add, ← mul_assoc, inv_mul_cancel₀ (by simpa using hvc), one_mul]`. Rewrite using `[smulA_apply, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Introduce and unpack `⟨y, ⟨hy1, hy2⟩, rfl⟩`. Use `⟨fun a ha => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smulA_apply, Matrix.mul_smul, Matrix.smul_mul, hy1 a ha]`. Rewrite using `[smulA_apply, Matrix.smul_apply, smul_eq_mul, Valuation.map_mul, map_pow, pow_add]`. Conclude with `mul_le_mul' le_rfl (hy2 i j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lat_add (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m r : ℕ) :
     Lat Z (m + r) = (Lat Z r).map (smulA (pi k ^ m)) := by
@@ -212,19 +212,19 @@ theorem Lat_add (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m r : ℕ) :
       exact mul_le_mul' le_rfl (hy2 i j)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `smul_right_injective _ hc h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smulA_injective {c : k} (hc : c ≠ 0) : Function.Injective (smulA (n := n) c) :=
   fun _ _ h => smul_right_injective _ hc h
 
 /- English proof (translation)
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjA_inv_conjA (g : GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) : conjA g⁻¹ (conjA g x) = x := by
   simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `x y h` and use `by rw [← conjA_inv_conjA g x, h, conjA_inv_conjA]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjA_injective (g : GL (Fin n) k) : Function.Injective (conjA g) := fun x y h => by
   rw [← conjA_inv_conjA g x, h, conjA_inv_conjA]

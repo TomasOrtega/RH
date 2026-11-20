@@ -10,9 +10,9 @@ def rl (S O : List ℚ) (x : ℚ) : ℚ :=
   ((S.countP (fun e => decide (e < x)) : ℚ) - (S.countP (fun e => decide (x < e)) : ℚ)) / 2
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Simplify using `only [List.length_cons]`. Rewrite using `[Fin.sum_univ_succ, List.countP_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, List.getD_cons_zero, Fin.val_succ, List.getD_cons_succ, ih]`. Apply the tactic sequence `by_cases h : P a <;> simp [h, add_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_ite_getD (L : List ℚ) (P : ℚ → Prop) [DecidablePred P] :
     (∑ j : Fin L.length, if P (L.getD j 0) then 1 else 0) = L.countP (fun e => decide (P e)) := by
@@ -25,7 +25,7 @@ theorem sum_ite_getD (L : List ℚ) (P : ℚ → Prop) [DecidablePred P] :
     by_cases h : P a <;> simp [h, add_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Fintype.sum_sum_type, ← sum_ite_getD]`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_inl (L : List ℚ) {q : ℕ} (P : Ix L.length q → Prop) [DecidablePred P] (Q : ℚ → Prop)
     [DecidablePred Q] (h1 : ∀ j, P (.inl j) ↔ Q (L.getD j 0)) (h2 : ∀ j, ¬ P (.inr j)) :
@@ -34,7 +34,7 @@ theorem card_inl (L : List ℚ) {q : ℕ} (P : Ix L.length q → Prop) [Decidabl
   simp [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Fintype.sum_sum_type, ← sum_ite_getD]`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_inr (L : List ℚ) {q : ℕ} (P : Ix q L.length → Prop) [DecidablePred P] (Q : ℚ → Prop)
     [DecidablePred Q] (h1 : ∀ j, P (.inr j) ↔ Q (L.getD j 0)) (h2 : ∀ j, ¬ P (.inl j)) :
@@ -43,7 +43,7 @@ theorem card_inr (L : List ℚ) {q : ℕ} (P : Ix q L.length → Prop) [Decidabl
   simp [h1, h2]
 
 /- English proof (translation)
-Substitute `hp hq` using the available equality. Unfold `rhoNC rl`. Apply the tactic sequence `rw [card_inr O _ (fun e => e < S.getD i 0), card_inr O _ (fun e => S.getD i 0 < e), card_inl S _ (fun e => e < S.getD i 0), card_inl S _ (fun e => S.getD i 0 < e)] <;>`. Apply the tactic sequence `intro j <;> simp [sameBlock, ofBlocks]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhoNC_inl {p q : ℕ} (S O : List ℚ) (hp : S.length = p) (hq : O.length = q) (i : Fin p) :
     rhoNC (ofBlocks (p := p) (q := q) S O) (.inl i) = rl S O (S.getD i 0) := by
@@ -54,7 +54,7 @@ theorem rhoNC_inl {p q : ℕ} (S O : List ℚ) (hp : S.length = p) (hq : O.lengt
   intro j <;> simp [sameBlock, ofBlocks]
 
 /- English proof (translation)
-Substitute `hp hq` using the available equality. Unfold `rhoNC rl`. Apply the tactic sequence `rw [card_inl S _ (fun e => e < O.getD i 0), card_inl S _ (fun e => O.getD i 0 < e), card_inr O _ (fun e => e < O.getD i 0), card_inr O _ (fun e => O.getD i 0 < e)] <;>`. Apply the tactic sequence `intro j <;> simp [sameBlock, ofBlocks]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhoNC_inr {p q : ℕ} (S O : List ℚ) (hp : S.length = p) (hq : O.length = q) (i : Fin q) :
     rhoNC (ofBlocks (p := p) (q := q) S O) (.inr i) = rl O S (O.getD i 0) := by
@@ -65,11 +65,11 @@ theorem rhoNC_inr {p q : ℕ} (S O : List ℚ) (hp : S.length = p) (hq : O.lengt
   intro j <;> simp [sameBlock, ofBlocks]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Simplify using `only [List.countP_cons, List.count_cons, List.length_cons]`. Break down `lt_trichotomy a x with h | h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h, h.ne, h.not_gt]`. Use linear arithmetic over natural numbers and integers. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[h, h.ne', h.not_gt]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem count_three (L : List ℚ) (x : ℚ) :
     L.countP (fun e => decide (e < x)) + L.countP (fun e => decide (x < e)) + L.count x = L.length := by
@@ -83,9 +83,9 @@ theorem count_three (L : List ℚ) (x : ℚ) :
     · simp [h, h.ne', h.not_gt]; omega
 
 /- English proof (translation)
-Rewrite using `[List.countP_eq_length_filter, ← List.toFinset_card_of_nodup (hA.filter _)]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `e he`. Simplify using `only [List.mem_toFinset, List.mem_filter] at he`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk, rfl⟩` from `h e he.1 he.2`. Conclude with `Finset.mem_image.2 ⟨k, Finset.mem_range.2 hk, rfl⟩`. Use `_ ≤ N := by simpa using Finset.card_image_le (s := Finset.range N) (f := φ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem countP_le_of_image (A : List ℚ) (hA : A.Nodup) (P : ℚ → Bool) (N : ℕ) (φ : ℕ → ℚ)
     (h : ∀ e ∈ A, P e = true → ∃ k < N, e = φ k) : A.countP P ≤ N := by
@@ -99,15 +99,15 @@ theorem countP_le_of_image (A : List ℚ) (hA : A.Nodup) (P : ℚ → Bool) (N :
     _ ≤ N := by simpa using Finset.card_image_le (s := Finset.range N) (f := φ)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hAm x hx`. Establish `hmx : m ≤ x` using `by rw [hN]; have : (0 : ℚ) ≤ N := Nat.cast_nonneg N; linarith`. Establish `h1 : A.countP (fun e => decide (e < x)) ≤ N`. Use `countP_le_of_image A hA _ N (fun k => m + k) fun e he hlt => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hAm e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨k, ?_, rfl⟩` and prove the remaining obligations. Establish `: m + k < m + N` using `by simpa [hN] using hlt`. Conclude with `(show (k : ℚ) < N by linarith)` after adjusting the coercions. Establish `h2` using `count_three A x`. Establish `h3 : A.count x ≤ 1` using `List.nodup_iff_count_le_one.1 hA x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : B.countP (fun e => decide (e < x)) ≤ B.length` using `List.countP_le_length`. Establish `h5 : D.countP (fun e => decide (e < x)) = D.length` using `List.countP_eq_length.2 fun e he => by simpa using (hD e he).trans_le hmx`. Establish `h6 : D.countP (fun e => decide (x < e)) = 0` using `List.countP_eq_zero.2 fun e he => by simpa using ((hD e he).trans_le hmx).le`. Establish `h7 : C.countP (fun e => decide (x < e)) ≤ C.length` using `List.countP_le_length`. Unfold `rl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.countP_append, h5, h6]`. Use `push_cast`. Establish `h1' : ((A.countP (fun e => decide (e < x)) : ℕ) : ℚ) ≤ N` using `by exact_mod_cast h1`. Establish `h2' : (A.length : ℚ) ≤ (A.countP (fun e => decide (e < x)) : ℕ) + (A.countP (fun e => decide (x < e)) : ℕ) + 1` using `by exact_mod_cast (by omega)`. Establish `h4' : ((B.countP (fun e => decide (e < x)) : ℕ) : ℚ) ≤ B.length` using `by exact_mod_cast h4`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7' : ((C.countP (fun e => decide (x < e)) : ℕ) : ℚ) ≤ C.length` using `by exact_mod_cast h7`. Establish `h8 : (0 : ℚ) ≤ (C.countP (fun e => decide (e < x)) : ℕ)` using `Nat.cast_nonneg _`. Establish `h9 : (0 : ℚ) ≤ (B.countP (fun e => decide (x < e)) : ℕ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bound_pos (A B C D : List ℚ) (m : ℚ) (hA : A.Nodup) (hAm : ∀ e ∈ A, ∃ k : ℕ, e = m + k)
     (hB : ∀ e ∈ B, e < m) (hD : ∀ e ∈ D, e < m) (x : ℚ) (hx : x ∈ A) :
@@ -142,15 +142,15 @@ theorem bound_pos (A B C D : List ℚ) (m : ℚ) (hA : A.Nodup) (hAm : ∀ e ∈
   linarith
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hBm x hx`. Establish `hmx : x ≤ -m` using `by rw [hN]; have : (0 : ℚ) ≤ N := Nat.cast_nonneg N; linarith`. Establish `h1 : B.countP (fun e => decide (x < e)) ≤ N`. Use `countP_le_of_image B hB _ N (fun k => -m - k) fun e he hlt => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hBm e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨k, ?_, rfl⟩` and prove the remaining obligations. Establish `: -m - N < -m - k` using `by simpa [hN] using hlt`. Conclude with `(show (k : ℚ) < N by linarith)` after adjusting the coercions. Establish `h2` using `count_three B x`. Establish `h3 : B.count x ≤ 1` using `List.nodup_iff_count_le_one.1 hB x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : A.countP (fun e => decide (x < e)) ≤ A.length` using `List.countP_le_length`. Establish `h5 : C.countP (fun e => decide (x < e)) = C.length` using `List.countP_eq_length.2 fun e he => by simpa using hmx.trans_lt (hC e he)`. Establish `h6 : C.countP (fun e => decide (e < x)) = 0` using `List.countP_eq_zero.2 fun e he => by simpa using (hmx.trans_lt (hC e he)).le`. Establish `h7 : D.countP (fun e => decide (e < x)) ≤ D.length` using `List.countP_le_length`. Unfold `rl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.countP_append, h5, h6]`. Use `push_cast`. Establish `h1' : ((B.countP (fun e => decide (x < e)) : ℕ) : ℚ) ≤ N` using `by exact_mod_cast h1`. Establish `h2' : (B.length : ℚ) ≤ (B.countP (fun e => decide (e < x)) : ℕ) + (B.countP (fun e => decide (x < e)) : ℕ) + 1` using `by exact_mod_cast (by omega)`. Establish `h4' : ((A.countP (fun e => decide (x < e)) : ℕ) : ℚ) ≤ A.length` using `by exact_mod_cast h4`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7' : ((D.countP (fun e => decide (e < x)) : ℕ) : ℚ) ≤ D.length` using `by exact_mod_cast h7`. Establish `h8 : (0 : ℚ) ≤ (D.countP (fun e => decide (x < e)) : ℕ)` using `Nat.cast_nonneg _`. Establish `h9 : (0 : ℚ) ≤ (A.countP (fun e => decide (e < x)) : ℕ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bound_neg (A B C D : List ℚ) (m : ℚ) (hB : B.Nodup) (hBm : ∀ e ∈ B, ∃ k : ℕ, e = -m - k)
     (hA : ∀ e ∈ A, -m < e) (hC : ∀ e ∈ C, -m < e) (x : ℚ) (hx : x ∈ B) :
@@ -185,7 +185,7 @@ theorem bound_neg (A B C D : List ℚ) (m : ℚ) (hB : B.Nodup) (hBm : ∀ e ∈
   linarith
 
 /- English proof (translation)
-Apply `List.ext_getElem (by simp [hS, hT])` to reduce the goal to its premises. Introduce `i h1 h2`. Use `h ⟨i, hT ▸ h2⟩` as an intermediate fact. Establish `h3 : i < S.length` using `by simpa using h1`. Simplify `this` using `[List.getD_eq_getElem?_getD, List.getElem?_eq_getElem h2, List.getElem?_eq_getElem h3]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_eq_of_getD {n : ℕ} (S T : List ℚ) (F : ℚ → ℚ) (hS : S.length = n) (hT : T.length = n)
     (h : ∀ i : Fin n, F (S.getD i 0) = T.getD i 0) : S.map F = T := by
@@ -197,16 +197,16 @@ theorem map_eq_of_getD {n : ℕ} (S T : List ℚ) (F : ℚ → ℚ) (hS : S.leng
     using this
 
 /- English proof (translation)
-Simplify using `[pad]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pad_length (a b : List ℤ) (n : ℕ) (h : a.length + b.length ≤ n) :
     (pad a (n - a.length - b.length) b).length = n := by
   simp [pad]; omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `map_eq_of_getD S T _ hp hT fun i => ?_` and prove the remaining obligations. Use `congrFun h (.inl i)` as an intermediate fact. Rewrite using `[← rhoNC_inl S O hp hq i]`. Simplify `this` using `[shiftNu, blattner, ofBlocks]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `map_eq_of_getD O U _ hq hU fun i => ?_` and prove the remaining obligations. Use `congrFun h (.inr i)` as an intermediate fact. Rewrite using `[← rhoNC_inr S O hp hq i]`. Simplify `this` using `[shiftNu, blattner, ofBlocks]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem shape_lists {p q : ℕ} (S O T U : List ℚ) (c : ℚ) (hp : S.length = p) (hq : O.length = q)
     (hT : T.length = p) (hU : U.length = q)
@@ -223,9 +223,9 @@ theorem shape_lists {p q : ℕ} (S O T U : List ℚ) (c : ℚ) (hp : S.length = 
     simpa [shiftNu, blattner, ofBlocks] using this
 
 /- English proof (translation)
-Establish `h1` using `congrArg (List.countP (fun e : ℚ => decide (0 < e))) h`. Simplify using `only [pad, List.map_append, List.countP_append, List.countP_map] at h1`. Establish `h2 : A.countP ((fun e : ℚ => decide (0 < e)) ∘ F) = A.length` using `List.countP_eq_length.2 fun e he => by simpa using hF e he`. Establish `h3 : b.countP ((fun e : ℚ => decide (0 < e)) ∘ fun v : ℤ => (v : ℚ)) = 0` using `List.countP_eq_zero.2 fun e he => by simpa using (hb e he).le`. Establish `h4 : (List.replicate k (0 : ℤ)).countP ((fun e : ℚ => decide (0 < e)) ∘ fun v : ℤ => (v : ℚ)) = 0` using `List.countP_eq_zero.2 fun e he => by simp [List.eq_of_mem_replicate he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : a.countP ((fun e : ℚ => decide (0 < e)) ∘ fun v : ℤ => (v : ℚ)) ≤ a.length` using `List.countP_le_length`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem len_pos (A B : List ℚ) (F : ℚ → ℚ) (a b : List ℤ) (k : ℕ) (hb : ∀ v ∈ b, v < 0)
     (h : (A ++ B).map F = pad a k b) (hF : ∀ x ∈ A, 0 < F x) : A.length ≤ a.length := by
@@ -243,9 +243,9 @@ theorem len_pos (A B : List ℚ) (F : ℚ → ℚ) (a b : List ℤ) (k : ℕ) (h
   omega
 
 /- English proof (translation)
-Establish `h1` using `congrArg (List.countP (fun e : ℚ => decide (e < 0))) h`. Simplify using `only [pad, List.map_append, List.countP_append, List.countP_map] at h1`. Establish `h2 : B.countP ((fun e : ℚ => decide (e < 0)) ∘ F) = B.length` using `List.countP_eq_length.2 fun e he => by simpa using hF e he`. Establish `h3 : a.countP ((fun e : ℚ => decide (e < 0)) ∘ fun v : ℤ => (v : ℚ)) = 0` using `List.countP_eq_zero.2 fun e he => by simpa using (ha e he).le`. Establish `h4 : (List.replicate k (0 : ℤ)).countP ((fun e : ℚ => decide (e < 0)) ∘ fun v : ℤ => (v : ℚ)) = 0` using `List.countP_eq_zero.2 fun e he => by simp [List.eq_of_mem_replicate he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : b.countP ((fun e : ℚ => decide (e < 0)) ∘ fun v : ℤ => (v : ℚ)) ≤ b.length` using `List.countP_le_length`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem len_neg (A B : List ℚ) (F : ℚ → ℚ) (a b : List ℤ) (k : ℕ) (ha : ∀ v ∈ a, 0 < v)
     (h : (A ++ B).map F = pad a k b) (hF : ∀ x ∈ B, F x < 0) : B.length ≤ b.length := by
@@ -263,16 +263,16 @@ theorem len_neg (A B : List ℚ) (F : ℚ → ℚ) (a b : List ℤ) (k : ℕ) (h
   omega
 
 /- English proof (translation)
-Unfold `cPair`. Rewrite using `[Nat.cast_sub hr, Nat.cast_sub hs]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cPair_sub (r s i : ℕ) (hr : i ≤ r) (hs : i ≤ s) : cPair (r - i) (s - i) = cPair r s := by
   unfold cPair
   rw [Nat.cast_sub hr, Nat.cast_sub hs]; ring
 
 /- English proof (translation)
-Introduce `e he`. Establish `: ∃ k < t, ((t : ℚ) - 1) / 2 - (k : ℕ) = e` using `by simpa [block] using he`. Take `⟨k, hk, rfl⟩` from `this`. Establish `h1 : (k : ℚ) < t` using `by exact_mod_cast hk`. Establish `h2 : (0 : ℚ) ≤ k` using `Nat.cast_nonneg k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_bounds (t : ℕ) : ∀ e ∈ block t, -(((t : ℚ) + 1) / 2) < e ∧ e < ((t : ℚ) + 1) / 2 := by
   intro e he
@@ -283,12 +283,12 @@ theorem block_bounds (t : ℕ) : ∀ e ∈ block t, -(((t : ℚ) + 1) / 2) < e �
   constructor <;> linarith
 
 /- English proof (translation)
-Simplify using `[block]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_length (t : ℕ) : (block t).length = t := by simp [block]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hk`. Establish `: 0 ≤ k` using `by exact_mod_cast (show (0 : ℚ) ≤ k by linarith)`. Use `lift k to ℕ using this`. Conclude with `⟨k, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem up_coset (m e : ℚ) (hk : ∃ k : ℤ, e = m + k) (h : m ≤ e) : ∃ k : ℕ, e = m + k := by
   obtain ⟨k, rfl⟩ := hk
@@ -297,7 +297,7 @@ theorem up_coset (m e : ℚ) (hk : ∃ k : ℤ, e = m + k) (h : m ≤ e) : ∃ k
   exact ⟨k, by simp⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hk`. Take `⟨j, hj⟩` from `up_coset (((t : ℚ) + 1) / 2) (-e) ⟨-k - t - 1, by rw [hk]; push_cast; ring⟩ (by linarith)`. Conclude with `⟨j, by linarith⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem down_coset (t : ℕ) (e : ℚ) (hk : ∃ k : ℤ, e = ((t : ℚ) + 1) / 2 + k)
     (h : e ≤ -(((t : ℚ) + 1) / 2)) : ∃ k : ℕ, e = -(((t : ℚ) + 1) / 2) - k := by
@@ -307,7 +307,7 @@ theorem down_coset (t : ℕ) (e : ℚ) (hk : ∃ k : ℤ, e = ((t : ℚ) + 1) / 
   exact ⟨j, by linarith⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hk`. Consider the cases of `k with`. Consider the case `zero => simp at h`. Consider the case `succ k => exact ⟨k, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem up_strict (m e : ℚ) (hk : ∃ k : ℕ, e = m + k) (h : e ≠ m) : ∃ k : ℕ, e = m + 1 + k := by
   obtain ⟨k, rfl⟩ := hk
@@ -316,7 +316,7 @@ theorem up_strict (m e : ℚ) (hk : ∃ k : ℕ, e = m + k) (h : e ≠ m) : ∃ 
   | succ k => exact ⟨k, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hk`. Consider the cases of `k with`. Consider the case `zero => simp at h`. Consider the case `succ k => exact ⟨k, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem down_strict (m e : ℚ) (hk : ∃ k : ℕ, e = -m - k) (h : e ≠ -m) :
     ∃ k : ℕ, e = -(m + 1) - k := by
@@ -326,9 +326,9 @@ theorem down_strict (m e : ℚ) (hk : ∃ k : ℕ, e = -m - k) (h : e ≠ -m) :
   | succ k => exact ⟨k, by push_cast; ring⟩
 
 /- English proof (translation)
-Break down `he with he | he` into its components or cases. Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem he`. Conclude with `⟨.inl ⟨i, by simpa using hi⟩, by`. Simplify using `only [lamA, ofBlocks]`. Conclude with `List.getD_eq_getElem _ _ hi⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem he`. Conclude with `⟨.inr ⟨i, by simpa using hi⟩, by`. Simplify using `only [lamA, ofBlocks]`. Conclude with `List.getD_eq_getElem _ _ hi⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entry_lamA (al be ga de : List ℚ) (e : ℚ) (he : e ∈ al ++ be ∨ e ∈ ga ++ de) :
     ∃ a, lamA al be ga de a = e := by
@@ -341,55 +341,55 @@ theorem entry_lamA (al be ga de : List ℚ) (e : ℚ) (he : e ∈ al ++ be ∨ e
       simp only [lamA, ofBlocks]; exact List.getD_eq_getElem _ _ hi⟩
 
 /- English proof (translation)
-Introduce `t al be ga de H i hi`. Take `⟨ht, -, pal, pbe, pga, pde, -, hpos, hneg, hint, habs⟩` from `H`. Establish `ht' : (1 : ℚ) ≤ t` using `by exact_mod_cast ht`. Establish `nal : al.Nodup` using `pal.imp fun h => ne_of_gt h`. Establish `nbe : be.Nodup` using `pbe.imp fun h => ne_of_gt h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nga : ga.Nodup` using `pga.imp fun h => ne_of_gt h`. Establish `nde : de.Nodup` using `pde.imp fun h => ne_of_gt h`. Establish `hbl` using `block_bounds t`. Establish `hbll` using `block_length t`. Establish `gal : ∀ e ∈ al, ((t : ℚ) + 1) / 2 ≤ e` using `fun e he => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `habs e (by simp [he]); rwa [abs_of_pos (hpos e (by simp [he]))] at h1`. Establish `gga : ∀ e ∈ ga, ((t : ℚ) + 1) / 2 ≤ e` using `fun e he => by`. Establish `h1` using `habs e (by simp [he]); rwa [abs_of_pos (hpos e (by simp [he]))] at h1`. Establish `gbe : ∀ e ∈ be, e ≤ -(((t : ℚ) + 1) / 2)` using `fun e he => by`. Establish `h1` using `habs e (by simp [he]); rw [abs_of_neg (hneg e (by simp [he]))] at h1; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gde : ∀ e ∈ de, e ≤ -(((t : ℚ) + 1) / 2)` using `fun e he => by`. Establish `h1` using `habs e (by simp [he]); rw [abs_of_neg (hneg e (by simp [he]))] at h1; linarith`. Establish `cal` using `fun e (he : e ∈ al) => up_coset _ e (hint e (by simp [he])) (gal e he)`. Establish `cga` using `fun e (he : e ∈ ga) => up_coset _ e (hint e (by simp [he])) (gga e he)`. Establish `cbe` using `fun e (he : e ∈ be) => down_coset t e (hint e (by simp [he])) (gbe e he)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cde` using `fun e (he : e ∈ de) => down_coset t e (hint e (by simp [he])) (gde e he)`. Establish `lal : ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ al, -m < e` using `fun m hm e he => by`. Combine the linear relations using `[gal e he]`. Establish `lga : ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ ga, -m < e` using `fun m hm e he => by`. Combine the linear relations using `[gga e he]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `lbe : ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ be, e < m` using `fun m hm e he => by`. Combine the linear relations using `[gbe e he]`. Establish `lde : ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ de, e < m` using `fun m hm e he => by`. Combine the linear relations using `[gde e he]`. Establish `up : ∀ L : List ℚ, (∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ L, -m < e) → ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ L ++ block t, -m < e` using `fun L hL m hm e he => by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Break down `List.mem_append.1 he with he | he` into its components or cases. Conclude with `hL m hm e he`. Combine the linear relations using `[(hbl e he).1]`. Establish `dn : ∀ L : List ℚ, (∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ L, e < m) → ∀ m, ((t : ℚ) + 1) / 2 ≤ m → ∀ e ∈ block t ++ L, e < m` using `fun L hL m hm e he => by`. Break down `List.mem_append.1 he with he | he` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[(hbl e he).2]`. Conclude with `hL m hm e he`. Establish `m1 : ((t : ℚ) + 1) / 2 ≤ ((t : ℚ) + 1) / 2 + 1` using `by linarith`. Use `⟨fun hr hs μ' hJ => ?_, fun hr hs μ' hJ => ?_, fun hne hp hq => ⟨fun μ hJ => ?_, fun μ hJ => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, l1, l2, l3, l4, e1, -⟩` from `hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e1` using `[cPair_sub _ _ _ hr hs]`. Take `⟨e2, e3⟩` from `shape_lists (al ++ be) (ga ++ de) _ _ _ (by simp) (by simp) (pad_length _ _ _ l1) (pad_length _ _ _ l2) e1`. Establish `k1` using `len_pos ga de _ _ _ _ hd e3 fun x hx => by`. Use `bound_pos ga de al be _ nga cga (lde _ le_rfl) (lbe _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `k2` using `len_neg al be _ _ _ _ ha e2 fun x hx => by`. Use `bound_neg al be ga de _ nbe cbe (lal _ le_rfl) (lga _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Take `⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, l1, l2, l3, l4, e1, -⟩` from `hJ`. Rewrite `e1` using `[cPair_sub _ _ _ hr hs]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e2, e3⟩` from `shape_lists (al ++ be) (ga ++ de) _ _ _ (by simp) (by simp) (pad_length _ _ _ l1) (pad_length _ _ _ l2) e1`. Establish `k1` using `len_pos al be _ _ _ _ hb e2 fun x hx => by`. Use `bound_pos al be ga de _ nal cal (lbe _ le_rfl) (lde _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `k2` using `len_neg ga de _ _ _ _ hc e3 fun x hx => by`. Use `bound_neg ga de al be _ nde cde (lga _ le_rfl) (lal _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Take `⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, l1, l2, l3, l4, -, e1⟩` from `hJ`. Rewrite `e1` using `[cPair_sub _ _ _ hp hq]`. Take `⟨e2, e3⟩` from `shape_lists (al ++ block t ++ de) (ga ++ be) _ _ _ (by simp [hbll]; omega) (by simp) (pad_length _ _ _ l3) (pad_length _ _ _ l4) e1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hne with hne | hne` into its components or cases. Establish `k1` using `len_neg ga be _ _ _ _ hc e3 fun x hx => by`. Use `bound_neg ga be (al ++ block t) de _ nbe cbe (lga _ le_rfl) (up al lal _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e2` using `[List.append_assoc]`. Establish `k2` using `len_pos al (block t ++ de) _ _ _ _ hd e2 fun x hx => by`. Use `bound_pos al (block t ++ de) ga be _ nal (fun e he => up_strict _ e (cal e he) fun h => hne (h ▸ entry_lamA al be ga de e (by simp [he]))) (dn de lde _ m1) (lbe _ m1) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish `k2` using `len_neg (al ++ block t) de _ _ _ _ ha e2 fun x hx => by`. Use `bound_neg (al ++ block t) de ga be _ nde (fun e he => down_strict _ e (cde e he) fun h => hne (h ▸ entry_lamA al be ga de e (by simp [he]))) (up al lal _ m1) (lga _ m1) x hx` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e3` using `[List.append_assoc]`. Establish `k1` using `len_pos ga be _ _ _ _ hb e3 fun x hx => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `bound_pos ga be al (block t ++ de) _ nga cga (lbe _ le_rfl) (dn de lde _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b, c, d, ha, hc, hb, hd, -, -, -, -, l1, l2, l3, l4, -, e1⟩` from `hJ`. Rewrite `e1` using `[cPair_sub _ _ _ hp hq]`. Take `⟨e2, e3⟩` from `shape_lists (al ++ de) (ga ++ block t ++ be) _ _ _ (by simp) (by simp [hbll]; omega) (pad_length _ _ _ l3) (pad_length _ _ _ l4) e1`. Break down `hne with hne | hne` into its components or cases. Establish `k1` using `len_neg al de _ _ _ _ ha e2 fun x hx => by`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `bound_neg al de (ga ++ block t) be _ nde cde (lal _ le_rfl) (up ga lga _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e3` using `[List.append_assoc]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `len_pos ga (block t ++ be) _ _ _ _ hb e3 fun x hx => by`. Use `bound_pos ga (block t ++ be) al de _ nga (fun e he => up_strict _ e (cga e he) fun h => hne (h ▸ entry_lamA al be ga de e (by simp [he]))) (dn be lbe _ m1) (lde _ m1) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `k2` using `len_neg (ga ++ block t) be _ _ _ _ hc e3 fun x hx => by`. Use `bound_neg (ga ++ block t) be al de _ nbe (fun e he => down_strict _ e (cbe e he) fun h => hne (h ▸ entry_lamA al be ga de e (by simp [he]))) (up ga lga _ m1) (lal _ m1) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`. Move the coercions through the operations in `at this ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e2` using `[List.append_assoc]`. Establish `k1` using `len_pos al de _ _ _ _ hd e2 fun x hx => by`. Use `bound_pos al de ga (block t ++ be) _ nal cal (lde _ le_rfl) (dn be lbe _ le_rfl) x hx` as an intermediate fact. Simplify using `only [cPair, List.length_append, hbll] at this ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lowestType_not_jointShape : ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → ∀ i : ℕ, 1 ≤ i → (i ≤ al.length + de.length + t → i ≤ ga.length + be.length → ∀ μ', ¬ JointShape _ _ (al.length + de.length + t - i) (ga.length + be.length - i) (blattner (lamA al be ga de)) μ') ∧ (i ≤ al.length + de.length → i ≤ ga.length + be.length + t → ∀ μ', ¬ JointShape _ _ (al.length + de.length - i) (ga.length + be.length + t - i) (blattner (lamA al be ga de)) μ') ∧ ((¬ (∃ a, lamA al be ga de a = ((t : ℚ) + 1) / 2) ∨ ¬ (∃ a, lamA al be ga de a = -(((t : ℚ) + 1) / 2))) → i ≤ al.length + be.length → i ≤ ga.length + de.length → (∀ μ, ¬ JointShape (al.length + be.length - i) (ga.length + de.length - i) _ _ μ (blattner (lamA' t al be ga de))) ∧ ∀ μ, ¬ JointShape (al.length + be.length - i) (ga.length + de.length - i) _ _ μ (blattner (lamM' t al be ga de))) := by
   intro t al be ga de H i hi

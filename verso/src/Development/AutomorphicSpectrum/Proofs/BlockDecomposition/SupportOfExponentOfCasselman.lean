@@ -13,9 +13,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.PinLift
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_one]`. Conclude with `mul_comm _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gl_one_comm {k : Type} [Field k] (a b : GL (Fin 1) k) : a * b = b * a := by
   apply Units.ext

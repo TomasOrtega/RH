@@ -18,13 +18,11 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.IdemIntegral
 
 /- English proof (translation)
-Establish `key : ∀ z ∈ intAE D, Algebra.TensorProduct.comm D.host.F (Formalism.L2.Herm.Af D.host.F) D.host.E z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : D.host.E) ⊗ₜ[D.host.F] a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Establish `h2 : (x : D.host.E) ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Subring.subset_closure (Or.inl ⟨⟨_, x, rfl⟩, rfl⟩)`. Establish `h3` using `mul_mem h2 h1`. Rewrite `h3` using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
-
-Conclude with `neg_mem hx`. Conclude with `key _ hw`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toEAf_mem_of_finPart {D : D7} {w : AE D} (hw : finPart D w ∈ intAE D) :
     toEAf D w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -52,22 +50,22 @@ Both sides reduce to the same expression.
 theorem toEAf_incA (D : D7) (x : D.host.E) : toEAf D (incA D x) = eToEAf D x := rfl
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨_, x, rfl⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem eToEAf_int (D : D7) (x : 𝓞 D.host.E) :
     eToEAf D (x : D.host.E) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E :=
   Subring.subset_closure (Or.inl ⟨⟨_, x, rfl⟩, rfl⟩)
 
 /- English proof (translation)
-Use `set n : ℕ := Ideal.absNorm D.host.𝔟 with hn`. Establish `hnP : (n : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `h`. Take `⟨p, hp, hpP⟩` from `GlobalTheory.HalfCompare.exists_prime_under PP`. Conclude with `hP ((hpP _).2 (((GlobalTheory.HalfCompare.prime_dvd_absNorm_halfDifferent D hp).1 ((hpP _).1 h)).mul_right _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : (n : 𝓞 D.host.E) ≠ 0` using `fun h => hnP (h ▸ zero_mem _)`. Establish `hn0' : (n : D.host.E) ≠ 0`. Introduce `h`. Apply `hn0` to reduce the goal to its premises. Establish `: n = 0` using `by exact_mod_cast h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Nat.cast_zero]`. Establish `h1 : finPart D (e * incA D (((n : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `hnP ((he.2 _ hn0).2 h)`. Establish `h2` using `toEAf_mem_of_finPart h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.int_of_mem_b D (Ideal.absNorm_mem D.host.𝔟) ha`. Establish `hi : IsIntegral ℤ (D.sp.cm.sig (c : D.host.E))` using `(show IsIntegral ℤ (c : D.host.E) from c.2).map (D.sp.cm.sig : D.host.E →+* D.host.E).toIntAlgHom`. Establish `h3` using `mul_mem h2 (eToEAf_int D ⟨_, hi⟩)`. Rewrite `h3` using `[map_mul, toEAf_incA, mul_assoc, ← map_mul]`. Use `h3 using 3` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc' : (c : D.host.E) = a * n` using `hc`. Establish `hcast : ((n : 𝓞 D.host.E) : D.host.E) = n` using `map_natCast (algebraMap (𝓞 D.host.E) D.host.E) n`. Express the relevant statement in the definitionally equal form `D.sp.cm.sig a = ((n : 𝓞 D.host.E) : D.host.E)⁻¹ * D.sp.cm.sig (c : D.host.E)`. Rewrite using `[hc', hcast, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem conj_mem_at (D : D7) (e : AE D) (PP : HeightOneSpectrum (𝓞 D.host.E)) (he : Formalism.L2.NTheta.IsIdemAt e PP)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
@@ -101,7 +99,7 @@ theorem conj_mem_at (D : D7) (e : AE D) (PP : HeightOneSpectrum (𝓞 D.host.E))
   field_simp
 
 /- English proof (translation)
-Introduce and unpack `D e P ⟨⟨es, hes, rfl⟩, -⟩ hP a ha`. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `sum_mem fun PP hPP => conj_mem_at D _ PP (hes PP hPP) (hP PP hPP) a ha`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_intAf : ∀ (D : D7) (e : AE D) (P : Finset (Pl D.host.E)), IsIdemSum e P → (∀ PP ∈ P, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ a : D.host.E, a ∈ D.host.AA → toEAf D e * eToEAf D (D.sp.cm.sig a) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   rintro D e P ⟨⟨es, hes, rfl⟩, -⟩ hP a ha

@@ -10,9 +10,9 @@ set_option maxHeartbeats 4000000
 namespace GlobalTheory.HeightCounting.Up.ThirdTied
 
 /- English proof (translation)
-Introduce `hL hP hX`. Use `StepW.of_all fun K B f T w _ _ _ P x => ?_` and prove the remaining obligations. Introduce `l big L _ _ m _ _ s r _ μ hμ`. Use `(m.z.lev.xiH (r.Y.tupT μ)).trans ?_` and prove the remaining obligations. Establish `b` using `r.Y.tupTie μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `b` using `[r.tup, m.tup]`. Rewrite using `[b]`. Conclude with `(congrFun l.c.xi_eq μ).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiH_tupT_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ T w P x => ∀ (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → ∀ (m : Moved (GlobalTheory.HeightCounting.Fin3.oL x L)), m.Copy → m.Coh → ∀ (s : Side0 (GlobalTheory.HeightCounting.Fin3.oL x L)) (r : ReadPk m s), r.Pin → ∀ μ, Formalism.IndefR.RecTie.Used0 (withLoc L) μ → m.z.R.toLevCh.xiH (r.Y.tupT μ) = (tpL L l.c.tp).xi μ := by
   intro hL hP hX

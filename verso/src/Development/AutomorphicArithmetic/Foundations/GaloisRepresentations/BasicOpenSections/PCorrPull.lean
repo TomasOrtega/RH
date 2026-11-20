@@ -8,9 +8,7 @@ open GlobalTheory.SS.FrobField (absFrob)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Introduce `p Y S B O g s bS β hS T w hw hr`. Establish `hsq : (pullback.fst T.p s ≫ T.r) ≫ g = (pullback.snd T.p s ≫ bS) ≫ β`. Rewrite using `[Category.assoc, hr, ← Category.assoc, pullback.condition, Category.assoc, hS.w, Category.assoc]`. Use `haveI := T.fin`. Use `⟨⟨pullback T.p s, pullback.snd T.p s, hS.lift _ _ hsq, Wt.comap (pullback.fst T.p s) w, inferInstance, TranscendenceTraces.wtBC_holds _ _ _ _ w (IsPullback.of_hasPullback T.p s) hw⟩, pullback.fst T.p s, IsPullback.of_hasPullback T.p s, hS.lift_fst _ _ _, ?_, rfl⟩` and prove the remaining obligations.
-
-Conclude with `hS.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.corrPull :
     CorrPull := by

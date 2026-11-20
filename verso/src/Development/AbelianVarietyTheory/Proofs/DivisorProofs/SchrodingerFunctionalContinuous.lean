@@ -12,7 +12,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.DblSiegelX
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ψ hψ κ _ Λ hΛ Φ hΦ d L`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hL : Continuous L` using `IsModuleTopology.continuous_of_linearMap L`. Conclude with `(GlobalTheory.ConeMeasSmall.continuous_schr hψ hΛ hΦ).comp hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_admitted_schr_linear : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ψ : AddChar (AF F) ℂ),
     IsStd ψ → ∀ (κ : Type) [Fintype κ], ∀ Λ ∈ (adeleClass F).adm κ, ∀ Φ ∈ schA F κ, ∀ (d : ℕ)

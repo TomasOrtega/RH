@@ -12,19 +12,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
 open MeasureTheory Set in
 open scoped ENNReal in
 /- English proof (translation)
-Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Establish `hcount : ∀ x : G, ∑' γ : Γ, C.indicator (1 : G → ℝ≥0∞) (γ • x) ≤ ENNReal.ofReal n`. Introduce `x`. Establish `hS : ∑' γ : Γ, C.indicator (1 : G → ℝ≥0∞) (γ • x) = ∑' γ : Γ, {γ : Γ | (γ : G) * x ∈ C}.indicator 1 γ` using `rfl`. Rewrite using `[hS, ← tsum_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.one_apply]`. Rewrite using `[ENNReal.tsum_set_one]`. Take `⟨hfin, hle⟩` from `hn x`. Establish `hE : ({γ : Γ | (γ : G) * x ∈ C}).encard ≤ (({γ : G | γ ∈ Γ ∧ γ * x ∈ C}.ncard : ℕ) : ℕ∞)`. Rewrite using `[hfin.cast_ncard_eq, ← Subtype.val_injective.encard_image]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Set.encard_le_encard` to reduce the goal to its premises. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `⟨γ.2, hγ⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal hle`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `γ`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : γ⁻¹ • x ∈ C <;> simp [hx, hinv]`. Use `_ = ∫⁻ x in 𝓕, ∑' γ : Γ, C.indicator (1 : G → ℝ≥0∞) (γ⁻¹ • x) * g x ∂μ := by`. Rewrite using `[lintegral_tsum]`. Introduce `γ`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(((measurable_one.indicator hCm).comp (measurable_const_smul _)).mul hg).aemeasurable`. Use `_ = ∫⁻ x in 𝓕, (∑' γ : Γ, C.indicator (1 : G → ℝ≥0∞) (γ • x)) * g x ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.tsum_mul_right]`.
-
-Use `congr 1`. Conclude with `(Equiv.inv Γ).tsum_eq (fun γ => C.indicator (1 : G → ℝ≥0∞) (γ • x))`. Use `_ ≤ ∫⁻ x in 𝓕, ENNReal.ofReal n * g x ∂μ := lintegral_mono fun x => by gcongr ?_ * _; exact hcount x`. Use `_ = _ := lintegral_const_mul _ hg`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem lintegral_compact_le_mul_lintegral_fundamentalDomain (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
@@ -79,17 +77,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   [BorelSpace G] {μ : Measure G} [μ.IsMulLeftInvariant] {Γ : Subgroup G} [Countable Γ] {𝓕 : Set G} in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ Γ _ 𝓕 h𝓕 C hC n hn`. Use `⟨(ENNReal.ofReal n ^ (1/2 : ℝ) * μ C ^ (1/2 : ℝ)).toReal, fun F => ?_⟩` and prove the remaining obligations. Establish `hπ : Measurable (Quotient.mk (QuotientGroup.rightRel Γ))` using `fun _ hs => hs`. Establish `hF` using `Lp.stronglyMeasurable F`. Establish `hf : StronglyMeasurable fun x => F (Quotient.mk (QuotientGroup.rightRel Γ) x)` using `hF.comp_measurable hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2 : eLpNorm (fun x => F (Quotient.mk (QuotientGroup.rightRel Γ) x)) 2 (μ.restrict C) ≤ ENNReal.ofReal n ^ (1/2 : ℝ) * eLpNorm F 2 ((μ.restrict 𝓕).map (Quotient.mk (QuotientGroup.rightRel Γ)))`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat]`. Rewrite using `[← ENNReal.mul_rpow_of_nonneg _ _ (by norm_num : (0 : ℝ) ≤ 1 / 2)]`. Use `ENNReal.rpow_le_rpow ?_ (by norm_num)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show Quotient.mk (QuotientGroup.rightRel Γ) (γ • x) = Quotient.mk _ x from Quotient.sound (QuotientGroup.rightRel_apply.2 (by simp [Subgroup.smul_def, mul_inv_rev]))]`. Use `_ = _ := by rw [lintegral_map (hF.measurable.enorm.pow_const _) hπ]`. Establish `hL1 : eLpNorm (fun x => F (Quotient.mk (QuotientGroup.rightRel Γ) x)) 1 (μ.restrict C) ≤ ENNReal.ofReal n ^ (1/2 : ℝ) * μ C ^ (1/2 : ℝ) * eLpNorm F 2 ((μ.restrict 𝓕).map (Quotient.mk (QuotientGroup.rightRel Γ)))`. Use `(eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hf.aestronglyMeasurable).trans ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_apply_univ]`. Simplify using `only [ENNReal.toReal_one, ENNReal.toReal_ofNat]`. Rewrite using `[show (1 / 1 - 1 / 2 : ℝ) = 1 / 2 by norm_num]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : ENNReal.ofReal n ^ (1/2 : ℝ) * μ C ^ (1/2 : ℝ) * eLpNorm F 2 ((μ.restrict 𝓕).map (Quotient.mk (QuotientGroup.rightRel Γ))) < ⊤`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.mul_lt_top (ENNReal.mul_lt_top ?_ ?_) (Lp.eLpNorm_lt_top F)` and prove the remaining obligations. Conclude with `ENNReal.rpow_lt_top_of_nonneg (by norm_num) ENNReal.ofReal_ne_top`. Conclude with `ENNReal.rpow_lt_top_of_nonneg (by norm_num) hC.measure_lt_top.ne`. Use `⟨memLp_one_iff_integrable.1 ⟨hf.aestronglyMeasurable, hL1.trans_lt hfin⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_norm_eq_lintegral_enorm hf.aestronglyMeasurable, ← eLpNorm_one_eq_lintegral_enorm, Lp.norm_def, ← ENNReal.toReal_mul]`.
-
-Conclude with `ENNReal.toReal_mono hfin.ne hL1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QuotLocInt.integrableOn_compact : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (Γ : Subgroup G) [Countable Γ]

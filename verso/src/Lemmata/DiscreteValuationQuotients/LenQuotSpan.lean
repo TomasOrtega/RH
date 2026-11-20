@@ -5,7 +5,7 @@ universe u_1 u_2
 namespace Bl.DiscreteValuationQuotients
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def' u hϖ n, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma lenQuotSpan {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {x : O} (hx : x ≠ 0) :
@@ -17,7 +17,7 @@ private lemma lenQuotSpan {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValua
     IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h` using `IsDiscreteValuationRing.addVal_def' u hϖ 0`. Rewrite `h` using `[pow_zero, mul_one, Nat.cast_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma addValUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (u : Oˣ) : IsDiscreteValuationRing.addVal O (u : O) = 0 := by
@@ -26,7 +26,7 @@ private lemma addValUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuat
   rwa [pow_zero, mul_one, Nat.cast_zero] at h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty, IsDiscreteValuationRing.addVal_one]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma addValProd {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ι : Type*} (s : Finset ι) (g : ι → O) :
@@ -39,19 +39,17 @@ private lemma addValProd {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuat
     rw [Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]
 
 /- English proof (translation)
-Introduce `O M _ _ _ _ _ _ _ φ hφ`. Set `e0 : M ≃ₗ[O] LinearMap.range φ` to `LinearEquiv.ofInjective φ hφ`. Establish `h : Module.finrank O (LinearMap.range φ) = Module.finrank O M` using `e0.finrank_eq.symm`. Set `b` to `Module.Free.chooseBasis O M`. Set `a` to `Submodule.smithNormalFormCoeffs b h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `ab` to `Submodule.smithNormalFormBotBasis b h`. Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `e' : M ≃ₗ[O] LinearMap.range φ` to `b'.equiv ab (Equiv.refl _)`. Set `f : M →ₗ[O] M` to `(LinearMap.range φ).subtype ∘ₗ (e' : M →ₗ[O] LinearMap.range φ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφf : φ = (LinearMap.range φ).subtype ∘ₗ (e0 : M →ₗ[O] LinearMap.range φ)` using `LinearMap.ext fun x => rfl`. Establish `hassoc : Associated (LinearMap.det φ) (LinearMap.det f)`. Rewrite using `[hφf]`. Conclude with `LinearMap.associated_det_comp_equiv _ _ _`. Establish `ha : ∀ i, f (b' i) = a i • b' i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Express the relevant statement in the definitionally equal form `((b'.equiv ab (Equiv.refl _) (b' i) : LinearMap.range φ) : M) = _`. Rewrite using `[Module.Basis.equiv_apply, Equiv.refl_apply]`. Conclude with `ab_eq i`. Establish `hdet : LinearMap.det f = ∏ i, a i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← LinearMap.det_toMatrix b', ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ha, map_smul, Module.Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hij, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]`. Establish `hval : IsDiscreteValuationRing.addVal O (LinearMap.det φ) = IsDiscreteValuationRing.addVal O (∏ i, a i)`. Take `⟨u, hu⟩` from `hassoc`. Rewrite using `[← hdet, ← hu, IsDiscreteValuationRing.addVal_mul, addValUnit, add_zero]`.
-
-Rewrite using `[(Submodule.quotientEquivPiSpan (LinearMap.range φ) b h).length_eq, Module.length_pi_of_fintype, hval, addValProd]`. Conclude with `Finset.sum_congr rfl fun i _ => lenQuotSpan (Submodule.smithNormalFormCoeffs_ne_zero b h i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {O : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O]

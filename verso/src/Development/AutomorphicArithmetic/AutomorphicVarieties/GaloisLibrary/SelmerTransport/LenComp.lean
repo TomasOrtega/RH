@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `e` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g.rangeRestrict (Submodule.subtype_injective _) g.surjective_rangeRestrict (by`. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])`. Rewrite using `[e, add_comm]`. Use `add_le_add (Module.length_le_of_injective _ (Submodule.subtype_injective _)) ?_` and prove the remaining obligations. Conclude with `(Module.length_le_of_injective _ (Submodule.inclusion_injective h)).trans (Module.length_le_of_surjective _ f.surjective_rangeRestrict)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem length_le_of_exact {R A B C : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C] (f : A →ₗ[R] B) (g : B →ₗ[R] C)
@@ -18,13 +18,13 @@ private theorem length_le_of_exact {R A B C : Type} [CommRing R] [AddCommGroup A
     (Module.length_le_of_surjective _ f.surjective_rangeRestrict)
 
 /- English proof (translation)
-Introduce `R N _ _ _ a b`. Prove the components needed by the constructor for the conclusion. Establish `h1 : LinearMap.ker b ≤ LinearMap.ker (a * b)` using `fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[Module.End.mul_apply, hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ x ∈ LinearMap.ker (a * b), b x ∈ LinearMap.ker a` using `fun x hx => hx`. Use `length_le_of_exact (Submodule.inclusion h1) (LinearMap.restrict b h2) fun x hx => ?_` and prove the remaining obligations. Conclude with `⟨⟨x.1, congrArg Subtype.val hx⟩, rfl⟩`. Establish `h1 : LinearMap.range b ≤ (LinearMap.range (a * b)).comap a`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, rfl⟩`. Establish `h2 : LinearMap.range (a * b) ≤ (LinearMap.range a).comap LinearMap.id`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨b y, rfl⟩`. Use `length_le_of_exact (Submodule.mapQ _ _ a h1) (Submodule.mapQ _ _ LinearMap.id h2) fun x hx => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy⟩` from `hx`. Use `⟨Submodule.Quotient.mk y, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mapQ_apply, hy]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

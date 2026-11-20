@@ -7,7 +7,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 open scoped ContDiff ENNReal Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.isBigO_norm_pow_of_le_rpow_sub_half_euclidean` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusHaarMeasure%2FHolomorphicIsBigOOfHalfPowerBound.lean&line=73#L73)
 -/

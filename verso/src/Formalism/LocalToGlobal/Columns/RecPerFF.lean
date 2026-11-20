@@ -24,7 +24,7 @@ section Cast
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use function extensionality and compare the values at `w`. Conclude with `h w w.2`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem levFam_eq_cast {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (e : SG = SG')
     (A : LevFam E K n SG) (B : LevFam E K n SG') (h : ∀ (w : SG') (hw : w.1 ∈ SG), B w = A ⟨w.1, hw⟩) : B = e ▸ A := by
@@ -52,7 +52,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-Use `levFam_eq_cast (rcol_rowSG_eq sel mu hQ) _ _ fun w hw => ?_` and prove the remaining obligations. Use `first`. Consider the case `(simp only [LevFam.inv, rowTy, LevFam.glue, dif_pos hw]; done)`. Consider the case `(unfold LevFam.inv rowTy LevFam.glue; rw [dif_pos hw])`. Consider the case `(simp [LevFam.inv, rowTy, LevFam.glue, hw])`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rowTy_inv_cast : (rowTy Ch sel mu P).inv = rcol_rowSG_eq sel mu hQ ▸ (rowTyG Ch P).inv := by
   refine levFam_eq_cast (rcol_rowSG_eq sel mu hQ) _ _ fun w hw => ?_

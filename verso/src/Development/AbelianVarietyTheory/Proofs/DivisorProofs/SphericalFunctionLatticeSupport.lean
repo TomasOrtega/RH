@@ -16,7 +16,7 @@ section IntMat
 variable {F : Type} [Field F] [NumberField F] {v : Pl F} {n d : ℕ}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem fun k _ => mul_mem (hA i k) (hM k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intMat_mul {A : Matrix (Fin n) (Fin n) (Fv F v)} {M : Matrix (Fin n) (Fin d) (Fv F v)}
     (hA : ∀ i j, A i j ∈ v.adicCompletionIntegers F) (hM : ∀ i j, M i j ∈ v.adicCompletionIntegers F) :
@@ -25,9 +25,9 @@ theorem intMat_mul {A : Matrix (Fin n) (Fin n) (Fv F v)} {M : Matrix (Fin n) (Fi
   exact sum_mem fun k _ => mul_mem (hA i k) (hM k j)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_GLint_iff.1 hk`. Use `⟨fun h => ?_, fun h => intMat_mul h1 h⟩` and prove the remaining obligations. Establish `e : M = (k⁻¹).1 * (k.1 * M)`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intMat_mul h2 h`.
+A detailed English derivation is pending.
 -/
 theorem intMat_kgl_mul_iff {k : GL (Fin n) (Fv F v)} (hk : k ∈ KGL v n) (M : Matrix (Fin n) (Fin d) (Fv F v)) :
     (∀ i j, (k.1 * M) i j ∈ v.adicCompletionIntegers F) ↔ ∀ i j, M i j ∈ v.adicCompletionIntegers F := by
@@ -39,7 +39,7 @@ theorem intMat_kgl_mul_iff {k : GL (Fin n) (Fv F v)} (hk : k ∈ KGL v n) (M : M
   exact intMat_mul h2 h
 
 /- English proof (translation)
-Establish `h : T.1 * ((T⁻¹).1 * M) = M`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `h'` using `congrFun (congrFun h i) j`. Rewrite `h'` using `[hT, Matrix.diagonal_mul]`. Rewrite using `[← h', ← mul_assoc, ← zpow_add₀ hϖ, neg_add_cancel, zpow_zero, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_inv_mul_apply {ϖ : Fv F v} (hϖ : ϖ ≠ 0) (e : Fin n → ℤ) {T : GL (Fin n) (Fv F v)}
     (hT : T.1 = Matrix.diagonal (fun i => ϖ ^ e i)) (M : Matrix (Fin n) (Fin d) (Fv F v)) (i : Fin n) (j : Fin d) :
@@ -51,7 +51,7 @@ theorem diag_inv_mul_apply {ϖ : Fv F v} (hϖ : ϖ ≠ 0) (e : Fin n → ℤ) {T
   rw [← h', ← mul_assoc, ← zpow_add₀ hϖ, neg_add_cancel, zpow_zero, one_mul]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hm`. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem hϖ k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_of_nonneg {ϖ : Fv F v} (hϖ : ϖ ∈ v.adicCompletionIntegers F) {m : ℤ} (hm : 0 ≤ m) :
     ϖ ^ m ∈ v.adicCompletionIntegers F := by
@@ -60,9 +60,9 @@ theorem zpow_mem_of_nonneg {ϖ : Fv F v} (hϖ : ϖ ∈ v.adicCompletionIntegers 
   exact pow_mem hϖ k
 
 /- English proof (translation)
-Break down `le_total e 0 with he | he` into its components or cases. Rewrite using `[max_eq_right he, neg_zero, zpow_zero, one_mul]`. Conclude with `⟨fun h => ⟨mul_mem (zpow_mem_of_nonneg hϖ (by omega)) h, h⟩, fun h => h.2⟩`. Rewrite using `[max_eq_left he]`. Use `⟨fun h => ⟨h, ?_⟩, fun h => h.1⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: z = ϖ ^ e * (ϖ ^ (-e) * z)`. Rewrite using `[← mul_assoc, ← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero, one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem (zpow_mem_of_nonneg hϖ he) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_max_mem_iff {ϖ : Fv F v} (hϖ : ϖ ∈ v.adicCompletionIntegers F) (hϖ0 : ϖ ≠ 0) (e : ℤ) (z : Fv F v) :
     ϖ ^ (-max e 0) * z ∈ v.adicCompletionIntegers F ↔
@@ -80,13 +80,13 @@ theorem zpow_max_mem_iff {ϖ : Fv F v} (hϖ : ϖ ∈ v.adicCompletionIntegers F)
 end IntMat
 
 /- English proof (translation)
-Introduce `F _ _ v n d ϖ hu e T hT k₁ hk₁ k₂ hk₂ T' hT' Y`. Establish `hϖ : ϖ.1 ∈ v.adicCompletionIntegers F` using `mem_Ov_of_isUnifV hu`. Establish `hϖ0 : ϖ.1 ≠ 0` using `ϖ.ne_zero`. Establish `hk₁i : k₁⁻¹ ∈ KGL v n` using `inv_mem hk₁`. Establish `hk₂i : k₂⁻¹ ∈ KGL v n` using `inv_mem hk₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z := (k₁⁻¹).1 * Y with hZ`. Establish `eL : ((k₁ * T')⁻¹).1 * Y = (T'⁻¹).1 * Z`. Rewrite using `[hZ, mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`. Establish `eR : ((k₁ * T * k₂)⁻¹).1 * Y = (k₂⁻¹).1 * ((T⁻¹).1 * Z)`. Rewrite using `[hZ, mul_inv_rev, mul_inv_rev, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eY : (∀ i j, Y i j ∈ v.adicCompletionIntegers F) ↔ ∀ i j, Z i j ∈ v.adicCompletionIntegers F` using `(intMat_kgl_mul_iff hk₁i Y).symm`. Rewrite using `[eL, eR, intMat_kgl_mul_iff hk₂i, eY]`. Establish `hT'' : T'.1 = Matrix.diagonal (fun i => ϖ.1 ^ (max (e i) 0))` using `hT'`. Simplify using `only [diag_inv_mul_apply hϖ0 _ hT'', diag_inv_mul_apply hϖ0 _ hT]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨fun i j => ((zpow_max_mem_iff hϖ hϖ0 (e i) (Z i j)).1 (h i j)).1, fun i j => ((zpow_max_mem_iff hϖ hϖ0 (e i) (Z i j)).1 (h i j)).2⟩`. Introduce and unpack `⟨h1, h2⟩ i j`. Conclude with `(zpow_max_mem_iff hϖ hϖ0 (e i) (Z i j)).2 ⟨h1 i j, h2 i j⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem inter_kdiag_int_iff : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (n d : ℕ),
     ∀ (ϖ : (Fv F v)ˣ), IsUnifV F v ϖ.1 → ∀ (e : Fin n → ℤ) (T : GL (Fin n) (Fv F v)), T.1 = Matrix.diagonal (fun i => ϖ.1 ^ e i) → ∀ k₁ ∈ KGL v n, ∀ k₂ ∈ KGL v n,

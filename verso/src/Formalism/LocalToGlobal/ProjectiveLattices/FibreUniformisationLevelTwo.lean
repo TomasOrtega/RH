@@ -15,11 +15,11 @@ section PerFr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `he : ∀ σ : E →+* ℂ, Data.emb σ (v + w) = Data.emb σ v + Data.emb σ w`. Introduce `σ`. Use `first`. Consider the case `(funext k; simp [Data.emb]; done)`. Consider the case `(simp [Data.emb]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact map_add _ _ _`. Unfold `perFr`. Simplify using `only [he]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `(simp; done)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [Matrix.mulVec_add]; done)`. Consider the case `(simp [hermC, Matrix.dotProduct_add, Matrix.mulVec_add, mul_add, add_mul, Finset.sum_add_distrib]; done)`. Consider the case `(unfold hermC; simp [Matrix.dotProduct_add, Matrix.mulVec_add, mul_add, add_mul, Finset.sum_add_distrib]; done)`. Consider the case `(unfold hermC; simp [mul_add, add_mul, Finset.sum_add_distrib, map_add])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perFr_add {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E →+* ℂ)
     (i : ℕ) : perFr X x (v + w) τ i = perFr X x v τ i + perFr X x w τ i := by
@@ -39,11 +39,11 @@ theorem perFr_add {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E 
     | (unfold hermC; simp [mul_add, add_mul, Finset.sum_add_distrib, map_add])
 
 /- English proof (translation)
-Establish `he : ∀ σ : E →+* ℂ, Data.emb σ (0 : Fin r → E) = 0`. Introduce `σ`. Use `first`. Consider the case `(funext k; simp [Data.emb]; done)`. Consider the case `(simp [Data.emb]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact map_zero _`. Unfold `perFr`. Simplify using `only [he]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `(simp; done)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [hermC]; done)`. Consider the case `(unfold hermC; simp)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perFr_zero {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Frame X.Ψ r) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x 0 τ i = 0 := by
@@ -72,7 +72,7 @@ def eb {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (τ : E �
   Pi.single (e.symm ⟨τ, i⟩) 1
 
 /- English proof (translation)
-Distinguish the cases in `hq : q = ⟨τ, i⟩`. Substitute `hq` using the available equality. Simplify using `[eb]`. Simplify using `[eb, hq, Pi.single_apply, e.symm.injective.eq_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eb_apply {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (τ : E →+* ℂ) (i : Fin (Dw.mult τ))
     (q : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : eb e τ i (e.symm q) = if q = ⟨τ, i⟩ then 1 else 0 := by
@@ -82,14 +82,14 @@ theorem eb_apply {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
   · simp [eb, hq, Pi.single_apply, e.symm.injective.eq_iff]
 
 /- English proof (translation)
-Simplify using `[Finset.sum_apply, eb_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_eb_apply {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (τ : E →+* ℂ)
     (c : Fin (Dw.mult τ) → ℂ) (l : Fin (Dw.mult τ)) : (∑ j, c j • eb e τ j) (e.symm ⟨τ, l⟩) = c l := by
   simp [Finset.sum_apply, eb_apply]
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_eb {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     (∑ j, (Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ) j • eb e τ j) = eb e τ i := by
@@ -109,7 +109,7 @@ def blkL {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     funext j; simp [blkF, Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Use `show blkF e A z (e (e.symm p)) = blkF e A z p`. Rewrite using `[Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkL_symm {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (z : Fin g → ℂ)
@@ -118,9 +118,9 @@ theorem blkL_symm {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)
   rw [Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show blkF e A (blkL e B z) (e j) = blkF e (fun τ => A τ * B τ) z (e j)`. Simplify using `only [blkF, blkL_symm, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Use `first`. Consider the case `exact Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Finset.sum_comm])`. Consider the case `(conv_lhs => rw [Finset.sum_comm])`.
+A detailed English derivation is pending.
 -/
 theorem blkL_comp {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (A B : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (z : Fin g → ℂ) :
@@ -134,7 +134,7 @@ theorem blkL_comp {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)
     | (conv_lhs => rw [Finset.sum_comm])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show blkF e (fun _ => 1) z (e j) = z j`. Simplify using `[blkF, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blkL_one {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (z : Fin g → ℂ) :
     blkL e (fun _ => 1) z = z := by
@@ -161,9 +161,9 @@ theorem blkE_apply {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ
     (z : Fin g → ℂ) : blkE e A hA z = blkL e A z := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Take `⟨⟨τ', k⟩, rfl⟩` from `e.symm.surjective j`. Rewrite using `[blkL_symm, eb_apply]`. Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [blkF, sum_eb_apply]`. Rewrite using `[← Matrix.mul_apply, hAB, Matrix.one_apply]`. Simplify using the standard rewrite rules. Simplify using `[blkF, Finset.sum_apply, eb_apply, ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blkL_col {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (τ : E →+* ℂ)
@@ -184,11 +184,11 @@ end Lin
 section Der
 
 /- English proof (translation)
-Unfold `IsDerivAt0 at hv ⊢`. Take `⟨h1, h2⟩` from `hv`. Establish `h0 : h 0 = 0` using `map_zero h`. Establish `h3 : e2 0 = e1 0` using `by simpa [h0] using he 0`. Use `⟨h1.trans h3.symm, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `U hU f`. Use `(h2 U hU f).trans ?_` and prove the remaining obligations. Establish `hfun : (fun z => valAt' (e1 z) U f) = (fun y => valAt' (e2 y) U f) ∘ (LinearEquiv.toContinuousLinearEquiv h)`. Use function extensionality and compare the values at `z`. Simplify using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun, ContinuousLinearEquiv.comp_right_fderiv]`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDerivAt0_comp {g : ℕ} {X : Scheme.{0}} {e1 e2 : (Fin g → ℂ) → (Sp ℂ ⟶ X)}
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (he : ∀ z, e2 (h z) = e1 z) {w : Fin g → ℂ}
@@ -280,7 +280,7 @@ def PerFib {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
         ∃ g0 ∈ (M.X k).Γ, ∃ b ∈ Bor (M.X k).Ψ r, x' = rmul (lact g0 x) b
 
 /- English proof (translation)
-Rewrite using `[isCombAt_unique h (isCombAt_epsPt hv 0)]`. Simplify using `only [Pi.zero_apply, epsPt_zero, List.ofFn_const, List.prod_replicate, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isCombAt_zero {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, IsTanAt x (v j))
@@ -289,7 +289,7 @@ theorem isCombAt_zero {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
   simp only [Pi.zero_apply, epsPt_zero, List.ofFn_const, List.prod_replicate, one_pow]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp_all [IsCombAt]; done)`. Consider the case `(unfold IsCombAt at h; skip)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isCombAt_empty {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X}
     {v : Fin 0 → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {cf : Fin 0 → S}
@@ -302,7 +302,7 @@ variable {g : ℕ} {e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)}
   {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)}
 
 /- English proof (translation)
-Take `⟨v, hv, -⟩` from `(F.ex_diff i P hP).1 w`. Conclude with `⟨_, hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem derivAt_exists {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (F.Di i) (fun j => relab c σ (e j).1) P) (w : Fin g → ℂ) :
@@ -311,7 +311,7 @@ theorem derivAt_exists {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
   exact ⟨_, hv⟩
 
 /- English proof (translation)
-Establish `ht` using `(hTE i P hP w v h1).1`. Set `v0 : ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsPt (F.u i P) ⟶ Xo.univ.t.G` to `Over.homMk v ht.1`. Conclude with `((F.ex_diff i P hP).2 v0 h1.1).unique h1 h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem derivAt_unique (hTE : ExpTan e F) {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (F.Di i) (fun j => relab c σ (e j).1) P) {w w' : Fin g → ℂ}
@@ -322,11 +322,11 @@ theorem derivAt_unique (hTE : ExpTan e F) {i : Fin F.n} {P : (F.Di i).La →+ (F
   exact ((F.ex_diff i P hP).2 v0 h1.1).unique h1 h2
 
 /- English proof (translation)
-Take `⟨v', hv'⟩` from `derivAt_exists hP (∑ j, cf j • w j)`. Establish `hc'` using `hL i P hP m w vs cf v' hvs hv'`. Establish `hvv : v = v'`. Unfold `IsCombAt at hc hc'`. Take `⟨u, hu1, hu2⟩` from `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu1', hu2'⟩` from `hc'`. Establish `huu : u = u'` using `funext fun j => by first`. Consider the case `exact Over.OverMorphism.ext ((hu1 j).trans (hu1' j).symm)`. Consider the case `(ext; exact (hu1 j).trans (hu1' j).symm)`. Rewrite using `[← hu2, ← hu2', huu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvv]`. Conclude with `hv'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivAt_of_comb (hL : ExpLin e F) {i : Fin F.n} {P : (F.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (F.Di i) (fun j => relab c σ (e j).1) P) {m : ℕ} {w : Fin m → (Fin g → ℂ)}
@@ -360,9 +360,9 @@ theorem blockDiagonal_comp_apply {Di : Datum H} (A : ∀ τ : E →+* ℂ, Matri
     blkP (e := e) A hA P a = blkE e A hA (P a) := rfl
 
 /- English proof (translation)
-Unfold `hermForm`. Establish `hs : star (N *ᵥ w) = Nᴴᵀ *ᵥ star w`. Use extensionality with `i`. Use `first`. Consider the case `(simp [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, star_sum, mul_comm]; done)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [Matrix.mulVec, Matrix.dotProduct, Matrix.conjTranspose_apply, star_sum, mul_comm]; done)`. Consider the case `(simp [Matrix.mulVec, dotProduct, star_sum, star_mul']; done)`. Rewrite using `[hs, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec z Nᵀ, Matrix.vecMul_transpose]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_mat (Hm N : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (Nᵀ * Hm * Nᴴᵀ) z w = hermForm Hm (N *ᵥ z) (N *ᵥ w) := by
@@ -377,19 +377,17 @@ theorem hermForm_mat (Hm N : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Take `⟨hlin, hinj, hdisc, hspan, Hm, hH, hpos, him⟩` from `hP`. Set `N : Matrix (Fin g) (Fin g) ℂ` to `LinearMap.toMatrix' ((blkE e A hA).symm : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))`. Establish `hN : ∀ z, N *ᵥ z = (blkE e A hA).symm z` using `fun z => LinearMap.toMatrix'_mulVec _ z`. Use `⟨?_, ?_, ?_, ?_, Nᵀ * Hm * Nᴴᵀ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[blockDiagonal_comp_apply, blockDiagonal_comp_apply, blkE_apply, blkE_apply]`. Use `show blkF e A (P (a • x)) (e i) = _ * blkF e A (P x) (e i)`. Simplify using `only [blkF, hlin, Equiv.apply_symm_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinj ((blkE e A hA).injective hxy)`. Establish `hsub : ∀ y : (blkP (e` using `e) A hA P).range, (blkE e A hA).symm (y : Fin g → ℂ) ∈ (P.range : Set (Fin g → ℂ)) := by`. Introduce `y`. Take `⟨x, hx⟩` from `AddMonoidHom.mem_range.1 y.2`. Use `AddMonoidHom.mem_range.2 ⟨x, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx, blockDiagonal_comp_apply, LinearEquiv.symm_apply_apply]`. Establish `h1 : Topology.IsEmbedding (fun y : (blkP (e` using `e) A hA P).range => (blkE e A hA).symm (y : Fin g → ℂ)) := ((blkE e A hA).symm.toContinuousLinearEquiv.toHomeomorph.isEmbedding).comp Topology.IsEmbedding.subtypeVal`. Establish `: DiscreteTopology (P.range : Set (Fin g → ℂ))` using `hdisc`. Conclude with `(h1.codRestrict _ hsub).discreteTopology`. Establish `hr : Set.range (blkP (e` using `e) A hA P) = (((blkE e A hA).restrictScalars ℝ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)) '' Set.range P := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `[blockDiagonal_comp_apply]`. Rewrite using `[hr, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Establish `hK : (Nᴴᵀ)ᴴ = Nᵀ`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.conjTranspose_apply, Matrix.transpose_apply]`. Rewrite using `[← hK]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ hH`. Introduce `z hz`. Rewrite using `[hermForm_mat, hN]`.
-
-Conclude with `hpos _ (fun h0 => hz ((LinearEquiv.map_eq_zero_iff _).1 h0))`. Introduce `x y`. Rewrite using `[hermForm_mat, hN, hN, blockDiagonal_comp_apply, blockDiagonal_comp_apply, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `him x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPeriod_blk {Di : Datum H} (P : Di.La →+ (Fin g → ℂ))
     (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ) (hA : ∀ τ, IsUnit (A τ).det)
@@ -441,35 +439,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Introduce `y`. Take `⟨k, P0, hP0, hu0⟩` from `F.onto y.x y.x_over`. Use `choose D1 hD1 using fun (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) => derivAt_exists hP0 (eb e τ i)`. Establish `htan : ∀ τ i, IsTanAt y.x (D1 τ i)` using `fun τ i => by`. Use `(hTE k _ hP0 _ _ (hD1 τ i)).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hu0]`. Conclude with `this`. Establish `heig : ∀ τ i, IsEigAt c τ (D1 τ i)` using `fun τ i => by`. Use `(hTE k _ hP0 _ _ (hD1 τ i)).2 (e.symm ⟨τ, i⟩) rfl` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hbas : ∀ τ (i : Fin (Dw.mult τ)), ∃ a : Fin (Dw.mult τ) → CAt σ, IsCombAt y.x (y.u τ) a (D1 τ i)` using `fun τ i => (y.basis τ _ (htan τ i) (heig τ i)).exists`. Use `choose Acol hAcol using hbas`. Set `A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun τ => Matrix.of fun i l => Acol τ l i`. Establish `hAc : ∀ τ l, IsCombAt y.x (y.u τ) (fun j => A τ j l) (D1 τ l)` using `fun τ l => hAcol τ l`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : ∀ τ (cv : Fin (Dw.mult τ) → ℂ), (A τ).mulVec cv = 0 → cv = 0`. Introduce `τ cv hcv`. Take `⟨w0, hw0⟩` from `derivAt_exists hP0 (∑ l, cv l • eb e τ l)`. Establish `h1 : IsCombAt (F.u k P0) (D1 τ) cv w0` using `hL k _ hP0 _ _ _ cv w0 (hD1 τ) hw0`. Rewrite `h1` using `[hu0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : IsCombAt y.x (y.u τ) ((A τ).mulVec cv) w0` using `hT (CAt σ) y.x (y.u τ) (y.tan τ) (D1 τ) (A τ) cv w0 (hAc τ) h1`. Rewrite `h2` using `[hcv]`. Establish `hw1` using `isCombAt_zero (y.tan τ) h2`. Take `⟨w00, hw00⟩` from `derivAt_exists hP0 0`. Establish `h3 : IsCombAt (F.u k P0) (Fin.elim0 : Fin 0 → (Sp (DualNumber (CAt σ)) ⟶ Xo.univ.t.G.left)) (Fin.elim0 : Fin 0 → ℂ) w00` using `hL k _ hP0 0 Fin.elim0 Fin.elim0 Fin.elim0 w00 (fun j => j.elim0) (by simpa using hw00)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hu0]`. Establish `hw2` using `isCombAt_empty h3`. Establish `hw12 : w0 = w00` using `hw1.trans hw2.symm`. Establish `h4 : IsDerivAt0 (fun z => (F.ex k P0 z).left) 0 w0`. Rewrite using `[hw12]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw00`. Establish `h5` using `derivAt_unique hTE hP0 hw0 h4`. Use function extensionality and compare the values at `l`. Use `congrFun h5 (e.symm ⟨τ, l⟩)` as an intermediate fact. Rewrite `this` using `[sum_eb_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hunit : ∀ τ, IsUnit (A τ).det` using `fun τ => by`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Introduce `c1 c2 h12`. Use `hzero τ (c1 - c2) (by rw [Matrix.mulVec_sub, h12, sub_self])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 this`. Establish `hAB : ∀ τ, A τ * (A τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ (hunit τ)`. Establish `hyD : ∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex k P0 z).left) (∑ l, (A τ)⁻¹ l i • eb e τ l) (y.u τ i)`. Introduce `τ i`. Take `⟨w', hw'⟩` from `isCombAt_exists (htan τ) (fun l => (A τ)⁻¹ l i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : IsCombAt y.x (y.u τ) ((A τ).mulVec fun l => (A τ)⁻¹ l i) w'` using `hT (CAt σ) y.x (y.u τ) (y.tan τ) (D1 τ) (A τ) _ w' (hAc τ) hw'`. Establish `hcol : ((A τ).mulVec fun l => (A τ)⁻¹ l i) = (Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ)`. Use function extensionality and compare the values at `j`. Use `congrFun (congrFun (hAB τ) j) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ l, A τ j l * (A τ)⁻¹ l i = (Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ) j`. Rewrite using `[this, Matrix.one_apply, Pi.single_apply]`. Rewrite `h2` using `[hcol]`. Establish `h3 : w' = y.u τ i` using `isCombAt_unique h2 (isCombAt_single (y.tan τ) i)`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw'' : IsCombAt (F.u k P0) (D1 τ) (fun l => (A τ)⁻¹ l i) w'`. Rewrite using `[hu0]`. Conclude with `hw'`. Conclude with `derivAt_of_comb hL hP0 (hD1 τ) hw''`. Establish `hP2` using `isPeriod_blk P0 A hunit hP0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrel : ∀ a, blkP (e` using `e) A hunit P0 (LinearEquiv.refl (𝓞 E) (F.Di k).La a) = blkE e A hunit (P0 a) := fun a => rfl`. Establish `hx2 : F.u k (blkP (e` using `e) A hunit P0) = F.u k P0 := ((F.fibre k _ _ hP0 hP2).2 ⟨LinearEquiv.refl _ _, blkE e A hunit, fun a b => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hrel⟩).symm`. Establish `hex` using `hU k _ _ hP0 hP2 (LinearEquiv.refl _ _) (blkE e A hunit) (fun a b => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hrel`. Take `⟨x', hx', hxe⟩` from `hOX hMB hR k _ hP2`. Use `⟨k, ⟨x', hx'⟩, blkP (e := e) A hunit P0, fun a j => by rw [← hxe]; rfl, hx2.trans hu0, fun v hv τ i => ?_⟩` and prove the remaining obligations.
-
-Establish `hd : IsDerivAt0 (fun z => (F.ex k (blkP (e` using `e) A hunit P0) z).left) (eb e τ i) (y.u τ i) := by`. Use `isDerivAt0_comp (e1 := fun z => (F.ex k P0 z).left) (e2 := fun z => (F.ex k (blkP (e := e) A hunit P0) z).left) (blkE e A hunit) hex (hyD τ i)` as an intermediate fact. Rewrite `this` using `[blkE_apply, blkL_col e A τ _ (hAB τ) i]`. Conclude with `this`. Establish `hd' : IsDerivAt0 (fun z => (F.ex k (blkP (e` using `e) A hunit P0) z).left) (∑ j, (Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ) j • eb e τ j) (y.u τ i) := by`.
-
-Rewrite using `[sum_single_eb]`. Conclude with `hd`. Establish `hc` using `hL k _ hP2 _ (eb e τ) (v τ) _ (y.u τ i) (hv τ) hd'`. Rewrite `hc` using `[hx2.trans hu0]`. Conclude with `⟨Pi.single i 1, by simp, fun j hj => Pi.single_eq_of_ne (ne_of_lt hj).symm _, hc⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coverTri_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
@@ -566,17 +560,17 @@ theorem coverTri_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
   exact ⟨Pi.single i 1, by simp, fun j hj => Pi.single_eq_of_ne (ne_of_lt hj).symm _, hc⟩
 
 /- English proof (translation)
-Introduce `k k' x x' Pm Pm' v v' hPm hPm' hu hv hv' htri`. Establish `eP : Pm = pmOf e M k x.1` using `AddMonoidHom.ext fun a => funext fun j => hPm a j`. Establish `eP' : Pm' = pmOf e M k' x'.1` using `AddMonoidHom.ext fun a => funext fun j => hPm' a j`. Substitute `eP eP'` using the available equality. Establish `hP` using `hD hMB hR k x.1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hP'` using `hD hMB hR k' x'.1 x'.2`. Take `rfl` from `F.disj k k' _ _ hP hP' hu`. Take `⟨gam, h, hiso, hlM, hlA, hrel⟩` from `(F.fibre k _ _ hP hP').1 hu`. Establish `hex` using `hU k _ _ hP hP' gam h hiso hlM hlA hrel`. Establish `htr : ∀ τ j, IsDerivAt0 (fun z => (F.ex k (pmOf e M k x'.1) z).left) (h (eb e τ j)) (v τ j)` using `fun τ j => isDerivAt0_comp (e1 := fun z => (F.ex k (pmOf e M k x.1) z).left) (e2 := fun z => (F.ex k (pmOf e M k x'.1) z).left) h hex (hv τ j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htri' : ∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → ℂ, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧ eb e τ i = h (∑ j, cf j • eb e τ j)`. Introduce `τ i`. Establish `hexi : ∃ cf : Fin (Dw.mult τ) → ℂ, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧ IsCombAt (F.u k (pmOf e M k x.1)) (v τ) cf (v' τ i)` using `htri τ i`. Take `⟨cf, hcu, hct, hcc⟩` from `hexi`. Take `⟨w0, hw0⟩` from `derivAt_exists hP' (∑ j, cf j • h (eb e τ j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hL k _ hP' _ (fun j => h (eb e τ j)) (v τ) cf w0 (htr τ) hw0`. Rewrite `h1` using `[← hu]`. Establish `h2 : w0 = v' τ i` using `isCombAt_unique h1 hcc`. Rewrite `hw0` using `[h2]`. Establish `h3` using `derivAt_unique hTE hP' (hv' τ i) hw0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨cf, hcu, hct, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Conclude with `h3`. Take `⟨γ, hγ, b, hb, hx⟩` from `hFb hMB hR k x.1 x'.1 x.2 x'.2 gam h hiso hlM hlA hrel htri'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, hγ, b, hb, by rw [hx]⟩`.
+A detailed English derivation is pending.
 -/
 theorem fibTri_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
@@ -621,7 +615,7 @@ section Rows
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `coverU_J hF (coverTri_of _ _ _ hM.choose_spec.1 hR hT hU hL hTE hOX)`.
+A detailed English derivation is pending.
 -/
 theorem cover_uniformisation_level_two {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}
@@ -631,7 +625,7 @@ theorem cover_uniformisation_level_two {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 �
   coverU_J hF (coverTri_of _ _ _ hM.choose_spec.1 hR hT hU hL hTE hOX)
 
 /- English proof (translation)
-The claim follows from `fibreU_J hF hT (fibTri_of _ _ _ hM.choose_spec.1 hR hU hL hTE hD hFb)`.
+A detailed English derivation is pending.
 -/
 theorem fibre_uniformisation_level_two {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}

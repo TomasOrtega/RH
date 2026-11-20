@@ -49,9 +49,9 @@ variable {l : ℕ} [Fact l.Prime] {K L Ω : Type} [Field Ω] [Field K] [NumberFi
   {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
 /- English proof (translation)
-Set `K' : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : L => Bw.j (algebraMap L Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (Bw.j.comp (algebraMap L Ω))⟩`. Use `K'.2` as an intermediate fact. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := L) hj K' rfl`. Use `⟨_, { Kw := K' j := Bw.j j_E := fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩ j_dense := GlobalTheory.PlaceBridge.adjoin_range_subset_closure (Bw.j.comp (algebraMap L Ω)) e := e e_cont := he e_symm_cont := he' e_comm := hec LL := supExt S ⟨IntermediateField.normalClosure …` and prove the remaining obligations. Use `show Bw.Kw.1 ≤ K'.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[BridgeInd.kw_eq_adjoin Bw, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `IntermediateField.subset_adjoin _ _ ⟨algebraMap K L x, ?_⟩` and prove the remaining obligations. Use `show Bw.j (algebraMap L Ω (algebraMap K L x)) = Bw.j (algebraMap K Ω x)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bridge (Bw : LocBridge l K Ω (Dec (F := K) A) O) (hj : Induces Bw) (S : FinExt l) :
     ∃ (LL' : FinExt l) (Bw' : LocBridge l L Ω (Dec (F := L) A) ↥(OL LL')), Bw'.j = Bw.j ∧ S.1 ≤ Bw'.LL.1 ∧ Bw.Kw.1 ≤ Bw'.Kw.1 := by
@@ -88,9 +88,9 @@ variable {O' : Type} [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O']
 include hjj hle
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Bw.j.injective` to reduce the goal to its premises. Establish `h1` using `Bw'.e_comm (Bw'.e.symm g') x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `Bw.e_comm (Bw.e.symm ⟨g', GK_le hle g'.2⟩) x`. Rewrite `h1`, `h2` using `[MulEquiv.apply_symm_apply]`. Rewrite `h1` using `[hjj]`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decRes_e_symm (g' : ↥(GK Bw'.Kw)) :
     decRes (K := K) A (Bw'.e.symm g') = Bw.e.symm ⟨g', GK_le hle g'.2⟩ := by
@@ -105,7 +105,7 @@ theorem decRes_e_symm (g' : ↥(GK Bw'.Kw)) :
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Use extensionality with `g' v i`. Simplify using `only [LocBridge.repE, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, GlobalTheory.Pst.resTo]`. Rewrite using `[decRes_e_symm Bw Bw' hjj hle]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem repE_decRes (T : FinExt l) {m : ℕ} (t : ↥(Dec (F := K) A) →* GL (Fin m) ↥T.1) :
     Bw'.repE T (t.comp (decRes A)) = GlobalTheory.Pst.resTo (Bw.repE T t) hle := by
@@ -117,9 +117,7 @@ theorem repE_decRes (T : FinExt l) {m : ℕ} (t : ↥(Dec (F := K) A) →* GL (F
 variable {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)} (h : IsPlaceOver A v) (h' : IsPlaceOver A v')
 
 /- English proof (translation)
-Establish `e1` using `decRes_e_symm Bw Bw' hjj hle (weilToGK Bw' h' σ')`. Establish `e2 : decRes (K` using `K) A (Bw'.e.symm (weilToGK Bw' h' σ')) = Subgroup.inclusion (Weil_le_Dec h) σ := by`. Rewrite using `[weilToGK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Conclude with `Subtype.ext (AlgEquiv.ext fun z => (hσ z).symm)`. Rewrite `e1` using `[e2, MulEquiv.eq_symm_apply]`.
-
-Conclude with `(congrArg Subtype.val e1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilToGK_eq (σ : Weil h) (σ' : Weil h') (hσ : ∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) :
     (weilToGK Bw' h' σ' : GQ l) = (weilToGK Bw h σ : GQ l) := by

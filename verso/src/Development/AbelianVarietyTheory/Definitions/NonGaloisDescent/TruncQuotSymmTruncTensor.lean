@@ -38,7 +38,7 @@ variable {O Or}
 def red (A : LocAlg O Or) : A.A →+* ResidueField Or := FOM.resRed Or A.A A.bij
 
 /- English proof (translation)
-Simplify using `[red, FOM.resRed, (residue_eq_zero_iff a).2 ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_eq_zero (A : LocAlg O Or) {a : A.A} (ha : a ∈ maximalIdeal A.A) : A.red a = 0 := by
   simp [red, FOM.resRed, (residue_eq_zero_iff a).2 ha]
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 @[simp] theorem id_f (A : LocAlg O Or) : Hom.f (𝟙 A) = AlgHom.id Or A.A := rfl
 
 /- English proof (translation)
-Simplify using `only [red, FOM.resRed, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[RingEquiv.symm_apply_eq]`. Simplify using `[ResidueField.map_residue]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem red_algebraMap (A : LocAlg O Or) (r : Or) : A.red (algebraMap Or A.A r) = residue Or r := by
   simp only [red, FOM.resRed, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]
@@ -77,13 +77,11 @@ Simplify using `only [red, FOM.resRed, RingHom.comp_apply, RingEquiv.toRingHom_e
   simp [ResidueField.map_residue]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(A.bij.2 (residue A.A a))`. Take `⟨r, rfl⟩` from `residue_surjective r`. Establish `h1 : a - algebraMap Or A.A r ∈ maximalIdeal A.A`. Rewrite using `[← residue_eq_zero_iff, map_sub, ← hr, ResidueField.map_residue, sub_self]`. Establish `h2 : f.f a - algebraMap Or B.A r ∈ maximalIdeal B.A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AlgHom.commutes f.f r, ← map_sub]`. Use `haveI := f.isLocal`. Conclude with `map_nonunit (f.f : A.A →+* B.A) _ h1`. Establish `e : ∀ (C : LocAlg O Or) (x : C.A), x - algebraMap Or C.A r ∈ maximalIdeal C.A → C.red x = residue Or r` using `fun C x hx => by`. Use `C.red_eq_zero hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this]`. Simplify using `only [red, FOM.resRed, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[RingEquiv.symm_apply_eq]`. Simplify using `[ResidueField.map_residue]`.
-
-Rewrite using `[e B _ h2, e A _ h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_comp {A B : LocAlg O Or} (f : A ⟶ B) (a : A.A) : B.red (f.f a) = A.red a := by
   obtain ⟨r, hr⟩ := (A.bij.2 (residue A.A a))
@@ -144,7 +142,7 @@ Both sides reduce to the same expression.
     R.truncTensor M k (Ideal.Quotient.mk _ r ⊗ₜ[R.A] x) = Ideal.Quotient.mk _ r ⊗ₜ[R.A] x := rfl
 
 /- English proof (translation)
-The claim follows from `R.truncTensor_tmul M k 1 x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem truncTensor_one_tmul (R : LocAlg O Or) (M : Type) [CommRing M] [Algebra R.A M] (k : ℕ)
     (x : M) : R.truncTensor M k ((1 : R.Trunc (k + 1)) ⊗ₜ[R.A] x) = (1 : R.Trunc k) ⊗ₜ[R.A] x :=
@@ -156,21 +154,21 @@ def truncQuot (R : LocAlg O Or) (M : Type) [CommRing M] [Algebra R.A M] (k : ℕ
     (Algebra.TensorProduct.quotIdealMapEquivQuotTensor M (maximalIdeal R.A ^ (k + 1))).toRingEquiv
 
 /- English proof (translation)
-Simplify using `[truncQuot]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem truncQuot_mk (R : LocAlg O Or) (M : Type) [CommRing M] [Algebra R.A M] (k : ℕ) (x : M) :
     R.truncQuot M k (Ideal.Quotient.mk _ x) = (1 : R.Trunc k) ⊗ₜ[R.A] x := by
   simp [truncQuot]
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, truncQuot_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem truncQuot_symm_tmul (R : LocAlg O Or) (M : Type) [CommRing M] [Algebra R.A M] (k : ℕ) (x : M) :
     (R.truncQuot M k).symm ((1 : R.Trunc k) ⊗ₜ[R.A] x) = Ideal.Quotient.mk _ x := by
   rw [RingEquiv.symm_apply_eq, truncQuot_mk]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `(R.truncQuot M (k + 1)).surjective z`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Rewrite using `[RingEquiv.symm_apply_apply, truncQuot_mk, truncTensor_one_tmul, truncQuot_symm_tmul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem truncQuot_symm_truncTensor (R : LocAlg O Or) (M : Type) [CommRing M] [Algebra R.A M] (k : ℕ)
     (z : R.Trunc (k + 1) ⊗[R.A] M) :
@@ -273,7 +271,7 @@ structure Push {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O
   s_app : ∀ n a, D'.s.app n (t.app n a) = D.s.app n a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.t, P.cart, P.comm, P.s_app⟩`.
+Supply the required witnesses or components.
 -/
 theorem Push.isPush {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O S']
     {red : S →+* ResidueField Or} {red' : S' →+* ResidueField Or} {f : S →+* S'}
@@ -281,7 +279,7 @@ theorem Push.isPush {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Alge
   ⟨P.t, P.cart, P.comm, P.s_app⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨t, h1, h2, h3⟩ => ⟨⟨t, h1, h2, h3⟩⟩, fun ⟨P⟩ => P.isPush⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPush_iff_nonempty {S S' : Type} [CommRing S] [Algebra O S] [CommRing S'] [Algebra O S']
     {red : S →+* ResidueField Or} {red' : S' →+* ResidueField Or} {f : S →+* S'}
@@ -303,7 +301,7 @@ structure ProRep (R : LocAlg O Or) : Type 1 where
       IsPush (LocAlg.truncLift g k hk) (univ k) D
 
 /- English proof (translation)
-The claim follows from `(U.tr k).isPush`.
+A detailed English derivation is pending.
 -/
 theorem ProRep.trans {R : LocAlg O Or} (U : ProRep p Hb R) (k : ℕ) :
     IsPush (R.truncMap k) (U.univ (k + 1)) (U.univ k) :=
@@ -325,7 +323,7 @@ def IsFullSet {S B T J : Type} [CommRing S] [CommRing B] [Algebra S B] [CommRing
       ∀ f : R' ⊗[S] B, Algebra.norm R' f = ∏ᶠ i, evBC R' (j.comp (P i)) f
 
 /- English proof (translation)
-Use `⟨(Equiv.finite_iff e).2 h.1, fun R' _ _ _ j => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h.2 R' j`. Use `⟨h1, h2, h3.trans (Nat.card_congr e).symm, fun f => (h4 f).trans ?_⟩` and prove the remaining obligations. Conclude with `(finprod_comp_equiv e (f := fun i => evBC R' (j.comp (P i)) f)).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsFullSet.comp_equiv {S B T J J' : Type} [CommRing S] [CommRing B] [Algebra S B] [CommRing T]
     [Algebra S T] {P : J → (B →ₐ[S] T)} (h : IsFullSet P) (e : J' ≃ J) : IsFullSet (P ∘ e) := by
@@ -335,7 +333,7 @@ theorem IsFullSet.comp_equiv {S B T J J' : Type} [CommRing S] [CommRing B] [Alge
   exact (finprod_comp_equiv e (f := fun i => evBC R' (j.comp (P i)) f)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun R' _ _ _ j => by simpa only [AlgHom.comp_assoc] using h.2 R' (j.comp g)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFullSet.comp {S B T T' J : Type} [CommRing S] [CommRing B] [Algebra S B] [CommRing T]
     [Algebra S T] [CommRing T'] [Algebra S T'] {P : J → (B →ₐ[S] T)} (h : IsFullSet P)
@@ -406,34 +404,34 @@ Both sides reduce to the same expression.
     (L.act g).α x = L.α (g.val.mulVec x) := rfl
 
 /- English proof (translation)
-The claim follows from `Level.ext (funext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem map_map {T'' : Type} [CommRing T''] [Algebra S T''] (L : Level p G ι ϖ n m T) (g : T →ₐ[S] T')
     (h : T' →ₐ[S] T'') : (L.map g).map h = L.map (h.comp g) :=
   Level.ext (funext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Level.ext (funext fun _ => AlgHom.id_comp _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id (L : Level p G ι ϖ n m T) : L.map (AlgHom.id S T) = L :=
   Level.ext (funext fun _ => AlgHom.id_comp _)
 
 /- English proof (translation)
-The claim follows from `Level.ext (funext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem act_map (L : Level p G ι ϖ n m T) (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (h : T →ₐ[S] T') :
     (L.act g).map h = (L.map h).act g :=
   Level.ext (funext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Level.ext (funext fun x => by simp only [act_α, Units.val_mul, Matrix.mulVec_mulVec])`.
+A detailed English derivation is pending.
 -/
 theorem act_mul (L : Level p G ι ϖ n m T) (a b : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
     (L.act a).act b = L.act (a * b) :=
   Level.ext (funext fun x => by simp only [act_α, Units.val_mul, Matrix.mulVec_mulVec])
 
 /- English proof (translation)
-The claim follows from `Level.ext (funext fun x => by simp only [act_α, Units.val_one, Matrix.one_mulVec])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem act_one (L : Level p G ι ϖ n m T) : L.act 1 = L :=
   Level.ext (funext fun x => by simp only [act_α, Units.val_one, Matrix.one_mulVec])
@@ -485,14 +483,14 @@ namespace LevelRep
 variable (L : LevelRep U ϖ n m)
 
 /- English proof (translation)
-The claim follows from `Equiv.ofBijective_apply_symm_apply _ (L.rep k _) _`.
+A detailed English derivation is pending.
 -/
 theorem aut_spec (k : ℕ) (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
     (L.lev k).map (L.aut k g) = (L.lev k).act g :=
   Equiv.ofBijective_apply_symm_apply _ (L.rep k _) _
 
 /- English proof (translation)
-Apply `(L.rep k _).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(L.lev k).map (L.aut k 1) = (L.lev k).map (AlgHom.id _ _)`. Rewrite using `[L.aut_spec, Level.act_one, Level.map_id]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem aut_one (k : ℕ) : L.aut k 1 = AlgHom.id _ _ := by
   apply (L.rep k _).1
@@ -500,7 +498,7 @@ theorem aut_one (k : ℕ) : L.aut k 1 = AlgHom.id _ _ := by
   rw [L.aut_spec, Level.act_one, Level.map_id]
 
 /- English proof (translation)
-Apply `(L.rep k _).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(L.lev k).map (L.aut k (g * h)) = (L.lev k).map ((L.aut k g).comp (L.aut k h))`. Rewrite using `[L.aut_spec, ← Level.map_map, L.aut_spec k h, Level.act_map, L.aut_spec k g, Level.act_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem aut_mul (k : ℕ) (g h : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
     L.aut k (g * h) = (L.aut k g).comp (L.aut k h) := by
@@ -509,15 +507,13 @@ theorem aut_mul (k : ℕ) (g h : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
   rw [L.aut_spec, ← Level.map_map, L.aut_spec k h, Level.act_map, L.aut_spec k g, Level.act_mul]
 
 /- English proof (translation)
-Use `letI : Algebra (R.Trunc (k + 1)) (R.Trunc k ⊗[R.A] L.Rm) := ((algebraMap (R.Trunc k) (R.Trunc k ⊗[R.A] L.Rm)).comp (R.truncMap k)).toAlgebra`. Establish `hc : ∀ r : R.Trunc (k + 1), R.truncTensor L.Rm k (algebraMap (R.Trunc (k + 1)) (R.Trunc (k + 1) ⊗[R.A] L.Rm) r) = algebraMap (R.Trunc k) (R.Trunc k ⊗[R.A] L.Rm) (R.truncMap k r)` using `fun r => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Both sides reduce to the same expression. Set `φ₁ : R.Trunc (k + 1) ⊗[R.A] L.Rm →ₐ[R.Trunc (k + 1)] R.Trunc k ⊗[R.A] L.Rm` to `{ toRingHom := (R.truncTensor L.Rm k).toRingHom.comp (L.aut (k + 1) g).toRingHom commutes' := fun r => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `R.truncTensor L.Rm k (L.aut (k + 1) g (algebraMap _ _ r)) = _`. Rewrite using `[AlgHom.commutes]`. Conclude with `hc r }`. Set `φ₂ : R.Trunc (k + 1) ⊗[R.A] L.Rm →ₐ[R.Trunc (k + 1)] R.Trunc k ⊗[R.A] L.Rm` to `{ toRingHom := (L.aut k g).toRingHom.comp (R.truncTensor L.Rm k).toRingHom commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `L.aut k g (R.truncTensor L.Rm k (algebraMap _ _ r)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc r, AlgHom.commutes]`. Use `rfl }`. Establish `key : φ₁ = φ₂`. Apply `(L.rep (k + 1) (R.Trunc k ⊗[R.A] L.Rm)).1` to reduce the goal to its premises. Use `Level.ext (funext fun x => AlgHom.ext fun a => ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `R.truncTensor L.Rm k (L.aut (k + 1) g ((L.lev (k + 1)).α x a)) = L.aut k g (R.truncTensor L.Rm k ((L.lev (k + 1)).α x a))`. Establish `h1` using `congrArg (fun M => M.α x a) (L.aut_spec (k + 1) g)`. Establish `h2` using `congrArg (fun M => M.α x ((U.tr k).t.app m a)) (L.aut_spec k g)`. Simplify using `only [Level.map_α, Level.act_α, AlgHom.comp_apply] at h1 h2`. Rewrite using `[h1, ← L.compat k _ a, ← L.compat k x a, h2]`.
-
-Conclude with `DFunLike.congr_fun key z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem truncTensor_aut (k : ℕ) (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m}))
     (z : R.Trunc (k + 1) ⊗[R.A] L.Rm) :
@@ -553,7 +549,7 @@ theorem truncTensor_aut (k : ℕ) (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m}))
   exact DFunLike.congr_fun key z
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Nat.succ_lt_succ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem succ_strictMono : StrictMono fun k : ℕ => k + 1 := fun _ _ h => Nat.succ_lt_succ h
 
@@ -563,7 +559,7 @@ def actTrunc (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (k : ℕ) :
     ((L.aut k g).toRingHom.comp (Algebra.TensorProduct.includeRight.toRingHom))
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorPow (R.mapMax L.Rm) (succ_strictMono.monotone k.le_succ) ((R.truncQuot L.Rm (k + 1)).symm (L.aut (k + 1) g ((1 : R.Trunc (k + 1)) ⊗ₜ[R.A] x))) = (R.truncQuot L.Rm k).symm (L.aut k g ((1 : R.Trunc k) ⊗ₜ[R.A] x))`. Rewrite using `[← LocAlg.truncQuot_symm_truncTensor, L.truncTensor_aut, LocAlg.truncTensor_one_tmul]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem actTrunc_compat (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) {k : ℕ} :
     (Ideal.Quotient.factorPow (R.mapMax L.Rm) (succ_strictMono.monotone k.le_succ)).comp
@@ -579,7 +575,7 @@ def actRing (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) : L.Rm →+* L.Rm :=
     (L.actTrunc_compat g)
 
 /- English proof (translation)
-Use `IsHausdorff.StrictMono.funext' (R.mapMax L.Rm) succ_strictMono (f := fun _ : Unit => x) (g := fun _ => y) (fun k _ => by` as an intermediate fact. Rewrite using `[← LocAlg.truncQuot_symm_tmul, ← LocAlg.truncQuot_symm_tmul, h k])`. Conclude with `congrFun this ()`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_tmul {x y : L.Rm}
     (h : ∀ k, (1 : R.Trunc k) ⊗ₜ[R.A] x = (1 : R.Trunc k) ⊗ₜ[R.A] y) : x = y := by
@@ -589,7 +585,7 @@ theorem eq_of_tmul {x y : L.Rm}
   exact congrFun this ()
 
 /- English proof (translation)
-Apply `(R.truncQuot L.Rm k).symm.injective` to reduce the goal to its premises. Rewrite using `[LocAlg.truncQuot_symm_tmul]`. Conclude with `IsAdicComplete.StrictMono.mk_liftRingHom (R.mapMax L.Rm) succ_strictMono _ _ x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_actRing (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (k : ℕ) (x : L.Rm) :
     (1 : R.Trunc k) ⊗ₜ[R.A] L.actRing g x = L.aut k g ((1 : R.Trunc k) ⊗ₜ[R.A] x) := by
@@ -598,13 +594,13 @@ theorem tmul_actRing (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (k : ℕ) (x :
   exact IsAdicComplete.StrictMono.mk_liftRingHom (R.mapMax L.Rm) succ_strictMono _ _ x
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => L.eq_of_tmul fun k => by rw [L.tmul_actRing, L.aut_one]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem actRing_one : L.actRing 1 = RingHom.id _ :=
   RingHom.ext fun x => L.eq_of_tmul fun k => by rw [L.tmul_actRing, L.aut_one]; rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => L.eq_of_tmul fun k => by rw [RingHom.comp_apply, L.tmul_actRing, L.tmul_actRing, L.tmul_actRing, L.aut_mul] rfl`.
+A detailed English derivation is pending.
 -/
 theorem actRing_mul (g h : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
     L.actRing (g * h) = (L.actRing g).comp (L.actRing h) :=
@@ -613,7 +609,7 @@ theorem actRing_mul (g h : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) :
     rfl
 
 /- English proof (translation)
-The claim follows from `L.eq_of_tmul fun k => by rw [L.tmul_actRing] have e : (1 : R.Trunc k) ⊗ₜ[R.A] algebraMap R.A L.Rm r = algebraMap R.A (R.Trunc k ⊗[R.A] L.Rm) r := Algebra.TensorProduct.includeRight.commutes r rw [e] exact ((L.aut k g).restrictScalars R.A).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem actRing_algebraMap (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (r : R.A) :
     L.actRing g (algebraMap R.A L.Rm r) = algebraMap R.A L.Rm r :=
@@ -640,7 +636,7 @@ instance mulSemiringAction : MulSemiringAction (GL (Fin n) (O ⧸ Ideal.span {ϖ
   MulSemiringAction.compHom L.Rm L.actEquiv
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `L.actEquiv g x = _`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 -/
 theorem smul_def (g : GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m})) (x : L.Rm) : g • x = L.actRing g x := by
   change L.actEquiv g x = _
@@ -655,27 +651,27 @@ section Examples
 variable (O Or : Type) [CommRing O] [CommRing Or] [IsLocalRing Or] [Algebra O Or]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsArtinianRing (ResidueField Or))`.
+A detailed English derivation is pending.
 -/
 example : IsArtinianRing (LocAlg.residueField (O := O) (Or := Or)).A :=
   inferInstanceAs (IsArtinianRing (ResidueField Or))
 
 /- English proof (translation)
-The claim follows from `LocAlg.red_algebraMap LocAlg.residueField r`.
+A detailed English derivation is pending.
 -/
 example (r : Or) : (LocAlg.residueField (O := O) (Or := Or)).red (residue Or r) = residue Or r :=
 
   LocAlg.red_algebraMap LocAlg.residueField r
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] (S T : Type) [CommRing S] [Algebra O S] [CommRing T] [Algebra S T]
     (G : PDivGroup p S) (ι : PDivGroup.Action O G) (ϖ : O) (n m : ℕ) :
     MulAction (GL (Fin n) (O ⧸ Ideal.span {ϖ ^ m}))ᵐᵒᵖ (Level p G ι ϖ n m T) := inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨L.smul_def 1 x, by rw [L.actRing_one]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] {Hb : GlobalTheory.VDiv.VarpiDivModule p O (ResidueField Or)} {R : LocAlg O Or}
     {U : ProRep p Hb R} {ϖ : O} {n m : ℕ} (L : LevelRep U ϖ n m) (x : L.Rm) :

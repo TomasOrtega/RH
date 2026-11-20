@@ -30,7 +30,7 @@ theorem resHom_apply (M : Matrix ι ι (R ⊗[K] E)) (p q : Fin 𝒩) :
     resHom b R M p q = blockHom b R M ((Fintype.equivFin (ι × κ)).symm p) ((Fintype.equivFin (ι × κ)).symm q) := rfl
 
 /- English proof (translation)
-Introduce `M M' h`. Apply `blockHom_injective b R` to reduce the goal to its premises. Use extensionality with `p q`. Use `congrFun (congrFun h (Fintype.equivFin (ι × κ) p)) (Fintype.equivFin (ι × κ) q)` as an intermediate fact. Simplify `this` using `[resHom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem resHom_injective : Function.Injective (resHom (ι := ι) b R) := by
   intro M M' h
@@ -45,27 +45,27 @@ def ofResVec (y : Fin 𝒩 → R) : ι → R ⊗[K] E :=
   fun i => (coords b R).symm fun k => y (Fintype.equivFin (ι × κ) (i, k))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[resVec, ofResVec, coordsVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resVec_ofResVec (y : Fin 𝒩 → R) : resVec b R (ofResVec b R y) = y := by
   funext p
   simp [resVec, ofResVec, coordsVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[resVec, ofResVec, coordsVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ofResVec_resVec (x : ι → R ⊗[K] E) : ofResVec b R (resVec b R x) = x := by
   funext i
   simp [resVec, ofResVec, coordsVec]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (ofResVec_resVec b R)`.
+A detailed English derivation is pending.
 -/
 theorem resVec_injective : Function.Injective (resVec (ι := ι) b R) :=
   Function.LeftInverse.injective (ofResVec_resVec b R)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [ofResVec, Pi.smul_apply]`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofResVec_smul (t : R) (y : Fin 𝒩 → R) : ofResVec b R (t • y) = t • ofResVec b R y := by
   funext i
@@ -74,7 +74,7 @@ theorem ofResVec_smul (t : R) (y : Fin 𝒩 → R) : ofResVec b R (t • y) = t 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [resVec, Function.comp_apply, coordsVec_vecMul, vecMul, dotProduct, resHom_apply]`. Conclude with `(Equiv.sum_comp (Fintype.equivFin (ι × κ)).symm (fun a => coordsVec b R x a * blockHom b R M a ((Fintype.equivFin (ι × κ)).symm q))).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resVec_vecMul (x : ι → R ⊗[K] E) (M : Matrix ι ι (R ⊗[K] E)) :
     resVec b R (x ᵥ* M) = resVec b R x ᵥ* resHom b R M := by
@@ -86,7 +86,7 @@ theorem resVec_vecMul (x : ι → R ⊗[K] E) (M : Matrix ι ι (R ⊗[K] E)) :
 variable {R}
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [resHom_apply, blockHom_baseMap, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem resHom_baseMap (f : R →ₐ[K] R') (M : Matrix ι ι (R ⊗[K] E)) :
     resHom b R' (M.map (baseMap f)) = (resHom b R M).map f := by
@@ -94,7 +94,7 @@ theorem resHom_baseMap (f : R →ₐ[K] R') (M : Matrix ι ι (R ⊗[K] E)) :
   simp only [resHom_apply, blockHom_baseMap, Matrix.map_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [resVec, Function.comp_apply, coordsVec_baseMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem resVec_baseMap (f : R →ₐ[K] R') (x : ι → R ⊗[K] E) :
     resVec b R' (fun i => baseMap f (x i)) = f ∘ resVec b R x := by
@@ -121,7 +121,7 @@ theorem trHom_val (g : GL ι (R ⊗[K] E)) :
     (trHom b R g : Matrix (Fin 𝒩) (Fin 𝒩) R) = resHom b R ((↑g⁻¹ : Matrix ι ι (R ⊗[K] E))ᵀ) := rfl
 
 /- English proof (translation)
-Rewrite using `[trHom_val, ← resVec_vecMul, vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resVec_vecMul_trHom (x : ι → R ⊗[K] E) (g : GL ι (R ⊗[K] E)) :
     resVec b R x ᵥ* (trHom b R g : Matrix (Fin 𝒩) (Fin 𝒩) R) =
@@ -134,7 +134,7 @@ def resScalar (j : κ) : Matrix (Fin 𝒩) (Fin 𝒩) K :=
 variable {R}
 
 /- English proof (translation)
-Rewrite using `[resScalar, ← resHom_baseMap, Matrix.scalar_apply, Matrix.diagonal_map (map_zero _), baseMap_baseBasis, Matrix.scalar_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resScalar_map (f : K →ₐ[K] R) (j : κ) :
     (resScalar (ι := ι) b j).map f = resHom b R (Matrix.scalar ι (baseBasis b R j)) := by
@@ -144,20 +144,20 @@ theorem resScalar_map (f : K →ₐ[K] R) (j : κ) :
 variable (R)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← map_mul, (Matrix.scalar_commute s (fun _ => mul_comm _ _) M).eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resHom_commute_scalar (M : Matrix ι ι (R ⊗[K] E)) (s : R ⊗[K] E) :
     resHom b R M * resHom b R (Matrix.scalar ι s) = resHom b R (Matrix.scalar ι s) * resHom b R M := by
   rw [← map_mul, ← map_mul, (Matrix.scalar_commute s (fun _ => mul_comm _ _) M).eq]
 
 /- English proof (translation)
-Establish `key : ∀ g : Matrix (Fin 𝒩) (Fin 𝒩) K, (∀ j, g * resScalar (ι` using `ι) b j = resScalar (ι := ι) b j * g) → ∃ M, resHom b K M = g := by`. Introduce `g hg`. Take `⟨M, hM⟩` from `exists_blockHom_eq b K ((Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ))).symm g) fun j => by`. Establish `h` using `congrArg (Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ))).symm (hg j)`. Rewrite `h` using `[map_mul, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ))).symm (resScalar (ι` using `ι) b j) = blockHom b K (Matrix.scalar ι (baseBasis b K j)) := by show (Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ))).symm (Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ)) (blockHom b K (Matrix.scalar ι (baseBasis b K j)))) = _`. Conclude with `AlgEquiv.symm_apply_apply _ _`. Rewrite `h` using `[e]`. Conclude with `h.symm`. Use `⟨M, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show Matrix.reindexAlgEquiv K K (Fintype.equivFin (ι × κ)) (blockHom b K M) = g`. Rewrite using `[hM]`. Conclude with `AlgEquiv.apply_symm_apply _ _`. Take `⟨M₀, h₀⟩` from `key γ hγ`. Take `⟨M₁, h₁⟩` from `key (↑γ⁻¹ : Matrix (Fin 𝒩) (Fin 𝒩) K) fun j => by`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1 : M₀ * M₁ = 1` using `resHom_injective b K (by rw [map_mul, map_one, h₀, h₁, γ.mul_inv])`. Establish `e2 : M₁ * M₀ = 1` using `resHom_injective b K (by rw [map_mul, map_one, h₀, h₁, γ.inv_mul])`. Conclude with `⟨⟨M₀, M₁, e1, e2⟩, h₀⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_resHom_eq_of_commute (γ : GL (Fin 𝒩) K)
     (hγ : ∀ j, (γ : Matrix (Fin 𝒩) (Fin 𝒩) K) * resScalar (ι := ι) b j =
@@ -192,7 +192,7 @@ theorem exists_resHom_eq_of_commute (γ : GL (Fin 𝒩) K)
   exact ⟨⟨M₀, M₁, e1, e2⟩, h₀⟩
 
 /- English proof (translation)
-Use `show (Matrix.reindex (Fintype.equivFin (ι × κ)) (Fintype.equivFin (ι × κ)) (blockHom b R M)).det = _`. Rewrite using `[Matrix.det_reindex_self]`. Conclude with `(Matrix.det_det M (rmatHom b R).toRingHom).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_resHom (M : Matrix ι ι (R ⊗[K] E)) :
     (resHom b R M).det = (rmat b R M.det).det := by
@@ -203,7 +203,7 @@ theorem det_resHom (M : Matrix ι ι (R ⊗[K] E)) :
 def conjMat : Matrix κ κ R := fun k => coords b R (conjBase K E R (baseBasis b R k))
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_coords b R z]`. Rewrite using `[map_sum, map_sum]`. Use function extensionality and compare the values at `l`. Simplify using `only [conjBase_smul, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, vecMul, dotProduct, conjMat]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_conjBase (z : R ⊗[K] E) :
     coords b R (conjBase K E R z) = coords b R z ᵥ* conjMat b R := by
@@ -214,7 +214,7 @@ theorem coords_conjBase (z : R ⊗[K] E) :
     dotProduct, conjMat]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rw [conjBase_tmul, conjBase_tmul, conj_conj]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjBase_conjBase (z : R ⊗[K] E) : conjBase K E R (conjBase K E R z) = z := by
   induction z using TensorProduct.induction_on with
@@ -223,9 +223,9 @@ theorem conjBase_conjBase (z : R ⊗[K] E) : conjBase K E R (conjBase K E R z) =
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `k l`. Establish `h` using `congrFun (coords_conjBase b R (conjBase K E R (baseBasis b R k))) l`. Rewrite `h` using `[conjBase_conjBase, coords_baseBasis]`. Establish `h' : (conjMat b R * conjMat b R) k l = (conjMat b R k ᵥ* conjMat b R) l`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h', conjMat, ← h, Pi.single_apply, Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjMat_mul_self : conjMat b R * conjMat b R = 1 := by
   ext k l
@@ -237,11 +237,11 @@ theorem conjMat_mul_self : conjMat b R * conjMat b R = 1 := by
   exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Establish `hT : IsUnit (conjMat b R).det`. Use `isUnit_iff_exists_inv.2 ⟨(conjMat b R).det, ?_⟩` and prove the remaining obligations. Rewrite using `[← det_mul, conjMat_mul_self, det_one]`. Establish `hrow : rmat b R z * conjMat b R = conjMat b R * rmat b R (conjBase K E R z)`. Use extensionality with `k l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h : rmat b R z k ᵥ* conjMat b R = conjMat b R k ᵥ* rmat b R (conjBase K E R z)`. Simplify using `only [rmat, conjMat]`. Rewrite using `[← coords_conjBase, map_mul, coords_mul]`. Use `congrFun h l` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, vecMul, dotProduct]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg Matrix.det hrow`. Rewrite `h` using `[det_mul, det_mul, mul_comm]`. Conclude with `(hT.mul_left_cancel h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_rmat_conjBase (z : R ⊗[K] E) :
     (rmat b R (conjBase K E R z)).det = (rmat b R z).det := by
@@ -260,9 +260,9 @@ theorem det_rmat_conjBase (z : R ⊗[K] E) :
   exact (hT.mul_left_cancel h).symm
 
 /- English proof (translation)
-Establish `hg : (((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).map (conjBase K E R))ᵀ * baseMatrix K H R * ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)) = baseMatrix K H R` using `g.2`. Establish `h` using `congrArg Matrix.det hg`. Establish `hd : (((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).map (conjBase K E R)).det = conjBase K E R ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).det` using `(RingHom.map_det (conjBase K E R) _).symm`. Rewrite `h` using `[det_mul, det_mul, det_transpose, hd]`. Establish `hu : IsUnit (baseMatrix K H R).det` using `isUnit_det_baseMatrix H R hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: conjBase K E R ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).det * ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).det * (baseMatrix K H R).det = 1 * (baseMatrix K H R).det`. Take the linear combination `h`. Conclude with `hu.mul_right_cancel this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem conjBase_det_mul_det (H : Matrix ι ι E) (hH : IsUnit H.det) (g : unitaryPoints K E H R) :
     conjBase K E R ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).det * ((g : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)).det = 1 := by
@@ -280,9 +280,9 @@ theorem conjBase_det_mul_det (H : Matrix ι ι E) (hH : IsUnit H.det) (g : unita
   exact hu.mul_right_cancel this
 
 /- English proof (translation)
-Rewrite using `[trHom_val, det_resHom, det_transpose]`. Establish `h` using `conjBase_det_mul_det R H hH g⁻¹`. Establish `e : (((g⁻¹ : unitaryPoints K E H R) : GL ι (R ⊗[K] E)) : Matrix ι ι (R ⊗[K] E)) = (↑(g : GL ι (R ⊗[K] E))⁻¹ : Matrix ι ι (R ⊗[K] E))` using `rfl`. Rewrite `h` using `[e]`. Use `conv_lhs => arg 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← det_rmat_conjBase b R]`. Rewrite using `[← det_mul, ← rmat_mul, h, rmat_one, det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_trHom_mul_self (H : Matrix ι ι E) (hH : IsUnit H.det) (g : unitaryPoints K E H R) :
     (trHom b R (g : GL ι (R ⊗[K] E)) : Matrix (Fin 𝒩) (Fin 𝒩) R).det *

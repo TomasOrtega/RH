@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R Q M _ _ _ _ π H f hf hH`. Distinguish the cases in `h0 : H.index = 0`. Conclude with `⟨0, fun g => by simp [h0]⟩`. Use `haveI : Finite (Q ⧸ H) := Nat.finite_of_card_ne_zero h0`. Use `letI : Fintype (Q ⧸ H) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `key : ∀ a b : Q, (a : Q ⧸ H) = (b : Q ⧸ H) → f a = f b`. Introduce `a b hab`. Establish `hm : a⁻¹ * b ∈ H` using `QuotientGroup.eq.mp hab`. Establish `h1` using `hf a (a⁻¹ * b)`. Rewrite `h1` using `[hH _ hm, map_zero, add_zero, mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `step : ∀ (g : Q) (x : Q ⧸ H), f (g • x).out = f g + π g (f x.out)`. Introduce `g x`. Rewrite using `[← hf]`. Apply `key` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_coe, QuotientGroup.out_eq']`. Use `⟨-∑ x : Q ⧸ H, f x.out, fun g => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ x : Q ⧸ H, f (g • x).out = ∑ x : Q ⧸ H, f x.out` using `Equiv.sum_comp (MulAction.toPerm g) (fun x : Q ⧸ H => f x.out)`. Simplify using `only [step, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ] at hs`. Rewrite `hs` using `[← map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Subgroup.index, Nat.card_eq_fintype_card, map_neg, sub_neg_eq_add, eq_sub_of_add_eq hs]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi36.aux :
     ∀ {R Q M : Type} [inst : CommRing R] [inst_1 : Group Q]

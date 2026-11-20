@@ -7,25 +7,25 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.FlagPoly G
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Use `set T : ℕ → ℝ := fun i => num (fun k : Fin (e + 1) => if (k : ℕ) < i then x + d else x) with hT`. Establish `h1 : num (fun _ => x + d) = T (e + 1)`. Simplify using `only [hT]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos k.2]`. Establish `h0 : num (fun _ => x) = T 0`. Simplify using `[hT]`. Rewrite using `[h1, h0, ← Finset.sum_range_sub]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi' : i < e + 1` using `Finset.mem_range.1 hi`. Establish `ha : T (i + 1) = num (Fin.cons (x + d) (fun l : Fin e => if (l : ℕ) < i then x + d else x))`. Simplify using `only [hT]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun l => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hf : (Fin.cons x (fun l : Fin e => if (l : ℕ) < i then x + d else x) : Fin (e + 1) → V) = fun k : Fin (e + 1) => if 0 < (k : ℕ) ∧ (k : ℕ) ≤ i then x + d else x`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun l => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Nat.succ_le_iff]`. Establish `hb : T i = num (Fin.cons x (fun l : Fin e => if (l : ℕ) < i then x + d else x))`. Rewrite using `[hf, ← hs _ (Equiv.swap 0 ⟨i, hi'⟩)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hT]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk0 : k = 0 ↔ (k : ℕ) = 0` using `Fin.ext_iff`. Establish `hki : k = ⟨i, hi'⟩ ↔ (k : ℕ) = i` using `Fin.ext_iff`. Rewrite using `[Equiv.swap_apply_def]`. Distinguish the cases in `c0 : k = 0`. Rewrite using `[if_pos c0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hk0.1 c0` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg c0]`. Distinguish the cases in `ci : k = ⟨i, hi'⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ci]`. Use `hki.1 ci` as an intermediate fact. Simplify using `only [Fin.val_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg ci]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `mt hk0.2 c0`. Establish `h3` using `mt hki.2 ci`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ha, hb, MultilinearMap.cons_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem symm_multilinear_telescope {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V]
     (num : MultilinearMap ℝ (fun _ : Fin (e + 1) => V) ℝ)
@@ -85,9 +85,9 @@ theorem symm_multilinear_telescope {e : ℕ} {V : Type} [AddCommGroup V] [Module
   ring
 
 /- English proof (translation)
-Introduce `e M K v u hu`. Unfold `Calc.top`. Rewrite using `[symm_multilinear_telescope K.num K.symm v (K.ar u)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[K.num_ar u hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Conclude with `apply_ite _ _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem top_add_ar_sub : ∀ (e : ℕ) (M : Man e) (K : Calc M) (v : K.V) (u : M.Fun), M.Smooth u →
     K.top (v + K.ar u) - K.top v = ∑ i ∈ Finset.range (e + 1),

@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.TestFnCusp
 
 /- English proof (translation)
-Introduce `a ha har`. Take `⟨v, hv⟩` from `h.2 a ha har`. Use `⟨v, fun y hy => hv y fun g hg => hy g ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hij (hg i j hc)`.
+A detailed English derivation is pending.
 -/
 theorem hypH_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (h : NoFixed T) :
     GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.HypH (k := fun v : T.S => ResF v.1) T.τ := by
@@ -45,11 +45,9 @@ theorem hypH_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (h : NoFixed T) :
   exact hij (hg i j hc)
 
 /- English proof (translation)
-Introduce `hCO hPC D V lam S M T U μa μf μ _ _ fa ff hTD`. Take `⟨hodd, -, -, hnf, hμ, ha, hb⟩` from `hTD`. Use `haveI : ∀ w, (μa w).IsHaarMeasure := hμ.haar_arch`. Use `haveI : ∀ v, (μf v).IsHaarMeasure := hμ.haar_loc`. Establish `hT : IsTestFnG M T U μa μf (tensor D.sp.cm.sig V.gram fa ff)` using `⟨fa, ff, ha, hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : tensor D.sp.cm.sig V.gram fa ff ∈ CcGA V` using `hT.isPureTensor.2`. Establish `hU` using `hPC.2 D V hodd S M T (hypH_of_noFixed T hnf) U μa μf _ hT`. Use `hCO D V μ _ hf ?_ ?_` and prove the remaining obligations. Introduce `𝔉 h𝔉 ν hν x y`. Conclude with `((hU 𝔉 h𝔉).1 ν x y).2`.
-
-Introduce `𝔉 h𝔉 ν hν x y`. Conclude with `((hU 𝔉 h𝔉).2 ν x y).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspidalOp_tensor : (∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.CuspidalOperators V μ) → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → ∀ (D : D7) (V : HSp D) (lam : D.what₂.Tau → Fin V.rank → ℤ) (S : D.what₂.Tau → SPar) (M : DSModel V S) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestData V lam M T U μa μf μ fa ff → GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.IsCuspidalOp V μ (tensor D.sp.cm.sig V.gram fa ff) := by
   intro hCO hPC D V lam S M T U μa μf μ _ _ fa ff hTD

@@ -26,9 +26,9 @@ def extFam (ι : Fin r → Fin c) (x : ∀ i, M (ι i)) (z : ∀ j, M j) : ∀ j
   fun j => if h : ∃ i, ι i = j then h.choose_spec ▸ x h.choose else z j
 
 /- English proof (translation)
-Establish `key : ∀ (i' : Fin r) (e : ι i' = ι i), (e ▸ x i' : M (ι i)) = x i`. Introduce `i' e`. Take `rfl` from `hι e`. Both sides reduce to the same expression. Establish `h : ∃ i', ι i' = ι i` using `⟨i, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `extFam`. Rewrite using `[dif_pos h]`. Conclude with `key _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extFam_apply {ι : Fin r → Fin c} (hι : Function.Injective ι) (x : ∀ i, M (ι i)) (z : ∀ j, M j) (i : Fin r) :
     extFam ι x z (ι i) = x i := by
@@ -42,7 +42,7 @@ theorem extFam_apply {ι : Fin r → Fin c} (hι : Function.Injective ι) (x : �
   exact key _ _
 
 /- English proof (translation)
-Unfold `extFam`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extFam_of_not {ι : Fin r → Fin c} (x : ∀ i, M (ι i)) (z : ∀ j, M j) {j : Fin c} (h : ¬ ∃ i, ι i = j) :
     extFam ι x z j = z j := by
@@ -50,9 +50,9 @@ theorem extFam_of_not {ι : Fin r → Fin c} (x : ∀ i, M (ι i)) (z : ∀ j, M
   rw [dif_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : ∃ i', ι i' = j`. Take `⟨i', rfl⟩` from `h`. Rewrite using `[extFam_apply hι]`. Distinguish the cases in `hi : i' = i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hi, Function.update_of_ne (hι.ne hi), extFam_apply hι]`. Establish `hj : j ≠ ι i` using `fun e => h ⟨i, e.symm⟩`. Rewrite using `[extFam_of_not _ _ h, Function.update_of_ne hj, extFam_of_not _ _ h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem extFam_update {ι : Fin r → Fin c} (hι : Function.Injective ι) [DecidableEq (Fin r)]
     (x : ∀ i, M (ι i)) (z : ∀ j, M j) (i : Fin r) (v : M (ι i)) :
@@ -85,11 +85,9 @@ def dropMul {ι : Fin r → Fin c} (hι : Function.Injective ι) (z : ∀ j, X j
     simp only [extFam_update hι, MultilinearMap.map_update_smul]
 
 /- English proof (translation)
-Establish `hf : ∀ i, ∃ f : Module.Dual ℂ (V i), f (v i) ≠ 0` using `fun i => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv i ((Module.forall_dual_apply_eq_zero_iff ℂ (v i)).1 fun f => not_not.1 (not_exists.1 hc f))`. Use `choose f hf using hf`. Set `F : MultilinearMap ℂ V ℂ` to `(MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap f`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : PiTensorProduct.lift F (PiTensorProduct.tprod ℂ v) ≠ 0`. Rewrite using `[PiTensorProduct.lift.tprod]`. Simplify `Finset.prod_ne_zero_iff.2 fun i _ => hf i` using `[F]`. Introduce `h`. Rewrite `hF` using `[h, map_zero]`.
-
-Conclude with `hF rfl`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_ne_zero {ι : Type} [Fintype ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (v : ∀ i, V i) (hv : ∀ i, v i ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
@@ -113,9 +111,9 @@ section Sums
 variable {r c : ℕ}
 
 /- English proof (translation)
-Use `Fintype.sum_of_injective (Fin.castLE t.2.le) (Fin.castLE_injective _) _ _ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[if_neg]`. Introduce `hlt`. Conclude with `hj ⟨⟨j, hlt⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[if_pos]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_castLE_eq (f : Fin c → ℕ) (t : Fin c) :
     ∑ a : Fin (t : ℕ), f (Fin.castLE t.2.le a) = ∑ j, if j < t then f j else 0 := by
@@ -129,9 +127,9 @@ theorem sum_castLE_eq (f : Fin c → ℕ) (t : Fin c) :
     exact a.2
 
 /- English proof (translation)
-Rewrite using `[sum_castLE_eq b (ι i), sum_castLE_eq (fun a => b (ι a)) i]`. Use `symm`. Use `Fintype.sum_of_injective ι ι.injective _ _ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[hz j (by simpa using hj)]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_partial (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0) (i : Fin r) :
     ∑ a : Fin (ι i : ℕ), b (Fin.castLE (ι i).2.le a) = ∑ a : Fin (i : ℕ), b (ι (Fin.castLE i.2.le a)) := by
@@ -158,7 +156,7 @@ def restrictHom (b : Fin c → ℕ) (ι : Fin r → Fin c) :
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Subsingleton.elim _ _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_one_of_zero {n : ℕ} (h : n = 0) (g : GL (Fin n) k) : g = 1 := by
   subst h
@@ -169,7 +167,7 @@ variable (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb : ∑ j, b j = N) (hb' 
 
 include hz in
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[stdBlocks_val, stdBlocks_val, sum_partial ι b hz]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdBlocks_drop (i : Fin r) (x : Fin (b (ι i))) :
     stdBlocks b hb ⟨ι i, x⟩ = stdBlocks (fun i => b (ι i)) hb' ⟨i, x⟩ := by
@@ -178,7 +176,7 @@ theorem stdBlocks_drop (i : Fin r) (x : Fin (b (ι i))) :
 
 include hz in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `hz j h` as an intermediate fact. Use `x.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_index {j : Fin c} (x : Fin (b j)) : ∃ i, ι i = j := by
   by_contra h
@@ -188,11 +186,11 @@ theorem exists_index {j : Fin c} (x : Fin (b j)) : ∃ i, ι i = j := by
 
 include hz in
 /- English proof (translation)
-Establish `hE` using `stdBlocks_drop ι b hb hb' hz`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨a, x⟩, rfl⟩` from `(stdBlocks (fun i => b (ι i)) hb').surjective p`. Take `⟨⟨a', x'⟩, rfl⟩` from `(stdBlocks (fun i => b (ι i)) hb').surjective q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : a = a'`. Substitute `h` using the available equality. Establish `h1` using `leviEmb_apply_same k (stdBlocks b hb) G (ι a) x x'`. Rewrite `h1` using `[hE, hE]`. Rewrite using `[h1, leviEmb_apply_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `leviEmb_apply_ne k (stdBlocks b hb) G (ι.injective.ne h) x x'`. Rewrite `h1` using `[hE, hE]`. Rewrite using `[h1, leviEmb_apply_ne k _ _ h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_drop (G : Levi k fun j => Fin (b j)) :
     leviEmb k (stdBlocks b hb) G = leviEmb k (stdBlocks (fun i => b (ι i)) hb') (restrictHom b ι G) := by
@@ -213,11 +211,11 @@ theorem leviEmb_drop (G : Levi k fun j => Fin (b j)) :
 
 include hz in
 /- English proof (translation)
-Establish `hE` using `stdBlocks_drop ι b hb hb' hz`. Use extensionality with `g`. Rewrite using `[mem_parab_iff, mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a a' x x' hlt`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hE, ← hE]`. Conclude with `h _ _ x x' (ι.lt_iff_lt.2 hlt)`. Introduce `h a a' x x' hlt`. Take `⟨a, rfl⟩` from `exists_index ι b hz x`. Take `⟨a', rfl⟩` from `exists_index ι b hz x'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, hE]`. Conclude with `h _ _ x x' (ι.lt_iff_lt.1 hlt)`.
+A detailed English derivation is pending.
 -/
 theorem parab_drop : parab k (stdBlocks b hb) = parab k (stdBlocks (fun i => b (ι i)) hb') := by
   have hE := stdBlocks_drop ι b hb hb' hz
@@ -235,11 +233,11 @@ theorem parab_drop : parab k (stdBlocks b hb) = parab k (stdBlocks (fun i => b (
 
 include hz in
 /- English proof (translation)
-Establish `hE` using `stdBlocks_drop ι b hb hb' hz`. Use extensionality with `g`. Rewrite using `[mem_unipRad, mem_unipRad, parab_drop ι b hb hb' hz]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h a x x'`. Rewrite using `[← hE, ← hE]`. Conclude with `h _ x x'`. Introduce `h a x x'`. Take `⟨a, rfl⟩` from `exists_index ι b hz x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, hE]`. Conclude with `h _ x x'`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_drop : unipRad k (stdBlocks b hb) = unipRad k (stdBlocks (fun i => b (ι i)) hb') := by
   have hE := stdBlocks_drop ι b hb hb' hz
@@ -257,11 +255,11 @@ theorem unipRad_drop : unipRad k (stdBlocks b hb) = unipRad k (stdBlocks (fun i 
 
 include hz in
 /- English proof (translation)
-Establish `key : ∀ P : Fin c → Prop, ∀ [DecidablePred P], ∑ j with P j, (Fintype.card (Fin (b j)) : ℤ) = ∑ a with P (ι a), (Fintype.card (Fin (b (ι a))) : ℤ)`. Introduce `P _`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `symm`. Use `Fintype.sum_of_injective ι ι.injective _ _ ?_ fun a => rfl` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j hj`. Rewrite using `[hz j (by simpa using hj)]`. Simplify using the standard rewrite rules. Unfold `modExp`. Rewrite using `[key, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ι.lt_iff_lt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_drop (i : Fin r) : modExp (fun i => Fin (b (ι i))) i = modExp (fun j => Fin (b j)) (ι i) := by
   have key : ∀ P : Fin c → Prop, ∀ [DecidablePred P],
@@ -279,9 +277,9 @@ theorem modExp_drop (i : Fin r) : modExp (fun i => Fin (b (ι i))) i = modExp (f
 
 include hz in
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `symm`. Use `Fintype.prod_of_injective ι ι.injective _ _ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[eq_one_of_zero (hz j (by simpa using hj)) (G j)]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[modExp_drop ι b hz]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_drop (G : Levi k fun j => Fin (b j)) :
     deltaHalf k (fun j => Fin (b j)) G = deltaHalf k (fun i => Fin (b (ι i))) (restrictHom b ι G) := by
@@ -298,9 +296,9 @@ theorem deltaHalf_drop (G : Levi k fun j => Fin (b j)) :
 include hz in
 
 /- English proof (translation)
-Establish `hU` using `unipRad_drop (k := k) ι b hb hb' hz`. Use `⟨.mk (Submodule.quotEquivOfEq _ _ (congrArg (fun U => twKer π U 1) hU)) fun g => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h1 : leviEmb k (stdBlocks b hb) g = leviEmb k (stdBlocks (fun i => b (ι i)) hb') (restrictHom b ι g)` using `leviEmb_drop ι b hb hb' hz g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `deltaHalf_drop (k := k) ι b hz g`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, MonoidHom.comp_apply]`. Rewrite using `[jac_mk, map_smul, Submodule.quotEquivOfEq_mk, Submodule.quotEquivOfEq_mk, jac_mk, h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_jac_equiv (π : Representation ℂ (GL (Fin N) k) V) :
     Nonempty ((jac (stdBlocks b hb) π).Equiv
@@ -322,11 +320,11 @@ section Abstract
 variable {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `⟨LinearMap.ker f.toLinearMap, fun g w hw => by`. Take `⟨g', rfl⟩` from `hψ g`. Establish `h1 : f w = 0` using `hw`. Establish `h2` using `f.isIntertwining _ _ g' w`. Use `show f (ρ (ψ g') w) = 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : f (ρ (ψ g') w) = σ g' (f w)` using `h2`. Rewrite using `[h3, h1, map_zero]⟩`. Break down `eq_bot_or_eq_top S with h | h` into its components or cases. Use `(injective_iff_map_eq_zero f).2 fun w hw => ?_` and prove the remaining obligations. Establish `h1 : w ∈ S.toSubmodule` using `hw`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Conclude with `h1`. Establish `h1 : v ∈ S.toSubmodule` using `by rw [h]; trivial`. Conclude with `absurd h1 hv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_comp (ψ : G' →* G) (hψ : Function.Surjective ψ) {ρ : Representation ℂ G V}
     (hρ : ρ.IsIrreducible) {σ : Representation ℂ G' W}
@@ -347,9 +345,9 @@ theorem injective_of_comp (ψ : G' →* G) (hψ : Function.Surjective ψ) {ρ : 
     exact absurd h1 hv
 
 /- English proof (translation)
-Set `S : Subrepresentation σ` to `⟨LinearMap.range f.toLinearMap, by`. Introduce and unpack `g _ ⟨w, rfl⟩`. Conclude with `⟨ρ g w, f.isIntertwining _ _ g w⟩⟩`. Use `haveI : Nontrivial S.toSubmodule := ⟨⟨⟨f v, v, rfl⟩, 0, fun h => hv (congrArg Subtype.val h)⟩⟩`. Take `⟨Z, i1, i2, υ, hυ, hs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ S.toRepresentation inferInstance`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q : ρ.IntertwiningMap S.toRepresentation` to `⟨LinearMap.codRestrict S.toSubmodule f.toLinearMap fun w => ⟨w, rfl⟩, fun g => LinearMap.ext fun w => Subtype.ext (f.isIntertwining _ _ g w)⟩`. Set `ι : S.toRepresentation.IntertwiningMap σ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Use `⟨Z, i1, i2, υ, hυ, hs.trans (.of_surjective q ?_), hs.trans (.of_injective ι Subtype.val_injective)⟩` and prove the remaining obligations. Introduce and unpack `⟨_, w, rfl⟩`. Conclude with `⟨w, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (f : ρ.IntertwiningMap σ) {v : V}
     (hv : f v ≠ 0) : ∃ (Z : Type) (_ : AddCommGroup Z) (_ : Module ℂ Z) (υ : Representation ℂ G Z),
@@ -375,17 +373,17 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {r c N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨φ⟩` from `nonempty_jac_equiv (k := k) ι b hb hb' hz π`. Establish `hv : ∀ j, ∃ v : (s j).V, v ≠ 0` using `fun j => by haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (s j).irr`. Conclude with `exists_ne 0`. Use `choose z hzne using hv`. Establish `hsurj : Function.Surjective (restrictHom (k` using `k) b ι) := fun g => ⟨extFam (M := fun j => GL (Fin (b j)) k) ι g fun _ => 1, funext fun i => extFam_apply (M := fun j => GL (Fin (b j)) k) ι.injective g (fun _ => 1) i⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L` to `PiTensorProduct.lift (dropMul (X := fun j => (s j).V) ι.injective z)`. Establish `hL : ∀ x, L (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (extFam ι x z)` using `fun x => by`. Simplify using `only [L, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression. Set `F : Representation.IntertwiningMap ((piTensor fun i => (s (ι i)).ρ).comp (restrictHom (k` to `k) b ι)) (piTensor fun j => (s j).ρ) := ⟨L, fun G => PiTensorProduct.ext (MultilinearMap.ext fun x => by`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, MonoidHom.comp_apply, piTensor_tprod, hL]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : ∃ i, ι i = j`. Take `⟨i, rfl⟩` from `hj`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[extFam_apply ι.injective, extFam_apply ι.injective]`. Both sides reduce to the same expression. Rewrite using `[extFam_of_not _ _ hj, extFam_of_not _ _ hj, eq_one_of_zero (hz j hj) (G j), map_one] rfl)⟩`. Establish `hne : ∀ i, (fun i => z (ι i)) i ≠ 0` using `fun i => hzne _`. Establish `hF : F (PiTensorProduct.tprod ℂ fun i => z (ι i)) ≠ 0` using `by show L _ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL]`. Use `tprod_ne_zero _ fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ∃ i, ι i = j`. Take `⟨i, rfl⟩` from `hj`. Rewrite using `[extFam_apply ι.injective]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hzne _`. Rewrite using `[extFam_of_not _ _ hj]`. Conclude with `hzne _`. Establish `hinj` using `injective_of_comp (restrictHom (k := k) b ι) hsurj hI F hF`. Conclude with `GlobalTheory.JacStages.isSubquotient_of_comp (restrictHom (k := k) b ι) hsurj ((IsSubquotient.of_injective F hinj).trans (h.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)))`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb : ∑ j, b j = N) (hb' : ∑ i, b (ι i) = N)
     (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0) (π : Representation ℂ (GL (Fin N) k) V)
@@ -432,9 +430,9 @@ theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb :
     ((IsSubquotient.of_injective F hinj).trans (h.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)))
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Establish `h1` using `hsub.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)`. Establish `h2` using `(GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun i => (σ₁ i).ρ) (fun i => (σ₁ i).irr) i).trans (SupportUnique.isSubquotient_comp h1 (MonoidHom.mulSingle (fun i => GL (Fin (D₁ i)) k) i))`. Establish `h3` using `SupportUnique.isSubquotient_factor (fun i => (σ₂ i).ρ) i (σ₁ i).irr h2`. Take `⟨ψ⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient (σ₁ i).irr (σ₂ i).irr h3`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `IrrGL.of_eq_of.2 ⟨ψ.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_eq_of_jac (D₁ D₂ : Fin r → ℕ) (hD : D₁ = D₂) (h₁ : ∑ i, D₁ i = N) (h₂ : ∑ i, D₂ i = N)
     (π : Representation ℂ (GL (Fin N) k) V) (σ₁ : ∀ i, IrrRep (GL (Fin (D₁ i)) k))
@@ -451,21 +449,19 @@ theorem of_eq_of_jac (D₁ D₂ : Fin r → ℕ) (hD : D₁ = D₂) (h₁ : ∑ 
   exact IrrGL.of_eq_of.2 ⟨ψ.symm⟩
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `SupportUnique.exists_map_of_isCuspidal hx.1 x.2.rep.irr hx.2 (isSmooth_parInd _ _) (SupportUnique.exists_scalar_multiProd e (fun a => (s a).ρ) (fun a => (s a).smooth) fun a => (s a).irr) hsub`. Establish `hne : GlobalTheory.SmGL.Model.evalOne e ι ≠ 0`. Introduce `h0`. Use `hι ((GlobalTheory.SmGL.Model.evalOne_bijective e hx.2.1 _).1 ?_)` and prove the remaining obligations. Use `h0.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Both sides reduce to the same expression. Establish `hU : unipRad k e = ⊥`. Assume the negation of the conclusion as `hU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI := hx.2.2 h _ e hU`. Use `hne (Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_))` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v 0, map_zero]`. Both sides reduce to the same expression. Take `⟨⟨a, i⟩, -⟩` from `e.surjective ⟨0, hx.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : ∀ j, j ≠ a → c j = 0`. Introduce `j hj`. Assume the negation of the conclusion as `hj0`. Use `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.2 ?_ hU` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨e ⟨j, ⟨0, by omega⟩⟩, e ⟨a, i⟩, by rwa [blk_apply, blk_apply]⟩`. Conclude with `⟨e ⟨a, i⟩, e ⟨j, ⟨0, by omega⟩⟩, by rwa [blk_apply, blk_apply]⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Take `⟨d, y⟩` from `x`. Choose the witnesses or unpack the hypotheses as in `rfl : c a = d := by`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∑ j, c j = d` using `by simpa using Fintype.card_congr e`. Rewrite `h1` using `[Finset.sum_eq_single a (fun j _ hj => ha j hj) (by simp)]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, GlobalTheory.SmGL.Model.evalOne e ι v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (Representation.IntertwiningMap.ext (LinearMap.ext hc))`. Set `ψ` to `compMap (GlobalTheory.SmGL.Model.evalOne e ι) (MonoidHom.mulSingle (fun j => GL (Fin (c j)) k) a)`. Take `⟨Z, _, _, υ, hυ, h1, h2⟩` from `exists_common ψ (v := v) hv`. Take `⟨φ₁⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hυ y.rep.irr (h1.trans (SupportUnique.isSubquotient_jac_single a ha e _))`. Take `⟨φ₂⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hυ (s a).irr (SupportUnique.isSubquotient_factor _ a hυ h2)`.
-
-Conclude with `(IrrGL.of_eq_of.2 ⟨φ₂.trans φ₁.symm⟩).trans (IrrGL.of_rep ⟨_, y⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_col {x : IrrGL k} (hx : x.IsCusp) {h : ℕ} {c : Fin h → ℕ} (e : (Σ i, Fin (c i)) ≃ Fin x.1)
     (s : ∀ i, IrrRep (GL (Fin (c i)) k)) (hsub : IsSubquotient x.rep (multiProd e fun i => (s i).ρ)) :
@@ -517,13 +513,13 @@ section Main
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hτ` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA y`. Establish `hτs : IsSmooth (piTensor fun j => (y j).rep)` using `isSmooth_piTensor fun j => (y j).2.rep.smooth`. Take `⟨hG, hC⟩` from `GlobalTheory.CompanionTheory.GeoLink.geometricLemma k`. Set `M : Fin h → Type` to `fun i => Fin (x i).1`. Set `M' : Fin c → Type` to `fun j => Fin (y j).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Fintype (SizeMatrix M M') := Fintype.ofFinite _`. Establish `hr : ∀ (b : SizeMatrix M M') i, ∑ j, b.1 i j = (x i).1` using `fun b i => by simpa [M] using b.2.1 i`. Set `fR : ∀ (b : SizeMatrix M M') i, (Σ j, Fin (b.1 i j)) ≃ M i` to `fun b i => stdBlocks (b.1 i) (hr b i)`. Set `gC : ∀ (b : SizeMatrix M M') j, (Σ i, Fin (b.1 i j)) ≃ M' j` to `fun b => b.nonempty_cols.some`. Establish `h0 : jhMult (piTensor fun j => (y j).rep) (jac (stdBlocks (fun j => (y j).1) hy) (prodIrr x hd)) ≠ 0` using `ENat.one_le_iff_ne_zero.1 hjm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hG.jhMult_eq (m := M) (m' := M') (stdBlocks (fun i => (x i).1) hd) (stdBlocks (fun j => (y j).1) hy) (isSmooth_piTensor fun i => (x i).2.rep.smooth) fR gC hτ`. Establish `h2 : ∑ b, jhMult (piTensor fun j => (y j).rep) (cellFunctor (fR b) (gC b) (piTensor fun i => (x i).rep)) ≠ 0` using `fun e => h0 (h1.trans e)`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h2`. Take `⟨T, -, hT⟩` from `hC _ _ M M' _ (fR b) (gC b) _ (fun i => (x i).rep) (fun i => (x i).2.rep.smooth) (fun i => hasFiniteLength_of_isIrreducible (x i).2.rep.irr)`. Rewrite `hb` using `[hT ⟨_, piTensor fun j => (y j).rep, hτs, hτ⟩]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Establish `hcol : IsSubquotient (piTensor fun j => (y j).rep) (piTensor fun j => multiProd (gC b j) fun i => (s i j).rep.ρ)` using `jhMult_ne_zero_iff.1 (right_ne_zero_of_mul hs)`. Use `⟨b.1, hr b, fun i j => (s i j).rep, fun i => jhMult_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hs) i (Finset.mem_univ i)), fun j => ?_⟩` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun j => (y j).rep) (fun j => (y j).2.rep.irr) j).trans (SupportUnique.isSubquotient_comp hcol (MonoidHom.mulSingle (fun j => GL (Fin (y j).1) k) j))`. Conclude with `exists_col (hyc j) (gC b j) _ (SupportUnique.isSubquotient_factor (fun j => multiProd (gC b j) fun i => (s i j).rep.ρ) j (y j).2.rep.irr h3)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cell_data (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h c N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ i, (x i).1 = N) (y : Fin c → IrrGL k) (hy : ∑ i, (y i).1 = N) (hyc : ∀ i, (y i).IsCusp)
@@ -562,25 +558,23 @@ theorem exists_cell_data (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {
     (SupportUnique.isSubquotient_factor (fun j => multiProd (gC b j) fun i => (s i j).rep.ρ) j (y j).2.rep.irr h3)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r, ι, hz, hpos⟩ : ∃ (r : ℕ) (ι : Fin r ↪o Fin c), (∀ j, (¬ ∃ i, ι i = j) → b j = 0) ∧ ∀ i, b (ι i) ≠ 0 := by`. Set `A : Finset (Fin c)` to `Finset.univ.filter fun j => b j ≠ 0`. Use `⟨A.card, A.orderEmbOfFin rfl, fun j hj => ?_, fun i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hm : j ∈ (A : Set (Fin c))` using `by simpa [A] using h0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hm` using `[← Finset.range_orderEmbOfFin A rfl]`. Conclude with `hj hm`. Conclude with `(Finset.mem_filter.1 (A.orderEmbOfFin_mem rfl i)).2`. Establish `hb' : ∑ i, b (ι i) = x.1`. Rewrite using `[← hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Fintype.sum_of_injective ι ι.injective _ _ (fun j hj => hz j (by simpa using hj)) fun _ => rfl`. Set `y' : Fin r → IrrGL k` to `fun i => IrrGL.of (w (ι i)).ρ (w (ι i)).smooth (w (ι i)).irr`. Establish `hyy : ∀ i, y' i = y (ι i)` using `fun i => hw _ (hpos i)`. Establish `hy'c : ∀ i, (y' i).IsCusp` using `fun i => by rw [hyy]; exact hyc _`. Set `φ : (piTensor fun i => (w (ι i)).ρ).Equiv (piTensor fun i => (y' i).rep)` to `piTensorEquiv fun i => IrrGL.equivOf (w (ι i)).ρ (w (ι i)).smooth (w (ι i)).irr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : (piTensor fun i => (w (ι i)).ρ).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv φ.symm (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA y')`. Establish `hdrop` using `isSubquotient_jac_drop ι b hb hb' hz x.rep w hI hsub`. Establish `hsum : ∑ i, (y' i).1 = x.1` using `hb'`. Establish `hjm : 1 ≤ jm y' hsum x.rep` using `ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 ((GlobalTheory.JacStages.isSubquotient_of_equiv φ.symm).trans hdrop))`. Take `⟨ψ⟩` from `hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.ProdSupport.nontrivial_piTensor (fun a => (s a).2.rep.V) fun a => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (s a).2.rep.irr`. Take `⟨t, ht⟩` from `exists_ne (0 : PiTensorProduct ℂ fun a => (s a).2.rep.V)`. Take `⟨F, hF⟩` from `(GlobalTheory.SmGL.Model.evalOne_bijective (stdBlocks (fun i => (s i).1) hs) x.2.rep.smooth _).2 ψ.toIntertwiningMap`. Establish `hQ : IsSubquotient x.rep (prodIrr s hs)`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (ψ.symm t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : GlobalTheory.SmGL.Model.evalOne _ F (Submodule.Quotient.mk v) = t`. Rewrite using `[hF, hv]`. Conclude with `ψ.apply_symm_apply t`. Establish `h2 : F v ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ht (h1.symm.trans ?_)` and prove the remaining obligations. Use `show (F v).1.1 1 = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression. Conclude with `.of_injective F (injective_of_comp (MonoidHom.id _) Function.surjective_id x.2.rep.irr F h2)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hP : 1 ≤ jm y' hsum (prodIrr s hs)` using `hjm.trans (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient y' hsum x.rep (prodIrr s hs) (isSmooth_prodIrr _ _) hQ)`. Rewrite `hP` using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA s y' hs hsum hsc hy'c]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : Fin r ≃ Fin p, ∀ a, y' a = s (e a) := by`. Assume the negation of the conclusion as `hc`. Establish `h0 : {e : Fin r ≃ Fin p | ∀ a, y' a = s (e a)} = ∅` using `Set.eq_empty_of_forall_notMem fun e he => hc ⟨e, he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hP` using `[h0]`. Simplify using `at hP`. Take `rfl : r = p` from `by simpa using Fintype.card_congr e`. Establish `hdeg : (fun i => b (ι i)) = fun i => (s i).1` using `funext fun i => by`. Establish `h1 : (y' i).1 = (s (e i)).1` using `congrArg Sigma.fst (he i)`.
-
-Conclude with `h1.trans ((hsd _).trans (hsd i).symm)`. Use `⟨ι, hpos, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `of_eq_of_jac (fun i => b (ι i)) (fun i => (s i).1) hdeg hb' hs x.rep (fun i => w (ι i)) (fun i => (s i).2.rep) hdrop ψ i`. Conclude with `(hyy i).symm.trans (h2.trans (IrrGL.of_rep (s i)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_row (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p c : ℕ} (x : IrrGL k) (s : Fin p → IrrGL k)
     (hs : ∑ i, (s i).1 = x.1) (d : ℕ) (hsd : ∀ i, (s i).1 = d) (hsc : ∀ i, (s i).IsCusp)
@@ -650,13 +644,11 @@ theorem exists_row (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p c : 
   exact (hyy i).symm.trans (h2.trans (IrrGL.of_rep (s i)))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA p q N c u v s t hs ht d hsd htd hsc htc hu hv hd y hy hyc h`. Take `⟨b, hb, w, hrow, hcol⟩` from `exists_cell_data hA ![u, v] hd y hy hyc h`. Use `choose a ha haw using hcol`. Establish `key : ∀ (i : Fin 2) j, b i j ≠ 0 → IrrGL.of (w i j).ρ (w i j).smooth (w i j).irr = y j`. Introduce `i j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : a j = i` from `by_contra fun hne => hj (ha j i (Ne.symm hne))`. Conclude with `haw j`. Take `⟨f, hf, hfs⟩` from `exists_row hA u s hs d hsd hsc hu (b 0) (hb 0) (w 0) (hrow 0) y hyc (key 0)`. Take `⟨g, hg, hgt⟩` from `exists_row hA v t ht d htd htc hv (b 1) (hb 1) (w 1) (hrow 1) y hyc (key 1)`. Use `⟨f, g, Set.disjoint_left.2 ?_, hfs, hgt⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩ ⟨l, hl⟩`. Establish `h0` using `hf i`. Establish `h1` using `hg l`. Rewrite `h1` using `[hl]`. Distinguish the cases in `e : a (f i) = 0`.
-
-Conclude with `h1 (ha _ 1 (by rw [e]; decide))`. Conclude with `h0 (ha _ 0 (Ne.symm e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem shuffle2 : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p q N c : ℕ} (u v : IrrGL k) (s : Fin p → IrrGL k) (t : Fin q → IrrGL k) (hs : ∑ i, (s i).1 = u.1) (ht : ∑ i, (t i).1 = v.1) (d : ℕ) (hsd : ∀ i, (s i).1 = d) (htd : ∀ j, (t j).1 = d) (hsc : ∀ i, (s i).IsCusp) (htc : ∀ i, (t i).IsCusp) (hu : Nonempty ((jac (stdBlocks (fun i => (s i).1) hs) u.rep).Equiv (piTensor fun i => (s i).rep))) (hv : Nonempty ((jac (stdBlocks (fun i => (t i).1) ht) v.rep).Equiv (piTensor fun i => (t i).rep))) (hd : ∑ i, (![u, v] i).1 = N) (y : Fin c → IrrGL k) (hy : ∑ i, (y i).1 = N) (hyc : ∀ i, (y i).IsCusp) (h : 1 ≤ jm y hy (prodIrr ![u, v] hd)), ∃ (f : Fin p ↪o Fin c) (g : Fin q ↪o Fin c), Disjoint (Set.range f) (Set.range g) ∧ (∀ i, y (f i) = s i) ∧ ∀ j, y (g j) = t j := by
   intro k _ _ _ _ hA p q N c u v s t hs ht d hsd htd hsc htc hu hv hd y hy hyc h

@@ -25,7 +25,7 @@ def finSecPullId {X : Scheme.{0}} {M : LB X} (s : LB.Sec M) : LB.Sec (M.pull (�
     rfl
 
 /- English proof (translation)
-Use `X.sheaf.eq_of_locally_eq' (fun i => U ⊓ V i) U (fun i => homOfLE inf_le_left) ?_ x 0 ?_` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq, hV, inf_top_eq]`. Introduce `i`. Conclude with `(hx i).trans (map_zero (rs X (inf_le_left : U ⊓ V i ≤ U))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finSec_eq_zero_of_cover {X : Scheme.{0}} {I : Type} (V : I → X.Opens) (hV : ⨆ i, V i = ⊤)
     {U : X.Opens} (x : Γ(X, U)) (hx : ∀ i, rs X (inf_le_left : U ⊓ V i ≤ U) x = 0) : x = 0 := by
@@ -35,21 +35,19 @@ theorem finSec_eq_zero_of_cover {X : Scheme.{0}} {I : Type} (V : I → X.Opens) 
     exact (hx i).trans (map_zero (rs X (inf_le_left : U ⊓ V i ≤ U))).symm
 
 /- English proof (translation)
-Establish `hpb : IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id K)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.id_horiz f`. Take `⟨E, hE⟩` from `Q.sec K (RingHom.id K) X (𝟙 X) f hpb`. Set `v : Fin (Q.a + 1) → Fin Q.a → K` to `fun k => (E.symm (finSecPullId (s k))).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : ∀ k j, rs X (Q.le j) ((s k).f (Q.ch j)) = ∑ l, cst f (Q.W j) (v k l) * Q.u l j`. Introduce `k j`. Establish `h` using `hE (E.symm (finSecPullId (s k))) j`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Use `Eq.trans ?_ h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(rs_rs _ _ _).symm`. Establish `hdep : ¬ LinearIndependent K v`. Introduce `h`. Use `h.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hdep` using `[Fintype.not_linearIndependent_iff]`. Take `⟨c, hc, k₀, hk₀⟩` from `hdep`. Establish `hc' : ∀ l, ∑ k, c k * v k l = 0` using `fun l => by`. Use `congrFun hc l` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ j, ∑ k, cst f (Q.W j) (c k) * rs X (Q.le j) ((s k).f (Q.ch j)) = 0`. Introduce `j`. Simplify using `only [hv, Finset.mul_sum, ← _root_.mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, ← map_sum, hc', map_zero, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun h => hk₀ (congrFun h k₀), fun i => ?_⟩` and prove the remaining obligations. Use `finSec_eq_zero_of_cover Q.W Q.cover _ fun j => ?_` and prove the remaining obligations. Establish `h₁ : ∀ k, rs X (inf_le_left : M.U i ⊓ Q.W j ≤ M.U i) ((s k).f i) = rs X (inf_le_inf le_rfl (Q.le j) : M.U i ⊓ Q.W j ≤ M.U i ⊓ M.U (Q.ch j)) (M.g i (Q.ch j)).val * rs X (inf_le_right : M.U i ⊓ Q.W j ≤ Q.W j) (rs X (Q.le j) ((s k).f (Q.ch j)))`. Introduce `k`. Establish `h` using `congrArg (rs X (inf_le_inf le_rfl (Q.le j) : M.U i ⊓ Q.W j ≤ M.U i ⊓ M.U (Q.ch j))) ((s k).compat i (Q.ch j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_mul]`. Simplify using `only [rs_rs] at h ⊢`. Conclude with `h`. Establish `h₂` using `congrArg (rs X (inf_le_right : M.U i ⊓ Q.W j ≤ Q.W j)) (hW j)`. Simplify using `only [map_sum, map_mul, rs_cst, map_zero] at h₂`.
-
-Simplify using `only [map_sum, map_mul, rs_cst, h₁]`. Simplify using `only [mul_left_comm (cst f _ _), ← Finset.mul_sum, h₂, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Perf.exists_relation {X : Scheme.{0}} {K : Type} [Field K] {f : X ⟶ Spec (CommRingCat.of K)}
     {M : LB X} (Q : Perf f M) (s : Fin (Q.a + 1) → LB.Sec M) :
@@ -96,9 +94,9 @@ theorem Perf.exists_relation {X : Scheme.{0}} {K : Type} [Field K] {f : X ⟶ Sp
   simp only [mul_left_comm (cst f _ _), ← Finset.mul_sum, h₂, mul_zero]
 
 /- English proof (translation)
-Take `⟨N, -, m, σ, hLB, hσ⟩` from `hva _ P K (𝟙 _) P.A.left (𝟙 _) P.A.hom (IsPullback.id_horiz _)`. Establish `hsm : Smooth P.A.hom` using `by haveI := P.smoothDim`. Conclude with `SmoothOfRelativeDimension.smooth P.g _`. Take `⟨Q⟩` from `hperf K P.A.left P.A.hom hsm ⟨_, hLB, m, σ, hσ⟩ M hM`. Use `⟨Q.a + 1, fun s => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, h⟩` from `Q.exists_relation s`. Use `⟨fun k => (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (c k), fun h0 => hc ?_, h⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1`. Conclude with `hinj ((congrFun h0 k).trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sections_finite_of_perf
     (hperf : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)),

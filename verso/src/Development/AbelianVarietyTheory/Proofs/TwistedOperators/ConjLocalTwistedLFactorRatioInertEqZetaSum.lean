@@ -13,29 +13,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinZeta
 
 /- English proof (translation)
-Introduce `D B m v w hv hq hB hm hs`. Use `set q : ℕ := Ideal.absNorm v.asIdeal with hqdef`. Establish `hqV : qV D.host.F v = q` using `rfl`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (GlobalTheory.LFun.one_lt_absNorm v).ne_bot`. Establish `hstar : ((star (m w) : ℂˣ) : ℂ) = (-1) ^ D.R.nV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.coe_star, hm]`. Simplify using the standard rewrite rules. Establish `hinv : ((m w : ℂ))⁻¹ = (-1) ^ D.R.nV` using `by rw [hm, ← inv_pow, inv_neg, inv_one]`. Establish `hnp : npow v (-(2 * ((1 + (D.R.t : ℂ)) / 2))) = ((q : ℂ) ^ (D.R.t + 1))⁻¹`. Rewrite using `[npow, show -(2 * ((1 + (D.R.t : ℂ)) / 2)) = -((D.R.t + 1 : ℕ) : ℂ) by push_cast; ring, Complex.cpow_neg, Complex.cpow_natCast]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LvTw_inert B m hv hq, hnp, hinv, hstar, hqV, map_div₀, Complex.conj_ofReal]`. Establish `hx : starRingEnd ℂ ((-1 : ℂ) ^ D.R.nV * ((q : ℂ) ^ (D.R.t + 1))⁻¹) = (-1 : ℂ) ^ D.R.nV * ((q : ℂ) ^ (D.R.t + 1))⁻¹` using `by simp`. Establish `hconjE : starRingEnd ℂ (eulerFac (B w) ((-1 : ℂ) ^ D.R.nV * ((q : ℂ) ^ (D.R.t + 1))⁻¹)) = eulerFac (B w) ((-1 : ℂ) ^ D.R.nV * ((q : ℂ) ^ (D.R.t + 1))⁻¹)` using `by conv_rhs => rw [← hB]`. Simplify using `only [eulerFac, eulerPoly, map_inv₀, map_multiset_prod, Multiset.map_map]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_sub, map_one, map_mul, Units.coe_star, hx]`. Both sides reduce to the same expression. Rewrite using `[hconjE, div_eq_mul_inv]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hqt : ∀ i : ℕ, quadTerm D v i = (-1 : ℝ) ^ i / (q : ℝ) ^ i`. Introduce `i`. Rewrite using `[quadTerm, hs]`. Establish `hd : ((dLoc D v : ℝ) : ℂ)⁻¹ = ∏ i ∈ Finset.Ioc D.R.t (D.R.r + D.R.t), (1 - (-1 : ℂ) ^ i / (q : ℂ) ^ i)`. Rewrite using `[dLoc, Complex.ofReal_prod, ← Finset.prod_inv_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr (by rfl) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_inv, inv_inv, hqt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a j : ℕ, (-1 : ℂ) ^ a / (q : ℂ) ^ a = (-(q : ℂ)) ^ j * ((-1 : ℂ) ^ (a + j) * ((q : ℂ) ^ (a + j))⁻¹)`. Introduce `a j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow, mul_inv_cancel₀ (pow_ne_zero _ hq0)]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := by rw [neg_pow, pow_add, pow_add, mul_inv]; ring`. Use `Finset.prod_nbij' (fun i => D.R.r + D.R.t - i) (fun j => D.R.r + D.R.t - j) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ioc]`. Rewrite using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Establish `hi'` using `Finset.mem_Ioc.1 hi`. Establish `e : D.R.nV = i + (D.R.r + D.R.t - i)` using `by show D.R.r + D.R.t = _; omega`. Rewrite using `[e, key i (D.R.r + D.R.t - i), ← e]`.
-
-Use `show _ = 1 - _ * (_ * ((q : ℂ) ^ (D.R.r + D.R.t))⁻¹)`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_LvTw_div_dLoc_inert : ∀ (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), (∀ u : HeightOneSpectrum (𝓞 D.host.E), u.under (𝓞 D.host.F) = v ↔ u = w) → Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ 2 → (B w).map star = B w → (m w : ℂ) = (-1) ^ D.R.nV → quadSign D v = -1 → starRingEnd ℂ (LvTw B m v ((1 + (D.R.t : ℂ)) / 2) / (dLoc D v : ℂ)) = eulerFac (B w) (((star (m w) : ℂˣ) : ℂ) * ((qV D.host.F v : ℂ) ^ (D.R.t + 1))⁻¹) * ∏ j ∈ Finset.range D.R.r, (1 - (-(qV D.host.F v : ℂ)) ^ j * (((star (m w) : ℂˣ) : ℂ) * ((qV D.host.F v : ℂ) ^ (D.R.r + D.R.t))⁻¹)) := by
   intro D B m v w hv hq hB hm hs

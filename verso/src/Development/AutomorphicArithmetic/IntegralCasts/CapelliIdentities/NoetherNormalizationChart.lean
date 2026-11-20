@@ -13,20 +13,20 @@ private noncomputable def shear (b : ℕ) (c : A) :
   aeval (Fin.cases (X 0) (fun i : Fin n => X i.succ + C c * X 0 ^ (b ^ (i.succ : ℕ))))
 
 /- English proof (translation)
-Simplify using `[shear]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma shear_zero (b : ℕ) (c : A) : shear (n := n) b c (X 0) = X 0 := by
   simp [shear]
 
 /- English proof (translation)
-Simplify using `[shear]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma shear_succ (b : ℕ) (c : A) (i : Fin n) :
     shear (n := n) b c (X i.succ) = X i.succ + C c * X 0 ^ (b ^ (i.succ : ℕ)) := by
   simp [shear]
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [shear_zero]`. Consider the case `succ i`. Rewrite using `[AlgHom.comp_apply, shear_succ, map_add, map_mul, map_pow, shear_zero, shear_succ, algHom_C, algebraMap_eq, add_assoc, ← add_mul, ← C_add, h]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -46,11 +46,11 @@ private noncomputable def chart (A : Type u) [CommRing A] (n b : ℕ) :
     (shear_comp b (-1) 1 (by simp))).trans (finSuccEquiv A n)
 
 /- English proof (translation)
-Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Establish `: chart A n b (X 0) = Polynomial.X`. Simplify using `[chart, shear_zero, finSuccEquiv_X_zero]`. Rewrite using `[this]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by simp, Polynomial.monic_X⟩`. Consider the case `succ i`. Establish `: chart A n b (X i.succ) = Polynomial.X ^ (b ^ (i.succ : ℕ)) + Polynomial.C (X i)`. Simplify using `[chart, shear_succ, finSuccEquiv_X_zero, finSuccEquiv_X_succ, add_comm]`. Rewrite using `[this]`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Polynomial.natDegree_X_pow_add_C, Polynomial.monic_X_pow_add_C _ (pow_ne_zero _ hb)⟩`.
+Supply the required witnesses or components.
 -/
 private lemma chart_X [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (i : Fin (n + 1)) :
     (chart A n b (X i)).IsMonicOfDegree (b ^ (i : ℕ)) := by
@@ -68,15 +68,15 @@ private lemma chart_X [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (i : Fin (n + 1)) 
     exact ⟨Polynomial.natDegree_X_pow_add_C, Polynomial.monic_X_pow_add_C _ (pow_ne_zero _ hb)⟩
 
 /- English proof (translation)
-The claim follows from `(chart A n b).commutes a`.
+A detailed English derivation is pending.
 -/
 private lemma chart_C (b : ℕ) (a : A) : chart A n b (C a) = Polynomial.C (C a) :=
   (chart A n b).commutes a
 
 /- English proof (translation)
-Establish `h : chart A n b (monomial v 1) = ∏ i, chart A n b (X i) ^ v i`. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using the standard rewrite rules. Establish `hm : ∀ i ∈ Finset.univ, (chart A n b (X i) ^ v i).Monic` using `fun i _ => (chart_X hb i).monic.pow _`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, Polynomial.monic_prod_of_monic _ _ hm⟩` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ hm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(chart_X hb i).monic.natDegree_pow, (chart_X hb i).natDegree_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma chart_monomial [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (v : Fin (n + 1) →₀ ℕ) :
     (chart A n b (monomial v 1)).IsMonicOfDegree (∑ i, v i * b ^ (i : ℕ)) := by
@@ -92,9 +92,9 @@ private lemma chart_monomial [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (v : Fin (n
   rw [(chart_X hb i).monic.natDegree_pow, (chart_X hb i).natDegree_eq]
 
 /- English proof (translation)
-Establish `key : (fun i => (⟨v i, hv i⟩ : Fin b)) = fun i => ⟨w i, hw i⟩`. Apply `finFunctionFinEquiv.injective` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finFunctionFinEquiv_apply, finFunctionFinEquiv_apply]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrArg Fin.val (congrFun key i)`.
+A detailed English derivation is pending.
 -/
 private lemma weight_inj {m b : ℕ} (v w : Fin m → ℕ) (hv : ∀ i, v i < b) (hw : ∀ i, w i < b)
     (h : ∑ i, v i * b ^ (i : ℕ) = ∑ i, w i * b ^ (i : ℕ)) : v = w := by
@@ -110,19 +110,17 @@ end UpperTheory.NoetherNormalizationChart
 
 open UpperTheory.NoetherNormalizationChart in
 /- English proof (translation)
-Introduce `A _ _ n f hf`. Use `set b := f.totalDegree + 1 with hbdef`. Establish `hb : b ≠ 0` using `Nat.succ_ne_zero _`. Set `wt : (Fin (n + 1) →₀ ℕ) → ℕ` to `fun v => ∑ i, v i * b ^ (i : ℕ)`. Establish `hlt : ∀ v ∈ f.support, ∀ i, v i < b` using `fun v hv i => Nat.lt_succ_of_le ((MvPolynomial.monomial_le_degreeOf i hv).trans (MvPolynomial.degreeOf_le_totalDegree f i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hmax⟩` from `Finset.exists_max_image f.support wt (MvPolynomial.support_nonempty.mpr hf)`. Establish `ha : f.coeff v ≠ 0` using `MvPolynomial.mem_support_iff.mp hv`. Establish `hsum : chart A n b f = ∑ w ∈ f.support, Polynomial.C (MvPolynomial.C (f.coeff w)) * chart A n b (MvPolynomial.monomial w 1)` using `by conv_lhs => rw [← f.support_sum_monomial_coeff, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← chart_C b, ← map_mul, MvPolynomial.C_mul_monomial, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : (chart A n b f).natDegree ≤ wt v`. Rewrite using `[hsum]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun w hw => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[(chart_monomial hb w).natDegree_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmax w hw`. Establish `hcoeff : (chart A n b f).coeff (wt v) = MvPolynomial.C (f.coeff v)`. Rewrite using `[hsum, Polynomial.finset_sum_coeff, Finset.sum_eq_single_of_mem v hv]`. Establish `h1` using `(chart_monomial (A := A) hb v).monic.coeff_natDegree`. Rewrite `h1` using `[(chart_monomial hb v).natDegree_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_C_mul, h1, mul_one]`. Introduce `w hw hne`. Rewrite using `[Polynomial.coeff_C_mul, Polynomial.coeff_eq_zero_of_natDegree_lt, mul_zero]`. Rewrite using `[(chart_monomial hb w).natDegree_eq]`. Use `lt_of_le_of_ne (hmax w hw) fun h => hne ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `DFunLike.coe_injective (weight_inj w v (hlt w hw) (hlt v hv) h)`. Use `⟨chart A n b, f.coeff v, ha, ?_⟩` and prove the remaining obligations. Establish `hne : (chart A n b f).coeff (wt v) ≠ 0`. Rewrite using `[hcoeff]`. Simplify using `using ha`.
-
-Rewrite using `[Polynomial.leadingCoeff, Polynomial.natDegree_eq_of_le_of_coeff_ne_zero hdeg hne, hcoeff]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_monic_change_of_variables :
     ∀ (A : Type u) [CommRing A] [IsDomain A] (n : ℕ) (f : MvPolynomial (Fin (n + 1)) A), f ≠ 0 → ∃ (e : MvPolynomial (Fin (n + 1)) A ≃ₐ[A] Polynomial (MvPolynomial (Fin n) A)) (a : A), a ≠ 0 ∧ (e f).leadingCoeff = MvPolynomial.C a := by

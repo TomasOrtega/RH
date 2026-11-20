@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.FN.Lag
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `(GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N f a hN ha).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mdiff_of_hasQ {N : ℕ} (hN : 0 < N) {f : ℍ → ℂ} (h : ∃ a, HasQ N f a) :
     MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f := by
@@ -32,7 +32,7 @@ theorem mdiff_of_hasQ {N : ℕ} (hN : 0 < N) {f : ℍ → ℂ} (h : ∃ a, HasQ 
   exact (GlobalTheory.T.mdifferentiable_and_isBoundedAtImInfty_of_hasQ N f a hN ha).1
 
 /- English proof (translation)
-Take `⟨a, ha, hb⟩` from `h`. Conclude with `⟨⟨a, ha⟩, ⟨_, hb⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasQ_of_qConj {g : ℂ ≃+* ℂ} {N : ℕ} {f f' : ℍ → ℂ} (h : QConj g N f f') :
     (∃ a, HasQ N f a) ∧ ∃ a, HasQ N f' a := by
@@ -40,14 +40,14 @@ theorem hasQ_of_qConj {g : ℂ ≃+* ℂ} {N : ℕ} {f f' : ℍ → ℂ} (h : QC
   exact ⟨⟨a, ha⟩, ⟨_, hb⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, ha, by simpa using ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qConj_refl {N : ℕ} {f : ℍ → ℂ} (h : ∃ a, HasQ N f a) : QConj (RingEquiv.refl ℂ) N f f := by
   obtain ⟨a, ha⟩ := h
   exact ⟨a, ha, by simpa using ha⟩
 
 /- English proof (translation)
-Introduce `τ`. Simplify using `only [zero_mul, Pi.zero_apply]`. Conclude with `hasSum_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasQ_zero (N : ℕ) : HasQ N (0 : ℍ → ℂ) (fun _ => 0) := by
   intro τ
@@ -55,9 +55,9 @@ theorem hasQ_zero (N : ℕ) : HasQ N (0 : ℍ → ℂ) (fun _ => 0) := by
   exact hasSum_zero
 
 /- English proof (translation)
-Take `⟨a, ha, hb⟩` from `h`. Introduce and unpack `rfl`. Establish `h1` using `(GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).1 N 0 _ _ hN hb (hasQ_zero N)`. Establish `h2 : a = fun _ => 0` using `funext fun n => by`. Use `congrFun h1 n` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Substitute `h2` using the available equality. Conclude with `hf ((GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).2 N f 0 _ ha (hasQ_zero N))`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem qConj_ne_zero {g : ℂ ≃+* ℂ} {N : ℕ} (hN : 0 < N) {f f' : ℍ → ℂ} (h : QConj g N f f') (hf : f ≠ 0) :
     f' ≠ 0 := by
@@ -71,11 +71,11 @@ theorem qConj_ne_zero {g : ℂ ≃+* ℂ} {N : ℕ} (hN : 0 < N) {f f' : ℍ →
   exact hf ((GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).2 N f 0 _ ha (hasQ_zero N))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `h`. Use `congrFun h UpperHalfPlane.I` as an intermediate fact. Simplify using `at this`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `insert x s hx ih`. Establish `hs : ∀ l ∈ s, u l ≠ 0 ∧ ∃ a, HasQ N (u l) a` using `fun l hl => hu l (Finset.mem_insert_of_mem hl)`. Establish `hQ : ∃ b, HasQ N (fun τ => ∏ l ∈ s, u l τ) b` using `(hasQ_of_qConj ((GlobalTheory.T.qExpansionsCoeffwiseConjugate_ring_closure (RingEquiv.refl ℂ) N hN).2.2.2.2.2 κ s u u fun l hl => qConj_refl (hs l hl).2).2).1`. Introduce `h`. Establish `hprod : ∀ τ, u x τ * (∏ l ∈ s, u l τ) = 0` using `fun τ => by`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun h τ` as an intermediate fact. Simplify `this` using `[Finset.prod_insert hx]`. Break down `GlobalTheory.T.upperHalfPlane_holomorphic_mul_eq_zero_iff (u x) _ (mdiff_of_hasQ hN (hu x (Finset.mem_insert_self x s)).2) (mdiff_of_hasQ hN hQ) hprod with h1 | h1` into its components or cases. Conclude with `(hu x (Finset.mem_insert_self x s)).1 h1`. Conclude with `ih hs h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem prod_ne_zero {N : ℕ} (hN : 0 < N) {κ : Type} (s : Finset κ) (u : κ → ℍ → ℂ)
     (hu : ∀ l ∈ s, u l ≠ 0 ∧ ∃ a, HasQ N (u l) a) : (fun τ => ∏ l ∈ s, u l τ) ≠ 0 := by
@@ -106,41 +106,35 @@ namespace GlobalTheory.FN.Lag
 open Finset in
 
 /- English proof (translation)
-Introduce `g ι _ act act' m k N t t' F hN hb hb' ht ht' hF hinj htt' hFq`. Establish `hR` using `GlobalTheory.T.qExpansionsCoeffwiseConjugate_ring_closure g N hN`. Establish `hRr` using `GlobalTheory.T.qExpansionsCoeffwiseConjugate_ring_closure (RingEquiv.refl ℂ) N hN`. Establish `hA` using `GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure ι act'`. Take `⟨c, hc, hlag⟩` from `GlobalTheory.T.modular_form_symmetric_function_decomp ι act m k N t F hN hb ht hF (fun i => (hasQ_of_qConj (htt' i)).1) hFq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose c' hc' using fun j => GlobalTheory.T.exists_qConj_level_one_invariant g (k + m * j) N (c j) hN (hc j).1 (hc j).2`. Take `⟨s, hs, hmin⟩` from `GlobalTheory.T.permutedModularFamily_monic_poly_coeff_invariant ι act k N F ⊤ hN hb hF (fun i => let ⟨a, ha⟩ := hFq i; ⟨a, ha, fun _ => Subring.mem_top _⟩)`. Use `choose s' hs' using fun j : Fin (Fintype.card ι) => GlobalTheory.T.exists_qConj_level_one_invariant g (k * (Fintype.card ι - j)) N (s j) hN (hs j).1 (let ⟨a, ha, _⟩ := (hs j).2; ⟨a, ha⟩)`. Take `⟨D, hD⟩ : ∃ D : ι → ℍ → ℂ, ∀ i, D i = fun τ => ∏ l ∈ univ.erase i, (t i τ - t l τ)` from `⟨_, fun _ => rfl⟩`. Take `⟨D', hD'⟩ : ∃ D' : ι → ℍ → ℂ, ∀ i, D' i = fun τ => ∏ l ∈ univ.erase i, (t' i τ - t' l τ)` from `⟨_, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hAd⟩ : ∃ A : ι → ℍ → ℂ, ∀ i, A i = fun τ => ∑ j ∈ range (Fintype.card ι), c j τ * t i τ ^ (Fintype.card ι - 1 - j)` from `⟨_, fun _ => rfl⟩`. Take `⟨A', hA'd⟩ : ∃ A' : ι → ℍ → ℂ, ∀ i, A' i = fun τ => ∑ j ∈ range (Fintype.card ι), c' j τ * t' i τ ^ (Fintype.card ι - 1 - j)` from `⟨_, fun _ => rfl⟩`. Establish `hDD : ∀ i, QConj g N (D i) (D' i)` using `fun i => by`. Rewrite using `[hD i, hD' i]`. Conclude with `(hR.2.2.2.2.2 ι (univ.erase i) (fun l τ => t i τ - t l τ) (fun l τ => t' i τ - t' l τ) (fun l _ => hR.2.2.1 _ _ _ _ (htt' i) (htt' l))).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAA : ∀ i, QConj g N (A i) (A' i)` using `fun i => by`. Rewrite using `[hAd i, hA'd i]`. Conclude with `(hR.2.2.2.2.2 ℕ (range (Fintype.card ι)) (fun j τ => c j τ * t i τ ^ (Fintype.card ι - 1 - j)) (fun j τ => c' j τ * t' i τ ^ (Fintype.card ι - 1 - j)) (fun j _ => hR.2.2.2.1 _ _ _ _ (hc' j).2 (hR.2.2.2.2.1 _ _ _ (htt' i)))).1`. Establish `hDne : ∀ i, D i ≠ 0` using `fun i => by`. Rewrite using `[hD i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `prod_ne_zero hN (univ.erase i) (fun l τ => t i τ - t l τ) fun l hl => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `Finset.ne_of_mem_erase hl` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun h τ` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Conclude with `(sub_eq_zero.mp this).symm`. Conclude with `(hasQ_of_qConj (hRr.2.2.1 _ _ _ _ (qConj_refl (hasQ_of_qConj (htt' i)).1) (qConj_refl (hasQ_of_qConj (htt' l)).1))).1`. Establish `hD'ne : ∀ i, D' i ≠ 0` using `fun i => qConj_ne_zero hN (hDD i) (hDne i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `choose F' hF'1 hF'2 using fun i => GlobalTheory.T.exists_coeffwiseConjugate_of_integral_quotient g N (Fintype.card ι) (F i) (D i) (D' i) (A i) (A' i) s s' hN (hFq i) (hDD i) (hAA i) (fun j => (hs' j).2) (hDne i) (fun τ => by simp only [hD, hAd]; exact hlag i τ) (fun τ => hmin i τ …`. Use `⟨F', ?_, hF'1⟩` and prove the remaining obligations. Establish `hv` using `(GlobalTheory.T.isSLTwoPermutedModularFamily_iff_values ι act' m t').1 ht'`. Establish `hD'fam : IsFam act' ((m * (Fintype.card ι - 1) : ℕ) : ℤ) D'`. Rewrite using `[GlobalTheory.T.isSLTwoPermutedModularFamily_iff_values]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `i γ τ`. Simplify using `only [hD', hv]`. Use `set X : ℂ := ((γ 1 0 : ℤ) : ℂ) * τ + ((γ 1 1 : ℤ) : ℂ)`. Establish `e : ∀ l ∈ univ.erase i, X ^ (m : ℤ) * t' (act' i γ) τ - X ^ (m : ℤ) * t' (act' l γ) τ = X ^ (m : ℤ) * (t' (act' i γ) τ - t' (act' l γ) τ)` using `fun _ _ => by ring`. Rewrite using `[Finset.prod_congr rfl e, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_erase_of_mem (mem_univ _), Finset.card_univ]`.
+Put the polynomial expressions in normal form. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `push_cast`. Put the polynomial expressions in normal form. Apply `Finset.prod_nbij (fun l => act' l γ)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Conclude with `Finset.mem_erase.mpr ⟨fun h => Finset.ne_of_mem_erase hl ((hb' γ).1 h), mem_univ _⟩`. Introduce `l _ l' _ h`. Conclude with `(hb' γ).1 h`. Introduce `y hy`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl⟩` from `(hb' γ).2 y`. Use `⟨l, ?_, hl⟩` and prove the remaining obligations. Use `Finset.mem_coe.mpr (Finset.mem_erase.mpr ⟨fun h => ?_, mem_univ _⟩)` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Finset.ne_of_mem_erase (Finset.mem_coe.mp hy) hl.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `l _`. Both sides reduce to the same expression. Establish `hA'fam : IsFam act' ((k + m * (Fintype.card ι - 1) : ℕ) : ℤ) A'`. Establish `e : A' = fun i τ => ∑ j ∈ range (Fintype.card ι), (fun j i τ => c' j τ * t' i τ ^ (Fintype.card ι - 1 - j)) j i τ`. Use function extensionality and compare the values at `i τ`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA'd i]`. Rewrite using `[e]`. Use `hA.2.2.2.2.2.1 ℕ _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < Fintype.card ι` using `Finset.mem_range.mp hj`. Establish `hw : ((k + m * j : ℕ) : ℤ) + ((Fintype.card ι - 1 - j : ℕ) : ℤ) * (m : ℤ) = ((k + m * (Fintype.card ι - 1) : ℕ) : ℤ)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le (Nat.le_sub_one_of_lt hj')`. Rewrite using `[hr, show j + r - j = r by omega]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hA.2.2.2.1 _ _ (fun _ => c' j) (fun i τ => t' i τ ^ (Fintype.card ι - 1 - j)) (fun _ γ => (hc' j).1 γ) (hA.2.2.2.2.1 _ _ _ ht')`. Introduce `i γ`. Establish `e1 : (F' i ∣[(k : ℤ)] γ) * (D' i ∣[((m * (Fintype.card ι - 1) : ℕ) : ℤ)] γ) = A' i ∣[((k + m * (Fintype.card ι - 1) : ℕ) : ℤ)] γ`. Rewrite using `[show ((k + m * (Fintype.card ι - 1) : ℕ) : ℤ) = (k : ℤ) + ((m * (Fintype.card ι - 1) : ℕ) : ℤ) by push_cast; ring, ← ModularForm.mul_slash_SL2]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `τ`. Conclude with `hF'2 i τ`. Rewrite `e1` using `[hD'fam i γ, hA'fam i γ]`. Establish `hz : ∀ τ, ((F' i ∣[(k : ℤ)] γ) τ - F' (act' i γ) τ) * D' (act' i γ) τ = 0` using `fun τ => by`. Use `congrFun e1 τ` as an intermediate fact.
-
-Simplify using `only [Pi.mul_apply] at this`. Rewrite using `[sub_mul, this, hF'2, sub_self]`. Establish `hol1 : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (F' i ∣[(k : ℤ)] γ)`. Rewrite using `[ModularForm.SL_slash]`. Conclude with `MDifferentiable.slash (mdiff_of_hasQ hN (hasQ_of_qConj (hF'1 i)).2) _ _`.
-
-Break down `GlobalTheory.T.upperHalfPlane_holomorphic_mul_eq_zero_iff _ _ (hol1.sub (mdiff_of_hasQ hN (hasQ_of_qConj (hF'1 (act' i γ))).2)) (mdiff_of_hasQ hN (hasQ_of_qConj (hDD (act' i γ))).2) hz with h | h` into its components or cases. Use function extensionality and compare the values at `τ`. Conclude with `sub_eq_zero.mp (congrFun h τ)`. Conclude with `absurd h (hD'ne _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem conj_family_of_injective : ∀ (g : ℂ ≃+* ℂ) (ι : Type) [Fintype ι] (act act' : ι → SL(2, ℤ) → ι) (m k N : ℕ) (t t' F : ι → ℍ → ℂ), 0 < N → ActBij act → ActBij act' → IsFam act m t → IsFam act' m t' → IsFam act k F → Function.Injective t → (∀ i, QConj g N (t i) (t' i)) → (∀ i, ∃ a, HasQ N (F i) a) → ∃ F' : ι → ℍ → ℂ, IsFam act' k F' ∧ ∀ i, QConj g N (F i) (F' i) := by
   intro g ι _ act act' m k N t t' F hN hb hb' ht ht' hF hinj htt' hFq

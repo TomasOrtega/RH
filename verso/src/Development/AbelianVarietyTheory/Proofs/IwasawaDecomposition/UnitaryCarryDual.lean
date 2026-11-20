@@ -14,11 +14,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Establish `hle : tensInt (F` using `F) 𝔸 (intOE E) (intAd F) ≤ (tensInt (F := F) 𝔸 (intOE E) (intAd F)).comap (sigR σ 𝔸) := by conv_lhs => unfold tensInt`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨y, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`. Take `⟨a, r, hr⟩` from `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `hr` using the available equality. Establish `hi : IsIntegral ℤ (σ (r : E))` using `map_isIntegral_int σ (RingOfIntegers.isIntegral_coe r)`. Express the relevant statement in the definitionally equal form `(σ (r : E)) ⊗ₜ[F] (1 : 𝔸) ∈ _`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨σ (r : E), ⟨⟨σ (r : E), hi⟩, rfl⟩⟩, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`.
+Substitute using the available equality. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(σ (1 : E)) ⊗ₜ[F] (y : 𝔸) ∈ _`. Rewrite using `[map_one]`. Conclude with `Subring.subset_closure (Or.inr ⟨y, rfl⟩)`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_int (σ : E →ₐ[F] E) (x : E ⊗[F] 𝔸)
     (hx : x ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F)) :
@@ -41,17 +41,17 @@ theorem sigR_int (σ : E →ₐ[F] E) (x : E ⊗[F] 𝔸)
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨l, hl, rfl⟩` from `hu`. Take `⟨r, hr⟩` from `hz l hl`. Establish `e : (fun i => sigR σ 𝔸 (inclE (F` using `F) 𝔸 (l i))) ⬝ᵥ (fun a => inclE (F := F) 𝔸 (z a)) = inclE (F := F) 𝔸 (hform (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) l z) := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : hform (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) l z = ∑ i, σ (l i) * z i`. Unfold `hform`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Rewrite using `[h1, map_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Simplify using `only [] at e ⊢`. Rewrite using `[e, ← hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, ⟨r, rfl⟩⟩, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Establish `: (fun i => sigR σ 𝔸 ((a + b) i)) = (fun i => sigR σ 𝔸 (a i)) + (fun i => sigR σ 𝔸 (b i))`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, add_dotProduct]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: (fun i => sigR σ 𝔸 ((c • a) i)) = sigR σ 𝔸 (c : E ⊗[F] 𝔸) • (fun i => sigR σ 𝔸 (a i))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Subring.smul_def]`. Rewrite using `[this, smul_dotProduct]`. Conclude with `mul_mem (sigR_int σ _ c.2) ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_latS_int (σ : E →ₐ[F] E) {n : ℕ} (L' : Submodule (𝓞 E) (Fin n → E))
     (z : Fin n → E) (hz : z ∈ dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L')
@@ -102,7 +102,7 @@ theorem sigR_inclE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
       inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (σ e) := rfl
 
 /- English proof (translation)
-Unfold `hform`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hform_one {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (x y : Fin n → E) :
     hform σ (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, σ (x i) * y i := by
@@ -114,15 +114,15 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.latS at hv ⊢`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨x, hx, rfl⟩` from `hv`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(_root_.Formalism.UG.P.afsplit_prV_inclE w (x i)).symm`. Consider the case `zero`. Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `smul c a _ ha`. Establish `hc : _root_.Formalism.UG.prV w (c : E ⊗[F] FiniteAdeleRing (𝓞 F) F) ∈ _root_.Formalism.BasicNotions.intV (F` using `F) E w := by unfold _root_.Formalism.BasicNotions.intV; exact _root_.Formalism.UG.P.afsplit_prV_int w _ c.2`. Use `Submodule.smul_mem _ (⟨_, hc⟩ : _root_.Formalism.BasicNotions.intV (F := F) E w) ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Subring.smul_def]`.
+A detailed English derivation is pending.
 -/
 private lemma prV_mem_latS (w : HeightOneSpectrum (𝓞 F)) {m : ℕ} (L : Submodule (𝓞 E) (Fin m → E))
     {v : Fin m → E ⊗[F] FiniteAdeleRing (𝓞 F) F}
@@ -156,7 +156,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.intV _root_.Formalism.UG.tensInt`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨a, ha⟩, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma inclE_mem_intV_of_mem_intOE (w : HeightOneSpectrum (𝓞 F)) {a : E} (ha : a ∈ _root_.Formalism.UG.intOE E) :
     _root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) a ∈ _root_.Formalism.BasicNotions.intV (F := F) E w := by
@@ -167,7 +167,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.hform`. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma hform_one_apply {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A) (x y : Fin m → A) :
     _root_.Formalism.UG.hform σ 1 x y = ∑ i, σ (x i) * y i := by
@@ -178,7 +178,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.intOE`. Conclude with `⟨⟨σ r, (r.isIntegral_coe).map (σ.toRingHom.toIntAlgHom)⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma algHom_coe_mem_intOE (σ : E →ₐ[F] E) (r : 𝓞 E) : σ (r : E) ∈ _root_.Formalism.UG.intOE E := by
   unfold _root_.Formalism.UG.intOE
@@ -188,13 +188,11 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.intV _root_.Formalism.UG.tensInt at *`. Establish `hle : Subring.closure ((Set.range fun x : _root_.Formalism.UG.intOE E => (x : E) ⊗ₜ[F] (1 : w.adicCompletion F)) ∪ Set.range fun y : (w.adicCompletionIntegers F).toSubring => (1 : E) ⊗ₜ[F] (y : w.adicCompletion F)) ≤ (Subring.closure ((Set.range fun x : _root_.Formalism.UG.intOE …`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨y, rfl⟩)`. Take `⟨r, hr⟩ : (x : E) ∈ (algebraMap (𝓞 E) E).range` from `x.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hσ : σ (x : E) ∈ _root_.Formalism.UG.intOE E` using `by rw [← hr]; exact algHom_coe_mem_intOE σ r`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Use `⟨⟨σ x, hσ⟩, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.UG.sigR`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Subring.subset_closure right` to reduce the goal to its premises. Use `⟨y, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.UG.sigR`. Simplify using the standard rewrite rules.
-
-Conclude with `hle hc`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sigR_mem_intV' (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F))
     {c : E ⊗[F] w.adicCompletion F} (hc : c ∈ _root_.Formalism.BasicNotions.intV (F := F) E w) :
@@ -226,13 +224,13 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Establish `hz' : ∀ y ∈ L, _root_.Formalism.UG.hform (σ : E →+* E) 1 y z ∈ (algebraMap (𝓞 E) E).range` using `hz`. Unfold `_root_.Formalism.UG.latS at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨y, hy, rfl⟩` from `hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h` using `inclE_mem_intV_of_mem_intOE (F := F) w (hz' y hy)`. Rewrite `h` using `[hform_one_apply, map_sum]`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `all_goals (unfold _root_.Formalism.UG.sigR _root_.Formalism.UG.inclE; simp)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Simplify using `[map_add, add_mul, Finset.sum_add_distrib]`.
+Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c a _ ha`. Use `mul_mem (sigR_mem_intV' σ w c.2) ha using 1` and compare the differences between its conclusion and the goal. Simplify using `[Subring.smul_def, map_mul, Finset.mul_sum, mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pairing_mem_intV_of_mem_dualSet (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) {m : ℕ}
     (L : Submodule (𝓞 E) (Fin m → E)) {z : Fin m → E} (hz : z ∈ _root_.Formalism.BasicNotions.dualSet (σ : E →+* E) 1 L)
@@ -263,57 +261,53 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ w n J L p hJ hp hL L' Y hY hLat z hz`. Substitute `hJ` using the available equality. Consider the cases of `n with`. Consider the case `zero`. Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `succ m => set Yw := _root_.Formalism.UG.bc (_root_.Formalism.UG.prV (E := E) w) Y with hYw_def`. Establish `hYwU : Yw ∈ _root_.Formalism.UG.UPts σ 1 (w.adicCompletion F)` using `_root_.Formalism.UG.P.afsplit_bc_mem σ 1 w Y hY`. Establish `hunit : _root_.Formalism.UG.cT (_root_.Formalism.UG.sigR σ (w.adicCompletion F)) (Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) * (Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) = 1`. Establish `h` using `hYwU`. Unfold `_root_.Formalism.UG.UPts _root_.Formalism.UG.UJ at h`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Express the relevant statement in the definitionally equal form `_ * _ * _ = _ at h`. Rewrite `h` using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`. Then use the resulting hypothesis. Establish `hinv : ((Yw⁻¹ : GL (Fin (m + 1)) (E ⊗[F] w.adicCompletion F)) : Matrix (Fin (m + 1)) (Fin (m + 1)) _) = _root_.Formalism.UG.cT (_root_.Formalism.UG.sigR σ (w.adicCompletion F)) (Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _)`. Combine the equalities or inequalities in the displayed calculation. Use `set v : Fin (m + 1) → E ⊗[F] w.adicCompletion F := fun a => _root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) (z a) with hv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hu_apply : ∀ i, (((Yw⁻¹ : GL (Fin (m + 1)) (E ⊗[F] w.adicCompletion F)) : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ v) i = ∑ j, _root_.Formalism.UG.sigR σ (w.adicCompletion F) ((Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) j i) * v j`. Introduce `i`. Rewrite using `[hinv]`. Unfold `_root_.Formalism.UG.cT`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcol : ∀ x ∈ L, (Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ (fun a => _root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) (x a)) ∈ _root_.Formalism.UG.latS (F := F) (w.adicCompletion F) (_root_.Formalism.BasicNotions.intV E w) L' := by`. Introduce `x hx`. Establish `hA : (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ (fun a => _root_.Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x a)) ∈ _root_.Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.intOE E) (_root_.Formalism.UG.intAd F)) L' := by`. Rewrite using `[hLat, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `prV_mem_latS w L' hA`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[hYw_def, _root_.Formalism.UG.P.afsplit_coe_bc_prV, RingHom.map_mulVec]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlast : ∀ j : Fin (m + 1), j.1 + 1 = m + 1 ↔ j = Fin.last m` using `fun j => by`. Rewrite using `[Fin.ext_iff, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Establish `hsingle : ∀ i, i ≠ Fin.last m → (Pi.single i 1 : Fin (m + 1) → E) ∈ L`. Introduce `i hi`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL]`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Conclude with `⟨1, by simp, fun h => absurd ((hlast j).1 h) hi⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, by simp [hj], fun _ => dvd_zero p⟩`. Establish `hpL : (Pi.single (Fin.last m) (p : E) : Fin (m + 1) → E) ∈ L`. Rewrite using `[hL]`. Introduce `j`. Distinguish the cases in `hj : j = Fin.last m`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hj` using the available equality. Conclude with `⟨p, by simp, fun _ => dvd_refl _⟩`. Conclude with `⟨0, by simp [hj], fun _ => dvd_zero p⟩`. Establish `hcoef_low : ∀ i, i ≠ Fin.last m → (((Yw⁻¹ : GL (Fin (m + 1)) (E ⊗[F] w.adicCompletion F)) : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ v) i ∈ _root_.Formalism.BasicNotions.intV (F` using `F) E w := by`. Introduce `i hi`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `pairing_mem_intV_of_mem_dualSet σ w L' hz (hcol _ (hsingle i hi))`. Rewrite using `[hu_apply]`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Use `congr 2`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoef_last : _root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) (σ (p : E)) * (((Yw⁻¹ : GL (Fin (m + 1)) (E ⊗[F] w.adicCompletion F)) : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ v) (Fin.last m) ∈ _root_.Formalism.BasicNotions.intV (F := F) E w := by`. Establish `h` using `pairing_mem_intV_of_mem_dualSet σ w L' hz (hcol _ hpL)`. Rewrite using `[hu_apply, Finset.mul_sum]`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Establish `hc : ((Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ (fun a => _root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) ((Pi.single (Fin.last m) (p : E) : Fin (m + 1) → E) a))) j = (Yw : Matrix (Fin (m + 1)) (Fin (m + 1)) _) j (Fin.last m) * _root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) (p : E) := by`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hv' : (fun a => _root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) ((Pi.single (Fin.last m) (p : E) : Fin (m + 1) → E) a)) = Pi.single (Fin.last m) (_root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) (p : E)) := by`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = Fin.last m`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha]`. Rewrite using `[hv']`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hc, map_mul]`. Establish `hs : _root_.Formalism.UG.sigR σ (w.adicCompletion F) (_root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) (p : E)) = _root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) (σ (p : E)) := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `_root_.Formalism.UG.sigR _root_.Formalism.UG.inclE`. Simplify using the standard rewrite rules. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd_single : ∀ i, (Pi.single i 1 : Fin (m + 1) → E) ∈ _root_.Formalism.BasicNotions.dualSet (σ : E →+* E) 1 L`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `show ∀ x ∈ L, _root_.Formalism.UG.hform (σ : E →+* E) 1 x _ ∈ (algebraMap (𝓞 E) E).range`. Introduce `x hx`. Take `⟨r, hr, _⟩` from `(hL x).1 hx i`. Establish `hc : σ (r : E) ∈ (algebraMap (𝓞 E) E).range` using `algHom_coe_mem_intOE σ r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hform_one_apply]`. Simplify `hc` using `[Pi.single_apply, hr]`. Establish `hq : σ (p : E) ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (p : E) = 0` using `σ.injective (h.trans (map_zero σ).symm)`. Conclude with `h'` after adjusting the coercions. Use `set e0 : Fin (m + 1) → E := Pi.single (Fin.last m) (σ (p : E))⁻¹ with he0_def`. Establish `he0 : e0 ∈ _root_.Formalism.BasicNotions.dualSet (σ : E →+* E) 1 L` using `by show ∀ x ∈ L, _root_.Formalism.UG.hform (σ : E →+* E) 1 x e0 ∈ (algebraMap (𝓞 E) E).range`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hxr, hdiv⟩` from `(hL x).1 hx (Fin.last m)`. Take `⟨c, rfl⟩` from `hdiv (by simp)`. Rewrite using `[hform_one_apply]`. Establish `hc : σ (c : E) ∈ (algebraMap (𝓞 E) E).range` using `algHom_coe_mem_intOE σ c`. Establish `key : σ (x (Fin.last m)) * (σ (p : E))⁻¹ = σ (c : E)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hxr]`. Use `push_cast`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Simplify `hc` using `[he0_def, Pi.single_apply, key]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Set `d : Fin (m + 1) → Fin (m + 1) → E` to `fun i => if i = Fin.last m then e0 else Pi.single i 1`. Establish `hd : ∀ i, d i ∈ _root_.Formalism.BasicNotions.dualSet (σ : E →+* E) 1 L`. Introduce `i`. Distinguish the cases in `h : i = Fin.last m`. Simplify using `only [d, h, if_true]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he0`. Simplify using `only [d, h, if_false]`. Conclude with `hd_single i`. Set `c : Fin (m + 1) → _root_.Formalism.BasicNotions.intV (F` to `F) E w := fun i => if h : i = Fin.last m then ⟨_, hcoef_last⟩ else ⟨_, hcoef_low i h⟩`. Establish `hsum : ((Yw⁻¹ : GL (Fin (m + 1)) (E ⊗[F] w.adicCompletion F)) : Matrix (Fin (m + 1)) (Fin (m + 1)) _) *ᵥ v = ∑ i, c i • (fun a => _root_.Formalism.UG.inclE (F` using `F) (w.adicCompletion F) (d i a)) := by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`. Distinguish the cases in `hk : k = Fin.last m`. Substitute `hk` using the available equality. Simplify using `only [c, d, dif_pos, if_pos, Pi.smul_apply, Subring.smul_def, smul_eq_mul, he0_def, Pi.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hq, map_one, one_mul]`. Simplify using `[c, d, hk, Subring.smul_def]`. Introduce `b _ hb`. Distinguish the cases in `hbl : b = Fin.last m`. Substitute `hbl` using the available equality.
-
-Simplify using `[c, d, he0_def, Pi.single_apply, Ne.symm hb, Subring.smul_def]`. Simplify using `[c, d, hbl, Pi.single_apply, Ne.symm hb, Subring.smul_def]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Rewrite using `[hsum]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨d i, Submodule.subset_span (hd i), rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.LevDual.unitary_carry_dual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (p : 𝓞 E), J = 1 → p ≠ 0 → (∀ x, x ∈ L ↔ ∀ j : Fin n, ∃ r : 𝓞 E, x j = (r : E) ∧ (j.1 + 1 = n → p ∣ r)) → ∀ (L' : Submodule (𝓞 E) (Fin n → E)) (Y : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))), Y ∈ _root_.Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F) → (∀ x : Fin n → TensorProduct F E (FiniteAdeleRing (𝓞 F) F), x ∈ _root_.Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.intOE E) (_root_.Formalism.UG.intAd F)) L' ↔ ((Y⁻¹ : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) : Matrix (Fin n) (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) *ᵥ x ∈ _root_.Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (_root_.Formalism.UG.intOE E) (_root_.Formalism.UG.intAd F)) L) → ∀ z ∈ _root_.Formalism.BasicNotions.dualSet (σ : E →+* E) J L', ((_root_.Formalism.UG.bc (_root_.Formalism.UG.prV (E := E) w) Y)⁻¹).1 *ᵥ (fun a => _root_.Formalism.UG.inclE (F := F) (w.adicCompletion F) (z a)) ∈ _root_.Formalism.UG.latS (F := F) (w.adicCompletion F) (_root_.Formalism.BasicNotions.intV E w) (Submodule.span (𝓞 E) (_root_.Formalism.BasicNotions.dualSet (σ : E →+* E) J L)) := by
   intro F E _ _ _ _ _ σ w n J L p hJ hp hL L' Y hY hLat z hz

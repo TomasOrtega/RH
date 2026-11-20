@@ -11,14 +11,14 @@ open ReciprocityTheory.PGsh.L2
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_augIdeal {X : Type} [AddCommGroup X] {M : Submodule R (X → C)} {f : X → C} :
     f ∈ augIdeal M ↔ f ∈ M ∧ f 0 = 0 := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `h ⟨f, hf, f', hf', rfl⟩`. Use `show F (f * f') ∈ sqIdeal J`. Rewrite using `[hF]`. Conclude with `Submodule.subset_span ⟨_, hIJ f hf, _, hIJ f' hf', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqIdeal_le {X Y : Type} (F : (X → C) →ₗ[R] (Y → C))
     (hF : ∀ f g, F (f * g) = F f * F g) {I : Submodule R (X → C)} {J : Submodule R (Y → C)}
@@ -30,7 +30,7 @@ theorem sqIdeal_le {X Y : Type} (F : (X → C) →ₗ[R] (Y → C))
   exact Submodule.subset_span ⟨_, hIJ f hf, _, hIJ f' hf', rfl⟩
 
 /- English proof (translation)
-Use `Submodule.smul_le.2 fun r hr n _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulTop_le (q : ℕ) {a b : ℕ} (G : Matrix (Fin a) (Fin b) R) :
     (Ideal.span {(q : R)} • (⊤ : Submodule R (Fin b → R))) ≤
@@ -84,27 +84,25 @@ def qPi (q d : ℕ) : LieDualModP q R d ≃ₗ[R] ((i : Fin d) → R ⧸ Ideal.s
 variable {X N : Type} [AddCommGroup X] [AddCommGroup N]
 
 /- English proof (translation)
-Establish `hM : P2 * F * P1 = 1`. Rewrite using `[← hF, ← Matrix.mul_assoc P2 P1 P2, h21, Matrix.one_mul, h21]`. Establish `hψI : ∀ f ∈ augIdeal A, LinearMap.funLeft R C ψ f ∈ augIdeal (A.map (LinearMap.funLeft R C ψ))`. Introduce `f hf`. Rewrite `hf`, the goal using `[mem_augIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨Submodule.mem_map_of_mem hf.1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.funLeft_apply, map_zero]`. Conclude with `hf.2`. Establish `hχI : ∀ g ∈ augIdeal (A.map (LinearMap.funLeft R C ψ)), LinearMap.funLeft R C χ g ∈ augIdeal A`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hg`, the goal using `[mem_augIdeal]`. Take `⟨⟨f, hf, rfl⟩, h0⟩` from `hg`. Use `⟨hA f hf, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.funLeft_apply, map_zero]`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ0 : augIdeal (A.map (LinearMap.funLeft R C ψ)) →ₗ[R] augIdeal A` to `((LinearMap.funLeft R C χ).comp (augIdeal (A.map (LinearMap.funLeft R C ψ))).subtype).codRestrict (augIdeal A) (fun g => hχI g.1 g.2)`. Set `Φ : augIdeal (A.map (LinearMap.funLeft R C ψ)) →ₗ[R] LieDualModP q R d` to `mq q P2 ∘ₗ φ ∘ₗ Φ0`. Establish `hΦ : ∀ g, Φ g = mq q P2 (φ (Φ0 g))` using `fun _ => rfl`. Establish `hsurjΦ : Function.Surjective Φ`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨f, hf⟩` from `hsurj (Submodule.Quotient.mk (P1 *ᵥ w))`. Use `⟨⟨LinearMap.funLeft R C ψ f, hψI f f.2⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hlin f (Φ0 ⟨LinearMap.funLeft R C ψ f, hψI f f.2⟩) (P1 *ᵥ w) (fun n => rfl) hf`. Rewrite using `[hΦ, h1, mq_mk, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hkerΦ : LinearMap.ker Φ = (sqIdeal (augIdeal (A.map (LinearMap.funLeft R C ψ)))).comap (augIdeal (A.map (LinearMap.funLeft R C ψ))).subtype`. Use extensionality with `u`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, hΦ]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `Submodule.Quotient.mk_surjective _ (φ (Φ0 u))`. Establish `hfix` using `hlin (Φ0 u) (Φ0 u) l (fun n => by show (u : X → C) (χ n) = (u : X → C) (χ (ψ (χ n)))`. Rewrite using `[hχψ]) hl.symm`. Rewrite `h0` using `[← hl, mq_mk]`. Establish `hφ0 : φ (Φ0 u) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hfix, ← hF, ← Matrix.mulVec_mulVec, show (Submodule.Quotient.mk (P1 *ᵥ (P2 *ᵥ l)) : LieDualModP q R g) = mq q P1 (Submodule.Quotient.mk (P2 *ᵥ l)) from rfl, h0, map_zero]`. Establish `hmem : ((Φ0 u : augIdeal A) : N → C) ∈ sqIdeal (augIdeal A)`. Use `LinearMap.mem_ker.2 hφ0` as an intermediate fact. Rewrite `this` using `[hker, Submodule.mem_comap]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Submodule.mem_comap.1 (sqIdeal_le (LinearMap.funLeft R C ψ) (fun _ _ => rfl) hψI hmem)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `show (u : X → C) x = (u : X → C) (χ (ψ x))`. Rewrite using `[hχψ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hu`. Establish `h1` using `Submodule.mem_comap.1 (sqIdeal_le (LinearMap.funLeft R C χ) (fun _ _ => rfl) hχI hu)`. Establish `hφ0 : φ (Φ0 u) = 0`. Rewrite using `[← LinearMap.mem_ker, hker, Submodule.mem_comap]`. Conclude with `h1`.
-
-Rewrite using `[hφ0, map_zero]`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hkerΦ.symm).trans (Φ.quotKerEquivOfSurjective hsurjΦ)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem omega_pull (q : ℕ) {g d : ℕ} (ψ : X →+ N) (χ : N →+ X) (hχψ : ∀ x, χ (ψ x) = x)
     (A : Submodule R (N → C)) (hA : ∀ f ∈ A, (fun n => f (ψ (χ n))) ∈ A)

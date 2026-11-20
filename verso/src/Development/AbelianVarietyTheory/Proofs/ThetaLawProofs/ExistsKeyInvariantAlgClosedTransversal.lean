@@ -17,9 +17,9 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN Nat.cast_zero`. Establish `hc : Nat.card {y : Pt x // y ^ N = 1} = N ^ (2 * x.P.g)` using `(hL.mulN _ x.P N (Nat.one_le_iff_ne_zero.2 hN0)).2.2.2.2 K (𝟙 _) hN`. Establish `: Finite {y : Pt x // y ^ N = 1}` using `Nat.finite_of_card_ne_zero (hc ▸ pow_ne_zero _ hN0)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e` to `(Finite.equivFinOfCardEq hc).symm`. Use `⟨fun a => (e a).1, fun a => (e a).2, fun a a' h p hp => h (e.injective (Subtype.ext ?_))⟩` and prove the remaining obligations. Use `x.P.isAb.proper` as an intermediate fact. Take `rfl : p = IsLocalRing.closedPoint K` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `Over.OverMorphism.ext (ext_of_apply_closedPoint_eq x.P.A.hom (Over.w _) (Over.w _) hp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_enum_torsion (hL : Out.Laws) {K : Type} [Field K] [IsAlgClosed K] (x : KeyIn K) (N : ℕ)
     (hN : (N : K) ≠ 0) : ∃ ξ : Fin (N ^ (2 * x.P.g)) → Pt x, (∀ a, ξ a ^ N = 1) ∧
@@ -37,7 +37,7 @@ theorem exists_enum_torsion (hL : Out.Laws) {K : Type} [Field K] [IsAlgClosed K]
   exact Over.OverMorphism.ext (ext_of_apply_closedPoint_eq x.P.A.hom (Over.w _) (Over.w _) hp)
 
 /- English proof (translation)
-Introduce `hL K _ _ x n l l' al d s z ch hA hN hZ`. Take `⟨ξ, h₁, h₂⟩` from `exists_enum_torsion hL x _ hN`. Conclude with `GlobalTheory.T.exists_invariant_of_split_zeros_torsion hL K x n l l' al d s z ch ξ hA (Ne.isUnit hN) hZ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_kaVal_of_isAlgClosed : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (d : ℕ) (s : Fin x.P.g → RR x n) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), admitted x.P.g n l l' al → ((degProd x.P.g n l l' : ℕ) : K) ≠ 0 → EtZ x s z ch → ∃ κ, KaVal x n l l' al s κ := by
   intro hL K _ _ x n l l' al d s z ch hA hN hZ

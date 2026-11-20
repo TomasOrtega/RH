@@ -10,44 +10,44 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Simplify using `[cw, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cw_add' {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (a b : A F) :
     cw w (a + b) = cw w a + cw w b := by
   simp [cw, map_add]
 
 /- English proof (translation)
-Simplify using `[cw, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cw_mul' {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (a b : A F) :
     cw w (a * b) = cw w a * cw w b := by
   simp [cw, map_mul]
 
 /- English proof (translation)
-Simplify using `[cw, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cw_one' {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) :
     cw w (1 : A F) = 1 := by
   simp [cw, map_one]
 
 /- English proof (translation)
-Simplify using `[cw, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cw_zero' {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) :
     cw w (0 : A F) = 0 := by
   simp [cw, map_zero]
 
 /- English proof (translation)
-Simplify using `[cw, map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma cw_neg' {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (a : A F) :
     cw w (-a) = -cw w a := by
   simp [cw, map_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← mul_assoc, h₁, mul_assoc, add_mul, smul_mul_assoc, smul_mul_assoc, k₁, k₂]`. Simplify using `only [mul_add, mul_smul_comm, smul_add, smul_smul, add_smul, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[← mul_assoc, h₂, mul_assoc, add_mul, smul_mul_assoc, smul_mul_assoc, k₁, k₂]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_add, mul_smul_comm, smul_add, smul_smul, add_smul, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private lemma step_mul {M : Type} [AddCommGroup M] [Module ℂ M] (d p X Y : Module.End ℂ M)
     (a b c e a' b' c' e' : ℂ)
@@ -64,11 +64,11 @@ private lemma step_mul {M : Type} [AddCommGroup M] [Module ℂ M] (d p X Y : Mod
     abel
 
 /- English proof (translation)
-Establish `k₁ : (e • d + (-b) • p) * X = X * d`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, h₁, h₂, ← mul_smul_comm, ← mul_smul_comm, ← mul_add]`. Use `congr 1`. Establish `: e • (a • d + b • p) + (-b) • (c • d + e • p) = (a * e - b * c) • d` using `by module`. Rewrite using `[this, hd, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₂ : ((-c) • d + a • p) * X = X * p`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, h₁, h₂, ← mul_smul_comm, ← mul_smul_comm, ← mul_add]`. Use `congr 1`. Establish `: (-c) • (a • d + b • p) + a • (c • d + e • p) = (a * e - b * c) • p` using `by module`. Rewrite using `[this, hd, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 private lemma step_inv {M : Type} [AddCommGroup M] [Module ℂ M] (d p X X' : Module.End ℂ M)
     (a b c e : ℂ) (hd : a * e - b * c = 1) (hl : X' * X = 1) (hr : X * X' = 1)
@@ -93,7 +93,7 @@ private lemma step_inv {M : Type} [AddCommGroup M] [Module ℂ M] (d p X X' : Mo
       _ = X' * ((-c) • d + a • p) := by rw [← k₂, mul_assoc, mul_assoc, hr, mul_one]
 
 /- English proof (translation)
-Simplify using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ent_mul {R : Type} [CommRing R] (g h : Matrix.SpecialLinearGroup (Fin 2) R) :
     (g * h) 0 0 = g 0 0 * h 0 0 + g 0 1 * h 1 0 ∧ (g * h) 0 1 = g 0 0 * h 0 1 + g 0 1 * h 1 1 ∧
@@ -101,32 +101,30 @@ private lemma ent_mul {R : Type} [CommRing R] (g h : Matrix.SpecialLinearGroup (
   simp [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ent_inv {R : Type} [CommRing R] (g : Matrix.SpecialLinearGroup (Fin 2) R) :
     g⁻¹ 0 0 = g 1 1 ∧ g⁻¹ 0 1 = -g 0 1 ∧ g⁻¹ 1 0 = -g 1 0 ∧ g⁻¹ 1 1 = g 0 0 := by
   simp [Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W O g`. Establish `hg : g ∈ Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) := by`. Rewrite using `[(UpperTheory.ConvolutionTheory.R2.gen F).1]`. Conclude with `Subgroup.mem_top g`. Proceed by induction on `hg using Subgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Introduce `w i`. Break down `hx with ⟨b, rfl⟩ | hx` into its components or cases. Establish `hp : O.p D.δ w i * W.Om (nU b) = W.Om (nU b) * O.p D.δ w i`. Establish `hx` using `fun k => (dN F E D W O w k b).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Use `all_goals`. Simplify using `only [Ops.p]`. Use `show (_ • O.x w _) * _ = _ * (_ • O.x w _)`. Rewrite using `[smul_mul_assoc, mul_smul_comm, hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `(dN F E D W O w i b).1` using `[nU, cw_one', cw_zero']`. Simplify `hp` using `[nU, cw_one', cw_zero']`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `dW F E D W O w i` using `[wW, cw_one', cw_zero']`. Simplify `pW F E D W O w i` using `[wW, cw_one', cw_zero', cw_neg']`. Consider the case `one`. Introduce `w i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[cw_one', cw_zero']`. Consider the case `mul x y _ _ hx hy`. Introduce `w i`. Take `⟨h₁, h₂⟩` from `hx w i`. Take `⟨k₁, k₂⟩` from `hy w i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨e₁, e₂, e₃, e₄⟩` from `ent_mul x y`. Use `step_mul _ _ _ _ _ _ _ _ _ _ _ _ h₁ h₂ k₁ k₂` as an intermediate fact. Rewrite using `[map_mul, e₁, e₂, e₃, e₄]`. Simplify `this` using `only [cw_add', cw_mul']`. Consider the case `inv x _ hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w i`. Take `⟨h₁, h₂⟩` from `hx w i`. Take `⟨e₁, e₂, e₃, e₄⟩` from `ent_inv x`. Establish `hdet : cw w (x 0 0) * cw w (x 1 1) - cw w (x 0 1) * cw w (x 1 0) = 1`. Establish `h` using `x.det_coe`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Matrix.det_fin_two]`. Use `congrArg (cw w) h` as an intermediate fact. Rewrite `this` using `[sub_eq_add_neg, cw_add', cw_neg', cw_mul', cw_mul', cw_one']`. Rewrite using `[sub_eq_add_neg]`. Conclude with `this`.
-
-Establish `hl : W.Om x⁻¹ * W.Om x = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `hr : W.Om x * W.Om x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Use `step_inv _ _ _ _ _ _ _ _ hdet hl hr h₁ h₂` as an intermediate fact. Rewrite using `[e₁, e₂, e₃, e₄, cw_neg', cw_neg']`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.Heisenberg₂ :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) (g : G1 F) w i,

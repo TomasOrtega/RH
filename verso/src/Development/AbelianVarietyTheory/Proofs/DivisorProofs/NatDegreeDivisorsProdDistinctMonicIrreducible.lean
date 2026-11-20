@@ -8,15 +8,15 @@ open Polynomial GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters Glob
 namespace GlobalTheory.Div.natDegree_divisors_prod_distinct_monic_irreducible
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `q hq`. Rewrite `hq` using `[Finset.prod_empty]`. Conclude with `⟨∅, Finset.Subset.refl _, by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.sum_empty, natDegree_eq_zero_of_isUnit (isUnit_of_dvd_one hq)]⟩`. Consider the case `insert i s hi ih`. Introduce `q hq`. Establish `hne : ∏ c ∈ insert i s, P c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun c _ => (hP c).ne_zero`. Establish `hq0 : q ≠ 0` using `ne_zero_of_dvd_ne_zero hne hq`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq` using `[Finset.prod_insert hi]`. Take `⟨q₁, q₂, h1, h2, rfl⟩` from `exists_dvd_and_dvd_of_dvd_mul hq`. Take `⟨A, hA, hsum⟩` from `ih q₂ h2`. Establish `hq1 : q₁ ≠ 0` using `left_ne_zero_of_mul hq0`. Establish `hq2 : q₂ ≠ 0` using `right_ne_zero_of_mul hq0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[natDegree_mul hq1 hq2]`. Break down `(hP i).dvd_iff.mp h1 with hu | ha` into its components or cases. Conclude with `⟨A, hA.trans (Finset.subset_insert _ _), by`. Rewrite using `[hsum, natDegree_eq_zero_of_isUnit hu, zero_add]⟩`. Use `⟨insert i A, Finset.insert_subset_insert _ hA, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert (fun h => hi (hA h)), hsum, natDegree_eq_of_degree_eq (degree_eq_degree_of_associated ha)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_subset_natDegree_of_dvd_prod {k : Type} [Field k] {ι : Type} (P : ι → k[X])
     (hP : ∀ c, Irreducible (P c)) (s : Finset ι) :
@@ -47,11 +47,11 @@ theorem exists_subset_natDegree_of_dvd_prod {k : Type} [Field k] {ι : Type} (P 
         natDegree_eq_of_degree_eq (degree_eq_degree_of_associated ha)]
 
 /- English proof (translation)
-Introduce `k _ ι _ P hP _`. Use `⟨fun a => ⟨?_, ?_⟩, fun Q => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨q, hq, rfl⟩`. Take `⟨A, -, hA⟩` from `exists_subset_natDegree_of_dvd_prod P (fun c => (hP c).2) _ q hq`. Conclude with `⟨A, hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨A, rfl⟩`. Conclude with `⟨∏ c ∈ A, P c, Finset.prod_dvd_prod_of_subset _ _ _ (Finset.subset_univ _), natDegree_prod_of_monic _ _ fun c _ => (hP c).1⟩`. Introduce and unpack `⟨q, hirr, hq, hQ⟩`. Take `⟨c, -, hc⟩` from `(Prime.dvd_finset_prod_iff hirr.prime _).mp hq`. Establish `ha` using `hirr.associated_of_dvd (hP c).2 hc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← natDegree_eq_of_degree_eq (degree_eq_degree_of_associated ha)]` and apply the resulting hypothesis. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨P c, (hP c).2, Finset.dvd_prod_of_mem _ (Finset.mem_univ c), hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem natDegree_divisors_prod :
     ∀ (k : Type) [Field k] (ι : Type) [Fintype ι] (P : ι → k[X]), (∀ c, (P c).Monic ∧ Irreducible (P c)) → Function.Injective P → (∀ a : ℕ, (∃ q : k[X], q ∣ ∏ c, P c ∧ q.natDegree = a) ↔ ∃ A : Finset ι, ∑ c ∈ A, (P c).natDegree = a) ∧ ∀ Q : ℕ → Prop, (∃ q : k[X], Irreducible q ∧ q ∣ ∏ c, P c ∧ Q q.natDegree) ↔ ∃ c, Q (P c).natDegree := by

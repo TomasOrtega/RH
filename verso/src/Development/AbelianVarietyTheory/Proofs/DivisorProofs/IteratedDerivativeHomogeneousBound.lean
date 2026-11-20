@@ -5,9 +5,9 @@ open MvPolynomial Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, pderiv_monomial, Nat.descFactorial_succ, tsub_tsub, ← Finsupp.single_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iterate_pderiv_monomial_descFactorial {σ : Type*} (i : σ) (n : ℕ) (m : σ →₀ ℕ) (c : ℝ) :
     (pderiv i)^[n] (monomial m c) =
@@ -23,7 +23,7 @@ theorem iterate_pderiv_monomial_descFactorial {σ : Type*} (i : σ) (n : ℕ) (m
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply', ih, map_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_pderiv_finset_sum {σ ι : Type*} (i : σ) (n : ℕ) (s : Finset ι)
     (f : ι → MvPolynomial σ ℝ) :
@@ -33,7 +33,7 @@ theorem iterate_pderiv_finset_sum {σ ι : Type*} (i : σ) (n : ℕ) (s : Finset
   | succ n ih => simp only [Function.iterate_succ_apply', ih, map_sum]
 
 /- English proof (translation)
-The claim follows from `|eval v ((pderiv i)^[n] (monomial m c))| ≤ |c| * (k : ℝ) ^ n * U ^ (k - n) := by rw [iterate_pderiv_monomial_descFactorial] by_cases h : m i < n · rw [Nat.descFactorial_eq_zero_iff_lt.2 h] simp only [Nat.cast_zero, mul_zero, map_zero, abs_zero, monomial_zero] positivity · push_ne …`.
+A detailed English derivation is pending.
 -/
 theorem abs_eval_iterate_pderiv_monomial_le {N k n : ℕ} (m : Fin N →₀ ℕ) (c : ℝ) (i : Fin N)
     (U : ℝ) (v : Fin N → ℝ) (hm : ∑ a, m a = k) (hU : 0 ≤ U) (hv : ∀ a, |v a| ≤ U) :
@@ -70,7 +70,7 @@ theorem abs_eval_iterate_pderiv_monomial_le {N k n : ℕ} (m : Fin N →₀ ℕ)
     · exact Finset.prod_nonneg fun a _ => abs_nonneg _
 
 /- English proof (translation)
-The claim follows from `|eval v ((pderiv i)^[n] rr)| ≤ (∑ m ∈ rr.support, |rr.coeff m|) * (k : ℝ) ^ n * U ^ (k - n) := by intro N k n rr i U v hr _ hU hv conv_lhs => rw [rr.as_sum] rw [iterate_pderiv_finset_sum, map_sum, Finset.sum_mul, Finset.sum_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finse …`.
+A detailed English derivation is pending.
 -/
 theorem abs_eval_iterate_pderiv_homogeneous_le :
     ∀ (N k n : ℕ) (rr : MvPolynomial (Fin N) ℝ) (i : Fin N) (U : ℝ) (v : Fin N → ℝ),

@@ -11,17 +11,17 @@ namespace RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `f N w H`. Set `e : Fin f × Fin N ≃ Fin f × Fin N` to `Equiv.prodShear (Equiv.refl _) w`. Establish `hcomp : ∀ α : Fin f × Fin N →₀ ℕ, (Finsupp.equivFunOnFinite.symm fun p : Fin f × Fin N => α (p.1, w p.1 p.2)) = Finsupp.equivMapDomain e.symm α`. Introduce `α`. Use extensionality with `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Finsupp.equivMapDomain_apply, e, Equiv.prodShear]`. Establish `hH : ∀ α, coeff α (blockPermute f N w H) = coeff (Finsupp.equivMapDomain e.symm α) H`. Introduce `α`. Rewrite using `[h1, hcomp]`. Establish `hD : ∀ α, coeff (Finsupp.equivMapDomain e.symm α) (blockVandermonde f N) = blockSign f N w * coeff α (blockVandermonde f N)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `α`. Rewrite using `[← hcomp, ← h1, Flag.blockPermute_blockVandermonde, coeff_smul, smul_eq_mul]`. Establish `hs2 : blockSign f N w * blockSign f N w = 1` using `Flag.blockSign_mul_self f N w`. Establish `hs0 : blockSign f N w ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs2` using `[h0, zero_mul]`. Conclude with `zero_ne_one hs2`. Establish `hfac : ∀ α : Fin f × Fin N →₀ ℕ, (Finsupp.equivMapDomain e.symm α).prod (fun _ n => (n.factorial : ℚ)) = α.prod (fun _ n => (n.factorial : ℚ))`. Introduce `α`. Rewrite using `[Finsupp.prod_equivMapDomain]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `flagIntegral`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_equiv (Finsupp.domCongr e.symm).toEquiv (fun α => ?_) (fun α _ => ?_)` and prove the remaining obligations. Simplify using `only [MvPolynomial.mem_support_iff, AddEquiv.toEquiv_eq_coe, AddEquiv.coe_toEquiv, Finsupp.domCongr_apply, hD]`. Conclude with `⟨fun h => mul_ne_zero hs0 h, fun h h' => h (by rw [h', mul_zero])⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddEquiv.toEquiv_eq_coe, AddEquiv.coe_toEquiv, Finsupp.domCongr_apply, hH, hD, hfac]`. Take the linear combination `(-(coeff (Finsupp.equivMapDomain e.symm α) H * coeff α (blockVandermonde f N) * α.prod (fun _ n => (n.factorial : ℚ)))) * hs2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem FlagIntegralPermute.proof (h1 : FlagCoeffBlockPermute.Statement) :
     FlagIntegralPermute.Statement := by

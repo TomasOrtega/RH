@@ -15,19 +15,17 @@ variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂
   {Y : NExp D.R D.host D.what₂ D.LL0 N X}
 
 /- English proof (translation)
-Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hst : ∀ x : D.host.E, IsCMField.complexConj D.host.E x = D.host.conj x` using `Formalism.BasicNotions.bridge_star_holds D.R D.host`. Take `⟨⟨j, hj⟩, -⟩` from `X.cc_cm`. Establish `hκ : ∀ x, D.host.conj (D.host.conj x) = x` using `fun x => by`. Rewrite using `[← hst, ← hst, IsCMField.complexConj_apply_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ x, X.cc (algebraMap D.host.E N.Om x) = algebraMap D.host.E N.Om (D.host.conj x)` using `fun x => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, ← hst]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E (j.comp (algebraMap D.host.E N.Om)) x).symm`. Establish `hs' : ∀ x, X.cc.symm (algebraMap D.host.E N.Om x) = algebraMap D.host.E N.Om (D.host.conj x)` using `fun x => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_eq, hc, hκ]`. Establish `hinv : ∀ x, X.cc (X.cc x) = x` using `fun x => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hj]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsymm : ∀ x, X.cc.symm x = X.cc x` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hinv]`. Establish `hP'P` using `GlobalTheory.GalChar.isConjPl_symm hPP`. Establish `hpl : IsPlaceOver (A.comap X.cc.symm.toRingHom) P` using `fun y => by`. Establish `hint : IsIntegral ℤ (D.host.conj (y : D.host.E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hst]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map ((IsCMField.complexConj D.host.E).toRingEquiv.toRingHom.toIntAlgHom)`. Rewrite using `[GlobalTheory.AntiRam.valuation_comap_lt_one, hs', ← hP'P ⟨_, hint⟩ y (hκ _).symm]`. Conclude with `hA' ⟨_, hint⟩`. Take `⟨σ, hσ, hσb⟩` from `hs _ hpl b⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ', h1, h2⟩` from `GlobalTheory.AntiRam.exists_conj_mem_Ine X.cc (fun x => D.host.conj x) hc hκ _ σ hσ`. Establish `eA : (A.comap X.cc.symm.toRingHom).comap X.cc.symm.toRingHom = A`. Use extensionality with `y`. Use `show X.cc.symm (X.cc.symm y) ∈ A ↔ y ∈ A`. Rewrite using `[hsymm, hsymm, hinv]`.
-
-Use `⟨σ', eA ▸ h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hA σ σ' h1, hσb, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_conj {B : Type} [CommGroup B] (χ : G D.host.E N.Om →* B) (hA : AntiHom X.cc χ)
     {P P' : PlE D.host} (hPP : IsConjPl D.host P P')
@@ -72,13 +70,13 @@ theorem surj_conj {B : Type} [CommGroup B] (χ : G D.host.E N.Om →* B) (hA : A
   rw [hA σ σ' h1, hσb, inv_inv]
 
 /- English proof (translation)
-Establish `hs` using `(Y.delU_conj i S M P hP v hv hc).choose_spec`. Establish `hva : v ∈ admissibleConjugatePairPlaces X i S M` using `conj_mem_admissibleConjugatePairPlaces hPa hc`. Take `⟨-, P', -, -, hadm⟩` from `mem_admissibleConjugatePairPlaces_iff.1 hPa`. Take `⟨-, χ, h1, h2, h3, h4, h5⟩` from `hadm.2 P (by simp)`. Establish `hDel : GlobalTheory.GalChar.IsDel D.host X.cc (X.l i) M (GlobalTheory.GalChar.pair D.host P) χ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨h1, h2, h3, fun w hw => h4 w (fun e => hw (Or.inl e)) (fun e => hw (Or.inr e)), fun w hw A hA b => ?_⟩` and prove the remaining obligations. Establish `hsP : ∀ A : ValuationSubring N.Om, IsPlaceOver A P → ∀ b, ∃ σ ∈ Ine (F` using `D.host.E) A, χ σ = b := fun A hA b => by`. Take `⟨σ, hσ⟩` from `h5 A hA (Multiplicative.toAdd b)`. Conclude with `⟨σ.1, σ.2, Multiplicative.toAdd.injective hσ⟩`. Break down `hw with rfl | hw` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hsP A hA b`. Conclude with `surj_conj χ h2 hw hsP A hA b`. Establish `hD` using `GlobalTheory.GalChar.isDel_delOf D.host X.cc (X.l i) ⟨χ, hDel⟩`. Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver N.Om P`. Take `⟨σ, -, hσ⟩` from `hD.2.2.2.2 P (Or.inl rfl) A hA (Multiplicative.ofAdd 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hs σ`. Rewrite `e` using `[delU_on hY σ ⟨v, hv⟩ hva, delU_on hY σ ⟨P, hP⟩ hPa]`. Simplify using `only at e`. Rewrite `e` using `[GlobalTheory.GalChar.pair_eq hc, hσ, toAdd_ofAdd, mul_one]`. Conclude with `e.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_eq_one (hY : GlobalTheory.UnivChar.IsUnivChar Y) {i : X.Tw} {S : Finset (Pl D.host.E)} {M : ℕ}
     {P v : Pl D.host.E} (hP : P ∈ S) (hv : v ∈ S) (hc : IsConjPl D.host P v) (hPa : P ∈ admissibleConjugatePairPlaces X i S M) :
@@ -107,11 +105,11 @@ theorem sign_eq_one (hY : GlobalTheory.UnivChar.IsUnivChar Y) {i : X.Tw} {S : Fi
   exact e.symm
 
 /- English proof (translation)
-Establish `hva : v ∈ admissibleConjugatePairPlaces X i S M` using `by rw [hS]; exact hvS`. Establish `hne : v ≠ P` using `ne_of_split (isSplit_of_mem_admissibleConjugatePairPlaces hva) hvP`. Establish `hPv` using `GlobalTheory.GalChar.isConjPl_symm hvP`. Establish `hPaa : P ∈ admissibleConjugatePairPlaces X i (admissibleConjugatePairPlaces X i S M) M`. Simplify using `only [hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hS]`. Conclude with `(mem_half.1 hPh).1`. Rewrite using `[spread_apply, Finset.sum_eq_single ⟨P, hPh⟩, weight, if_neg hne, dif_pos ⟨hva, hPv⟩, sign_eq_one hY _ _ hPv hPaa, one_mul]`. Introduce `P' _ h'`. Rewrite using `[weight, if_neg fun e : v = P'.1 => hvc (e ▸ (mem_half.1 P'.2).2), dif_neg fun h => h' (Subtype.ext (GlobalTheory.GalChar.isConjPl_unique (GlobalTheory.GalChar.isConjPl_symm h.2) hvP)), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem spread_conj (hY : GlobalTheory.UnivChar.IsUnivChar Y) {i : X.Tw} {M : ℕ} {ch : Set (Pl D.host.E)} (hch : IsChoice ch)
     {S : Finset (Pl D.host.E)} (hS : admissibleConjugatePairPlaces X i S M = S) (x : ↥(half ch (admissibleConjugatePairPlaces X i S M)) → ZMod (X.l i ^ M))
@@ -133,11 +131,11 @@ theorem spread_conj (hY : GlobalTheory.UnivChar.IsUnivChar Y) {i : X.Tw} {M : �
   · exact fun h => absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `D N X Y hY i M ch hch Q Q' hQQ hQ hQ' hsub c v hv`. Distinguish the cases in `hc : v ∈ ch`. Establish `h1 : v ∈ half ch (admissibleConjugatePairPlaces X i Q M)` using `mem_half.2 ⟨by rw [hQ]; exact hQQ hv, hc⟩`. Establish `h2 : v ∈ half ch (admissibleConjugatePairPlaces X i Q' M)` using `mem_half.2 ⟨by rw [hQ']; exact hv, hc⟩`. Rewrite using `[spread_of_mem Y i Q M hch c ⟨v, hQQ hv⟩ h1, spread_of_mem Y i Q' M hch _ ⟨v, hv⟩ h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hva : v ∈ admissibleConjugatePairPlaces X i Q' M` using `by rw [hQ']; exact hv`. Take `⟨-, P, -, hvP, -⟩` from `mem_admissibleConjugatePairPlaces_iff.1 hva`. Establish `hne : v ≠ P` using `ne_of_split (isSplit_of_mem_admissibleConjugatePairPlaces hva) hvP`. Establish `hPc : P ∈ ch`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc ((hch.pair _ _ hvP hne).2 h)`. Establish `hPa' : P ∈ admissibleConjugatePairPlaces X i Q' M` using `conj_mem_admissibleConjugatePairPlaces hva hvP`. Establish `hPh' : P ∈ half ch (admissibleConjugatePairPlaces X i Q' M)` using `mem_half.2 ⟨hPa', hPc⟩`. Rewrite using `[spread_conj hY hch hQ c (hQQ hv) hc hvP (hsub P hPh'), spread_conj hY hch hQ' _ hv hc hvP hPh']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread_restrict : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (Y : NExp D.R D.host D.what₂ D.LL0 N X), GlobalTheory.UnivChar.IsUnivChar Y → ∀ (i : X.Tw) (M : ℕ) (ch : Set (Pl D.host.E)), IsChoice ch → ∀ (Q Q' : Finset (Pl D.host.E)) (hQQ : Q' ⊆ Q), admissibleConjugatePairPlaces X i Q M = Q → admissibleConjugatePairPlaces X i Q' M = Q' → ∀ (hsub : ∀ w ∈ half ch (admissibleConjugatePairPlaces X i Q' M), w ∈ half ch (admissibleConjugatePairPlaces X i Q M)) (c : ↥(half ch (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M)) (v : Pl D.host.E) (hv : v ∈ Q'), spread Y i Q M ch c ⟨v, hQQ hv⟩ = spread Y i Q' M ch (fun w => c ⟨w.1, hsub w.1 w.2⟩) ⟨v, hv⟩ := by
   intro D N X Y hY i M ch hch Q Q' hQQ hQ hQ' hsub c v hv

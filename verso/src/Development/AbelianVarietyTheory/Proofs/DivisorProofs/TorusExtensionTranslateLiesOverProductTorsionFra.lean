@@ -24,15 +24,15 @@ section Pull
 open GlobalTheory.UT.PullMul
 
 /- English proof (translation)
-Establish `em : (snd T P.A).left ≫ (mulA P.A n).left = m.left` using `by rw [hmn, Over.comp_left]`. Take `⟨α, hα, hv⟩` from `exists_gen P.isLB (φ' := ![(snd T P.A).left, m.left]) (ε' := ![(k' : ℤ), -(k : ℤ)]) (fun U _ h => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, em, hk]`. Apply the tactic sequence `congr 2 <;> push_cast <;> ring)`. Use the proof step `(GeneratorPullback.powGen P.L _ _ (LB.pullGen P.L _ _ α₀ (snd T P.A).left) k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use the proof step `(powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hα₀ _) k)`. Establish `hv' : ∀ (y : T ⟶ P.A) (z : T.left) (J), Good P.L z J → val α (ptSecT P.A y).left z J = val α₀ y.left z J ^ k` using `fun y z J hJ => by`. Rewrite using `[hv _ _ z J hJ, val_powGen, val_pull hJ, ← Over.comp_left, ptSecT, lift_snd]`. Use `⟨α, hα, corr_of_val P.isLB fun z J hJ => ?_, fun t c ht => ?_⟩` and prove the remaining obligations. Establish `a` using `val_corr hJ hN T.hom`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `a` using `[val_pull hJ, val_mul hJ, val_inv, val_rigPow]`. Rewrite using `[val_pull hJ, Category.id_comp, hv' 1 z J hJ, one_left, val_rigT ρ T _ _ z hJ, Category.id_comp]`. Use `(congrArg (· ^ k) a).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rv ρ T.hom z J ^ ((n : ℤ) ^ 2) * (rv ρ T.hom z J)⁻¹) ^ k = rv ρ T.hom z J ^ _`. Rewrite using `[← zpow_sub_one, ← zpow_natCast, ← zpow_mul, hk]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t', ht'⟩` from `VVRank.exists_isTwistPull P.A (ψ := ψ) (hm := hm) P.isLB hα t`. Use `⟨t', ht', fun x hxn z J hJ => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : ptSecT P.A x ≫ ψ = ptSecT P.A 1` using `by ext1`. Rewrite using `[Category.assoc, hψ, ptSecT, ptSecT, lift_fst, lift_fst]`. Rewrite using `[Category.assoc, hm, hmn, ptSecT, ptSecT, lift_snd_assoc, lift_snd, MonObj.comp_pow, Category.comp_id, hxn]`. Rewrite using `[VVRank.sv_of_isTwistPull P.A ht' _ z hJ, ← Over.comp_left, e₁, ht z J hJ, hv' x z J hJ, val_rigT ρ T _ _ z hJ, val_mul hJ, val_pull hJ, val_rigT ρ T _ _ z hJ, Category.id_comp, zpow_one, mul_left_comm, ← Units.val_mul, zpow_natCast, ← mul_pow, Units.val_pow_eq_pow_val]`. Simplify using `only [Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_mul_all {S : Scheme.{0}} (P : PolAV S) (T : Over S) (ρ : LB.Gen (P.L.pull (eSec P.A))) (n k k' : ℕ)
     (hk : k' = k * n ^ 2)
@@ -86,15 +86,15 @@ section Field
 variable {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `p₁ : ptSecT A.A x₁ ≫ translPt A.A θ.pt = x₂`. Rewrite using `[ptSecT, translPt, comp_lift_assoc, lift_fst_assoc, lift_snd, Category.id_comp, ← Hom.mul_def, hx, mul_comm]`. Establish `p₂ : (ptSecT A.A x₁).left ≫ (translT A.A θ.pt).left = (ptSecT A.A x₂).left`. Rewrite using `[← Over.comp_left, translT, comp_lift, p₁, ptSecT, lift_fst]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₀ : (ptSecT A.A x₁).left ≫ (snd (TFK (R` using `R) F) A.A).left = x₁.left := by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Establish `e₃ : (ptSecT A.A x₁).left ≫ (translPt A.A θ.pt).left = x₂.left`. Rewrite using `[← Over.comp_left, p₁]`. Take `⟨u, hu, hv⟩` from `TWM.exists_ratio (F := F) A.isLB (LB.mulGen A.L _ _ _ _ (LB.pullGen A.L _ _ θ.φ (ptSecT A.A x₁).left) (powFrame A.A A.L x₂ e₂ N)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ θ.isGen _) (EvalLevel.powFrame_isGen x₂ e₂ he₂ N)) (powFrame A.A A.L x₁ e₁ N) (EvalLevel.po …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg]`. Conclude with `(congrArg₂ (fun a b => h a ^ (N : ℤ) * (h b ^ (N : ℤ))⁻¹ * h x₂.left ^ (N : ℤ)) e₀ e₃).trans (inv_mul_cancel_right _ _))`. Use `⟨u, hu, fun t t' c ha ht z J hJ => ?_⟩` and prove the remaining obligations. Establish `a₁` using `GlobalTheory.BoxTheta.act_val θ t t' ha (ptSecT A.A x₁).left z hJ`. Rewrite `a₁` using `[p₂]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a₀` using `(val_pull (L := A.L) (K := Fin 2) (φ := ![(snd (TFK (R := R) F) A.A).left, (translPt A.A θ.pt).left]) (ε := ![(N : ℤ), -(N : ℤ)]) hJ θ.φ (ptSecT A.A x₁).left (𝟙 _)).trans (congrArg (fun r => val (L := A.L) (K := Fin 2) (φ := ![(snd (TFK (R := R) F) A.A).left, (translPt A.A θ.pt). …`. Establish `a₂` using `((Units.val_mul _ _).symm.trans (congrArg Units.val ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) a₀ rfl)).symm)).trans (hv _ (𝟙 _) z J hJ)`. Establish `a₃` using `ht z J hJ`. Establish `a₄ : UT.cst (R` using `R) F z (u * c) = UT.cst (R := R) F z u * UT.cst (R := R) F z c := by`. Rewrite using `[cst_eq, cst_eq, cst_eq, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `a₁.trans ((congrArg _ a₃).trans ?_)` and prove the remaining obligations. Rewrite using `[a₄]`. Use `(mul_left_comm _ _ _).trans ((congrArg _ a₂).trans ?_)` and prove the remaining obligations. Conclude with `(_root_.mul_assoc _ _ _).symm.trans (congrArg₂ (fun a b : (TFK (R := R) F).left.presheaf.stalk z => a * b) (_root_.mul_comm _ _) rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_act_value (N : ℕ) (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F)) (x₁ x₂ : TFK (R := R) F ⟶ A.A)
     (hx : x₂ = x₁ * θ.pt) (e₁ : FrAt x₁) (he₁ : e₁.IsGen) (e₂ : FrAt x₂) (he₂ : e₂.IsGen) :
@@ -135,13 +135,13 @@ theorem exists_act_value (N : ℕ) (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R
     (congrArg₂ (fun a b : (TFK (R := R) F).left.presheaf.stalk z => a * b) (_root_.mul_comm _ _) rfl)
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.firstFiveLaws`. Use `haveI : Subsingleton (TFK (R := R) F).left := inferInstanceAs (Subsingleton (Spec (CommRingCat.of F)))`. Use `haveI : Nonempty (TFK (R := R) F).left := inferInstanceAs (Nonempty (Spec (CommRingCat.of F)))`. Take `⟨hxN, hθ⟩` from `hx w₀ hw₀`. Take `⟨θ, rfl⟩` from `GlobalTheory.BoxTheta.exists_theta hL.1.kerPow A hN1 (T := TFK (R := R) F) x hxN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', hΦ⟩` from `hθ θ rfl`. Take `⟨u, hu, hval⟩` from `exists_act_value N θ x₁ x₂ hx₂ e₁ he₁ e he`. Take `⟨W, hW, hWv⟩` from `TorsionValue.exists_frm_pow w₁ hw₁ N`. Take `⟨ω, hω, -, hc⟩` from `coefPhi_field hL R _ hB D F N hN1 q w' hw' g₁ g₂ hadd W hW`. Take `⟨d, hd, -, hdc⟩` from `((coef_basic R D.toPre F N g₂).2.2 ω hω).2.2.1 w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨d * u, mul_ne_zero hd hu, fun t s c hts hc' => ?_⟩` and prove the remaining obligations. Take `⟨t', ht'⟩` from `GlobalTheory.VVRank.exists_isTwistPull A.A (ψ := translT A.A θ.pt) (m := translPt A.A θ.pt) (hm := lift_snd _ _) (a := N) (b := N) (α := θ.φ) A.isLB θ.isGen t`. Take `⟨s', hs', -⟩` from `((GlobalTheory.TorsionAnyChar.expBijF_any hL R _ hB D A G hG U).1 F N hN1 w₀ hw₀).1 t'`. Establish `h₁` using `H N hN1 W hWv hW t' s' (u * c) hs' (hval t t' c ht' hc')`. Establish `h₂` using `((sumF_calculus R I hB F _ _ (fun _ => 0) _ 0).2.2 _ (fun β => β + q.y) (add_left_injective _) fun β hβ => absurd ⟨β - q.y, sub_add_cancel _ _⟩ hβ).2 h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `hc 1 N le_rfl (Nat.mul_one N).symm q (one_nsmul _).symm rfl w' W ω ⟨hw', fun _ _ _ => (pow_one _).symm⟩ ⟨hW, fun _ _ _ => (pow_one _).symm⟩ ⟨hω, fun _ _ _ => (pow_one _).symm⟩ s s' (hΦ t t' s s' hts hs' ht')`. Establish `h₄` using `sumF_smul hB d h₂`. Simplify using `only [Function.comp_apply, h₃, ← hdc] at h₄`. Rewrite using `[_root_.mul_assoc]`. Conclude with `h₄`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_at_level (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D A G) {w₀ : W0 U.toUnifPre} (hw₀ : w₀.IsGen)
     {g₁ g₂ : GtPtF D.toPre F} {w₁ : Frm D.toPre F 1 g₁.b} (hw₁ : w₁.IsGen) {x₁ x₂ : TFK (R := R) F ⟶ A.A} {e₁ : FrAt x₁}
@@ -175,31 +175,29 @@ theorem value_at_level (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D A
   exact h₄
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hbij` using `(GlobalTheory.TorsionAnyChar.expBijF_any hL R _ hB D A G hG U).1 F`. Take `⟨hx₁, -, α₀, hα₀, hN₀, hC⟩` from `he₁`. Use `⟨hx₂, he₂, α₀, hα₀, hN₀, corr_of_val A.isLB ?_⟩` and prove the remaining obligations. Establish `f₁ : x₂.left ≫ (mulA A.A n).left = (TFK (R` using `R) F).hom ≫ eSec A.A := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id, hx₂]`. Both sides reduce to the same expression. Take `⟨r, -, hr⟩` from `TWM.exists_ratio (F := F) A.isLB (LB.mulGen A.L _ _ _ _ (LB.pullGen A.L _ _ α₀ x₂.left) (rigT A.A A.L ρ (TFK (R := R) F) 1)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hα₀ _) (EvalLevel.rigT_isGen hρ 1)) (powFrame A.A A.L x₂ e₂ ((n : ℤ) ^ 2)) (EvalLevel.powFrame_i …`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, zpow_one]`. Conclude with `(congrArg₂ (fun a b => h a ^ ((n : ℤ) ^ 2) * (h b)⁻¹ * h ((TFK (R := R) F).hom ≫ eSec A.A)) (Category.comp_id _) f₁).trans (inv_mul_cancel_right _ _))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀, hN⟩` from `(sumF_origin hL R _ hB D A G hG U F).2.1 ρ hρ`. Take `⟨E, eG, eA, -, eh, eAct⟩` from `(GlobalTheory.IntEnd.exists_nsmul_and_neg hL R _ hB D A G hG U).1 n`. Establish `hinj : Function.Injective E.h` using `fun a b h => by`. Rewrite `h` using `[eh, eh, ← natCast_zsmul, ← natCast_zsmul]`. Conclude with `smul_right_injective _ (by exact_mod_cast (by omega : n ≠ 0)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAct : E.Act g₁ o` using `(eAct F _ _).2 ho`. Establish `key : ∀ k : ℕ, 4 ≤ k → r ^ k = 1`. Introduce `k hk`. Establish `hpos : 1 ≤ k * n ^ 2` using `Nat.mul_pos (by omega) (Nat.pow_pos hn)`. Take `⟨⟨κ, hκ⟩, hpull⟩` from `coef_twistPull hL R _ hB D A G hG U F E hinj (k * n ^ 2) k (by omega) hpos (by rw [eG]; exact exists_gen_mulPull_pow_unif R _ D A G U.toUnifPre n k _ rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, c, hc, hσ⟩` from `NonVan.exists_sec_ne_zero hL R A F k hk 1 (rigT A.A A.L ρ (TFK (R := R) F) 1) (EvalLevel.rigT_isGen hρ 1)`. Establish `e₀ : powFrame A.A A.L (1 : TFK (R` using `R) F ⟶ A.A) (rigT A.A A.L ρ (TFK (R := R) F) 1) (k : ℤ) = rigT A.A A.L ρ (TFK (R := R) F) (k : ℤ) := congrArg LB.Gen.mk (funext fun j => congrArg (· ^ (k : ℤ)) (zpow_one _))`. Rewrite `hσ` using `[e₀]`. Take `⟨α, hα, hα', Hα⟩` from `pull_mul_all A (TFK (R := R) F) ρ n k (k * n ^ 2) rfl α₀ hα₀ hN₀ (lift (fst _ _) (snd _ _ ≫ E.aA)) (snd _ _ ≫ E.aA) (lift_snd _ _) (lift_fst _ _) (by rw [eA])`. Take `⟨t, htw, htv⟩` from `Hα σ (fun z => UT.cst (R := R) F z c) hσ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `(hbij k (by omega) u₀ hN.1).1 σ`. Take `⟨s', hs', -⟩` from `(hbij _ hpos w₀ hw₀).1 t`. Take `⟨d, -, hd⟩` from `exists_coef_ratio (F := F) U hw₀ hN.1 (k * n ^ 2)`. Take `⟨s'', hs'', es⟩` from `hd t s' hs'`. Take `⟨W₁, hW₁, vW₁⟩` from `TorsionValue.exists_frm_pow w₁ hw₁ (k * n ^ 2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W₂, hW₂, vW₂⟩` from `TorsionValue.exists_frm_pow w₂ hw₂ (k * n ^ 2)`. Take `⟨w, hw, hwv⟩` from `TorsionValue.exists_frm_kap hAct.1 W₁ hW₁ κ hκ.1`. Take `⟨-, h₂⟩` from `hpull u₀ ρ hN _ _ (lift_snd _ _) (lift_fst _ _) rfl α hα hα' σ t s s'' hs hs'' htw κ hκ g₁ o hAct W₁ w hW₁ hw hwv`. Establish `pw : ∀ (x : TFK (R` using `R) F ⟶ A.A) (e : FrAt x) z J, (val (powFrame A.A A.L x e ((n : ℤ) ^ 2)) (𝟙 _) z J).val ^ k = (val (powFrame A.A A.L x e ((k * n ^ 2 : ℕ) : ℤ)) (𝟙 _) z J).val := fun x e z J => by`. Rewrite using `[PullMul.val_powFrame, PullMul.val_powFrame, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `S₁` using `H₁ _ hpos W₁ vW₁ hW₁ t s' c hs' fun z J hJ => (htv x₁ hx₁ z J hJ).trans (by rw [← val_corr hJ hC (𝟙 _), pw]; rfl)`. Establish `S₂` using `H₂ _ hpos W₂ vW₂ hW₂ t s' (c * r ^ k) hs' fun z J hJ => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(htv x₂ hx₂ z J hJ).trans ?_` and prove the remaining obligations. Establish `a : UT.cst (R` using `R) F z (c * r ^ k) = UT.cst (R := R) F z c * UT.cst (R := R) F z r ^ k := by`. Rewrite using `[cst_eq, cst_eq, cst_eq, map_mul, map_pow]`. Rewrite using `[a, ← pw]`. Conclude with `(congrArg (fun q : (TFK (R := R) F).left.presheaf.stalk z => @id ((TFK (R := R) F).left.presheaf.stalk z) (UT.cst (R := R) F z c) * q ^ k) (hr _ (𝟙 _) z J hJ)).trans ((congrArg (@id ((TFK (R := R) F).left.presheaf.stalk z) (UT.cst (R := R) F z c) * ·) (mul_pow _ _ _)).trans (_roo …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e₃ : coef s' g₂ W₂ = coef s' g₁ W₁` using `funext fun β => by`. Rewrite using `[((coef_basic R D.toPre F _ g₁).2.2 W₁ hW₁).2.2.2 χ g₀ g₂ W₂ ht hadd (fun z J hJ => by rw [vW₁ z J hJ, vW₂ z J hJ, hww z J hJ])]`. Distinguish the cases in `hβ : β ∈ Set.range E.h`. Take `⟨b, rfl⟩` from `hβ`. Rewrite using `[eh, ofAdd_nsmul, map_pow, ← MonoidHom.pow_apply, hχ, MonoidHom.one_apply, Units.val_one, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[es g₁ W₁ hW₁]`. Simplify using `only [h₂ β hβ, mul_zero]`. Rewrite `S₂` using `[e₃]`. Conclude with `mul_left_cancel₀ hc (((sumF_calculus R I hB F _ _ (fun _ => 0) _ _).1 S₂ S₁).trans (_root_.mul_one c).symm)`. Establish `r₁ : r = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a` using `key 5 (by omega)`. Rewrite `a` using `[pow_succ, key 4 le_rfl, _root_.one_mul]`. Then use the resulting hypothesis. Introduce `z J hJ`. Establish `a` using `hr _ (𝟙 _) z J hJ`. Use `Units.ext (Eq.symm (a.trans ?_))` and prove the remaining obligations.
-
-Establish `b : UT.cst (R` using `R) F z r = 1 := by rw [cst_eq, r₁, map_one]`. Conclude with `(congrArg (fun q : (Spec (CommRingCat.of F)).presheaf.stalk z => q * _) b).trans (_root_.one_mul _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTorsFrame_of_liesOver [CharZero R] (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D A G)
     {w₀ : W0 U.toUnifPre} (hw₀ : w₀.IsGen) {ρ : LB.Gen (A.L.pull (eSec A.A))} (hρ : ρ.IsGen) {n : ℕ} (hn : 1 ≤ n)
@@ -292,23 +290,21 @@ end Field
 attribute [local instance] TorusExt.gtGroup in
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hbij` using `(GlobalTheory.TorsionAnyChar.expBijF_any hL R _ hB D A G hG U).1 (FractionRing R)`. Take `⟨z₀⟩` from `exists_pt (R := R) (F := FractionRing R)`. Take `⟨e, he⟩ : ∃ e : FrAt x₂, e.IsGen` from `exists_gen_pt A.isLB z₀ (fun y => pt_eq y z₀) _ _`. Use `choose Ω hΩ hΩv using TorsionValue.exists_frm_pow w₂ hw₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `pf : ∀ (e : FrAt x₂) (k : ℤ) z J, val (powFrame A.A A.L x₂ e k) (𝟙 _) z J = val e (𝟙 _) z J ^ k` using `fun e k z J => map_zpow _ _ _`. Take `⟨l, hl, H⟩` from `exists_degree_constant hB (fun k a c => ∃ (t : SecA A (FractionRing R) k) (s : Fam D.toPre (FractionRing R) k), U.ExpandsF (FractionRing R) k w₀ t s ∧ ValAt t x₂ e c ∧ a = coef s g₂ (Ω k)) n hn (by`. Introduce and unpack `k _ c hk ⟨t, s, hs, -, rfl⟩`. Take `⟨W, hW, vW⟩` from `TorsionValue.exists_frm_pow w₁ hw₁ k`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.OneBasis.exists_valAt A (FractionRing R) hL.1 t x₁ he₁`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[funext (((coef_basic R D.toPre _ _ g₁).2.2 W hW).2.2.2 χ p.g g₂ (Ω k) ht hadd (fun z J hJ => by rw [vW z J hJ, hΩv k z J hJ, hww z J hJ]) s)]`. Conclude with `exists_sumF_twist hB (H₁ k hk W vW hW t s c₁ hs hc₁) hn _ fun β => by`. Rewrite using `[← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, hχ, MonoidHom.one_apply, Units.val_one])`. Use the proof step `(by`. Introduce and unpack `k k' _ _ c c' hk hk' ⟨t, s, hs, ht, rfl⟩ ⟨t', s', hs', ht', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t'', h''⟩` from `TorsionValue.exists_secA_mul t t'`. Take `⟨s'', hs'', -⟩` from `(hbij (k + k') (by omega) w₀ hw₀).1 t''`. Use `⟨_, ⟨t'', s'', hs'', fun z J hJ => ?_, rfl⟩, fun α => (prodConv_field hL R _ hB D A G hG U _ w₀ hw₀ k k' _ hk hk' rfl t t' t'' s s' s'' hs hs' hs'' (fun z J hJ => h'' _ _ z J hJ) g₂ _ _ _ (hΩ k) (hΩ k') (hΩ _) (fun z J hJ => by rw [hΩv _ z J hJ, hΩv _ z J hJ, hΩv _ z J hJ, pow_ad …` and prove the remaining obligations. Establish `cm : @id ((TFK (R` using `R) (FractionRing R)).left.presheaf.stalk z) (UT.cst (R := R) (FractionRing R) z (c * c')) = @id ((TFK (R := R) (FractionRing R)).left.presheaf.stalk z) (UT.cst (R := R) (FractionRing R) z c) * @id ((TFK (R := R) (FractionRing R)).left.presheaf.stalk z) (UT.cst (R := R) (FractionR …`. Rewrite using `[h'' _ _ z J hJ, ht z J hJ, ht' z J hJ, pf, pf, pf, cm, Nat.cast_add, zpow_add, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `ring)`. Use the proof step `(fun k hk => by`. Take `⟨t, c, hc, ht⟩` from `NonVan.exists_sec_ne_zero hL R A _ k hk x₂ e he`. Take `⟨s, hs, -⟩` from `(hbij k (by omega) w₀ hw₀).1 t`. Conclude with `⟨_, c, ⟨t, s, hs, ht, rfl⟩, hc⟩)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun m hm => by`. Set `q : QkPt D.toPre (FractionRing R) (n * m)` to `TorusExt.qkMk D.tau_bimult (m • p.y) p.g (by`. Rewrite using `[mul_nsmul, TorusExt.qk_nsmul D.tau_bimult p, map_nsmul])`. Establish `hq` using `qkToAkU_level_field hL R _ hB D A G hG U _ n m _ hn hm rfl p q x rfl rfl hx`. Take `⟨κ, hκ, Hκ⟩` from `value_at_level hB hG U hw₀ hw₁ he₁ H₁ (Nat.mul_pos hn hm) q x hq hadd hx₂ e he (Ω _) (hΩ _)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ c ⟨t, s, hs, ht, rfl⟩`. Conclude with `Hκ t s c hs ht)`. Take `⟨e₂, he₂, ve⟩` from `exists_scale (R := R) (φ := fun _ : Fin 1 => x₂.left) e he (inv_ne_zero hl)`. Use `⟨e₂, he₂, fun k hk w hwv hw t s c hs ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `S` using `H k _ (c * l⁻¹ ^ k) hk ⟨t, s, hs, fun z J hJ => by`. Use `(ht z J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[pf, pf, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, cst_eq, cst_eq, map_mul, map_pow]`. Conclude with `(congrArg (fun q => _ * q ^ k) (ve z J hJ)).trans ((congrArg (_ * ·) (mul_pow _ _ _)).trans (_root_.mul_assoc _ _ _).symm), rfl⟩`. Establish `sc` using `coef_scale g₂ (w' := w) (hΩ k) (c := 1) (fun z J hJ => by`.
-
-Rewrite using `[hwv z J hJ, hΩv k z J hJ, map_one, _root_.one_mul]) s`. Rewrite `S` using `[mul_left_comm, ← mul_pow, mul_inv_cancel₀ hl, one_pow, _root_.mul_one]`. Rewrite using `[funext sc]`. Simplify `S` using `only [_root_.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_liesOver (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D A G)
     {w₀ : W0 U.toUnifPre} (hw₀ : w₀.IsGen) {n : ℕ} (hn : 1 ≤ n)
@@ -379,9 +375,9 @@ theorem exists_liesOver (hB : AdmBase R I) (hG : IsSemiAbelian G) (U : Unif I D 
   simpa only [_root_.one_mul] using S
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 w₀ hw₀ ρ hρ x₁ e₁ he₁ g₁ w₁ ⟨o, ho, _⟩ hw₁ H₁ χ hχ g₀ ht p x _ hp hx g₂ hadd w₂ hww x₂ hx₂`. Substitute `hp` using the available equality. Establish `hB : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Use `haveI := 𝔪.cn.2.2.2`. Establish `hn : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (lt_of_lt_of_le two_pos X₁.S.N_ge)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, vw⟩` from `exists_gen 𝔪.D.toPre.P.isLB (φ' := DegPre.lineφ 𝔪.D.toPre _ g₂.b) (ε' := DegPre.lineε 1) (fun U _ h => by rw [(ThetaAverage.val_translate ht hadd).1]) w₁ hw₁`. Establish `vw'` using `fun z J hJ => vw _ (𝟙 _) z J hJ`. Take `⟨e₂, he₂, H₂⟩` from `exists_liesOver hB 𝔪.semi 𝔪.U hw₀ hn hw₁ he₁.2.1 H₁ hχ p ht hx hadd hw vw' hx₂`. Use `⟨e₂, isTorsFrame_of_liesOver hB 𝔪.semi 𝔪.U hw₀ hρ hn ho hw₁ he₁ H₁ hχ ht hadd hw vw' ?_ he₂ H₂, fun k hk wk e => H₂ k hk wk fun z J hJ => by rw [e z J hJ, hww z J hJ, vw' z J hJ]⟩` and prove the remaining obligations. Rewrite using `[hx₂, mul_pow, he₁.1, (hx w₀ hw₀).1, _root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_translate : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), ∀ (w₀ : W0 𝔪.U.toUnifPre), w₀.IsGen → ∀ (ρA : LB.Gen (𝔪.A.L.pull (eSec 𝔪.A.A))), ρA.IsGen → ∀ (x₁ : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A) (e₁ : FrAt x₁), IsTorsFrame 𝔪.A ρA (X₁.S.r * X₁.S.N) x₁ e₁ → ∀ (g₁ : GtPtF 𝔪.D.toPre (FractionRing V)) (w₁ : Frm 𝔪.D.toPre (FractionRing V) 1 g₁.b), (∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) g₁ o ∧ o.IsZero) → w₁.IsGen → 𝔪.Over' w₀ g₁ w₁ x₁ e₁ → ∀ χ : Multiplicative 𝔪.D.toPre.X →* (FractionRing V)ˣ, χ ^ (X₁.S.r * X₁.S.N) = 1 → ∀ (g₀ : GtPtF 𝔪.D.toPre (FractionRing V)), IsTor χ g₀ → ∀ (p : QkPt 𝔪.D.toPre (FractionRing V) (X₁.S.r * X₁.S.N)) (xτ : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A), p.y = 0 → p.g = g₀ → QkToAkU 𝔪.U.toUnifPre (FractionRing V) (X₁.S.r * X₁.S.N) p xτ → ∀ (g₂ : GtPtF 𝔪.D.toPre (FractionRing V)), g₁.IsAdd g₀ g₂ → ∀ (w₂ : Frm 𝔪.D.toPre (FractionRing V) 1 g₂.b), (∀ z J, Good 𝔪.D.toPre.P.L z J → val w₂ (𝟙 _) z J = val w₁ (𝟙 _) z J) → ∀ (x₂ : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A), x₂ = x₁ * xτ → ∃ e₂ : FrAt x₂, IsTorsFrame 𝔪.A ρA (X₁.S.r * X₁.S.N) x₂ e₂ ∧ 𝔪.Over' w₀ g₂ w₂ x₂ e₂ := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 w₀ hw₀ ρ hρ x₁ e₁ he₁ g₁ w₁ ⟨o, ho, _⟩ hw₁ H₁ χ hχ g₀ ht p x _ hp hx

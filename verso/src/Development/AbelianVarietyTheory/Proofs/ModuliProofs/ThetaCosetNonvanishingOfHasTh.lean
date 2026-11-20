@@ -23,9 +23,9 @@ namespace GlobalTheory.ThetaCoset
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ThetaCoord GlobalTheory.CommPairing GlobalTheory.GlobalLift GlobalTheory.VVRank
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Establish `h₀ : 0 < n` using `Nat.pos_of_ne_zero (left_ne_zero_of_mul hN)`. Establish `: NeZero ((n * m) ^ 2)` using `⟨pow_ne_zero _ hN⟩`. Take `⟨e, rfl⟩` from `ZMod.natCast_zmod_surjective c`. Rewrite `hc` using `[nsmul_eq_mul, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff, show (n * m) ^ 2 = n * (n * m * m) by ring]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, rfl⟩` from `Nat.dvd_of_mul_dvd_mul_left h₀ hc`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_div_cancel_left _ h₀, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_eq_smul {N n : ℕ} (hN : N ≠ 0) (hn : n ∣ N) {c : ZMod (N ^ 2)} (hc : n • c = 0) :
     ∃ d : ZMod (N ^ 2), N • (N / n) • d = c := by
@@ -42,15 +42,13 @@ theorem exists_eq_smul {N n : ℕ} (hN : N ≠ 0) (hn : n ∣ N) {c : ZMod (N ^ 
   ring
 
 /- English proof (translation)
-Establish `: NeZero (N ^ 2)` using `⟨pow_ne_zero _ hN⟩`. Set `f : (Fin r → ZMod (N ^ 2)) → G` to `fun c => ∏ i, p i ^ (c i).val`. Establish `f₀ : f 0 = 1` using `Finset.prod_eq_one fun i _ => by rw [Pi.zero_apply, ZMod.val_zero, pow_zero]`. Establish `fa : ∀ c d, f (c + d) = f c * f d` using `fun c d => by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ZMod.val_add, ← pow_eq_pow_mod _ (hp i), pow_add]`. Establish `fs : ∀ (m : ℕ) c, f (m • c) = f c ^ m` using `fun m c => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, f₀, pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [succ_nsmul, fa, ih, pow_succ]`. Take `⟨c₀, hc₀, -⟩` from `hb z (by`. Take `⟨m, hm⟩` from `hn.trans (dvd_pow_self N two_ne_zero)`. Rewrite using `[hm, pow_mul, hz, one_pow])`. Use `replace hc₀ : f c₀ = z := hc₀`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : n • c₀ = 0` using `(hb 1 (one_pow _)).unique ((fs n c₀).trans (by rw [hc₀, hz])) f₀`. Use `choose d hd using fun i => exists_eq_smul hN hn (congrFun h₁ i)`. Use `⟨d, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f _ ^ N = f a ^ N * z`. Rewrite using `[fa, mul_pow, ← fs N (_ • d), ← hc₀]`.
-
-Conclude with `congrArg (fun c => _ * f c) (funext hd)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_label {G : Type} [CommGroup G] {r N n : ℕ} (hN : N ≠ 0) (hn : n ∣ N) (p : Fin r → G)
     (hp : ∀ i, p i ^ (N ^ 2) = 1)
@@ -82,11 +80,11 @@ theorem exists_label {G : Type} [CommGroup G] {r N n : ℕ} (hN : N ≠ 0) (hn :
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨V, hV, b, hb⟩` from `hB S P 1 le_rfl (x (IsLocalRing.closedPoint K))`. Take `⟨t, rfl⟩ : ∃ t : Sp K ⟶ (overRes (T` from `baseOver S) V).left, t ≫ (overRes (T := baseOver S) V).hom = x := ⟨IsOpenImmersion.lift V.ι x (by`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Subsingleton.elim p (IsLocalRing.closedPoint K)]),` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(congrArg (_ ≫ ·) (Category.comp_id _)).trans (IsOpenImmersion.lift_fac _ _ _)⟩`. Take `⟨hli, -⟩` from `hb K t (fun i => pullS P.A _ (homAt t) (b i)) fun i => isPullSec_pullS _ _ _ _`. Establish `: Nontrivial Γ((baseAt t).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Establish `i : Fin (1 ^ P.g)` using `⟨0, by rw [one_pow]; exact one_pos⟩`. Introduce `h₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `H (pullS P.A _ (homAt t) (b i))`. Establish `e : SecM.ofSec P.A (pullS P.A _ (homAt t) (b i)) = r • SecM.ofSec P.A th` using `Subtype.ext (funext hr)`. Rewrite `e` using `[h₀, smul_zero]`. Conclude with `hli.ne_zero i e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_isGenSec (hB : SecBaseChangeAnySt) (P : PolAV S) {K : Type} [Field K] (x : Sp K ⟶ S)
     {th : LB.Sec (LPow P.A P.L 1 (Over.mk x))} (H : IsGenSec P.A P.L 1 th) : SecM.ofSec P.A th ≠ 0 := by
@@ -108,11 +106,11 @@ theorem ne_zero_of_isGenSec (hB : SecBaseChangeAnySt) (P : PolAV S) {K : Type} [
   exact hli.ne_zero i e
 
 /- English proof (translation)
-Establish `hL` using `P.isLB`. Take `⟨th, s₁, α, τ, U, s₂, w, u, hth, hα, hτ, hs₁, hU, hs₂, hw, hv⟩` from `H`. Take `⟨z, hz, hu⟩` from `UT.ExactTerm.exists_good_point h₁.goodPt h₁.polBaseChange P x hn hK th (ne_zero_of_isGenSec h₂.secBaseChangeAny P x hth) a`. Use `⟨z, hz, fun i hi h₀ => ?_⟩` and prove the remaining obligations. Set `p : (Over.mk x).left` to `IsLocalRing.closedPoint K`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `choose J hJ using fun χ : (Over.mk x).left ⟶ P.A.left => exists_chart hL (χ p)`. Use `replace hJ : Good P.L p J := hJ`. Establish `b₁` using `sv_act (hU i).pt_eq (hs₂ i) (𝟙 _) hJ 1`. Establish `b₂` using `sv_mulPull hs₁ (𝟙 _) hJ (y i)`. Establish `b₃` using `sv_of_isValueAt (hw i) (𝟙 _) hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b₁` using `[Category.id_comp, _root_.mul_one]`. Rewrite `b₃` using `[Category.id_comp]`. Rewrite `h₀` using `[hv, Units.mul_right_eq_zero]`. Rewrite `b₁` using `[b₃, b₂, hi, h₀, UT.ExactTerm.gs_zero' _ _ ⊤ trivial, MulZeroClass.zero_mul]`. Conclude with `((Units.isUnit _).mul ((Units.isUnit _).mul (hu p J hJ))).ne_zero b₁.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_over (h₁ : Laws) (h₂ : Laws2) (P : PolAV S) {K : Type} [Field K] [IsAlgClosed K]
     (x : Sp K ⟶ S) {k n : ℕ} (hn : 2 ≤ n) (hK : (n : K) ≠ 0) {I : Type} {y : I → (Over.mk x ⟶ P.A)}
@@ -136,11 +134,11 @@ theorem exists_ne_zero_over (h₁ : Laws) (h₂ : Laws2) (P : PolAV S) {K : Type
   exact ((Units.isUnit _).mul ((Units.isUnit _).mul (hu p J hJ))).ne_zero b₁.symm
 
 /- English proof (translation)
-Use `t.ab.comm` as an intermediate fact. Set `π : Over.mk x ⟶ baseOver S` to `Over.homMk x (by simp)`. Establish `hK : (n : K) ≠ 0`. Use `H.2.1.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isUnit_of_dvd_unit (Nat.cast_dvd_cast hd) this).ne_zero`. Establish `: Subsingleton (Over.mk x).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `: Nonempty (Over.mk x).left` using `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Take `⟨z, hz, hv⟩` from `exists_ne_zero_over h₁ h₂ t.pol x hn hK (isThetaPtOver_of_subsingleton t.pol H) ((π ≫ t.lab a) ^ N')`. Establish `e : ∀ c, π ≫ t.lab c = ∏ i, (π ≫ t.pt i) ^ (c i).val` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TObj.lab, VVRank.comp_linComb, linComb, List.prod_ofFn]`. Take `⟨c, hc⟩` from `exists_label (G := Over.mk x ⟶ t.A) H.1.pos.ne' hd (fun i => π ≫ t.pt i) (fun i => by rw [← MonObj.comp_pow, t.torsion, MonObj.comp_one]) (fun y hy => by simpa only [linComb, List.prod_ofFn] using t.bij K x y hy) a hz`. Rewrite `hc` using `[← e, ← e]`. Use `⟨c, fun h₀ => hv _ hc ?_⟩` and prove the remaining obligations. Rewrite using `[h₀, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_bot (h₁ : Laws) (h₂ : Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
     {s : S ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) {n : ℕ} (hn : 2 ≤ n) (hd : n ∣ N') {K : Type} [Field K] [IsAlgClosed K]
@@ -170,7 +168,7 @@ end GlobalTheory.ThetaCoset
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ o _ g N' J b S s t n R _ x v q hn hd H hq a`. Set `φ : R →+* AlgebraicClosure q.ResidueField` to `(algebraMap q.ResidueField (AlgebraicClosure q.ResidueField)).comp (algebraMap R q.ResidueField)`. Take `⟨c, hc⟩` from `ThetaCoset.coset_bot h₁ h₂ t hn hd _ (T.hasThetaConstants_ring_baseChange h₂ o g N' J b S s t R _ φ x v H) a`. Use `⟨c, fun hm => hc ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Ideal.algebraMap_residueField_eq_zero.2 hm, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coset_of_hasTh : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (n : ℕ) (R : Type) [CommRing R] (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R) (q : Ideal R), 2 ≤ n → n ∣ N' → t.HasTh x v → q.IsPrime → Coset n N' v q := by
   intro h₁ h₂ o _ g N' J b S s t n R _ x v q hn hd H hq a

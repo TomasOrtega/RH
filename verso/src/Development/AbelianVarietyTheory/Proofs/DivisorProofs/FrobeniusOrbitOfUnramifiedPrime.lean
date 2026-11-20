@@ -12,11 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll bo
 namespace GlobalTheory.FrobOrbit
 
 /- English proof (translation)
-Set `g : (A →+* k) → (A →ₗ[ℤ] k)` to `fun f => f.toAddMonoidHom.toIntLinearMap`. Establish `hli : LinearIndependent k g`. Apply `LinearIndependent.of_comp (LinearMap.ltoFun ℤ A k k)` to reduce the goal to its premises. Conclude with `(linearIndependent_monoidHom A k).comp (fun f : A →+* k => f.toMonoidHom) (fun f f' h => RingHom.ext fun a => DFunLike.congr_fun h a)`. Set `e` to `(Module.Free.chooseBasis ℤ A).constr (M' := k) k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite k (A →ₗ[ℤ] k)` using `Module.Finite.equiv e`. Use `hli.finite` as an intermediate fact. Use `Fintype.ofFinite (A →+* k)` as an intermediate fact. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hli.fintype_card_le_finrank.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← e.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ringHom_le (A k : Type) [CommRing A] [Module.Free ℤ A] [Module.Finite ℤ A] [Field k] :
     Finite (A →+* k) ∧ Nat.card (A →+* k) ≤ Module.finrank ℤ A := by
@@ -35,13 +35,11 @@ theorem card_ringHom_le (A k : Type) [CommRing A] [Module.Free ℤ A] [Module.Fi
   rw [← e.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_chooseBasisIndex]
 
 /- English proof (translation)
-Set `: Algebra (ZMod p) k` to `ZMod.algebra k p`. Establish `hinj : Function.Injective (fun s : Fin (Module.finrank (ZMod p) F) => (iterateFrobenius k p s).comp ψ)`. Introduce `s t hst`. Apply `(FiniteField.bijective_frobeniusAlgHom_pow (ZMod p) F).1` to reduce the goal to its premises. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `DFunLike.congr_fun hst x` as an intermediate fact. Simplify using `only [RingHom.comp_apply, iterateFrobenius_def, ← map_pow] at this`. Establish `h2` using `ψ.injective this`. Simplify using `only [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card]`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e : (F →+* k) → (F →ₐ[ZMod p] k)` to `fun f => { f with commutes' := fun r => DFunLike.congr_fun (Subsingleton.elim (f.comp (algebraMap (ZMod p) F)) (algebraMap (ZMod p) k)) r }`. Establish `he : Function.Injective e` using `fun f f' h => RingHom.ext fun a => DFunLike.congr_fun h a`. Establish `: Finite (F →+* k)` using `Finite.of_injective e he`. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
-
-Conclude with `(Nat.card_le_card_of_injective e he).trans (by simpa using card_algHom_le_finrank (ZMod p) F k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_frob_twist (F k : Type) [Field F] [Finite F] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
     [Algebra (ZMod p) F] (ψ : F →+* k) :
@@ -67,19 +65,19 @@ theorem bijective_frob_twist (F k : Type) [Field F] [Finite F] [Field k] (p : �
   exact (Nat.card_le_card_of_injective e he).trans (by simpa using card_algHom_le_finrank (ZMod p) F k)
 
 /- English proof (translation)
-Establish `: (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Set `: Field (A ⧸ RingHom.ker ψ)` to `(Finite.isField_of_domain _).toField`. Set `ψ' : A ⧸ RingHom.ker ψ →+* k` to `RingHom.kerLift ψ`. Establish `hψ : ψ'.comp (Ideal.Quotient.mk _) = ψ` using `RingHom.ext fun a => RingHom.kerLift_mk ψ a`. Establish `: CharP (A ⧸ RingHom.ker ψ) p` using `(RingHom.charP_iff_charP ψ' p).2 inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `: Algebra (ZMod p) (A ⧸ RingHom.ker ψ)` to `ZMod.algebra _ p`. Use `Fintype.ofFinite (A ⧸ RingHom.ker ψ)` as an intermediate fact. Establish `hb` using `bijective_frob_twist (A ⧸ RingHom.ker ψ) k p ψ'`. Establish `hc : Fintype.card (A ⧸ RingHom.ker ψ) = p ^ Module.finrank (ZMod p) (A ⧸ RingHom.ker ψ)`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod p), ZMod.card]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Module.finrank (ZMod p) (A ⧸ RingHom.ker ψ), Module.finrank_pos, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, hc]`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, iterateFrobenius_def, ← hc, ← RingHom.kerLift_mk ψ a, ← map_pow, FiniteField.pow_card]`. Introduce `s t hs ht hst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨s, hs⟩ : Fin _) = ⟨t, ht⟩`. Apply `hb.1` to reduce the goal to its premises. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Simplify `hst` using `only [RingHom.comp_assoc, hψ]`. Conclude with `congrArg Fin.val this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`. Take `⟨s, hs⟩` from `hb.2 (Ideal.Quotient.lift _ φ (fun a ha => by rwa [← hφ] at ha))`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun f => RingHom.comp f (Ideal.Quotient.mk (RingHom.ker ψ))) hs` as an intermediate fact. Simplify using `only [RingHom.comp_assoc, hψ] at this`. Rewrite using `[this]`. Use extensionality with `a`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, -, rfl⟩`. Use extensionality with `a`. Simplify using `[RingHom.mem_ker]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbit_of_ker (A k : Type) [CommRing A] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (ψ : A →+* k)
     [Finite (A ⧸ RingHom.ker ψ)] :
@@ -121,15 +119,15 @@ theorem orbit_of_ker (A k : Type) [CommRing A] [Field k] (p : ℕ) [Fact p.Prime
       simp [RingHom.mem_ker]
 
 /- English proof (translation)
-Introduce `τ τ' h`. Assume the negation of the conclusion as `hne`. Set `b : (E →+* ℂ) → 𝓞 E` to `fun i => RingOfIntegers.basis E (equivReindex E i)`. Set `M : Matrix (E →+* ℂ) (E →+* ℂ) F` to `Matrix.of fun i σ => u σ (b i)`. Establish `hM : ι.mapMatrix M = basisMatrix E`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i σ`. Simplify using `only [basisMatrix, Matrix.of_apply, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Conclude with `hu σ _`. Establish `hdet : M.det ^ 2 = (discr E : F)`. Apply `ι.injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, RingHom.map_det, hM, map_intCast, discr_eq_basisMatrix_det_sq]`. Set `N : Matrix (E →+* ℂ) (E →+* ℂ) R` to `Matrix.of fun i σ => t σ (b i)`. Establish `hN : N.det ^ 2 = (discr E : R)`. Apply `hR` to reduce the goal to its premises. Establish `: (algebraMap R K).mapMatrix N = j.mapMatrix M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i σ`. Conclude with `ht σ _`. Rewrite using `[map_pow, RingHom.map_det, this, ← RingHom.map_det, ← map_pow, hdet, map_intCast, map_intCast]`. Establish `h0 : (r.mapMatrix N).det = 0` using `Matrix.det_zero_of_column_eq hne fun i => DFunLike.congr_fun h (b i)`. Establish `h1 : (discr E : k) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_intCast r, ← hN, map_pow, RingHom.map_det, h0]`. Simplify using the standard rewrite rules. Conclude with `hd ((CharP.intCast_eq_zero_iff k p _).1 h1)`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_det {E k : Type} [Field E] [NumberField E] [Field k] (p : ℕ) [CharP k p]
     (hd : ¬ (p : ℤ) ∣ discr E) {R K : Type} [CommRing R] [CommRing K] [Algebra R K] (hR : Function.Injective (algebraMap R K))
@@ -163,15 +161,15 @@ theorem injective_of_det {E k : Type} [Field E] [NumberField E] [Field k] (p : �
   exact hd ((CharP.intCast_eq_zero_iff k p _).1 h1)
 
 /- English proof (translation)
-Set `f : ZMod p →+* k` to `ZMod.castHom (dvd_refl p) k`. Establish `hodd : p = 2 * (p / 2) + 1`. Use `(Fact.out : p.Prime).eq_two_or_odd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hpow : r ^ p = f ((-(d : ZMod p)) ^ (p / 2)) * r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_neg, map_natCast, ← hr, ← pow_mul, ← pow_succ, ← hodd]`. Establish `hd' : -(d : ZMod p) ≠ 0` using `neg_ne_zero.2 hd`. Use `⟨fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (2 : k) ≠ 0`. Introduce `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(CharP.cast_eq_zero_iff k p 2).1 (by exact_mod_cast h2)` as an intermediate fact. Conclude with `hp ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`. Establish `h3 : r = 0`. Establish `: 2 * r = 0` using `by linear_combination h`. Conclude with `(mul_eq_zero.1 this).resolve_left h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd'` to reduce the goal to its premises. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[map_neg, map_natCast, ← hr, h3, map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hpow, (ZMod.euler_criterion p hd').1 h, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `ZMod.pow_div_two_eq_neg_one_or_one p hd' with h1 | h1` into its components or cases. Conclude with `absurd ((ZMod.euler_criterion p hd').2 h1) h`. Rewrite using `[hpow, h1, map_neg, map_one, neg_one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pow_char_sqrt {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (hp : p ≠ 2) (d : ℕ)
     (hd : (d : ZMod p) ≠ 0) {r : k} (hr : r ^ 2 = -(d : k)) :
@@ -203,7 +201,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
 
 /- English proof (translation)
-Use `congrArg (σ.comp (algebraMap (𝓞 E) E)) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_rt_sq (σ : E →+* ℂ) : σ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
   have := congrArg (σ.comp (algebraMap (𝓞 E) E)) H.rt_sq
@@ -211,9 +209,9 @@ theorem emb_rt_sq (σ : E →+* ℂ) : σ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
   exact this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt`. Consider the case `exact _root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt`. Consider the case `(apply _root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conj_rt (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ (H.rt : E) = -σ (H.rt : E) := by
   first
@@ -225,9 +223,9 @@ theorem conj_rt (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ (H.rt : E) = 
   | (intros; exact _root_.GlobalTheory.ConjugateNegativeSquare.conjugate_rt ..)
 
 /- English proof (translation)
-Take `⟨n, hn⟩ : ∃ n, H.d + 1 = 8 * n` from `⟨(H.d + 1) / 8, by have := H.d_mod; omega⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : (H.d : 𝓞 E) + 1 = 8 * n` using `by exact_mod_cast congrArg (Nat.cast : ℕ → 𝓞 E) hn`. Establish `h4 : (4 : 𝓞 E) ≠ 0` using `by norm_num`. Apply `mul_left_cancel₀ h4` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `H.rt_sq`. Establish `h3` using `H.two_weight_eq_one_add_root`. Take the linear combination `(2 * H.w0 + H.rt - 1) * h3 + h2 - h1`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cm_generator_sq_quadratic_eq : ∃ m : 𝓞 E, H.w0 ^ 2 = H.w0 - 2 * m := by
   obtain ⟨n, hn⟩ : ∃ n, H.d + 1 = 8 * n := ⟨(H.d + 1) / 8, by have := H.d_mod; omega⟩
@@ -240,25 +238,23 @@ theorem cm_generator_sq_quadratic_eq : ∃ m : 𝓞 E, H.w0 ^ 2 = H.w0 - 2 * m :
   linear_combination (2 * H.w0 + H.rt - 1) * h3 + h2 - h1
 
 /- English proof (translation)
-Establish `hor : σ' (H.rt : E) = σ (H.rt : E) ∨ σ' (H.rt : E) = -σ (H.rt : E)` using `sq_eq_sq_iff_eq_or_eq_neg.1 (by rw [emb_rt_sq, emb_rt_sq])`. Establish `hr : ψ σ H.rt ^ 2 = -(H.d : k)` using `by rw [← map_pow, H.rt_sq, map_neg, map_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `hor.resolve_right fun hneg => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hp : p = 2`. Substitute `hp` using the available equality. Establish `e : ∀ τ : E →+* ℂ, 2 * τ (H.w0 : E) = 1 + τ (H.rt : E)` using `fun τ => by`. Use `congrArg (τ.comp (algebraMap (𝓞 E) E)) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h1 : ψ σ' H.w0 = ψ σ (1 - H.w0)`. Apply `hψ` to reduce the goal to its premises. Establish `: σ ((1 - H.w0 : 𝓞 E) : E) = 1 - σ (H.w0 : E)`. Use `map_sub (σ.comp (algebraMap (𝓞 E) E)) 1 H.w0` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one]`. Conclude with `this`. Rewrite using `[this]`. Take the linear combination `(1 / 2 : ℂ) * (e σ + e σ' + hneg)`. Take `⟨m, hm⟩` from `cm_generator_sq_quadratic_eq H`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (2 : k) = 0` using `by exact_mod_cast CharP.cast_eq_zero k 2`. Rewrite `h1` using `[h, ← map_pow, hm, map_sub, map_sub, map_mul, map_one, map_ofNat]`. Establish `: (1 : k) = 0` using `by linear_combination -h1 + (ψ σ H.w0 - ψ σ m) * h2`. Conclude with `one_ne_zero this`. Take `⟨h1, h2, -⟩` from `pow_char_sqrt p hp H.d hs.1 hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ψ σ' H.rt = ψ σ (-H.rt)`. Apply `hψ` to reduce the goal to its premises. Rewrite using `[hneg]`. Conclude with `(map_neg (σ.comp (algebraMap (𝓞 E) E)) H.rt).symm`. Rewrite `h3` using `[h, h2 hs.2, map_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h1 h3`. Introduce `hi`. Use `hor.resolve_left fun hpos => ?_` and prove the remaining obligations. Establish `hp : p ≠ 2`. Introduce and unpack `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hi` to reduce the goal to its premises. Generalize the expression as in `-(H.d : ZMod 2) = z`. Use `revert z`. Evaluate the decidable proposition. Establish `hd : (H.d : ZMod p) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[h0, neg_zero]`. Conclude with `IsSquare.zero`. Take `⟨h1, -, h2⟩` from `pow_char_sqrt p hp H.d hd hr`.
-
-Establish `h3` using `hψ _ _ _ _ hpos`. Rewrite `h3` using `[h, h2 hi]`. Conclude with `h1 h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem frob_rt {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (ψ : (E →+* ℂ) → (𝓞 E →+* k))
     (hψ : ∀ σ σ' (a b : 𝓞 E), σ (a : E) = σ' (b : E) → ψ σ a = ψ σ' b) (σ σ' : E →+* ℂ)
@@ -317,37 +313,35 @@ theorem frob_rt {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (ψ : 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c p _ T io X hdisc`. Take `⟨τT, -, hT, -⟩` from `exists_types_valuationRing E H l c T io p X`. Set `t : (E →+* ℂ) → (𝓞 E →+* X.O)` to `fun τ => X.ι.comp (τT τ)`. Establish `ht : ∀ τ a, algebraMap X.O X.C (t τ a) = embX io X τ a` using `hT`. Set `k` to `IsLocalRing.ResidueField X.O`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : (E →+* ℂ) → (𝓞 E →+* k)` to `fun τ => (IsLocalRing.residue X.O).comp (t τ)`. Establish `hv : ∀ x : X.O, X.v (algebraMap X.O X.C x) < 1 ↔ IsLocalRing.residue X.O x = 0`. Introduce `x`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, X.ints.isUnit_iff_valuation_eq_one, lt_iff_le_and_ne]`. Conclude with `and_iff_right (X.ints.map_le_one x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hch : CharP k p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (by`. Rewrite using `[← map_natCast (IsLocalRing.residue X.O), IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `X.nonunit.out)`. Establish `hker : ∀ τ, primeBelow io X τ = RingHom.ker (ψ τ)`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `X.v (embX io X τ a) < 1 ↔ _`. Rewrite using `[← ht, hv, RingHom.mem_ker]`. Both sides reduce to the same expression. Establish `hfrob : ∀ σ σ', GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes.IsFrob io X σ σ' ↔ ∀ a, ψ σ' a = ψ σ a ^ p`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ σ'`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← ht, ← ht, ← map_pow, ← map_sub, hv, map_sub, map_pow, sub_eq_zero]`. Both sides reduce to the same expression. Establish `hψ : ∀ σ σ' (a b : 𝓞 E), σ (a : E) = σ' (b : E) → ψ σ a = ψ σ' b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ σ' a b hab`. Establish `h1 : embK c σ a = embK c σ' b` using `Subtype.ext (by rw [embK_coe, embK_coe, hab])`. Establish `h2 : t σ a = t σ' b` using `X.ints.hom_inj (by`. Rewrite using `[ht, ht]`. Conclude with `congrArg (fun z => X.ιF (io z)) h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (IsLocalRing.residue X.O) h2`. Use `⟨fun σ σ' hσ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `frob_rt H p ψ hψ σ σ' ((hfrob _ _).1 hσ)`. Use `⟨fun hs => ?_, fun hi => ?_⟩` and prove the remaining obligations. Unfold `InPsi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1 hs]`. Unfold `InPsi`. Rewrite using `[h2 hi, conj_rt]`. Establish `hinj : Function.Injective ψ` using `injective_of_det p hdisc X.ints.hom_inj (IsLocalRing.residue X.O) (algebraMap c.F ℂ) (X.ιF.comp io) (embK c) (embK_coe c) t ht`. Take `⟨hfin, hcard⟩` from `card_ringHom_le (𝓞 E) k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective ψ` using `hinj.bijective_of_nat_card_le (by`. Rewrite using `[Nat.card_eq_fintype_card (α := E →+* ℂ), Embeddings.card, ← RingOfIntegers.rank]`. Conclude with `hcard)`. Set `Φ` to `Equiv.ofBijective ψ hbij`. Establish `hΦ : ∀ φ, ψ (Φ.symm φ) = φ` using `Φ.apply_symm_apply`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : RingHom.ker (ψ τ) ≠ ⊥`. Introduce `h0`. Establish `h1 : (p : 𝓞 E) ∈ RingHom.ker (ψ τ)`. Rewrite using `[RingHom.mem_ker, map_natCast, CharP.cast_eq_zero]`. Rewrite `h1` using `[h0, Ideal.mem_bot]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast h1)`. Use `Ideal.finiteQuotientOfFreeOfNeBot _ hne` as an intermediate fact. Take `⟨h, hpos, hc, hper, hdist, hall⟩` from `orbit_of_ker (𝓞 E) k p (ψ τ)`. Establish `: NeZero h` using `⟨hpos.ne'⟩`. Establish `hmod : ∀ m, (iterateFrobenius k p (m % h)).comp (ψ τ) = (iterateFrobenius k p m).comp (ψ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : ∀ q r, (iterateFrobenius k p (r + h * q)).comp (ψ τ) = (iterateFrobenius k p r).comp (ψ τ)`. Introduce `q r`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [mul_add, mul_one, ← add_assoc, iterateFrobenius_add, RingHom.comp_assoc, hper, ih]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[← hq (m / h), Nat.mod_add_div]`. Use `⟨h, hpos, by rw [hker]; exact hc, fun s => Φ.symm ((iterateFrobenius k p s.val).comp (ψ τ)), ?_, fun s => ?_, fun s s' hs => ?_, fun σ => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hΦ, ZMod.val_zero, iterateFrobenius_zero, RingHom.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfrob]`. Introduce `a`. Rewrite using `[hΦ, hΦ]`. Establish `h1 : (s + 1).val = (s.val + 1) % h`. Rewrite using `[← ZMod.val_natCast, Nat.cast_add, ZMod.natCast_zmod_val, Nat.cast_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, hmod]`. Simplify using `only [RingHom.comp_apply, iterateFrobenius_def, pow_succ, pow_mul]`. Conclude with `ZMod.val_injective h (hdist _ _ (ZMod.val_lt s) (ZMod.val_lt s') (Φ.symm.injective hs))`. Rewrite using `[hker, hker, hall]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨s, hs, hσ⟩`. Use `⟨(s : ZMod h), hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, ZMod.val_natCast, hmod, hσ]`. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨s.val, ZMod.val_lt s, (hΦ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frobOnType_and_orbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p), ¬ (p : ℤ) ∣ discr E → FrobOnType io X ∧ ∀ τ : E →+* ℂ, ∃ h : ℕ, 0 < h ∧ Nat.card (𝓞 E ⧸ primeBelow io X τ) = p ^ h ∧ ∃ lab : ZMod h → (E →+* ℂ), IsOrbit io X τ lab := by
   intro E _ _ _ H l c p _ T io X hdisc

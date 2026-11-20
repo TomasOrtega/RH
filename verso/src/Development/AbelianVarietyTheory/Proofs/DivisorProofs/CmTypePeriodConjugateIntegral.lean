@@ -12,14 +12,14 @@ variable {O : Type} [CommRing O] {K : Type} [Field K] [Algebra O K]
 variable {H : Type} [AddCommGroup H] [Module O H] {c : Ideal (OF E)}
 
 /- English proof (translation)
-The claim follows from `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hx a)`.
+A detailed English derivation is pending.
 -/
 theorem act_of_mem_eigK {ρ : orderC c →+* Module.End O H} {σ : E →+* K} {x : K ⊗[O] H}
     (hx : x ∈ eigK ρ σ) (a : orderC c) : (ρ a).baseChange K x = σ a • x :=
   Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hx a)
 
 /- English proof (translation)
-Use `show IsCMField.complexConj E (algebraMap (OF E) E a) = algebraMap (OF E) E a`. Rewrite using `[IsScalarTower.algebraMap_apply (OF E) (maximalRealSubfield E) E]`. Conclude with `IsCMField.complexConj_apply_eq_self E _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_ofF (a : OF E) :
     IsCMField.complexConj E ((ofF c a : orderC c) : E) = ((ofF c a : orderC c) : E) := by
@@ -28,7 +28,7 @@ theorem conj_ofF (a : OF E) :
   exact IsCMField.complexConj_apply_eq_self E _
 
 /- English proof (translation)
-Introduce `h`. Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `σ.injective (congrArg (fun τ : E →+* K => τ x) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem bar_ne_self (σ : E →+* K) : bar σ ≠ σ := by
   intro h
@@ -37,21 +37,21 @@ theorem bar_ne_self (σ : E →+* K) : bar σ ≠ σ := by
   exact σ.injective (congrArg (fun τ : E →+* K => τ x) h)
 
 /- English proof (translation)
-The claim follows from `hy`.
+A detailed English derivation is pending.
 -/
 theorem inK_mem_eigK {ρ : orderC c →+* Module.End O H} {σ : E →+* K} {y : H} (hy : y ∈ eigLat (K := K) ρ σ) :
     inK K H y ∈ eigK ρ σ := hy
 
 /- English proof (translation)
-Establish `hD' : algebraMap O K D ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hD`. Establish `hsub : ∀ y ∈ ⨆ σ : E →+* K, eigLat (K` using `K) ρ σ, S (inK K H y) = T (inK K H y) := by`. Introduce `y hy`. Proceed by induction on `hy using Submodule.iSup_induction' with`. Consider the case `mem σ y hy => exact hST σ y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [map_add, hy, hz]`. Establish `hH : ∀ h : H, S (inK K H h) = T (inK K H h)`. Introduce `h`. Establish `h1 : inK (O` using `O) K H (D • h) = algebraMap O K D • inK (O := O) K H h := by`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_smul, algebraMap_smul K D (inK K H h)]`. Establish `h2` using `hsub _ (hsum h)`. Rewrite `h2` using `[h1, map_smul, map_smul]`. Conclude with `smul_right_injective _ hD' h2`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k h`. Establish `: k ⊗ₜ[O] h = k • inK K H h` using `by simp [inK, TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul, map_smul, hH]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_eigLat [IsDomain O] [IsFractionRing O K] (ρ : orderC c →+* Module.End O H) (D : O) (hD : D ≠ 0)
     (hsum : ∀ h : H, D • h ∈ ⨆ σ : E →+* K, eigLat (K := K) ρ σ) (S T : Module.End K (K ⊗[O] H))
@@ -79,9 +79,9 @@ theorem ext_of_eigLat [IsDomain O] [IsFractionRing O K] (ρ : orderC c →+* Mod
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite `hy` using `[(hG i).1, Submodule.mem_span_singleton]`. Take `⟨r, rfl⟩` from `hy`. Establish `hf : inK K H (f i) ∈ eigK ρ (bar (φ i))`. Establish `: f i ∈ eigLat (K` using `K) ρ (bar (φ i)) := by`. Rewrite using `[(hG i).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_span_singleton_self _`. Conclude with `inK_mem_eigK this`. Rewrite using `[map_smul, LinearMap.map_smul_of_tower, hN.1]`. Conclude with `Submodule.smul_of_tower_mem _ r hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_mem_eigK_bar {I : Type} {φ : I → E →+* K} {ρ : orderC c →+* Module.End O H} {e f : I → H}
     (hG : IsGens φ ρ e f) {i : I} {N : Module.End K (K ⊗[O] H)} (hN : IsLower ρ (φ i) (e i) (f i) N) {y : H}
@@ -96,19 +96,17 @@ theorem lower_mem_eigK_bar {I : Type} {φ : I → E →+* K} {ρ : orderC c →+
   exact Submodule.smul_of_tower_mem _ r hf
 
 /- English proof (translation)
-Introduce `E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D hD _ I _ φ hφ H _ _ ρ Fil B _ hEig e f hG N hN`. Establish `hsum` using `hEig.2.2.1.2`. Use `⟨fun i a => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show N i * (ρ (ofF c a)).baseChange K = (ρ (ofF c a)).baseChange K * N i`. Apply `ext_of_eigLat ρ D hD hsum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ y hy`. Establish `hx` using `inK_mem_eigK (K := K) hy`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, act_of_mem_eigK hx, map_smul]`. Distinguish the cases in `hσ : σ = φ i`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hm` using `lower_mem_eigK_bar hG (hN i) hy`. Rewrite using `[act_of_mem_eigK hm]`. Use `congr 1`. Use `show _ = φ i (IsCMField.complexConj E ((ofF c a : orderC c) : E))`. Rewrite using `[conj_ofF]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[(hN i).2 σ hσ _ hx, smul_zero, map_zero]`. Apply `ext_of_eigLat ρ D hD hsum` to reduce the goal to its premises. Introduce `σ y hy`. Establish `hx` using `inK_mem_eigK (K := K) hy`. Rewrite using `[Module.End.mul_apply, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hσ : σ = φ j`. Substitute `hσ` using the available equality. Establish `hm` using `lower_mem_eigK_bar hG (hN j) hy`. Establish `hne : bar (φ j) ≠ φ i`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, _, hk⟩` from `hφ (bar (φ j))`. Establish `hi` using `hk i (Or.inl h)`. Establish `hj` using `hk j (Or.inr rfl)`. Substitute `hi` using the available equality. Substitute `hj` using the available equality.
-
-Conclude with `bar_ne_self _ h`. Conclude with `(hN i).2 _ hne _ hm`. Rewrite using `[(hN j).2 σ hσ _ hx, map_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_commute_and_mul_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → ∀ e f : I → H, IsGens φ ρ e f → ∀ N : I → Module.End K (K ⊗[O] H), (∀ i, IsLower ρ (φ i) (e i) (f i) (N i)) → (∀ i (a : OF E), Commute (N i) ((ρ (ofF c a)).baseChange K)) ∧ ∀ i j, N i * N j = 0 := by
   intro E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D hD _ I _ φ hφ H _ _ ρ Fil B _ hEig e f hG N hN

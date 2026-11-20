@@ -17,11 +17,11 @@ theorem stdForm_apply (K : Type) [Field K] [StarRing K] (M : ℕ) (x y : Fin M �
     StandardLattice.stdForm K M x y = ∑ i, star (x i) * y i := rfl
 
 /- English proof (translation)
-Establish `e : (fun i : Fin M => (Pi.single i 1 : Fin M → K)) = Pi.basisFun K (Fin M)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `⟨fun i => Pi.single i 1, ?_, ?_, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun K (Fin M)).linearIndependent`. Rewrite using `[e]`. Conclude with `(Pi.basisFun K (Fin M)).span_eq`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[stdForm_apply, Pi.single_apply]`. Simplify using `[stdForm_apply, Pi.single_apply, hij, Ne.symm hij]`.
+A detailed English derivation is pending.
 -/
 theorem std_ortho (K : Type) [Field K] [NumberField K] [StarRing K] (M : ℕ) :
     IsOrthoLattice (StandardLattice.stdForm K M) (StandardLattice.stdLat K M) M := by
@@ -35,7 +35,7 @@ theorem std_ortho (K : Type) [Field K] [NumberField K] [StarRing K] (M : ℕ) :
     · simp [stdForm_apply, Pi.single_apply, hij, Ne.symm hij]
 
 /- English proof (translation)
-Introduce `j hj V V' _ _ _ _ _ _ _ _ hV hV' L L' _ _ hL hL'`. Rewrite using `[mass_ortho_eq hL (std_ortho D.host.E j), mass_ortho_eq hL' (std_ortho D.host.E (j - 1))]`. Conclude with `h j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massRatio_host_of (D : D7) (h : StandardLattice.MassRatio₂ D) : ∀ (j : ℕ), 3 ≤ j →
     ∀ (V V' : Type) [AddCommGroup V] [Module D.host.E V] [Module (𝓞 D.host.E) V]
@@ -50,7 +50,7 @@ theorem massRatio_host_of (D : D7) (h : StandardLattice.MassRatio₂ D) : ∀ (j
   exact h j hj
 
 /- English proof (translation)
-Introduce `K _ _ _ hK M hM V V' _ _ _ _ _ _ _ _ hV hV' L L' _ _ hL hL'`. Rewrite using `[mass_ortho_eq hL (std_ortho K M), mass_ortho_eq hL' (std_ortho K (M - 1))]`. Conclude with `h K hK M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massRatio_all_of (h : StandardLattice.SiegelMassRatioCM) : SiegelMassRatio := by
   intro K _ _ _ hK M hM V V' _ _ _ _ _ _ _ _ hV hV' L L' _ _ hL hL'
@@ -58,11 +58,11 @@ theorem massRatio_all_of (h : StandardLattice.SiegelMassRatioCM) : SiegelMassRat
   exact h K hK M hM
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < ((M : ℂ)).re`. Simplify using `only [Complex.natCast_re]`. Conclude with `hM` after adjusting the coercions. Rewrite using `[zeta_eq_tsum_one_div_nat_add_one_cpow h1]`. Establish `h2 : (∑' n : ℕ, 1 / ((n : ℂ) + 1) ^ (M : ℂ)) = ((StandardLattice.zetaR M : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `StandardLattice.zetaR`. Rewrite using `[Complex.ofReal_tsum]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Complex.cpow_natCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zetaR_eq (M : ℕ) (hM : 2 ≤ M) : (riemannZeta (M : ℂ)).re = StandardLattice.zetaR M := by
   have h1 : (1 : ℝ) < ((M : ℂ)).re := by
@@ -78,7 +78,7 @@ theorem zetaR_eq (M : ℕ) (hM : 2 ≤ M) : (riemannZeta (M : ℂ)).re = Standar
   rw [h2, Complex.ofReal_re]
 
 /- English proof (translation)
-The claim follows from `|Real.log (lValEta D.host.E i)| ≤ (D.R.f : ℝ) * Real.log (riemannZeta (i : ℂ)).re := by intro i hi rw [zetaR_eq i hi] exact h i hi`.
+A detailed English derivation is pending.
 -/
 theorem lBound_host_of (D : D7) (h : StandardLattice.gram_det_kernel_dual_lattice D) : ∀ i : ℕ, 2 ≤ i →
     |Real.log (lValEta D.host.E i)| ≤ (D.R.f : ℝ) * Real.log (riemannZeta (i : ℂ)).re := by

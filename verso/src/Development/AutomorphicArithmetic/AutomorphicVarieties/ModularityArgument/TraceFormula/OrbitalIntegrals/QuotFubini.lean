@@ -14,7 +14,7 @@ def CptMod {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) (F : G →
   ∃ C : Set G, IsCompact C ∧ ∀ g, F g ≠ 0 → ∃ h ∈ H, ∃ c ∈ C, g = h * c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩`.
+Supply the required witnesses or components.
 -/
 example {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) : CptMod H 0 := ⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩
 

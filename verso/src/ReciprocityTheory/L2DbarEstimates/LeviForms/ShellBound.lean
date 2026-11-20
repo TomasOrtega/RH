@@ -8,65 +8,55 @@ open MeasureTheory Metric Filter Topology Set
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Introduce `z g ph ph2 r j p hn hz hg hph hph2 hr hp hJ`. Take `⟨e, he, hpe⟩` from `exists_chart n z hz p`. Take `⟨ρ, hρ, hbt, hinj, hsmall⟩` from `sh_local n z g hg p hp hJ e he hpe`. Establish `hcph : Continuous ph` using `(Complex.continuous_re.comp (Smooth.continuous n z hz _ hph)).congr (fun x => by simp)`. Establish `hcph2 : Continuous ph2` using `(Complex.continuous_re.comp (Smooth.continuous n z hz _ hph2)).congr (fun x => by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcg : ∀ i, Continuous (g i)` using `fun i => Smooth.continuous n z hz _ (Holo.smooth n z _ (hg i))`. Establish `hevc : Continuous (ev n g ph r)`. Unfold `ev`. Conclude with `((continuous_finsetSum _ fun i _ => (hcg i).norm.pow 2).mul (Real.continuous_exp.comp hcph.neg)).div_const _`. Establish `hy0 : e p ∈ e.target` using `e.map_source hpe`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : e.symm (e p) = p` using `e.left_inv hpe`. Establish `hca : ContinuousAt (fun y => ph (e.symm y)) (e p)` using `hcph.continuousAt.comp (e.continuousAt_symm hy0)`. Establish `hcb : ContinuousAt (fun y => ph2 (e.symm y) + (j : ℝ) * ph (e.symm y)) (e p)` using `(hcph2.continuousAt.comp (e.continuousAt_symm hy0)).add (continuousAt_const.mul (hcph.continuousAt.comp (e.continuousAt_symm hy0)))`. Take `⟨δ0, hδ0, h0⟩` from `Metric.continuousAt_iff.1 hca 1 one_pos`. Use `set ρ1 := min ρ δ0 with hρ1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρ1p : 0 < ρ1` using `lt_min hρ hδ0`. Use `⟨e.source ∩ e ⁻¹' ball (e p) ρ1, e.isOpen_inter_preimage isOpen_ball, ⟨hpe, mem_ball_self hρ1p⟩, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Use `set θ := min (τ / 10) (1 / 4) with hθdef`. Establish `hθ : 0 < θ` using `lt_min (by positivity) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ1, hδ1, h1⟩` from `Metric.continuousAt_iff.1 hca θ hθ`. Take `⟨δ2, hδ2, h2⟩` from `Metric.continuousAt_iff.1 hcb θ hθ`. Use `set ρ' := min (min δ1 δ2) ρ1 with hρ'`. Establish `hρ'p : 0 < ρ'` using `lt_min (lt_min hδ1 hδ2) hρ1p`. Take `⟨κ, hκ, hκs⟩` from `hsmall ρ' hρ'p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set C0 := r ^ 2 * Real.exp (ph p + 1) with hC0`. Establish `hev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε ^ 2 * C0 < κ ^ 2`. Use `Filter.Eventually.and eventually_mem_nhdsWithin ?_` and prove the remaining obligations. Apply `nhdsWithin_le_nhds` to reduce the goal to its premises. Establish `ht : Tendsto (fun ε : ℝ => ε ^ 2 * C0) (𝓝 0) (𝓝 ((0 : ℝ) ^ 2 * C0))` using `((continuous_pow 2).mul continuous_const).tendsto 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[zero_pow two_ne_zero, zero_mul]`. Conclude with `ht.eventually (gt_mem_nhds (by positivity))`. Use `filter_upwards [hev] with ε ⟨hε, hεκ⟩`. Use `set G := shG n g e.symm with hGdef`. Use `set A := (e.source ∩ e ⁻¹' ball (e p) ρ1) ∩ shell n g ph r ε with hAdef`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAm : MeasurableSet A`. Use `(e.isOpen_inter_preimage isOpen_ball).measurableSet.inter ?_` and prove the remaining obligations. Conclude with `((isClosed_le continuous_const hevc).inter (isClosed_le hevc continuous_const)).measurableSet`. Use `set Fh : M → ℝ≥0∞ := fun x => ENNReal.ofReal (‖LinearMap.det (fderiv ℂ G (z x) : V n →ₗ[ℂ] V n)‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) with hFh`. Establish `hFm : Measurable Fh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd : Measurable fun x => (fderiv ℂ G (z x)).det` using `ContinuousLinearMap.continuous_det.measurable.comp ((measurable_fderiv ℂ G).comp hz.continuous.measurable)`. Use `Measurable.ennreal_ofReal ?_` and prove the remaining obligations. Use `((hd.norm.pow_const 2).mul ?_).mul (hevc.measurable.pow_const _)` and prove the remaining obligations. Conclude with `(Real.continuous_exp.comp ((hcph2.neg).sub (continuous_const.mul hcph))).measurable`. Use `set a := ε ^ 2 * r ^ 2 * Real.exp (ph p - θ) / 2 with hadef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := ε ^ 2 * r ^ 2 * Real.exp (ph p + θ) with hbdef`. Establish `ha : 0 < a` using `by positivity`. Establish `hba : b / a = 2 * Real.exp (2 * θ)`. Rewrite using `[div_eq_iff ha.ne', hadef, hbdef]`. Establish `: Real.exp (ph p + θ) = Real.exp (2 * θ) * Real.exp (ph p - θ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hab : a ≤ b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: 1 ≤ b / a` using `by rw [hba]; nlinarith [Real.add_one_le_exp (2 * θ)]`. Rewrite `this` using `[le_div_iff₀ ha, one_mul]`. Then use the resulting hypothesis. Use `set Ann := {w : V n | a ≤ ‖w‖ ^ 2 ∧ ‖w‖ ^ 2 ≤ b} with hAnn`. Establish `hAnnm : MeasurableSet Ann` using `((isClosed_le continuous_const (continuous_norm.pow 2)).inter (isClosed_le (continuous_norm.pow 2) continuous_const)).measurableSet`. Use `set K := r ^ (2 * n) * Real.exp (-ph2 p - (j : ℝ) * ph p) * Real.exp θ with hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set f : V n → ℝ≥0∞ := fun w => ENNReal.ofReal K * Ann.indicator (fun w => ENNReal.ofReal ((‖w‖ ^ 2) ^ (-(n : ℝ)))) w with hfdef`. Establish `hfm' : Measurable fun w : V n => ENNReal.ofReal ((‖w‖ ^ 2) ^ (-(n : ℝ)))` using `((measurable_norm.pow_const 2).pow_const _).ennreal_ofReal`. Establish `hfm : Measurable f` using `measurable_const.mul (hfm'.indicator hAnnm)`. Use `set U' := ball (e p) ρ' with hU'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU'1 : U' ⊆ ball (e p) ρ1` using `ball_subset_ball (min_le_right _ _)`. Establish `hU'ρ : U' ⊆ ball (e p) ρ` using `hU'1.trans (ball_subset_ball (min_le_left _ _))`. Use `set h2f : V n → ℝ≥0∞ := fun y => ENNReal.ofReal (‖LinearMap.det (fderiv ℂ G y : V n →ₗ[ℂ] V n)‖ ^ 2) * f (G y) with hh2`. Establish `step1 : ∫⁻ x in (e.source ∩ e ⁻¹' ball (e p) ρ1) ∩ shell n g ph r ε, ENNReal.ofReal (‖jac n z g x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n z = ∫⁻ x in A, Fh x ∂vol n z`. Use `setLIntegral_congr_fun hAm (fun x hx => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : x ∈ e.source` using `hx.1.1`. Establish `hj` using `sh_jac n z g hg e he (e x) (e.map_source hxs)`. Rewrite `hj` using `[e.left_inv hxs]`. Simplify using `only [hFh, hj, he hxs, hGdef]`. Establish `step2 : ∫⁻ x in A, Fh x ∂vol n z = ∫⁻ y in e.target, A.indicator Fh (e.symm y)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator hAm]`. Conclude with `lintegral_vol_chart n z hz e he _ (hFm.indicator hAm) (fun x hx => indicator_of_notMem (fun h => hx h.1.1) _)`. Establish `step3 : ∫⁻ y in e.target, A.indicator Fh (e.symm y) ≤ ∫⁻ y in e.target, U'.indicator h2f y`. Use `setLIntegral_mono' e.open_target.measurableSet (fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hA : e.symm y ∈ A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Rewrite using `[indicator_of_notMem hA]`. Conclude with `zero_le`. Establish `hey : e (e.symm y) = y` using `e.right_inv hy`. Establish `hzy : z (e.symm y) = y` using `chart_z_symm n z e he y hy`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyb : y ∈ ball (e p) ρ1`. Establish `h` using `hA.1.2`. Simplify using `only [mem_preimage, hey] at h`. Conclude with `h`. Establish `hsh : ε ^ 2 / 2 ≤ ev n g ph r (e.symm y) ∧ ev n g ph r (e.symm y) ≤ ε ^ 2` using `hA.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGS : ‖G y‖ ^ 2 = ∑ i, ‖g i (e.symm y)‖ ^ 2` using `shG_norm_sq n g e.symm y`. Use `set x := e.symm y with hxdef`. Use `set S := ∑ i, ‖g i x‖ ^ 2 with hS`. Establish `hevx : ev n g ph r x = S * Real.exp (-ph x) / r ^ 2` using `rfl`. Establish `hSev : S = ev n g ph r x * r ^ 2 * Real.exp (ph x)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hevx, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hevpos : 0 < ev n g ph r x` using `lt_of_lt_of_le (by positivity) hsh.1`. Establish `hSpos : 0 < S`. Rewrite using `[hSev]; exact mul_pos (mul_pos hevpos (by positivity)) (Real.exp_pos _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : dist y (e p) < δ0` using `lt_of_lt_of_le (mem_ball.1 hyb) (min_le_right _ _)`. Establish `hph0` using `h0 hd0`. Rewrite `hph0` using `[hsp, Real.dist_eq, abs_lt]`. Establish `hSle : S ≤ ε ^ 2 * C0`. Rewrite using `[hSev, hC0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : Real.exp (ph x) ≤ Real.exp (ph p + 1)` using `Real.exp_le_exp.2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hGk : ‖G y‖ < κ`. Establish `h3 : ‖G y‖ ^ 2 < κ ^ 2` using `by rw [hGS]; linarith`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hκ.le h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyU : y ∈ U'` using `hκs y (ball_subset_ball (min_le_left _ _) hyb) hGk`. Establish `hd1 : dist y (e p) < δ1` using `lt_of_lt_of_le (mem_ball.1 hyU) ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hd2 : dist y (e p) < δ2` using `lt_of_lt_of_le (mem_ball.1 hyU) ((min_le_left _ _).trans (min_le_right _ _))`. Establish `hph1` using `h1 hd1`. Establish `hph2'` using `h2 hd2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hph1`, `hph2'` using `[hsp, Real.dist_eq, abs_lt]`. Establish `hGA : G y ∈ Ann`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [hGS, hSev]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right hsh.2 (by positivity)) (Real.exp_le_exp.2 (by linarith)) (by positivity) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[indicator_of_mem hA, indicator_of_mem hyU]`. Simplify using `only [hFh, hh2, hfdef, indicator_of_mem hGA, hzy]`. Rewrite using `[← ENNReal.ofReal_mul hK0, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hGS, hevx, mul_assoc, sh_val n j S r (ph x) (ph2 x) hSpos hr]`.
-
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hK]`. Establish `hexp : Real.exp (-ph2 x - (j : ℝ) * ph x) ≤ Real.exp (-ph2 p - (j : ℝ) * ph p) * Real.exp θ`. Rewrite using `[← Real.exp_add]; exact Real.exp_le_exp.2 (by linarith)`. Establish `hSn : 0 ≤ S ^ (-(n : ℝ))` using `Real.rpow_nonneg hSpos.le _`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `step4 : ∫⁻ y in e.target, U'.indicator h2f y ≤ ∫⁻ w in G '' U', f w`. Use `(setLIntegral_le_lintegral _ _).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator measurableSet_ball]`. Rewrite using `[hCov U' G f isOpen_ball (((shG_contDiffOn n z g hg e he).differentiableOn (by simp)).mono (hU'ρ.trans hbt)) (hinj.mono hU'ρ) hfm]`.
-
-Establish `step5 : ∫⁻ w in G '' U', f w ≤ ENNReal.ofReal K * ENNReal.ofReal (Real.pi ^ n / (Nat.factorial (n - 1) : ℝ) * Real.log (b / a))`. Use `(setLIntegral_le_lintegral _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (hfm'.indicator hAnnm), lintegral_indicator hAnnm, hP hn a b ha hab]`. Rewrite using `[step1, step2]`. Use `step3.trans (step4.trans (step5.trans ?_))` and prove the remaining obligations.
-
-Rewrite using `[← ENNReal.ofReal_mul hK0]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hba, Real.log_mul two_ne_zero (Real.exp_pos _).ne', Real.log_exp, hK]`. Establish `hnum` using `sh_num τ hτ`. Rewrite `hnum` using `[← hθdef]`.
-
-Establish `hX : 0 ≤ r ^ (2 * n) * Real.exp (-ph2 p - (j : ℝ) * ph p) * (Real.pi ^ n / (Nat.factorial (n - 1) : ℝ))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem shellBound (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M]

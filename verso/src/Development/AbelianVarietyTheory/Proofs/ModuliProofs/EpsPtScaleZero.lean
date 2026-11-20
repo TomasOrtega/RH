@@ -24,7 +24,7 @@ open GlobalTheory.TangentOrigin GlobalTheory.LieEtale
 variable {g g' : ℕ} {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Use `Scheme.Hom.appLE_comp_appLE x φ U (φ ⁻¹ᵁ U) ⊤ le_rfl h` as an intermediate fact. Unfold `evalPt`. Rewrite using `[← this, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPt_comp {R : Type} [CommRing R] (x : Sp R ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U) (f : Γ(Y, U)) :
@@ -35,7 +35,7 @@ theorem evalPt_comp {R : Type} [CommRing R] (x : Sp R ⟶ X) (φ : X ⟶ Y) (U :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Rewrite using `[valAt'_eq_evalPt _ _ h, valAt'_eq_evalPt x (φ ⁻¹ᵁ U) h, evalPt_comp]`. Establish `h' : ¬ ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U` using `h`. Unfold `valAt'`. Rewrite using `[dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valAt' (x ≫ φ) U f = valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) := by
@@ -46,7 +46,7 @@ theorem valAt'_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Introduce `U f`. Simplify using `only [valAt'_comp]`. Conclude with `he (φ ⁻¹ᵁ U) ((φ.app U).hom f)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e) (φ : X ⟶ Y) :
     IsHolTo Set.univ fun z => e z ≫ φ := by
@@ -55,7 +55,7 @@ theorem isHolTo_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.
   exact he (φ ⁻¹ᵁ U) ((φ.app U).hom f)
 
 /- English proof (translation)
-Introduce `U f`. Establish `hF : Differentiable ℂ F` using `F.toContinuousLinearMap.differentiable`. Conclude with `⟨(he U f).1.preimage hF.continuous, (he U f).2.comp hF.differentiableOn fun z hz => hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isHolTo_linear {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e)
     (F : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) : IsHolTo Set.univ fun z => e (F z) := by
@@ -64,14 +64,14 @@ theorem isHolTo_linear {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Se
   exact ⟨(he U f).1.preimage hF.continuous, (he U f).2.comp hF.differentiableOn fun z hz => hz⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDerivAt0_iff {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X} :
     IsDerivAt0 e w v ↔ spMap fstC ≫ v = e 0 ∧ ∀ (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)),
       (evalPt v U h f).snd = fderiv ℂ (fun z => valAt' (e z) U f) 0 w := Iff.rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isDerivAt0_iff]`. Use `⟨by rw [← h.1, Category.assoc], fun U hU f => ?_⟩` and prove the remaining obligations. Simplify using `only [valAt'_comp]`. Rewrite using `[evalPt_comp]`. Conclude with `h.2 _ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X}
     (h : IsDerivAt0 e w v) (φ : X ⟶ Y) : IsDerivAt0 (fun z => e z ≫ φ) w (v ≫ φ) := by
@@ -82,11 +82,9 @@ theorem deriv_comp {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} 
   exact h.2 _ _ _
 
 /- English proof (translation)
-Rewrite `h`, `h'` using `[isDerivAt0_iff]`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (e 0 (default : PrimeSpectrum ℂ))) isOpen_univ`. Establish `h0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `fun q _ => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) q default]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : ⊤ ≤ v ⁻¹ᵁ U` using `(top_le_preimage_iff v U).2 (h.1 ▸ h0)`. Establish `hv' : ⊤ ≤ v' ⁻¹ᵁ U` using `(top_le_preimage_iff v' U).2 (h'.1 ▸ h0)`. Use `ext_evalPt hU hv hv' (RingHom.ext fun f => TrivSqZeroExt.ext ?_ ((h.2 U hv f).trans (h'.2 U hv' f).symm))` and prove the remaining obligations. Establish `key : ∀ (u : Sp (DualNumber ℂ) ⟶ X) (hu : ⊤ ≤ u ⁻¹ᵁ U) (y : Sp ℂ ⟶ X) (hy : ⊤ ≤ y ⁻¹ᵁ U), spMap fstC ≫ u = y → (evalPt u U hu f).fst = evalPt y U hy f`. Introduce and unpack `u hu y hy rfl`.
-
-Conclude with `(evalPt_spMap_comp fstC u U hu hy f).symm`. Conclude with `(key v hv _ h0 h.1).trans (key v' hv' _ h0 h'.1).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem deriv_unique {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v v' : Sp (DualNumber ℂ) ⟶ X}
     (h : IsDerivAt0 e w v) (h' : IsDerivAt0 e w v') : v = v' := by
@@ -105,11 +103,11 @@ theorem deriv_unique {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ
   exact (key v hv _ h0 h.1).trans (key v' hv' _ h0 h'.1).symm
 
 /- English proof (translation)
-Rewrite using `[isDerivAt0_iff, isDerivAt0_iff, map_zero]`. Use `and_congr_right fun h0 => forall₃_congr fun U hU f => ?_` and prove the remaining obligations. Establish `hU0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `h0 ▸ (top_le_preimage_iff v U).1 hU`. Establish `hd : DifferentiableAt ℂ (fun z => valAt' (e z) U f) (F.toContinuousLinearMap 0)`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(he U f).2.differentiableAt ((he U f).1.mem_nhds ⟨trivial, hU0⟩)`. Use `(hd.hasFDerivAt.comp 0 F.toContinuousLinearMap.hasFDerivAt).fderiv` as an intermediate fact. Rewrite `this` using `[map_zero]`. Establish `e2 : fderiv ℂ (fun z => valAt' (e (F z)) U f) 0 = _` using `this`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem deriv_linear {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e)
     (F : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) {w : Fin g' → ℂ} {v : Sp (DualNumber ℂ) ⟶ X} :
@@ -127,9 +125,9 @@ theorem deriv_linear {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} (he : IsHolTo Set.
   rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isDerivAt0_iff]`. Establish `e0 : spMap fstC ≫ spMap (epsScale c) ≫ v = spMap fstC ≫ v`. Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun r => TrivSqZeroExt.fst_map _ r`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e0.trans h.1, fun U hU f => ?_⟩` and prove the remaining obligations. Establish `hv : ⊤ ≤ v ⁻¹ᵁ U` using `(top_le_preimage_iff v U).2 (e0 ▸ (top_le_preimage_iff _ U).1 hU)`. Rewrite using `[evalPt_spMap_comp _ v U hv hU, map_smul, ← h.2 U hv f]`. Simplify using `[epsScale]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_smul {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X}
     (h : IsDerivAt0 e w v) (c : ℂ) : IsDerivAt0 e (c • w) (spMap (epsScale c) ≫ v) := by
@@ -162,9 +160,9 @@ def ofTwo (y : Sp ℂ ⟶ S) (l : ℂ × ℂ →ₗ[ℂ] ℂ) : epsPt y ⟶ epsT
     exact RingHom.ext fun r => (TrivSqZeroExt.map l).commutes r)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: l' (l x.snd) = l' (l 1) * x.snd`. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, ← map_smul, smul_eq_mul, _root_.mul_one]`. Apply the tactic sequence `ext <;> simp [this, epsScale]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofTwo_toTwo (l : ℂ →ₗ[ℂ] ℂ × ℂ) (l' : ℂ × ℂ →ₗ[ℂ] ℂ) :
     ofTwo y l' ≫ toTwo y l = epsPtScale y (l' (l 1)) := by
@@ -178,7 +176,7 @@ theorem ofTwo_toTwo (l : ℂ →ₗ[ℂ] ℂ × ℂ) (l' : ℂ × ℂ →ₗ[ℂ
   ext <;> simp [this, epsScale]
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext x <;> simp [epsScale]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsPtScale_one : epsPtScale y 1 = 𝟙 _ := by
   refine Over.OverMorphism.ext ?_
@@ -188,9 +186,9 @@ theorem epsPtScale_one : epsPtScale y 1 = 𝟙 _ := by
   ext x <;> simp [epsScale]
 
 /- English proof (translation)
-Set `s : epsPt y ⟶ Over.mk y` to `Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl`. Establish `: epsPtScale y 0 = s ≫ epsPtZero y`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ = spMap _ ≫ spMap _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsScale, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this, Category.assoc, hv, MonObj.comp_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem epsPtScale_zero {v : epsPt y ⟶ G} (hv : epsPtZero y ≫ v = 1) : epsPtScale y 0 ≫ v = 1 := by
   let s : epsPt y ⟶ Over.mk y := Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl
@@ -204,23 +202,23 @@ theorem epsPtScale_zero {v : epsPt y ⟶ G} (hv : epsPtZero y ≫ v = 1) : epsPt
   rw [this, Category.assoc, hv, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `hv : epsPtZero y ≫ v = 1` using `Over.OverMorphism.ext (h.1.trans h0)`. Establish `hv' : epsPtZero y ≫ v' = 1` using `Over.OverMorphism.ext (h'.1.trans h0)`. Establish `hm : epsPtZero y ≫ (v * v') = 1` using `by rw [MonObj.comp_mul, hv, hv', _root_.mul_one]`. Establish `hm' : spMap fstC ≫ (v * v').left = e 0` using `(congrArg (·.left) hm).trans h0.symm`. Rewrite `h`, `h'`, the goal using `[isDerivAt0_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨hm', fun U hU f => ?_⟩` and prove the remaining obligations. Set `u : epsTwo y ⟶ G` to `(toTwo y (LinearMap.inl ℂ ℂ ℂ) ≫ v) * (toTwo y (LinearMap.inr ℂ ℂ ℂ) ≫ v')`. Establish `hu : ∀ l, ofTwo y l ≫ u = (epsPtScale y (l (1, 0)) ≫ v) * (epsPtScale y (l (0, 1)) ≫ v')` using `fun l => by`. Simplify using `only [u, MonObj.comp_mul, ← Category.assoc, ofTwo_toTwo]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h1 : ofTwo y (LinearMap.fst ℂ ℂ ℂ) ≫ u = v`. Rewrite using `[hu, LinearMap.fst_apply, LinearMap.fst_apply, epsPtScale_one, epsPtScale_zero hv', _root_.mul_one, Category.id_comp]`. Establish `h2 : ofTwo y (LinearMap.snd ℂ ℂ ℂ) ≫ u = v'`. Rewrite using `[hu, LinearMap.snd_apply, LinearMap.snd_apply, epsPtScale_one, epsPtScale_zero hv, _root_.one_mul, Category.id_comp]`. Establish `h3 : ofTwo y (LinearMap.fst ℂ ℂ ℂ + LinearMap.snd ℂ ℂ ℂ) ≫ u = v * v'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu]`. Simplify using `[epsPtScale_one]`. Establish `hU0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `hm' ▸ (top_le_preimage_iff _ U).1 hU`. Establish `hU1 : ⊤ ≤ v.left ⁻¹ᵁ U` using `(top_le_preimage_iff _ U).2 (h.1 ▸ hU0)`. Establish `hU2 : ⊤ ≤ v'.left ⁻¹ᵁ U` using `(top_le_preimage_iff _ U).2 (h'.1 ▸ hU0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ p q : PrimeSpectrum (TrivSqZeroExt ℂ (ℂ × ℂ)), p = q`. Establish `k : ∀ z : PrimeSpectrum (TrivSqZeroExt ℂ (ℂ × ℂ)), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`. Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `p q`. Use extensionality with `a`. Rewrite using `[k, k]`. Establish `hUu : ⊤ ≤ u.left ⁻¹ᵁ U` using `fun p _ => by`. Set `q : (epsPt y).left` to `spMap fstC (default : PrimeSpectrum ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : v.left q ∈ U` using `hU1 (Set.mem_univ q)`. Rewrite `hq` using `[← h1]`. Rewrite using `[hsub p ((ofTwo y (LinearMap.fst ℂ ℂ ℂ)).left q)]`. Conclude with `hq`. Establish `key : ∀ (l : ℂ × ℂ →ₗ[ℂ] ℂ) (x : epsPt y ⟶ G) (hx : ⊤ ≤ x.left ⁻¹ᵁ U), ofTwo y l ≫ u = x → (evalPt (R` using `DualNumber ℂ) x.left U hx f).snd = l (evalPt (R := TrivSqZeroExt ℂ (ℂ × ℂ)) u.left U hUu f).snd := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `l x hx rfl`. Conclude with `(congrArg TrivSqZeroExt.snd (evalPt_spMap_comp (TrivSqZeroExt.map l).toRingHom u.left U hUu hx f)).trans (TrivSqZeroExt.snd_map _ _)`. Rewrite using `[map_add, ← h.2 U hU1 f, ← h'.2 U hU2 f, key _ _ hU h3, key _ _ hU1 h1, key _ _ hU2 h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem deriv_mul {e : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)} {w w' : Fin g → ℂ} {v v' : epsPt y ⟶ G}
     (h0 : e 0 = (1 : Over.mk y ⟶ G).left)

@@ -36,13 +36,11 @@ noncomputable section
 namespace GlobalTheory.EvenOnto
 
 /- English proof (translation)
-Introduce `hDS hHC D t V W S S' M M' aS aT θ ψ hθ hP`. Take `⟨X, hX, h1, h2, -⟩` from `GlobalTheory.T.exists_real_discreteSeries_data_theta_properties hDS hHC`. Establish `hB` using `GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hDS hHC D`. Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ (aS τ) (aT τ) A` using `fun τ => by`. Take `⟨al, be, ga, de, hd, -, e1, e2⟩` from `hP τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_locIt hX h1 h2 hB M M' τ hd e1 e2`. Use `choose hr A hA using key`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.ContrObj.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Use `⟨It, fun ω f ⟨χS, χT, hω, he⟩ hf => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_realPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`. Apply the tactic sequence `exact isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectors_overVacuum_isometry D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hv τ).2.1) fun τ => (hv τ).2.2`. Establish `hA' : ∀ τ, ∃ A', LocIt M' M τ (aT τ) (aS τ) A'` using `fun τ => GlobalTheory.T.localFockIntertwiner_adjoint_exchangedPair D V W _ _ M M' τ _ _ (A τ) (hA τ) choose A' hA' using hA'`. Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D W V _ _ M' M aT aS A' GlobalTheory.ContrObj.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA'`. Use `⟨It, fun ω f ⟨χS, χT, hω, he⟩ hf => ?_⟩` and prove the remaining obligations.
-
-Establish `hv` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_realPlaces D W V _ _ M' M θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`. Apply the tactic sequence `exact isItW_of_globIt hθ hI (fun τ => ⟨(hr τ).2, (hr τ).1⟩) (GlobalTheory.T.fockVectors_overVacuum_isometry D W V _ _ M' M ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hv τ).2.1) fun τ => (hv τ).2.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem upPair_itW : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (t : ℕ) (V W : HSp D)
     (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (aS aT : D.what₂.Tau → ℚ) (θ : InfFam D)

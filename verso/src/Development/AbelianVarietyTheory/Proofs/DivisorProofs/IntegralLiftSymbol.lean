@@ -16,7 +16,7 @@ namespace GlobalTheory.HSCore.IntLift
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨F, rfl⟩` from `hm`. Use `⟨(Vanishing.powChart (isLB_tens G.K.isLB G.isLBA) G.isLB ((Nat.cast_add j a).symm.trans (congrArg _ h))).mul (H0.ofSec G.str ⊤ (monoSec (G.sec s) α)) F, ?_⟩` and prove the remaining obligations. Rewrite using `[ProdChart.restr_mul, H0.restr_ofSec]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulPow_mem_global (G : Geo K) (s : Fin G.D → Fin G.N → K) {a j l : ℕ} (h : j + a = l)
     (α : MonoDeg (Fin G.D) a) {m : G.Sec j} (hm : m ∈ G.global j) : mulPow G s h α m ∈ G.global l := by

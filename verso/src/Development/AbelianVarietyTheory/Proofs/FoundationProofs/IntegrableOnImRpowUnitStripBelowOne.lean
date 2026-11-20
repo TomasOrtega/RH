@@ -9,23 +9,23 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hmeasIm : Measurable (fun τ : ℍ => τ.im)` using `UpperHalfPlane.continuous_im.measurable`. Establish `hf : Measurable (fun τ : ℍ => τ.im ^ (s + 1))` using `hmeasIm.pow_const _`. Establish `hT : MeasurableSet {τ : ℍ | τ.im < 1}` using `measurableSet_lt hmeasIm measurable_const`. Use `⟨hf.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_enorm]`. Use `set F : ℍ → ENNReal := Set.indicator {τ : ℍ | τ.im < 1} (fun τ => ‖τ.im ^ (s + 1)‖ₑ) with hFdef`. Establish `hFm : Measurable F` using `hf.enorm.indicator hT`. Establish `h1 : ∫⁻ τ in {τ | τ ∈ strip ∧ τ.im < 1}, ‖τ.im ^ (s + 1)‖ₑ = ∫⁻ τ in strip, F τ`. Rewrite using `[hFdef, lintegral_indicator hT, Measure.restrict_restrict hT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `τ`. Simplify using `[and_comm]`. Rewrite using `[h1, (GlobalTheory.T.unitStrip_integral_eq_iterated).1 F hFm]`. Establish `h2 : ∀ y ∈ Set.Ioi (0:ℝ), (∫⁻ x in Set.Ico (0 : ℝ) 1, F (ofComplex (x + y * Complex.I))) * ENNReal.ofReal (1 / y ^ 2) = Set.indicator (Set.Iio 1) (fun y : ℝ => ENNReal.ofReal (y ^ (s - 1))) y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy0 : (0:ℝ) < y` using `hy`. Establish `him : ∀ x : ℝ, (ofComplex ((x:ℂ) + y * Complex.I)).im = y`. Introduce `x`. Rewrite using `[ofComplex_apply_of_im_pos (by simpa using hy0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[UpperHalfPlane.im]`. Establish `hin : ∀ x : ℝ, F (ofComplex ((x:ℂ) + y * Complex.I)) = Set.indicator (Set.Iio 1) (fun y : ℝ => ENNReal.ofReal (y ^ (s + 1))) y`. Introduce `x`. Simplify using `only [hFdef, Set.indicator, Set.mem_setOf_eq, him, Set.mem_Iio]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Real.enorm_eq_ofReal (Real.rpow_nonneg hy0.le _)`. Both sides reduce to the same expression. Repeatedly rewrite using `[hin]`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, Real.volume_Ico]`. Simplify using `only [sub_zero, ENNReal.ofReal_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : y < 1`. Simplify using `only [Set.indicator, Set.mem_Iio, h, if_true]`. Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg hy0.le _)]`. Use `congr 1`. Establish `: y ^ (s + 1) = y ^ (s - 1) * y ^ 2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Put the polynomial expressions in normal form.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hy0]`. Evaluate the numerical expressions. Put the polynomial expressions in normal form. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Set.indicator, h]`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi h2, lintegral_indicator measurableSet_Iio, Measure.restrict_restrict measurableSet_Iio, Set.Iio_inter_Ioi]`. Establish `hI : IntegrableOn (fun y : ℝ => y ^ (s - 1)) (Set.Ioo 0 1)` using `(intervalIntegral.integrableOn_Ioo_rpow_iff zero_lt_one).2 (by linarith)`. Conclude with `hI.lintegral_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem stripLow_integrableOn_im_rpow : ∀ (s : ℝ), 0 < s →
     IntegrableOn (fun τ : ℍ => τ.im ^ (s + 1)) {τ | τ ∈ strip ∧ τ.im < 1} := by

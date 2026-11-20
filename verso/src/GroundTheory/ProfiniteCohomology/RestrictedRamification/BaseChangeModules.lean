@@ -28,7 +28,7 @@ def resSymmHomOfIso (e : H ≃ₜ* G) {A : Rep.{u} k G} {B : Rep.{u} k H}
 omit [IsTopologicalGroup G] [IsTopologicalGroup H] in
 
 /- English proof (translation)
-The claim follows from `e.continuous_toFun`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulEquiv_toMonoidHom (e : H ≃ₜ* G) : Continuous e.toMulEquiv.toMonoidHom :=
   e.continuous_toFun
@@ -104,7 +104,7 @@ def galRootsOfUnityZResIso (n : ℕ) :
 variable [NumberField F] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Rewrite using `[sUnitsOf_placesOver_eq (L := L) (E := E') S]`. Set `f : E →ₐ[S.integer F] E'` to `((fieldEquivOfRestrictScalarsEq h : E →ₐ[F] E')).restrictScalars (S.integer F)`. Use `⟨hx.1.map f, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hx.2.map f`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsEquivOfRestrictScalarsEq_mem_sUnitsOf {x : Eˣ} (hx : x ∈ sUnitsOf S E) :
     unitsEquivOfRestrictScalarsEq h x ∈ sUnitsOf (placesOver S : Set (HeightOneSpectrum (𝓞 L))) E' := by
@@ -116,7 +116,7 @@ theorem unitsEquivOfRestrictScalarsEq_mem_sUnitsOf {x : Eˣ} (hx : x ∈ sUnitsO
   exact hx.2.map f
 
 /- English proof (translation)
-Rewrite `hy` using `[sUnitsOf_placesOver_eq (L := L) (E := E') S]`. Set `f : E' →ₐ[S.integer F] E` to `((fieldEquivOfRestrictScalarsEq h).symm : E' →ₐ[F] E).restrictScalars (S.integer F)`. Use `⟨hy.1.map f, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hy.2.map f`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsEquivOfRestrictScalarsEq_symm_mem_sUnitsOf {y : E'ˣ}
     (hy : y ∈ sUnitsOf (placesOver S : Set (HeightOneSpectrum (𝓞 L))) E') :
@@ -144,7 +144,7 @@ def galSUnitsResIso : Rep.res (fixingOfRestrictScalarsEq h).subtype (galSUnits S
       LinearMap.ext fun _ => rfl)
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `_`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem galSUnitsResIso_hom_sUnitsToUnits :
     (galSUnitsResIso h S).hom ≫ (Rep.resFunctor _).map (sUnitsToUnits (placesOver S : Set (HeightOneSpectrum (𝓞 L))) E') =
@@ -156,7 +156,7 @@ theorem galSUnitsResIso_hom_sUnitsToUnits :
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `_`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem galRootsOfUnityResIso_hom_rootsOfUnityToSUnits (n : ℕ) [NeZero n] :
     (galRootsOfUnityResIso h n).hom ≫ (Rep.resFunctor _).map (rootsOfUnityToSUnits (placesOver S : Set (HeightOneSpectrum (𝓞 L))) E' n) =
@@ -207,7 +207,7 @@ def gsSUnitsIso : Rep.res (gsSubtype S hL) (galSUnitsMax F Ω S) ≅
   galSUnitsResIso (restrictScalars_maxUnramifiedOutside_eq S hL) S
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `_`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem gsSUnitsIso_hom_sUnitsToUnits :
     (gsSUnitsIso S hL).hom ≫
@@ -220,7 +220,7 @@ theorem gsSUnitsIso_hom_sUnitsToUnits :
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `_`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem gsRootsOfUnityIso_hom_rootsOfUnityToSUnits (n : ℕ) [NeZero n] :
     (gsRootsOfUnityIso S hL n).hom ≫ (Rep.resFunctor _).map

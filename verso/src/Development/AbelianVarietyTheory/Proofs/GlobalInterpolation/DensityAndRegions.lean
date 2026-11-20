@@ -8,7 +8,7 @@ open Complex DirichletCharacter Formalism.MainNotions Formalism.MainNotions.Glob
 namespace GlobalTheory.ZerosNearOne
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `GlobalTheory.ZeroDensityMult.zero_density_mult`. Take `⟨c, hc, H2, H3⟩` from `GlobalTheory.ZeroFreeHalf.main GlobalTheory.LandauPageRegion.main`. Conclude with `⟨C, c, hC, hc, H, H2, H3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem density_and_regions : ∃ C1 c : ℝ, 0 < C1 ∧ 0 < c ∧
     (∀ Q : ℝ, 3 ≤ Q → ∀ T : Finset (Σ N : ℕ, DirichletCharacter ℂ (N + 1) × ℂ), (∀ p ∈ T, ((p.1 + 1 : ℕ) : ℝ) ≤ Q ∧ p.2.1.IsPrimitive ∧ LFunction p.2.1 p.2.2 = 0 ∧ 1 - 1 / 400 ≤ p.2.2.re ∧ |p.2.2.im| ≤ Q) → ((∑ p ∈ T, analyticOrderNatAt (LFunction p.2.1) p.2.2 : ℕ) : ℝ) ≤ C1 * Q ^ ((1 : ℝ) / 4)) ∧

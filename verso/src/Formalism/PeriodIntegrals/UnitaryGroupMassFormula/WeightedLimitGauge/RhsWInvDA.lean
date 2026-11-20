@@ -16,15 +16,13 @@ open scoped ENNReal
 namespace PI.RhsWLim.W.RI
 
 /- English proof (translation)
-Set `_` to `TopologicalSpace.metrizableSpaceMetric Y`. Establish `hemb : IsEmbedding ((↑) : Y → UniformSpace.Completion Y)` using `(UniformSpace.Completion.isUniformEmbedding_coe Y).isEmbedding`. Establish `hdense : DenseRange ((↑) : Y → UniformSpace.Completion Y)` using `UniformSpace.Completion.denseRange_coe`. Establish `hopen : IsOpen (range ((↑) : Y → UniformSpace.Completion Y))`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨K, hK, hKy⟩` from `exists_compact_mem_nhds y`. Take `⟨V, hVK, hVo, hyV⟩` from `mem_nhds_iff.1 hKy`. Take `⟨U, hUo, hUV⟩` from `hemb.isInducing.isOpen_iff.1 hVo`. Use `⟨U, ?_, hUo, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed (((↑) : Y → UniformSpace.Completion Y) '' K)` using `(hK.image hemb.continuous).isClosed`. Combine the equalities or inequalities in the displayed calculation. Apply `closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨hz, ⟨z, rfl⟩⟩`. Use `⟨z, hVK ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hUV]`. Conclude with `hz`. Use `_ = ((↑) : Y → UniformSpace.Completion Y) '' K := hcl.closure_eq`. Use `_ ⊆ range ((↑) : Y → UniformSpace.Completion Y) := image_subset_range _ _`. Use `show y ∈ ((↑) : Y → UniformSpace.Completion Y) ⁻¹' U`.
-
-Rewrite using `[hUV]`. Conclude with `hyV`. Establish `: PolishSpace (range ((↑) : Y → UniformSpace.Completion Y))` using `hopen.polishSpace`. Conclude with `hemb.toHomeomorph.isClosedEmbedding.polishSpace`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [SecondCountableTopology Y] : PolishSpace Y := by
@@ -64,7 +62,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : G × H => p.1 * (p.2 : G))` using `continuous_fst.mul (continuous_subtype_val.comp continuous_snd)`. Conclude with `(hf.comp hc.measurable).lintegral_prod_right'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_avg (H : Subgroup G) (ν : Measure H) [SFinite ν] {f : G → ℝ≥0∞} (hf : Measurable f) :
     Measurable (fun g : G => ∫⁻ h, f (g * (h : G)) ∂ν) := by
@@ -73,7 +71,7 @@ theorem meas_avg (H : Subgroup G) (ν : Measure H) [SFinite ν] {f : G → ℝ�
   exact (hf.comp hc.measurable).lintegral_prod_right'
 
 /- English proof (translation)
-Use `lintegral_mul_left_eq_self (μ := ν) (fun h : H => f (g * (h : G))) k` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem avg_mul_mem (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞)
     (g : G) (k : H) : ∫⁻ h, f (g * k * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -81,7 +79,7 @@ theorem avg_mul_mem (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hk]`. Conclude with `avg_mul_mem H ν f g k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_out (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) :
     ∫⁻ h, f ((g : G ⧸ H).out * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -90,9 +88,7 @@ theorem avg_out (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G
   exact avg_mul_mem H ν f g k
 
 /- English proof (translation)
-Apply `measurable_from_quotient.2` to reduce the goal to its premises. Establish `: ((fun q : G ⧸ H => ∫⁻ h, f (q.out * (h : G)) ∂ν) ∘ Quotient.mk'') = fun g => ∫⁻ h, f (g * (h : G)) ∂ν`. Use function extensionality and compare the values at `g`. Conclude with `avg_out H ν f g`. Rewrite using `[this]`.
-
-Conclude with `meas_avg H ν hf`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_avg_q (H : Subgroup G) (ν : Measure H) [SFinite ν] [ν.IsMulLeftInvariant]
     {f : G → ℝ≥0∞} (hf : Measurable f) :
@@ -106,9 +102,9 @@ theorem meas_avg_q (H : Subgroup G) (ν : Measure H) [SFinite ν] [ν.IsMulLeftI
   exact meas_avg H ν hf
 
 /- English proof (translation)
-Rewrite using `[lintegral_map (meas_avg_q H ν hf) measurable_quotient_mk'']`. Establish `e1 : ∀ g : G, ∫⁻ h, f ((g : G ⧸ H).out * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν` using `avg_out H ν f`. Rewrite using `[lintegral_congr e1]`. Establish `hmeas2 : AEMeasurable (Function.uncurry fun (g : G) (h : H) => f (g * (h : G))) (μ.prod ν)`. Establish `hc2 : Continuous (fun p : G × H => p.1 * (p.2 : G))` using `continuous_fst.mul (continuous_subtype_val.comp continuous_snd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hf.comp hc2.measurable).aemeasurable`. Rewrite using `[lintegral_lintegral_swap hmeas2]`. Establish `: ∀ h : H, ∫⁻ g, f (g * (h : G)) ∂μ = ∫⁻ g, f g ∂μ` using `fun h => by`. Rewrite using `[← lintegral_map hf (measurable_mul_const (h : G)), hr h]`. Rewrite using `[lintegral_congr this, lintegral_const, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_eq (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] [IsFiniteMeasure ν]
     (μ : Measure G) [SFinite μ] (hr : ∀ k : H, μ.map (· * (k : G)) = μ) (f : G → ℝ≥0∞) (hf : Measurable f) :
@@ -131,19 +127,15 @@ variable {X : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelS
 def iotaQ (H : Subgroup G) (p : G → X) (q : G ⧸ H) : X := p q.out
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure ν := ⟨lt_top_iff_ne_top.2 hfin⟩`. Use `haveI : IsClosed (H : Set G) := hH`. Use `haveI : PolishSpace G := polish_of_lcsc G`. Use `haveI : PolishSpace (G ⧸ H) := polish_of_lcsc _`. Use `haveI : BorelSpace (G ⧸ H) := CosetSpace.borelSpace`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmk : ∀ g : G, iotaQ H p (g : G ⧸ H) = p g`. Introduce `g`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul H g`. Use `show p (g : G ⧸ H).out = p g`. Rewrite using `[hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `((hpH g (g * k)).2 ?_).symm` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`. Conclude with `k.2`. Establish `hcomp : (iotaQ H p ∘ (QuotientGroup.mk : G → G ⧸ H)) = p` using `funext hmk`. Establish `hιc : Continuous (iotaQ H p)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(QuotientGroup.isQuotientMap_mk H).continuous_iff, hcomp]`. Conclude with `hp`. Establish `hinj : Function.Injective (iotaQ H p)`. Introduce `q q' h`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hpH _ _).1 h`. Establish `hemb : MeasurableEmbedding (iotaQ H p)` using `hιc.measurableEmbedding hinj`. Establish `hπ : Measurable (QuotientGroup.mk : G → G ⧸ H)` using `measurable_quotient_mk''`. Establish `hq : μ₁.map (QuotientGroup.mk : G → G ⧸ H) = μ₂.map (QuotientGroup.mk : G → G ⧸ H)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Measure.map_map hemb.measurable hπ, hcomp]`. Use `_ = μ₂.map (QuotientGroup.mk : G → G ⧸ H) := hemb.comap_map _`. Use extensionality with `S hS`. Establish `hf : Measurable (S.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hS`. Establish `e1` using `lint_eq H ν μ₁ h₁ _ hf`.
-
-Establish `e2` using `lint_eq H ν μ₂ h₂ _ hf`. Rewrite `e1` using `[hq, ← e2, lintegral_indicator_one hS, lintegral_indicator_one hS]`. Conclude with `(ENNReal.mul_right_inj h0 hfin).1 e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_uniq (H : Subgroup G) (hH : IsClosed (H : Set G)) (ν : Measure H) [ν.IsMulLeftInvariant]
     (h0 : ν univ ≠ 0) (hfin : ν univ ≠ ∞) (p : G → X) (hp : Continuous p)

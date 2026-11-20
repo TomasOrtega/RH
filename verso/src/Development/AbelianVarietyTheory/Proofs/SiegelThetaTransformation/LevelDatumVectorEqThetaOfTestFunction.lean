@@ -24,9 +24,9 @@ namespace GlobalTheory.Ker.LevVec
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `h0 : C.Th x 0 = 0`. Simplify using `using (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx 0 SW.isSB_zero).2.1 0`. Use `Finset.induction_on s (by simpa using h0) ?_` and prove the remaining obligations. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx (f i) (hf i)).1 _ (GlobalTheory.SW.RecSum.isSB_sum s f hf)).1`.
+A detailed English derivation is pending.
 -/
 theorem th_sum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι : Type} (s : Finset ι)
     (f : ι → TF S.rank C.g) (hf : ∀ i, SW.IsSB (f i)) :
@@ -40,9 +40,9 @@ theorem th_sum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι 
   exact ((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx (f i) (hf i)).1 _ (GlobalTheory.SW.RecSum.isSB_sum s f hf)).1
 
 /- English proof (translation)
-Establish `h0 : C.Th x 0 = 0`. Simplify using `using (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx 0 SW.isSB_zero).2.1 0`. Establish `hsub : (Function.support fun i => C.Th x (f i)) ⊆ (hfin.toFinset : Set ι)`. Introduce `i hi`. Rewrite using `[hfin.coe_toFinset, Function.mem_support]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hfi`. Conclude with `(Function.mem_support.1 hi) (by simp [hfi, h0])`. Rewrite using `[finsum_eq_sum_of_support_subset f (by rw [hfin.coe_toFinset]), finsum_eq_sum_of_support_subset _ hsub]`. Conclude with `th_sum C hx hfin.toFinset f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_finsum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι : Type}
     (f : ι → TF S.rank C.g) (hf : ∀ i, SW.IsSB (f i)) (hfin : (Function.support f).Finite) :
@@ -60,11 +60,11 @@ theorem th_finsum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {
   exact th_sum C hx hfin.toFinset f hf
 
 /- English proof (translation)
-Establish `key : ∀ c : A ⧸ B.addSubgroupOf A, F (-(c.out : G)) = F (((-c).out : A) : G)`. Introduce `c`. Establish `hc : ((-c.out : A) : A ⧸ B.addSubgroupOf A) = (((-c).out : A) : A ⧸ B.addSubgroupOf A)`. Rewrite using `[QuotientAddGroup.mk_neg, QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Rewrite `hc` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (((-c).out : A) : G) = -(c.out : G) + ((-(-c.out) + (-c).out : A) : G)`. Use `push_cast`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hF _ (neg_mem c.out.2) _ hc]`. Rewrite using `[finsum_congr key]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_comp_equiv (Equiv.neg _) (f := fun c : A ⧸ B.addSubgroupOf A => F ((c.out : A) : G))`.
+A detailed English derivation is pending.
 -/
 theorem finsum_out_neg {G N : Type} [AddCommGroup G] [AddCommMonoid N] (A B : AddSubgroup G)
     (F : G → N) (hF : ∀ y ∈ A, ∀ δ ∈ B, F (y + δ) = F y) :
@@ -83,13 +83,11 @@ theorem finsum_out_neg {G N : Type} [AddCommGroup G] [AddCommMonoid N] (A B : Ad
   exact finsum_comp_equiv (Equiv.neg _) (f := fun c : A ⧸ B.addSubgroupOf A => F ((c.out : A) : G))
 
 /- English proof (translation)
-Distinguish the cases in `hfin : (Function.support f).Finite`. Conclude with `th_finsum C hx f hf hfin`. Establish `h0 : C.Th x 0 = 0`. Simplify using `using (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx 0 SW.isSB_zero).2.1 0`. Establish `hsupp : (Function.support fun i => C.Th x (f i)) = Function.support f`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `only [Function.mem_support, ne_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h hfi`. Conclude with `h (by rw [hfi, h0])`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hT`. Conclude with `h (((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx (f i) (hf i)).1 0 SW.isSB_zero).2 (by rw [hT, h0]))`. Establish `hinf : (Function.support fun i => C.Th x (f i)).Infinite`. Rewrite using `[hsupp]`. Conclude with `hfin`.
-
-Rewrite using `[finsum_of_infinite_support hfin, finsum_of_infinite_support hinf, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ctx_Th_finsum_of_isSB (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι : Type}
     (f : ι → TF S.rank C.g) (hf : ∀ i, SW.IsSB (f i)) :
@@ -112,27 +110,27 @@ private theorem ctx_Th_finsum_of_isSB (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (h
     rw [finsum_of_infinite_support hfin, finsum_of_infinite_support hinf, h0]
 
 /- English proof (translation)
-Introduce `D S T C Lv hn M hw2 hM0 hM B hB`. Establish `hs` using `C.sympl`. Establish `he` using `C.even`. Establish `h6833` using `GlobalTheory.T.level_structure_properties D.host.E T.rank C.X C.g C.bas C.idx S.rank hs he Lv hn`. Establish `hΛlats : C.X.Λ ∈ Lv.lats` using `h6833.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛself : SelfD C.X C.X.Λ` using `hΛlats.1`. Establish `hSelf : SelfD C.X (Lv.sh C.X.Λ)` using `(h6833.2.2.2.1 _ hΛlats).1`. Establish `hstd : stdL D.host.E S.rank ∈ Vset D.host.E S.rank M` using `GlobalTheory.SW.Base.stdL_mem_Vset _ _`. Establish `h26522` using `GlobalTheory.T.latticeVacua_tensor_correspond_line D S T C Lv.w Lv.w_int Lv.w_tr hw2 M _ hstd _ hSelf`. Establish `hxdom : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `f' hf' v hv`. Take `⟨t, ht⟩` from `h26522.2 B hB v hv f' hf'.th hf'.fock hf'.lat`. Use `⟨t, ?_, ht⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hf'.ne (by simpa using ht)`. Introduce `v₀ hv₀`. Establish `hv` using `hv₀ _ hΛlats`. Establish `hvSB : SW.IsSB (v₀ C.X.Λ)` using `hv.1`. Establish `hvip : SW.ip (v₀ C.X.Λ) (v₀ C.X.Λ) = 1` using `hv.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTh` using `GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hxdom (v₀ C.X.Λ) hvSB`. Establish `h0 : C.Th (C.xB B) 0 = 0`. Simplify using `using (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hxdom 0 SW.isSB_zero).2.1 0`. Use `⟨⟨(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hxdom _ hvSB).1.1, ?_, ((GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries D S T C).2 B hB _ hvSB).1, (h26522.1 _ hxdom _ hvSB).2 hv.2.2⟩, ?_⟩` and prove the remaining obligations. Introduce `hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : C.Th (C.xB B) (v₀ C.X.Λ) = C.Th (C.xB B) 0` using `by rw [hz, h0]`. Establish `h2` using `(hTh.1 0 SW.isSB_zero).2 h1`. Establish `h3` using `GlobalTheory.SW.TensVac.ip_smul_left (φ := (0 : TF S.rank C.g)) (ψ := 0) (0 : ℂ) SW.isSB_zero SW.isSB_zero`. Rewrite `hvip` using `[h2]`. Simplify using `only [smul_zero, zero_mul] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hvip` using `[h3]`. Conclude with `zero_ne_one hvip`. Introduce `t`. Establish `htv : SW.IsSB (t • v₀ C.X.Λ)` using `GlobalTheory.SW.TensVac.sb_smul t hvSB`. Establish `hsbH : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, SW.IsSB (heisG C.X C.bas y (v₀ C.X.Λ))` using `fun y => (GlobalTheory.SW.TensVac.laws C.idx hs he y hvSB).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, Lv.dat hn y • C.Th (C.xB B) (heisG C.X C.bas y (t • v₀ C.X.Λ)) = t • C.Th (C.xB B) (Lv.dat hn y • heisG C.X C.bas y (v₀ C.X.Λ))`. Introduce `y`. Establish `e1` using `(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hxdom _ (hsbH y)).2.1`. Rewrite using `[GlobalTheory.SW.TensVac.heisG_smul, e1, e1, smul_comm]`. Establish `hu : unitv (projA C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ)) (v₀ C.X.Λ)) = v₀ C.X.Λ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(GlobalTheory.SW.RecSum.unitv_proj C.idx hs he hstd hSelf hv hv).2, hvip]`. Simplify using the standard rewrite rules. Establish `hrho : ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.rho (finW S T y) (t • C.Th (C.xB B) (v₀ C.X.Λ)) = C.Th (C.xB B) (heisG C.X C.bas (-y) (t • v₀ C.X.Λ))`. Introduce `y`. Rewrite using `[← hTh.2.1 t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hxdom _ htv).2.2.1 y`. Simplify using `only [GlobalTheory.Ker.Ctx.uVec, GlobalTheory.SW.Level.phi, hu, hrho]`. Use `Eq.trans (finsum_out_neg (tens (stdL D.host.E S.rank) ((Ideal.span {2} * conjI Lv.𝔪) • C.X.Λ)) (tens (stdL D.host.E S.rank) ((Ideal.span {2} * conjI Lv.𝔪 * Lv.𝔪) • C.X.Λ)) (fun y => Lv.dat hn y • C.Th (C.xB B) (heisG C.X C.bas y (t • v₀ C.X.Λ))) ?_) ?_` and prove the remaining obligations. Introduce `y hy δ hδ`. Establish `hcong : ∀ k, Cong C.X Lv.𝔪 ((y + δ) k) (y k)` using `GlobalTheory.SW.RecSum.cong_of_mem hstd hM (GlobalTheory.SW.RecSum.near_of_mem hΛlats) (by simpa using hδ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdat : Lv.dat hn (y + δ) = Lv.dat hn y` using `h6833.2.2.2.2.2.1 _ _ hcong`. Use `show Lv.dat hn (y + δ) • _ = Lv.dat hn y • _`. Rewrite using `[hdat, GlobalTheory.SW.TensVac.heisG_smul, GlobalTheory.SW.TensVac.heisG_smul, GlobalTheory.SW.RecSum.heis_add C.idx hs he Lv hstd hΛself hSelf hv hy hδ]`. Rewrite using `[ctx_Th_finsum_of_isSB C hxdom _ (fun c => GlobalTheory.SW.TensVac.sb_smul _ (hsbH _)), smul_finsum]`. Conclude with `finsum_congr fun c => hterm _`.
+A detailed English derivation is pending.
 -/
 theorem uVec_eq : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (Lv : SW.Level C.X) (hn : T.rank ≤ S.rank) (M : ℕ), IdemTwo Lv.w → 0 < M → (M : 𝓞 D.host.E) ∈ Lv.𝔪 → ∀ B, C.IsB B → (∀ f', C.IsBase Lv B f' → ∀ v, IsVac C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ)) v → ∃ t : ℂ, t ≠ 0 ∧ f' = t • (C.Th (C.xB B) v)) ∧ ∀ v₀ : Lt D.host.E T.rank → TF S.rank C.g, (∀ L ∈ Lv.lats, IsVac C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh L)) (v₀ L)) → C.IsBase Lv B (C.Th (C.xB B) (v₀ C.X.Λ)) ∧ ∀ t : ℂ, C.uVec Lv hn (t • (C.Th (C.xB B) (v₀ C.X.Λ))) = t • (C.Th (C.xB B) (Lv.phi C.bas hn v₀ C.X.Λ (stdL D.host.E S.rank))) := by
   intro D S T C Lv hn M hw2 hM0 hM B hB

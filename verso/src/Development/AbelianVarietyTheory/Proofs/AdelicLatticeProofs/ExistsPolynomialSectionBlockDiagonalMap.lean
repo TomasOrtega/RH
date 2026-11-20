@@ -13,7 +13,7 @@ section ring
 variable {A : Type} [Ring A] {E : A}
 
 /- English proof (translation)
-Establish `h : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma corner_mul (hE : E * E = E) {x y : A} (hx : E * x * (1 - E) = x) (hy : E * y * (1 - E) = y) :
     x * y = 0 := by
@@ -23,7 +23,7 @@ lemma corner_mul (hE : E * E = E) {x y : A} (hx : E * x * (1 - E) = x) (hy : E *
     _ = 0 := by rw [h]; simp
 
 /- English proof (translation)
-Establish `h : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Establish `h' : E * (1 - E) = 0` using `by rw [mul_sub, mul_one, hE, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma diag_comm (hE : E * E = E) (g : A) :
     E * (E * g * E + (1 - E) * g * (1 - E)) = (E * g * E + (1 - E) * g * (1 - E)) * E := by
@@ -35,7 +35,7 @@ lemma diag_comm (hE : E * E = E) (g : A) :
     _ = _ := by simp only [add_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h : D * (1 - E) = (1 - E) * D` using `by rw [mul_sub, sub_mul, hD, mul_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma corner_mul_comm {x D : A} (hD : E * D = D * E) (hx : E * x * (1 - E) = x) :
     E * (x * D) * (1 - E) = x * D := by
@@ -45,7 +45,7 @@ lemma corner_mul_comm {x D : A} (hD : E * D = D * E) (hx : E * x * (1 - E) = x) 
     _ = x * D := by rw [hx]
 
 /- English proof (translation)
-Establish `h : (1 - E) * (1 - E) = 1 - E`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, hE, sub_self, sub_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma corner_idem (hE : E * E = E) (g : A) : E * (E * g * (1 - E)) * (1 - E) = E * g * (1 - E) := by
   have h : (1 - E) * (1 - E) = 1 - E := by
@@ -54,7 +54,7 @@ lemma corner_idem (hE : E * E = E) (g : A) : E * (E * g * (1 - E)) * (1 - E) = E
     _ = _ := by rw [hE, h]
 
 /- English proof (translation)
-Establish `h : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma corner_diag (hE : E * E = E) {x : A} (hx : E * x * (1 - E) = x) :
     E * x * E + (1 - E) * x * (1 - E) = 0 := by
@@ -65,7 +65,7 @@ lemma corner_diag (hE : E * E = E) {x : A} (hx : E * x * (1 - E) = x) :
     _ = 0 := by rw [h]; simp
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma inv_comm {D D' : A} (hD : E * D = D * E) (h1 : D * D' = 1) (h2 : D' * D = 1) :
     E * D' = D' * E := by
@@ -90,28 +90,28 @@ section natural
 variable {R S : Type} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebra ℚ S] (φ : R →ₐ[ℚ] S)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[AlgHom.mapMatrix_apply, -eq_ratCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_rat (e : Matrix ι ι ℚ) :
     φ.mapMatrix (e.map (algebraMap ℚ R)) = e.map (algebraMap ℚ S) := by
   ext i j; simp [AlgHom.mapMatrix_apply, -eq_ratCast]
 
 /- English proof (translation)
-Simplify using `only [blk, map_add, map_mul, map_sub, map_one, map_rat]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_blk (e : Matrix ι ι ℚ) (g : Matrix ι ι R) :
     φ.mapMatrix (blk e g) = blk e (φ.mapMatrix g) := by
   simp only [blk, map_add, map_mul, map_sub, map_one, map_rat]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[linExt, AlgHom.mapMatrix_apply, map_sum, -eq_ratCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_linExt (c : ι × ι → ι × ι → ℚ) (g : Matrix ι ι R) :
     φ.mapMatrix (linExt c g) = linExt c (φ.mapMatrix g) := by
   ext i j; simp [linExt, AlgHom.mapMatrix_apply, map_sum, -eq_ratCast]
 
 /- English proof (translation)
-Simplify using `only [sec, beta, map_mul, map_sub, map_one, map_rat, map_linExt, AlgHom.map_adjugate, map_blk]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_sec (e : Matrix ι ι ℚ) (c : ι × ι → ι × ι → ℚ) (g : Matrix ι ι R) :
     φ.mapMatrix (sec e c g) = sec e c (φ.mapMatrix g) := by
@@ -120,9 +120,9 @@ lemma map_sec (e : Matrix ι ι ℚ) (c : ι × ι → ι × ι → ℚ) (g : Ma
 end natural
 
 /- English proof (translation)
-Use `⟨fun i j => sec e c (Matrix.of fun k l => (MvPolynomial.X (k, l) : MvPolynomial (ι × ι) ℚ)) i j, fun g i j => ?_⟩` and prove the remaining obligations. Establish `h` using `map_sec (MvPolynomial.aeval (R := ℚ) (fun ij : ι × ι => g ij.1 ij.2)) e c (Matrix.of fun k l => (MvPolynomial.X (k, l) : MvPolynomial (ι × ι) ℚ))`. Establish `h2 : (MvPolynomial.aeval (R` using `ℚ) (fun ij : ι × ι => g ij.1 ij.2)).mapMatrix (Matrix.of fun k l => (MvPolynomial.X (k, l) : MvPolynomial (ι × ι) ℚ)) = g := by`. Use extensionality with `k l`. Simplify using `[AlgHom.mapMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[h2]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma exists_poly (e : Matrix ι ι ℚ) (c : ι × ι → ι × ι → ℚ) :
     ∃ f : ι → ι → MvPolynomial (ι × ι) ℚ, ∀ (g : Matrix ι ι ℂ) i j, ev (f i j) g = sec e c g i j := by
@@ -137,14 +137,14 @@ lemma exists_poly (e : Matrix ι ι ℚ) (c : ι × ι → ι × ι → ℚ) :
   rw [← h]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[linExt, mul_sub, Finset.sum_sub_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma linExt_sub (c : ι × ι → ι × ι → ℚ) (x y : Matrix ι ι ℂ) :
     linExt c (x - y) = linExt c x - linExt c y := by
   ext i j; simp [linExt, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[linExt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma linExt_zero (c : ι × ι → ι × ι → ℚ) : linExt c (0 : Matrix ι ι ℂ) = 0 := by
   ext i j; simp [linExt]
@@ -154,39 +154,39 @@ end GlobalTheory.ClassFin.IdempotentCornerSection
 open GlobalTheory.ClassFin.IdempotentCornerSection in
 
 /- English proof (translation)
-Introduce `ι _ _ Γ e hΓ he htri`. Take `⟨c, hc, hfix⟩` from `GlobalTheory.T.exists_rat_linear_param_blockDiag_kernel ι Γ e hΓ he`. Establish `hpre` using `GlobalTheory.T.isAutStableSLMatrixGroup_image_blockDiagPart ι Γ e hΓ.toIsPre he htri`. Take `⟨hb1, -, hdec, hbb, -⟩` from `GlobalTheory.T.blockDiagPartOfRatIdempotent_one_and_mul_of_triangular ι e ℂ he`. Take `⟨f, hf⟩` from `exists_poly e c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hE : e.map (algebraMap ℚ ℂ) * e.map (algebraMap ℚ ℂ) = e.map (algebraMap ℚ ℂ)`. Rewrite using `[← Matrix.map_mul, he]`. Establish `hcomm : ∀ g : Matrix ι ι ℂ, e.map (algebraMap ℚ ℂ) * blk e g = blk e g * e.map (algebraMap ℚ ℂ)` using `fun g => diag_comm hE g`. Establish `hdet : ∀ g ∈ Γ, (blk e g).det = 1` using `fun g hg => hpre.det_eq _ ⟨g, hg, rfl⟩`. Establish `h1 : ∀ g ∈ Γ, blk e g * (blk e g).adjugate = 1` using `fun g hg => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_adjugate, hdet g hg, one_smul]`. Establish `h2 : ∀ g ∈ Γ, (blk e g).adjugate * blk e g = 1` using `fun g hg => by`. Rewrite using `[Matrix.adjugate_mul, hdet g hg, one_smul]`. Establish `hβ : ∀ g ∈ Γ, e.map (algebraMap ℚ ℂ) * beta e g * (1 - e.map (algebraMap ℚ ℂ)) = beta e g` using `fun g hg => corner_mul_comm (inv_comm (hcomm g) (h1 g hg) (h2 g hg)) (corner_idem hE g)`. Establish `hg1 : ∀ g ∈ Γ, g = (1 + beta e g) * blk e g` using `fun g hg => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_mul, one_mul, beta, mul_assoc _ _ (blk e g), h2 g hg, mul_one]`. Conclude with `hdec g (htri g hg)`. Establish `hs : ∀ g ∈ Γ, sec e c g = (1 + (beta e g - linExt c (beta e g))) * blk e g` using `fun g hg => by`. Establish `h0` using `corner_mul hE (hc (beta e g)).2 (hβ g hg)`. Establish `: sec e c g = (1 - linExt c (beta e g)) * ((1 + beta e g) * blk e g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg1 g hg]`. Both sides reduce to the same expression. Rewrite using `[this, ← mul_assoc]`. Use `congr 1`. Rewrite using `[mul_add, sub_mul, sub_mul, h0]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one, one_mul, sub_zero]`. Normalize the expressions using the abelian group laws. Establish `hsub : ∀ x y : Matrix ι ι ℂ, e.map (algebraMap ℚ ℂ) * x * (1 - e.map (algebraMap ℚ ℂ)) = x → e.map (algebraMap ℚ ℂ) * y * (1 - e.map (algebraMap ℚ ℂ)) = y → e.map (algebraMap ℚ ℂ) * (x - y) * (1 - e.map (algebraMap ℚ ℂ)) = x - y` using `fun x y hx hy => by`. Rewrite using `[mul_sub (e.map (algebraMap ℚ ℂ)) x y, sub_mul, hx, hy]`. Establish `hconst : ∀ x ∈ Γ, ∀ x' ∈ Γ, blk e x = blk e x' → sec e c x = sec e c x'`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx x' hx' hxx`. Establish `hε` using `hsub _ _ (hβ x hx) (hβ x' hx')`. Establish `h0` using `corner_mul hE hε (hβ x' hx')`. Establish `hxe : x = (1 + (beta e x - beta e x')) * x'`. Establish `: (1 + (beta e x - beta e x')) * x' = (1 + (beta e x - beta e x')) * ((1 + beta e x') * blk e x')` using `by rw [← hg1 x' hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← mul_assoc, ← hxx]`. Establish `h3 : (1 + (beta e x - beta e x')) * (1 + beta e x') = 1 + beta e x`. Rewrite using `[mul_add, add_mul _ _ (beta e x'), h0]`. Simplify using `only [mul_one, one_mul, add_zero]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `hg1 x hx`. Establish `hmem : 1 + (beta e x - beta e x') ∈ Γ`. Establish `h4 : x * x'.adjugate = 1 + (beta e x - beta e x')`. Establish `: x * x'.adjugate = ((1 + (beta e x - beta e x')) * x') * x'.adjugate` using `by rw [← hxe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_assoc, Matrix.mul_adjugate, hΓ.det_eq x' hx', one_smul, mul_one]`. Rewrite using `[← h4]`. Conclude with `hΓ.mul_mem _ hx _ (hΓ.adj_mem _ hx')`. Establish `h5` using `hfix _ hmem hε`. Rewrite `h5` using `[linExt_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs x hx, hs x' hx', hxx]`. Use `congr 2`. Rewrite using `[sub_eq_iff_eq_add.mp h5]`. Normalize the expressions using the abelian group laws. Establish `hb : ∀ i j, ∃ b : MvPolynomial (ι × ι) ℚ, ∀ x ∈ Γ, ev (f i j) x = ev b (blk e x)` using `fun i j => GlobalTheory.T.descend_blockDiagPart_ratPoly_of_fibre_const ι Γ e hΓ he htri (f i j) fun x hx x' hx' hxx => by`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hf, hf, hconst x hx x' hx' hxx]`. Use `choose b hb using hb`. Establish `hbs : ∀ g ∈ Γ, (Matrix.of fun i j => ev (b i j) (blk e g)) = sec e c g` using `fun g hg => by`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ← hb i j g hg, hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, b, hc, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h` using `hbs 1 hΓ.one_mem`. Rewrite `h` using `[hb1]`. Rewrite using `[h]`. Establish `h0 : beta e (1 : Matrix ι ι ℂ) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[beta, mul_one, mul_sub, mul_one, hE, sub_self, zero_mul]`. Rewrite using `[sec, h0, linExt_zero, sub_zero, mul_one]`. Rewrite using `[hbs g hg]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(hc (0 - beta e g)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[linExt_sub, linExt_zero, ← add_sub_assoc, add_zero]`. Conclude with `hΓ.mul_mem _ h _ hg`. Establish `h` using `corner_diag hE (corner_mul_comm (hcomm g) (hsub _ _ (hβ g hg) (hc (beta e g)).2))`. Establish `h'` using `hbb g`. Rewrite using `[hs g hg, add_mul, one_mul]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Generalize the expression as in `(beta e g - linExt c (beta e g)) * blk e g = y at h`. Generalize the expression as in `blk e g = D at h' ⊢`. Establish `: blk e (D + y) = blk e D + (e.map (algebraMap ℚ ℂ) * y * e.map (algebraMap ℚ ℂ) + (1 - e.map (algebraMap ℚ ℂ)) * y * (1 - e.map (algebraMap ℚ ℂ)))`. Simplify using `only [blk, mul_add, add_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, h, h', add_zero]`. Establish `h0` using `corner_mul hE (hc (beta e g)).2 (hc (beta e g)).2`. Express the relevant statement in the definitionally equal form `g = (1 + linExt c (beta e g)) * ((1 - linExt c (beta e g)) * g)`. Rewrite using `[← mul_assoc, mul_sub, add_mul _ _ (linExt c (beta e g)), h0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ClassFin.exists_blk_section : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ), IsQGroup Γ → e * e = e → (∀ g ∈ Γ, (1 - e.map (algebraMap ℚ ℂ)) * g * e.map (algebraMap ℚ ℂ) = 0) → ∃ (c : ι × ι → ι × ι → ℚ) (b : ι → ι → MvPolynomial (ι × ι) ℚ), (∀ X : Matrix ι ι ℂ, 1 + linExt c X ∈ Γ ∧ e.map (algebraMap ℚ ℂ) * linExt c X * (1 - e.map (algebraMap ℚ ℂ)) = linExt c X) ∧ (Matrix.of fun i j => ev (b i j) (1 : Matrix ι ι ℂ)) = 1 ∧ ∀ g ∈ Γ, (Matrix.of fun i j => ev (b i j) (blk e g)) ∈ Γ ∧ blk e (Matrix.of fun i j => ev (b i j) (blk e g)) = blk e g ∧ g = (1 + linExt c (e.map (algebraMap ℚ ℂ) * g * (1 - e.map (algebraMap ℚ ℂ)) * (blk e g).adjugate)) * (Matrix.of fun i j => ev (b i j) (blk e g)) := by
   intro ι _ _ Γ e hΓ he htri

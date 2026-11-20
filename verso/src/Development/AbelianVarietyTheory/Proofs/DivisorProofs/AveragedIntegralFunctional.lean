@@ -18,14 +18,14 @@ def zs {n n₁ d : ℕ} (H : Plane E n n₁) (u : Fin d → AE F E) : Matrix (Fi
 variable {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F} {d : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_add (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (w : V) (Φ Ψ : (κ → AF F) → ℂ) :
     dd.rho ψ w (Φ + Ψ) = dd.rho ψ w Φ + dd.rho ψ w Ψ := by
   funext x; simp [Darboux.rho, schr, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (w : V) (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     dd.rho ψ w (c • Φ) = c • dd.rho ψ w Φ := by
@@ -36,7 +36,7 @@ def avgFun (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E
   fun u => lam (dd.rho ψ (z u) Φ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[avgFun, rho_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem avgFun_add (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (Φ Ψ : (κ → AF F) → ℂ) :
@@ -44,7 +44,7 @@ theorem avgFun_add (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d �
   funext u; simp [avgFun, rho_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[avgFun, rho_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem avgFun_smul (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (c : ℂ) (Φ : (κ → AF F) → ℂ) :
@@ -82,7 +82,7 @@ def avgL (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) 
   (LinearMap.exists_extend (averagedIntegralIntegrable dd ψ z lam μ)).choose
 
 /- English proof (translation)
-Use `congrArg (fun f => f ⟨Φ, h⟩) (LinearMap.exists_extend (averagedIntegralIntegrable dd ψ z lam μ)).choose_spec` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem avgL_apply (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (μ : @Measure (Fin d → AE F E) (borel _)) (Φ : (κ → AF F) → ℂ)

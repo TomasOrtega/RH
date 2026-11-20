@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.G8
 
 /- English proof (translation)
-The claim follows from `global_character_of_finite_inputs Fin.kfOC_holds Fin.finLevel_holds Fin.finHalf_holds`.
+A detailed English derivation is pending.
 -/
 theorem global_character_holds : G4 := global_character_of_finite_inputs Fin.kfOC_holds Fin.finLevel_holds Fin.finHalf_holds
 

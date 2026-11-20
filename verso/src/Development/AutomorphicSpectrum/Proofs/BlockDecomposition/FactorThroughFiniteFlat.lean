@@ -17,9 +17,9 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp)
 namespace GlobalTheory.CompanionTheory.FlatFactor
 
 /- English proof (translation)
-Establish `key : ∀ (B : CommRingCat.{0}) (j₀ : Spec B ⟶ W.left), j₀ ≫ u.left = j₀ ≫ v.left`. Introduce `B j₀`. Use `letI : Algebra R B := (Spec.preimage (j₀ ≫ W.hom)).hom.toAlgebra`. Set `j : sp (R₀` to `R) B ⟶ W := Over.homMk j₀ (Spec.map_preimage (j₀ ≫ W.hom)).symm`. Conclude with `congrArg CommaMorphism.left (h B j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `Scheme.Cover.hom_ext W.left.affineCover _ _ fun i => key _ _`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_affine_points {R : Type} [CommRing R] {W X : Over (Sp R)} (u v : W ⟶ X)
     (h : ∀ (S : Type) [CommRing S] [Algebra R S] (t : sp (R₀ := R) S ⟶ W), t ≫ u = t ≫ v) : u = v := by
@@ -32,9 +32,9 @@ theorem ext_of_affine_points {R : Type} [CommRing R] {W X : Over (Sp R)} (u v : 
   exact Scheme.Cover.hom_ext W.left.affineCover _ _ fun i => key _ _
 
 /- English proof (translation)
-Use `ext_of_affine_points _ _ fun S _ _ t => ?_` and prove the remaining obligations. Establish `h1 : ((t ≫ a) / (t ≫ b)) ≫ l = 1`. Rewrite using `[GrpObj.div_comp, Category.assoc, Category.assoc, h, div_self']`. Establish `h2` using `hk S _ h1`. Rewrite `h2` using `[GrpObj.div_comp, div_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comp_eq_of_comp_eq {R : Type} [CommRing R] {A B A' : Over (Sp R)} [GrpObj A] [GrpObj B] [GrpObj A']
     (l : A ⟶ B) (f : A ⟶ A') [IsMonHom l] [IsMonHom f]
@@ -48,11 +48,11 @@ theorem comp_eq_of_comp_eq {R : Type} [CommRing R] {A B A' : Over (Sp R)} [GrpOb
   simpa using h2
 
 /- English proof (translation)
-Introduce `R _ A B A' _ _ _ l f hl hf hfl hsl hql hk`. Establish `hc : ∀ {Z : Scheme.{0}} (g g' : Z ⟶ A.left), g ≫ l.left = g' ≫ l.left → g ≫ f.left = g' ≫ f.left`. Introduce `Z g g' h`. Establish `hw : g' ≫ A.hom = g ≫ A.hom`. Rewrite using `[← Over.w l, ← Category.assoc, ← h, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `comp_eq_of_comp_eq l f hk (W := Over.mk (g ≫ A.hom)) (Over.homMk g rfl) (Over.homMk g' hw) (Over.OverMorphism.ext h)` as an intermediate fact. Conclude with `congrArg CommaMorphism.left this`. Establish `hfac` using `EffectiveEpi.fac l.left f.left hc`. Set `g : B ⟶ A'` to `Over.homMk (EffectiveEpi.desc l.left f.left hc) (by`. Rewrite using `[← cancel_epi l.left, ← Category.assoc, hfac, Over.w, Over.w])`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : l ≫ g = f` using `Over.OverMorphism.ext hfac`. Use `⟨g, ⟨?_, ?_⟩, hg⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom l, Category.assoc, hg, IsMonHom.one_hom]`. Use `GlobalTheory.FlatQuotient.epi_tensorHom l l` as an intermediate fact. Rewrite using `[← cancel_epi (l ⊗ₘ l), ← IsMonHom.mul_hom_assoc, hg, tensorHom_comp_tensorHom_assoc, hg, IsMonHom.mul_hom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factorThroughFF : PositivityTheory.Tls2.Zar3.Ch1.FactorThroughFF := by
   intro R _ A B A' _ _ _ l f hl hf hfl hsl hql hk

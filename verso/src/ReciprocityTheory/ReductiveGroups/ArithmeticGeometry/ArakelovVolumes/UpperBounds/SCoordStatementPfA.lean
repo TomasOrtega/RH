@@ -10,13 +10,13 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type*} [Fi
   {K : Type*} [CommSemiring K] (σ : K →+* ℂ)
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using hasFDerivAt_const (σ a) z0`. Consider the case `add p q hp hq`. Simplify using `only [eval₂_add, map_add, add_smul, Finset.sum_add_distrib]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [eval₂_mul, eval₂_X]`. Use `(hp.mul (hh i)).congr_fderiv ?_` and prove the remaining obligations. Simplify using `only [Derivation.leibniz, smul_eq_mul, eval₂_add, eval₂_mul, eval₂_X, add_smul, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[pderiv_X_self]`. Introduce `b _ hb classical`. Rewrite using `[pderiv_X]`. Simplify using `[hb.symm]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_mv (q : MvPolynomial ι K) {h : V → ι → ℂ} {z0 : V} {Dh : ι → V →L[ℂ] ℂ}
     (hh : ∀ i, HasFDerivAt (fun z => h z i) (Dh i) z0) :
@@ -45,7 +45,7 @@ def xTerm {R : Type*} [CommSemiring R] (ψ : MvPolynomial ι K →+* R) (s : R) 
   P.sum fun n c => ψ (pderiv i c) * s ^ n
 
 /- English proof (translation)
-Unfold `xTerm`. Conclude with `Polynomial.sum_add_index _ _ _ (by simp) (by intros; simp [add_mul])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xTerm_add {R : Type*} [CommSemiring R] (ψ : MvPolynomial ι K →+* R) (s : R) (i : ι)
     (P Q : Polynomial (MvPolynomial ι K)) : xTerm ψ s i (P + Q) = xTerm ψ s i P + xTerm ψ s i Q := by
@@ -53,7 +53,7 @@ theorem xTerm_add {R : Type*} [CommSemiring R] (ψ : MvPolynomial ι K →+* R) 
   exact Polynomial.sum_add_index _ _ _ (by simp) (by intros; simp [add_mul])
 
 /- English proof (translation)
-Unfold `xTerm`. Conclude with `Polynomial.sum_monomial_index _ _ (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xTerm_monomial {R : Type*} [CommSemiring R] (ψ : MvPolynomial ι K →+* R) (s : R) (i : ι)
     (n : ℕ) (c : MvPolynomial ι K) : xTerm ψ s i (Polynomial.monomial n c) = ψ (pderiv i c) * s ^ n := by
@@ -61,7 +61,7 @@ theorem xTerm_monomial {R : Type*} [CommSemiring R] (ψ : MvPolynomial ι K →+
   exact Polynomial.sum_monomial_index _ _ (by simp)
 
 /- English proof (translation)
-Unfold `xTerm Polynomial.sum`. Simplify using `[map_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem map_xTerm {R S : Type*} [CommSemiring R] [CommSemiring S] (ψ : MvPolynomial ι K →+* R)
     (f : R →+* S) (s : R) (i : ι) (P : Polynomial (MvPolynomial ι K)) :
@@ -70,11 +70,11 @@ theorem map_xTerm {R S : Type*} [CommSemiring R] [CommSemiring S] (ψ : MvPolyno
   simp [map_sum]
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Simplify using `only [Polynomial.eval₂_add]`. Use `(hp.add hq).congr_fderiv ?_` and prove the remaining obligations. Simplify using `only [map_add, Polynomial.eval₂_add, xTerm_add, add_smul, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Consider the case `monomial n c`. Simplify using `only [Polynomial.eval₂_monomial]`. Use `((hasFDerivAt_mv σ c hh).mul (hg.pow n)).congr_fderiv ?_` and prove the remaining obligations. Simplify using `only [Polynomial.derivative_monomial, xTerm_monomial, Polynomial.eval₂_monomial, coe_eval₂Hom, Finset.smul_sum, smul_smul, map_mul, map_natCast, nsmul_eq_mul]`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Finset.sum_congr rfl fun b _ => by rw [mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_eval₂ (P : Polynomial (MvPolynomial ι K)) {h : V → ι → ℂ} {g : V → ℂ} {z0 : V}
     {Dh : ι → V →L[ℂ] ℂ} {Dg : V →L[ℂ] ℂ}
@@ -100,15 +100,15 @@ theorem hasFDerivAt_eval₂ (P : Polynomial (MvPolynomial ι K)) {h : V → ι �
 omit [Fintype ι] in
 
 /- English proof (translation)
-Take `⟨q, hq0, hqa⟩` from `ha`. Set `f : Algebra.adjoin K (Set.range y) →+* MvPolynomial ι K` to `hy.aevalEquiv.symm.toRingHom`. Establish `hf : Function.Injective f` using `hy.aevalEquiv.symm.injective`. Establish `hcomp : (aeval y).toRingHom.comp f = algebraMap (Algebra.adjoin K (Set.range y)) Ω`. Use extensionality with `s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `hy.algebraMap_aevalEquiv (hy.aevalEquiv.symm s)` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `hex : ∃ n, ∃ P : Polynomial (MvPolynomial ι K), P ≠ 0 ∧ P.eval₂ (aeval y).toRingHom a = 0 ∧ P.natDegree = n`. Use `⟨_, q.map f, (Polynomial.map_ne_zero_iff hf).mpr hq0, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval₂_map, hcomp]`. Conclude with `hqa`. Take `⟨P, hP0, hPa, hPn⟩` from `Nat.find_spec hex`. Use `⟨P, hPa, fun hd => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hD : Polynomial.derivative P = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : P.natDegree = 0` using `Polynomial.derivative_eq_zero.mp hD`. Rewrite `hPa` using `[Polynomial.eq_C_of_natDegree_eq_zero h0, Polynomial.eval₂_C]`. Establish `hc : P.coeff 0 = 0` using `hy (by simpa using hPa)`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero h0, hc, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : P.natDegree ≠ 0` using `fun h0 => hD (Polynomial.derivative_eq_zero.mpr h0)`. Establish `hlt` using `Polynomial.natDegree_derivative_lt hne`. Rewrite `hlt` using `[hPn]`. Conclude with `Nat.find_min hex hlt ⟨_, hD, hd, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel {K Ω : Type*} [Field K] [CharZero K] [Field Ω] [Algebra K Ω] {y : ι → Ω}
     (hy : AlgebraicIndependent K y) {a : Ω} (ha : IsAlgebraic (Algebra.adjoin K (Set.range y)) a) :

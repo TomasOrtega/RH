@@ -7,13 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Introduce `hP l _ k _ _ hl d X p hSP hR G y`. Take `⟨hprop, hsm⟩` from `hSP`. Use `haveI := hprop`. Take `⟨hdiag, hpt⟩` from `hP k d p inferInstance hsm`. Take `⟨hy, hpb⟩` from `hpt y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunitX : IsUnit ((l : Γ(X, ⊤)))`. Establish `h1 : IsUnit ((l : k))` using `isUnit_iff_ne_zero.mpr hl`. Establish `h2` using `(h1.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom`. Simplify `h2` using `[map_natCast]`. Establish `hunit : IsUnit ((l : Γ(S k, ⊤)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hunitX.map (y.1.appTop).hom` using `[map_natCast]`. Simplify using `only [GysQ.diag, GysQ.pt, GysQ.cls, dif_pos hdiag, dif_pos hy]`. Rewrite using `[G.nat hy hdiag (slice y) y.1 (by rw [slice, ← Category.assoc, pullback.lift_fst, Category.id_comp]) hpb]`. Use `congr 1`. Use `first`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hR.one_nat y.1 hunitX`. Consider the case `exact hR.one_nat y.1 hunit`.
+A detailed English derivation is pending.
 -/
 theorem slice_holds : Slice := by
   intro hP l _ k _ _ hl d X p hSP hR G y

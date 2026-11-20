@@ -11,13 +11,13 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Z.Bc
 section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 /- English proof (translation)
-Establish `e2 : lie E a (Central.scL a z) = ∑ i, lieS E a i i z`. Simplify using `only [lieS_apply, ← map_sum]`. Conclude with `congrArg (lie E a) (Matrix.sum_single_eq_diagonal (fun _ : Fin a => z)).symm`. Rewrite using `[← LinearMap.sum_apply, ← e2]`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `Central.hasDerivAt_scalar z ψ g`. Establish `h2 : (fun t : ℝ => ψ.1 (g * Matrix.GeneralLinearGroup.scalar (Fin a) (infId E (expU (t • z))))) = fun t : ℝ => Complex.exp (t * dchi ω z) * ψ.1 g`. Use function extensionality and compare the values at `t`. Establish `h3` using `congrFun (congrArg Subtype.val (hω (infId E (expU (t • z))) ψ hψ)) g`. Establish `h4` using `chiInf_expU ω (t • z)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[map_smul, Complex.real_smul]`. Rewrite using `[← h4]`. Conclude with `h3`. Rewrite `h1` using `[h2]`. Establish `h5` using `(((Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const (dchi ω z)).cexp).mul_const (ψ.1 g)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h6` using `h1.unique h5`. Express the relevant statement in the definitionally equal form `lieD _ ψ.1 g = dchi ω z * ψ.1 g`. Rewrite using `[h6]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lie_central {π : CuspSub E a} {ω : HChar E} (hω : π.HasCentral ω) (z : Cinf E) {ψ : Sm E a} (hψ : ψ ∈ π.V) :
     ∑ i, lieS E a i i z ψ = dchi ω z • ψ := by
@@ -42,9 +42,9 @@ private theorem lie_central {π : CuspSub E a} {ω : HChar E} (hω : π.HasCentr
   rw [h6]
   simp
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `smul_left_injective ℂ h0 ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← GlobalTheory.trace_Eop_of_hasInfChar E a π τ m hm φ hφ]`. Establish `h1` using `lie_central hω (atEmb τ 1) hφ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `lie_central hω (atEmb τ Complex.I) hφ`. Simplify using `only [Eop, expo, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.sub_apply, ← Finset.smul_sum, Finset.sum_sub_distrib, h1, h2]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem expo_central {π : CuspSub E a} {ω : HChar E} (hω : π.HasCentral ω) {τ : E →+* ℂ} {m : Multiset ℂ}
     (hm : π.HasInfChar τ m) : expo ω τ = m.sum := by
@@ -57,9 +57,9 @@ private theorem expo_central {π : CuspSub E a} {ω : HChar E} (hω : π.HasCent
   simp only [Eop, expo, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.sub_apply, ← Finset.smul_sum, Finset.sum_sub_distrib, h1, h2]
   module
 /- English proof (translation)
-Establish `hq : ((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2)) * ((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2)) = q`. Rewrite using `[← Real.rpow_add' (Nat.cast_nonneg q) (by norm_num)]`. Evaluate the numerical expressions. Establish `hq'` using `congrArg (fun x : ℝ => (x : ℂ)) hq`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_natCast] at hq'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : algSat 2 q {x, y} = {(((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) * x, (((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) * y}`. Simplify using `[algSat]`. Rewrite using `[Matrix.det_eq_prod_roots_charpoly, h, roots_multiset_prod_X_sub_C, e, Multiset.prod_pair, mul_mul_mul_comm, hq', Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_algSat (M : Matrix (Fin 2) (Fin 2) ℂ) (q : ℕ) (x y : ℂˣ)
     (h : M.charpoly = ((algSat 2 q {x, y}).map fun b => X - C b).prod) : M.det = (q : ℂ) * ((x * y : ℂˣ) : ℂ) := by
@@ -74,11 +74,11 @@ private theorem det_algSat (M : Matrix (Fin 2) (Fin 2) ℂ) (q : ℕ) (x y : ℂ
   rw [Matrix.det_eq_prod_roots_charpoly, h, roots_multiset_prod_X_sub_C, e, Multiset.prod_pair, mul_mul_mul_comm, hq',
     Units.val_mul]
 /- English proof (translation)
-Establish `h0 : i + j = 0`. Establish `: ((i + j : ℤ) : ℂ) = 0` using `by push_cast; linear_combination hs - hi - hj`. Conclude with `this` after adjusting the coercions. Establish `h1 : i ≠ j` using `fun e => hne (by rw [hi, hj, e])`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 h.le)`. Use `⟨x, k, by omega, ?_⟩` and prove the remaining obligations. Establish `: ((j - i : ℤ) : ℂ) = k` using `by rw [hk]; simp`. Move the coercions through the operations in `at this`. Rewrite using `[show x + k = y by linear_combination hi - hj - this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 h.le)`. Use `⟨y, k, by omega, ?_⟩` and prove the remaining obligations. Establish `: ((i - j : ℤ) : ℂ) = k` using `by rw [hk]; simp`. Move the coercions through the operations in `at this`. Rewrite using `[show y + k = x by linear_combination hj - hi - this, Multiset.pair_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gap_of_sum {x y : ℂ} (hne : x ≠ y) {i j : ℤ} (hi : x = i + 1 / 2) (hj : y = j + 1 / 2) (hs : x + y = 1) :
     ∃ (c : ℂ) (k : ℕ), 2 ≤ k ∧ ({x, y} : Multiset ℂ) = {c, c + k} := by
@@ -99,23 +99,23 @@ private theorem gap_of_sum {x y : ℂ} (hne : x ≠ y) {i j : ℤ} (hi : x = i +
     rw [show y + k = x by linear_combination hj - hi - this, Multiset.pair_comm]
 end SlopeTestRemainingChoices
 /- English proof (translation)
-Introduce `_ F Ω _ _ _ _ _ _ l _ ι r P hreg hatt ⟨N, hN, hdet⟩ τ`. Take `⟨ω, hω⟩` from `Central.exists_hasCentral F 2 P`. Establish `hone : (ω * GlobalTheory.HeckeGal.Model.absPow F (-1)) ^ N = 1`. Use `PositivityTheory.jumpWindows.FiniteInfinitePlaceProduct.eq_one _ ?_` and prove the remaining obligations. Use `filter_upwards [hatt.2] with w ⟨B, hB, hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, rfl⟩` from `Multiset.card_eq_two.1 hB.card`. Establish `h1` using `PositivityTheory.jumpWindows.PSmo.val_eq_prod (CuspSub.hasCentral_iff.1 hω) hB`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `e2` using `(hF A hA).2 σ hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← Matrix.charpoly_map]`. Establish `e3` using `det_algSat _ _ _ _ e2`. Establish `e4 : ι (r σ⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar l)).det = ((r σ⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar l)).map ι.toRingHom).det` using `ι.toRingHom.map_det _`. Establish `e5` using `congrArg (fun u : (Qbar l)ˣ => ι (u : Qbar l)) (hdet σ⁻¹)`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one, Matrix.GeneralLinearGroup.val_det_apply] at e5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e5` using `[e4, e3]`. Establish `e6` using `(GlobalTheory.HeckeGal.Model.absPow_isAbsPow F (-1)).2.1 w`. Use `Units.ext ?_` and prove the remaining obligations. Establish `hp : ∀ ν : HChar F, (ν ^ N).val w = ν.val w ^ N` using `fun ν => MonoidHom.pow_apply ν.1 N _`. Rewrite using `[hp, HChar.val_mul, Units.val_pow_eq_pow_val, Units.val_mul, e6, h1, Multiset.prod_pair, Units.val_one, ← e5, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hsum : ((CG.mk P).infChar τ).sum = 1`. Establish `h1` using `GlobalTheory.BCT.TwistDisc.expo_pow (ω * GlobalTheory.HeckeGal.Model.absPow F (-1)) N τ`. Establish `h2` using `GlobalTheory.BCT.TwistDisc.expo_pow (1 : HChar F) 0 τ`. Rewrite `h2` using `[pow_zero, Nat.cast_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(CG.hasInfChar_ofChar ω τ).twist (GlobalTheory.HeckeGal.Model.absPow F (-1))`. Rewrite `h3` using `[CG.twist_ofChar, Multiset.map_singleton]`. Establish `h4` using `h3.infChar_eq`. Rewrite `h4` using `[CG.infChar_ofChar, Multiset.singleton_inj]`. Establish `h5 : expo (GlobalTheory.HeckeGal.Model.absPow F (-1)) τ = ((-1 : ℝ) : ℂ)` using `GlobalTheory.CuspRep.Model.expo_absC _ τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hone, h2, h4, h5, expo_central hω (ParLaws.hasInfChar_infChar (CG.mk P) τ)]`. Establish `h6` using `(mul_eq_zero.1 h1.symm).resolve_left (Nat.cast_ne_zero.2 hN.ne')`. Move the coercions through the operations in `at h6`. Take the linear combination `h6`. Establish `hm : P.HasInfChar τ ((CG.mk P).infChar τ)` using `ParLaws.hasInfChar_infChar (CG.mk P) τ`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hnd, hint⟩` from `hreg τ`. Take `⟨x, y, e⟩` from `Multiset.card_eq_two.1 (CG.card_infChar (CG.mk P) τ)`. Rewrite `hm`, `hnd`, `hint`, `hsum` using `[e]`. Take `⟨i, hi⟩` from `hint x (by simp)`. Take `⟨j, hj⟩` from `hint y (by simp)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, k, hk, e'⟩` from `gap_of_sum (x := x) (y := y) (by simpa using hnd) (i := i) (j := j) (by rw [hi]; norm_num) (by rw [hj]; norm_num) (by simpa using hsum)`. Conclude with `⟨c, k, hk, e' ▸ hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.gapTwo_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Z.Bc.GapTwo := by

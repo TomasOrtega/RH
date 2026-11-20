@@ -7,11 +7,11 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Unfold `pk`. Rewrite using `[map_sum]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single i]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz_pow, pderiv_X_self, smul_eq_mul, mul_one, nsmul_eq_mul, ← map_natCast C]`. Introduce `b _ hb`. Rewrite using `[Derivation.leibniz_pow, pderiv_X_of_ne (by simp [hb]), smul_zero, smul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz_pow, pderiv_X_of_ne (by simp [Ne.symm h]), smul_zero, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_pderiv_pk {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (τ σ : Ψ) (i : Fin N) (k : ℕ) :
     pderiv (σ, i) (pk τ k : RP Ψ N) = if σ = τ then C (k : ℝ) * X (τ, i) ^ (k - 1) else 0 := by
@@ -32,13 +32,13 @@ theorem pa_pderiv_pk {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (τ σ 
     rw [Derivation.leibniz_pow, pderiv_X_of_ne (by simp [Ne.symm h]), smul_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hlin : ∀ F : RP Ψ N, degFl F = pa_degFlL Ψ N F` using `fun F => (pa_degFlL_apply F).symm`. Establish `hd : ∀ i, pderiv (σ, i) (pk τ k * Q) = pderiv (σ, i) (pk τ k : RP Ψ N) * Q + pk τ k * pderiv (σ, i) Q`. Introduce `i`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[hd, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[hlin, map_add, ← hlin, ← hlin, degFl_power_sum_mul Ψ N τ k _ hk, add_zero]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `only [pa_pderiv_pk, if_true]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hsum : (∑ i ∈ s, C (k : ℝ) * X (σ, i) ^ (k - 1) * Q : RP Ψ N) = (k : ℝ) • ((∑ i ∈ s, X (σ, i) ^ (k - 1)) * Q)`. Rewrite using `[MvPolynomial.smul_eq_C_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, hlin, map_smul, ← hlin, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pa_pderiv_pk, if_neg h, zero_mul, Finset.sum_const_zero]`. Rewrite using `[hlin, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pa_degFl_sum_pderiv {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (s : Finset (Fin N)) (τ σ : Ψ) (k : ℕ)
     (Q : RP Ψ N) (hk : 1 ≤ k) :
@@ -65,13 +65,13 @@ theorem pa_degFl_sum_pderiv {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} 
     rw [hlin, map_zero]
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j τ σ k Q hk`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Sh, pa_degFl_sum_pderiv _ τ σ k Q hk]`. Both sides reduce to the same expression. Rewrite using `[Tot, pa_degFl_sum_pderiv _ τ σ k Q hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : σ = τ`. Rewrite using `[if_pos h]`. Break down `Nat.lt_or_ge 1 k with hk2 | hk1` into its components or cases. Establish `h0 : degFl ((∑ i : Fin N, X (τ, i) ^ (k - 1)) * Q : RP Ψ N) = 0` using `degFl_power_sum_mul Ψ N τ (k - 1) Q (by omega)`. Rewrite using `[h0, mul_zero, if_neg (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : k = 1` using `le_antisymm hk1 hk`. Substitute `hk'` using the available equality. Rewrite using `[if_pos ⟨h, rfl⟩]`. Establish `hsum : ((∑ i : Fin N, X (τ, i) ^ (1 - 1)) * Q : RP Ψ N) = (N : ℝ) • Q`. Simplify using `[MvPolynomial.smul_eq_C_mul]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum, ← pa_degFlL_apply, map_smul, pa_degFlL_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (fun h' => h h'.1)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_power_sum_mul : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (τ σ : Ψ) (k : ℕ) (Q : RP Ψ N), 1 ≤ k → Sh j σ (pk τ k * Q) = (if σ = τ then k * degFl (pkLow j τ (k - 1) * Q) else 0) ∧ Tot σ (pk τ k * Q) = (if σ = τ ∧ k = 1 then N * degFl Q else 0) := by
   intro Ψ _ _ N j τ σ k Q hk

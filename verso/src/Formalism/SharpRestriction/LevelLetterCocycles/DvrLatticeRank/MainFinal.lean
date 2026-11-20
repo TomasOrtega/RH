@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
 /- English proof (translation)
-The claim follows from `lifting_theorem_of_uniform_link u1link_pf`.
+A detailed English derivation is pending.
 -/
 theorem integrality_from_metric_of_large_constant :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)

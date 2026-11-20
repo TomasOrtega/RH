@@ -3,19 +3,19 @@ import Mathlib
 open Matrix
 
 /- English proof (translation)
-Set `ψ : ((κ → K) × (κ → K)) →ₗ[K] Module.Dual K ((κ → K) × (κ → K))` to `LinearMap.mk₂ K (fun a b => a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) (by intro a a' b; simp only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring) (by intro c a b; simp only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]; ring) (by intro a b b'; s …`. Establish `hψ : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `a ha`. Rewrite `ha` using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∀ i, a.1 i = 0`. Introduce `i`. Use `LinearMap.congr_fun ha ((0 : κ → K), Pi.single i 1)` as an intermediate fact. Simplify `this` using `[ψ, dotProduct_single]`. Establish `h2 : ∀ i, a.2 i = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i`. Use `LinearMap.congr_fun ha ((Pi.single i 1 : κ → K), 0)` as an intermediate fact. Simplify `this` using `[ψ, single_dotProduct]`. Use extensionality with `i`. Conclude with `h1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Conclude with `h2 i`. Set `g : L →ₗ[K] L.dualAnnihilator` to `(ψ.comp L.subtype).codRestrict L.dualAnnihilator (by`. Introduce `x`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (x : (κ → K) × (κ → K)).1 ⬝ᵥ b.2 - b.1 ⬝ᵥ (x : (κ → K) × (κ → K)).2 = 0`. Rewrite using `[hL _ x.2 b hb, sub_self])`. Establish `hg : Function.Injective g`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hψ` to reduce the goal to its premises. Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify `this` using `[g]`. Establish `h3` using `LinearMap.finrank_le_finrank_of_injective hg`. Establish `h4` using `Subspace.finrank_add_finrank_dualAnnihilator_eq L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h5 : Module.finrank K ((κ → K) × (κ → K)) = Fintype.card κ + Fintype.card κ`. Rewrite using `[Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.isotropic_finrank_le_card (K : Type) [Field K] (κ : Type) [Fintype κ]
     (L : Submodule K ((κ → K) × (κ → K)))

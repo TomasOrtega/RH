@@ -45,9 +45,9 @@ def Ssum (x : ℝ) (κ : ℕ → ℂ) (q : ℕ) : ℂ :=
   ∑ n ∈ Finset.Icc 1 ⌊zz x⌋₊, ((GlobalTheoryTheory.cn x n : ℝ) : ℂ) * κ n * kron (-(q : ℤ)) n
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩ : ∃ k : ℕ, (d + 1) / 4 = k + 1 ∧ d = 4 * k + 3` from `⟨d / 4, by omega, by omega⟩`. Unfold `NormOne GlobalTheory.Mem.An.NormOne`. Rewrite using `[hk]`. Use `push_cast`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, v, h⟩`. Conclude with `⟨2 * (1 + M * u) + M * v, M * v, by rw [h]; ring, ⟨v, rfl⟩, ⟨u, by ring⟩⟩`. Introduce and unpack `⟨A, B, h, ⟨v, rfl⟩, ⟨u, hu⟩⟩`. Take `rfl : A = 2 * (1 + M * u) + M * v` from `by linarith`. Conclude with `⟨u, v, by nlinarith [h]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normOne_iff {d : ℕ} (hd : d % 4 = 3) (M p : ℕ) : NormOne d M p ↔ GlobalTheory.Mem.An.NormOne d M p := by
   obtain ⟨k, hk, rfl⟩ : ∃ k : ℕ, (d + 1) / 4 = k + 1 ∧ d = 4 * k + 3 := ⟨d / 4, by omega, by omega⟩
@@ -62,19 +62,19 @@ theorem normOne_iff {d : ℕ} (hd : d % 4 = 3) (M p : ℕ) : NormOne d M p ↔ G
     exact ⟨u, v, by nlinarith [h]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-1, 1, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : NormOne 7 1 2 := ⟨-1, 1, by norm_num⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-1, 1, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : NormOne 7 2 7 := ⟨-1, 1, by norm_num⟩
 
 /- English proof (translation)
-Rewrite using `[normOne_iff (by norm_num)]`. Introduce and unpack `⟨A, B, h, -, -⟩`. Move the coercions through the operations in `at h`. Establish `hB : B ^ 2 ≤ 1` using `by nlinarith [sq_nonneg A]`. Establish `hA : A ^ 2 ≤ 12` using `by nlinarith [sq_nonneg B]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have h1 : -1 ≤ B ∧ B ≤ 1 := by constructor <;> nlinarith`. Apply the tactic sequence `have h2 : -4 ≤ A ∧ A ≤ 4 := by constructor <;> nlinarith`. Take `⟨h1, h1'⟩` from `h1`. Take `⟨h2, h2'⟩` from `h2`. Apply the tactic sequence `interval_cases A <;> interval_cases B <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : ¬ NormOne 7 1 3 := by
   rw [normOne_iff (by norm_num)]
@@ -145,7 +145,7 @@ instance smulCommClass_gal_integers : SMulCommClass (L ≃ₐ[K] L) (𝓞 K) (�
     rw [map_mul, AlgEquiv.commutes]
 
 /- English proof (translation)
-Use `exists_congr fun P => and_congr_right fun _ => and_congr_right fun hP => ?_` and prove the remaining obligations. Establish `h : P.under (𝓞 K) = 𝔭.asIdeal` using `hP.over.symm`. Unfold `IsArithFrobAt AlgHom.IsArithFrobAt`. Rewrite using `[h, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isFrob_iff (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : L ≃ₐ[K] L) :
     IsFrob L 𝔭 σ ↔ ∃ P : Ideal (𝓞 L), P.IsPrime ∧ P.LiesOver 𝔭.asIdeal ∧ IsArithFrobAt (𝓞 K) σ P := by
@@ -156,16 +156,16 @@ theorem isFrob_iff (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : L ≃ₐ[K] L) :
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inInertia_iff (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : L ≃ₐ[K] L) :
     InInertia L 𝔭 σ ↔ ∃ P : Ideal (𝓞 L), P.IsPrime ∧ P.LiesOver 𝔭.asIdeal ∧ σ ∈ P.inertia (L ≃ₐ[K] L) :=
   Iff.rfl
 
 /- English proof (translation)
-Use `𝔭.isPrime` as an intermediate fact. Take `⟨P, hP, hP'⟩` from `(inferInstance : Nonempty (𝔭.asIdeal.primesOver (𝓞 L)))`. Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `: Finite (𝓞 L ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 K) (L ≃ₐ[K] L) P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σ, (isFrob_iff L 𝔭 σ).2 ⟨P, hP, hP', hσ⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isFrob [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)) : ∃ σ : L ≃ₐ[K] L, IsFrob L 𝔭 σ := by
   have := 𝔭.isPrime
@@ -176,11 +176,11 @@ theorem exists_isFrob [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)) : ∃ �
   exact ⟨σ, (isFrob_iff L 𝔭 σ).2 ⟨P, hP, hP', hσ⟩⟩
 
 /- English proof (translation)
-Establish `h : (∀ σ, InInertia L 𝔭 σ → χ σ = 1) ∧ ∃ σ, IsFrob L 𝔭 σ` using `⟨hχ, σ, hσ⟩`. Unfold `heckeVal`. Rewrite using `[dif_pos h]`. Take `⟨P, hP, hPo, h1⟩` from `(isFrob_iff L 𝔭 _).1 h.2.choose_spec`. Take `⟨P', hP', hPo', h2⟩` from `(isFrob_iff L 𝔭 _).1 hσ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `𝔭.isPrime` as an intermediate fact. Take `⟨τ, hτ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 L) (L ≃ₐ[K] L) P' P (hPo'.over.symm.trans hPo.over)`. Establish `h3` using `h2.conj τ`. Rewrite `h3` using `[← hτ]`. Establish `h4` using `hχ _ ((inInertia_iff L 𝔭 _).2 ⟨P, hP, hPo, h1.mul_inv_mem_inertia h3⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv, mul_inv_eq_one] at h4`. Rewrite using `[h4, mul_inv_cancel_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVal_eq [IsGalois K L] (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔭 : HeightOneSpectrum (𝓞 K))
     (hχ : ∀ τ, InInertia L 𝔭 τ → χ τ = 1) {σ : L ≃ₐ[K] L} (hσ : IsFrob L 𝔭 σ) :
@@ -200,7 +200,7 @@ theorem heckeVal_eq [IsGalois K L] (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔭 : Hei
   rw [h4, mul_inv_cancel_comm]
 
 /- English proof (translation)
-Unfold `heckeVal`. Rewrite using `[dif_neg fun h => hχ h.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVal_eq_zero (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔭 : HeightOneSpectrum (𝓞 K))
     (hχ : ¬ ∀ τ, InInertia L 𝔭 τ → χ τ = 1) : heckeVal L χ 𝔭 = 0 := by
@@ -208,14 +208,14 @@ theorem heckeVal_eq_zero (χ : (L ≃ₐ[K] L) →* ℂˣ) (𝔭 : HeightOneSpec
   rw [dif_neg fun h => hχ h.1]
 
 /- English proof (translation)
-The claim follows from `heckeVal_eq L χ 𝔭 (fun τ hτ => by rw [hu τ hτ, map_one]) hσ`.
+A detailed English derivation is pending.
 -/
 theorem heckeVal_of_unramIn [IsGalois K L] (χ : (L ≃ₐ[K] L) →* ℂˣ) {𝔭 : HeightOneSpectrum (𝓞 K)}
     (hu : UnramIn L 𝔭) {σ : L ≃ₐ[K] L} (hσ : IsFrob L 𝔭 σ) : heckeVal L χ 𝔭 = (χ σ : ℂˣ) :=
   heckeVal_eq L χ 𝔭 (fun τ hτ => by rw [hu τ hτ, map_one]) hσ
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_isFrob L 𝔭`. Rewrite using `[heckeVal_eq L 1 𝔭 (fun _ _ => rfl) hσ]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heckeVal_one [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)) :
     heckeVal L (1 : (L ≃ₐ[K] L) →* ℂˣ) 𝔭 = 1 := by
@@ -224,9 +224,9 @@ theorem heckeVal_one [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)) :
   simp
 
 /- English proof (translation)
-Establish `hm : IsModulus L (1 : (L ≃ₐ[K] L) →* ℂˣ) ⊤` using `⟨top_ne_bot, fun p _ => by simp [heckeVal_one], fun a b _ => by simp [heckeIdeal, heckeVal_one]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Nat.sInf_le ⟨⊤, hm, by simp⟩`. Unfold `condNorm`. Use `le_csInf ⟨1, ⊤, hm, by simp⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `n ⟨m, hm, rfl⟩`. Conclude with `Nat.one_le_iff_ne_zero.2 (by simpa [Ideal.absNorm_eq_zero_iff] using hm.1)`.
+A detailed English derivation is pending.
 -/
 theorem condNorm_one [IsGalois K L] : condNorm L (1 : (L ≃ₐ[K] L) →* ℂˣ) = 1 := by
   have hm : IsModulus L (1 : (L ≃ₐ[K] L) →* ℂˣ) ⊤ :=
@@ -239,9 +239,9 @@ theorem condNorm_one [IsGalois K L] : condNorm L (1 : (L ≃ₐ[K] L) →* ℂˣ
     exact Nat.one_le_iff_ne_zero.2 (by simpa [Ideal.absNorm_eq_zero_iff] using hm.1)
 
 /- English proof (translation)
-Use `and_congr_right fun hβ => ⟨?_, fun h => ⟨G, hG, hp, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨F, hF, hFp, h0⟩`. Establish `ho : IsOpen ({1}ᶜ : Set ℂ)` using `isOpen_compl_singleton`. Establish `hc : IsPreconnected ({1}ᶜ : Set ℂ)` using `(isConnected_compl_singleton_of_one_lt_rank (by simp) (1 : ℂ)).isPreconnected`. Establish `he : F =ᶠ[nhds (2 : ℂ)] G`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: {s : ℂ | 1 < s.re} ∈ nhds (2 : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)`. Use `filter_upwards [this] with s hs using (hFp s hs).unique (hp s hs)`. Use `(hF.analyticOnNhd ho).eqOn_of_preconnected_of_eventuallyEq (hG.analyticOnNhd ho) hc (z₀ := 2) (by norm_num) he hβ` as an intermediate fact. Rewrite using `[← this, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeZero_iff (χ : (L ≃ₐ[K] L) →* ℂˣ) {G : ℂ → ℂ} (hG : DifferentiableOn ℂ G {1}ᶜ)
     (hp : ∀ s : ℂ, 1 < s.re → HasProd (fun 𝔭 : HeightOneSpectrum (𝓞 K) =>
@@ -263,9 +263,9 @@ theorem heckeZero_iff (χ : (L ≃ₐ[K] L) →* ℂˣ) {G : ℂ → ℂ} (hG : 
 end Hecke
 
 /- English proof (translation)
-Establish `e` using `Ideal.quotientEquiv p.asIdeal _ (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) (Rat.HeightOneSpectrum.span_natGenerator p)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr e.toEquiv]`. Use `Ideal.absNorm_span_singleton ((Rat.HeightOneSpectrum.natGenerator p : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.norm_self, MonoidHom.id_apply, Int.natAbs_natCast]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem absNorm_rat (p : HeightOneSpectrum (𝓞 ℚ)) :
     Ideal.absNorm p.asIdeal = (Rat.HeightOneSpectrum.primesEquiv p : ℕ) := by
@@ -278,9 +278,9 @@ theorem absNorm_rat (p : HeightOneSpectrum (𝓞 ℚ)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[heckeZero_iff L 1 (G := riemannZeta) (fun s hs => (differentiableAt_riemannZeta hs).differentiableWithinAt) ?_ β]`. Conclude with `⟨fun h => h.2, fun h => ⟨fun h1 => riemannZeta_one_ne_zero (h1 ▸ h), h⟩⟩`. Introduce `s hs`. Use `(Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).hasProd_iff.2 (riemannZeta_eulerProduct_hasProd hs)` as an intermediate fact. Use `this using 2 with p` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[heckeVal_one, absNorm_rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeZero_rat_one_iff (L : Type) [Field L] [NumberField L] [Algebra ℚ L] [IsGalois ℚ L] (β : ℂ) :
     HeckeZero L (1 : (L ≃ₐ[ℚ] L) →* ℂˣ) β ↔ riemannZeta β = 0 := by
@@ -293,14 +293,14 @@ theorem heckeZero_rat_one_iff (L : Type) [Field L] [NumberField L] [Algebra ℚ 
     simp [heckeVal_one, absNorm_rat]
 
 /- English proof (translation)
-Conclude with `⟨(heckeZero_rat_one_iff ℚ (-2)).2 (by simpa using riemannZeta_neg_two_mul_nat_add_one 0), fun h => riemannZeta_ne_zero_of_one_lt_re (by simp) ((heckeZero_rat_one_iff ℚ 2).1 h)⟩`.
+Supply the required witnesses or components.
 -/
 example : HeckeZero ℚ (1 : (ℚ ≃ₐ[ℚ] ℚ) →* ℂˣ) (-2) ∧ ¬ HeckeZero ℚ (1 : (ℚ ≃ₐ[ℚ] ℚ) →* ℂˣ) 2 := by
   exact ⟨(heckeZero_rat_one_iff ℚ (-2)).2 (by simpa using riemannZeta_neg_two_mul_nat_add_one 0),
     fun h => riemannZeta_ne_zero_of_one_lt_re (by simp) ((heckeZero_rat_one_iff ℚ 2).1 h)⟩
 
 /- English proof (translation)
-Establish `h : ∀ χ : (ℚ ≃ₐ[ℚ] ℚ) →* ℂˣ, condNorm ℚ χ = 1` using `fun χ => by`. Establish `hχ : χ = 1` using `by ext σ; rw [Subsingleton.elim σ 1]; simp`. Rewrite using `[hχ, condNorm_one]`. Simplify using `[bigQ, h, Rat.numberField_discr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : bigQ ℚ ℚ = 1 := by
   have h : ∀ χ : (ℚ ≃ₐ[ℚ] ℚ) →* ℂˣ, condNorm ℚ χ = 1 := fun χ => by

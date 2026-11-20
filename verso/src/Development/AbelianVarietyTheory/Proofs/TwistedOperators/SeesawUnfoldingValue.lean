@@ -22,17 +22,15 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm γ hγ ΦD hΦD Φ₁D hΦ₁D hder`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Take `⟨-, Φ, hΦF, hD, hp⟩` from `(mem_kerPD hψ θ A₁ B Bs Γ cB p' ΦD).1 hΦD`. Establish `hΦD' : ΦD ∈ algD Γ.M' Bs.ψ Bs.emb` using `((mem_kerPD hψ θ A₁ B Bs Γ cB p' ΦD).1 hΦD).1`. Take `⟨l, hl, hγl⟩` from `GlobalTheory.T.oneParamSubgroup_transposeGramUnitary_decomposes D θ X e Γ.W hO.JX hθ γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hder' : ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hO.JX ((l.map fun q => oneP θ X q.1 q.2 t).prod)) ΦD x) (Φ₁D x) 0`. Introduce `x`. Use `hder x` as an intermediate fact. Simplify using `only [hγl] at this`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ, hsum⟩` from `GlobalTheory.T.seesaw_doubling_gram_model hP D θ X e Bs Γ Xc om om' hO.JX hθ hT l hl ΦD hΦD' Φ₁D hder'`. Use `choose Φ' hΦ'F hΦ'D using fun i => hO.algB' (Ψ i) (hΨ i).1`. Take `⟨Φ₁, hΦ₁F, hD₁⟩` from `hO.algB' Φ₁D hΦ₁D`. Use `(mem_kerPD hψ θ A₁ B Bs Γ cB p' Φ₁D).2 ⟨hΦ₁D, Φ₁, hΦ₁F, hD₁, ?_⟩` and prove the remaining obligations. Establish `hsumD : ∀ s : Finset (Fin l.length), IsDatum Γ.M' ψ cB (∑ i ∈ s, Ψ i) (∑ i ∈ s, Φ' i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (CoinvPass.isDatum_zero (M := Γ.M') (ψ := ψ) (crd := cB))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CoinvPass.isDatum_add hψ (hΦ'D a) ih`. Establish `hΦ₁ : Φ₁ = ∑ i, Φ' i` using `IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD₁ (hsum ▸ hsumD Finset.univ)`. Rewrite using `[hΦ₁, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `hl _ (List.get_mem l i)`.
-
-Rewrite using `[hm.mapB.eql _ _ hi Φ hΦF (Φ' i) (hΦ'F i) (GlobalTheory.T.isDer_of_hasDerivAt_kapX_oneP hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT _ _ hi ΦD hΦD' (Ψ i) (hΨ i).1 (hΨ i).2 Φ (Φ' i) hD (hΦ'D i)), hp, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.kerPD_stabLie : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

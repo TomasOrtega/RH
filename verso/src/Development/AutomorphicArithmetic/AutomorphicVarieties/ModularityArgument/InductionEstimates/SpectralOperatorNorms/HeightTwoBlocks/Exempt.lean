@@ -14,21 +14,21 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (BW.
 private noncomputable def bV {r : ℕ} (b : Blo S r) : Submodule ℂ (LL (mu1 E r)) := b.summand.choose
 
 /- English proof (translation)
-The claim follows from `b.summand.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 private theorem bV_summand {r : ℕ} (b : Blo S r) : IsSummand (mu1 E r) (bV b) := b.summand.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `b.summand.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 private theorem bV_mem {r : ℕ} (b : Blo S r) :
     ((cuspToL2 (mu1 E r) ⟨b.f.1, b.cusp⟩ : cuspidalL2 (mu1 E r)) : LL (mu1 E r)) ∈ bV b :=
   b.summand.choose_spec.2
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `nil`. Express the relevant statement in the definitionally equal form `∑ i : Fin 0, _ = 0`. Simplify using the standard rewrite rules. Consider the case `@cons r s b d ih`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin (d.len + 1), _ = r + s`. Rewrite using `[Fin.sum_univ_succ]`. Conclude with `congrArg (r + ·) ih`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_blo {n : ℕ} (d : Dat S n) : ∑ i, (d.blo i).1 = n := by
   induction d with
@@ -51,7 +51,7 @@ private noncomputable def datOf {n : ℕ} (d : Dat S n) (h : 2 ≤ d.len) : Datu
   summand := fun i => bV_summand _
 
 /- English proof (translation)
-Simplify using `only [Fin.univ_val_map, List.ofFn_add, Multiset.coe_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem map_split {r s : ℕ} (f : Fin (r + s) → ℂ) :
     (Finset.univ.val.map f) = (Finset.univ.val.map fun i : Fin r => f (Fin.castAdd s i)) +
@@ -60,13 +60,13 @@ private theorem map_split {r s : ℕ} (f : Fin (r + s) → ℂ) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `nil`. Introduce `z`. Express the relevant statement in the definitionally equal form `_ = ∑ j : Fin 0, _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Consider the case `@cons r s b d ih`. Introduce `(z : Fin (d.len + 1) → ℂ)`. Express the relevant statement in the definitionally equal form `_ = ∑ j : Fin (d.len + 1), (Finset.univ.val.map (((Dat.cons b d).blo j).2.Λ τ)).map (· + z j)`. Rewrite using `[map_split, Fin.sum_univ_succ]`. Establish `h1 : (fun i : Fin r => (Dat.cons b d).lam τ (Fin.castAdd s i) + z ((Dat.cons b d).idx (Fin.castAdd s i))) = fun i => b.Λ τ i + z 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Dat.lam, Dat.idx]`. Conclude with `congrArg z (Fin.addCases_left (motive := fun _ => Fin (d.len + 1)) _)`. Establish `h2 : (fun i : Fin s => (Dat.cons b d).lam τ (Fin.natAdd r i) + z ((Dat.cons b d).idx (Fin.natAdd r i))) = fun i => d.lam τ i + z (d.idx i).succ`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Dat.lam, Dat.idx]`. Conclude with `congrArg z (Fin.addCases_right (motive := fun _ => Fin (d.len + 1)) _)`. Rewrite using `[h1, h2, ih fun j => z j.succ, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lam_ms {n : ℕ} (d : Dat S n) (τ : E →+* ℂ) : ∀ z : Fin d.len → ℂ,
     (Finset.univ.val.map fun i : Fin n => d.lam τ i + z (d.idx i)) =
@@ -94,9 +94,9 @@ private theorem lam_ms {n : ℕ} (d : Dat S n) (τ : E →+* ℂ) : ∀ z : Fin 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `nil => exact (j : Fin 0).elim0`. Consider the case `@cons r s b d ih => revert j`. Express the relevant statement in the definitionally equal form `∀ j : Fin (d.len + 1), _`. Introduce `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `ih i`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sat_blo {n : ℕ} (d : Dat S n) (j : Fin d.len) : d.sat j = (d.blo j).2.sat := by
   induction d with
@@ -110,9 +110,9 @@ private theorem sat_blo {n : ℕ} (d : Dat S n) (j : Fin d.len) : d.sat j = (d.b
     · exact ih i
 
 /- English proof (translation)
-Take `⟨z, hΛ, ht⟩` from `ho`. Use `⟨z, fun i τ => Finset.univ.val.map ((d.blo i).2.Λ τ), fun i w => ((d.blo i).2.sat w).map fun x : ℂˣ => (x : ℂ), fun i => UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.bloAt E S _ _ _ (bV_summand _) (bV_mem _), fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ]`. Conclude with `lam_ms d τ z`. Rewrite using `[ht w hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Dat.ptS`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sat_blo, Multiset.map_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pt_on {n : ℕ} (d : Dat S n) (h : 2 ≤ d.len) {Λ : (E →+* ℂ) → Multiset ℂ} {t : BW.Pl E → Multiset ℂ}
     (ho : d.On Λ t) : (datOf d h).Pt S Λ t := by
@@ -128,11 +128,11 @@ private theorem pt_on {n : ℕ} (d : Dat S n) (h : 2 ≤ d.len) {Λ : (E →+* �
     rfl
 
 /- English proof (translation)
-Consider the cases of `d with`. Consider the case `nil => exact absurd h (by simp [Dat.len])`. Consider the case `@cons r s b d`. Consider the cases of `d with`. Consider the case `nil => exact absurd h (by simp [Dat.len])`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `@cons r' s' b' d`. Consider the cases of `d with`. Consider the case `nil`. Take `rfl : r = 2` from `hs (0 : Fin 2)`. Take `rfl : r' = 2` from `hs (1 : Fin 2)`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, b', HEq.rfl⟩`. Consider the case `cons _ _ => exact absurd h (by simp [Dat.len])`.
+Supply the required witnesses or components. Treat this case separately.
 -/
 private theorem two_blocks {n : ℕ} (d : Dat S n) (h : d.len = 2) (hs : ∀ i, (d.blo i).1 = 2) :
     ∃ b₁ b₂ : Blo S 2, HEq d (Dat.cons b₁ (Dat.cons b₂ (Dat.nil : Dat S 0))) := by
@@ -150,7 +150,7 @@ private theorem two_blocks {n : ℕ} (d : Dat S n) (h : d.len = 2) (hs : ∀ i, 
       | cons _ _ => exact absurd h (by simp [Dat.len])
 
 /- English proof (translation)
-Rewrite using `[← hs _ (bV_summand b) hA]`. Conclude with `bV_mem b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_mem {m : (E →+* ℂ) → Multiset ℂ} {B : BW.Pl E → Multiset ℂ} {τ : Submodule ℂ (LL (mu1 E 2))}
     (b : Blo S 2) (hA : At (mu1 E 2) S (bV b) m B)
@@ -166,11 +166,11 @@ private theorem fin_two_ne : ∀ i j : Fin 2, i ≠ j → (i = 0 ∧ j = 1) ∨ 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `hP` using `pt_on d h ho`. Establish `key` using `rigid (datOf d h) hP`. Establish `hr` using `key.1`. Establish `hd` using `key.2.1`. Take `⟨b₁, b₂, he⟩` from `two_blocks d hr hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, j, hij, hi, hj⟩` from `key.2.2`. Establish `he' : d = Dat.cons b₁ (Dat.cons b₂ Dat.nil)` using `eq_of_heq he`. Substitute `he'` using the available equality. Use `⟨b₁, b₂, rfl, ?_⟩` and prove the remaining obligations. Use `revert i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∀ i j : Fin 2, _`. Introduce `i j hij hi hj`. Break down `fin_two_ne i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨form_mem b₁ hi smo₁, form_mem b₂ hj smo₂⟩`. Conclude with `Or.inr ⟨form_mem b₁ hj smo₂, form_mem b₂ hi smo₁⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem core (τ₁ τ₂ : Submodule ℂ (LL (mu1 E 2))) (m₁ m₂ : (E →+* ℂ) → Multiset ℂ) (B₁ B₂ : BW.Pl E → Multiset ℂ)
     (smo₁ : ∀ V, IsSummand (mu1 E 2) V → At (mu1 E 2) S V m₁ B₁ → V = τ₁)
@@ -202,7 +202,7 @@ private theorem core (τ₁ τ₂ : Submodule ℂ (LL (mu1 E 2))) (m₁ m₂ : (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ μ _ θ 𝔢 𝔵 d h ho`. Conclude with `core 𝔵.τ₁ 𝔵.τ₂ 𝔵.m₁ 𝔵.m₂ 𝔵.B₁ 𝔵.B₂ 𝔵.smo₁ 𝔵.smo₂ 𝔵.rigid d h ho`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.exempt :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (μ : Measure (normOneGL E (2 + 2))) [μ.IsHaarMeasure] (θ : Twist μ)

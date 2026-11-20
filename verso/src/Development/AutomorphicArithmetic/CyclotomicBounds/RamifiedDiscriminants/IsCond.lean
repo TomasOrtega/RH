@@ -12,11 +12,9 @@ namespace UpperTheory.Ram
 open Formalism.L2.Host Formalism.HC Formalism.HC.Der Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Take `⟨w, hw⟩ : ∃ w : Qb, IsPrimitiveRoot w N` from `HasEnoughRootsOfUnity.exists_primitiveRoot Qb N`. Establish `hw' : IsPrimitiveRoot (w ^ u) N` using `hw.pow_of_coprime u hu`. Establish `hc : IsConjRoot ℚ (w ^ u) w`. Unfold `IsConjRoot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.cyclotomic_eq_minpoly_rat hw hN, ← Polynomial.cyclotomic_eq_minpoly_rat hw' hN]`. Use `haveI : IsAlgClosure ℚ Qb := AlgebraicClosure.instIsAlgClosure ℚ`. Use `haveI : Normal ℚ Qb := IsAlgClosure.normal ℚ Qb`. Take `⟨s, hs⟩` from `hc.exists_algEquiv`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Take `⟨i, -, rfl⟩` from `hw.eq_pow_of_pow_eq_one hz`. Rewrite using `[map_pow, hs, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_aut_pow (N : ℕ) (hN : 0 < N) (u : ℕ) (hu : u.Coprime N) :
     ∃ s : Qb ≃ₐ[ℚ] Qb, ∀ z ∈ mus N, s z = z ^ u := by
@@ -34,13 +32,13 @@ private theorem exists_aut_pow (N : ℕ) (hN : 0 < N) (u : ℕ) (hu : u.Coprime 
   rw [map_pow, hs, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `huM : u.Coprime M`. Unfold `Nat.Coprime`. Rewrite using `[hu1.gcd_eq, Nat.gcd_one_left]`. Take `⟨s, hs⟩` from `exists_aut_pow (N * M) (Nat.mul_pos hN hM) u (Nat.Coprime.mul_right hu huM)`. Use `⟨s, fun z hz => hs z ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show z ^ (N * M) = 1`. Rewrite using `[pow_mul, show z ^ N = 1 from hz, one_pow]`. Unfold `cycQ at hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem z hz`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hz' : z ^ M = 1` using `hz`. Rewrite using `[hs z (by show z ^ (N * M) = 1; rw [mul_comm, pow_mul, hz', one_pow]), pow_eq_pow_of_modEq hu1 hz', pow_one]`. Consider the case `algebraMap r => exact s.commutes r`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb]`. Consider the case `inv a _ ha => rw [map_inv₀, ha]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => rw [map_mul, ha, hb]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_aut_fix (N M : ℕ) (hN : 0 < N) (hM : 0 < M) (u : ℕ) (hu : u.Coprime N)
     (hu1 : u ≡ 1 [MOD M]) :
@@ -64,13 +62,13 @@ private theorem exists_aut_fix (N M : ℕ) (hN : 0 < N) (hM : 0 < M) (u : ℕ) (
     | mul a b _ _ ha hb => rw [map_mul, ha, hb]
 
 /- English proof (translation)
-Set `_ : Algebra H.E (Cond.Cyc H.condN)` to `(emb H).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ H.E (Cond.Cyc H.condN)` using `IsScalarTower.of_algebraMap_eq fun x => ((emb H).commutes x).symm`. Establish `: Algebra.IsAlgebraic H.E (Cond.Cyc H.condN)` using `Algebra.IsAlgebraic.tower_top (K := ℚ) H.E`. Set `_ : Algebra H.E Qb` to `j.toRingHom.toAlgebra`. Set `Ψ0 : Cond.Cyc H.condN →ₐ[H.E] Qb` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Ψ : Cond.Cyc H.condN →+* Qb` to `Ψ0.toRingHom`. Establish `h1 : ∀ y, Ψ (emb H y) = j y` using `fun y => Ψ0.commutes y`. Establish `key : (Ψ.comp (tauN H.condN u : Cond.Cyc H.condN →+* Cond.Cyc H.condN)).toRatAlgHom = ((s : Qb →+* Qb).comp Ψ).toRatAlgHom`. Use `AlgHom.ext_of_adjoin_eq_top (IsCyclotomicExtension.adjoin_primitive_root_eq_top (Cond.z_spec H.condN)) ?_` and prove the remaining obligations. Introduce `y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Use `show Ψ (tauN H.condN u (Cond.z H.condN)) = s (Ψ (Cond.z H.condN))`. Establish `hz` using `(Cond.z_spec H.condN).pow_eq_one`. Rewrite using `[tauN_root H.condN _ _ hz, map_pow, hs _ (show _ ^ H.condN = 1 by rw [← map_pow, hz, map_one])]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h1, emb_art]`. Conclude with `(DFunLike.congr_fun key (emb H x)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem aut_art {φ : Frame} (H : HostRaw φ) (j : H.E →ₐ[ℚ] Qb) (u : (ZMod H.condN)ˣ) (s : Qb ≃ₐ[ℚ] Qb)
     (hs : ∀ z ∈ mus H.condN, s z = z ^ (u : ZMod H.condN).val) (x : H.E) :
@@ -96,11 +94,11 @@ private theorem aut_art {φ : Frame} (H : HostRaw φ) (j : H.E →ₐ[ℚ] Qb) (
   exact (DFunLike.congr_fun key (emb H x)).symm
 
 /- English proof (translation)
-Break down `(H.toHostRaw.dvd_condN_iff hl).1 hd with h | rfl | rfl` into its components or cases. Conclude with `H.QS_exact l hl h`. Establish `hN : H.condN = H.QS * H.d * H.q` using `mul_right_comm _ _ _`. Take `⟨b, hb, hj⟩` from `D7.exists_sign H.q_prime H.q_mod_four (-1)`. Take `⟨n, hn1, hn2⟩` from `Nat.chineseRemainder H.toHostRaw.coprime_QSd_q 1 b`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_unit_modEq (dvd_refl H.condN) n (hN ▸ Nat.Coprime.mul_right (hn1.gcd_eq.trans (Nat.coprime_one_left _)) (hn2.gcd_eq.trans hb))`. Use `⟨u, ?_, fun h3 => ?_⟩` and prove the remaining obligations. Rewrite using `[show H.condN / H.q = H.QS * H.d by rw [hN, Nat.mul_div_cancel _ hl.pos]]`. Conclude with `(hu.of_dvd ⟨H.q, hN⟩).trans hn1`. Establish `h4` using `H.flPS u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h4` using `[h3, D7.jac_congr ((hu.of_dvd H.toHostRaw.q_dvd_condN).trans hn2), hj]`. Conclude with `absurd h4 (show ¬ ((1 : ℤˣ) : ℤ) = ((-1 : ℤˣ) : ℤ) by decide)`. Take `⟨u, h1, h2⟩` from `exists_art_iod H.toHostRaw`. Use `⟨u, ?_, fun h3 => R.toFrame.iod_ne_one (h2.symm.trans h3)⟩` and prove the remaining obligations. Rewrite using `[show H.condN / H.d = H.QS * H.q from Nat.mul_div_cancel _ hl.pos]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_exact {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) {l : ℕ} (hl : l.Prime) (hd : l ∣ H.condN) :
     ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD H.condN / l] ∧ H.art u ≠ 1 := by
@@ -124,15 +122,13 @@ private theorem exists_exact {R : Formalism.BasicNotions.Ranks} (H : Formalism.B
 end UpperTheory.Ram
 
 /- English proof (translation)
-Introduce `R H j`. Establish `hN : 0 < H.condN` using `Nat.pos_of_ne_zero H.toHostRaw.condN_ne_zero`. Use `⟨?_, fun M hM hle => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `H.toHostRaw.image_mem_of_roots j.toRingHom (Formalism.L2.Host.cycQ H.condN).toSubfield (fun y hy => IntermediateField.subset_adjoin ℚ _ hy) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Take `⟨k, hk⟩` from `Nat.gcd_dvd_left H.condN M`. Establish `hk1 : k ≠ 1`. Introduce and unpack `rfl`. Rewrite `hk` using `[mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hn (hk ▸ Nat.gcd_dvd_right _ _)`. Take `⟨l, hl, m, rfl⟩` from `Nat.exists_prime_and_dvd hk1`. Establish `hld : l ∣ H.condN` using `⟨Nat.gcd H.condN M * m, hk.trans (by ring)⟩`. Establish `hg : Nat.gcd H.condN M ∣ H.condN / l` using `⟨m, Nat.div_eq_of_eq_mul_right hl.pos (hk.trans (by ring))⟩`. Take `⟨u, hu1, hu2⟩` from `exists_exact H hl hld`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn1, hn2⟩` from `Nat.chineseRemainder' (hu1.of_dvd hg)`. Take `⟨s, hs1, hs2⟩` from `exists_aut_fix H.condN M hN hM n (hn1.gcd_eq.trans (ZMod.val_coe_unit_coprime u)) hn2`. Apply `hu2` to reduce the goal to its premises. Rewrite using `[← H.gal.symm.map_eq_one_iff]`. Use `AlgEquiv.ext fun x => j.injective ?_` and prove the remaining obligations.
-
-Establish `h` using `aut_art H.toHostRaw j u s (fun z hz => by rw [hs1 z hz, pow_eq_pow_of_modEq hn1 hz]) x`. Conclude with `h.symm.trans (hs2 _ (hle ⟨x, rfl⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ram.isCond_condN :
     ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (j : H.E →ₐ[ℚ] Formalism.L2.Host.Qb),

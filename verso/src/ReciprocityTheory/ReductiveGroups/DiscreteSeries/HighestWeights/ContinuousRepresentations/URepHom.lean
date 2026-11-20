@@ -21,11 +21,9 @@ Both sides reduce to the same expression.
 lemma urepHom_toMK_one {ε : Fin n → Bool} : toMK (1 : KG ε) = 1 := rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ k : KG ε, toMK k ∈ Kset ε` using `fun k => k.2`. Use `set a := σ (toMK k)`. Use `set c := σ (toMK k⁻¹)`. Establish `h1 : star a * a = 1` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self a).1 (hσ.2.1 _ (hmem k))`. Establish `h2 : a * c = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : toMK k * toMK k⁻¹ = 1`. Rewrite using `[← urepHom_toMK_mul, mul_inv_cancel, urepHom_toMK_one]`. Use `hσ.1.2 _ (hmem k) _ (hmem k⁻¹)` as an intermediate fact. Rewrite `this` using `[e, hσ.1.1]`. Conclude with `this.symm`.
-
-Establish `h3 : a * star a = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Unitary.mem_iff.2 ⟨h1, h3⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma urepHom_mem_unitary {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [FiniteDimensional ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (Kset ε) σ)
@@ -50,11 +48,11 @@ lemma urepHom_mem_unitary {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H
   exact Unitary.mem_iff.2 ⟨h1, h3⟩
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ`. Establish `hmem : ∀ k : KG ε, toMK k ∈ Kset ε` using `fun k => k.2`. Use `⟨{ toFun := fun k => ⟨σ (toMK k), urepHom_mem_unitary hσ k⟩ map_one' := ?_ map_mul' := ?_ }, ?_, fun k => rfl⟩` and prove the remaining obligations. Apply `Subtype.ext show σ (toMK (1 : KG ε)) = 1` to reduce the goal to its premises. Rewrite using `[urepHom_toMK_one, hσ.1.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `k k'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show σ (toMK (k * k')) = σ (toMK k) * σ (toMK k')`. Rewrite using `[urepHom_toMK_mul]`. Conclude with `hσ.1.2 _ (hmem k) _ (hmem k')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun k : KG ε => toMK k)` using `by fun_prop`. Establish `hop : Continuous (fun k : KG ε => σ (toMK k))`. Use `continuous_clm_apply.2 fun v => ?_` and prove the remaining obligations. Conclude with `(hσ.2.2 v).comp_continuous hc hmem`. Conclude with `Continuous.subtype_mk hop _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uRepHom : URepHomStatement := by
   intro n ε H _ _ _ σ hσ

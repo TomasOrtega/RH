@@ -15,7 +15,7 @@ def extMul {O : Type} [CommRing O] (R : Type) [CommRing R] [Algebra O R] {M M' M
   m.baseChange R ((AlgebraTensorModule.distribBaseChange O R M M').symm (x ⊗ₜ[R] y))
 
 /- English proof (translation)
-Simplify using `[extMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extMul_tmul {O : Type} [CommRing O] (R : Type) [CommRing R] [Algebra O R] {M M' M'' : Type}
     [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M'] [AddCommGroup M''] [Module O M'']
@@ -29,7 +29,7 @@ def extPair {O : Type} [CommRing O] (R : Type) [CommRing R] [Algebra O R] {M M' 
   TensorProduct.rid O R (extMul R (TensorProduct.lift β) x y)
 
 /- English proof (translation)
-Simplify using `[extPair, extMul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extPair_tmul {O : Type} [CommRing O] (R : Type) [CommRing R] [Algebra O R] {M M' : Type}
     [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
@@ -104,13 +104,11 @@ def DualFor (E : EtTie W RA RW inclR φR gR πA) : Prop :=
             b (x : W.DD T) (y : W.DD T') = algebraMap (LetA O n) W.EE (δ y x)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨w, hw⟩` from `ν.surjective ⟨z, hz⟩`. Establish `hz' : z = ((ν w : ↥(W.N T'')) : W.DD T'')` using `by rw [hw]`. Rewrite using `[hz']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `clear hw hz' hz`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [hν]`. Conclude with `Submodule.subset_span ⟨x, x.2, y, y.2, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => rw [map_add, Submodule.coe_add]`. Conclude with `Submodule.add_mem _ ha hb`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨x, hx, y, hy, rfl⟩`. Use `hν ⟨x, hx⟩ ⟨y, hy⟩` as an intermediate fact.
-
-Simplify using `only at this`. Rewrite using `[← this]`. Conclude with `(ν _).2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {T T' T'' : LocLat G Qp LL O} (μ : W.DD T →ₗ[W.EE] W.DD T' →ₗ[W.EE] W.DD T'')
     (ν : ↥(W.N T) ⊗[LetA O n] ↥(W.N T') ≃ₗ[LetA O n] ↥(W.N T''))

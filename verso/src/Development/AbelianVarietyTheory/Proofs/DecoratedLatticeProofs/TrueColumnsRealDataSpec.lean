@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.RealTrue
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `using hr`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ontoUni_reindex {ι K : Type} [Group K] [TopologicalSpace K] {a b : ℕ} (h : a = b)
     {r : K → ι → Matrix (Fin a) (Fin a) ℂ} (hr : OntoUni r) :
@@ -23,7 +23,7 @@ theorem ontoUni_reindex {ι K : Type} [Group K] [TopologicalSpace K] {a b : ℕ}
   subst h; simpa using hr
 
 /- English proof (translation)
-Establish `hm` using `hr.mul 1 1 τ`. Rewrite `hm` using `[mul_one]`. Establish `hu` using `Matrix.mem_unitaryGroup_iff'.1 (hr.uni 1 τ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ontoUni_one {ι K : Type} [Group K] [TopologicalSpace K] {a : ℕ}
     {r : K → ι → Matrix (Fin a) (Fin a) ℂ} (hr : OntoUni r) (τ : ι) : r 1 τ = 1 := by
@@ -35,14 +35,14 @@ theorem ontoUni_one {ι K : Type} [Group K] [TopologicalSpace K] {a : ℕ}
     _ = 1 := by rw [← hm, hu]
 
 /- English proof (translation)
-Simplify using `[inN, GlobalTheory.SeeSaw.inB, infM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inN_one {D : D7} (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (g : GA D V) (τ : D.what₂.Tau) :
     inN θ V (fun _ => 1) hn g τ = infM θ V hn g τ := by
   simp [inN, GlobalTheory.SeeSaw.inB, infM]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hf`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem valC_transport {ι : Type} [Fintype ι] {n : ℕ} {G G' : ι → Matrix (Fin n) (Fin n) ℂ} (h : G = G')
     (lam : ι → DomWeight n) (f : Formalism.L2.Forms.Frames G → ℂ) (hf : f ∈ ValC G lam) :
@@ -54,37 +54,31 @@ end GlobalTheory.RealTrue
 open GlobalTheory.RealTrue in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J hX j hJ hJO hEmb`. Establish `hstd` using `GlobalTheory.T.trueColumnSteps_are_standardHermitianPairs I hOk hPins l Z R.ψ R.θ hX.std hX.inf`. Establish `hm2 : 2 ≤ B.R.m` using `B.R.two_le_m`. Establish `hgX : ∀ i, i ≤ B.R.m → ((I.rec7 l Z).sp.X i).gram = 1`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.lt_or_ge i B.R.m with h | h` into its components or cases. Conclude with `(hstd.1 i h).gS`. Take `rfl : i = B.R.m` from `le_antisymm hi h`. Use `(hstd.1 (B.R.m - 1) (by omega)).gT` as an intermediate fact. Rewrite `this` using `[show B.R.m - 1 + 1 = B.R.m by omega]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hrk : ∀ i, i < B.R.m → 0 < B.R.N i ∧ B.R.N i ≤ B.R.N (i + 1)`. Introduce `i hi`. Establish `h` using `(hstd.1 i hi).rk`. Rewrite `h` using `[rankN (I.rec7 l Z) i hi.le, rankN (I.rec7 l Z) (i + 1) hi]`. Conclude with `⟨h.1, h.2.1.le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `huni : ∀ i (hi : i ≤ B.R.m), OntoUni fun k : GinfC ((I.rec7 l Z).sp.X i) => (realOf u R g s J).r i hi k.1`. Introduce `i hi`. Establish `hB` using `(hX.xs i hi).2.1`. Use `GlobalTheory.SeeSaw.ontoUni_inB (I.rec7 l Z) R.θ ((I.rec7 l Z).sp.X i) (g.x i).B hX.inf (fun τ => by` as an intermediate fact. Rewrite using `[hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[gramAt, hgX i hi])`. Conclude with `ontoUni_reindex (rankN (I.rec7 l Z) i hi) this`. Establish `huniT : OntoUni fun k : GinfC (I.rec7 l Z).sp.X' => (realOf u R g s J).rT k.1`. Use `GlobalTheory.SeeSaw.ontoUni_inB (I.rec7 l Z) R.θ (I.rec7 l Z).sp.X' (fun _ => 1) hX.inf (fun τ => by` as an intermediate fact. Simplify using `[gramAt, hstd.2.1])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ontoUni_reindex (rankP (I.rec7 l Z)) this`. Establish `hrT : ∀ k, (realOf u R g s J).rT k = infM R.θ _ (rankP (I.rec7 l Z)) k` using `fun k => funext fun τ => inN_one _ _ _ _ _`. Establish `hone : ∀ τ, infM R.θ _ (rankP (I.rec7 l Z)) 1 τ = 1`. Introduce `τ`. Use `ontoUni_one huniT τ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hrT]`. Conclude with `this`. Establish `htr1 : ∀ z : FrN (I.rec7 l Z) (B.R.N B.R.m - 1), IsTr (infM R.θ _ (rankP (I.rec7 l Z)) 1) z z`. Introduce `z τ`. Rewrite using `[hone, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hJ1 : ∀ v, J v 1 = fun z => j v ⟨z.1, z.2⟩` using `fun v => funext fun z => hJO v 1 (Subgroup.one_mem _) z z (htr1 z)`. Establish `hG : gramC (gramP (I.rec7 l Z)) (Formalism.L2.Forms.embT (I.rec7 l Z)) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Simplify using `[gramC, gramP, hstd.2.1]`. Use `⟨huni, ?_, hrk, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `huniT`. Introduce `i τ`. Simplify using `only [realOf]`. Use `split_ifs with h`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_ne_zero h (hstd.2.2.2.1 τ)`. Introduce `i hi τ`. Take `⟨Ch, _, A, hA, -⟩` from `GlobalTheory.T.exists_tupleChain_adelicData I hOk hPins l Z u I.mu0`. Take `⟨e, -, he⟩` from `GlobalTheory.T.exists_charExponent_infinity_kernel_shift I hOk hPins l Z u I.mu0 Ch A hA i hi`. Conclude with `Int.toNat_of_nonneg (he τ).2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `v`. Use `⟨?_, fun k hk z z' hz => ?_⟩` and prove the remaining obligations. Use `show J v 1 ∈ ValC _ (sgT (D := I.rec7 l Z) u)`. Rewrite using `[hJ1 v]`. Establish `hm : j v ∈ ValC (gramC (gramP (I.rec7 l Z)) (Formalism.L2.Forms.embT (I.rec7 l Z))) (sgT (D` using `I.rec7 l Z) u) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hJ.range]`. Conclude with `LinearMap.mem_range_self j v`. Conclude with `valC_transport hG _ _ hm`. Rewrite using `[hrT] at hz show J v k z' = J v 1 z`. Rewrite using `[hJO v k hk z z' hz, hJO v 1 (Subgroup.one_mem _) z z (htr1 z)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Substitute `hn` using the available equality. Establish `hN : B.R.N B.R.m = (B.R.N B.R.m - 1) + 1`. Use `hrk (B.R.m - 1) (by omega)` as an intermediate fact. Rewrite `this` using `[show B.R.m - 1 + 1 = B.R.m by omega]`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.trueColumns_branchingMap_equivariant_nonzero_common I hOk hPins l Z u hN`. Use `⟨hN, h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce `k hk τ`. Establish `hb` using `GlobalTheory.T.lastGroup_embedding_real_components_block_form I hOk hPins l Z u R.θ hX.inf _ hN hEmb k τ`.
-
-Establish `hB` using `(hX.xs B.R.m le_rfl).2.1`. Use `show GlobalTheory.BranchFormula.IsBlock hN (inN R.θ _ (g.x B.R.m).B (rankN (I.rec7 l Z) B.R.m le_rfl) ((g.oT B.R.m rfl).emb (k, 1)) τ) (inN R.θ _ (fun _ => 1) (rankP (I.rec7 l Z)) k τ) 1`. Rewrite using `[hB]`. Use `first`. Consider the case `simpa only [inN_one] using hb`.
-
-Consider the case `simpa [inN, GlobalTheory.SeeSaw.inB, infM] using hb`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdForm.realOf_is : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL] (R : RealDat (I.rec7 l Z) F Ks) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ s : ℕ → ℂ) J, PinX I l Z R.ψ R.θ g.x g.vac c₀ → ∀ j : SmT R.MX →ₗ[ℂ] (FrP (I.rec7 l Z) → ℂ), GlobalTheory.Core.Rk.Top.IsJ u R.MX j → JOf R j J → IsEmbTop (D := (I.rec7 l Z)) (TC.z0 X u) ((g.oT B.R.m rfl).emb.comp (MonoidHom.inl _ _)) → (realOf u R g s J).Is := by
   intro B X I hOk hPins l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J hX j hJ hJO hEmb

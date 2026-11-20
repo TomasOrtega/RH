@@ -20,7 +20,7 @@ def blk (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (u : F
   if h : k ≤ (i : ℕ) ∧ (i : ℕ) < k + r + 1 then ∑ l : Fin (r + 1), P l ⟨i - k, by omega⟩ • u ⟨k + l, by omega⟩ else u i
 
 /- English proof (translation)
-Establish `h : k ≤ k + (i : ℕ) ∧ k + (i : ℕ) < k + r + 1` using `by omega`. Simplify using `only [blk, dif_pos h, Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_add (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (u : Fin m → N) (i : Fin (r + 1)) :
     blk hj P u ⟨k + i, by omega⟩ = ∑ l : Fin (r + 1), P l i • u ⟨k + l, by omega⟩ := by
@@ -28,7 +28,7 @@ theorem blk_add (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R
   simp only [blk, dif_pos h, Nat.add_sub_cancel_left]
 
 /- English proof (translation)
-Unfold `blk`. Use `split_ifs`. Simplify using `only [map_sum, map_smulₛₗ, Matrix.map_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_blk (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (u : Fin m → N) {φ : R →+* R'}
     (g : N →ₛₗ[φ] N') (i : Fin m) : g (blk hj P u i) = blk hj (P.map φ) (fun j => g (u j)) i := by
@@ -38,9 +38,9 @@ theorem map_blk (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : k ≤ (i : ℕ) ∧ (i : ℕ) < k + r + 1`. Rewrite using `[blk, dif_pos h] conv_rhs => rw [blk, dif_pos h]`. Simplify using `only [blk_add, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_comm]`. Simplify using `only [blk, dif_neg h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blk_blk (hj : k + r + 1 ≤ m) (P Q : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (u : Fin m → N) :
     blk hj Q (blk hj P u) = blk hj (P * Q) u := by
@@ -54,9 +54,9 @@ theorem blk_blk (hj : k + r + 1 ≤ m) (P Q : Matrix (Fin (r + 1)) (Fin (r + 1))
   · simp only [blk, dif_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : k ≤ (i : ℕ) ∧ (i : ℕ) < k + r + 1`. Rewrite using `[blk, dif_pos h]`. Simplify using `only [Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using `only [blk, dif_neg h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem blk_one (hj : k + r + 1 ≤ m) (u : Fin m → N) : blk hj (1 : Matrix _ _ R) u = u := by
   funext i
@@ -70,9 +70,9 @@ theorem blk_one (hj : k + r + 1 ≤ m) (u : Fin m → N) : blk hj (1 : Matrix _ 
   · simp only [blk, dif_neg h]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `hi' : (i : ℕ) < e` using `hi`. Distinguish the cases in `h : k ≤ (i : ℕ) ∧ (i : ℕ) < k + r + 1`. Rewrite using `[blk, dif_pos h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations. Use `show k + (l : ℕ) < e`. Use linear arithmetic over natural numbers and integers. Rewrite using `[blk, dif_neg h]`. Conclude with `Submodule.subset_span ⟨i, hi, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initSpan_blk_le (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (u : Fin m → N) {e : ℕ}
     (he : e ≤ k ∨ k + r + 1 ≤ e) : initSpan R (blk hj P u) e ≤ initSpan R u e := by
@@ -88,7 +88,7 @@ theorem initSpan_blk_le (hj : k + r + 1 ≤ m) (P : Matrix (Fin (r + 1)) (Fin (r
     exact Submodule.subset_span ⟨i, hi, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[initSpan, ← Set.image_univ]`. Use `congr 2`. Conclude with `Set.eq_univ_of_forall fun j => j.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem initSpan_top (u : Fin m → N) : initSpan R u m = Submodule.span R (Set.range u) := by
   rw [initSpan, ← Set.image_univ]
@@ -96,7 +96,7 @@ theorem initSpan_top (u : Fin m → N) : initSpan R u m = Submodule.span R (Set.
   exact Set.eq_univ_of_forall fun j => j.2
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `hP`. Use `le_antisymm (initSpan_blk_le hj _ u he) ?_` and prove the remaining obligations. Use `initSpan_blk_le hj (P⁻¹).val (blk hj P.val u) he` as an intermediate fact. Rewrite `this` using `[blk_blk, Units.mul_inv, blk_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem initSpan_blk (hj : k + r + 1 ≤ m) {P : Matrix (Fin (r + 1)) (Fin (r + 1)) R} (hP : IsUnit P) (u : Fin m → N)
     {e : ℕ} (he : e ≤ k ∨ k + r + 1 ≤ e) : initSpan R (blk hj P u) e = initSpan R u e := by
@@ -106,11 +106,9 @@ theorem initSpan_blk (hj : k + r + 1 ≤ m) {P : Matrix (Fin (r + 1)) (Fin (r + 
   rwa [blk_blk, Units.mul_inv, blk_one] at this
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `hP`. Establish `key : ∀ {N : Type} [AddCommGroup N] [Module R N] (Q : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (v : Fin m → N), Fintype.linearCombination R v ∘ blk hj Q (Pi.basisFun R (Fin m)) = blk hj Q v` using `fun Q v => by`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, map_blk]`. Simplify using `[Fintype.linearCombination_apply_single]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : LinearIndependent R (blk hj P.val (Pi.basisFun R (Fin m)))`. Use `LinearIndependent.of_comp (Fintype.linearCombination R (blk hj (P⁻¹).val (Pi.basisFun R (Fin m)))) ?_` and prove the remaining obligations. Rewrite using `[key, blk_blk, Units.inv_mul, blk_one]`. Conclude with `(Pi.basisFun R (Fin m)).linearIndependent`. Rewrite using `[← key]`.
-
-Conclude with `h1.map' _ (LinearMap.ker_eq_bot'.2 fun a ha => funext (Fintype.linearIndependent_iff.1 hu a ha))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_blk (hj : k + r + 1 ≤ m) {P : Matrix (Fin (r + 1)) (Fin (r + 1)) R} (hP : IsUnit P)
     {u : Fin m → N} (hu : LinearIndependent R u) : LinearIndependent R (blk hj P u) := by
@@ -128,13 +126,13 @@ theorem linearIndependent_blk (hj : k + r + 1 ≤ m) {P : Matrix (Fin (r + 1)) (
   exact h1.map' _ (LinearMap.ker_eq_bot'.2 fun a ha => funext (Fintype.linearIndependent_iff.1 hu a ha))
 
 /- English proof (translation)
-The claim follows from `hu.notMem_span_image (lt_irrefl (i : ℕ))`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_initSpan [Nontrivial R] {u : Fin m → N} (hu : LinearIndependent R u) (i : Fin m) :
     u i ∉ initSpan R u i := hu.notMem_span_image (lt_irrefl (i : ℕ))
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with h' | h'` into its components or cases. Conclude with `h (Submodule.subset_span ⟨j, h', rfl⟩)`. Rewrite using `[Fin.ext h']` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem initSpan_succ_le {u : Fin m → N} {W : Submodule R N} (i : Fin m) (h : initSpan R u i ≤ W) (hi : u i ∈ W) :
     initSpan R u (i + 1) ≤ W := by
@@ -145,15 +143,15 @@ theorem initSpan_succ_le {u : Fin m → N} {W : Submodule R N} (i : Fin m) (h : 
   · rwa [Fin.ext h']
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj', rfl⟩` from `hx`. Establish `hj'' : (j : ℕ) < k + r + 1` using `hj'`. Distinguish the cases in `h : (j : ℕ) < k`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: u j ∈ initSpan R u k` using `Submodule.subset_span ⟨j, h, rfl⟩`. Conclude with `⟨0, by simpa using this⟩`. Use `⟨Pi.single ⟨j - k, by omega⟩ 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `: (⟨k + (j - k), by omega⟩ : Fin m) = j` using `Fin.ext (by simp only; omega)`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, sub_self]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Consider the case `smul s x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨s • a, ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ s ha using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul, smul_sub, Finset.smul_sum, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem (hj : k + r + 1 ≤ m) (u : Fin m → N) {w : N} (hw : w ∈ initSpan R u (k + r + 1)) :
     ∃ v : Fin (r + 1) → R, w - ∑ l : Fin (r + 1), v l • u ⟨k + l, by omega⟩ ∈ initSpan R u k := by
@@ -184,9 +182,9 @@ theorem exists_sub_mem (hj : k + r + 1 ≤ m) (u : Fin m → N) {w : N} (hw : w 
     simp only [Pi.smul_apply, smul_eq_mul, smul_sub, Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[initSpan_top, show Set.range (fun i : Fin k => b (.inl i)) = b '' Set.range Sum.inl from by`. Rewrite using `[← Set.range_comp]`. Use the proof step `rfl, b.mem_span_image]`. Use `⟨fun h j => ?_, fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `h (Finsupp.mem_support_iff.2 h')`. Consider the cases of `hi`. Introduce and unpack `(i | j) hi`. Conclude with `⟨i, rfl⟩`. Conclude with `absurd (h j) (Finsupp.mem_support_iff.1 hi)`.
+Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_initSpan_inl {n : ℕ} (b : Module.Basis (Fin k ⊕ Fin n) R N) (v : N) :
     v ∈ initSpan R (fun i : Fin k => b (.inl i)) k ↔ ∀ j, b.repr v (.inr j) = 0 := by
@@ -207,7 +205,7 @@ section Carry
 variable {Z Z' : Scheme.{0}} {C : Coc Z} {f : Z' ⟶ Z} {L : C.Line f} {S : Type} [CommRing S] {w : Sp S ⟶ Z'}
 
 /- English proof (translation)
-Introduce `β hw` and use `by obtain ⟨u, hu⟩ := hξ β hw refine ⟨s * u, ?_⟩ rw [Matrix.mulVec_smul, hu] funext i simp only [Pi.smul_apply, smul_eq_mul, Units.val_mul, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem carries_smul {α : C.A} {h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α} {ξ : Fin (C.n α) → S} (hξ : L.Carries w α h ξ) (s : Sˣ) :
     L.Carries w α h ((s : S) • ξ) := fun β hw => by
@@ -218,7 +216,7 @@ theorem carries_smul {α : C.A} {h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α} {ξ : Fi
   simp only [Pi.smul_apply, smul_eq_mul, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `γ hw` and use `by obtain ⟨u, hu⟩ := hξ γ hw rw [Matrix.mulVec_mulVec, Coc.tr_mul] at hu exact ⟨u, hu⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem carries_tr {α β : C.A} {hα : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α} (hβ : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B β) {ξ : Fin (C.n β) → S}
     (hξ : L.Carries w α hα ((C.tr α β (w ≫ f) hα hβ).mulVec ξ)) : L.Carries w β hβ ξ := fun γ hw => by
@@ -227,7 +225,7 @@ theorem carries_tr {α β : C.A} {hα : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α} (hβ 
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-The claim follows from `FlagMod.exists_chart_of_isLocalRing (eq_top_iff.2 fun x _ => by obtain ⟨β, hβ⟩ := L.cover x exact TopologicalSpace.Opens.mem_iSup.2 ⟨β, hβ⟩) w`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart [IsLocalRing S] (L : C.Line f) (w : Sp S ⟶ Z') : ∃ β, ⊤ ≤ w ⁻¹ᵁ L.B β :=
   FlagMod.exists_chart_of_isLocalRing (eq_top_iff.2 fun x _ => by
@@ -242,7 +240,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {A : Atlas M π ty} {σ : E →+* ℂ} {k r : ℕ} {K : Type} [Field K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Rewrite using `[Vecs.bc, Vecs.bc, Vecs.bc, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_bc {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) (u : Vecs Dw M.t R) :
     (u.bc φ).bc ψ = u.bc (ψ.comp φ) := by
@@ -262,7 +260,7 @@ theorem crd_eq {m : ℕ} {U : X.Opens} {hU : IsAffineOpen U}
     (h : ⊤ ≤ z ⁻¹ᵁ U) (v : TanM (z ≫ π) M.t.G) : crd b z h v = crdL b z h v := rfl
 
 /- English proof (translation)
-Rewrite using `[D.int α K z h u hu k le_rfl, mem_initSpan_inl]`. Conclude with `funext_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crdL_eq_zero_iff (D : Adapted A σ k) {z : Sp K ⟶ X} {u : TVecs Dw M.t (z ≫ π)} (hu : A.FlagAt z (up u))
     (α : D.C.A) (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α) (v : TanM (z ≫ π) M.t.G) :
@@ -271,7 +269,7 @@ theorem crdL_eq_zero_iff (D : Adapted A σ k) {z : Sp K ⟶ X} {u : TVecs Dw M.t
   exact funext_iff
 
 /- English proof (translation)
-Take `⟨a, φ, -, hf, -⟩` from `hu`. Conclude with `((isFrame_up_iff _ _).1 hf τ).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_flagAt {z : Sp K ⟶ X} {u : TVecs Dw M.t (z ≫ π)} (hu : A.FlagAt z (up u)) (τ : E →+* ℂ) :
     LinearIndependent K (u τ) := by
@@ -286,22 +284,20 @@ variable {D : Adapted A σ k} {hk : k < Dw.mult σ} {X' : Scheme.{0}} {f : X' �
   {u u' : TVecs Dw M.t ((w ≫ f) ≫ π)} {ty' : (E →+* ℂ) → Finset ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hu, fun β hβ => carries_tr (hα := h) hβ (by rwa [D.coord])⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_of_one (hu : A.FlagAt (w ≫ f) (up u)) {α : D.C.A} {h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ D.C.B α}
     (hc : L.Carries w α h (crd (D.b α) (w ≫ f) h (u σ ⟨k, hk⟩))) : Good D hk L w u :=
   ⟨hu, fun β hβ => carries_tr (hα := h) hβ (by rwa [D.coord])⟩
 
 /- English proof (translation)
-Introduce `τ j hj`. Distinguish the cases in `hτ : τ = σ`. Use `swap`. Conclude with `(h'.1.initSpan_eq h.1 τ (h2 τ hτ ▸ hj)).le`. Substitute `hτ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hj` using `[h1, Finset.mem_insert]`. Break down `hj with rfl | hj` into its components or cases. Use `swap`. Conclude with `(h'.1.initSpan_eq h.1 τ hj).le`. Take `⟨β, hβ⟩` from `exists_chart L w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hα` using `le_preimage_map f (L.le β) hβ`. Take `⟨s, hs⟩` from `h.2 _ hα β hβ`. Take `⟨s', hs'⟩` from `h'.2 _ hα β hβ`. Rewrite `hs`, `hs'` using `[Coc.tr_self, Matrix.one_mulVec, crd_eq]`. Establish `hle` using `FlagMod.initSpan_mono (R := K) (u τ) (Nat.le_succ k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `initSpan_succ_le ⟨k, hk⟩ (fun v hv => hle ?_) ?_` and prove the remaining obligations. Conclude with `(crdL_eq_zero_iff D h.1 _ hα v).1 ((crdL_eq_zero_iff D h'.1 _ hα v).2 hv)`. Establish `: u' τ ⟨k, hk⟩ - ((s' * s⁻¹ : Kˣ) : K) • u τ ⟨k, hk⟩ ∈ initSpan K (u τ) k`. Rewrite using `[← crdL_eq_zero_iff D h.1 _ hα, map_sub, map_smul, hs, hs']`. Use function extensionality and compare the values at `i`.
-
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Units.val_mul, Pi.zero_apply, mul_assoc, Units.inv_mul_cancel_left, sub_self]`. Establish `h3 : u τ ⟨k, hk⟩ ∈ initSpan K (u τ) (k + 1)` using `Submodule.subset_span ⟨_, Nat.lt_succ_self k, rfl⟩`. Simplify using `using Submodule.add_mem _ (hle this) (Submodule.smul_mem _ ((s' * s⁻¹ : Kˣ) : K) h3)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Good.le (h : Good D hk L w u) (h' : Good D hk L w u') (h1 : ty' σ = insert (k + 1) (ty σ))
     (h2 : ∀ σ', σ' ≠ σ → ty' σ' = ty σ') : ∀ τ, ∀ j ∈ ty' τ, initSpan K (u' τ) j ≤ initSpan K (u τ) j := by
@@ -331,13 +327,13 @@ theorem Good.le (h : Good D hk L w u) (h' : Good D hk L w u') (h1 : ty' σ = ins
     simpa using Submodule.add_mem _ (hle this) (Submodule.smul_mem _ ((s' * s⁻¹ : Kˣ) : K) h3)
 
 /- English proof (translation)
-Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Establish `hsub : ∀ τ, ∀ j ∈ ty τ, j ∈ ty' τ` using `fun τ j hj => by`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_insert_of_mem hj`. Rewrite using `[h2 τ hτ]` and apply the resulting hypothesis. Establish `hi` using `linearIndependent_of_flagAt h.1`. Establish `hF : A.FlagAt (w ≫ f) (up u')` using `(A.flagAt_iff e h₀ u').2 ⟨hf, fun τ j hj => (initSpan_eq_of_le (hi τ) ((isFrame_up_iff _ _).1 hf τ).1 (hle τ j (hsub τ j hj))).trans (((A.flagAt_iff e h₀ u).1 h.1).2 τ j hj)⟩`. Use `⟨hF, fun α hα => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : u' σ ⟨k, hk⟩ ∈ initSpan K (u' σ) (k + 1)` using `Submodule.subset_span ⟨_, Nat.lt_succ_self k, rfl⟩`. Take `⟨s, hs, -⟩` from `FlagMod.existsUnique_sub_mem_initSpan (hi σ) ⟨k, hk⟩ (hle σ (k + 1) (h1 ▸ Finset.mem_insert_self _ _) h3)`. Establish `hs'` using `(crdL_eq_zero_iff D h.1 α hα _).2 hs`. Rewrite `hs'` using `[map_sub, map_smul, sub_eq_zero]`. Establish `h0 : s ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hs'` using `[zero_smul, crdL_eq_zero_iff D hF]`. Conclude with `not_mem_initSpan (linearIndependent_of_flagAt hF σ) ⟨k, hk⟩ hs'`. Rewrite using `[crd_eq, hs']`. Conclude with `carries_smul (h.2 α hα) (Units.mk0 s h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.of_le (h : Good D hk L w u) {a : A.ch.ι} {φ : A.ch.R a →+* K} (e : spMap φ ≫ A.ch.χ a = w ≫ f)
     (hf : LocM.IsFrame M.t (φ.comp (A.alg a)) ((w ≫ f) ≫ π) (up u')) (h1 : ty' σ = insert (k + 1) (ty σ))
@@ -373,7 +369,7 @@ def chg (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] (P : Matrix (Fin
     {x : Sp S ⟶ M.X} (u : TVecs Dw M.t x) : TVecs Dw M.t x := Function.update u σ (blk hj P (u σ))
 
 /- English proof (translation)
-Unfold `chg`. Use `Function.update_self σ _ u` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem chg_self (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] (P : Matrix (Fin (r + 1)) (Fin (r + 1)) S)
     {x : Sp S ⟶ M.X} (u : TVecs Dw M.t x) : chg hj P u σ = blk hj P (u σ) := by
@@ -382,7 +378,7 @@ theorem chg_self (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] (P : Ma
   convert Function.update_self σ _ u
 
 /- English proof (translation)
-Unfold `chg`. Use `Function.update_of_ne h _ u` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem chg_ne (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] (P : Matrix (Fin (r + 1)) (Fin (r + 1)) S)
     {x : Sp S ⟶ M.X} (u : TVecs Dw M.t x) {τ : E →+* ℂ} (h : τ ≠ σ) : chg hj P u τ = u τ := by
@@ -391,9 +387,9 @@ theorem chg_ne (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] (P : Matr
   convert Function.update_of_ne h _ u
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[isFrame_up_iff]`. Introduce `τ`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Rewrite using `[chg_self, ← initSpan_top, initSpan_blk hj hP _ (Or.inr hj), initSpan_top]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨linearIndependent_blk hj hP (hu τ).1, (hu τ).2⟩`. Rewrite using `[chg_ne hj P u hτ]`. Conclude with `hu τ`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_chg (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] {P : Matrix (Fin (r + 1)) (Fin (r + 1)) S}
     (hP : IsUnit P) {x : Sp S ⟶ M.X} {u : TVecs Dw M.t x} {g : c.F →+* S} (hu : LocM.IsFrame M.t g x (up u)) :
@@ -408,7 +404,7 @@ theorem isFrame_chg (hj : k + r + 1 ≤ Dw.mult σ) {S : Type} [CommRing S] {P :
     exact hu τ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Rewrite using `[chg_self, chg_self, map_blk]`. Rewrite using `[chg_ne hj _ _ hτ, chg_ne hj _ _ hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanPull_chg (hj : k + r + 1 ≤ Dw.mult σ) {S S' : Type} [CommRing S] [CommRing S']
     (P : Matrix (Fin (r + 1)) (Fin (r + 1)) S) (φ : S →+* S') {x : Sp S ⟶ M.X} {x' : Sp S' ⟶ M.X}
@@ -421,9 +417,9 @@ theorem tanPull_chg (hj : k + r + 1 ≤ Dw.mult σ) {S S' : Type} [CommRing S] [
   · rw [chg_ne hj _ _ hτ, chg_ne hj _ _ hτ]
 
 /- English proof (translation)
-Take `⟨a, φ, e, -⟩` from `id hu`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Take `⟨h1, h2⟩` from `(A.flagAt_iff e h₀ u).1 hu`. Use `(A.flagAt_iff e h₀ _).2 ⟨isFrame_chg hj hP h1, fun τ j hj' => Eq.trans ?_ (h2 τ j hj')⟩` and prove the remaining obligations. Distinguish the cases in `hτ : τ = σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hτ` using the available equality. Rewrite using `[chg_self, initSpan_blk hj hP _ (hty j hj')]`. Rewrite using `[chg_ne hj _ _ hτ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagAt_chg (hj : k + r + 1 ≤ Dw.mult σ) (hty : ∀ e ∈ ty σ, e ≤ k ∨ k + r + 1 ≤ e)
     {P : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hP : IsUnit P) {z : Sp K ⟶ X} {u : TVecs Dw M.t (z ≫ π)}
@@ -438,7 +434,7 @@ theorem flagAt_chg (hj : k + r + 1 ≤ Dw.mult σ) (hty : ∀ e ∈ ty σ, e ≤
   · rw [chg_ne hj _ _ hτ]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Simplify using `only [map_smul, ← crd_eq, ← hS a K φ z e h u hu]`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crdL_sum {Sb : D.C.Sub A.ch r} {hj : k + r + 1 ≤ Dw.mult σ} (hS : IsFrSub D Sb hj) {a : A.ch.ι}
     {φ : A.ch.R a →+* K} {z : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ a = z) (h : ⊤ ≤ z ⁻¹ᵁ D.C.B (Sb.α a))
@@ -450,15 +446,15 @@ theorem crdL_sum {Sb : D.C.Sub A.ch r} {hj : k + r + 1 ≤ Dw.mult σ} (hS : IsF
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `hu.exists_up`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr (φ := φ) rfl`. Take `⟨h1, h2⟩` from `(A.flagAt_iff rfl h₀ U).1 hu`. Establish `hF : A.FlagAt (spMap φ ≫ A.ch.χ a) (up u₀)` using `h₀ ▸ A.flagAt_fr rfl`. Establish `h3 : U σ ⟨k, hk⟩ ∈ initSpan K (u₀ σ) (k + r + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : U σ ⟨k, hk⟩ ∈ initSpan K (U σ) (k + r + 1)` using `Submodule.subset_span ⟨_, show k < k + r + 1 by omega, rfl⟩`. Break down `hty with h | h` into its components or cases. Rewrite using `[← h2 σ _ h]` and apply the resulting hypothesis. Establish `f₀` using `A.isFrame_bc (φ := φ) rfl`. Rewrite `f₀` using `[← h₀]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, initSpan_top, ((isFrame_up_iff _ _).1 f₀ σ).2, ← ((isFrame_up_iff _ _).1 h1 σ).2]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Take `⟨v, hv⟩` from `exists_sub_mem hj _ h3`. Establish `key : ∀ h, crd (D.b (Sb.α a)) _ h (U σ ⟨k, hk⟩) = ((Sb.M a).map φ).mulVec v` using `fun h => by`. Use `(crdL_eq_zero_iff D hF _ h _).2 hv` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_sub, sub_eq_zero, crdL_sum hS rfl h h₀]`. Then use the resulting hypothesis. Use `⟨v, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `key (le_preimage_comp _ (Sb.le a))` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_zero, crd_eq, crdL_eq_zero_iff D hu]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `not_mem_initSpan (linearIndependent_of_flagAt hu σ) ⟨k, hk⟩ this`. Introduce and unpack `z rfl U' hU'`. Rewrite using `[up_injective hU']`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vec {Sb : D.C.Sub A.ch r} {hj : k + r + 1 ≤ Dw.mult σ} (hS : IsFrSub D Sb hj)
     (hty : k + r + 1 ∈ ty σ ∨ k + r + 1 = Dw.mult σ) (hk : k < Dw.mult σ) {a : A.ch.ι}
@@ -497,7 +493,7 @@ variable {D : Adapted A σ k} {Sb : D.C.Sub A.ch r} (Cl : Sb.Closure (π ≫ M.s
 def frBelow (q : Cl.ch'.ι) : TVecs Dw M.t ((Cl.ch'.χ q ≫ Cl.f) ≫ π) := (A.exists_up_fr (Cl.sq q).symm).choose
 
 /- English proof (translation)
-The claim follows from `(A.exists_up_fr (Cl.sq q).symm).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem up_frBelow (q : Cl.ch'.ι) : up (frBelow Cl q) = (A.fr (Cl.b q)).bc (Cl.ρ q) :=
   (A.exists_up_fr (Cl.sq q).symm).choose_spec
@@ -508,7 +504,7 @@ def pre (hj : k + r + 1 ≤ Dw.mult σ) : PreAtlas M Cl.Z' where
   fr q := up (chg hj (Cl.P q) (frBelow Cl q))
 
 /- English proof (translation)
-Rewrite using `[chg_self]`. Conclude with `blk_add hj P _ 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chg_k (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) {S : Type} [CommRing S]
     (P : Matrix (Fin (r + 1)) (Fin (r + 1)) S) {x : Sp S ⟶ M.X} (u : TVecs Dw M.t x) :
@@ -517,22 +513,20 @@ theorem chg_k (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) {S : Type} [
   exact blk_add hj P _ 0
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp', Category.assoc, ← Cl.sq, ← Category.assoc, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_point (q : Cl.ch'.ι) {ψ : Cl.ch'.R q →+* K} {w : Sp K ⟶ Cl.Z'} (e : spMap ψ ≫ Cl.ch'.χ q = w) :
     spMap (ψ.comp (Cl.ρ q)) ≫ A.ch.χ (Cl.b q) = w ≫ Cl.f := by
   rw [← spMap_comp', Category.assoc, ← Cl.sq, ← Category.assoc, e]
 
 /- English proof (translation)
-Establish `e'` using `sq_point Cl q e`. Establish `e2 : spMap ψ ≫ (Cl.ch'.χ q ≫ Cl.f) ≫ π = (w ≫ Cl.f) ≫ π`. Rewrite using `[← e]`. Simplify using `only [Category.assoc]`. Set `U₀ : TVecs Dw M.t ((w ≫ Cl.f) ≫ π)` to `fun τ i => tanPull ψ e2 (frBelow Cl q τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h₀ : up U₀ = (A.fr (Cl.b q)).bc (ψ.comp (Cl.ρ q))`. Rewrite using `[up_tanPull ψ e2, up_frBelow, bc_bc]`. Establish `hF : A.FlagAt (w ≫ Cl.f) (up U₀)` using `h₀ ▸ A.flagAt_fr e'`. Establish `hP : IsUnit ((Cl.P q).map ψ)`. Use `(Cl.P_unit q).map (RingHom.mapMatrix ψ)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hU : (fun τ i => tanPull ψ e2 (chg hj (Cl.P q) (frBelow Cl q) τ i)) = chg hj ((Cl.P q).map ψ) U₀` using `tanPull_chg hj _ ψ e2 _`. Use `⟨chg hj ((Cl.P q).map ψ) U₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hU]`. Conclude with `up_tanPull ψ e2 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ⊤ ≤ (w ≫ Cl.f) ⁻¹ᵁ D.C.B (Sb.α (Cl.b q))` using `e' ▸ le_preimage_comp _ (Sb.le _)`. Use `good_of_one (flagAt_chg hj hty hP hF) (α := Sb.α (Cl.b q)) (h := h) ?_` and prove the remaining obligations. Rewrite using `[crd_eq, chg_k hj hk]`. Use `crdL_sum hS e' h h₀ (fun l => ψ (Cl.P q l 0))` as an intermediate fact. Simplify using `only [Matrix.map_apply]`.
-
-Rewrite using `[this]`. Conclude with `Cl.car q K ψ w e h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS : IsFrSub D Sb hj)
     (hty : ∀ e ∈ ty σ, e ≤ k ∨ k + r + 1 ≤ e) (q : Cl.ch'.ι) {ψ : Cl.ch'.R q →+* K} {w : Sp K ⟶ Cl.Z'}
@@ -562,15 +556,13 @@ theorem exists_good (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS : 
     exact Cl.car q K ψ w e h
 
 /- English proof (translation)
-Establish `ex : w ≫ Cl.f ≫ π = (w ≫ Cl.f) ≫ π` using `(Category.assoc _ _ _).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, ψ, e, hf, hs⟩`. Take `⟨U₀, hU₀, hg⟩` from `exists_good Cl hj hk hS hty q e`. Rewrite `hf`, `hs` using `[ex]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs' : SameFlag ty' M.t ((w ≫ Cl.f) ≫ π) (up U₀) (up U)` using `by rw [hU₀]; exact hs`. Rewrite `hs'` using `[sameFlag_up_iff]`. Conclude with `hg.of_le (sq_point Cl q e) hf h1 h2 hs'`. Introduce `hg`. Take `⟨a, φ, e, -⟩` from `id hg.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : w (IsLocalRing.closedPoint K) ∈ Cl.ch'.carrier`. Rewrite using `[Cl.carrier_eq]`. Conclude with `A.ch.range_subset e ⟨IsLocalRing.closedPoint K, rfl⟩`. Take `⟨q, ψ, eq⟩` from `Cl.ch'.exists_fac w hr`. Take `⟨U₀, hU₀, hg₀⟩` from `exists_good Cl hj hk hS hty q eq`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e'` using `sq_point Cl q eq`. Take `⟨u₁, h₁⟩` from `A.exists_up_fr e'`. Establish `hfr` using `((A.flagAt_iff e' h₁ U).1 hg.1).1`. Establish `hs` using `(sameFlag_up_iff U₀ U).2 (hg₀.le hg h1 h2)`. Rewrite `hs` using `[hU₀]`.
-
-Conclude with `⟨q, ψ, eq, by rw [ex]; exact hfr, by rw [ex]; exact hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pre_flagAt_iff (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS : IsFrSub D Sb hj)
     (hty : ∀ e ∈ ty σ, e ≤ k ∨ k + r + 1 ≤ e) (h1 : ty' σ = insert (k + 1) (ty σ))
@@ -599,7 +591,7 @@ theorem pre_flagAt_iff (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS
     exact ⟨q, ψ, eq, by rw [ex]; exact hfr, by rw [ex]; exact hs⟩
 
 /- English proof (translation)
-Rewrite using `[Cl.carrier_eq, A.cover]`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pre_cover : Cl.ch'.carrier = (Cl.f ≫ π) ⁻¹' Set.range M.j := by
   rw [Cl.carrier_eq, A.cover]
@@ -607,7 +599,7 @@ theorem pre_cover : Cl.ch'.carrier = (Cl.f ≫ π) ⁻¹' Set.range M.j := by
   simp only [Set.mem_preimage, Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Use `A.affineOpenChart_comp_structure_eq_spMap (Cl.sq q).symm` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_alg_s (q : Cl.ch'.ι) : Cl.ch'.χ q ≫ (Cl.f ≫ π) ≫ M.s =
     spMap (((Cl.ρ q).comp (A.alg (Cl.b q))).comp V.subtype) := by
@@ -616,9 +608,9 @@ theorem pre_alg_s (q : Cl.ch'.ι) : Cl.ch'.χ q ≫ (Cl.f ≫ π) ≫ M.s =
   exact this
 
 /- English proof (translation)
-Establish `h3 : Cl.ch'.χ q ≫ Cl.f ≫ π = spMap (Cl.ρ q) ≫ A.ch.χ (Cl.b q) ≫ π`. Rewrite using `[← Category.assoc, Cl.sq, Category.assoc]`. Use `Cl.smooth q` as an intermediate fact. Use `A.smooth (Cl.b q)` as an intermediate fact. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem pre_smooth (q : Cl.ch'.ι) : Smooth (Cl.ch'.χ q ≫ Cl.f ≫ π) := by
   have h3 : Cl.ch'.χ q ≫ Cl.f ≫ π = spMap (Cl.ρ q) ≫ A.ch.χ (Cl.b q) ≫ π := by
@@ -629,9 +621,9 @@ theorem pre_smooth (q : Cl.ch'.ι) : Smooth (Cl.ch'.χ q ≫ Cl.f ≫ π) := by
   infer_instance
 
 /- English proof (translation)
-Establish `hf` using `A.isFrame_bc (Cl.sq q).symm`. Establish `hf' : LocM.IsFrame M.t ((Cl.ρ q).comp (A.alg (Cl.b q))) ((Cl.ch'.χ q ≫ Cl.f) ≫ π) (up (frBelow Cl q))`. Rewrite using `[up_frBelow]`. Conclude with `hf`. Establish `h5 : ∀ {x x' : Sp (Cl.ch'.R q) ⟶ M.X} (_ : x = x') {v : Vecs Dw M.t (Cl.ch'.R q)}, LocM.IsFrame M.t ((Cl.ρ q).comp (A.alg (Cl.b q))) x v → LocM.IsFrame M.t ((Cl.ρ q).comp (A.alg (Cl.b q))) x' v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ _ rfl _ h`. Conclude with `h`. Conclude with `h5 (Category.assoc _ _ _) (isFrame_chg hj (Cl.P_unit q) hf')`.
+A detailed English derivation is pending.
 -/
 theorem pre_frame (hj : k + r + 1 ≤ Dw.mult σ) (q : Cl.ch'.ι) : LocM.IsFrame M.t ((Cl.ρ q).comp (A.alg (Cl.b q)))
     (Cl.ch'.χ q ≫ Cl.f ≫ π) (up (chg hj (Cl.P q) (frBelow Cl q))) := by
@@ -645,9 +637,9 @@ theorem pre_frame (hj : k + r + 1 ≤ Dw.mult σ) (q : Cl.ch'.ι) : LocM.IsFrame
   exact h5 (Category.assoc _ _ _) (isFrame_chg hj (Cl.P_unit q) hf')
 
 /- English proof (translation)
-Take `⟨U, hU, hg⟩` from `exists_good Cl hj hk hS hty q (rfl : spMap ψ ≫ Cl.ch'.χ q = _)`. Take `⟨U', hU', hg'⟩` from `exists_good Cl hj hk hS hty q' e.symm`. Establish `hs` using `(sameFlag_up_iff U U').2 (hg.le hg' h1 h2)`. Rewrite `hs` using `[hU, hU']`. Establish `ex : spMap ψ ≫ Cl.ch'.χ q ≫ Cl.f ≫ π = ((spMap ψ ≫ Cl.ch'.χ q) ≫ Cl.f) ≫ π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[ex]`. Conclude with `hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_glue (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS : IsFrSub D Sb hj)
     (hty : ∀ e ∈ ty σ, e ≤ k ∨ k + r + 1 ≤ e) (h1 : ty' σ = insert (k + 1) (ty σ))
@@ -702,7 +694,7 @@ def atlas (hj : k + r + 1 ≤ Dw.mult σ) (hk : k < Dw.mult σ) (hS : IsFrSub D 
 end Closure
 
 /- English proof (translation)
-Introduce `hS hty₀ hty h1 h2` and use `⟨atlas Cl hj hk hS hty₀ hty h1 h2, fun _ _ w U => pre_flagAt_iff Cl hj hk hS hty h1 h2 w U⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_stepAtlas (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F)

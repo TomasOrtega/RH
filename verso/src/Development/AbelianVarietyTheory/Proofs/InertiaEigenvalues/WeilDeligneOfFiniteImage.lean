@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h G _ _ π hπ n R μ hμ`. Establish `hsm : IsSmooth (R.comp π)` using `IsSmooth.of_le (f := π) hπ fun σ hσ => by simp [hσ]`. Establish `hss : ∀ σ, Module.End.IsSemisimple ((R.comp π) σ)`. Introduce `σ`. Establish `hu : IsUnit ((R.comp π) σ)` using `((R.comp π).toHomUnits σ).isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `FrobSemisimple.isSemisimple_of_pow hu (m := Nat.card G) Nat.card_pos ?_` and prove the remaining obligations. Rewrite using `[← map_pow, MonoidHom.comp_apply, map_pow, pow_card_eq_one', map_one]`. Conclude with `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (p := Polynomial.X - Polynomial.C 1) (Polynomial.irreducible_X_sub_C 1).squarefree (by simp)`. Set `b0 : WDRep h (Fin n → ℂ)` to `{ ρ := R.comp π N := 0 smooth := hsm semisimple := hss nilpotent := IsNilpotent.zero comm := fun σ => by simp }`. Conclude with `⟨b0.twist μ hμ, fun σ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_wdRep_pull_finite_twist :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]

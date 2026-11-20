@@ -20,13 +20,13 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {F : Set (Matrix (Fin n) 
 
 include hP in
 /- English proof (translation)
-Use `set y := aeval x P with hydef`. Take `⟨hyF, hyS, -, -⟩` from `hP x hx`. Take `⟨-, hzS, hzN, -⟩` from `hP y hyF`. Establish `e : ∀ M : Matrix (Fin n) (Fin n) k, Matrix.toLinAlgEquiv' M = Matrix.toLin' M` using `fun M => rfl`. Establish `hc : Commute y (aeval y P)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Commute.all (X : k[X]) P).map (aeval y)` as an intermediate fact. Rewrite `this` using `[aeval_X]`. Then use the resulting hypothesis. Establish `hc' : Commute (Matrix.toLin' y) (Matrix.toLin' (aeval y P))`. Use `hc.map (Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] _)` as an intermediate fact. Rewrite `this` using `[e, e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hS : Module.End.IsSemisimple (Matrix.toLin' (y - aeval y P))`. Rewrite using `[map_sub]`. Conclude with `Module.End.IsSemisimple.sub_of_commute hc' hyS hzS`. Establish `hN : IsNilpotent (Matrix.toLin' (y - aeval y P))`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hzN.map _`. Establish `h0` using `Module.End.eq_zero_of_isNilpotent_isSemisimple hN hS`. Rewrite `h0` using `[← e, map_eq_zero_iff _ (AlgEquiv.injective _), sub_eq_zero]`. Conclude with `h0.symm`.
+A detailed English derivation is pending.
 -/
 theorem P_idem [CharZero k] {x} (hx : x ∈ F) : aeval (aeval x P) P = aeval x P := by
   set y := aeval x P with hydef
@@ -51,13 +51,13 @@ theorem P_idem [CharZero k] {x} (hx : x ∈ F) : aeval (aeval x P) P = aeval x P
 
 include hP in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hP x hx).1, P_idem hP hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem P_mem_Tset [CharZero k] {x} (hx : x ∈ F) : aeval x P ∈ Tset F P := ⟨(hP x hx).1, P_idem hP hx⟩
 
 include hP in
 /- English proof (translation)
-Take `⟨hxF, hxP⟩` from `hx`. Take `⟨-, -, -, g, hg, hgs⟩` from `hP x hxF`. Rewrite `hgs` using `[hxP]`. Conclude with `⟨g, hg, hgs⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_conj_eq_semisimple {x} (hx : x ∈ Tset F P) : ∃ g ∈ Gz Z, cj g x = s := by
   obtain ⟨hxF, hxP⟩ := hx
@@ -66,7 +66,7 @@ theorem exists_conj_eq_semisimple {x} (hx : x ∈ Tset F P) : ∃ g ∈ Gz Z, cj
   exact ⟨g, hg, hgs⟩
 
 /- English proof (translation)
-Use `@ContinuousSMul.mk _ _ (actT hFinv).toSMul _ _ ?_` and prove the remaining obligations. Conclude with `(((Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)).matrix_mul (continuous_subtype_val.comp continuous_snd)).matrix_mul (Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_fst))).subtype_mk _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousSMul_actT : @ContinuousSMul (GzS Z) (Tset F P) (actT hFinv).toSMul _ _ := by
   refine @ContinuousSMul.mk _ _ (actT hFinv).toSMul _ _ ?_
@@ -76,11 +76,9 @@ theorem continuousSMul_actT : @ContinuousSMul (GzS Z) (Tset F P) (actT hFinv).to
 
 include hP in
 /- English proof (translation)
-Use `@MulAction.IsPretransitive.mk _ _ (actT hFinv).toSMul ?_` and prove the remaining obligations. Introduce `x y`. Take `⟨a, ha, hax⟩` from `exists_conj_eq_semisimple hP x.2`. Take `⟨b, hb, hby⟩` from `exists_conj_eq_semisimple hP y.2`. Use `⟨⟨b⁻¹ * a, (GzS Z).mul_mem ((GzS Z).inv_mem hb) ha⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show cj (b⁻¹ * a) x.1 = y.1`. Simplify using `only [cj] at hax hby ⊢`. Simplify using `only [_root_.mul_inv_rev, inv_inv, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = (b⁻¹ : GL (Fin n) k).val * (b.val * y.1 * b⁻¹.val) * b.val := by rw [hax, hby]`. Use `_ = y.1 := by simp [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPretransitive_actT (hsT : s ∈ Tset F P) : @MulAction.IsPretransitive (GzS Z) (Tset F P) (actT hFinv).toSMul := by
   refine @MulAction.IsPretransitive.mk _ _ (actT hFinv).toSMul ?_

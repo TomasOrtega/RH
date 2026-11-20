@@ -15,61 +15,53 @@ namespace DiscreteGroups.T1.G.CP
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨‖ψ.1 1‖ * ‖φ.1 1‖, fun x _ z _ => ?_⟩` and prove the remaining obligations. Establish `h1 : x = 1` using `Units.ext (Subsingleton.elim _ _)`. Rewrite using `[h1, one_mul, show z = 1 from Units.ext (Subsingleton.elim _ _)]`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := E) n`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hd0 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `had : n * Module.finrank ℚ E ≠ 0` using `(Nat.mul_pos hn hd0).ne'`. Use `set m : AdelicGLn.AdelicGL E n → ℝ := fun b => (IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) : ℝ) with hm`. Establish `hmpos : ∀ b, 0 < m b` using `fun b => (IdeleGroup.ideleModule E _).2`. Use `set s : AdelicGLn.AdelicGL E n → ℝ := fun b => m b ^ (((n * Module.finrank ℚ E : ℕ) : ℝ)⁻¹) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspos : ∀ b, 0 < s b` using `fun b => Real.rpow_pos_of_pos (hmpos b) _`. Establish `hspow : ∀ b, s b ^ (n * Module.finrank ℚ E) = m b` using `fun b => Real.rpow_inv_natCast_pow (hmpos b).le had`. Use `set f : AdelicGLn.AdelicGL E n → AdelicGLn.AdelicGL E n := fun b => b * (diagUnits n (fun _ : Fin n => posIdele (K := E) (s b) (hspos b)))⁻¹ with hf`. Establish `hmc : Continuous m` using `continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E n))`. Establish `hsc : Continuous fun b => (⟨s b, hspos b⟩ : {r : ℝ // 0 < r})` using `Continuous.subtype_mk (hmc.rpow_const fun b => Or.inl (hmpos b).ne') _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous f` using `continuous_id.mul ((continuous_diagUnits n).comp (continuous_pi fun _ => GlobalTheory.CuspBoundSiegel.continuous_posIdele_pos.comp hsc)).inv`. Establish `hω'c : IsCompact (f '' ω)` using `hω.image hfc`. Establish `hω'B : f '' ω ⊆ (adelicBorel (K` using `E) (n := n) : Set (AdelicGLn.AdelicGL E n)) := by`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `mul_mem (hωB hb) (inv_mem (diagUnits_mem_adelicBorel n _))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hω'1 : ∀ b ∈ f '' ω, (IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) : ℝ) = 1`. Introduce and unpack `_ ⟨b, -, rfl⟩`. Establish `e : IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det (diagUnits n (fun _ : Fin n => posIdele (K` using `E) (s b) (hspos b)))) = IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) := Subtype.ext (by rw [GlobalTheory.CuspBoundSiegel.ideleModule_det_diagUnits_posIdele, hspow])`. Simplify using `only [hf, map_mul, map_inv, e, mul_inv_cancel]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N0, hN0⟩` from `uniform_exp φ hφ`. Establish `hQc : IsCompact ((maxCompact (K` using `E) (n := n) : Set (GA E n)) * Ω) := (isCompact_maxCompact (K := E) (n := n)).mul hΩ`. Take `⟨C2, hC20, hC2⟩` from `uniform_growth0 φ hφ.level N0 hN0 (hω.mul hQc)`. Take `⟨B, hB0, hB⟩` from `GlobalTheory.ConstTermGrowth.height_mul_left_le (hQc.image (GlobalTheory.ConstTermGrowth.continuous_mapInf (E := E) (a := n)).inv)`. Establish `hlast : n - 1 < n` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set M : ℝ := 2 * (N0 : ℝ) with hM`. Use `set lam : Fin n → ℝ := fun i => (if i = (⟨n - 1, hlast⟩ : Fin n) then M else 0) - (if i = (⟨0, hn⟩ : Fin n) then M else 0) with hlam`. Take `⟨C1, hC1⟩` from `hRD E n ψ hψ (f '' ω) hω'c hω'B hω'1 t ht lam`. Take `⟨Bω, hBω⟩` from `hω.exists_bound_of_continuousOn (DiscreteGroups.T1.G.continuous_logAbs_det (E := E) (n := n)).continuousOn`. Use `set t₀ : ℝ := |Real.log t| with ht₀`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set S : ℝ := (R + Bω) / Module.finrank ℚ E with hSdef`. Use `⟨C1 * (C2 * (B * B * 3) ^ N0 * Real.exp (N0 * (S + 4 * n * t₀))), fun x hx z hz => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, _, ⟨r, hr, hrat, rfl⟩, k, hk, e⟩` from `hsieg x`. Use `set ℓ : Fin n → ℝ := fun i => Real.log (r i) with hℓ`. Establish `hsr : ∀ q, -t₀ ≤ PositivityTheory.Rg.Rs.An.sr ℓ q` using `fun q => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `PositivityTheory.Rg.Rs.An.sr`. Use `split_ifs with h`. Establish `h1` using `hrat ⟨q - 1, by omega⟩ ⟨q, h.2⟩ (by show q = q - 1 + 1; omega)`. Establish `h2` using `Real.log_le_log (mul_pos ht (hr _)) h1`. Rewrite `h2` using `[Real.log_mul ht.ne' (hr _).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `neg_abs_le (Real.log t)`. Simplify using `only [hℓ]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [ht₀, neg_nonpos]`. Conclude with `abs_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e2 : ratGL E n γ * x = b * diagUnits n (fun i => posIdele (K` using `E) (r i) (hr i)) * k := e`. Establish `hsum : |∑ i, ℓ i| ≤ S`. Establish `e1 : logAbs (ratGL E n γ * x).val.det = logAbs x.val.det` using `by rw [lAbs_mul, lAbs_rat, zero_add]`. Rewrite `e1` using `[e2, lAbs_mul, lAbs_mul, lAbs_diag, lAbs_maxCompact hk, add_zero]`. Establish `hbb` using `hBω b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hbb` using `[Real.norm_eq_abs]`. Establish `hdpos : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast hd0`. Establish `e3 : (Module.finrank ℚ E : ℝ) * ∑ i, ℓ i = logAbs x.val.det - logAbs b.val.det`. Simplify using `only [hℓ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hSdef, le_div_iff₀ hdpos, show |∑ i, ℓ i| * (Module.finrank ℚ E : ℝ) = |(Module.finrank ℚ E : ℝ) * ∑ i, ℓ i| by rw [abs_mul, abs_of_pos hdpos, mul_comm], e3]`. Conclude with `(abs_sub_le_abs_add_abs _ _).trans (add_le_add hx hbb)`. Establish `hprod : 0 < ∏ i, r i` using `Finset.prod_pos fun i _ => hr i`. Use `set ρ := (∏ i, r i) ^ ((n : ℝ)⁻¹) with hρ`. Establish `hρpos : 0 < ρ` using `Real.rpow_pos_of_pos hprod _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Establish `hρa : ρ ^ n = ∏ i, r i` using `Real.rpow_inv_natCast_pow hprod.le hn.ne'`. Use `set r' : Fin n → ℝ := fun i => r i / ρ with hr'`. Establish `hr'pos : ∀ i, 0 < r' i` using `fun i => div_pos (hr i) hρpos`. Establish `hD : diagUnits n (fun i => posIdele (K` using `E) (r i) (hr i)) = diagUnits n (fun _ : Fin n => posIdele (K := E) ρ hρpos) * diagUnits n (fun i => posIdele (K := E) (r' i) (hr'pos i)) := by`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, ← GlobalTheory.CuspBoundSiegel.posIdele_mul]`. Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (by simp only [hr']; field_simp)`. Use `set D' := diagUnits n (fun i => posIdele (K := E) (r' i) (hr'pos i)) with hD'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ratGL E n γ * x = splitCentre E n (Real.log (s b) + Real.log ρ) * (f b * D' * k)`. Express the relevant statement in the definitionally equal form `AdelicGLn.diagonal E n γ * x = _`. Rewrite using `[e, hD, GlobalTheory.CuspBoundSiegel.diagUnits_posIdele n hρpos, splitCentre_add]`. Simplify using `only [hf, GlobalTheory.CuspBoundSiegel.diagUnits_posIdele n (hspos b)]`. Use `symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hr'rat : ∀ i j : Fin n, (j : ℕ) = i + 1 → t * r' j ≤ r' i` using `fun i j hij => by`. Simplify using `only [hr']`. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (hrat i j hij) hρpos.le`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hr'prod : ∏ i, r' i = 1`. Simplify using `only [hr']`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hρa, div_self hprod.ne']`. Establish `hpsi0 : ‖ψ.1 x‖ ≤ C1 * ∏ i, r' i ^ lam i`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set L := ∑ q ∈ Finset.range n, PositivityTheory.Rg.Rs.An.sr ℓ q with hLdef`. Establish `hL : L = ℓ ⟨0, hn⟩ - ℓ ⟨n - 1, hlast⟩` using `sum_sr ℓ hn`. Establish `hlog : ∀ i, Real.log (r' i) = ℓ i - Real.log ρ` using `fun i => Real.log_div (hr i).ne' hρpos.ne'`. Establish `hprodlam : ∏ i, r' i ^ lam i = Real.exp (-(M * L))`. Rewrite using `[show ∏ i, r' i ^ lam i = ∏ i, Real.exp (Real.log (r' i) * lam i) from Finset.prod_congr rfl fun i _ => Real.rpow_def_of_pos (hr'pos i) _, ← Real.exp_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Simplify using `only [hlog, hlam, mul_sub, mul_ite, mul_zero, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hL]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpsi : ‖ψ.1 x‖ ≤ C1 * Real.exp (-(M * L))` using `by rw [← hprodlam]; exact hpsi0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `htor : diagUnits n (fun i => posIdele (K` using `E) (r i) (hr i)) = PositivityTheory.Rg.Rs.An.tor E ℓ := by`. Unfold `PositivityTheory.Rg.Rs.An.tor`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (Real.exp_log (hr i)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hq : k * z ∈ (maxCompact (K` using `E) (n := n) : Set (GA E n)) * Ω := Set.mul_mem_mul hk hz`. Establish `e4 : φ.1 (x * z) = φ.1 ((b * (k * z)) * infGL E n ((mI (k * z))⁻¹ * dg ℓ * mI (k * z)))`. Rewrite using `[← hφ.left γ (x * z), ← mul_assoc (ratGL E n γ) x z, e2, htor, mul_assoc _ k z, key0 b _ (k * z) (pFin_tor ℓ), mI, mI, pInf_tor]`. Establish `hz' : GlobalTheory.CuspRep.height ((mI (k * z))⁻¹ * dg (E` using `E) ℓ * mI (k * z)) ≤ B * B * GlobalTheory.CuspRep.height (dg (E := E) ℓ) := by`. Establish `h1` using `hB (mI (k * z))⁻¹ ⟨k * z, hq, rfl⟩ (dg ℓ * mI (k * z))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2` using `hB (mI (k * z))⁻¹ ⟨k * z, hq, rfl⟩ (dg ℓ)⁻¹`. Rewrite `h2` using `[← _root_.mul_inv_rev, height_inv', height_inv']`. Rewrite using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA0 : 0 ≤ S + 2 * (L + 2 * (n : ℝ) * t₀)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `bound_nonneg ℓ t₀ hsr`. Establish `h2` using `(abs_nonneg _).trans hsum`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcoord : ∀ i, |ℓ i| ≤ S + 2 * (L + 2 * (n : ℝ) * t₀)` using `fun i => coord_bound ℓ hn t₀ S hsr hsum i`. Establish `hD3` using `height_dg (E := E) ℓ _ hcoord hA0`.
-
-Establish `hphi : ‖φ.1 (x * z)‖ ≤ C2 * (B * B * (3 * Real.exp (S + 2 * (L + 2 * (n : ℝ) * t₀)))) ^ N0`. Rewrite using `[e4]`. Establish `hy1` using `one_le_height ((mI (k * z))⁻¹ * dg (E := E) ℓ * mI (k * z))`. Combine the equalities or inequalities in the displayed calculation. Establish `hC1' : 0 ≤ C1`.
-
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `mul_neg_of_neg_of_pos h (Real.exp_pos (-(M * L)))` as an intermediate fact. Combine the linear relations using `[norm_nonneg (ψ.1 x)]`. Establish `hexp : Real.exp (-(M * L)) * Real.exp (N0 * (S + 2 * (L + 2 * (n : ℝ) * t₀))) = Real.exp (N0 * (S + 4 * n * t₀))`.
-
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Real.exp_nat_mul, show B * B * (3 * Real.exp (S + 2 * (L + 2 * (n : ℝ) * t₀))) = B * B * 3 * Real.exp (S + 2 * (L + 2 * (n : ℝ) * t₀)) by ring, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hexp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cp_core (hRD : GlobalTheory.Published.CuspRapidDecaySiegelGL) (ψ φ : Sm E n) (hψ : IsCuspForm ψ)
     (hZ : ∀ t g, ψ.1 (splitCentre E n t * g) = ψ.1 g) (hφ : IsAutForm φ)

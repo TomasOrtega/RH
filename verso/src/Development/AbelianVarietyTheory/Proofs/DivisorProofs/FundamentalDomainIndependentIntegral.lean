@@ -9,7 +9,7 @@ section SymmetricUnfolding
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G]
 
 /- English proof (translation)
-Establish `hm : Measurable (Function.uncurry fun (p : H) (g : G) => (p : G) * g)` using `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Establish `h1 : MeasurePreserving (fun z : H × G => (id z.1, (z.1 : G) * z.2)) (ν.prod μ) (ν.prod μ)` using `MeasurePreserving.skew_product (MeasurePreserving.id ν) hm (Filter.Eventually.of_forall fun p => map_mul_left_eq_self μ (p : G))`. Conclude with `Measure.quasiMeasurePreserving_snd.comp h1.quasiMeasurePreserving`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quasiMeasurePreserving_subgroup_mul (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant]
     (H : Subgroup G) (ν : Measure H) [SFinite ν] :
@@ -22,15 +22,15 @@ theorem quasiMeasurePreserving_subgroup_mul (μ : Measure G) [SFinite μ] [μ.Is
   exact Measure.quasiMeasurePreserving_snd.comp h1.quasiMeasurePreserving
 
 /- English proof (translation)
-Establish `hq` using `quasiMeasurePreserving_subgroup_mul μ H ν`. Establish `hi : AEMeasurable (D.indicator (1 : G → ENNReal)) μ` using `(measurable_const.aemeasurable : AEMeasurable (fun _ : G => (1 : ENNReal)) μ).indicator₀ hD`. Establish `h1 : AEMeasurable (fun z : H × G => D.indicator (1 : G → ENNReal) ((z.1 : G) * z.2)) (ν.prod μ)` using `hi.comp_quasiMeasurePreserving hq`. Establish `h2 : AEMeasurable (fun z : H × G => f z.2) (ν.prod μ)` using `hf.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd`. Establish `h3 : AEMeasurable (Function.uncurry fun (p : H) (g : G) => f g * D.indicator (1 : G → ENNReal) ((p : G) * g)) (ν.prod μ)` using `h2.mul h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_lintegral_swap h3, ← lintegral_const_mul'' c hf]`. Establish `h4` using `h1.aestronglyMeasurable.prodMk_right`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hc, h4] with g hg hg'`. Establish `hg'' : AEMeasurable (fun p : H => D.indicator (1 : G → ENNReal) ((p : G) * g)) ν` using `hg'.aemeasurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_const_mul'' _ hg'', mul_comm, ← hg]`. Use `congr 1`. Establish `he : (fun p : H => D.indicator (1 : G → ENNReal) ((p : G) * g)) = {p : H | (p : G) * g ∈ D}.indicator 1`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `by_cases h : (p : G) * g ∈ D <;> simp [Set.indicator, h]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hn : NullMeasurableSet {p : H | (p : G) * g ∈ D} ν`. Establish `h5` using `hg''.nullMeasurable (measurableSet_singleton (1 : ENNReal))`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p`. Apply the tactic sequence `by_cases h : (p : G) * g ∈ D <;> simp [Set.indicator, h]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, lintegral_indicator_one₀ hn]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_mul_lintegral_subgroup_swap (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant]
     (H : Subgroup G) (ν : Measure H) [SFinite ν] (D : Set G) (hD : NullMeasurableSet D μ)
@@ -66,11 +66,11 @@ theorem lintegral_mul_lintegral_subgroup_swap (μ : Measure G) [SFinite μ] [μ.
   rw [he, lintegral_indicator_one₀ hn]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ μ _ _ H ν _ hinv D₁ D₂ hD₁ hD₂ c₁ c₂ h₁ h₂ φ hφ hinvφ`. Rewrite using `[← lintegral_indicator₀ hD₁, ← lintegral_indicator₀ hD₂, lintegral_mul_lintegral_subgroup_swap μ H ν D₂ hD₂ c₂ h₂ _ (hφ.indicator₀ hD₁), lintegral_mul_lintegral_subgroup_swap μ H ν D₁ hD₁ c₁ h₁ _ (hφ.indicator₀ hD₂)]`. Set `e : H ≃ᵐ H` to `{ toEquiv := Equiv.inv H measurable_toFun := hinv.measurable measurable_invFun := hinv.measurable }`. Establish `he : MeasurePreserving e ν ν` using `hinv`. Rewrite using `[← he.lintegral_comp_emb e.measurableEmbedding]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Establish `hp : ((e p : H) : G) = (p : G)⁻¹` using `rfl`. Rewrite using `[hp, ← lintegral_mul_left_eq_self _ (p : G)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases a : (p : G) * g ∈ D₁ <;> by_cases b : g ∈ D₂ <;>`. Simplify using `[Set.indicator, a, b, hinvφ p p.2 g]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem const_mul_setLIntegral_eq_of_slice_measure :
     ∀ {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G] (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant] (H : Subgroup G) (ν : Measure H) [SFinite ν], MeasurePreserving (fun p : H => p⁻¹) ν ν → ∀ 𝓓₁ 𝓓₂ : Set G, NullMeasurableSet 𝓓₁ μ → NullMeasurableSet 𝓓₂ μ → ∀ c₁ c₂ : ENNReal, (∀ᵐ g ∂μ, ν {p : H | (p : G) * g ∈ 𝓓₁} = c₁) → (∀ᵐ g ∂μ, ν {p : H | (p : G) * g ∈ 𝓓₂} = c₂) → ∀ φ : G → ENNReal, AEMeasurable φ μ → (∀ p ∈ H, ∀ g, φ (p * g) = φ g) → c₂ * ∫⁻ g in 𝓓₁, φ g ∂μ = c₁ * ∫⁻ g in 𝓓₂, φ g ∂μ := by

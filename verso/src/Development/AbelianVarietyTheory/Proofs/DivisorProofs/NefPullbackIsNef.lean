@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.NumPull
 
 /- English proof (translation)
-Introduce `k _ X Y p s hp N hN`. Use `letI := algebraΓOfHom p`. Use `letI := algebraΓOfHom (s ≫ p)`. Establish `: IsProper p` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hp).1`. Use `⟨pull_isLB hN.isLB s, fun C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `interNumRed_pull_curve p s C hC with h | ⟨C', hC', d, hd⟩` into its components or cases. Rewrite using `[h N hN.isLB]`. Rewrite using `[hd N hN.isLB]`. Conclude with `mul_nonneg (Int.natCast_nonneg d) (hN.nonneg C' hC')`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNef_pull_of_isProjOver : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (s : Y ⟶ X), IsProjOver p → ∀ N : LB X, (letI := algebraΓOfHom p; IsNef k N) → (letI := algebraΓOfHom (s ≫ p); IsNef k (N.pull s)) := by
   intro k _ X Y p s hp N hN

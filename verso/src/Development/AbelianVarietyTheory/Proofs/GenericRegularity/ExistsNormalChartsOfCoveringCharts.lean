@@ -27,9 +27,9 @@ variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fi
   [Algebra V K'] [IsFractionRing V K']
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Conclude with `⟨fun _ => by simp [vV], fun _ => ⟨0, map_zero _⟩⟩`. Establish `h1 : valV V x ≠ 0` using `valV_ne_zero hx`. Establish `h2 : valV V x ≤ 1 ↔ 0 ≤ vV V x`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[vV, ← WithZero.log_le_log h1 one_ne_zero, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← h2]`. Conclude with `⟨fun ⟨v, hv⟩ => hv ▸ valV_algebraMap_le_one v, exists_algebraMap_eq_of_valV_le_one⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_range_iff_vV_nonneg (x : K') : x ∈ Set.range (algebraMap V K') ↔ 0 ≤ vV V x := by
   by_cases hx : x = 0
@@ -43,7 +43,7 @@ theorem mem_range_iff_vV_nonneg (x : K') : x ∈ Set.range (algebraMap V K') ↔
   exact ⟨fun ⟨v, hv⟩ => hv ▸ valV_algebraMap_le_one v, exists_algebraMap_eq_of_valV_le_one⟩
 
 /- English proof (translation)
-Rewrite using `[vV, valV_algebraMap_of_irreducible hv, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vV_of_irreducible {v : V} (hv : Irreducible v) : vV V (algebraMap V K' v) = 1 := by
   rw [vV, valV_algebraMap_of_irreducible hv, WithZero.log_exp]; simp
@@ -53,13 +53,13 @@ variable (V K') in
 def imageVal : ValuationSubring K' := (valV V (K' := K')).valuationSubring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => exists_algebraMap_eq_of_valV_le_one h, fun ⟨v, hv⟩ => hv ▸ valV_algebraMap_le_one v⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_imageVal (x : K') : x ∈ imageVal V K' ↔ x ∈ Set.range (algebraMap V K') :=
   ⟨fun h => exists_algebraMap_eq_of_valV_le_one h, fun ⟨v, hv⟩ => hv ▸ valV_algebraMap_le_one v⟩
 
 /- English proof (translation)
-Use `choose f hf using h`. Establish `hinj` using `IsFractionRing.injective V K'`. Conclude with `⟨{ toFun := f map_one' := hinj (by simp [hf]) map_mul' := fun x y => hinj (by simp [hf]) map_zero' := hinj (by simp [hf]) map_add' := fun x y => hinj (by simp [hf]) }, hf⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_corestrict {A : Type} [CommRing A] (φ : A →+* K')
     (h : ∀ x, φ x ∈ Set.range (algebraMap V K')) :
@@ -73,15 +73,15 @@ theorem exists_corestrict {A : Type} [CommRing A] (φ : A →+* K')
            map_add' := fun x y => hinj (by simp [hf]) }, hf⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((algebraMap V K').comp g)` using `(IsFractionRing.injective V K').comp hg`. Set `χ : F →+* K'` to `IsFractionRing.lift (K := F) hinj`. Establish `hχ : ∀ a, χ (algebraMap O F a) = algebraMap V K' (g a)` using `fun a => IsFractionRing.lift_algebraMap hinj a`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨ρ, hρ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : g π ≠ 0` using `fun h => hπ.ne_zero (hg (h.trans (map_zero g).symm))`. Take `⟨r, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hρ`. Establish `hr : 0 < r`. Use `Nat.pos_of_ne_zero fun h => hπ.not_isUnit (hl.map_nonunit π ?_)` and prove the remaining obligations. Rewrite using `[hu, h, pow_zero, mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.isUnit`. Establish `key : ∀ a : O, valV V (χ (algebraMap O F a)) = valV O (algebraMap O F a) ^ r`. Introduce `a`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, hr.ne']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Rewrite using `[hχ]`. Simplify using `only [map_mul, map_pow, hu]`. Rewrite using `[valV_algebraMap_of_isUnit (w.isUnit.map g), valV_algebraMap_of_isUnit u.isUnit, valV_algebraMap_of_isUnit w.isUnit, valV_algebraMap_of_irreducible hρ, valV_algebraMap_of_irreducible hπ, one_mul, one_mul, one_mul, ← pow_mul, ← pow_mul, mul_comm]`. Use `⟨χ, r, hr, hχ, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: valV V (χ x) = valV O x ^ r`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`. Rewrite using `[map_div₀, map_div₀, map_div₀, key, key, div_pow]`. Rewrite using `[vV, vV, this, WithZero.log_pow]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ramification {O F : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field F] [Algebra O F] [IsFractionRing O F] (g : O →+* V) (hg : Function.Injective g)
@@ -124,15 +124,13 @@ section Alg
 variable {A : Type} [CommRing A] [IsDomain A]
 
 /- English proof (translation)
-Set `D : Ideal A` to `{ carrier := {s | ∃ x : A, q * algebraMap A _ s = algebraMap A _ x} add_mem' := by`. Introduce and unpack `a b ⟨x, hx⟩ ⟨y, hy⟩`. Conclude with `⟨x + y, by rw [map_add, map_add, mul_add, hx, hy]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `r a ⟨x, hx⟩`. Conclude with `⟨r * x, by rw [smul_eq_mul, map_mul, map_mul, ← hx]; ring⟩ }`. Establish `: ∀ e ∈ Ideal.span s, ϖ * e ∈ D.radical`. Introduce `e he`. Proceed by induction on `he using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem e he`. Take `⟨x, t, hx⟩` from `h e he`. Conclude with `⟨t, x, hx⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Introduce `e he`. Take `⟨t, x, hx⟩` from `this e he`.
-
-Conclude with `⟨x, t, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regular_span (q : FractionRing A) (ϖ : A) (s : Set A)
     (h : ∀ e ∈ s, ∃ (x : A) (t : ℕ), q * algebraMap A _ ((ϖ * e) ^ t) = algebraMap A _ x) :
@@ -161,7 +159,7 @@ theorem regular_span (q : FractionRing A) (ϖ : A) (s : Set A)
   exact ⟨x, t, hx⟩
 
 /- English proof (translation)
-Use `⟨x, s, hs, hq, ?_⟩` and prove the remaining obligations. Establish `h0 : algebraMap V (FractionRing V) (φ s) ≠ 0` using `by simpa using hs`. Rewrite using `[← hw, nval_mul, nval_of_ne h0, EReal.add_sub_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chV_of {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (φ : A →+* V)
     (n : ℕ) (q : FractionRing A) (w : FractionRing V) (x s : A) (hs : φ s ≠ 0)
@@ -181,7 +179,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   [Algebra O A] (io : c.F →+* FractionRing O) (α : P.Ω →+* FractionRing A)
 
 /- English proof (translation)
-Use `(Subring.closure_le (t := (P.R e).toSubring)).2 ?_ hb` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | hx)`. Conclude with `(P.R e).algebraMap_mem _`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_R_of_mem_B (e : P.Ω) {b : P.Ω} (hb : b ∈ P.B) : b ∈ P.R e := by
   refine (Subring.closure_le (t := (P.R e).toSubring)).2 ?_ hb
@@ -192,7 +190,7 @@ theorem mem_R_of_mem_B (e : P.Ω) {b : P.Ω} (hb : b ∈ P.B) : b ∈ P.R e := b
 def bdry : Ideal A := Ideal.span {x | ∃ e ∈ P.es, algebraMap A (FractionRing A) x = α e}
 
 /- English proof (translation)
-The claim follows from `evR_baseChange_of_isReduced E H Dw l Xo c hE a n f hf _ _ _ _ _ (P.gen e he)`.
+A detailed English derivation is pending.
 -/
 theorem evR_generic (hE : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) (e : P.Ω) (he : e ∈ P.es) :
@@ -206,9 +204,9 @@ variable (hβ : ∀ a, io (β a) ∈ Set.range (algebraMap O (FractionRing O)))
 
 include hβ hK hg in
 /- English proof (translation)
-Use `(Subring.closure_le (t := (algebraMap A (FractionRing A)).range.comap α)).2 ?_ hb` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | hx)`. Take `⟨x, hx⟩` from `hβ a`. Use `hK (β a) x 1 (by rw [map_one, mul_one, hx])` as an intermediate fact. Rewrite `this` using `[map_one, map_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, this.symm⟩`. Conclude with `hg x hx`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_mem_B {b : P.Ω} (hb : b ∈ P.B) :
     α b ∈ Set.range (algebraMap A (FractionRing A)) := by
@@ -222,9 +220,9 @@ theorem mem_range_of_mem_B {b : P.Ω} (hb : b ∈ P.B) :
 
 include hβ hK hg in
 /- English proof (translation)
-Take `⟨e, he⟩` from `P.es_ne`. Take `⟨x, hx⟩` from `mem_range_of_mem_B P io α hβ hK hg (P.es_mem e he).2`. Introduce `h`. Establish `: x ∈ bdry P α` using `Ideal.subset_span ⟨e, he, hx⟩`. Rewrite `this` using `[h, Ideal.mem_bot]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[this, map_zero, eq_comm, map_eq_zero]`. Conclude with `(P.es_mem e he).1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdry_ne_bot : bdry P α ≠ ⊥ := by
   obtain ⟨e, he⟩ := P.es_ne
@@ -237,7 +235,7 @@ theorem bdry_ne_bot : bdry P α ≠ ⊥ := by
 
 include hK hg in
 /- English proof (translation)
-Introduce `e he ϖ hϖ`. Use `regular_span _ _ _ ?_ e he` and prove the remaining obligations. Introduce and unpack `eb ⟨e, he, heb⟩`. Conclude with `(GlobalTheory.Reg.openChart_regular_away c.F P.Ω O A io P.gens e α eb ϖ hϖ (P.es_mem e he).1 heb hK hg).1 q (hq e he)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem regular_bdry {q : P.Ω} (hq : ∀ e ∈ P.es, q ∈ P.R e) :
     ∀ e ∈ bdry P α, ∀ ϖ : O, Irreducible ϖ → ∃ (x : A) (t : ℕ),
@@ -249,13 +247,13 @@ theorem regular_bdry {q : P.Ω} (hq : ∀ e ∈ P.es, q ∈ P.R e) :
 
 include hβ hK hg in
 /- English proof (translation)
-Take `⟨eb, heb⟩` from `mem_range_of_mem_B P io α hβ hK hg (P.es_mem e he).2`. Establish `h0 : φ eb ≠ 0`. Introduce `h`. Set `r : P.R e` to `⟨e, mem_R_of_mem_B P e (P.es_mem e he).2⟩`. Set `r' : P.R e` to `⟨e⁻¹, Algebra.subset_adjoin (Set.mem_insert _ _)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1` using `hψ r eb 1 (by rw [map_one, mul_one, heb])`. Rewrite `h1` using `[h, map_one, map_one, mul_one, map_zero]`. Establish `h2 : r * r' = 1` using `Subtype.ext (mul_inv_cancel₀ (P.es_mem e he).1)`. Establish `h3` using `congrArg ψ h2`. Rewrite `h3` using `[map_mul, h1, zero_mul, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h3`. Use `⟨⟨eb, Ideal.subset_span ⟨e, he, heb⟩, h0⟩, fun n r => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨x, t, hx⟩` from `(GlobalTheory.Reg.openChart_regular_away c.F P.Ω O A io P.gens e α eb ϖ hϖ (P.es_mem e he).1 heb hK hg).1 r r.2`. Use `chV_of φ n _ _ x _ ?_ hx (hψ r x _ hx)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_mul]`. Conclude with `pow_ne_zero _ (mul_ne_zero (hφ ϖ hϖ.ne_zero) h0)`.
+A detailed English derivation is pending.
 -/
 theorem chV_point {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (φ : A →+* V)
     (e : P.Ω) (he : e ∈ P.es) (ψ : P.R e →+* FractionRing V)
@@ -284,9 +282,9 @@ theorem chV_point {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing 
 
 include hK hg in
 /- English proof (translation)
-Take `⟨k, h0, h1, h2⟩` from `h`. Use `⟨k, (map_ne_zero α).2 h0, fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `mem_range_of_mem_B P io α hβ hK hg (h1 i)`. Conclude with `⟨x, by rw [hx, ← map_mul, div_mul_cancel₀ _ h0]⟩`. Rewrite using `[← map_inv₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `regular_bdry P io α hK hg h2`.
+A detailed English derivation is pending.
 -/
 theorem family_chart {m : ℕ} {ws : Fin m → Rul Xo c}
     (hβ : ∀ a, io (β a) ∈ Set.range (algebraMap O (FractionRing O))) (h : P.Fam ws) :
@@ -304,25 +302,23 @@ theorem family_chart {m : ℕ} {ws : Fin m → Rul Xo c}
 
 include hβ hK hg in
 /- English proof (translation)
-Take `⟨hinj, hloc, hcpl, hch, hfin'⟩` from `GlobalTheory.dvr_finite_over_complete_dvr O V`. Take `⟨χ, r, hr, hχ, hv⟩` from `exists_ramification (K' := FractionRing V) (F := FractionRing O) (algebraMap O V) hinj hloc`. Establish `hgen : ∃ eb : A, (∃ e ∈ P.es, algebraMap A (FractionRing A) eb = α e) ∧ φ eb ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx0⟩` from `hφ`. Conclude with `hx0 ((Ideal.span_le (I := RingHom.ker φ.toRingHom)).2 (fun y hy => hcon y hy) hx)`. Take `⟨eb, ⟨e, he, heb⟩, h0⟩` from `hgen`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hφO : ∀ a : O, a ≠ 0 → φ (algebraMap O A a) ≠ 0` using `fun a ha => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[φ.commutes]`. Conclude with `(map_ne_zero_iff _ hinj).2 ha`. Take `⟨ψ, hψ⟩` from `(GlobalTheory.Reg.openChart_regular_away c.F P.Ω O A io P.gens e α eb ϖ hϖ (P.es_mem e he).1 heb hK hg).2 (FractionRing V) ((algebraMap V (FractionRing V)).comp φ.toRingHom) (by`. Express the relevant statement in the definitionally equal form `algebraMap V (FractionRing V) (φ _) ≠ 0`. Rewrite using `[map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `using mul_ne_zero (hφO ϖ hϖ.ne_zero) h0)`. Use `replace hψ : ∀ (r : P.R e) (x s : A), α r * algebraMap A _ s = algebraMap A _ x → ψ r * algebraMap V _ (φ s) = algebraMap V _ (φ x) := hψ`. Set `T : CDVR` to `{ V := V }`. Set `ioV : c.F →+* T.Fr` to `χ.comp io`. Use `letI := ioV.toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψK : ∀ k : c.F, ψ (algebraMap c.F _ k) = ioV k`. Introduce `k`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := O) (io k)`. Establish `hb0 : algebraMap O (FractionRing O) b ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hb`. Establish `h1 : io k * algebraMap O _ b = algebraMap O _ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hab, div_mul_cancel₀ _ hb0]`. Establish `h2` using `hψ (algebraMap c.F _ k) _ _ (hK k a b h1)`. Rewrite `h2` using `[φ.commutes, φ.commutes, ← hχ, ← hχ, ← h1, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero χ).2 hb0) h2`. Set `ψ' : P.R e →ₐ[c.F] T.Fr` to `{ ψ with commutes' := hψK }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, hz⟩` from `hE.bc _ _ ψ' (P.y e he)`. Establish `hint : Integral T ioV z`. Use `P.int e he T ioV ψ' (fun a => ?_) (fun g hg' => ?_) z hz` and prove the remaining obligations. Take `⟨x, hx⟩` from `hβ a`. Conclude with `⟨algebraMap O V x, by rw [← hχ, hx]; rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨x, hx⟩` from `hg g hg'`. Use `hψ g x 1 (by rw [map_one, mul_one, hx])` as an intermediate fact. Rewrite `this` using `[map_one, map_one, mul_one]`. Conclude with `⟨φ x, this.symm⟩`. Set `y : IntFr Xo c T ioV` to `⟨z, hE.test _ z, hint⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hov : OverLa la V ioV (r * 1)` using `hio.bc χ hr hv`. Use `⟨ioV, r * 1, hov, fun π hπ => ?_, _, ⟨PtV.mk (T := T) la hov y (hfin' hfin) () trivial, rfl⟩, fun a n f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← hχ, hv, vV_of_irreducible hπ]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `ChV _ _ _ (nval T.V (r * 1) (evI y f))`.
-
-Rewrite using `[evR_generic P hE hf e he]`. Establish `: evI y f = ψ (evR Xo c f (P.y e he))` using `evR_baseChange_of_isReduced E H Dw l Xo c hE a n f hf _ _ ψ' _ _ hz`. Rewrite using `[this]`. Conclude with `(chV_point P io α hβ hK hg φ.toRingHom e he ψ hψ hφO).2 _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem points_chart (hE : EvLaws Xo c) [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [CharZero O]
     (hfin : Finite (IsLocalRing.ResidueField O)) {la : HeightOneSpectrum (𝓞 c.F)}
@@ -395,9 +391,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨e, he, ψ, z, t, hg, hz, ht⟩` from `h`. Establish `hint : Integral T io z` using `P.int e he T io ψ (fun a => hW _ (hβ a)) (fun g hg' => hW _ (hg g hg')) z hz`. Set `z' : IntFr Xo c T io` to `⟨z, hE.test _ z, hint⟩`. Use `⟨e, he, ψ.toRingHom, ψ.commutes, hg, fun a n f hf => ⟨evR Xo c f (P.y e he), evR_generic P hE hf e he, fun d => ?_⟩⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[unitIndep_of hE.wt hU a n f hf T io y z' t ht d]`. Establish `: evI z' f = ψ (evR Xo c f (P.y e he))` using `evR_baseChange_of_isReduced E H Dw l Xo c hE a n f hf _ _ ψ _ _ hz`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem values_of_catches {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} (P : PChart Xo c β)
     (hE : EvLaws Xo c) (hU : IntDiagUnit Xo c) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io)
@@ -420,7 +416,7 @@ theorem values_of_catches {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} (P
   rw [this]; rfl
 
 /- English proof (translation)
-The claim follows from `exists_algebraMap_eq_of_valV_le_one (by rw [valV_eq_pow_of_overLa h] exact pow_le_one₀ zero_le a.2)`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_overLa {la : HeightOneSpectrum (𝓞 c.F)} {V K' : Type} [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [Field K'] [Algebra V K'] [IsFractionRing V K'] {io : c.F →+* K'}
@@ -431,13 +427,13 @@ theorem mem_range_of_overLa {la : HeightOneSpectrum (𝓞 c.F)} {V K' : Type} [C
     exact pow_le_one₀ zero_le a.2)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[Ideal.eq_top_iff_one, Submodule.mem_sup]`. Take `⟨u, hu, m, hm, hum⟩` from `h`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Establish `h1 : W.valuation (algebraMap V (FractionRing V) (φ (a * p))) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right ((W.valuation_le_one_iff _).2 (hφ a)) zero_le (W.mem_nonunits_iff.1 hp)`. Establish `h2 : W.valuation (algebraMap V (FractionRing V) (φ m)) < 1`. Rewrite using `[← W.mem_nonunits_iff, W.mem_nonunits_iff_or]`. Distinguish the cases in `h0 : algebraMap V (FractionRing V) (φ m) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl h0`. Use `Or.inr fun hinv => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `(mem_imageVal _).1 (hW hinv)`. Use `(hm : ¬ IsUnit (φ m)) (IsUnit.of_mul_eq_one v (IsFractionRing.injective V (FractionRing V) ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hv, map_one, mul_inv_cancel₀ h0]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `W.valuation.map_add_lt h1 h2`. Rewrite `h3` using `[← map_add, ← map_add, hum, map_one, map_one, map_one]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_ne_top_of_nonunits {A V : Type} [CommRing A] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (φ : A →+* V) (W : ValuationSubring (FractionRing V))
@@ -465,11 +461,11 @@ theorem sup_ne_top_of_nonunits {A V : Type} [CommRing A] [CommRing V] [IsDomain 
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `exists_corestrict (V := T) io fun a => (mem_range_iff_vV_nonneg _).2 (by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV]`. Conclude with `(htriv a ha).ge)`. Take `⟨V, _, _, _, i, χ, hinj, hirr, hloc, hiχ⟩` from `@GlobalTheory.DVRBaseChange.exists_unramified_extension K F T _ _ _ io₀.toAlgebra _ _ _ κ.toAlgebra`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `replace hiχ : ∀ a, i (κ a) = χ (io₀ a) := hiχ`. Take `⟨i', r, hr, hi', hv⟩` from `exists_ramification (K' := FractionRing V) (F := Fr) i hinj hloc`. Establish `hr1 : r = 1`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible T`. Use `hv (algebraMap T Fr π)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `this` using `[hi', vV_of_irreducible hπ, vV_of_irreducible (hirr π hπ), mul_one]`. Conclude with `this.symm` after adjusting the coercions. Substitute `hr1` using the available equality. Conclude with `⟨V, inferInstance, inferInstance, inferInstance, i', χ, hv, fun k => by rw [← hκ, hi', hiχ]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unramified_of_trivial {K F T Fr : Type} [Field K] [CharZero K] [Field F] [CommRing T]
     [IsDomain T] [IsDiscreteValuationRing T] [Field Fr] [Algebra T Fr] [IsFractionRing T Fr]
@@ -503,35 +499,31 @@ namespace GlobalTheory.Reg
 open NormalCharts
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hE hU la J _ P hP`. Take `⟨T₀, io₀, hov, hfin, hinit⟩` from `exists_initial_completion c.F la`. Establish `hβ` using `mem_range_of_overLa hov`. Establish `hN` using `fun j => GlobalTheory.exists_normal_charts_over_dvr c.F (P j).Ω T₀.V io₀ (P j).gens (P j).es (P j).frac (fun e he => ⟨((P j).es_mem e he).1, Subring.closure_mono (by`. Use `Set.union_subset_union_left _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, hβ a, rfl⟩) ((P j).es_mem e he).2⟩) (P j).sm`. Use `choose J' finJ A acr adom alg α hA hK hg hcov using hN`. Use `⟨{ O := T₀.V ioO := io₀ eO := 1 overO := hov J := Σ j, J' j A := fun j => A j.1 j.2 ft := fun j => (hA j.1 j.2).1 flat := fun j => (hA j.1 j.2).2.1 ic := fun j => (hA j.1 j.2).2.2 ch := fun j f => α j.1 j.2 (evR Xo c f (P j.1).yg) Eb := fun j => bdry (P j.1) (α j.1 j.2) Eb_ne := …` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨_, T, io, d, ho, y, -, η, -, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `letI := io.toAlgebra`. Establish `hβT : ∀ a, io ((la.valuation c.F).valuationSubring.subtype a) ∈ imageVal T.V T.Fr` using `fun a => (mem_imageVal _).2 (mem_range_of_overLa ho a)`. Take `⟨j, hj⟩` from `hP T.Fr (imageVal T.V T.Fr) hβT y.1`. Take `⟨e, he, ψ, hψK, hψg, hval⟩` from `values_of_catches (P j) hE hU T io y _ (fun x hx => (mem_imageVal _).1 hx) hβT hj`. Take `⟨g, χ, hloc, hχio, hχg, hϖ⟩` from `hinit T io d ho`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχg' : ∀ a, χ (algebraMap T₀.V T₀.Fr a) = algebraMap T.V T.Fr (g a)` using `fun a => RingHom.congr_fun hχg a`. Take `⟨j', φ, hφW, hφO, hφψ⟩` from `hcov j e he T.Fr (imageVal T.V T.Fr) χ ψ (fun k => (hψK k).trans (RingHom.congr_fun hχio k).symm) (fun a => (mem_imageVal _).2 ⟨g a, (hχg' a).symm⟩) hψg`. Take `⟨φ', hφ'⟩` from `exists_corestrict (V := T.V) φ fun x => (mem_imageVal _).1 (hφW x)`. Use `letI : Algebra T₀.V T.V := g.toAlgebra`. Establish `hc : ∀ a, φ' (algebraMap T₀.V (A j j') a) = g a` using `fun a => IsFractionRing.injective T.V T.Fr (by rw [hφ', hφO, hχg'])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, hch⟩` from `chV_point (P j) io₀ (α j j') hβ (hK j j') (hg j j') φ' e he ψ (fun r x s h => by rw [hφ', hφ']; exact hφψ r x s h) (fun a ha h => by`. Use `hφ' (algebraMap T₀.V (A j j') a)` as an intermediate fact. Rewrite `this` using `[h, map_zero, hφO, eq_comm, map_eq_zero]`. Conclude with `ha (by simpa using this))`. Use `⟨⟨j, j'⟩, T.V, inferInstance, inferInstance, inferInstance, inferInstance, { φ' with commutes' := hc }, io, d, ho, hx, fun ϖ h => ?_, ?_, fun a n f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_one, mul_one]`. Conclude with `hϖ ϖ h`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha hu`. Conclude with `ha (hloc.map_nonunit a (by rw [← hc]; exact hu))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨r, hr, hv⟩` from `hval a n f hf`. Express the relevant statement in the definitionally equal form `ChV φ' d (α j j' (evR Xo c f (P j).yg)) (nval T.V d (evI y f))`. Rewrite using `[hr, hv]`. Conclude with `hch d r`. Introduce and unpack `_ ⟨T, io, y, htriv, rfl⟩`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-It suffices to establish `h : ∃ (j : Σ j, J' j) (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : Algebra T₀.V V) (φ : A j.1 j.2 →ₐ[T₀.V] V), (∀ ϖ : T₀.V, Irreducible ϖ → Ideal.span {algebraMap T₀.V (A j.1 j.2) ϖ} ⊔ (IsLocalRing.maximalIdeal V).comap φ.toRingHom ≠ ⊤) ∧ (∀ ϖ …`. Take `⟨V, _, _, _, i', χ, hv, hι⟩` from `exists_unramified_of_trivial io₀ io htriv`. Set `ι : T₀.Fr →+* FractionRing V` to `(algebraMap V (FractionRing V)).comp χ`. Use `replace hι : ∀ k, i' (io k) = ι (io₀ k) := hι`. Take `⟨W, hWle, hWO, hWm⟩` from `GlobalTheory.exists_valuationSubring_le_dominating_of_fractionField T₀.V T₀.Fr (FractionRing V) ι (imageVal V (FractionRing V)) (fun x => (mem_imageVal _).2 ⟨χ x, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := io.toAlgebra`. Establish `hβT : ∀ a, io ((la.valuation c.F).valuationSubring.subtype a) ∈ W.comap i'` using `fun a => by`. Take `⟨x, hx⟩` from `hβ a`. Rewrite using `[ValuationSubring.mem_comap, hι, ← hx]`. Conclude with `hWO x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨j, hj⟩` from `hP T.Fr (W.comap i') hβT y.1`. Take `⟨e, he, ψ, hψK, hψg, hval⟩` from `values_of_catches (P j) hE hU T io y _ (fun x hx => by`. Use `(mem_range_iff_vV_nonneg _).1 ((mem_imageVal _).1 (hWle hx))` as an intermediate fact. Rewrite `this` using `[hv, Nat.cast_one, one_mul]`. Conclude with `(mem_range_iff_vV_nonneg _).2 this) hβT hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j', φ, hφW, hφO, hφψ⟩` from `hcov j e he (FractionRing V) W ι (i'.comp ψ) (fun k => by rw [RingHom.comp_apply, hψK, hι]) hWO hψg`. Take `⟨φ', hφ'⟩` from `exists_corestrict (V := V) φ fun x => (mem_imageVal _).1 (hWle (hφW x))`. Use `letI : Algebra T₀.V V := (χ.comp (algebraMap T₀.V T₀.Fr)).toAlgebra`. Establish `hc : ∀ a, φ' (algebraMap T₀.V (A j j') a) = χ (algebraMap T₀.V T₀.Fr a)` using `fun a => IsFractionRing.injective V (FractionRing V) (by rw [hφ', hφO]; rfl)`. Take `⟨hx, hch⟩` from `chV_point (P j) io₀ (α j j') hβ (hK j j') (hg j j') φ' e he (i'.comp ψ) (fun r x s h => by rw [hφ', hφ']; exact hφψ r x s h) (fun a ha h => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hφ' (algebraMap T₀.V (A j j') a)` as an intermediate fact. Rewrite `this` using `[h, map_zero, hφO, eq_comm, map_eq_zero]`. Conclude with `ha (by simpa using this))`. Use `⟨⟨j, j'⟩, V, inferInstance, inferInstance, inferInstance, inferInstance, { φ' with commutes' := hc }, fun ϖ h => ?_, fun ϖ h => ?_, hx, fun a n f hf => ?_⟩` and prove the remaining obligations. Use `sup_ne_top_of_nonunits φ' W hWle (fun x => by rw [hφ']; exact hφW x) _ ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ']`. Use `hWm ϖ h.not_isUnit` as an intermediate fact. Rewrite `this` using `[← hφO]`. Conclude with `this`. Use `IsUnit.map χ (IsUnit.mk0 (algebraMap T₀.V T₀.Fr ϖ) ?_)` and prove the remaining obligations.
-
-Simplify using `using h.ne_zero`. Take `⟨r, hr', hv'⟩` from `hval a n f hf`. Express the relevant statement in the definitionally equal form `ChV φ' 1 (α j j' (evR Xo c f (P j).yg)) (nval T.V 1 (evI y f))`. Rewrite using `[hr', hv', ← nval_bc i' one_pos hv]`. Conclude with `hch 1 r`.
-
-Introduce `m ws hws choose k hk using fun j : Σ j, J' j => family_chart (P j.1) io₀ (α j.1 j.2) (hK j.1 j.2) (hg j.1 j.2) hβ (hws j.1)`. Conclude with `⟨k, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scharts_of_covers :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → IntDiagUnit Xo c → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (J : Type) [Finite J] (P : J → PChart Xo c (la.valuation c.F).valuationSubring.subtype), Covers P → ∃ S : SCharts Xo c la, S.CovQ ∧ ∀ (m : ℕ) (ws : Fin m → Rul Xo c), (∀ j, (P j).Fam ws) → S.FamW ws := by

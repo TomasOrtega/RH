@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.JR.LinDesc
 
 /- English proof (translation)
-Establish `h1 : ‖x‖ ≤ max ‖x - y‖ ‖y‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (x - y) y`. Establish `h2 : ‖y‖ ≤ max ‖y - x‖ ‖x‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (y - x) x`. Rewrite `h2` using `[norm_sub_rev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `le_total ‖x - y‖ ‖y‖ with h3 | h3` into its components or cases. Rewrite `h1` using `[max_eq_right h3]`. Break down `le_total ‖x - y‖ ‖x‖ with h4 | h4` into its components or cases. Rewrite `h2` using `[max_eq_right h4]`. Conclude with `le_antisymm h1 h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[max_eq_left h4]`. Conclude with `absurd h (not_lt.mpr h2)`. Conclude with `absurd h (not_lt.mpr h3)`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_of_sub_lt {F : Type} [NormedField F] [IsUltrametricDist F] {x y : F}
     (h : ‖x - y‖ < ‖y‖) : ‖x‖ = ‖y‖ := by
@@ -30,11 +30,9 @@ theorem norm_eq_of_sub_lt {F : Type} [NormedField F] [IsUltrametricDist F] {x y 
   · exact absurd h (not_lt.mpr h3)
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `hd : ((g : Matrix (Fin r) (Fin r) F).det) ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp g.isUnit).ne_zero`. Establish `hc : Continuous (fun h : GL (Fin r) F => (h : Matrix (Fin r) (Fin r) F).det)` using `Units.continuous_val.matrix_det`. Establish `hpos : 0 < ‖(g : Matrix (Fin r) (Fin r) F).det‖` using `norm_pos_iff.mpr hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ h : GL (Fin r) F in 𝓝 g, ‖((h : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det - (g : Matrix (Fin r) (Fin r) F).det‖ < ‖(g : Matrix (Fin r) (Fin r) F).det‖`. Establish `: Continuous (fun h : GL (Fin r) F => ‖(h : Matrix (Fin r) (Fin r) F).det - (g : Matrix (Fin r) (Fin r) F).det‖)` using `(hc.sub continuous_const).norm`. Conclude with `(this.tendsto g).eventually_lt_const (by rw [sub_self, norm_zero]; exact hpos)`. Use `filter_upwards [hev] with h hh`. Unfold `eta`.
-
-Rewrite using `[norm_eq_of_sub_lt hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_det_isLocallyConstant {F : Type} [NontriviallyNormedField F] [IsUltrametricDist F] (r : ℕ) :
     IsLocallyConstant (fun g : GL (Fin r) F => eta ((g : Matrix (Fin r) (Fin r) F).det)) := by
@@ -58,41 +56,37 @@ theorem eta_det_isLocallyConstant {F : Type} [NontriviallyNormedField F] [IsUltr
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A r τ p hG lam M α f' hf hα hαc`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Set `ρL : A.K →ₗ[F] (Fin r → F)` to `LinearMap.pi fun i => (Algebra.trace F A.K).comp (LinearMap.mulLeft F (τ ^ (i : ℕ)))`. Establish `hρL : ∀ c, ρL c = fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * c)` using `fun c => rfl`. Establish `hbij : Function.Bijective ρL`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p lam hG).1` as an intermediate fact. Rewrite using `[show (⇑ρL) = fun (a : A.K) (i : Fin r) => Algebra.trace F A.K (τ ^ (i : ℕ) * a) from funext hρL]`. Conclude with `this`. Set `ρE : A.K ≃ₗ[F] (Fin r → F)` to `LinearEquiv.ofBijective ρL hbij`. Establish `hι : Continuous (bas A hG).equivFun` using `IsModuleTopology.continuous_of_linearMap (R := F) (bas A hG).equivFun.toLinearMap`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : Continuous ρL` using `IsModuleTopology.continuous_of_linearMap (R := F) ρL`. Establish `hιs : Continuous (bas A hG).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (R := F) (bas A hG).equivFun.symm.toLinearMap`. Establish `hρs : Continuous ρE.symm` using `IsModuleTopology.continuous_of_linearMap (R := F) ρE.symm.toLinearMap`. Establish `hpt : Continuous (fun x : A.K × A.K => pt A hG lam x.1 x.2)`. Unfold `pt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_const.prodMk ((hι.comp continuous_fst).prodMk ((hρ.comp continuous_snd).prodMk continuous_const))`. Establish `hact : Continuous (fun q : GL (Fin r) F × Gl r F => act q.1 q.2)`. Unfold `act`. Establish `h1 : Continuous (fun q : GL (Fin r) F × Gl r F => ((q.1 : GL (Fin r) F) : Matrix (Fin r) (Fin r) F))` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous (fun q : GL (Fin r) F × Gl r F => ((q.1⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F))` using `Units.continuous_val.comp (continuous_inv.comp continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((h1.matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul h2).prodMk ((h1.matrix_mulVec (continuous_fst.comp (continuous_snd.comp continuous_snd))).prodMk (((continuous_fst.comp (continuous_snd.comp (continuous_snd.comp continuous_snd))).matrix_vecMul h2).prodMk (continuou …`. Establish `heta` using `eta_det_isLocallyConstant (F := F) r`. Establish `hΦ : IsLocallyConstant (fun q : (A.K × A.K) × GL (Fin r) F => f' (act q.2 (pt A hG lam q.1.1 q.1.2)) * eta ((q.2 : Matrix (Fin r) (Fin r) F).det) * (α q.2 : ℂ))`. Establish `a1 : IsLocallyConstant (fun q : (A.K × A.K) × GL (Fin r) F => f' (act q.2 (pt A hG lam q.1.1 q.1.2)))` using `hf.1.comp_continuous (hact.comp (continuous_snd.prodMk (hpt.comp continuous_fst)))`. Establish `a2 : IsLocallyConstant (fun q : (A.K × A.K) × GL (Fin r) F => eta ((q.2 : Matrix (Fin r) (Fin r) F).det))` using `heta.comp_continuous continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a3 : IsLocallyConstant (fun q : (A.K × A.K) × GL (Fin r) F => (α q.2 : ℂ))` using `(hα.comp_continuous continuous_snd).comp (fun t : ℝ => (t : ℂ))`. Conclude with `(a1.mul a2).mul a3`. Establish `hloc : IsLocallyConstant (LinDesc.desc A M hG lam α f')`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ᶠ x in 𝓝 x₀, ∀ g ∈ tsupport α, f' (act g (pt A hG lam x.1 x.2)) * eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ) = f' (act g (pt A hG lam x₀.1 x₀.2)) * eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ)`. Use `hαc.eventually_forall_of_forall_eventually fun g _ => ?_` and prove the remaining obligations. Establish `h2` using `(hΦ.prodMk (hΦ.comp_continuous (f := fun q : (A.K × A.K) × GL (Fin r) F => (x₀, q.2)) (continuous_const.prodMk continuous_snd))).eventually_eq (x₀, g)`. Use `filter_upwards [h2] with q hq`. Simplify using `only [Prod.mk.injEq, Function.comp] at hq`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq.1, hq.2]`. Use `filter_upwards [h1] with x hx`. Unfold `desc`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Distinguish the cases in `hg : g ∈ tsupport α`. Conclude with `hx g hg`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg]`. Simplify using the standard rewrite rules. Use `⟨hloc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `L : (Fin r → F) × (Fin r → F) → A.K × A.K` to `fun u => ((bas A hG).equivFun.symm u.1, ρE.symm u.2)`. Establish `hL : Continuous L` using `(hιs.comp continuous_fst).prodMk (hρs.comp continuous_snd)`. Set `T : GL (Fin r) F × Gl r F → A.K × A.K` to `fun q => L ((act q.1⁻¹ q.2).2.1, (act q.1⁻¹ q.2).2.2.1)`. Establish `hT : Continuous T`. Establish `: Continuous (fun q : GL (Fin r) F × Gl r F => act q.1⁻¹ q.2)` using `hact.comp ((continuous_inv.comp continuous_fst).prodMk continuous_snd)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hL.comp ((continuous_fst.comp (continuous_snd.comp this)).prodMk (continuous_fst.comp (continuous_snd.comp (continuous_snd.comp this))))`. Establish `hS : IsCompact (T '' (tsupport α ×ˢ tsupport f'))` using `(hαc.prod hf.2).image hT`. Establish `hsub : Function.support (LinDesc.desc A M hG lam α f') ⊆ T '' (tsupport α ×ˢ tsupport f')`. Introduce `x hx`. Assume the negation of the conclusion as `hxS`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx` to reduce the goal to its premises. Establish `h0 : ∀ g : GL (Fin r) F, f' (act g (pt A hG lam x.1 x.2)) * eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ) = 0`. Introduce `g`. Assume the negation of the conclusion as `hne`. Apply `hxS` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hαg : α g ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfg : f' (act g (pt A hG lam x.1 x.2)) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `⟨(g, act g (pt A hG lam x.1 x.2)), ⟨subset_tsupport _ hαg, subset_tsupport _ hfg⟩, ?_⟩` and prove the remaining obligations. Establish `hback : act g⁻¹ (act g (pt A hG lam x.1 x.2)) = pt A hG lam x.1 x.2`. Rewrite using `[← act_mul, inv_mul_cancel, act_one]`. Use `show L ((act g⁻¹ (act g (pt A hG lam x.1 x.2))).2.1, (act g⁻¹ (act g (pt A hG lam x.1 x.2))).2.2.1) = x`. Rewrite using `[hback]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `show ((bas A hG).equivFun.symm ((bas A hG).equivFun x.1), ρE.symm (ρL x.2)) = x`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `: ρE.symm (ρL x.2) = x.2` using `ρE.symm_apply_apply x.2`. Rewrite using `[this]`. Unfold `desc`.
-
-Simplify using `only [h0, integral_zero]`. Establish `hcl : IsClosed (Function.support (LinDesc.desc A M hG lam α f'))`. Use `hloc.isOpen_fiber 0` as an intermediate fact. Rewrite using `[← isOpen_compl_iff]`. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `x`. Simplify using the standard rewrite rules. Unfold `HasCompactSupport tsupport`. Rewrite using `[hcl.closure_eq]`. Conclude with `hS.of_isClosed_subset hcl hsub`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (lam : F), ∀ (M : Meas r F E) (α : GL (Fin r) F → ℝ) (f' : Gl r F → ℂ), IsTest f' → IsLocallyConstant α → HasCompactSupport α → IsTest (LinDesc.desc A M hG lam α f') := by
   intro F E _ _ _ _ hU A r τ p hG lam M α f' hf hα hαc

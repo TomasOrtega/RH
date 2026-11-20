@@ -16,7 +16,7 @@ open Pb HT
 variable {K : Type} [CommRing K] {W Z : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem obj_ext {C : Type 1} [Category.{0} C] {P : ObjectProperty C} (a b : P.FullSubcategory) (h : a.obj = b.obj) :
     a = b := by
@@ -46,11 +46,9 @@ def lift (T : Thick (smFun Z q)) (w : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ W)
     T.w
 
 /- English proof (translation)
-Establish `hs1` using `s_eq_one (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T`. Take `⟨B, i₀, J, δ, adm, compat, α, y, inα, w₀, x, v, s, hx, hs, hv⟩` from `T`. Express the relevant statement in the definitionally equal form `Thick.mk _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ = _`. Use `congr 1`. Apply the tactic sequence `all_goals first`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `exact RingHom.comp_id _`. Consider the case `(funext j; exact (j : Empty).elim)`. Consider the case `(apply Subtype.ext; apply Prod.ext; rfl; exact hw)`. Consider the case `(have h1 : s = 1 := hs1`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
-
-Use `show (1 : Bˣ) ^ 1 * (Units.map _ (1 : Kˣ))⁻¹ = 1`. Use the proof step `simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem G_lift (T : Thick (smFun Z q)) (w : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ W)
     (hw : w ≫ i = pt (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T) :
@@ -69,7 +67,7 @@ theorem G_lift (T : Thick (smFun Z q)) (w : Spec (CommRingCat.of (T.B ⧸ T.J)) 
        simp)
 
 /- English proof (translation)
-Establish `hY : (U ⊓ On q i) Y.obj` using `Y.property`. Take `⟨w, hw⟩` from `hY.2`. Establish `hY' : U' (lift Y.obj w hw)` using `hU _ (by rw [G_lift]; exact hY.1)`. Conclude with `⟨⟨lift Y.obj w hw, hY'⟩, ⟨eqToIso (obj_ext _ _ (G_lift Y.obj w hw))⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem essSurj [Mono i] (U : ObjectProperty (Thick (smFun Z q))) (U' : ObjectProperty (Thick (smFun W (i ≫ q))))
     (h : ∀ T, U' T → (U ⊓ On q i) ((smS i rfl).G.obj T)) (hU : ∀ T, U ((smS i rfl).G.obj T) → U' T) (a : ℕ) :
@@ -81,7 +79,7 @@ theorem essSurj [Mono i] (U : ObjectProperty (Thick (smFun Z q))) (U' : ObjectPr
     exact ⟨⟨lift Y.obj w hw, hY'⟩, ⟨eqToIso (obj_ext _ _ (G_lift Y.obj w hw))⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ObjectProperty.homMk (preim (T₁ := X.obj) (T₂ := Y.obj) g.hom), ObjectProperty.hom_ext _ (hom_ext rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem full [Mono i] {U : ObjectProperty (Thick (smFun Z q))} {U' : ObjectProperty (Thick (smFun W (i ≫ q)))}
     (h : ∀ T, U' T → (U ⊓ On q i) ((smS i rfl).G.obj T)) (a : ℕ) : (morV i rfl a h).G.Full where
@@ -89,16 +87,16 @@ theorem full [Mono i] {U : ObjectProperty (Thick (smFun Z q))} {U' : ObjectPrope
     ObjectProperty.hom_ext _ (hom_ext rfl)⟩
 
 /- English proof (translation)
-The claim follows from `ObjectProperty.hom_ext _ (hom_ext (congrArg (fun k => k.hom.φ) e))`.
+A detailed English derivation is pending.
 -/
 theorem faithful {U : ObjectProperty (Thick (smFun Z q))} {U' : ObjectProperty (Thick (smFun W (i ≫ q)))}
     (h : ∀ T, U' T → (U ⊓ On q i) ((smS i rfl).G.obj T)) (a : ℕ) : (morV i rfl a h).G.Faithful where
   map_injective {X Y} {f g} e := ObjectProperty.hom_ext _ (hom_ext (congrArg (fun k => k.hom.φ) e))
 
 /- English proof (translation)
-Establish `hτ : ∀ x, ((morV i rfl a h).τ T x).1 = x.1`. Introduce `x`. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `⟨fun x y e => Subtype.ext ((hτ x).symm.trans ((congrArg Subtype.val e).trans (hτ y))), fun y => ⟨y, Subtype.ext (hτ y)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tau_bij {U : ObjectProperty (Thick (smFun Z q))} {U' : ObjectProperty (Thick (smFun W (i ≫ q)))}
     (h : ∀ T, U' T → (U ⊓ On q i) ((smS i rfl).G.obj T)) (a : ℕ) (T : U'.FullSubcategory) :
@@ -118,9 +116,9 @@ namespace CrystallineSemistableComparison.Onto
 open EquivalenceOnIso in
 
 /- English proof (translation)
-Introduce `K _ W Z q i _ U U' h hU a n`. Use `faithful h a` as an intermediate fact. Use `full h a` as an intermediate fact. Use `essSurj U U' h hU a` as an intermediate fact. Establish `: (morV i rfl a h).G.IsEquivalence` using `{}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `CrystallineSemistableComparison.P.adj_mor (morV i rfl a h) (tau_bij h a) n`.
+A detailed English derivation is pending.
 -/
 theorem onIso_pf : OnIso := by
   intro K _ W Z q i _ U U' h hU a n

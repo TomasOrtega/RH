@@ -18,7 +18,7 @@ open GlobalTheory.UnitGlue
 namespace GlobalTheory.UnitGlue.IsLBProof
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (u : Γ(X, U)ˣ) :
     res h2 (res h1 u) = res (h2.trans h1) u := by
@@ -28,13 +28,13 @@ theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hV : (V : Set X).Nonempty`. Establish `hne : ((V ⊓ P : X.Opens) : Set X).Nonempty`. Take `⟨z, _, hz⟩` from `(PreirreducibleSpace.isPreirreducible_univ (X := X)) _ _ V.isOpen P.isOpen (by simpa using hV) (by simpa using hP)`. Conclude with `⟨z, hz⟩`. Use `haveI : Nonempty (V ⊓ P : X.Opens) := ⟨⟨hne.choose, hne.choose_spec⟩⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hi` using `map_injective_of_isIntegral X (homOfLE (inf_le_left : V ⊓ P ≤ V))`. Use `ext`. Apply `hi` to reduce the goal to its premises. Use `congrArg (fun w : Γ(X, V ⊓ P)ˣ => (w : Γ(X, V ⊓ P))) hab` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[res]`. Establish `hb : V = ⊥`. Use extensionality with `z`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Introduce `hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `hV ⟨z, hz⟩`. Substitute `hb` using the available equality. Introduce `a b _`. Conclude with `Subsingleton.elim a b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem res_inj {X : Scheme.{0}} [IsIntegral X] (P : X.Opens) (hP : (P : Set X).Nonempty) (V : X.Opens) :
     Function.Injective (res (inf_le_left : V ⊓ P ≤ V)) := by
@@ -58,7 +58,7 @@ theorem res_inj {X : Scheme.{0}} [IsIntegral X] (P : X.Opens) (hP : (P : Set X).
     exact Subsingleton.elim a b
 
 /- English proof (translation)
-Use `congrArg (res hW) hu.1` as an intermediate fact. Rewrite `this` using `[map_mul, res_res', res_res', res_res']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratio_res {p : ℕ} [Fact p.Prime] {X : Scheme.{0}} {Xw : X.Opens} {K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]}
     (h : ∀ x : X, UnitChartAt p Xw K x) (x y : X) (u : Γ(X, Uc h x ⊓ Uc h y)ˣ) (hu : RatioProp h x y u)
@@ -76,19 +76,17 @@ namespace GlobalTheory.UnitGlue
 open GlobalTheory.UnitGlue.IsLBProof in
 
 /- English proof (translation)
-Introduce `p _ X Xw K h hI hw hle hex`. Establish `hP : ((Xp X p : X.Opens) : Set X).Nonempty` using `hw.mono hle`. Establish `hR : ∀ x y, RatioProp h x y (gU h x y)` using `fun x y => by`. Unfold `gU`. Rewrite using `[dif_pos (hex x y)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hex x y).choose_spec`. Use `⟨?_, fun (i : X) => ?_, fun (i j k : X) => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(c_spec h x).2.1`. Use `show x ∈ ((cξ h x ''ᵁ ⊤ : X.Opens) : Set X)`. Conclude with `⟨y, trivial, hy⟩`. Use `show res (le_inf le_rfl le_rfl : Uc h i ≤ Uc h i ⊓ Uc h i) (gU h i i) = 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `res_inj (Xp X p) hP (Uc h i)` to reduce the goal to its premises. Rewrite using `[res_res', map_one]`. Establish `hW : Uc h i ⊓ Xp X p ≤ Uc h i ⊓ Uc h i ⊓ Xp X p` using `le_inf (le_inf inf_le_left inf_le_left) inf_le_right`. Establish `h1` using `ratio_res h i i _ (hR i i) _ hW`. Establish `h2 : res (hW.trans inf_le_left) (gU h i i) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3` using `h1`. Rewrite `h3` using `[mul_eq_right]`. Conclude with `h3`. Conclude with `h2`. Use `show res (inf_le_left : Uc h i ⊓ Uc h j ⊓ Uc h k ≤ Uc h i ⊓ Uc h j) (gU h i j) * res (le_inf (inf_le_left.trans inf_le_right) inf_le_right : Uc h i ⊓ Uc h j ⊓ Uc h k ≤ Uc h j ⊓ Uc h k) (gU h j k) = res (le_inf (inf_le_left.trans inf_le_left) inf_le_right : Uc h i ⊓ Uc h j ⊓ Uc h …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `res_inj (Xp X p) hP _` to reduce the goal to its premises. Rewrite using `[map_mul, res_res', res_res', res_res']`. Establish `hT : Uc h i ⊓ Uc h j ⊓ Uc h k ⊓ Xp X p ≤ Uc h i ⊓ Uc h j ⊓ Xp X p` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hT2 : Uc h i ⊓ Uc h j ⊓ Uc h k ⊓ Xp X p ≤ Uc h j ⊓ Uc h k ⊓ Xp X p` using `le_inf (le_inf (inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans inf_le_right)) inf_le_right`. Establish `hT3 : Uc h i ⊓ Uc h j ⊓ Uc h k ⊓ Xp X p ≤ Uc h i ⊓ Uc h k ⊓ Xp X p` using `le_inf (le_inf (inf_le_left.trans (inf_le_left.trans inf_le_left)) (inf_le_left.trans inf_le_right)) inf_le_right`.
-
-Establish `hij` using `ratio_res h i j _ (hR i j) _ hT`. Establish `hjk` using `ratio_res h j k _ (hR j k) _ hT2`. Establish `hik` using `ratio_res h i k _ (hR i k) _ hT3`. Apply `mul_right_cancel (b := res (hT2.trans (le_inf (inf_le_left.trans inf_le_right) inf_le_right)) (Cx h k))` to reduce the goal to its premises. Rewrite using `[_root_.mul_assoc, hjk, hij, hik]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueLB_isLB : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (h : ∀ x : X, UnitChartAt p Xw K x), IsIntegral X → (Xw : Set X).Nonempty → Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → (∀ x y : X, ∃ u, RatioProp h x y u) → (glueLB h).IsLB := by
   intro p _ X Xw K h hI hw hle hex

@@ -11,15 +11,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.OscGauss
 
 /- English proof (translation)
-Establish `h1` using `Matrix.nonsing_inv_mul _ h`. Establish `h2` using `Matrix.mul_nonsing_inv _ h`. Generalize the expression as in `(1 - C * B)⁻¹ = N at h1 h2 ⊢`. Establish `h3 : C * B * N = N - 1` using `by rw [← h2, Matrix.sub_mul, Matrix.one_mul, sub_sub_cancel]`. Establish `h4 : N * (C * B) = N - 1` using `by rw [← h1, Matrix.mul_sub, Matrix.mul_one, sub_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (1 - B * C)⁻¹ = 1 + B * N * C`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `: B * C * (B * N * C) = B * (C * B * N) * C` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_add, this, h3, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hMB : (1 + B * N * C) * B = B * N`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, h4, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[hM, hMB]`. Establish `e1 : N *ᵥ (-(b + C *ᵥ c) + (1 - C * B) *ᵥ u) = u - N *ᵥ (b + C *ᵥ c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.mulVec_neg]`. Normalize the expressions using the abelian group laws. Establish `e2 : (s ᵥ* (1 - C * B)) ⬝ᵥ N *ᵥ (b + C *ᵥ c) = s ⬝ᵥ (b + C *ᵥ c)`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Rewrite using `[e1, dotProduct_sub, sub_dotProduct _ _ (N *ᵥ _), e2]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [add_dotProduct, sub_dotProduct, dotProduct_add, ← Matrix.dotProduct_mulVec, Matrix.mulVec_add, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, dotProduct_sub, dotProduct_comm b s]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kerAlg_exponent {P Q : ℕ} (B : Matrix (Fin P) (Fin Q) ℂ) (C : Matrix (Fin Q) (Fin P) ℂ)
     (h : IsUnit (1 - C * B).det) (a c : Fin P → ℂ) (b d s u : Fin Q → ℂ) :
@@ -53,13 +53,13 @@ theorem kerAlg_exponent {P Q : ℕ} (B : Matrix (Fin P) (Fin Q) ℂ) (C : Matrix
   ring
 
 /- English proof (translation)
-Establish `hH : IsUnit (Y.toRows₂ᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact h.star`. Establish `e0 : Yᴴ * Jm P Q * Y' = (-Y.toRows₂ᴴ) * (1 - (matA Y)ᴴ * matA Y') * Y'.toRows₂`. Rewrite using `[Matrix.neg_mul, Matrix.neg_mul, ← form_factor Y Y' h h', neg_neg]`. Establish `e1 : Yᴴ * Jm P Q = (-Y.toRows₂ᴴ) * Matrix.fromCols (-(matA Y)ᴴ) 1` using `by conv_lhs => rw [frame_eq Y h]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, baseY, Jm, Formalism.UG.Jpq, Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, Matrix.fromCols_mul_fromBlocks, Matrix.neg_mul, ← Matrix.mul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `hN : IsUnit (-Y.toRows₂ᴴ).det`. Rewrite `hH`, the goal using `[← Matrix.isUnit_iff_isUnit_det]`. Conclude with `hH.neg`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, Matrix.mul_assoc _ Yᴴ, e1, Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Establish `e2` using `frame_eq Y' h'`. Generalize the expression as in `matA Y' = B at e2 ⊢`. Generalize the expression as in `Y'.toRows₂ = Z at e2 h' ⊢`. Substitute `e2` using the available equality.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, baseY]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ h', Matrix.nonsing_inv_mul_cancel_left _ _ hN]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerAlg_proj {P Q : ℕ} (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit Y.toRows₂.det)
     (h' : IsUnit Y'.toRows₂.det) :
@@ -86,23 +86,23 @@ theorem kerAlg_proj {P Q : ℕ} (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ h', Matrix.nonsing_inv_mul_cancel_left _ _ hN]
 
 /- English proof (translation)
-Introduce `P Q Y Y' v φ v' φ' h h' hK A B a b c d M N`. Establish `hs : star (scal Y v φ) = ((Y.toRows₂ᴴ).det)⁻¹ * Complex.exp (-(b ⬝ᵥ star (v ∘ Sum.inr)))`. Rewrite using `[scal, star_mul', star_inv₀, Matrix.det_conjTranspose, Complex.star_def, ← Complex.exp_conj]`. Use `congr 2`. Simplify using `[b, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hs' : scal Y' v' φ' = (Y'.toRows₂.det)⁻¹ * Complex.exp (-(d ⬝ᵥ (v' ∘ Sum.inr)))` using `rfl`. Establish `ha : star (v ∘ Sum.inl) = a + star (v ∘ Sum.inr) ᵥ* Aᴴ`. Establish `: a = star (v ∘ Sum.inl - A *ᵥ (v ∘ Sum.inr))` using `rfl`. Rewrite using `[this, star_sub, Matrix.star_mulVec]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hb : b = Aᴴ *ᵥ star (φ ∘ Sum.inl) + star (φ ∘ Sum.inr)`. Establish `: b = star ((φ ∘ Sum.inl) ᵥ* A + φ ∘ Sum.inr)` using `rfl`. Rewrite using `[this, star_add, Matrix.star_vecMul]`. Establish `hc : v' ∘ Sum.inl = c + B *ᵥ (v' ∘ Sum.inr)`. Establish `: c = v' ∘ Sum.inl - B *ᵥ (v' ∘ Sum.inr)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Establish `hd : d = (φ' ∘ Sum.inl) ᵥ* B + φ' ∘ Sum.inr` using `rfl`. Establish `hJ1 : star v ᵥ* Jm P Q = Sum.elim (star (v ∘ Sum.inl)) (-star (v ∘ Sum.inr))`. Rewrite using `[Jm, Formalism.UG.Jpq, Matrix.vecMul_fromBlocks]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext (i | i) <;> simp [Matrix.vecMul_neg]`. Establish `hJ2 : Jm P Q *ᵥ star φ = Sum.elim (star (φ ∘ Sum.inl)) (-star (φ ∘ Sum.inr))`. Rewrite using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_mulVec]`. Apply the tactic sequence `ext (i | i) <;> simp [Matrix.neg_mulVec]`. Establish `e0 : (star v ᵥ* Jm P Q) ⬝ᵥ v' = (a + star (v ∘ Sum.inr) ᵥ* Aᴴ) ⬝ᵥ (c + B *ᵥ (v' ∘ Sum.inr)) - star (v ∘ Sum.inr) ⬝ᵥ (v' ∘ Sum.inr)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← ha, ← hc, hJ1]`. Simplify using `[dotProduct, Fintype.sum_sum_type, sub_eq_add_neg]`. Establish `e1 : (star v ᵥ* Jm P Q + φ') ᵥ* Matrix.fromRows B 1 = a ᵥ* B + d - star (v ∘ Sum.inr) ᵥ* (1 - Aᴴ * B)`. Establish `: star v ᵥ* Jm P Q + φ' = Sum.elim (star (v ∘ Sum.inl) + φ' ∘ Sum.inl) (-star (v ∘ Sum.inr) + φ' ∘ Sum.inr)`. Apply the tactic sequence `rw [hJ1]; ext (i | i) <;> rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Matrix.sumElim_vecMul_fromRows, ha, hd]`. Simplify using `only [Matrix.add_vecMul, Matrix.vecMul_one, Matrix.vecMul_sub, Matrix.vecMul_vecMul]`. Normalize the expressions using the abelian group laws. Establish `e2 : Matrix.fromCols (-Aᴴ) 1 *ᵥ (Jm P Q *ᵥ star φ + v') = -(b + Aᴴ *ᵥ c) + (1 - Aᴴ * B) *ᵥ (v' ∘ Sum.inr)`. Establish `: Jm P Q *ᵥ star φ + v' = Sum.elim (star (φ ∘ Sum.inl) + v' ∘ Sum.inl) (-star (φ ∘ Sum.inr) + v' ∘ Sum.inr)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hJ2]; ext (i | i) <;> rfl`. Rewrite using `[this, Matrix.fromCols_mulVec_sumElim, hb]`. Use `conv_lhs => rw [hc]`. Simplify using `only [Matrix.mulVec_add, Matrix.one_mulVec, Matrix.sub_mulVec, Matrix.mulVec_mulVec, Matrix.neg_mulVec, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `key` using `kerAlg_exponent B Aᴴ hK a c b d (star (v ∘ Sum.inr)) (v' ∘ Sum.inr)`. Rewrite using `[ker, kerAlg_proj Y Y' h h', form_factor Y Y' h h', ← Matrix.mulVec_mulVec _ (Matrix.fromRows _ _ * _), ← Matrix.mulVec_mulVec _ (Matrix.fromRows _ _), Matrix.dotProduct_mulVec _ (Matrix.fromRows _ _), e0, e1, e2, ← key, hs, hs', Complex.exp_add (-_ + -_), Complex.exp_add (-_) (- …`. Simplify using `only [mul_inv, M, N, A, B]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kerAlg : ∀ (P Q : ℕ) (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) (v φ v' φ' : Ix P Q → ℂ), IsUnit Y.toRows₂.det → IsUnit Y'.toRows₂.det → IsUnit (1 - (matA Y)ᴴ * matA Y').det → let A := matA Y; let B := matA Y'; let a : Fin P → ℂ := fun i => star (linX Y v φ (Sum.inl i)); let b : Fin Q → ℂ := fun j => star (linX Y v φ (Sum.inr j)); let c : Fin P → ℂ := fun i => linX Y' v' φ' (Sum.inl i); let d : Fin Q → ℂ := fun j => linX Y' v' φ' (Sum.inr j); let M := (1 - B * Aᴴ)⁻¹; let N := (1 - Aᴴ * B)⁻¹; star (scal Y v φ) * scal Y' v' φ' * (((1 - Aᴴ * B).det)⁻¹ * Complex.exp (a ⬝ᵥ M *ᵥ c + d ⬝ᵥ N *ᵥ b + a ⬝ᵥ (M * B) *ᵥ b + d ⬝ᵥ (N * Aᴴ) *ᵥ c)) = ker Y v φ Y' v' φ' := by
   intro P Q Y Y' v φ v' φ' h h' hK A B a b c d M N

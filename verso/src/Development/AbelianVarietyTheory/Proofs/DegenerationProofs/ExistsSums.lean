@@ -48,9 +48,9 @@ def homComp (I : NumD.Hom f N N') (I' : NumD.Hom g N' N'') (k : O →+* O'') (hk
       linear_combination (norm := abel) a + b }
 
 /- English proof (translation)
-Use `⟨h'.1.trans (congrArg I'.φ h.1), fun χ => ?_⟩` and prove the remaining obligations. Establish `e : ∀ x : Oˣ, Units.map k.toMonoidHom x = Units.map g.toMonoidHom (Units.map f.toMonoidHom x)` using `fun x => Units.ext (hk x)`. Establish `p` using `congrArg (fun t => Additive.ofMul (Units.map g.toMonoidHom t)) (h.2 χ)`. Establish `q` using `congrArg Additive.ofMul (h'.2 (I.e χ))`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [homComp, e, map_mul, ofMul_mul, AddEquiv.trans_apply, I.c_eq, h.1] at p q ⊢`. Take the linear combination `(norm := abel) p + q`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem homComp_rel (I : NumD.Hom f N N') (I' : NumD.Hom g N' N'') (k : O →+* O'') (hk : ∀ x, k x = g (f x))
     {a : N.Gt} {b : N'.Gt} {c : N''.Gt} (h : I.Rel a b) (h' : I'.Rel b c) : (homComp I I' k hk).Rel a c := by
@@ -65,7 +65,7 @@ theorem homComp_rel (I : NumD.Hom f N N') (I' : NumD.Hom g N' N'') (k : O →+* 
 end Comp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(NormedField.valuation (K := C)).valuationSubring, fun x => by rw [Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]; exact Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ball (C : Type) [NormedField C] [IsUltrametricDist C] :
     ∃ S : ValuationSubring C, ∀ x, x ∈ S ↔ ‖x‖ ≤ 1 :=
@@ -73,7 +73,7 @@ theorem exists_ball (C : Type) [NormedField C] [IsUltrametricDist C] :
     rw [Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]; exact Iff.rfl⟩
 
 /- English proof (translation)
-Establish `: IsIntegral S x` using `hx.map_of_comp_eq ((algebraMap R K).codRestrict S h) (RingHom.id K) rfl`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 this`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral {R K : Type} [CommRing R] [Field K] [Algebra R K] (S : ValuationSubring K)
     (h : ∀ r, algebraMap R K r ∈ S) {x : K} (hx : IsIntegral R x) : x ∈ S := by
@@ -82,15 +82,13 @@ theorem mem_of_isIntegral {R K : Type} [CommRing R] [Field K] [Algebra R K] (S :
   exact y.2
 
 /- English proof (translation)
-Take `⟨Φ₁, h1, h2, h3⟩` from `GlobalTheory.T.exists_powerSeries_ringHom_extending_finite_free O O₁ K (algebraMap _ K) io hio`. Take `⟨Φ, h4, h5, h6⟩` from `GlobalTheory.T.exists_ringHom_powerSeries_root' O₁ K Φ₁ k t hk (ht.trans h2.symm)`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := O₁)`. Use `⟨Algebra.adjoin _ (io '' s ∪ {t}), Φ, Algebra.finite_adjoin_of_finite_of_isIntegral ((s.finite_toSet.image _).union (Set.finite_singleton _)) ?_, fun a => (h4 a).trans (h1 a), h5, fun f => ?_⟩` and prove the remaining obligations. Introduce and unpack `x (⟨a, -, rfl⟩ | rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(Algebra.IsIntegral.isIntegral (R := O) a).map_of_comp_eq PowerSeries.C io (RingHom.ext fun a => (hio a).symm)`. Conclude with `IsIntegral.of_pow hk (ht ▸ isIntegral_algebraMap)`. Use `(Subring.closure_le (t := (Algebra.adjoin _ (io '' s ∪ {t})).toSubring)).2 ?_ (h6 f)` and prove the remaining obligations. Introduce and unpack `x (⟨g, rfl⟩ | rfl)`. Use `(Subring.closure_le (t := (Algebra.adjoin _ (io '' s ∪ {t})).toSubring)).2 ?_ (h3 g)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `x (⟨g, rfl⟩ | ⟨a, rfl⟩)`. Conclude with `Subalgebra.algebraMap_mem _ g`. Establish `ha : a ∈ Submodule.span O (s : Set O₁)` using `hs ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `io a ∈ Algebra.adjoin (PowerSeries O) (io '' s ∪ {t})`. Proceed by induction on `ha using Submodule.span_induction with`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact Algebra.subset_adjoin (.inl ⟨x, hx, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ a b => rw [map_add]`. Conclude with `add_mem a b`.
-
-Consider the case `smul c x _ a => rw [Algebra.smul_def, map_mul, hio]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) a`. Conclude with `Algebra.subset_adjoin (.inr rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_map {O O₁ K : Type} [CommRing O] [CommRing O₁] [Field K] [Algebra O O₁] [Module.Free O O₁]
     [Module.Finite O O₁] [Algebra (PowerSeries O) K] (io : O₁ →+* K)
@@ -135,17 +133,17 @@ def Sums {R K F : Type} [CommRing R] [Field K] [Field F] [Algebra R K] (X : R) (
       TwRel β u rj qz' pz → ∃ s : Cˣ, ∀ x, gam (w x) = s * (N'.twist β u).ev m (p x) pz.1.2
 
 /- English proof (translation)
-Establish `hk : 0 < m ^ 2 * j` using `Nat.mul_pos (pow_pos hm.pos 2) hj`. Take `⟨R₁, Φ, hR, h1, h2, h3⟩` from `exists_map (io.comp f) hio hk ht`. Use `choose p₀ hp hp' using hq`. Take `⟨q₀, hz, hz'⟩` from `hz`. Set `be₀ : LinearMap.BilinForm ℤ N₀.X` to `be.comp I₀.e.toAddMonoidHom.toIntLinearMap I₀.e.toAddMonoidHom.toIntLinearMap`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : ℕ` to `((m : ℤ) ^ 2 * (((m ^ 2 * j : ℕ) : ℤ) * be₀ q₀.1.1.toAdd q₀.1.1.toAdd)).toNat`. Use `⟨R₁, fun x => Φ (N₀.arcTx (((m ^ 2 * j : ℕ) : ℤ) • be₀) m (p₀ x)), fun x => Φ (N₀.arcEv (((m ^ 2 * j : ℕ) : ℤ) • be₀) m (p₀ x) q₀ s), hR, fun x => h3 _, ?_⟩` and prove the remaining obligations. Introduce `C _ _ _ gam g1 g2 N' I k β hI hβ u rm rj hu hrm hrj q' p hq' hp''`. Take `⟨S, hS⟩` from `exists_ball C`. Establish `n1 : ∀ g, ‖(gam.comp Φ) g‖ ≤ 1` using `fun g => (hS _).1 (mem_of_isIntegral (S.comap gam) (fun r => (hS _).2 (g1 r)) ((Algebra.IsIntegral.isIntegral (⟨_, h3 g⟩ : R₁)).map R₁.val))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : ‖(gam.comp Φ) PowerSeries.X‖ < 1`. Rewrite `g2` using `[← ht, map_pow, norm_pow, pow_lt_one_iff_of_nonneg (norm_nonneg _) hk.ne']`. Rewrite using `[RingHom.comp_apply, h2]` and apply the resulting hypothesis. Set `t' : Cˣ` to `Units.map gam.toMonoidHom t`. Set `J` to `homComp I₀ I ((gam.comp Φ).comp PowerSeries.C) fun x => congrArg gam (h1 x)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJ : J.lam = 1`. Express the relevant statement in the definitionally equal form `I.lam * Units.map _ I₀.lam = 1`. Rewrite using `[hI, hl, map_one, mul_one]`. Establish `e1 : t' ^ j = rm` using `Units.ext (by rw [hrm, ← map_pow]; rfl)`. Establish `key` using `fun x => GlobalTheory.T.twist_tx_ev_eq_map_arc_root_alt O₁ C (gam.comp Φ) n1 n2 t' u rm rj m j hm hj (congrArg gam h2.symm) e1 (Units.ext (by rw [hrj, ← map_pow]; rfl)) (Units.ext (by rw [hu, ← e1, ← pow_mul, mul_comm j, ← ht, ← map_pow, map_pow gam]; simp [t'])) N₀ N' J k be₀ β …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_, fun qz' pz a b c => ⟨(J.lam * J.h q₀.1.2.b ^ (m ^ 2))⁻¹ * t' ^ s, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(key x).1, hJ, Units.val_one, one_mul]`. Both sides reduce to the same expression. Use `(key x).2 q₀ qz' pz (a.trans (congrArg I.e hz)) (homComp_rel _ _ _ _ hz' b) c s (Int.self_le_toNat _)` as an intermediate fact. Rewrite using `[Units.val_mul, mul_assoc, Units.val_pow_eq_pow_val, this, Units.inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_sums {O O₁ K F : Type} [CommRing O] [CommRing O₁] [Field K] [Field F] [Algebra O O₁] [Module.Free O O₁]
     [Module.Finite O O₁] [Algebra (PowerSeries O) K] (f : O₁ →+* F) (io : F →+* K)

@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, ht χ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem appTop_charUnit_of_torusEndOf {S : Scheme.{0}} {X : Type} [AddCommGroup X] {h : X → X}
     {t : splitTorus S X ⟶ splitTorus S X} (ht : Out.TorusEndOf X h t) (χ : X) :
@@ -29,15 +29,13 @@ private theorem appTop_charUnit_of_torusEndOf {S : Scheme.{0}} {X : Type} [AddCo
   rw [← this, ht χ]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U OE _ _ _ io oD oA hl k a S _ _`. Establish `hG : ((Over.pullback (Out.thick R I k)).map (io.act a)).left ≫ (Out.fstG I k G).left = (Out.fstG I k G).left ≫ (io.act a).left` using `GlobalTheory.SplitTorusPoints.map_left_fst (Out.thick R I k) (io.act a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z y ⟨w, h1, h2⟩`. Use `⟨w ≫ ((Over.pullback (Out.thick R I k)).map (io.act a)).left, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.comp_left, ← h1]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) hG).trans (Category.assoc _ _ _).symm)`. Establish `hB : ((Over.pullback (Out.thick R I k)).map (oD.onB.act a)).left ≫ (D.toPre.prBe I k).left = (D.toPre.prBe I k).left ≫ (oD.onB.act a).left` using `GlobalTheory.SplitTorusPoints.map_left_fst (Out.thick R I k) (oD.onB.act a)`. Establish `hq : ((Over.pullback (Out.thick R I k)).map (io.act a)).left ≫ (U.gt k).q.left = (U.gt k).q.left ≫ ((Over.pullback (Out.thick R I k)).map (oD.onB.act a)).left` using `congrArg (·.left) (hl.q_lin k a)`. Establish `hp : ((Over.pullback (Out.thick R I k)).map (io.act a)).left ≫ (U.gt k).pG.left = (U.gt k).pG.left ≫ (oD.onB.act a).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (D.toPre.prBe I k).left) hq).trans ((Category.assoc _ _ _).trans ((congrArg ((U.gt k).q.left ≫ ·) hB).trans (Category.assoc _ _ _).symm)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left (g := oD.onB.act a), ← h2]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) hp).trans (Category.assoc _ _ _).symm)`. Introduce and unpack `χ χ' z hχ ⟨w, h1, h2⟩`. Take `⟨t, ht, hi⟩` from `hl.i_lin k a`. Use `⟨w ≫ t.left, fun x => ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hχ, ← h1, ← appTop_charUnit_of_torusEndOf ht x, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `hi' : (U.gt k).i.left ≫ ((Over.pullback (Out.thick R I k)).map (io.act a)).left = t.left ≫ (U.gt k).i.left` using `congrArg (·.left) hi`. Establish `hp : t.left ≫ (U.gt k).i.left ≫ (Out.fstG I k G).left = ((U.gt k).i.left ≫ (Out.fstG I k G).left) ≫ (io.act a).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (Out.fstG I k G).left) hi'.symm).trans ((Category.assoc _ _ _).trans ((congrArg ((U.gt k).i.left ≫ ·) hG).trans (Category.assoc _ _ _).symm)))`. Rewrite using `[Over.comp_left, ← h2]`.
-
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (w ≫ ·) hp).trans (Category.assoc _ _ _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qRel_iRel_equivariant : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G), ∀ (OE : Type) [CommRing OE] [StarRing OE] [Module OE D.toPre.X] (io : Out.RingAct G OE) (oD : D.OAct OE) (oA : A.OAct OE), U.OLinear OE oD oA io → ∀ (k : ℕ) (a : OE) (S : Type) [CommRing S] [Algebra R S], (∀ z y, QRel (U.gt k) S z y → QRel (U.gt k) S (z ≫ io.act a) (y ≫ oD.onB.act a)) ∧ ∀ χ χ' z, (∀ x, χ' (Multiplicative.ofAdd x) = χ (Multiplicative.ofAdd (star a • x))) → IRel (U.gt k) S χ z → IRel (U.gt k) S χ' (z ≫ io.act a) := by
   intro R _ _ I D A G _ _ U OE _ _ _ io oD oA hl k a S _ _

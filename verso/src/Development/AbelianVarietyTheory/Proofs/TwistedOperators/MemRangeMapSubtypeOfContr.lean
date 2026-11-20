@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Chain.IoLift
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TensorContraction.mem_range_map`. Consider the case `exact _root_.GlobalTheory.TensorContraction.mem_range_map`. Consider the case `(apply _root_.GlobalTheory.TensorContraction.mem_range_map <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TensorContraction.mem_range_map <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TensorContraction.mem_range_map <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TensorContraction.mem_range_map ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_range_map_subtype_of_contr (ι : Type) [Fintype ι] (K : ι → Type) [∀ i, AddCommGroup (K i)]
     [∀ i, Module ℂ (K i)] (N : ∀ i, Submodule ℂ (K i)) (x : ⨂[ℂ] i, K i)

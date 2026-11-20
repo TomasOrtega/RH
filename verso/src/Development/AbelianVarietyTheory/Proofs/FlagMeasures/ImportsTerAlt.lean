@@ -6,11 +6,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.R3.RowFrameParts
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F X0 Y`. Use `⟨Y.stdPsi.1, fun σ => ?_⟩` and prove the remaining obligations. Establish `h` using `Y.tied.sharp.ft σ`. Establish `h1` using `Y.prtE (D.what₂.ft σ)`. Establish `h2` using `Y.eE_read (D.what₂.onb σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h1 ▸ h`. Take `⟨z, hz, hze⟩` from `h3`. Rewrite `hze` using `[h2]`. Establish `: z = R.HE.e (Y.eE (D.what₂.onb σ))` using `LinearEquiv.injective _ hze`. Rewrite using `[← this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A3.A Ks) (F : Face D A3.A) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R F X0), StdPsi Y.hF Y.PY ∧ ∀ σ, R.HE.e (Y.eE (D.what₂.onb σ)) ∈ isotE R.θ Y.PY (R.MY 0) (JR R F) (chiR R F) R.e0 (rowRepR R.θ (Y.eFT (D.what₂.ft σ))) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F X0 Y

@@ -19,9 +19,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK G
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[he]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Use `congrFun h i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, adMat, incV, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat]`. Introduce `h`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun h i) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, adMat, incV, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem line_iff {σ : E →ₐ[F] E} {n : ℕ} {J J' : Matrix (Fin n) (Fin n) E} (e : UA σ J ≃* GAd σ J')
     (he : ∀ g, matHom _ σ J' (e g) = (g : GL (Fin n) (AF F ⊗[F] E))) (x : Fin n → E) (p : UA σ J) (l : (AF F ⊗[F] E)ˣ) :
@@ -44,7 +44,7 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Matr
   {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)} {h : GAd σ J → ℝ}
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hq, Matrix.mul_smul, hp, smul_smul, Units.val_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem line_mul {p q : GAd σ J} {l l' : (AF F ⊗[F] E)ˣ} (hp : (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x)
     (hq : (matHom _ σ J q).1 * adMat F x = l'.1 • adMat F x) :
@@ -52,7 +52,7 @@ theorem line_mul {p q : GAd σ J} {l l' : (AF F ⊗[F] E)ˣ} (hp : (matHom _ σ 
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, hq, Matrix.mul_smul, hp, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Use `congrArg (fun z => (l⁻¹).1 • ((matHom _ σ J p⁻¹).1 * z)) hp` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_smul, smul_smul] at this`. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem line_inv {p : GAd σ J} {l : (AF F ⊗[F] E)ˣ} (hp : (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x) :
     (matHom _ σ J p⁻¹).1 * adMat F x = (l⁻¹).1 • adMat F x := by
@@ -62,7 +62,7 @@ theorem line_inv {p : GAd σ J} {l : (AF F ⊗[F] E)ˣ} (hp : (matHom _ σ J p).
   simpa using this.symm
 
 /- English proof (translation)
-Establish `h1 : absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `: absE F E l ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absE_pos (l : (AF F ⊗[F] E)ˣ) : (0 : ℝ) < absE F E l := by
   have h1 : absE F E l * absE F E l⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
@@ -70,7 +70,7 @@ theorem absE_pos (l : (AF F ⊗[F] E)ˣ) : (0 : ℝ) < absE F E l := by
   exact_mod_cast pos_iff_ne_zero.2 this
 
 /- English proof (translation)
-Take `⟨q, l, hq, k, hk, rfl⟩` from `hh.1 g`. Rewrite using `[hh.2 q l hq k hk]`. Conclude with `absE_pos l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_pos (hh : IsIwaHtG σ J x L a h) (g : GAd σ J) : 0 < h g := by
   obtain ⟨q, l, hq, k, hk, rfl⟩ := hh.1 g
@@ -78,7 +78,7 @@ theorem h_pos (hh : IsIwaHtG σ J x L a h) (g : GAd σ J) : 0 < h g := by
   exact absE_pos l
 
 /- English proof (translation)
-Take `⟨q, l', hq, k, hk, rfl⟩` from `hh.1 g`. Rewrite using `[← mul_assoc, hh.2 _ _ (line_mul hp hq) k hk, hh.2 q l' hq k hk, map_mul, NNReal.coe_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_left (hh : IsIwaHtG σ J x L a h) {p : GAd σ J} {l : (AF F ⊗[F] E)ˣ}
     (hp : (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x) (g : GAd σ J) : h (p * g) = absE F E l * h g := by
@@ -86,7 +86,7 @@ theorem h_left (hh : IsIwaHtG σ J x L a h) {p : GAd σ J} {l : (AF F ⊗[F] E)�
   rw [← mul_assoc, hh.2 _ _ (line_mul hp hq) k hk, hh.2 q l' hq k hk, map_mul, NNReal.coe_mul]
 
 /- English proof (translation)
-Take `⟨q, l, hq, k, hk, rfl⟩` from `hh.1 g`. Rewrite using `[mul_assoc, hh.2 q l hq _ (mul_mem hk hm), hh.2 q l hq k hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_right (hh : IsIwaHtG σ J x L a h) (g : GAd σ J) {m : GAd σ J} (hm : m ∈ levelAll σ J L a) :
     h (g * m) = h g := by
@@ -96,7 +96,7 @@ theorem h_right (hh : IsIwaHtG σ J x L a h) (g : GAd σ J) {m : GAd σ J} (hm :
 end Height
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hx.le (inv_nonneg.2 hy.le), Complex.ofReal_inv, Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg hy.le]; exact Real.pi_ne_zero.symm), Complex.cpow_neg, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem div_cpow_pos {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (z : ℂ) :
     (((x / y : ℝ)) : ℂ) ^ z = (y : ℂ) ^ (-z) * (x : ℂ) ^ z := by
@@ -105,11 +105,11 @@ theorem div_cpow_pos {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (z : ℂ) :
     Complex.cpow_neg, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hx]`. Establish `hd : ‖s - z₀‖ < 1` using `by simpa [dist_eq_norm] using hs`. Establish `hn : ‖-(s + ρ)‖ ≤ ‖z₀‖ + 1 + ‖ρ‖`. Rewrite using `[norm_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : ‖s‖ ≤ ‖z₀‖ + ‖s - z₀‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : |(-(s + ρ)).re| ≤ ‖z₀‖ + 1 + ‖ρ‖` using `(Complex.abs_re_le_norm _).trans hn`. Establish `hA` using `abs_le.1 h1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_or_gt 1 x with h | h` into its components or cases. Conclude with `(Real.rpow_le_rpow_of_exponent_le h hA.2).trans (le_add_of_nonneg_right (Real.rpow_nonneg hx.le _))`. Conclude with `(Real.rpow_le_rpow_of_exponent_ge hx h.le hA.1).trans (le_add_of_nonneg_left (Real.rpow_nonneg hx.le _))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cpow_bound {x : ℝ} (hx : 0 < x) (z₀ ρ : ℂ) {s : ℂ} (hs : s ∈ Metric.ball z₀ 1) :
     ‖(x : ℂ) ^ (-(s + ρ))‖ ≤ x ^ (‖z₀‖ + 1 + ‖ρ‖) + x ^ (-(‖z₀‖ + 1 + ‖ρ‖)) := by
@@ -135,57 +135,49 @@ namespace GlobalTheory.EisReduce
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.SquareIntegrability
 
 /- English proof (translation)
-Introduce `hCore F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' hT K hK`. Establish `hB` using `hT.base`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Establish `hσ : ∀ z : E, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Take `⟨m, Xf, Yf, L, a0, c, hW, hA, hcol, hKc⟩` from `GlobalTheory.T.stabilizer_finite_index_chain F E σ B (b + 2) b G.V' G₁.V' G.q (b + 2 - G.q) 0 (b + 1) H hB hT.geo.hV' hC.hH K hK`. Establish `hJt : (1 : E) • G.V'.J.map σ = G.V'.Jᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.transpose_apply, hT.geo.hV'.herm j i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hND : IsHermND σ ((1 : E) • G.V'.J.map σ)` using `hJt ▸ GlobalTheory.IwLine.isHermND_transpose hT.geo.hV'`. Take `⟨h0, hh0⟩` from `GlobalTheory.T.iwasawa_height_adapted_lattice F E σ (b + 2) _ m Xf Yf L a0 hcm hB.unram hND hW hA`. Establish `h4 : 4 ≤ b + 2`. Use `hT.geo.aBig` as an intermediate fact. Use `hC.eq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨Eis0, hSer0, hMer0, hRho0⟩` from `hCore F E σ (b + 2) _ m Xf Yf L a0 h0 ⟨hcm, hB.unram, hND, h4, hW, hA, hh0⟩`. Rewrite `hh0`, `hSer0` using `[hcol]`. Take `⟨e, he⟩ : ∃ e : UA σ G.V'.J ≃* GAd σ ((1 : E) • G.V'.J.map σ), ∀ g, matHom _ σ ((1 : E) • G.V'.J.map σ) (e g) = (g : GL (Fin (b + 2)) (AF F ⊗[F] E))` from `⟨toGAd hσ G.V'.J one_ne_zero, fun g => rfl⟩`. Establish `hht : ∀ g, height σ ((1 : E) • G.V'.J.map σ) (e g) = ht g` using `fun g => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AdelicU.height, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht, he]`. Use `set ρ : ℂ := (((b + 2 : ℕ) : ℂ) - 1) / 2 with hρ`. Establish `hc0 : 0 < h0 c` using `h_pos hh0 c`. Establish `hval : ∀ g : UA σ G.V'.J, (g : GL (Fin (b + 2)) (AF F ⊗[F] E)) = matHom _ σ ((1 : E) • G.V'.J.map σ) (e g)` using `fun g => (he g).symm`. Establish `kc : ∀ k ∈ K, ∃ mm ∈ levelAll σ ((1 : E) • G.V'.J.map σ) L a0, e k * c = c * mm` using `fun k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨mm, hmm, hk'⟩` from `(hKc k).1 hk`. Use `⟨mm, hmm, matHom_injective _ σ ((1 : E) • G.V'.J.map σ) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hval, hk']`. Use `group`. Use `⟨fun s g => (h0 c : ℂ) ^ (-(s + ρ)) * Eis0 s (e g * c), ⟨fun g => h0 (e g * c) / h0 c, ?hiwa, ?hdec, ?hser⟩, ?hmer, ?hrho⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `case hiwa =>`. Introduce `p k l hk hp`. Take `⟨mm, hmm, hkc⟩` from `kc k hk`. Use `show h0 (e (p * k) * c) / h0 c = absE F E l`. Rewrite using `[map_mul, mul_assoc, hkc, ← mul_assoc, h_right hh0 _ hmm, h_left hh0 ((line_iff e he _ p l).1 hp) c, mul_div_assoc, div_self hc0.ne', mul_one]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `case hdec =>`. Introduce `g`. Take `⟨q, l, hq, mq, hmq, hg⟩` from `hh0.1 (e g * c)`. Take `⟨q₁, l₁, hq₁, m₁, hm₁, hc⟩` from `hh0.1 c`. Use `⟨e.symm (q * q₁⁻¹), e.symm (c * (m₁⁻¹ * mq) * c⁻¹), l * l₁⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKc]`. Use `⟨m₁⁻¹ * mq, mul_mem (inv_mem hm₁) hmq, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, MulEquiv.apply_symm_apply, map_mul, map_mul, map_inv]`. Rewrite using `[line_iff e he, MulEquiv.apply_symm_apply]`. Conclude with `line_mul hq (line_inv hq₁)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Establish `e1 : q * q₁⁻¹ * (c * (m₁⁻¹ * mq) * c⁻¹) = q * q₁⁻¹ * c * m₁⁻¹ * mq * c⁻¹` using `by group`. Establish `e2 : q * q₁⁻¹ * c = q * m₁` using `by rw [hc]; group`. Rewrite using `[e1, e2, mul_inv_cancel_right, ← hg]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `group`. Use `case hser =>`. Introduce `T hTsub hTt s hs g`. Establish `memP : ∀ u ∈ ratU σ G.V'.J, e u ∈ ratPts σ ((1 : E) • G.V'.J.map σ)` using `fun u hu => by`. Take `⟨mu, hmu⟩` from `Subgroup.mem_subgroupOf.1 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(e u).2`. Establish `hmu' : Formalism.UG.bc (inclR (AF F)) mu = matHom _ σ ((1 : E) • G.V'.J.map σ) (e u)`. Rewrite using `[he]`. Conclude with `hmu`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨mu, ?_, hmu'⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `unitary_of_map_inclR σ (b + 2) _ mu _ hmu'.symm h2`. Establish `memU : ∀ γ : ratPts σ ((1 : E) • G.V'.J.map σ), e.symm γ.1 ∈ ratU σ G.V'.J` using `fun γ => by`. Take `⟨u, -, hu2⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Conclude with `Subgroup.mem_subgroupOf.2 ⟨u, by rw [← he, MulEquiv.apply_symm_apply]; exact hu2⟩`. Use `set T' : Set (ratPts σ ((1 : E) • G.V'.J.map σ)) := {t | e.symm t.1 ∈ T} with hT'`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hTt' : ∀ γ : ratPts σ ((1 : E) • G.V'.J.map σ), ∃! t, t ∈ T' ∧ ∃ l : (AF F ⊗[F] E)ˣ, (matHom _ σ ((1 : E) • G.V'.J.map σ) (γ * t⁻¹ : ratPts σ ((1 : E) • G.V'.J.map σ)).1).1 * adMat F (Matrix.of fun i (_ : Fin 1) => H.x i) = l.1 • adMat F (Matrix.of fun i (_ : Fin 1) => H.x i)`. Introduce `γ`. Take `⟨t, ⟨htT, l, hl⟩, huniq⟩` from `hTt (e.symm γ.1) (memU γ)`. Use `⟨⟨e t, memP t (hTsub htT)⟩, ⟨by simpa [T'] using htT, l, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[line_iff e he]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `hl` using `[map_mul, map_inv]`. Introduce and unpack `t' ⟨ht'T, l', hl'⟩`. Use `huniq (e.symm t'.1) ⟨ht'T, l', by rw [line_iff e he]; simpa [map_mul, map_inv] using hl'⟩` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[← this]`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `eqv : T ≃ T'` to `{ toFun := fun u => ⟨⟨e u.1, memP _ (hTsub u.2)⟩, by simp [T', u.2]⟩ invFun := fun t => ⟨e.symm t.1.1, t.2⟩ left_inv := fun u => by simp right_inv := fun t => by simp }`. Establish `H1` using `(hSer0 T' hTt' s hs (e g * c)).mul_left ((h0 c : ℂ) ^ (-(s + ρ)))`. Rewrite `H1` using `[← eqv.hasSum_iff]`. Use `H1.congr_fun fun u => ?_` and prove the remaining obligations. Use `show ((h0 (e (u.1 * g) * c) / h0 c : ℝ) : ℂ) ^ _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, mul_assoc, div_cpow_pos (h_pos hh0 _) hc0]`. Both sides reduce to the same expression. Use `case hmer =>`. Introduce `s₀`. Take `⟨k, U, Hol0, C0, N0, hU, hHol, hdiff, hbd⟩` from `hMer0 s₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k, U ∩ Metric.ball s₀ 1, fun s g => (h0 c : ℂ) ^ (-(s + ρ)) * Hol0 s (e g * c), (h0 c ^ (‖s₀‖ + 1 + ‖ρ‖) + h0 c ^ (-(‖s₀‖ + 1 + ‖ρ‖))) * max C0 0 * (height σ ((1 : E) • G.V'.J.map σ) c : ℝ) ^ N0, N0, Filter.inter_mem hU (Metric.ball_mem_nhds _ one_pos), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs hne g`. Simplify using `only`. Rewrite using `[hHol s hs.1 hne]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `g s hs`. Use `DifferentiableAt.differentiableWithinAt ?_ |>.mul ((hdiff (e g * c)).mono Set.inter_subset_left s hs)` and prove the remaining obligations. Conclude with `DifferentiableAt.const_cpow ((differentiableAt_id.add_const ρ).neg) (Or.inl (by exact_mod_cast hc0.ne'))`. Introduce `s hs g`. Establish `hb` using `cpow_bound hc0 s₀ ρ hs.2`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH` using `hbd s hs.1 (e g * c)`. Establish `hm : (height σ ((1 : E) • G.V'.J.map σ) (e g * c) : ℝ) ≤ (ht g : ℝ) * height σ ((1 : E) • G.V'.J.map σ) c`. Use `height_mul_le σ ((1 : E) • G.V'.J.map σ) (e g) c` as an intermediate fact. Rewrite `this` using `[hht]`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hb (hH.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) hm _) (by positivity) (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := by rw [mul_pow]; ring`. Use `case hrho =>`. Take `⟨U, hU, C0, N0, hU0⟩` from `hRho0`. Use `⟨U ∩ Metric.ball (-ρ) 1, Filter.inter_mem hU (Metric.ball_mem_nhds _ one_pos), (h0 c ^ (‖-ρ‖ + 1 + ‖ρ‖) + h0 c ^ (-(‖-ρ‖ + 1 + ‖ρ‖))) * max C0 0 * (height σ ((1 : E) • G.V'.J.map σ) c : ℝ) ^ N0, N0, fun g => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `s hs`.
-
-Use `DifferentiableAt.differentiableWithinAt ?_ |>.mul (((hU0 (e g * c)).1).mono Set.inter_subset_left s hs)` and prove the remaining obligations. Conclude with `DifferentiableAt.const_cpow ((differentiableAt_id.add_const ρ).neg) (Or.inl (by exact_mod_cast hc0.ne'))`. Introduce `s hs`. Establish `hb` using `cpow_bound hc0 (-ρ) ρ hs.2`. Establish `hH` using `(hU0 (e g * c)).2.1 s hs.1`.
-
-Establish `hm : (height σ ((1 : E) • G.V'.J.map σ) (e g * c) : ℝ) ≤ (ht g : ℝ) * height σ ((1 : E) • G.V'.J.map σ) c`. Use `height_mul_le σ ((1 : E) • G.V'.J.map σ) (e g) c` as an intermediate fact. Rewrite `this` using `[hht]`. Conclude with `this` after adjusting the coercions. Rewrite using `[norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hb (hH.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) hm _) (by positivity) (le_max_right _ _)`. Use `_ = _ := by rw [mul_pow]; ring`. Use `show (h0 c : ℂ) ^ (-(-ρ + ρ)) * Eis0 (-ρ) (e g * c) = 1`.
-
-Rewrite using `[(hU0 (e g * c)).2.2, neg_add_cancel, neg_zero, Complex.cpow_zero, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisAtMinusRho_of_core : EisCore → GlobalTheory.ConeSmall.EisAtMinusRho := by
   intro hCore F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' hT K hK

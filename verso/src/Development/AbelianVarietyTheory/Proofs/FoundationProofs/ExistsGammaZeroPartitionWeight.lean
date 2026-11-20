@@ -9,7 +9,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: Function.Injective (fun g : SL(2, ℤ) => fun i j => (g : Matrix (Fin 2) (Fin 2) ℤ) i j)`. Introduce `g h e`. Use extensionality with `i j`. Conclude with `congrFun (congrFun e i) j`. Conclude with `this.countable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma wt_countable : Countable SL(2, ℤ) := by
   have : Function.Injective (fun g : SL(2, ℤ) => fun i j => (g : Matrix (Fin 2) (Fin 2) ℤ) i j) := by
@@ -17,13 +17,13 @@ lemma wt_countable : Countable SL(2, ℤ) := by
   exact this.countable
 
 /- English proof (translation)
-The claim follows from `continuous_const_smul (g : GL (Fin 2) ℝ)`.
+A detailed English derivation is pending.
 -/
 lemma wt_cont (g : SL(2, ℤ)) : Continuous (fun τ : ℍ => g • τ) :=
   continuous_const_smul (g : GL (Fin 2) ℝ)
 
 /- English proof (translation)
-Establish `h1 : IsClosed {z : ℍ | 1 ≤ normSq (z : ℂ)}` using `isClosed_le continuous_const (Complex.continuous_normSq.comp UpperHalfPlane.continuous_coe)`. Establish `h2 : IsClosed {z : ℍ | |z.re| ≤ 1 / 2}` using `isClosed_le (continuous_abs.comp (Complex.continuous_re.comp UpperHalfPlane.continuous_coe)) continuous_const`. Conclude with `h1.inter h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma wt_fd_closed : IsClosed ModularGroup.fd := by
   have h1 : IsClosed {z : ℍ | 1 ≤ normSq (z : ℂ)} :=
@@ -33,41 +33,35 @@ lemma wt_fd_closed : IsClosed ModularGroup.fd := by
   exact h1.inter h2
 
 /- English proof (translation)
-Introduce `L hL`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Use `haveI := wt_countable`. Use `haveI hfin : Finite (SL(2, ℤ) ⧸ Gamma0 L) := Subgroup.finite_quotient_of_finiteIndex`. Use `set S : Finset SL(2, ℤ) := (Set.finite_range (fun q : SL(2, ℤ) ⧸ Gamma0 L => q.out)).toFinset with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcov : ∀ g : SL(2, ℤ), ∃ s ∈ S, ∃ γ ∈ Gamma0 L, g = s * γ`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (Gamma0 L) g`. Use `⟨(QuotientGroup.mk g : SL(2, ℤ) ⧸ Gamma0 L).out, by simp [hS], ((h⁻¹ : Gamma0 L) : SL(2, ℤ)), (h⁻¹).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `set K : Set ℍ := {τ | ∃ s ∈ S, s • τ ∈ ModularGroup.fd} with hK`. Establish `hKm : MeasurableSet K`. Establish `: K = ⋃ s ∈ S, (fun τ : ℍ => s • τ) ⁻¹' ModularGroup.fd`. Use extensionality with `τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hK]`. Rewrite using `[this]`. Conclude with `Finset.measurableSet_biUnion _ fun s _ => (wt_fd_closed.preimage (wt_cont s)).measurableSet`. Establish `hKfin : ∀ τ : ℍ, {γ : Gamma0 L | (γ : SL(2, ℤ)) • τ ∈ K}.Finite`. Introduce `τ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : {g : SL(2, ℤ) | g • τ ∈ K}.Finite`. Establish `: {g : SL(2, ℤ) | g • τ ∈ K} = ⋃ s ∈ S, (fun g => s * g) ⁻¹' {g | g • τ ∈ ModularGroup.fd}`. Use extensionality with `g`. Simplify using `[hK, mul_smul]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `Set.Finite.biUnion S.finite_toSet fun s _ => (GlobalTheory.T.finite_slTwo_smul_mem_fundamentalDomain τ).preimage (mul_right_injective s).injOn`. Conclude with `Set.Finite.preimage (f := (Subtype.val : Gamma0 L → SL(2, ℤ))) Subtype.val_injective.injOn h1`. Establish `hKne : ∀ τ : ℍ, ∃ γ : Gamma0 L, (γ : SL(2, ℤ)) • τ ∈ K`. Introduce `τ`. Take `⟨g, hg⟩` from `ModularGroup.exists_smul_mem_fd τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs, γ, hγ, rfl⟩` from `hcov g`. Conclude with `⟨⟨γ, hγ⟩, s, hs, by rwa [mul_smul] at hg⟩`. Set `N : ℍ → ENNReal` to `fun τ => ∑' γ : Gamma0 L, K.indicator (1 : ℍ → ENNReal) ((γ : SL(2, ℤ)) • τ)`. Establish `hNm : Measurable N`. Use `Measurable.ennreal_tsum fun γ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(measurable_one.indicator hKm).comp (wt_cont (γ : SL(2, ℤ))).measurable`. Establish `hNcard : ∀ τ, N τ = ((hKfin τ).toFinset.card : ENNReal)`. Introduce `τ`. Simplify using `only [N]`. Rewrite using `[tsum_eq_sum (s := (hKfin τ).toFinset)]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hγ`. Rewrite using `[Set.indicator_of_mem hγ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `γ hγ`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hγ`. Rewrite using `[Set.indicator_of_notMem hγ]`. Establish `hNinv : ∀ (γ : Gamma0 L) τ, N ((γ : SL(2, ℤ)) • τ) = N τ`. Introduce `γ τ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [N]`. Rewrite using `[← (Equiv.mulRight γ).tsum_eq (fun δ : Gamma0 L => K.indicator (1 : ℍ → ENNReal) ((δ : SL(2, ℤ)) • τ))]`. Simplify using `[mul_smul]`. Set `ρ : ℍ → ℝ` to `fun τ => K.indicator (fun τ => ((N τ).toReal)⁻¹) τ`. Use `⟨ρ, ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(ENNReal.measurable_toReal.comp hNm).inv.indicator hKm`. Introduce `τ`. Simplify using `only [ρ]`. Apply `Set.indicator_nonneg` to reduce the goal to its premises. Introduce `τ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Introduce `τ`. Establish `hz : ∀ γ ∉ (hKfin τ).toFinset, ρ ((γ : SL(2, ℤ)) • τ) = 0`. Introduce `γ hγ`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hγ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ρ]`. Rewrite using `[Set.indicator_of_notMem hγ]`. Establish `hpos : 0 < (hKfin τ).toFinset.card`. Take `⟨γ, hγ⟩` from `hKne τ`. Conclude with `Finset.card_pos.mpr ⟨γ, by simpa using hγ⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `heq : ∑ γ ∈ (hKfin τ).toFinset, ρ ((γ : SL(2, ℤ)) • τ) = 1`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (((hKfin τ).toFinset.card : ℝ))⁻¹)]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Establish `: ((hKfin τ).toFinset.card : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
-
-Introduce `γ hγ`. Establish `hγ' : (γ : SL(2, ℤ)) • τ ∈ K`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hγ`. Conclude with `hγ`. Simplify using `only [ρ]`.
-
-Rewrite using `[Set.indicator_of_mem hγ', hNinv, hNcard]`. Simplify using the standard rewrite rules. Conclude with `heq ▸ hasSum_sum_of_ne_finset_zero hz`. Use `⟨S, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `: τ ∈ K`.
-
-Assume the negation of the conclusion as `h; exact hτ (by simp only [ρ]; rw [Set.indicator_of_notMem h])`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem wt_exists : ∀ L : ℕ, 0 < L → ∃ ρ, Wt L ρ := by
   intro L hL

@@ -7,11 +7,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 open GroundTheory.Automorphic GroundTheory.Automorphic.FourierWhittaker GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Use `letI : Unique (Pos 2) := ⟨⟨⟨(0, 1), by decide⟩⟩, by decide⟩`. Rewrite using `[← wfT F f hf (-1) g, ← int_one (ι := Pos 2)]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `h1 : gl (nU (x default)) = uGL x`. Use `Units.ext ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn, uMat_apply]`. Both sides reduce to the same expression. Establish `h2 : supSum 0 x = x default`. Unfold `supSum`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.filter_true_of_mem fun p _ => by rw [Unique.eq_default p]; decide, Fintype.sum_unique]`. Simplify using `[h1, h2, ψ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.whittaker_eq {F : Type} [Field F] [NumberField F] {f : GL (Fin 2) (A F) → ℂ} (hf : Lf f)
     (g : GL (Fin 2) (A F)) : whittaker f g = Wf f (aE (IdeleGroup.diagonal F (-1)) * g) := by
@@ -29,7 +29,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Pp.whittaker_eq {F : Type} [Field F] [N
   simp [h1, h2, ψ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[eq_nestedWhittaker hc two_pos g]`. Simplify using `[nestedWhittaker, whittaker_eq hf, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.eq_zero_of_Wf {F : Type} [Field F] [NumberField F] {f : GL (Fin 2) (A F) → ℂ}
     (hc : f ∈ cuspForms F 2) (hf : Lf f) (h : ∀ g, Wf f g = 0) : f = 0 := by

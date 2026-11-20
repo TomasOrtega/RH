@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BmuFactor
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker J ≤ LinearMap.ker B` using `fun v hv => by`. Use `hb v` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hv, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 this`. Set `g : LinearMap.range J →ₗ[ℂ] V` to `((LinearMap.ker J).liftQ B hker).comp J.quotKerEquivRange.symm.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ v : S, g ⟨J v, LinearMap.mem_range_self J v⟩ = B v` using `fun v => by show (LinearMap.ker J).liftQ B hker (J.quotKerEquivRange.symm ⟨J v, _⟩) = _`. Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression. Establish `hgb : ∀ y : LinearMap.range J, ‖g y‖ ≤ C * ‖y‖`. Introduce and unpack `⟨_, v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg norm (hg v)).le.trans (hb v)`. Take `⟨T, hT⟩` from `ContinuousLinearMap.exist_extension_of_finiteDimensional_range (g.mkContinuous _ hgb)`. Use `⟨T, fun v => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f => f ⟨J v, LinearMap.mem_range_self J _⟩) hT` as an intermediate fact. Conclude with `(hg v).symm.trans this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_factor {S E V : Type*} [AddCommGroup S] [Module ℂ S] [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (J : S →ₗ[ℂ] E) (B : S →ₗ[ℂ] V) (C : ℝ)
@@ -37,15 +37,15 @@ theorem exists_factor {S E V : Type*} [AddCommGroup S] [Module ℂ S] [NormedAdd
   exact (hg v).symm.trans this
 
 /- English proof (translation)
-Introduce `n Hm H _ _ _ σ hσ V _ _ _ B hB`. Take `⟨C, Ws, hW, hC⟩` from `hB.bd`. Establish `h` using `hσ.rep`. Establish `hI : ∀ i : Fin Ws.length, LieWd Hm (Ws.get i)` using `fun i => hW _ (List.get_mem Ws i)`. Establish `hL : ∀ i : Fin Ws.length, LieW (UH Hm) (Ws.get i)` using `fun i X hX t => ex_mem_of_lie (hI i X hX) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : Submodule ℂ H` to `{ carrier := {v | IsSm (UH Hm) σ v} add_mem' := fun ha hb => IsSm.add ha hb zero_mem' := IsSm.zero smul_mem' := fun c _ ha => IsSm.smul ha c }`. Set `J : S →ₗ[ℂ] (Fin Ws.length → H)` to `{ toFun := fun v i => dsW σ (Ws.get i) v map_add' := fun a b => funext fun i => dsW_add h a.2 b.2 (hL i) map_smul' := fun c a => funext fun i => dsW_smul h a.2 c (hL i) }`. Set `B' : S →ₗ[ℂ] V` to `{ toFun := fun v => B v map_add' := fun a b => hB.add _ a.2 _ b.2 map_smul' := fun c a => hB.smul c _ a.2 }`. Establish `hb : ∀ v : S, ‖B' v‖ ≤ (|C| * Ws.length) * ‖J v‖` using `fun v => by`. Establish `h1 : (Ws.map fun w => ‖dsW σ w (v : H)‖).sum ≤ Ws.length * ‖J v‖`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `List.sum_le_card_nsmul (Ws.map fun w => ‖dsW σ w (v : H)‖) ‖J v‖ (by` as an intermediate fact. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hx`. Take `⟨i, rfl⟩` from `List.get_of_mem hw`. Conclude with `norm_le_pi_norm (J v) i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[List.length_map, nsmul_eq_mul]`. Then use the resulting hypothesis. Establish `h0 : 0 ≤ (Ws.map fun w => ‖dsW σ w (v : H)‖).sum` using `List.sum_nonneg fun x hx => by obtain ⟨w, -, rfl⟩ := List.mem_map.1 hx; exact norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Take `⟨T, hT⟩` from `exists_factor J B' _ hb`. Use `⟨Ws.length, Ws.get, fun i => T.comp (ContinuousLinearMap.single ℂ (fun _ => H) i), hI, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : B v = T (J ⟨v, hv⟩)` using `hT ⟨v, hv⟩`. Rewrite using `[h2, ← Finset.univ_sum_single (J ⟨v, hv⟩), map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem factor : Factor := by
   intro n Hm H _ _ _ σ hσ V _ _ _ B hB

@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Distinguish the cases in `h : x = y`. Conclude with `Filter.Eventually.of_forall fun _ _ => h`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, PadicInt.toZModPow m x ≠ PadicInt.toZModPow m y := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h (PadicInt.ext_of_toZModPow.mp hc)`. Use `filter_upwards [Filter.eventually_ge_atTop m] with n hn heq`. It suffices to derive a contradiction. Apply `hm` to reduce the goal to its premises. Rewrite using `[← PadicInt.cast_toZModPow m n hn x, ← PadicInt.cast_toZModPow m n hn y, heq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_pair (l : ℕ) [Fact l.Prime] (x y : ℤ_[l]) :
     ∀ᶠ n in Filter.atTop, PadicInt.toZModPow n x = PadicInt.toZModPow n y → x = y := by
@@ -21,7 +21,7 @@ private theorem sep_pair (l : ℕ) [Fact l.Prime] (x y : ℤ_[l]) :
     rw [← PadicInt.cast_toZModPow m n hn x, ← PadicInt.cast_toZModPow m n hn y, heq]
 
 /- English proof (translation)
-Introduce `l _ S`. Establish `h : ∀ᶠ n in Filter.atTop, ∀ p ∈ S ×ˢ S, PadicInt.toZModPow n p.1 = PadicInt.toZModPow n p.2 → p.1 = p.2` using `(Filter.eventually_all_finset _).mpr fun p _ => sep_pair l p.1 p.2`. Take `⟨n₀, hn₀⟩` from `Filter.eventually_atTop.mp h`. Conclude with `⟨n₀, fun n hn x hx y hy hxy => hn₀ n hn (x, y) (Finset.mk_mem_product hx hy) hxy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.FW.sep :
     ∀ (l : ℕ) [Fact l.Prime] (S : Finset ℤ_[l]), ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → Set.InjOn (PadicInt.toZModPow n : ℤ_[l] → ZMod (l ^ n)) S := by

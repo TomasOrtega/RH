@@ -5,23 +5,23 @@ open Matrix Filter Topology ValuativeRel
 namespace GlobalTheory.CompanionTheory.LocalFieldChar
 
 /- English proof (translation)
-Establish `hsq : ∀ w : Circle, (w : ℂ).re ^ 2 + (w : ℂ).im ^ 2 = 1`. Introduce `w`. Use `Circle.normSq_coe w` as an intermediate fact. Rewrite `this` using `[Complex.normSq_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Assume the negation of the conclusion as `hz`. Establish `ha0 : (z : ℂ).re < 1`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `h2` using `hsq z`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : (z : ℂ).im = 0` using `by nlinarith [sq_nonneg (z : ℂ).im, sq_nonneg ((z : ℂ).re - 1)]`. Establish `hre : (z : ℂ).re = 1`. Rewrite `h2` using `[him]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hz (Circle.ext (Complex.ext (by simpa using hre) (by simpa using him)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a : ℕ → ℝ := fun j => ((z ^ (2 ^ j) : Circle) : ℂ).re with ha`. Establish `hstep : ∀ j, a (j + 1) = 2 * a j ^ 2 - 1`. Introduce `j`. Establish `h2` using `hsq (z ^ (2 ^ j))`. Establish `hp : z ^ (2 ^ (j + 1)) = z ^ (2 ^ j) * z ^ (2 ^ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_mul, sq]`. Simplify using `only [ha]`. Rewrite using `[hp, Circle.coe_mul, Complex.mul_re]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : ∀ j, (2 : ℝ) ^ j * (1 - (z : ℂ).re) ≤ 1 - a j`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp [ha]`. Consider the case `succ j ih`. Establish `hpos : 0 < a j` using `h _`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : a j ≤ 1`. Use `hsq (z ^ (2 ^ j))` as an intermediate fact. Establish `h3 : a j ^ 2 ≤ 1`. Simplify using `only [ha]`. Use polynomial arithmetic with `[sq_nonneg ((z ^ (2 ^ j) : Circle) : ℂ).im]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hstep, pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (1 / (1 - (z : ℂ).re)) (by norm_num : (1 : ℝ) < 2)`. Establish `hd : 0 < 1 - (z : ℂ).re` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hj` using `[div_lt_iff₀ hd]`. Use `hlow j` as an intermediate fact. Establish `hpos : 0 < a j` using `h _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem circle_eq_one_of_forall_re_pow_pos (z : Circle)
     (h : ∀ n : ℕ, 0 < ((z ^ n : Circle) : ℂ).re) : z = 1 := by
@@ -71,15 +71,15 @@ theorem circle_eq_one_of_forall_re_pow_pos (z : Circle)
   linarith
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ`. Set `H : AddSubgroup k` to `{ carrier := {x | ψ x = 1} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[AddChar.map_add_eq_mul, ha, hb, one_mul]`. Use the proof step `zero_mem' := by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `neg_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[AddChar.map_neg_eq_inv, ha, inv_one] }`. Establish `hV : IsOpen {z : Circle | 0 < (z : ℂ).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp continuous_induced_dom)`. Establish `hU : ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re} ∈ 𝓝 (0 : k)` using `(hV.preimage hψ).mem_nhds (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hball⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.1 hU`. Establish `hsmul : ∀ x : k, valuation k x < γ → ∀ n : ℕ, valuation k (n • x) < γ`. Introduce `x hx n`. Proceed by induction on `n with`. Consider the case `zero => simpa using zero_lt_iff.2 hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Rewrite using `[succ_nsmul]`. Conclude with `Valuation.map_add_lt _ ih hx`. Establish `hone : ∀ x : k, valuation k x < γ → x ∈ H`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `circle_eq_one_of_forall_re_pow_pos (ψ x) fun n => ?_` and prove the remaining obligations. Establish `h1 : 0 < ((ψ (n • x) : Circle) : ℂ).re` using `hball (hsmul x hx n)`. Rewrite `h1` using `[AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis. Establish `hnh : (H : Set k) ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.2 ⟨γ, hγ, fun x hx => hone x hx⟩`. Conclude with `H.isOpen_of_mem_nhds hnh`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_addChar_ker : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ →

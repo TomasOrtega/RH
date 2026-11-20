@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalCartanPairs.CmpSpl
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalCartanPairs.StepGlue
 
 /- English proof (translation)
-The claim follows from `PI.SqPair.LCP.locCartanPair_of PI.SqPair.LCP.pair_dichotomy PI.SqPair.LCP.base_lagrangian (PI.SqPair.LCP.step_of PI.SqPair.LCP.pair_selection PI.SqPair.LCP.hyperbolic_plane PI.SqPair.LCP.pair_split')`.
+A detailed English derivation is pending.
 -/
 theorem local_cartan_pair : PI.SqPair.LocCartanPair :=
   PI.SqPair.LCP.locCartanPair_of PI.SqPair.LCP.pair_dichotomy PI.SqPair.LCP.base_lagrangian

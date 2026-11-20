@@ -14,15 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PairIntegral
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨c, hc⟩` from `hu y hy`. Establish `hm : (algebraMap (𝓞 E) E c) ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F) ∈ Formalism.L2.Herm.intAf F E` using `Subring.subset_closure (Or.inl ⟨⟨_, c, rfl⟩, rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hm using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hc, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(u k ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) * (y k ⊗ₜ[F] 1) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp only [Pi.zero_apply, mul_zero, Finset.sum_const_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `mul_mem c.2 hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (c.1 * x k) = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_mem_intAf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (u : Fin n → E)
@@ -51,15 +49,15 @@ theorem sum_mem_intAf {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     ring
 
 /- English proof (translation)
-Introduce `D W β Λ hβ v hv a`. Establish `hΛ` using `GlobalTheory.PrincInLevel.eq_latC hβ`. Establish `hfr : Formalism.L2.DIV.IsFrame β Λ` using `by obtain ⟨c, h, -⟩ := hβ; exact h`. Take `⟨h1, -, hfg, hsp, -, -, -, -, -, -, hsd⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D W`. Establish `hv' : v ∈ GlobalTheory.Member.latC W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, e⟩` from `hv`. Rewrite `e` using `[map_one, Units.val_one, Matrix.one_mulVec]`. Substitute `e` using the available equality. Rewrite `hz` using `[h1]`. Conclude with `((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E W.rank _ hfg hsp).1 v).1 hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol : (fun k => β.val k a) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := by`. Use `(hfr _).2 fun i => ?_` and prove the remaining obligations. Establish `e : ((β⁻¹).val *ᵥ fun k => β.val k a) i = ((β⁻¹).val * β.val) i a` using `rfl`. Rewrite using `[e, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `exacts [one_mem _, zero_mem _]`. Use `sum_mem_intAf Λ (fun k => ∑ l, D.sp.cm.sig (v l) * W.gram l k) (fun y hy => ?_) _ hcol` and prove the remaining obligations. Rewrite `hy` using `[hΛ]`. Take `⟨c, hc⟩` from `(FractionalIdeal.mem_one_iff _).1 ((hsd y).2 hy v hv')`. Use `⟨c, hc.trans (Finset.sum_congr rfl fun k _ => ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y k * W.gram l k * D.sp.cm.sig (v l) = _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pair_mem_intAf : ∀ (D : D7) (W : HSp D) (β : GL (Fin W.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)), IsSDFrame W β Λ 1 → ∀ v : Fin W.rank → D.host.E, finVec W v ∈ gLat W 1 → ∀ a : Fin W.rank, ∑ k, eToEAf D (∑ l, D.sp.cm.sig (v l) * W.gram l k) * β.val k a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D W β Λ hβ v hv a

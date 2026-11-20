@@ -18,7 +18,7 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `(b c).2 (Pi.single j 1) (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨α, hα.trans (dotProduct_single_one _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coord_integral (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (c : T) (j : Fin i) :
     ∃ α : 𝓞 K, (α : K) = (b c : Fin i → K) j := by
@@ -28,7 +28,7 @@ theorem coord_integral (b : Module.Basis T ℤ (dualLattice (HermLattice.standar
 omit [DecidableEq T] in
 
 /- English proof (translation)
-Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [mConeMap, aeval_X, map_mul, map_intCast, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mConeMap_lin {Ω : Type} [Field Ω] (y : (Σ _ : Unit, T) → Ω) (a : T → ℤ) :
     mConeMap y (∑ t, C (a t) * X ⟨(), t⟩ : MRing (dualBlocks T)) =
@@ -43,33 +43,33 @@ end StandardDualBasePointFree
 open StandardDualBasePointFree DualPointsOnPlane in
 
 /- English proof (translation)
-Introduce `K _ _ i T _ _ b k₂ c`. Consider the cases of `k₂`. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `hprod : (∏ k : Unit, (X ⟨k, c k⟩ : MRing (dualBlocks T))) = X ⟨(), c ()⟩` using `Fintype.prod_unique _`. Rewrite using `[hprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose α hα using coord_integral b (c ())`. Set `am` to `algebraMap (MvPolynomial (Fin i) K) (ProjField K i)`. Set `y` to `dualLatticeCoord b`. Set `L : Fin i → MRing (dualBlocks T)` to `fun j => ∑ s, C (mulMat b (α j) (c ()) s) * X ⟨(), s⟩`. Establish `hA : ∀ j, ∑ t, (dualStdCoordMat b () j t : ProjField K i) * y ⟨(), t⟩ = am (X j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hpoly : ∑ t, (dualStdCoordMat b () j t : MvPolynomial (Fin i) K) * ∑ l, C ((b t : Fin i → K) l) * X l = X j`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `hc : ∀ l, ∑ t, (dualStdCoordMat b () j t : K) * (b t : Fin i → K) l = (Pi.single j (1 : K) : Fin i → K) l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Establish `h` using `congrFun (dualStdCoordMat_sum b j) l`. Simplify `h` using `only [Finset.sum_apply, Pi.smul_apply, Pi.mul_apply, Pi.intCast_apply, zsmul_eq_mul]`. Establish `hc' : ∀ l, ∑ t, (dualStdCoordMat b () j t : MvPolynomial (Fin i) K) * (C ((b t : Fin i → K) l) * X l) = C ((Pi.single j (1 : K) : Fin i → K) l) * X l`. Introduce `l`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc l, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hc']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single j (fun l _ hl => by simp [hl]) (by simp)]`. Simplify using the standard rewrite rules. Establish `h` using `congrArg am hpoly`. Simplify `h` using `only [am, y, dualLatticeCoord, map_sum, map_mul, map_intCast]`. Establish `hS : ∀ j, ∑ s, (mulMat b (α j) (c ()) s : ProjField K i) * y ⟨(), s⟩ = am (C (α j : K)) * y ⟨(), c ()⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hlin : ∑ t, (mulMat b (α j) (c ()) t : MvPolynomial (Fin i) K) * ∑ l, C ((b t : Fin i → K) l) * X l = C (α j : K) * ∑ l, C ((b (c ()) : Fin i → K) l) * X l`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congrArg (C : K → MvPolynomial (Fin i) K) (mulMat_sum b (α j) (c ()) l)`. Simplify using `only [map_sum, map_mul, map_intCast] at h`. Rewrite using `[← mul_assoc, ← h, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h` using `congrArg am hlin`. Simplify `h` using `only [am, y, dualLatticeCoord, map_sum, map_mul, map_intCast]`. Establish `hy : y ⟨(), c ()⟩ = ∑ j, am (C (α j : K)) * am (X j)`. Simplify using `only [y, am, dualLatticeCoord, map_sum, map_mul, hα]`. Establish `key : X ⟨(), c ()⟩ ^ 2 - ∑ j, linForm (ι₂` using `PBlk i) (dualStdCoordMat b) ⟨(), j⟩ * L j ∈ dualIdeal b := by show _ ∈ RingHom.ker (mConeMap (dualLatticeCoord b))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero, map_sum]`. Establish `hl : ∀ j, mConeMap (dualLatticeCoord b) (linForm (ι₂` using `PBlk i) (dualStdCoordMat b) ⟨(), j⟩) = MvPolynomial.C (am (X j)) * MvPolynomial.X () := by`. Introduce `j`. Rewrite using `[← hA j]`. Conclude with `mConeMap_lin _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ j, mConeMap (dualLatticeCoord b) (L j) = MvPolynomial.C (am (C (α j : K)) * y ⟨(), c ()⟩) * MvPolynomial.X ()`. Introduce `j`. Rewrite using `[← hS j]`. Conclude with `mConeMap_lin _ _`. Establish `hX : mConeMap (dualLatticeCoord b) (X ⟨(), c ()⟩ : MRing (dualBlocks T)) = MvPolynomial.C (y ⟨(), c ()⟩) * MvPolynomial.X ()`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Simplify using `only [mConeMap, aeval_X, y]`. Simplify using `only [map_mul, map_pow, hl, hL, hX]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, map_sum, Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[← hy, map_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQ : ∑ j, linForm (ι₂` using `PBlk i) (dualStdCoordMat b) ⟨(), j⟩ * L j ∈ Ideal.span (Set.range fun j : PBlk i () => linForm (ι₂ := PBlk i) (dualStdCoordMat b) ⟨(), j⟩) := Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `h` using `Ideal.add_mem _ (Ideal.mem_sup_left key) (Ideal.mem_sup_right hQ)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem DualStdBasePtFree.proof : DualStdBasePtFree.Statement := by
   intro K _ _ i T _ _ b k₂ c

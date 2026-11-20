@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Take `⟨M, s, U, α₀, hfine, -, -, -, -, -, ⟨V, hV, -, hbasic, -⟩, -, -⟩` from `hDP F 𝔠 N hN`. Establish `hNZ : IsUnit (algebraMap ℤ R (N : ℤ))` using `by simpa using hNR`. Set `ρ : Localization.Away (N : ℤ) →+* R` to `IsLocalization.Away.lift (N : ℤ) hNZ`. Take `⟨b, ⟨-, φ, hpull, -⟩, -⟩` from `hfine (Sp R) (spMap ρ) X α`. Establish `hunit : IsUnit (b.appTop ((NumberField.discr F : ℤ) : Γ(M, ⊤)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_intCast]`. Use `hd.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` as an intermediate fact. Simplify using `using this`. Establish `hpre : b ⁻¹ᵁ M.basicOpen ((NumberField.discr F : ℤ) : Γ(M, ⊤)) = ⊤`. Rewrite using `[Scheme.preimage_basicOpen_top]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.basicOpen_of_isUnit _ hunit`. Rewrite using `[Obj.isRapoport_iff]`. Use `Set.eq_univ_of_forall fun x K _ t ⟨p, hp⟩ Y ψ hY ↦ ?_` and prove the remaining obligations. Establish `hx : b x ∈ (V : Set M)`. Apply `hbasic` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `x ∈ b ⁻¹ᵁ M.basicOpen ((NumberField.discr F : ℤ) : Γ(M, ⊤))`. Rewrite using `[hpre]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[hV]`. Use `hx K (t ≫ b) ⟨p, ?_⟩ Y (ψ ≫ φ) (hY.comp hpull)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Apply the tactic sequence `first | rfl | exact Scheme.Hom.comp_apply t b p | simp`.
+A detailed English derivation is pending.
 -/
 theorem isRapoport_of_level (hDP : GlobalTheory.Published.DelignePappasModel) (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ) (hN : 3 ≤ N) (R : Type) [CommRing R] (hNR : IsUnit (N : R))
@@ -48,9 +48,9 @@ theorem isRapoport_of_level (hDP : GlobalTheory.Published.DelignePappasModel) (F
   first | rfl | exact Scheme.Hom.comp_apply t b p | simp
 
 /- English proof (translation)
-Set `σ` to `algebraMap K (AlgebraicClosure K)`. Take `⟨X', φ, h⟩` from `Obj.exists_isPullBy X (spMap σ)`. Establish `hN' : IsUnit (N : AlgebraicClosure K)` using `by simpa using hNK.map σ`. Take `⟨α⟩` from `nonempty_level_of_isAlgClosed F 𝔠 N (AlgebraicClosure K) hN'.ne_zero X'`. Establish `hX' : X'.IsRapoport` using `isRapoport_of_level hDP F 𝔠 N hN _ hN' (by simpa using hd.map σ) X' α`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, -, he⟩` from `Obj.exists_lieEquiv (R' := AlgebraicClosure K) h`. Conclude with `GlobalTheory.invertible_of_faithfullyFlat_baseChange_tensor_int K (AlgebraicClosure K) (𝓞 F) X.Lie X'.Lie e he hX'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isRapoport_of_field (hDP : GlobalTheory.Published.DelignePappasModel) (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ) (hN : 3 ≤ N) (K : Type) [Field K] (hNK : IsUnit (N : K))
@@ -64,11 +64,11 @@ theorem isRapoport_of_field (hDP : GlobalTheory.Published.DelignePappasModel) (F
   exact GlobalTheory.invertible_of_faithfullyFlat_baseChange_tensor_int K (AlgebraicClosure K) (𝓞 F) X.Lie X'.Lie e he hX'
 
 /- English proof (translation)
-Introduce `hDP F _ _ _ 𝔠 R _ hd X`. Rewrite using `[Obj.isRapoport_iff]`. Use `Set.eq_univ_of_forall fun s K _ t _ Y φ hY ↦ ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩ : ∃ σ : R →+* K, spMap σ = t` from `⟨(Spec.preimage t).hom, Spec.map_preimage t⟩`. Establish `hdK : IsUnit ((NumberField.discr F : ℤ) : K)` using `by simpa using hd.map σ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h3 : (3 : K) = 0`. Establish `h4 : IsUnit ((4 : ℕ) : K)`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Establish `: ((4 : ℕ) : K) = 3 + 1` using `by push_cast; ring`. Rewrite using `[this, h3, zero_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Conclude with `isRapoport_of_field hDP F 𝔠 4 (by norm_num) K h4 hdK Y`. Conclude with `isRapoport_of_field hDP F 𝔠 3 le_rfl K (IsUnit.mk0 _ (by exact_mod_cast h3)) hdK Y`.
+A detailed English derivation is pending.
 -/
 theorem isRapoport_of_isUnit_discr : GlobalTheory.Published.DelignePappasModel → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R],
   IsUnit ((NumberField.discr F : ℤ) : R) → ∀ X : Obj F 𝔠 (Sp R), X.IsRapoport := by

@@ -22,17 +22,15 @@ def SharpAt (φ : V n → ℝ) (x : V n) (ξ : Fin n → ℂ) : Prop :=
       φ x * (leviV n (fun y => (φ y : ℂ)) x ξ).re
 
 /- English proof (translation)
-Take `⟨hψ, h0, hL, hb⟩` from `h`. Establish `hrd : DifferentiableAt ℝ φ x` using `hφ.differentiableAt (by simp)`. Establish `hψd : DifferentiableAt ℝ ψ x` using `hψ.differentiableAt (by simp)`. Establish `hmin : IsLocalMin (fun y => φ y - ψ y) x` using `by filter_upwards [hle] with v hv`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hfd : fderiv ℝ φ x = fderiv ℝ ψ x`. Establish `h` using `hmin.fderiv_eq_zero`. Rewrite `h` using `[fderiv_fun_sub hrd hψd]`. Conclude with `sub_eq_zero.1 h`. Establish `hwd : ∀ j, wd n j (fun y => (φ y : ℂ)) x = wd n j (fun y => (ψ y : ℂ)) x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Simplify using `only [wd, fderiv_ofReal_apply hrd, fderiv_ofReal_apply hψd, hfd]`. Establish `hmax : IsLocalMax (fun y => ψ y + (-1) * φ y) x`. Use `hmin.neg` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `filter_upwards with y`. Expand and normalize the polynomial expressions, which then agree. Establish `hcd : ContDiffAt ℝ 2 (fun y => ψ y + (-1) * φ y) x` using `hψ.add (contDiffAt_const.mul hφ)`. Establish `h2` using `ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_re_nonpos_of_isLocalMax hcd hmax ξ`. Rewrite `h2` using `[ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_add hψ (contDiffAt_const.mul hφ) ξ, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (-1) hφ ξ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : (leviV n (fun y => (ψ y : ℂ)) x ξ).re ≤ (leviV n (fun y => (φ y : ℂ)) x ξ).re`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hφ, heq ▸ h0, hL.trans h3, ?_⟩` and prove the remaining obligations. Simplify using `only [hwd]`.
-
-Rewrite using `[heq]`. Conclude with `hb.trans (mul_le_mul_of_nonneg_left h3 h0)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SharpAt.of_minorant {φ ψ : V n → ℝ} {x : V n} {ξ : Fin n → ℂ} (h : SharpAt ψ x ξ)
     (hφ : ContDiffAt ℝ 2 φ x) (hle : ∀ᶠ v in 𝓝 x, ψ v ≤ φ v) (heq : φ x = ψ x) :
@@ -69,7 +67,7 @@ theorem SharpAt.of_minorant {φ ψ : V n → ℝ} {x : V n} {ξ : Fin n → ℂ}
   exact hb.trans (mul_le_mul_of_nonneg_left h3 h0)
 
 /- English proof (translation)
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Establish `h1 : ‖∑ i, a i‖ ≤ ∑ i, ‖a i‖` using `norm_sum_le _ _`. Establish `h2` using `Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul (Finset.univ : Finset ι) (r := fun i => ‖a i‖) (f := s) (g := L) (fun i _ => hs i) (fun i _ => hL i) (fun i _ => by rw [← Complex.normSq_eq_norm_sq]; exact h i)`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normSq_sum_le {ι : Type} [Fintype ι] (a : ι → ℂ) (s L : ι → ℝ) (hs : ∀ i, 0 ≤ s i)
     (hL : ∀ i, 0 ≤ L i) (h : ∀ i, Complex.normSq (a i) ≤ s i * L i) :
@@ -82,11 +80,9 @@ theorem normSq_sum_le {ι : Type} [Fintype ι] (a : ι → ℂ) (s L : ι → �
   exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
 
 /- English proof (translation)
-Establish `hc : ∀ i, ContDiffAt ℝ 2 (u i) x` using `fun i => (h i).1`. Establish `hL` using `H.leviV_ofReal_sum hc ξ`. Establish `hw : ∑ j, wd n j (fun y => ((∑ i, u i y : ℝ) : ℂ)) x * ξ j = ∑ i, ∑ j, wd n j (fun y => (u i y : ℂ)) x * ξ j`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H.wd_ofReal_sum (fun i => (hc i).differentiableAt (by simp)), Finset.sum_mul]`. Use `⟨ContDiffAt.sum fun i _ => hc i, Finset.sum_nonneg fun i _ => (h i).2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun i _ => (h i).2.2.1`. Rewrite using `[hL, hw, Complex.re_sum]`.
-
-Conclude with `normSq_sum_le _ _ _ (fun i => (h i).2.1) (fun i => (h i).2.2.1) fun i => (h i).2.2.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharpAt_sum {m : ℕ} {u : Fin m → V n → ℝ} {x : V n} {ξ : Fin n → ℂ}
     (h : ∀ i, SharpAt (u i) x ξ) : SharpAt (fun y => ∑ i, u i y) x ξ := by
@@ -104,7 +100,7 @@ theorem sharpAt_sum {m : ℕ} {u : Fin m → V n → ℝ} {x : V n} {ξ : Fin n 
     exact normSq_sum_le _ _ _ (fun i => (h i).2.1) (fun i => (h i).2.2.1) fun i => (h i).2.2.2
 
 /- English proof (translation)
-Establish `e : (fun y => ∑ i, u i y) = fun y => ∑ k, u ((Fintype.equivFin ι).symm k) y`. Use function extensionality and compare the values at `y`. Conclude with `((Fintype.equivFin ι).symm.sum_comp (fun i => u i y)).symm`. Rewrite using `[e]`. Conclude with `sharpAt_sum fun k => h _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharpAt_sum' {ι : Type} [Fintype ι] {u : ι → V n → ℝ} {x : V n} {ξ : Fin n → ℂ}
     (h : ∀ i, SharpAt (u i) x ξ) : SharpAt (fun y => ∑ i, u i y) x ξ := by
@@ -115,29 +111,27 @@ theorem sharpAt_sum' {ι : Type} [Fintype ι] {u : ι → V n → ℝ} {x : V n}
   exact sharpAt_sum fun k => h _
 
 /- English proof (translation)
-Use `set k : ℝ → ℝ := fun t => -Real.log (1 - t) with hk`. Establish `hu : ∀ i, ContDiffAt ℝ 2 (fun y => Complex.normSq (g i y)) x` using `fun i => H.contDiffAt_normSq_comp (hg i)`. Establish `hS : ContDiffAt ℝ 2 (fun y => ∑ i, Complex.normSq (g i y)) x` using `ContDiffAt.sum fun i _ => hu i`. Use `set t := ∑ i, Complex.normSq (g i x) with ht`. Establish `ht0 : 0 ≤ t` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1t : 0 < 1 - t` using `by linarith`. Establish `hkc : ContDiffAt ℝ 2 k t`. Use `ContDiffAt.neg ?_` and prove the remaining obligations. Conclude with `(Real.contDiffAt_log.2 h1t.ne').comp t (contDiffAt_const.sub contDiffAt_id)`. Establish `hd1 : deriv k = fun s => (1 - s)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Simplify using `only [hk]`. Rewrite using `[deriv.fun_neg, deriv_comp_const_sub Real.log, Real.deriv_log, neg_neg]`. Establish `hd2 : deriv (deriv k) t = ((1 - t) ^ 2)⁻¹`. Rewrite using `[hd1, deriv_comp_const_sub (fun s : ℝ => s⁻¹), deriv_inv, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc` using `H.leviChain n k (fun y => ∑ i, Complex.normSq (g i y)) x ξ hS hkc`. Use `set η : Fin m → ℂ := fun i => ∑ j, wd n j (g i) x * ξ j with hη`. Establish `hw : ∑ j, wd n j (fun y => ((∑ i, Complex.normSq (g i y) : ℝ) : ℂ)) x * ξ j = ∑ i, η i * conj (g i x)`. Simplify using `only [hη, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[H.wd_ofReal_sum (u := fun i y => Complex.normSq (g i y)) (fun i => (hu i).differentiableAt (by simp)), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[H.wd_normSq_comp (hg i)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[H.leviV_ofReal_sum (u := fun i y => Complex.normSq (g i y)) hu, hw, ← ht, hd2, hd1]`. Simplify using `only [fun i => H.leviV_normSq_comp (hg i) ξ] at hc`. Use `set N := Complex.normSq (∑ i, η i * conj (g i x)) with hN`. Use `set M := ∑ i, Complex.normSq (η i) with hM`. Establish `hN0 : 0 ≤ N` using `Complex.normSq_nonneg _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Establish `hNM : N ≤ M * t`. Use `normSq_sum_le _ _ _ (fun i => Complex.normSq_nonneg _) (fun i => Complex.normSq_nonneg _) fun i => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_mul, Complex.normSq_conj]`. Establish `hL : (leviV n (fun y => ((-Real.log (1 - ∑ i, Complex.normSq (g i y)) : ℝ) : ℂ)) x ξ).re = (1 - t)⁻¹ * M + ((1 - t) ^ 2)⁻¹ * N`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: leviV n (fun y => ((-Real.log (1 - ∑ i, Complex.normSq (g i y)) : ℝ) : ℂ)) x ξ = (((1 - t)⁻¹ * M + ((1 - t) ^ 2)⁻¹ * N : ℝ) : ℂ)`. Use `hc.trans ?_` and prove the remaining obligations. Simplify using `only [hM, hη, Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_sum]`. Rewrite using `[this, Complex.ofReal_re]`. Establish `hG : ∑ j, wd n j (fun y => ((-Real.log (1 - ∑ i, Complex.normSq (g i y)) : ℝ) : ℂ)) x * ξ j = (((1 - t)⁻¹ : ℝ) : ℂ) * ∑ i, η i * conj (g i x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hw, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `wd_ofReal_comp (j := j) (k := k) (v := fun y => ∑ i, Complex.normSq (g i y)) (x := x) (hkc.differentiableAt (by simp)) (hS.differentiableAt (by simp))` as an intermediate fact. Rewrite `this` using `[hd1]`. Rewrite using `[← mul_assoc, ← this]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : t ≤ -Real.log (1 - t)`. Use `Real.log_le_sub_one_of_pos h1t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : 0 < (1 - t)⁻¹` using `inv_pos.2 h1t`. Establish `hL0 : 0 ≤ (1 - t)⁻¹ * M + ((1 - t) ^ 2)⁻¹ * N` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hcc : ContDiffAt ℝ 2 (k ∘ fun y => ∑ i, Complex.normSq (g i y)) x` using `hkc.comp x hS`. Use `⟨hcc, ht0.trans hlog, hL ▸ hL0, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, hG, Complex.normSq_mul, Complex.normSq_ofReal, ← hN]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right hlog hL0)` and prove the remaining obligations. Establish `e : t * ((1 - t)⁻¹ * M + ((1 - t) ^ 2)⁻¹ * N) - (1 - t)⁻¹ * (1 - t)⁻¹ * N = (1 - t)⁻¹ * (M * t - N)`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ (1 - t)⁻¹ * (M * t - N)` using `mul_nonneg hi.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sharpAt_ball {m : ℕ} {g : Fin m → V n → ℂ} {x : V n} (ξ : Fin n → ℂ)
     (hg : ∀ i, ContDiffAt ℂ 2 (g i) x) (hlt : ∑ i, Complex.normSq (g i x) < 1) :
@@ -216,15 +210,15 @@ end Calculus
 section Matrices
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Establish `hd : ∀ i, 0 < A i i` using `fun i => hA.diag_pos`. Establish `hre : ∀ i, ((A i i).re : ℂ) = A i i` using `fun i => Complex.ext (by simp) (by simp [(Complex.lt_def.1 (hd i)).2.symm])`. Establish `hD : (Matrix.diagonal fun i => A i i).PosDef` using `Matrix.posDef_diagonal_iff.2 hd`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `RgB.amgm hm hA hD`. Establish `hinv : (Matrix.diagonal fun i => A i i)⁻¹ = Matrix.diagonal fun i => (A i i)⁻¹`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (hd i).ne'`. Establish `htr : (A * (Matrix.diagonal fun i => A i i)⁻¹).trace.re = m`. Rewrite using `[hinv]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_diagonal, mul_inv_cancel₀ (hd _).ne']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hdet : (Matrix.diagonal fun i => A i i).det.re = ∏ i, (A i i).re`. Rewrite using `[Matrix.det_diagonal, ← Complex.ofReal_re (∏ i, (A i i).re), Complex.ofReal_prod]`. Simplify using `only [hre]`. Establish `hmR : (0 : ℝ) < m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[htr, hdet, div_self hmR.ne', mul_one]`. Establish `hp : 0 ≤ ∏ i, (A i i).re` using `Finset.prod_nonneg fun i _ => (Complex.lt_def.1 (hd i)).1.le`. Conclude with `(Real.rpow_le_rpow_iff (ExhA.det_re_pos_im hA).1.le hp (inv_pos.2 hmR)).1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_le_prod_diag {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.PosDef) :
     A.det.re ≤ ∏ i, (A i i).re := by
@@ -254,7 +248,7 @@ theorem det_le_prod_diag {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.PosD
   exact (Real.rpow_le_rpow_iff (ExhA.det_re_pos_im hA).1.le hp (inv_pos.2 hmR)).1 h
 
 /- English proof (translation)
-Establish `e : Uᴴ * (1 - Z * Zᴴ) * U = 1 - (Uᴴ * Z) * (Uᴴ * Z)ᴴ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hU]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Matrix.sub_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.one_apply_eq, Complex.sub_re, Complex.one_re, conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.re_sum, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_diag {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
     (Z : Matrix (Fin p) (Fin q) ℂ) (a : Fin p) :
@@ -268,7 +262,7 @@ theorem conj_diag {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 
     Complex.star_def, Complex.mul_conj, Complex.re_sum, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det hU`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Take the linear combination `A.det * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_conj {p : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
     (A : Matrix (Fin p) (Fin p) ℂ) : (Uᴴ * A * U).det = A.det := by
@@ -278,9 +272,7 @@ theorem det_conj {p : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
   linear_combination A.det * h
 
 /- English proof (translation)
-Establish `hu : IsUnit U`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `h` using `congrArg Matrix.det hU`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one_right _ h`.
-
-Conclude with `(Matrix.IsUnit.posDef_star_left_conjugate_iff hu).2 hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_conj {p : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
     {A : Matrix (Fin p) (Fin p) ℂ} (hA : A.PosDef) : (Uᴴ * A * U).PosDef := by
@@ -292,7 +284,7 @@ theorem posDef_conj {p : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 
   exact (Matrix.IsUnit.posDef_star_left_conjugate_iff hu).2 hA
 
 /- English proof (translation)
-Establish `h : 0 < (Uᴴ * (1 - Z * Zᴴ) * U : Matrix (Fin p) (Fin p) ℂ) a a` using `(posDef_conj U hU hZ).diag_pos`. Establish `h1` using `(Complex.lt_def.1 h).1`. Rewrite `h1` using `[conj_diag U hU]`. Simplify using `only [Complex.zero_re] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem row_lt_one {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
     {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef) (a : Fin p) :
@@ -304,9 +296,9 @@ theorem row_lt_one {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U =
   linarith
 
 /- English proof (translation)
-Establish `h` using `det_le_prod_diag (posDef_conj U hU hZ)`. Rewrite `h` using `[det_conj U hU]`. Simplify using `only [conj_diag U hU] at h`. Establish `h2` using `Real.log_le_log (ExhA.det_re_pos_im hZ).1 h`. Rewrite `h2` using `[Real.log_prod (fun a _ => (sub_pos.2 (row_lt_one U hU hZ a)).ne')]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rows_le_neg_log_det {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : Uᴴ * U = 1)
     {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef) :
@@ -321,11 +313,11 @@ theorem rows_le_neg_log_det {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (hU : U
   linarith
 
 /- English proof (translation)
-Establish `hH` using `hZ.1`. Establish `hU : (hH.eigenvectorUnitary : Matrix (Fin p) (Fin p) ℂ)ᴴ * hH.eigenvectorUnitary = 1` using `Unitary.coe_star_mul_self hH.eigenvectorUnitary`. Use `⟨hH.eigenvectorUnitary, hU, ?_⟩` and prove the remaining obligations. Establish `hdiag : (hH.eigenvectorUnitary : Matrix (Fin p) (Fin p) ℂ)ᴴ * (1 - Z * Zᴴ) * (hH.eigenvectorUnitary : Matrix (Fin p) (Fin p) ℂ) = Matrix.diagonal (RCLike.ofReal ∘ hH.eigenvalues)`. Use `hH.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Unitary.conjStarAlgAut_star_apply]`. Then use the resulting hypothesis. Establish `hev : ∀ a, 1 - ∑ b, Complex.normSq (((hH.eigenvectorUnitary : Matrix (Fin p) (Fin p) ℂ)ᴴ * Z) a b) = hH.eigenvalues a`. Introduce `a`. Rewrite using `[← conj_diag _ hU, hdiag]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : (1 - Z * Zᴴ).det.re = ∏ i, hH.eigenvalues i`. Rewrite using `[hH.det_eq_prod_eigenvalues]`. Simplify using `[← Complex.ofReal_prod]`. Rewrite using `[hd, Real.log_prod (fun a _ => (hZ.eigenvalues_pos a).ne'), Finset.sum_neg_distrib]`. Simplify using `only [hev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_unitary_rows {p q : ℕ} {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef) :
     ∃ U : Matrix (Fin p) (Fin p) ℂ, Uᴴ * U = 1 ∧
@@ -351,13 +343,13 @@ theorem exists_unitary_rows {p q : ℕ} {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (
   simp only [hev]
 
 /- English proof (translation)
-Take `⟨U, hU, he⟩` from `exists_unitary_rows hZ`. Establish `hU' : U * Uᴴ = 1` using `mul_eq_one_comm.1 hU`. Establish `hF : ∑ a, ∑ b, Complex.normSq ((Uᴴ * Z) a b) = ∑ a, ∑ b, Complex.normSq (Z a b)`. Rewrite using `[← RgC.trace_mul_conjTranspose_re, ← RgC.trace_mul_conjTranspose_re, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, ← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hU', Matrix.one_mul]`. Rewrite using `[he, ← hF, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Use `set t := ∑ b, Complex.normSq ((Uᴴ * Z) a b) with ht`. Establish `ht0 : 0 ≤ t` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`. Establish `ht1 : t ≤ 1 / 2`. Use `le_trans ?_ (hF ▸ hs)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.single_le_sum (f := fun a => ∑ b, Complex.normSq ((Uᴴ * Z) a b)) (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ a)`. Establish `h1 : 0 < 1 - t` using `by linarith`. Establish `h2` using `Real.one_sub_inv_le_log_of_pos h1`. Establish `h3 : (1 - t)⁻¹ ≤ 1 + 2 * t`. Rewrite using `[inv_le_iff_one_le_mul₀ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem neg_log_det_le {p q : ℕ} {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef)
     (hs : ∑ a, ∑ b, Complex.normSq (Z a b) ≤ 1 / 2) :
@@ -388,7 +380,7 @@ end Matrices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[ExF.rhF_eq_sum X x0 ho, Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[ExF.norm_of_pos ((ExF.mem_OmF_iff X x0 ho z).1 hz τ).det_pos]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rhF_eq_sum_re {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)}
     (hz : z ∈ OmF X x0) :
@@ -400,11 +392,9 @@ theorem rhF_eq_sum_re {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOrth 
   rfl
 
 /- English proof (translation)
-Establish `hpd : ∀ y ∈ OmF X x0, ∀ τ, (1 - ExF.Zt X y τ * (ExF.Zt X y τ)ᴴ).PosDef` using `fun y hy => (ExF.mem_OmF_iff X x0 ho y).1 hy`. Use `choose U hU he using fun τ => exists_unitary_rows (hpd z hz τ)`. Establish `hS : SharpAt (fun y => ∑ τ, ∑ a, -Real.log (1 - ∑ b, Complex.normSq (((U τ)ᴴ * ExF.Zt X y τ) a b))) z ξ`. Use `sharpAt_sum' fun τ => sharpAt_sum fun a => ?_` and prove the remaining obligations. Use `sharpAt_ball (g := fun b y => ((U τ)ᴴ * ExF.Zt X y τ) a b) ξ (fun b => ?_) (row_lt_one _ (hU τ) (hpd z hz τ) a)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply]`. Conclude with `(ContDiff.sum fun c _ => contDiff_const.mul (ExF.cd_Zt X τ c b)).contDiffAt.of_le (WithTop.coe_le_coe.2 le_top)`. Use `hS.of_minorant ((ExF.rhF_contDiffAt X x0 ho hz).of_le (WithTop.coe_le_coe.2 le_top)) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [(ExF.isOpen_OmF X x0).mem_nhds hz] with y hy`. Rewrite using `[rhF_eq_sum_re X x0 ho hy]`.
-
-Conclude with `Finset.sum_le_sum fun τ _ => rows_le_neg_log_det _ (hU τ) (hpd y hy τ)`. Rewrite using `[rhF_eq_sum_re X x0 ho hz]`. Conclude with `Finset.sum_congr rfl fun τ _ => he τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharpAt_rhF {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)}
     (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) : SharpAt (rhF X x0) z ξ := by
@@ -427,7 +417,7 @@ theorem sharpAt_rhF {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOrth X 
     exact Finset.sum_congr rfl fun τ _ => he τ
 
 /- English proof (translation)
-Simplify using `only [ExF.unipotentFrame_inv_eq_adjugate]`. Establish `h : Continuous fun z : V (nd X) => ExF.n1 X z τ` using `continuous_pi fun i => continuous_pi fun j => (ExF.cd_nM X τ _ _).continuous`. Conclude with `h.matrix_adjugate.matrix_elem a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_inv_leadingBlock_entry {r : ℕ} (X : Data E r) (τ : X.Ψ) (a b : Fin X.p0) :
     Continuous fun z : V (nd X) => (ExF.n1 X z τ)⁻¹ a b := by
@@ -437,9 +427,9 @@ theorem continuous_inv_leadingBlock_entry {r : ℕ} (X : Data E r) (τ : X.Ψ) (
   exact h.matrix_adjugate.matrix_elem a b
 
 /- English proof (translation)
-Establish `hlt : Fin.castLE X.p0_le b < ExF.qI X m`. Rewrite using `[Fin.lt_def]`. Use `b.isLt` as an intermediate fact. Simplify using `only [ExF.qI, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `have h := Finset.single_le_sum (f := fun e : Ent X => if (e.2.1.2 : ℕ) < X.p0 ∧ X.p0 ≤ (e.2.1.1 : ℕ) then ‖z (Fintype.equivFin (Ent X) e)‖ ^ 2 else 0) (fun e _ => by split_ifs <;> positivity) (Finset.mem_univ (⟨τ, ⟨(ExF.qI X m, Fin.castLE X.p0_le b), hlt⟩⟩ : Ent X))`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Establish `hc : ((Fin.castLE X.p0_le b : Fin r) : ℕ) < X.p0 ∧ X.p0 ≤ ((ExF.qI X m : Fin r) : ℕ)` using `⟨b.isLt, by simp [ExF.qI]⟩`. Simplify using `only [if_pos hc]`. Simplify using `[ExF.Wm, ExF.nM, mat, nmat, hlt]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem norm_Wm_sq_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (m : Fin (r - X.p0))
     (b : Fin X.p0) :
@@ -462,25 +452,25 @@ theorem norm_Wm_sq_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (m : F
   simp [ExF.Wm, ExF.nM, mat, nmat, hlt]
 
 /- English proof (translation)
-Establish `hZ0 : ∀ τ, ExF.Zt X 0 τ = 0`. Introduce `τ`. Establish `: ExF.Wm X 0 τ = 0`. Use extensionality with `m b`. Establish `h` using `norm_Wm_sq_le X 0 τ m b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 (le_antisymm (h.trans ?_) (by positivity)))` and prove the remaining obligations. Use `le_of_eq (Finset.sum_eq_zero fun e _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[show (0 : V (nd X)) (Fintype.equivFin (Ent X) e) = 0 from rfl]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[ExF.Zt, this]`. Establish `h0 : (0 : V (nd X)) ∈ OmF X x0`. Rewrite using `[ExF.mem_OmF_iff X x0 ho]`. Introduce `τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ExF.Am, hZ0, Matrix.zero_mul, sub_zero]`. Conclude with `Matrix.PosDef.one`. Establish `e1 : ∀ᶠ z in 𝓝 (0 : V (nd X)), z ∈ OmF X x0` using `(ExF.isOpen_OmF X x0).mem_nhds h0`. Establish `e2 : ∀ᶠ z in 𝓝 (0 : V (nd X)), ∀ τ, ∑ a, ∑ b, Complex.normSq (ExF.Zt X z τ a b) < 1 / 2`. Rewrite using `[Filter.eventually_all]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Establish `hc : Continuous fun z : V (nd X) => ∑ a, ∑ b, Complex.normSq (ExF.Zt X z τ a b)` using `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => Complex.continuous_normSq.comp (ExF.cd_Zt X τ a b).continuous`. Use `hc.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Simplify using `[hZ0]`. Establish `e3 : ∀ᶠ z in 𝓝 (0 : V (nd X)), ∀ τ b a, ‖(ExF.n1 X z τ)⁻¹ b a‖ < ‖(ExF.n1 X 0 τ)⁻¹ b a‖ + 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Filter.eventually_all]`. Introduce `τ b a`. Apply the tactic sequence `exact (continuous_inv_leadingBlock_entry X τ b a).norm.continuousAt.eventually_lt continuousAt_const (lt_add_one _)`. Take `⟨ρ, hρ, hball⟩` from `Metric.eventually_nhds_iff.1 (e1.and (e2.and e3))`. Use `⟨ρ, ∑ τ, 2 * ∑ a, ∑ _m : Fin (r - X.p0), (∑ b, (‖(ExF.n1 X 0 τ)⁻¹ b a‖ + 1)) ^ 2, hρ, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨hz1, hz2, hz3⟩` from `hball (y := z) (by simpa using hz)`. Use `⟨hz1, ?_⟩` and prove the remaining obligations. Use `set S := ∑ e : Ent X, if (e.2.1.2 : ℕ) < X.p0 ∧ X.p0 ≤ (e.2.1.1 : ℕ) then ‖z (Fintype.equivFin (Ent X) e)‖ ^ 2 else 0 with hS`. Apply the tactic sequence `have hS0 : 0 ≤ S := Finset.sum_nonneg fun e _ => by split_ifs <;> positivity`. Establish `hW : ∀ τ m b, ‖ExF.Wm X z τ m b‖ ≤ √S` using `fun τ m b => Real.le_sqrt_of_sq_le (norm_Wm_sq_le X z τ m b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rhF_eq_sum_re X x0 ho hz1, Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Use `(neg_log_det_le ((ExF.mem_OmF_iff X x0 ho z).1 hz1 τ) (hz2 τ).le).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun a _ => ?_) (by norm_num)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun m _ => ?_` and prove the remaining obligations. Establish `hn : ‖ExF.Zt X z τ a m‖ ≤ (∑ b, (‖(ExF.n1 X 0 τ)⁻¹ b a‖ + 1)) * √S`. Rewrite using `[ExF.Zt, Matrix.transpose_apply, Matrix.mul_apply, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul (hz3 τ b a).le (hW τ m b) (norm_nonneg _) (by positivity)`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `(pow_le_pow_left₀ (norm_nonneg _) hn 2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt hS0]`.
+A detailed English derivation is pending.
 -/
 theorem rhF_le_near_zero {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOrth X x0) :
     ∃ ρ C : ℝ, 0 < ρ ∧ ∀ z : V (nd X), ‖z‖ < ρ → z ∈ OmF X x0 ∧ rhF X x0 z ≤ C * ∑ e : Ent X,
@@ -546,7 +536,7 @@ theorem rhF_le_near_zero {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (ho : IsOr
   rw [mul_pow, Real.sq_sqrt hS0]
 
 /- English proof (translation)
-Introduce `_ X x0 ho` and use `⟨fun _ hz => ⟨ExF.rhF_nonneg X x0 ho hz, fun ξ => (sharpAt_rhF X x0 ho hz ξ).2.2.2⟩, rhF_le_near_zero X x0 ho⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rhF_sharp_gradient : ∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 →
     (∀ z ∈ OmF X x0, 0 ≤ rhF X x0 z ∧ ∀ ξ : Fin (nd X) → ℂ,

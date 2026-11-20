@@ -9,23 +9,21 @@ open MeasureTheory Filter Topology Matrix GlobalTheory.CompanionTheory.Ar.Cusp
 open scoped ENNReal ComplexOrder
 
 /- English proof (translation)
-Establish `hfin : ∀ k, {m | pc m = k ∧ t ∈ B m}.Finite`. Introduce `k`. Distinguish the cases in `hk : t ∈ FF k`. Conclude with `Set.finite_of_encard_eq_coe (ht k hk)`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `rfl hm`. Conclude with `hk (hB m hm)`. Establish `hS : {m | t ∈ B m}.Finite`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hU : {m | t ∈ B m} = ⋃ k, {m | pc m = k ∧ t ∈ B m}`. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite using `[hU]`. Conclude with `Set.finite_iUnion hfin`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set s := hS.toFinset with hs`. Establish `hzero : ∀ m ∉ s, (B m).indicator (g (pc m)) t = 0`. Introduce `m hm`. Rewrite `hm` using `[Set.Finite.mem_toFinset]`. Conclude with `Set.indicator_of_notMem (show t ∉ B m from hm) _`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to establish `hsum : ∑ k, d k • (FF k).indicator (g k) t = ∑ m ∈ s, (B m).indicator (g (pc m)) t by`. Rewrite using `[hsum]`. Conclude with `hasSum_sum_of_ne_finset_zero hzero`. Establish `h1 : ∑ m ∈ s, (B m).indicator (g (pc m)) t = ∑ m ∈ s, g (pc m) t` using `Finset.sum_congr rfl (fun m hm => Set.indicator_of_mem (show t ∈ B m from hS.mem_toFinset.mp hm) _)`. Rewrite using `[h1, ← Finset.sum_fiberwise s pc (fun m => g (pc m) t)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Establish `h2 : ∑ m ∈ s with pc m = k, g (pc m) t = ∑ m ∈ s with pc m = k, g k t` using `Finset.sum_congr rfl (fun m hm => by rw [(Finset.mem_filter.mp hm).2])`. Rewrite using `[h2, Finset.sum_const]`. Distinguish the cases in `hk : t ∈ FF k`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hk]`. Use `congr 1`. Establish `hset : ((s.filter (fun m => pc m = k)) : Set ℕ) = {m | pc m = k ∧ t ∈ B m}`. Use extensionality with `m`. Simplify using `[s, and_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hc` using `ht k hk`. Rewrite `hc` using `[← hset, Set.encard_coe_eq_coe_finsetCard]`. Conclude with `hc.symm` after adjusting the coercions. Rewrite using `[Set.indicator_of_notMem hk, smul_zero]`. Establish `he : s.filter (fun m => pc m = k) = ∅`.
-
-Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.notMem_empty, iff_false, not_and, s, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Introduce `hm h`. Conclude with `hk (h ▸ hB m hm)`. Rewrite using `[he, Finset.card_empty, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_sheets {X M : Type*} [AddCommMonoid M] [TopologicalSpace M] [ContinuousAdd M] {np : ℕ}
     (FF : Fin np → Set X) (pc : ℕ → Fin np) (B : ℕ → Set X) (d : Fin np → ℕ)
@@ -83,23 +81,23 @@ theorem hasSum_sheets {X M : Type*} [AddCommMonoid M] [TopologicalSpace M] [Cont
     rw [he, Finset.card_empty, zero_smul]
 
 /- English proof (translation)
-Use `set F : ℕ → X → ℝ := fun m => (B m).indicator (f (pc m)) with hFdef`. Establish `hFint : ∀ m, Integrable (F m) μ` using `fun m => ((hf (pc m)).mono_set (hB m)).integrable_indicator (hBm m)`. Establish `hInt : ∀ m, ∫ t in B m, f (pc m) t ∂μ = ∫ t, F m t ∂μ` using `fun m => (integral_indicator (hBm m)).symm`. Establish `hIntAbs : ∀ m, ∫ t in B m, |f (pc m) t| ∂μ = (∫⁻ t, ‖F m t‖ₑ ∂μ).toReal`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_norm_eq_lintegral_enorm (hFint m).aestronglyMeasurable, ← integral_indicator (hBm m)]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [F, Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp [Real.norm_eq_abs]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ t ∂μ, ∀ k, t ∈ FF k → {m | pc m = k ∧ t ∈ B m}.encard = d k` using `ae_all_iff.mpr hc`. Establish `hmeas : ∀ k, AEMeasurable (fun t => (d k : ℝ≥0∞) * (FF k).indicator (fun x => ‖f k x‖ₑ) t) μ`. Introduce `k`. Apply `AEMeasurable.const_mul` to reduce the goal to its premises. Conclude with `(aemeasurable_indicator_iff (hF k)).mpr (hf k).aestronglyMeasurable.enorm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ∑' m, ∫⁻ t, ‖F m t‖ₑ ∂μ = ∑ k, (d k : ℝ≥0∞) * ∫⁻ t in FF k, ‖f k t‖ₑ ∂μ`. Rewrite using `[← lintegral_tsum (fun m => (hFint m).aestronglyMeasurable.enorm)]`. Establish `hae1 : ∀ᵐ t ∂μ, ∑' m, ‖F m t‖ₑ = ∑ k, (d k : ℝ≥0∞) * (FF k).indicator (fun x => ‖f k x‖ₑ) t` using `by filter_upwards [hae] with t ht`. Establish `h` using `hasSum_sheets FF pc B d hB (fun k x => ‖f k x‖ₑ) t ht`. Simplify using `only [nsmul_eq_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h.tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Simplify using `only [F, Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[lintegral_congr_ae hae1, lintegral_finset_sum' _ (fun k _ => hmeas k)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.natCast_ne_top _), lintegral_indicator (hF k)]`. Establish `hne : ∑' m, ∫⁻ t, ‖F m t‖ₑ ∂μ ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hlin]`. Conclude with `(ENNReal.sum_lt_top.mpr fun k _ => ENNReal.mul_lt_top (ENNReal.natCast_lt_top _) (hf k).hasFiniteIntegral).ne`. Prove the components needed by the constructor for the conclusion. Repeatedly rewrite using `[hIntAbs]`. Conclude with `ENNReal.summable_toReal hne`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hInt]`. Rewrite using `[← integral_tsum (fun m => (hFint m).aestronglyMeasurable) hne]`. Establish `hae2 : ∀ᵐ t ∂μ, ∑' m, F m t = ∑ k, (d k : ℝ) * (FF k).indicator (f k) t` using `by filter_upwards [hae] with t ht`. Establish `h` using `(hasSum_sheets FF pc B d hB f t ht).tsum_eq`. Simplify `h` using `only [nsmul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_congr_ae hae2, integral_finset_sum _ (fun k _ => ((hf k).integrable_indicator (hF k)).const_mul _)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[integral_const_mul, integral_indicator (hF k)]`.
+A detailed English derivation is pending.
 -/
 theorem sum_sheets {X : Type*} [MeasurableSpace X] (μ : Measure X) {np : ℕ}
     (FF : Fin np → Set X) (pc : ℕ → Fin np) (B : ℕ → Set X) (d : Fin np → ℕ)
@@ -165,13 +163,11 @@ theorem sum_sheets {X : Type*} [MeasurableSpace X] (μ : Measure X) {np : ℕ}
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
 /- English proof (translation)
-Establish `hent : ∀ a b, ContDiff ℝ 2 fun t : Fin n → ℂ => ((1 - (ballMat q t τ)ᴴ * ballMat q t τ : Matrix (Fin j') (Fin j') ℂ)) a b`. Introduce `a b`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, ballMat, Matrix.of_apply]`. Apply `contDiff_const.sub` to reduce the goal to its premises. Apply `ContDiff.sum` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Apply `ContDiff.mul` to reduce the goal to its premises. Conclude with `(Complex.conjCLE.contDiff).comp (contDiff_apply ℝ ℂ _)`. Conclude with `contDiff_apply ℝ ℂ _`. Simplify using `only [Matrix.det_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `σ _`. Apply `ContDiff.const_smul` to reduce the goal to its premises. Apply `contDiff_prod` to reduce the goal to its premises. Introduce `i _`.
-
-Conclude with `hent _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiff_ballDet (q : Ψ × Fin j × Fin j' ≃ Fin n) (τ : Ψ) :
     ContDiff ℝ 2 fun t => (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det := by
@@ -194,7 +190,7 @@ theorem contDiff_ballDet (q : Ψ × Fin j × Fin j' ≃ Fin n) (τ : Ψ) :
   exact hent _ _
 
 /- English proof (translation)
-Use `ContDiffAt.div_const (ContDiffAt.neg (ContDiffAt.sum fun τ _ => ?_)) _` and prove the remaining obligations. Use `ContDiffAt.log (Complex.reCLM.contDiff.comp (contDiff_ballDet q τ)).contDiffAt ?_` and prove the remaining obligations. Conclude with `(Complex.pos_iff.1 (ht τ).det_pos).1.ne'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffAt_ballPot (q : Ψ × Fin j × Fin j' ≃ Fin n) {t : Fin n → ℂ} (ht : t ∈ ballDom q) :
     ContDiffAt ℝ 2 (fun t' => ballPot q t' / 2) t := by
@@ -203,7 +199,7 @@ theorem contDiffAt_ballPot (q : Ψ × Fin j × Fin j' ≃ Fin n) {t : Fin n → 
   exact (Complex.pos_iff.1 (ht τ).det_pos).1.ne'
 
 /- English proof (translation)
-Introduce `τ`. Establish `: ballMat q 0 τ = 0` using `by ext a b; simp [ballMat]`. Rewrite using `[this]`. Simplify using `using Matrix.PosDef.one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_ballDom (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ) ∈ ballDom q := by
   intro τ
@@ -212,16 +208,16 @@ theorem zero_mem_ballDom (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → 
   simpa using Matrix.PosDef.one
 
 /- English proof (translation)
-Establish `: ∀ τ, ballMat q 0 τ = 0` using `fun τ => by ext a b; simp [ballMat]`. Simplify using `[ballDens, ballPot, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ballDens_zero (q : Ψ × Fin j × Fin j' ≃ Fin n) : ballDens q 0 = 1 := by
   have : ∀ τ, ballMat q 0 τ = 0 := fun τ => by ext a b; simp [ballMat]
   simp [ballDens, ballPot, this]
 
 /- English proof (translation)
-Use `⟨q'.symm.trans ((Equiv.prodCongr e.symm (Equiv.refl _)).trans q), fun t => ?_⟩` and prove the remaining obligations. Establish `hB : ∀ τ', ballMat q' (fun i => t ((q'.symm.trans ((Equiv.prodCongr e.symm (Equiv.refl _)).trans q)) i)) τ' = ballMat q t (e.symm τ')`. Introduce `τ'`. Use extensionality with `a b`. Simplify using `[ballMat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [ballPot, hB]`. Use `congr 1`. Conclude with `(Equiv.sum_comp e.symm (fun τ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re)).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ballPot_renumber {Ψ' : Type} [Fintype Ψ'] (e : Ψ ≃ Ψ') (q : Ψ × Fin j × Fin j' ≃ Fin n)
     (q' : Ψ' × Fin j × Fin j' ≃ Fin n) :
@@ -238,9 +234,9 @@ theorem ballPot_renumber {Ψ' : Type} [Fintype Ψ'] (e : Ψ ≃ Ψ') (q : Ψ × 
     (fun τ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re)).symm
 
 /- English proof (translation)
-Use `set L : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ) := LinearMap.toContinuousLinearMap (Matrix.toLin' (σ.permMatrix ℂ)) with hLdef`. Establish `hL : (fun (t : Fin n → ℂ) i => t (σ i)) = ⇑L`. Use function extensionality and compare the values at `s`. Simplify using `[L, Matrix.toLin'_apply, Matrix.permMatrix_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, L.fderiv]`. Establish `hdet : LinearMap.det (L : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = ((Equiv.Perm.sign σ : ℤ) : ℂ)`. Simplify using `[L, LinearMap.det_toLin', Matrix.det_permutation]`. Rewrite using `[hdet]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem norm_det_perm (σ : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     ‖LinearMap.det ((fderiv ℂ (fun (t : Fin n → ℂ) i => t (σ i)) t : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) :

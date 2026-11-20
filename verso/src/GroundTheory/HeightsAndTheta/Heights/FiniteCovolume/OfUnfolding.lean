@@ -29,7 +29,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-The claim follows from `ReducedBasisBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem ReducedBasisBound.full : ReducedBasisBound.Statement := ReducedBasisBound.proof
 
@@ -46,7 +46,7 @@ variable (h : HermitianForm F E W) (v : Basis ι E W)
 omit [NumberField F] [IsTotallyReal F] [DecidableEq ι] in
 
 /- English proof (translation)
-The claim follows from `ArchCovolumeBound.proof h v (CoordEmbedBasis.proof E ι) (IntegralFormCovolume.proof _ _ _) (TraceHermNondegenerate.proof h v) (DualLatticeMultiple.proof h) (CoordLatticeFullRank.proof v)`.
+A detailed English derivation is pending.
 -/
 theorem ArchCovolumeBound.full : ArchCovolumeBound.Statement h v :=
   ArchCovolumeBound.proof h v (CoordEmbedBasis.proof E ι) (IntegralFormCovolume.proof _ _ _)
@@ -55,28 +55,28 @@ theorem ArchCovolumeBound.full : ArchCovolumeBound.Statement h v :=
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `MajorantTransport.proof h v`.
+A detailed English derivation is pending.
 -/
 theorem MajorantTransport.full : MajorantTransport.Statement h v := MajorantTransport.proof h v
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `ComplementExtension.proof h`.
+A detailed English derivation is pending.
 -/
 theorem ComplementExtension.full : ComplementExtension.Statement h := ComplementExtension.proof h
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `LineNormalForm.proof h`.
+A detailed English derivation is pending.
 -/
 theorem LineNormalForm.full : LineNormalForm.Statement h := LineNormalForm.proof h
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `ComplementLattice.proof h`.
+A detailed English derivation is pending.
 -/
 theorem ComplementLattice.full [FiniteDimensional E W] : ComplementLattice.Statement h :=
   ComplementLattice.proof h
@@ -84,32 +84,32 @@ theorem ComplementLattice.full [FiniteDimensional E W] : ComplementLattice.State
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `LatticePointsBelowFinite.proof h v`.
+A detailed English derivation is pending.
 -/
 theorem LatticePointsBelowFinite.full : LatticePointsBelowFinite.Statement h v :=
   LatticePointsBelowFinite.proof h v
 
 /- English proof (translation)
-The claim follows from `ArchimedeanUnitaryEquiv.proof h v`.
+A detailed English derivation is pending.
 -/
 theorem ArchimedeanUnitaryEquiv.full : ArchimedeanUnitaryEquiv.Statement h v :=
   ArchimedeanUnitaryEquiv.proof h v
 
 /- English proof (translation)
-The claim follows from `AdelicLatticeDictionary.proof h v`.
+A detailed English derivation is pending.
 -/
 theorem AdelicLatticeDictionary.full : AdelicLatticeDictionary.Statement h v :=
   AdelicLatticeDictionary.proof h v
 
 /- English proof (translation)
-The claim follows from `MahlerCompactness.full_of h v ReducedBasisBound.full (ArchCovolumeBound.full h v) (MajorantTransport.full h v)`.
+A detailed English derivation is pending.
 -/
 theorem MahlerCompactness.full : MahlerCompactness.Statement h v :=
   MahlerCompactness.full_of h v ReducedBasisBound.full (ArchCovolumeBound.full h v)
     (MajorantTransport.full h v)
 
 /- English proof (translation)
-The claim follows from `AdaptedReduction.full_of h (LineNormalForm.full h) (ComplementLattice.full h)`.
+A detailed English derivation is pending.
 -/
 theorem AdaptedReduction.full [FiniteDimensional E W] : AdaptedReduction.Statement h :=
   AdaptedReduction.full_of h (LineNormalForm.full h) (ComplementLattice.full h)
@@ -117,7 +117,7 @@ theorem AdaptedReduction.full [FiniteDimensional E W] : AdaptedReduction.Stateme
 end OneSpace
 
 /- English proof (translation)
-The claim follows from `LatticeOrbitsFiniteBelow.of_steps ReducedBasisBound.full (fun _ _ _ _ h _ v => ArchCovolumeBound.full h v) (fun _ _ _ _ h _ v => MajorantTransport.full h v) (fun _ _ _ _ h => ComplementExtension.full h) (fun _ _ _ _ h => LineNormalForm.full h) (fun _ _ _ _ h => ComplementLattice. …`.
+A detailed English derivation is pending.
 -/
 theorem LatticeOrbitsFiniteBelow.full (N : ℕ) : LatticeOrbitsFiniteBelow.{u} F E N :=
   LatticeOrbitsFiniteBelow.of_steps ReducedBasisBound.full
@@ -131,7 +131,7 @@ variable {W : Type u} [AddCommGroup W] [Module E W] [FiniteDimensional E W]
 variable (h : HermitianForm F E W)
 
 /- English proof (translation)
-The claim follows from `LatticeOrbitsFinite.step_of h (LatticeOrbitsFiniteBelow.full _) ReducedBasisBound.full (ArchCovolumeBound.full h _) (MajorantTransport.full h _) (ComplementExtension.full h) (LineNormalForm.full h) (ComplementLattice.full h)`.
+A detailed English derivation is pending.
 -/
 theorem LatticeOrbitsFinite.full : LatticeOrbitsFinite.Statement h :=
   LatticeOrbitsFinite.step_of h (LatticeOrbitsFiniteBelow.full _) ReducedBasisBound.full
@@ -139,14 +139,14 @@ theorem LatticeOrbitsFinite.full : LatticeOrbitsFinite.Statement h :=
     (LineNormalForm.full h) (ComplementLattice.full h)
 
 /- English proof (translation)
-The claim follows from `LinePairOrbitsFinite.full_of h (LatticeOrbitsFiniteBelow.full _) (ComplementExtension.full h) (LineNormalForm.full h) (ComplementLattice.full h)`.
+A detailed English derivation is pending.
 -/
 theorem LinePairOrbitsFinite.full : LinePairOrbitsFinite.Statement h :=
   LinePairOrbitsFinite.full_of h (LatticeOrbitsFiniteBelow.full _) (ComplementExtension.full h)
     (LineNormalForm.full h) (ComplementLattice.full h)
 
 /- English proof (translation)
-The claim follows from `ScalingLaw.full_of h v (LinePairOrbitsFinite.full h) hU`.
+A detailed English derivation is pending.
 -/
 theorem ScalingLaw.of_unfolding {ι : Type*} [Fintype ι] [DecidableEq ι] (v : Basis ι E W)
     (hU : UnfoldingIntegral.Statement h v) : ScalingLaw.Statement h v :=
@@ -163,7 +163,7 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional E W := Module.Finite.of_basis v AdelicCovolumeFinite.full_of h v (LatticeOrbitsFinite.full h) hC (ArchimedeanUnitaryEquiv.full h v) (AdelicLatticeDictionary.full h v) (DoubleCosetCovolume.proof _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem AdelicCovolumeFinite.of_covolume (h : HermitianForm F E W) (v : Basis ι E W)
     (hC : ArithmeticCovolumeFinite.Statement h v) : AdelicCovolumeFinite.Statement h v :=
@@ -172,7 +172,7 @@ theorem AdelicCovolumeFinite.of_covolume (h : HermitianForm F E W) (v : Basis ι
     (AdelicLatticeDictionary.full h v) (DoubleCosetCovolume.proof _ _ _)
 
 /- English proof (translation)
-The claim follows from `HaarParabolicCoordinates.proof h v (ParabolicDecomposition.full h v) hAU hMS hLS`.
+A detailed English derivation is pending.
 -/
 theorem HaarParabolicCoordinates.of_open (h : HermitianForm F E W) (v : Basis ι E W)
     (hAU : ArchUnimodular.Statement h v) (hMS : MajorantStabCompact.Statement h v)
@@ -210,7 +210,7 @@ variable
 include hAU hMS hLS hSD hSL hUM hUC hCL
 
 /- English proof (translation)
-The claim follows from `CovolumeFiniteBelow.of_steps ReducedBasisBound.full (fun _ _ _ _ h _ v => ArchCovolumeBound.full h v) (fun _ _ _ _ h _ v => MajorantTransport.full h v) (fun _ _ _ _ h => ComplementExtension.full h) (fun _ _ _ _ h => LineNormalForm.full h) (fun _ _ _ _ h => ComplementLattice.full …`.
+A detailed English derivation is pending.
 -/
 theorem CovolumeFiniteBelow.of_open (N : ℕ) : CovolumeFiniteBelow.{u} F E N :=
   CovolumeFiniteBelow.of_steps ReducedBasisBound.full
@@ -235,7 +235,7 @@ variable (hSD' : ∀ (x₀ w₀ : W) (h' : HermitianForm F E (hypComplement h x�
 include hSD' hSL' hUM' hUC'
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional E W := Module.Finite.of_basis v StabilizerCovolumeFinite.proof h v (CovolumeFiniteBelow.of_open hAU hMS hLS hSD hSL hUM hUC hCL _) hSD' hSL' hUM' hUC' (hCL W h)`.
+A detailed English derivation is pending.
 -/
 theorem StabilizerCovolumeFinite.of_open : StabilizerCovolumeFinite.Statement h v :=
   haveI : FiniteDimensional E W := Module.Finite.of_basis v
@@ -248,7 +248,7 @@ variable (hAU' : ArchUnimodular.Statement h v) (hMS' : MajorantStabCompact.State
 include hAU' hMS' hLS'
 
 /- English proof (translation)
-The claim follows from `UnfoldingIntegral.full_of h v (fun _ => UnfoldAlongSubgroup.proof _ _) (HaarParabolicCoordinates.of_open h v hAU' hMS' hLS') (StabilizerCovolumeFinite.of_open hAU hMS hLS hSD hSL hUM hUC hCL h v hSD' hSL' hUM' hUC')`.
+A detailed English derivation is pending.
 -/
 theorem UnfoldingIntegral.of_open : UnfoldingIntegral.Statement h v :=
   UnfoldingIntegral.full_of h v (fun _ => UnfoldAlongSubgroup.proof _ _)
@@ -256,7 +256,7 @@ theorem UnfoldingIntegral.of_open : UnfoldingIntegral.Statement h v :=
     (StabilizerCovolumeFinite.of_open hAU hMS hLS hSD hSL hUM hUC hCL h v hSD' hSL' hUM' hUC')
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional E W := Module.Finite.of_basis v ScalingLaw.of_unfolding h v (UnfoldingIntegral.of_open hAU hMS hLS hSD hSL hUM hUC hCL h v hSD' hSL' hUM' hUC' hAU' hMS' hLS')`.
+A detailed English derivation is pending.
 -/
 theorem ScalingLaw.of_open : ScalingLaw.Statement h v :=
   haveI : FiniteDimensional E W := Module.Finite.of_basis v
@@ -264,7 +264,7 @@ theorem ScalingLaw.of_open : ScalingLaw.Statement h v :=
     (UnfoldingIntegral.of_open hAU hMS hLS hSD hSL hUM hUC hCL h v hSD' hSL' hUM' hUC' hAU' hMS' hLS')
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional E W := Module.Finite.of_basis v ArithmeticCovolumeFinite.step_of h v (LatticeOrbitsFiniteBelow.full _) ReducedBasisBound.full (ArchCovolumeBound.full h v) (MajorantTransport.full h v) (ComplementExtension.full h) (LineNormalForm.full h) (ComplementLattic …`.
+A detailed English derivation is pending.
 -/
 theorem ArithmeticCovolumeFinite.of_open : ArithmeticCovolumeFinite.Statement h v :=
   haveI : FiniteDimensional E W := Module.Finite.of_basis v
@@ -276,7 +276,7 @@ theorem ArithmeticCovolumeFinite.of_open : ArithmeticCovolumeFinite.Statement h 
     (LatticePointsBelowFinite.full h v)
 
 /- English proof (translation)
-The claim follows from `AdelicCovolumeFinite.of_covolume h v (ArithmeticCovolumeFinite.of_open hAU hMS hLS hSD hSL hUM hUC hCL h v hSD' hSL' hUM' hUC' hAU' hMS' hLS')`.
+A detailed English derivation is pending.
 -/
 theorem AdelicCovolumeFinite.of_open : AdelicCovolumeFinite.Statement h v :=
   AdelicCovolumeFinite.of_covolume h v

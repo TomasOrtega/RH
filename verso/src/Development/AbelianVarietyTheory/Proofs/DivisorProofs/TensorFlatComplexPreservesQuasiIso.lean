@@ -30,25 +30,25 @@ Both sides reduce to the same expression.
 -/
 theorem sm_id {F : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (𝟙 F) x = x := rfl
 /- English proof (translation)
-The claim follows from `congrArg (fun k => k.hom x) (φ.hom.naturality g.op)`.
+A detailed English derivation is pending.
 -/
 theorem sm_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
   congrArg (fun k => k.hom x) (φ.hom.naturality g.op)
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sm_madd {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) : Sec.map φ (x + y) = Sec.map φ x + Sec.map φ y := map_add _ _ _
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem sm_mzero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 := map_zero _
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_munits {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (e : ℤˣ) (x : Sec F U) : Sec.map φ (e • x) = e • Sec.map φ x := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ _
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rs_madd {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) : Sec.res g (x + y) = Sec.res g x + Sec.res g y := map_add _ _ _
 
@@ -56,31 +56,31 @@ section Cone
 variable {K L : Cx R} (φ : K ⟶ L) {U : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.inl_v_fst_v φ (p + 1) p rfl, sm_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_inl (p : ℤ) (a : Sec (K.X (p + 1)) U) :
     Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) (Sec.map ((mappingCone.inl φ).v (p + 1) p (by omega)) a) = a := by
   rw [← sm_comp, mappingCone.inl_v_fst_v φ (p + 1) p rfl, sm_id]
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.inr_f_fst_v φ p (p + 1) rfl, sm_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_inr (p : ℤ) (a : Sec (L.X p) U) :
     Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) (Sec.map ((mappingCone.inr φ).f p) a) = 0 := by
   rw [← sm_comp, mappingCone.inr_f_fst_v φ p (p + 1) rfl, sm_zero]
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.inl_v_snd_v φ (p + 1) p (by omega), sm_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_inl (p : ℤ) (a : Sec (K.X (p + 1)) U) :
     Sec.map ((mappingCone.snd φ).v p p (add_zero p)) (Sec.map ((mappingCone.inl φ).v (p + 1) p (by omega)) a) = 0 := by
   rw [← sm_comp, mappingCone.inl_v_snd_v φ (p + 1) p (by omega), sm_zero]
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.inr_f_snd_v φ p, sm_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_inr (p : ℤ) (a : Sec (L.X p) U) :
     Sec.map ((mappingCone.snd φ).v p p (add_zero p)) (Sec.map ((mappingCone.inr φ).f p) a) = a := by
   rw [← sm_comp, mappingCone.inr_f_snd_v φ p, sm_id]
 /- English proof (translation)
-Use `congrArg (fun k => Sec.map k z) (mappingCone.id_X φ p (p + 1) rfl)` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[sm_add, sm_comp, sm_comp, sm_id]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_eta (p : ℤ) (z : Sec ((mappingCone φ).X p) U) :
     z = Sec.map ((mappingCone.inl φ).v (p + 1) p (by omega)) (Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) z) +
@@ -90,21 +90,21 @@ theorem cone_eta (p : ℤ) (z : Sec ((mappingCone φ).X p) U) :
   rw [sm_add, sm_comp, sm_comp, sm_id] at this
   exact this.symm
 /- English proof (translation)
-Rewrite using `[cone_eta φ p z, cone_eta φ p z', h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cone_ext {p : ℤ} {z z' : Sec ((mappingCone φ).X p) U}
     (h1 : Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) z = Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) z')
     (h2 : Sec.map ((mappingCone.snd φ).v p p (add_zero p)) z = Sec.map ((mappingCone.snd φ).v p p (add_zero p)) z') : z = z' := by
   rw [cone_eta φ p z, cone_eta φ p z', h1, h2]
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.d_fst_v φ p (p + 1) (p + 1 + 1) rfl rfl, sm_neg, sm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_d (p : ℤ) (z : Sec ((mappingCone φ).X p) U) :
     Sec.map ((mappingCone.fst φ).1.v (p + 1) (p + 1 + 1) rfl) (Sec.map ((mappingCone φ).d p (p + 1)) z) =
       -Sec.map (K.d (p + 1) (p + 1 + 1)) (Sec.map ((mappingCone.fst φ).1.v p (p + 1) rfl) z) := by
   rw [← sm_comp, mappingCone.d_fst_v φ p (p + 1) (p + 1 + 1) rfl rfl, sm_neg, sm_comp]
 /- English proof (translation)
-Rewrite using `[← sm_comp, mappingCone.d_snd_v φ p (p + 1) rfl, sm_add, sm_comp, sm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_d (p : ℤ) (z : Sec ((mappingCone φ).X p) U) :
     Sec.map ((mappingCone.snd φ).v (p + 1) (p + 1) (add_zero _)) (Sec.map ((mappingCone φ).d p (p + 1)) z) =
@@ -189,7 +189,7 @@ def tSnd (f : I ⟶ I') (U : Scheme.{0}) (w : ℤ) : Tens (mappingCone f) J U w 
       TensorProduct.map (((mappingCone.snd f).v p.1.1 p.1.1 (add_zero _)).hom.app (op U)).hom LinearMap.id
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[← sm_comp, mappingCone.inl_v_fst_v, sm_id]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_fst_inl (f : I ⟶ I') (τ : Pair I J T) (U : Scheme.{0}) (s t w' : ℤ) (hst : s + t = w') (s' : ℤ) (e : s' = s)
     (h1 : s' + t = w') (h2 : s - 1 + 1 = s') (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
@@ -199,9 +199,9 @@ theorem mul_fst_inl (f : I ⟶ I') (τ : Pair I J T) (U : Scheme.{0}) (s t w' : 
   rw [← sm_comp, mappingCone.inl_v_fst_v, sm_id]
 
 /- English proof (translation)
-Establish `: (conePair τ τ' f u hc).lift U w ∘ₗ tInl f U w = (((mappingCone.inl u).v (w + 1) w (by omega)).hom.app (op U)).hom ∘ₗ τ.lift U (w + 1)`. Use `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Take `⟨⟨s, t⟩, hp⟩` from `p`. Simplify using `only [LinearMap.comp_apply, tInl, Pair.lift, DirectSum.toModule_lof, TensorProduct.map_tmul, LinearMap.id_apply, TensorProduct.lift.tmul]`. Express the relevant statement in the definitionally equal form `coneMul τ τ' f u U (s - 1) t w (by omega) (Sec.map ((mappingCone.inl f).v s (s - 1) (by omega)) a) b = Sec.map ((mappingCone.inl u).v (w + 1) w (by omega)) (τ.mul U s t (w + 1) hp a b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coneMul_apply, ← sm_comp _ ((mappingCone.snd f).v _ _ _), mappingCone.inl_v_snd_v, sm_zero, map_zero, LinearMap.zero_apply, sm_mzero, add_zero, mul_fst_inl f τ U s t (w + 1) hp _ (by omega)]`. Conclude with `congrArg (fun k => k x) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_tInl (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') (u : T ⟶ T') (hc : τ.Compat τ' f (𝟙 J) u)
     (U : Scheme.{0}) (w : ℤ) (x : Tens I J U (w + 1)) :
@@ -219,9 +219,9 @@ theorem lift_tInl (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') (u : T �
   exact congrArg (fun k => k x) this
 
 /- English proof (translation)
-Establish `: (conePair τ τ' f u hc).lift U w ∘ₗ tInr f U w = (((mappingCone.inr u).f w).hom.app (op U)).hom ∘ₗ τ'.lift U w`. Use `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Take `⟨⟨s, t⟩, hp⟩` from `p`. Simplify using `only [LinearMap.comp_apply, tInr, Pair.lift, DirectSum.toModule_lof, TensorProduct.map_tmul, LinearMap.id_apply, TensorProduct.lift.tmul]`. Express the relevant statement in the definitionally equal form `coneMul τ τ' f u U s t w hp (Sec.map ((mappingCone.inr f).f s) a) b = Sec.map ((mappingCone.inr u).f w) (τ'.mul U s t w hp a b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coneMul_apply, fst_inr, map_zero, LinearMap.zero_apply, sm_mzero, zero_add, snd_inr]`. Conclude with `congrArg (fun k => k x) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_tInr (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') (u : T ⟶ T') (hc : τ.Compat τ' f (𝟙 J) u)
     (U : Scheme.{0}) (w : ℤ) (x : Tens I' J U w) :
@@ -237,7 +237,7 @@ theorem lift_tInr (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') (u : T �
   exact congrArg (fun k => k x) this
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lof_shift (f : I ⟶ I') (U : Scheme.{0}) (w : ℤ) [DecidableEq {p : ℤ × ℤ // p.1 + p.2 = w}] (s t : ℤ) (hp : s + t = w)
     (s'' : ℤ) (e : s'' = s) (h : s'' + t = w) (h' : s + 1 + -1 = s'') (y : Sec (I.X (s + 1)) U) (b : Sec (J.X t) U) :
@@ -250,9 +250,9 @@ theorem lof_shift (f : I ⟶ I') (U : Scheme.{0}) (w : ℤ) [DecidableEq {p : �
   subst e; rfl
 
 /- English proof (translation)
-Establish `: (tInl f U w ∘ₗ tFst f U w + tInr f U w ∘ₗ tSnd f U w : Tens (mappingCone f) J U w →ₗ[ULift.{1} R] Tens (mappingCone f) J U w) = LinearMap.id`. Use `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Take `⟨⟨s, t⟩, hp⟩` from `p`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, tInl, tInr, tFst, tSnd, DirectSum.toModule_lof, TensorProduct.map_tmul, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `DirectSum.lof (ULift.{1} R) {p : ℤ × ℤ // p.1 + p.2 = w} (fun q => Sec ((mappingCone f).X q.1.1) U ⊗[ULift.{1} R] Sec (J.X q.1.2) U) ⟨(s + 1 - 1, t), by omega⟩ (Sec.map ((mappingCone.inl f).v (s + 1) (s + 1 - 1) (by omega)) (Sec.map ((mappingCone.fst f).1.v s (s + 1) rfl) a) ⊗ₜ b …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[lof_shift f U w s t hp _ (by omega), ← map_add, ← TensorProduct.add_tmul, ← cone_eta]`. Conclude with `congrArg (fun k => k x) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tDecomp (f : I ⟶ I') (U : Scheme.{0}) (w : ℤ) (x : Tens (mappingCone f) J U w) :
     tInl f U w (tFst f U w x) + tInr f U w (tSnd f U w x) = x := by
@@ -274,9 +274,9 @@ theorem tDecomp (f : I ⟶ I') (U : Scheme.{0}) (w : ℤ) (x : Tens (mappingCone
   exact congrArg (fun k => k x) this
 
 /- English proof (translation)
-Establish `: (Tens.res g w ∘ₗ tInl f U w : Tens I J U (w + 1) →ₗ[ULift.{1} R] Tens (mappingCone f) J V w) = tInl f V w ∘ₗ Tens.res g (w + 1)`. Use `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Take `⟨⟨s, t⟩, hp⟩` from `p`. Simplify using `only [LinearMap.comp_apply, tInl, Tens.res, DirectSum.toModule_lof, DirectSum.lmap_lof, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Sec.res g (Sec.map ((mappingCone.inl f).v s (s - 1) (by omega)) a) ⊗ₜ[ULift.{1} R] Sec.res g b = Sec.map ((mappingCone.inl f).v s (s - 1) (by omega)) (Sec.res g a) ⊗ₜ[ULift.{1} R] Sec.res g b`. Rewrite using `[sm_res]`. Conclude with `congrArg (fun k => k x) this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_tInl (f : I ⟶ I') {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U (w + 1)) :
     Tens.res g w (tInl f U w x) = tInl f V w (Tens.res g (w + 1) x) := by
@@ -293,9 +293,9 @@ theorem res_tInl (f : I ⟶ I') {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : 
   exact congrArg (fun k => k x) this
 
 /- English proof (translation)
-Establish `: (Tens.res g w ∘ₗ tInr f U w : Tens I' J U w →ₗ[ULift.{1} R] Tens (mappingCone f) J V w) = tInr f V w ∘ₗ Tens.res g w`. Use `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Take `⟨⟨s, t⟩, hp⟩` from `p`. Simplify using `only [LinearMap.comp_apply, tInr, Tens.res, DirectSum.toModule_lof, DirectSum.lmap_lof, TensorProduct.map_tmul, LinearMap.id_apply]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Sec.res g (Sec.map ((mappingCone.inr f).f s) a) ⊗ₜ[ULift.{1} R] Sec.res g b = Sec.map ((mappingCone.inr f).f s) (Sec.res g a) ⊗ₜ[ULift.{1} R] Sec.res g b`. Rewrite using `[sm_res]`. Conclude with `congrArg (fun k => k x) this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_tInr (f : I ⟶ I') {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I' J U w) :
     Tens.res g w (tInr f U w x) = tInr f V w (Tens.res g w x) := by
@@ -312,13 +312,13 @@ theorem res_tInr (f : I ⟶ I') {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : 
   exact congrArg (fun k => k x) this
 
 /- English proof (translation)
-Take `⟨-, loc_mono, loc_and, -, -, -, -⟩` from `GlobalTheory.EtC.loc_calculus`. Prove the components needed by the constructor for the conclusion. Introduce `U w y`. Establish `h1` using `hτ.1 U (w + 1) (Sec.map ((mappingCone.fst u).1.v w (w + 1) rfl) y)`. Establish `h2` using `hτ'.1 U w (Sec.map ((mappingCone.snd u).v w w (add_zero w)) y)`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `loc_mono _ _ _ (loc_and _ _ _ h1 h2) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨⟨x1, hx1⟩, ⟨x2, hx2⟩⟩`. Use `⟨tInl f V w x1 + tInr f V w x2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, lift_tInl, lift_tInr, hx1, hx2, sm_res, sm_res, ← rs_madd, ← cone_eta]`. Introduce `U w x hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← tDecomp f U w x, map_add, lift_tInl, lift_tInr]`. Establish `e1 : τ.lift U (w + 1) (tFst f U w x) = 0`. Use `congrArg (fun z => Sec.map ((mappingCone.fst u).1.v w (w + 1) rfl) z) hx` as an intermediate fact. Simplify `this` using `only [sm_madd, fst_inl, fst_inr, add_zero, sm_mzero]`. Establish `e2 : τ'.lift U w (tSnd f U w x) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun z => Sec.map ((mappingCone.snd u).v w w (add_zero w)) z) hx` as an intermediate fact. Simplify `this` using `only [sm_madd, snd_inl, snd_inr, zero_add, sm_mzero]`. Use `loc_mono _ _ _ (loc_and _ _ _ (hτ.2 U (w + 1) _ e1) (hτ'.2 U w _ e2)) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨h1, h2⟩`. Rewrite using `[← tDecomp f U w x, map_add, res_tInl, res_tInr, h1, h2, map_zero, map_zero, add_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conePair_isTensor (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') (u : T ⟶ T') (hc : τ.Compat τ' f (𝟙 J) u)
     (hτ : τ.IsTensor) (hτ' : τ'.IsTensor) : (conePair τ τ' f u hc).IsTensor := by
@@ -344,7 +344,7 @@ theorem conePair_isTensor (τ : Pair I J T) (τ' : Pair I' J T') (f : I ⟶ I') 
     rw [← tDecomp f U w x, map_add, res_tInl, res_tInr, h1, h2, map_zero, map_zero, add_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[← HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic]`. Establish `hu : HomotopyCategory.quasiIso 𝒜 (ComplexShape.up ℤ) ((HomotopyCategory.quotient 𝒜 (ComplexShape.up ℤ)).map u)`. Rewrite using `[HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic]`. Conclude with `((HomotopyCategory.subcategoryAcyclic 𝒜).trW_iff_of_distinguished _ (HomotopyCategory.mappingCone_triangleh_distinguished u)).2 h`. Rewrite `hu` using `[HomotopyCategory.quotient_map_mem_quasiIso_iff]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem quasiIso_of_cone_acyclic {𝒜 : Type*} [Category 𝒜] [Abelian 𝒜]
     {K L : CochainComplex 𝒜 ℤ} (u : K ⟶ L) (h : (CochainComplex.mappingCone u).Acyclic) : QuasiIso u := by
@@ -361,7 +361,7 @@ end GlobalTheory.EtC.TensQis
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ I I' J T T' _ _ _ τ τ' hτ hτ' hJ f _ u hc`. Use `haveI : (mappingCone f).IsStrictlyGE (-1) := CochainComplex.isStrictlyGE_mappingCone f 0 0 (-1)`. Establish `hC` using `GlobalTheory.mappingCone_acyclic_of_quasiIso f`. Conclude with `TensQis.quasiIso_of_cone_acyclic u (GlobalTheory.T.acyclic_tensor_acyclic_flatEtaleComplex R (-1) 0 (TensQis.conePair τ τ' f u hc) (TensQis.conePair_isTensor τ τ' f u hc hτ hτ') hJ hC)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tensor_quasiIso : ∀ (R : Type) [CommRing R] {I I' J T T' : Cx R} [I.IsStrictlyGE 0] [I'.IsStrictlyGE 0]
     [J.IsStrictlyGE 0] (τ : Pair I J T) (τ' : Pair I' J T'), τ.IsTensor → τ'.IsTensor → (∀ t, FlatS (J.X t)) →

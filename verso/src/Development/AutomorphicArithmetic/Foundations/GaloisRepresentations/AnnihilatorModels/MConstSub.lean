@@ -11,7 +11,7 @@ open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison
 open GlobalTheory GlobalTheory.PointQuot
 
 /- English proof (translation)
-Use extensionality with `: 1`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `c`. Use `congrArg Over.Hom.left (h c)` as an intermediate fact. Conclude with `this`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem constObj_hom_ext {S : Scheme} {I : Type} {Z : Over S} (f₁ f₂ : constObj S I ⟶ Z)
     (h : ∀ c, PointQuot.constPt S c ≫ f₁ = PointQuot.constPt S c ≫ f₂) : f₁ = f₂ := by
@@ -22,25 +22,23 @@ private theorem constObj_hom_ext {S : Scheme} {I : Type} {Z : Over S} (f₁ f₂
   exact this
 
 /- English proof (translation)
-Introduce `K _ A _ hsep Γ hfin`. Establish `hinj : Function.Injective (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A))` using `Subtype.val_injective`. Use `haveI hmono : Mono (constDesc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A))) := mono_constDesc _ hinj`. Take `⟨hG, hmon⟩` from `exists_grpObj_constObj (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)) Γ Subtype.range_coe`. Establish `hsplit : FinEt.IsSplitOfRank (constObj (Sp K) Γ).hom (Nat.card Γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FinEt.isSplitOfRank_iff_exists_iso]`. Use `⟨Sigma.reindex (Finite.equivFin Γ).symm (fun _ => Sp K), ?_⟩` and prove the remaining obligations. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `h` using `Sigma.ι_reindex_hom (Finite.equivFin Γ).symm (fun _ : Γ => Sp K) j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [constObj, Over.mk_hom]`. Rewrite using `[← Category.assoc]`. Use `erw [h]`. Simplify using the standard rewrite rules. Use `haveI := hsplit.isFinite`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI := hsplit.etale`. Use `⟨constObj (Sp K) Γ, hG, constDesc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)), hmon, hmono, hsplit.isFinite, hsplit.etale, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hsplit.isFinite, (inferInstance : Flat (constObj (Sp K) Γ).hom), ?_, hsplit.finrank_eq⟩` and prove the remaining obligations. Set `c0 : Γ` to `⟨1, Γ.one_mem⟩`. Establish `hw : (PointQuot.constPt (Sp K) c0).left ≫ (toUnit (constObj (Sp K) Γ)).left = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left]`. Simplify using the standard rewrite rules. Use `⟨fun y => ⟨(PointQuot.constPt (Sp K) c0).left y, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hw]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Set `z : (𝟙_ (Over (Sp K))).left` to `(⊥ : PrimeSpectrum K)`. Take `⟨V, hzV, c, hc⟩` from `locally_const_desc (Subtype.val : Γ → (𝟙_ (Over (Sp K)) ⟶ A)) y z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Nonempty (openObj (𝟙_ (Over (Sp K))) V).left := ⟨⟨z, hzV⟩⟩`. Use `haveI := epi_toUnit (openObj (𝟙_ (Over (Sp K))) V)`. Establish `e : openι (𝟙_ (Over (Sp K))) V = toUnit _` using `toUnit_unique _ _`. Rewrite `hc` using `[hy, e]`. Use `(cancel_epi _).1 hc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `c.2`. Introduce `hg`. Conclude with `⟨PointQuot.constPt (Sp K) (⟨g, hg⟩ : Γ), constPt_desc _ _⟩`. Introduce `α hα`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `constObj_hom_ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[← Category.assoc, constPt_desc]`. Conclude with `(hα _ c.2).trans (comp_one _).symm`. Introduce `α hα`.
-
-Use `⟨constDesc (fun c : Γ => PointQuot.constPt (Sp K) (⟨c.1 ≫ α, hα _ c.2⟩ : Γ)), ?_⟩` and prove the remaining obligations. Apply `constObj_hom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [← Category.assoc, constPt_desc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.constSub_of : ConstSub := by
   intro K _ A _ hsep Γ hfin

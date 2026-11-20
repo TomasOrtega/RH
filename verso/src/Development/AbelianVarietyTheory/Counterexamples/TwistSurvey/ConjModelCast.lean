@@ -8,13 +8,13 @@ noncomputable section
 namespace GlobalTheory.ConjReading
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj {K : Type} [Field K] (f : K →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp f) = f := by
   ext x; simp
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `show H.φ₀ (H.sigmaOf (g * g') x) = H.φ₀ (H.sigmaOf g (H.sigmaOf g' x))`. Establish `: H.sigmaOf (g * g') = H.sigmaOf g * H.sigmaOf g'` using `map_mul (H.gal).symm g g'`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emb_mul {R : Ranks} (H : Host R) (g g' : R.GG) :
     H.emb (g * g') = (H.emb g).comp (H.sigmaOf g' : H.E →+* H.E) := by
@@ -25,9 +25,9 @@ theorem emb_mul {R : Ranks} (H : Host R) (g g' : R.GG) :
   rw [this]; rfl
 
 /- English proof (translation)
-Introduce `hg`. Establish `e1` using `((factEmb D.R D.host).2 _).2 (D.eTau ρ).2`. Establish `e2` using `((factEmb D.R D.host).2 _).2 hg`. Simplify using `only [Formalism.HC.HostRaw.cmType, Set.mem_setOf_eq] at e1 e2`. Rewrite `e2` using `[h, RingHom.comp_apply, tauE, e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : (0 : ℝ) < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)`. Use `congrArg Complex.im e2` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem conj_not_mem (D : D7) (ρ : D.what₂.Tau) (g : D.R.GG)
     (h : D.host.emb g = (starRingEnd ℂ).comp (tauE D ρ)) : g ∉ D.R.Psi := by
@@ -43,21 +43,21 @@ theorem conj_not_mem (D : D7) (ρ : D.what₂.Tau) (g : D.R.GG)
   linarith
 
 /- English proof (translation)
-Introduce `h` and use `conj_not_mem D ρ _ h (D.eTau ρ).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauE_ne_conj (D : D7) (ρ : D.what₂.Tau) : tauE D ρ ≠ (starRingEnd ℂ).comp (tauE D ρ) :=
   fun h => conj_not_mem D ρ _ h (D.eTau ρ).2
 
 /- English proof (translation)
-Take `⟨g0, h0⟩` from `(factEmb D.R D.host).1.2 (σ.comp D.embE)`. Take `⟨g1, h1⟩` from `(factEmb D.R D.host).1.2 ((starRingEnd ℂ).comp (tauE D ρ))`. Establish `key : ∀ g (hg : g ∈ D.R.Psi), labE σ (D.eTau.symm ⟨g, hg⟩) = D.host.emb (g0 * g)`. Introduce `g hg`. Rewrite using `[emb_mul, h0, labE, labLL, Equiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `m1` using `conj_not_mem D ρ g1 h1`. Establish `m0` using `(D.eTau ρ).2`. Rewrite `m1`, `m0` using `[Formalism.HC.Frame.mem_Psi_iff]`. Distinguish the cases in `hg : g0 ∈ D.R.Psi`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨D.eTau.symm ⟨g0⁻¹ * (D.eTau ρ).1, Subgroup.mul_mem _ (Subgroup.inv_mem _ hg) (D.eTau ρ).2⟩, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[key, mul_inv_cancel_left]`. Both sides reduce to the same expression. Establish `hm : g0⁻¹ * g1 ∈ D.R.Psi`. Rewrite `hg`, the goal using `[Formalism.HC.Frame.mem_Psi_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show (g0.1.2)⁻¹ * g1.1.2 = 1`. Establish `a0 : g0.1.2 = -1` using `(Int.units_eq_one_or _).resolve_left hg`. Establish `a1 : g1.1.2 = -1` using `(Int.units_eq_one_or _).resolve_left m1`. Rewrite using `[a0, a1]`. Evaluate the decidable proposition.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D.eTau.symm ⟨_, hm⟩, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[key, mul_inv_cancel_left, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_exists {D : D7} (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     ∃ τ, labE σ τ = tauE D ρ ∨ labE σ τ = (starRingEnd ℂ).comp (tauE D ρ) := by
@@ -88,13 +88,11 @@ theorem labE_conj {D : D7} (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) :
     labE ((starRingEnd ℂ).comp σ) τ = (starRingEnd ℂ).comp (labE σ τ) := rfl
 
 /- English proof (translation)
-Establish `e : (fun τ => labE ((starRingEnd ℂ).comp σ) τ = tauE D ρ ∨ labE ((starRingEnd ℂ).comp σ) τ = (starRingEnd ℂ).comp (tauE D ρ)) = fun τ => labE σ τ = tauE D ρ ∨ labE σ τ = (starRingEnd ℂ).comp (tauE D ρ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[labE_conj]`. Use `propext ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(h | h)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `right`. Rewrite using `[← h, conj_conj]`. Use `left`. Rewrite using `[← conj_conj (labE σ τ), h, conj_conj]`. Introduce and unpack `(h | h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[h]`. Use `left`. Rewrite using `[h, conj_conj]`. Unfold `lab`.
-
-Rewrite using `[dif_pos (lab_exists _ ρ), dif_pos (lab_exists σ ρ)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lab_conj {D : D7} (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : lab ((starRingEnd ℂ).comp σ) ρ = lab σ ρ := by
   have e : (fun τ => labE ((starRingEnd ℂ).comp σ) τ = tauE D ρ ∨
@@ -114,11 +112,11 @@ theorem lab_conj {D : D7} (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : l
   congr 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Establish `hk : kapAt W ((starRingEnd ℂ).comp σ) ρ = kapAt W σ ρ` using `by unfold kapAt; rw [lab_conj]`. Establish `hs : labE σ (lab σ ρ) = tauE D ρ ∨ labE σ (lab σ ρ) = (starRingEnd ℂ).comp (tauE D ρ)`. Unfold `lab`. Rewrite using `[dif_pos (lab_exists σ ρ)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lab_exists σ ρ).choose_spec`. Unfold `Links.parAt`. Rewrite using `[hk, lab_conj, labE_conj]`. Break down `hs with h | h` into its components or cases. Rewrite using `[h, if_neg (tauE_ne_conj D ρ).symm, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, conj_conj, if_pos rfl, if_neg (tauE_ne_conj D ρ).symm, dualPar_dualPar]`.
+A detailed English derivation is pending.
 -/
 theorem parAt_conj {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) :
     Links.parAt W ((starRingEnd ℂ).comp σ) = fun ρ => dualPar (Links.parAt W σ ρ) := by
@@ -141,9 +139,9 @@ variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
   (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
 
 /- English proof (translation)
-Introduce `h'`. Establish `e : (starRingEnd ℂ) T.Q.H.rt0 = T.Q.H.rt0` using `(congrArg (starRingEnd ℂ) h).symm.trans h'`. Establish `him : T.Q.H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 e`. Establish `hre` using `congrArg Complex.re T.Q.H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < T.Q.H.d` using `by exact_mod_cast T.Q.H.d_prime.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sq, Complex.mul_re, Complex.neg_re, Complex.natCast_re, him] at hre`. Use polynomial arithmetic with `[mul_self_nonneg T.Q.H.rt0.re]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem not_good_conj {σ : D.what₂.LL →+* ℂ} (h : GoodEmb T.Q.c (res T σ)) :
     ¬ GoodEmb T.Q.c (res T ((starRingEnd ℂ).comp σ)) := by
@@ -156,9 +154,9 @@ theorem not_good_conj {σ : D.what₂.LL →+* ℂ} (h : GoodEmb T.Q.c (res T σ
   nlinarith [mul_self_nonneg T.Q.H.rt0.re]
 
 /- English proof (translation)
-Establish `key : ∃ σ : D.what₂.LL →+* ℂ, ¬ GoodEmb T.Q.c (res T σ)`. Distinguish the cases in `h : GoodEmb T.Q.c (res T D.what₂.embLL)`. Conclude with `⟨_, not_good_conj T h⟩`. Conclude with `⟨_, h⟩`. Take `⟨σ, hσ⟩` from `key`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σ, hσ, hl.spaceW _ (inR i) _ (good_resC T hσ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem premises_met (hl : LawsJ T) (i : Fin D.R.m) : ∃ σ : D.what₂.LL →+* ℂ, ¬ GoodEmb T.Q.c (res T σ) ∧
     T.V ((i : ℕ) + 1) (resC T σ) = Wc D i := by
@@ -170,11 +168,11 @@ theorem premises_met (hl : LawsJ T) (i : Fin D.R.m) : ∃ σ : D.what₂.LL →+
   exact ⟨σ, hσ, hl.spaceW _ (inR i) _ (good_resC T hσ)⟩
 
 /- English proof (translation)
-Establish `e0` using `res_embLL T ha hp`. Establish `hx : ∀ τ, labLL D τ (T.Q.H.rt : D.host.E) = algebraMap T.Q.c.F D.what₂.LL (IntermediateField.inclusion T.Q.c.le (ReciprocityTheory.ChartRestriction.G.Geo.Tor.baseKA T.Q.l).ρ)` using `fun τ => by`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Establish `h1` using `RingHom.congr_fun (embV_spec (RingHom.id _) D.what₂.embLL rfl τ) (T.Q.H.rt : D.host.E)`. Establish `h2 : GoodEmb T.Q.c (res T D.what₂.embLL)` using `e0 ▸ T.toCore.good_σ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.trans (hr τ)).trans (Eq.symm h2)`. Establish `hb : ∀ σ : D.what₂.LL →+* ℂ, labE σ (lab σ ρ) = tauE D ρ → GoodEmb T.Q.c (res T σ)` using `fun σ h => (congrArg σ (hx _)).symm.trans ((RingHom.congr_fun h _).trans (hr ρ))`. Use `⟨fun h => ?_, hb σ⟩` and prove the remaining obligations. Establish `hs : labE σ (lab σ ρ) = tauE D ρ ∨ labE σ (lab σ ρ) = (starRingEnd ℂ).comp (tauE D ρ)`. Unfold `lab`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (lab_exists σ ρ)]`. Conclude with `(lab_exists σ ρ).choose_spec`. Use `hs.resolve_right fun h' => not_good_conj T h (hb _ ?_)` and prove the remaining obligations. Rewrite using `[lab_conj, labE_conj, h', conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branch (ha : AlgTie T) (hp : T.Q.PinField) (hr : ∀ τ, tauE D τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0)
     (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : GoodEmb T.Q.c (res T σ) ↔ labE σ (lab σ ρ) = tauE D ρ := by
@@ -194,7 +192,7 @@ theorem branch (ha : AlgTie T) (hp : T.Q.PinField) (hr : ∀ τ, tauE D τ (T.Q.
   rw [lab_conj, labE_conj, h', conj_conj]
 
 /- English proof (translation)
-The claim follows from `branch T ha hp.2.2.1 (fun τ => hp.1.2.2.2 τ) σ ρ`.
+A detailed English derivation is pending.
 -/
 theorem branch_of_pins (ha : AlgTie T) (hp : T.Q.Pins) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     GoodEmb T.Q.c (res T σ) ↔ labE σ (lab σ ρ) = tauE D ρ :=

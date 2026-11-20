@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.ThetaReal
 
 /- English proof (translation)
-Establish `h0 : pt 0 = 1`. Use `h 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Use `⟨h0, fun n a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, h, ih, pow_succ]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pt_nsmul {G H : Type} [AddCommGroup G] [Group H] (pt : G → H) (h : ∀ a b, pt (a + b) = pt a * pt b) :
     pt 0 = 1 ∧ ∀ (n : ℕ) a, pt (n • a) = pt a ^ n := by
@@ -26,31 +26,31 @@ theorem pt_nsmul {G H : Type} [AddCommGroup G] [Group H] (pt : G → H) (h : ∀
   | succ n ih => rw [succ_nsmul, h, ih, pow_succ]
 
 /- English proof (translation)
-Simplify using `only [eStd, Finset.smul_sum, Pi.smul_apply, nsmul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eStd_nsmul (g M r : ℕ) (a b : Fin g ⊕ Fin g → ZMod M) : eStd g M a (r • b) = r • eStd g M a b := by
   simp only [eStd, Finset.smul_sum, Pi.smul_apply, nsmul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nsmul_self {κ : Type} (M : ℕ) (a : κ → ZMod M) : M • a = 0 := by
   funext i
   simp
 
 /- English proof (translation)
-Take `⟨ρ, hρ, -⟩` from `GlobalTheory.thetaGrp_acts_linearly hL.globalFns S P N (baseOver S)`. Take `⟨h0, hsm⟩` from `pt_nsmul pt hadd`. Establish `hodd : Odd N` using `hN ▸ hm.pow`. Establish `tors : ∀ a, pt (r • a) ^ N = 1` using `fun a => by rw [← hsm, smul_smul, mul_comm N r, nsmul_self, h0]`. Establish `act : ∀ a v, IsActOf P.A P.L N (U a) (SecM.toSec P.A v) (SecM.toSec P.A (ρ (U a) v))` using `fun a v => (hρ _ _ _).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `weil : ∀ a b, WeilIs P.A P.L N (pt (r • a)) (pt (r • b)) (ze ^ (r * N * (r • eStd g (r * N) a b).val))` using `fun a b => by`. Establish `h₁` using `hw a (r • b)`. Rewrite `h₁` using `[eStd_nsmul]`. Establish `h₂` using `(hL.weil S P N (baseOver S)).2.2.2 r (pt a) (pt (r • b)) (ze ^ (r * N * (r • eStd g (r * N) a b).val)) (by rw [mul_comm]; exact hu) (by rw [← hsm, mul_comm N r, nsmul_self, h0]) (tors b)`. Rewrite using `[hsm r a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h₂.1 ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_mul, mul_comm N r]`. Conclude with `h₁`. Establish `key : ∀ a b v, ρ (U a) (ρ (U b) v) = (show Γ((baseOver S).left, ⊤) from ze.val ^ (r * N * (r • eStd g (r * N) a b).val * ((N + 1) / 2))) • ρ (U (a + b)) v` using `fun a b v => by`. Use `act_act hL.globalFns P.isAb P.isLB hodd (tors b) (hU a) (hU b) (by rw [← hadd, ← smul_add, add_comm]; exact hU (a + b)) (weil a b) (act b v) (act a _) (act (a + b) v)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans (congrArg (· • _) ?_)` and prove the remaining obligations. Rewrite using `[pow_mul ze.val]`. Conclude with `(Units.val_pow_eq_pow_val _ _).trans (congrArg (· ^ _) (Units.val_pow_eq_pow_val _ _))`. Use `⟨fun a => (ρ (U a)).toLinearMap, fun a => hρ _, fun a ha v => ?_, fun a b => ⟨_, key a b⟩, fun a b h v => ?_, fun a ha => (hρ _ _ _).1 ?_⟩` and prove the remaining obligations. Establish `h₁ : SymLift P.A P.L N N 1 (U a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hU a` as an intermediate fact. Rewrite `this` using `[ha, h0]`. Then use the resulting hypothesis. Use `act_act hL.globalFns P.isAb P.isLB hodd (one_pow N) h₁ h₁ (by rw [_root_.mul_one]; exact h₁) ((hL.weil S P N (baseOver S)).2.2.1 1 (one_pow N)) (act a v) (act a _) (act a v)` as an intermediate fact. Rewrite `this` using `[one_pow, Units.val_one, one_smul]`. Conclude with `(ρ (U a)).injective this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(key a b v).trans ?_` and prove the remaining obligations. Rewrite using `[h, ZMod.val_zero, mul_zero, zero_mul, pow_zero]`. Conclude with `one_smul _ _`. Take `⟨ν, hν⟩` from `GlobalTheory.exists_gen_negLB hL.globalFns S P 1 (baseOver S)`. Conclude with `isActOf_self hL.globalFns P.isAb P.isLB hν hodd hα hs (by rw [← hsm, smul_smul, mul_comm m r, ha, h0]) (tors a) (hU a)`.
+A detailed English derivation is pending.
 -/
 theorem exists_operators (hL : Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) {g m r N : ℕ}
     (hN : N = m ^ 2) (hm : Odd m) (hu : IsUnit ((r * N : ℕ) : Γ(S, ⊤))) (ze : Γ(S, ⊤)ˣ)

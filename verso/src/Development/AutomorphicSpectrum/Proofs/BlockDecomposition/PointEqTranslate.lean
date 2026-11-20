@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.NullFr.CoverStep
 variable {A : Type} [CommRing A] {a r t : ℕ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.NullFr.yc]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_sub, ← Matrix.mul_assoc, hP, Matrix.smul_mul, Matrix.one_mul, hY₀]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem yc_sub_mul_mul_mul_eq (e : A)
     (P : GlobalTheory.CompanionTheory.NullFr.Fx A a r → GlobalTheory.CompanionTheory.NullFr.Fx A r a)
@@ -21,7 +21,7 @@ private theorem yc_sub_mul_mul_mul_eq (e : A)
     Matrix.smul_mul, Matrix.one_mul, hY₀]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.NullFr.vc]`. Rewrite using `[yc_sub_mul_mul_mul_eq e P z hP Y₀ hY₀ S D, ← Matrix.mul_assoc z.1, ← Matrix.mul_assoc z.1, ← Matrix.sub_mul, ← Matrix.sub_mul, Matrix.mul_sub z.1, sub_sub_sub_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vc_sub_mul_mul_mul_eq (e : A)
     (P : GlobalTheory.CompanionTheory.NullFr.Fx A a r → GlobalTheory.CompanionTheory.NullFr.Fx A r a)
@@ -34,9 +34,9 @@ private theorem vc_sub_mul_mul_mul_eq (e : A)
     sub_sub_sub_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.NullFr.gU, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Distinguish the cases in `h : j = i`. Rewrite using `[if_pos h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.of_apply, if_pos h, mul_comm]`. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_gU_apply' {m : ℕ} (M : Fx A m t) (i : Fin t) (d : Fin t → A) (p : Fin m) (j : Fin t) :
     (M * gU i d) p j = M p j + if j = i then ∑ k, d k * M p k else 0 := by
@@ -51,7 +51,7 @@ theorem mul_gU_apply' {m : ℕ} (M : Fx A m t) (i : Fin t) (d : Fin t → A) (p 
     rw [Matrix.of_apply, if_neg h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.NullFr.gD, Matrix.mul_diagonal]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[mul_comm]`. Simplify using `[h, Function.update_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_gD_apply' {m : ℕ} (M : Fx A m t) (i : Fin t) (u : A) (p : Fin m) (j : Fin t) :
     (M * gD i u) p j = if j = i then u * M p i else M p j := by
@@ -62,7 +62,7 @@ theorem mul_gD_apply' {m : ℕ} (M : Fx A m t) (i : Fin t) (u : A) (p : Fin m) (
   · simp [h, Function.update_apply]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gD_apply', GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_apply', GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_apply']`. Distinguish the cases in `h : j = i`. Rewrite using `[if_pos h, if_pos h, if_pos rfl]`. Simplify using `only [Pi.neg_apply, neg_mul, Finset.sum_neg_distrib, sub_eq_add_neg]`. Simplify using `only [if_neg h, add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_gU_gD_apply {m : ℕ} (M : Fx A m t) (i : Fin t) (c : Fin t → A) (u' : A) (p : Fin m)
     (j : Fin t) :
@@ -75,9 +75,9 @@ theorem mul_gU_gD_apply {m : ℕ} (M : Fx A m t) (i : Fin t) (c : Fin t → A) (
   · simp only [if_neg h, add_zero]
 
 /- English proof (translation)
-Use `Matrix.ext fun p j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_apply']`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.CompanionTheory.NullFr.gU, Matrix.one_apply, mul_add, Finset.sum_add_distrib, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.CompanionTheory.NullFr.gU, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gU_neg_mul (i : Fin t) (c : Fin t → A) (hc : c i = 0) : gU i (-c) * gU i c = 1 := by
   refine Matrix.ext fun p j => ?_
@@ -89,9 +89,9 @@ theorem gU_neg_mul (i : Fin t) (c : Fin t → A) (hc : c i = 0) : gU i (-c) * gU
   · simp [GlobalTheory.CompanionTheory.NullFr.gU, h]
 
 /- English proof (translation)
-Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.NullFr.gD, GlobalTheory.CompanionTheory.NullFr.gD, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Distinguish the cases in `hpi : p = i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hpi` using the available equality. Simplify using `[h]`. Simplify using `[Function.update_apply, hpi]`. Simplify using `[hpq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gD_mul (i : Fin t) (u' u : A) (h : u' * u = 1) : gD i u' * gD i u = 1 := by
   refine Matrix.ext fun p q => ?_
@@ -110,37 +110,35 @@ end GlobalTheory.CompanionTheory.NullFr.CoverStep
 namespace GlobalTheory.CompanionTheory.NullFr.CoverStep
 
 /- English proof (translation)
-Introduce `A _ a r t e f he hfe hff P i C z hz hz1 hY hKo hKi c hci hfc hfK u hu c₀ c₁ hc₀i hfc₀ hc₁i hc₁ hc y₀ y₁ hfy₀ hy₁ hy`. Simplify using `only [GlobalTheory.CompanionTheory.NullFr.admitted, Set.mem_setOf_eq] at hz`. Take `⟨hez1, hez2, hP⟩` from `hz`. Establish `hey₀ : ∀ l, e * y₀ l = y₀ l` using `fun l => by`. Rewrite using `[← hfy₀ l, ← mul_assoc, mul_comm e f, hfe]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY₀ : e • GlobalTheory.CompanionTheory.NullFr.yU i y₀ = GlobalTheory.CompanionTheory.NullFr.yU i y₀`. Use `Matrix.ext fun l j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompanionTheory.NullFr.yU, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Use `split_ifs`. Conclude with `hey₀ l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_zero e`. Establish `hY₀i : ∀ l, GlobalTheory.CompanionTheory.NullFr.yU i y₀ l i = y₀ l` using `fun l => by`. Simplify using `[GlobalTheory.CompanionTheory.NullFr.yU]`. Establish `hu' : (1 - f) * ((u⁻¹ : Aˣ) : A) = 1 - f` using `by conv_lhs => rw [← hu]`. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1fc₀ : ∀ k, (1 - f) * c₀ k = 0` using `fun k => by`. Rewrite using `[sub_mul, one_mul, hfc₀, sub_self]`. Establish `h1fy₀ : ∀ l, (1 - f) * y₀ l = 0` using `fun l => by`. Rewrite using `[sub_mul, one_mul, hfy₀, sub_self]`. Establish `hsum : ∀ l, ∑ k, c₀ k * (GlobalTheory.CompanionTheory.NullFr.yc P z - GlobalTheory.CompanionTheory.NullFr.yU i y₀) l k = ∑ k, c₀ k * GlobalTheory.CompanionTheory.NullFr.yc P z l k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `l`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Simplify using `[hk, hc₀i]`. Simplify using `[GlobalTheory.CompanionTheory.NullFr.yU, hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ l, f * (GlobalTheory.CompanionTheory.NullFr.yc P z l i - y₀ l - ∑ k, c₀ k * GlobalTheory.CompanionTheory.NullFr.yc P z l k) = (u : A) * y₁ l`. Introduce `l`. Rewrite using `[mul_sub, mul_sub, hfy₀, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc, hfc₀]`. Rewrite using `[sub_right_comm, hy l, add_sub_cancel_left]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : ∀ l, (1 - f) * (GlobalTheory.CompanionTheory.NullFr.yc P z l i - y₀ l - ∑ k, c₀ k * GlobalTheory.CompanionTheory.NullFr.yc P z l k) = (1 - f) * GlobalTheory.CompanionTheory.NullFr.yc P z l i`. Introduce `l`. Rewrite using `[mul_sub, mul_sub, h1fy₀, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc, h1fc₀, zero_mul, Finset.sum_const_zero, sub_zero]`. Establish `hD : GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A) * GlobalTheory.CompanionTheory.NullFr.gD i (u : A) = 1` using `GlobalTheory.CompanionTheory.NullFr.CoverStep.gD_mul i _ _ u.inv_mul`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : GlobalTheory.CompanionTheory.NullFr.gU i (-c₀) * GlobalTheory.CompanionTheory.NullFr.gU i c₀ = 1` using `GlobalTheory.CompanionTheory.NullFr.CoverStep.gU_neg_mul i c₀ hc₀i`. Establish `hco` using `yc_sub_mul_mul_mul_eq e P z hP _ hY₀ (GlobalTheory.CompanionTheory.NullFr.gU i (-c₀)) (GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A))`. Establish `hcm` using `vc_sub_mul_mul_mul_eq e P z hP _ hY₀ (GlobalTheory.CompanionTheory.NullFr.gU i (-c₀)) (GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A))`. Use `⟨(z.1, (z.2 - z.1 * GlobalTheory.CompanionTheory.NullFr.yU i y₀) * GlobalTheory.CompanionTheory.NullFr.gU i (-c₀) * GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompanionTheory.NullFr.Piece, GlobalTheory.CompanionTheory.NullFr.admitted, Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hco, hcm]`. Use `⟨⟨hez1, ?_, hP⟩, hz1, ?_, ?_, ?_, c₁, hc₁i, hc₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, smul_sub, ← Matrix.smul_mul, hez2, hez1]`. Introduce `l k`. Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_gD_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hk : k = i`. Rewrite using `[if_pos hk, hsum l, Matrix.sub_apply, hY₀i l]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, key l, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `(hy₁ l).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, hu', key2 l]`. Conclude with `(hY l i).2`. Establish `hE : (GlobalTheory.CompanionTheory.NullFr.yc P z - GlobalTheory.CompanionTheory.NullFr.yU i y₀) l k = GlobalTheory.CompanionTheory.NullFr.yc P z l k`. Simplify using `[GlobalTheory.CompanionTheory.NullFr.yU, hk]`. Rewrite using `[if_neg hk, hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `hY l k`. Introduce `p k hk`. Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_gD_apply, if_neg hk]`. Conclude with `hKo p k hk`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_gD_apply, if_pos rfl, ← mul_assoc, hu', mul_sub, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc, h1fc₀, zero_mul, Finset.sum_const_zero, sub_zero]`. Conclude with `hKi p`. Introduce `p`. Establish `hR : ∑ k, c₁ k * (GlobalTheory.CompanionTheory.NullFr.vc P z * GlobalTheory.CompanionTheory.NullFr.gU i (-c₀) * GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A)) p k = ∑ k, c₁ k * GlobalTheory.CompanionTheory.NullFr.vc P z p k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_gD_apply]`. Distinguish the cases in `hk : k = i`. Simplify using `[hk, hc₁i]`. Rewrite using `[if_neg hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : f * (GlobalTheory.CompanionTheory.NullFr.vc P z p i - ∑ k, c₀ k * GlobalTheory.CompanionTheory.NullFr.vc P z p k) = (u : A) * ∑ k, c₁ k * GlobalTheory.CompanionTheory.NullFr.vc P z p k`. Rewrite using `[mul_sub, hfK p, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hfc₀, ← sub_mul, hc k, add_sub_cancel_left, mul_assoc]`. Rewrite using `[hR, GlobalTheory.CompanionTheory.NullFr.CoverStep.mul_gU_gD_apply, if_pos rfl, mul_left_comm, hL, ← mul_assoc, Units.inv_mul, one_mul]`.
-
-Use `Prod.ext rfl ?_ dsimp only` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc _ (GlobalTheory.CompanionTheory.NullFr.gD i ((u⁻¹ : Aˣ) : A)) (GlobalTheory.CompanionTheory.NullFr.gD i (u : A)), hD, Matrix.mul_one, Matrix.mul_assoc _ (GlobalTheory.CompanionTheory.NullFr.gU i (-c₀)) (GlobalTheory.CompanionTheory.NullFr.gU i c₀), hS, Matrix.mu …`.
+A detailed English derivation is pending.
 -/
 theorem point_eq_translate : ∀ {A : Type} [CommRing A] {a r t : ℕ} (e f : A) (_ : e * e = e) (_ : f * e = f) (_ : f * f = f) (P : Fx A a r → Fx A r a)
     (i : Fin t) (C : Set A) (z : Fx A a r × Fx A a t) (_ : z ∈ admitted e P) (_ : ∀ p q, z.1 p q ∈ C)

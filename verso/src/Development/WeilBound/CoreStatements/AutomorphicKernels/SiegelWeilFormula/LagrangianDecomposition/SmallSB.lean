@@ -12,11 +12,9 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (show ((g : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E))ᵀ * incM F J * ((g : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)).map (cA σ) = incM F J from g.2)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, show (((g : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)).map (cA σ)).det = cA σ ((g : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)).det from ((cA σ).toRingHom.map_det _).symm]`. Establish `hu : IsUnit (incM F J).det`. Establish `e : (incM F J).det = (inclR (F` using `F) (E := E) (AF F)) J.det := by`. Rewrite using `[incM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.map_det (inclR (F := F) (E := E) (AF F) : E →+* AE F E) J).symm`. Rewrite using `[e]`. Conclude with `(Ne.isUnit hJ).map _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Use `hu.mul_left_cancel ?_` and prove the remaining obligations.
-
-Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_mul_conj {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) (g : UA σ J) :
     ((Matrix.GeneralLinearGroup.det (g : GL (Fin m) (AE F E)) : (AE F E)ˣ) : AE F E) *
@@ -38,9 +36,7 @@ theorem det_mul_conj {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0)
   linear_combination h
 
 /- English proof (translation)
-Take `⟨ξ, hq⟩` from `GlobalTheory.OppLagr.exists_isQuad hcm`. Use `Units.ext (hq.algebraMap_injective ?_)` and prove the remaining obligations. Rewrite using `[Units.coe_map, Units.val_one, map_one]`. Use `show algebraMap (AF F) (AE F E) (Algebra.norm (AF F) _) = 1`. Rewrite using `[hq.algebraMap_norm]`.
-
-Conclude with `det_mul_conj hJ g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_unitary (hcm : IsCMExt F E σ) {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) (g : UA σ J) :
     Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det (g : GL (Fin m) (AE F E))) = 1 := by

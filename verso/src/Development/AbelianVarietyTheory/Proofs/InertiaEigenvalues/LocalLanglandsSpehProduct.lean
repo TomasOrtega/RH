@@ -19,7 +19,7 @@ open NumberField ReciprocityTheory.Gal Formalism.ConjugateSelfDual IsDedekindDom
 namespace GlobalTheory.SpehRec
 
 /- English proof (translation)
-Take `⟨m, x, hd, hx, hc⟩` from `h`. Conclude with `⟨m, x, hd, hx, hc.of_equiv e (.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isL_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -34,7 +34,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [sumList, WD.lpSum_comm (WD.lpZero h), WD.lpSum_zero]`. Consider the case `cons x l ih`. Simplify using `only [List.cons_append, sumList, List.foldr_cons] at ih ⊢`. Rewrite using `[ih, WD.lpSum_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumList_append (l l' : List (WD h)) : sumList (l ++ l') = (sumList l).lpSum (sumList l') := by
   induction l with
@@ -44,7 +44,7 @@ theorem sumList_append (l l' : List (WD h)) : sumList (l ++ l') = (sumList l).lp
     rw [ih, WD.lpSum_assoc]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons x L ih`. Rewrite using `[List.flatMap_cons, sumList_append, ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sumList_flatMap {α : Type*} (L : List α) (f : α → List (WD h)) :
     sumList (L.flatMap f) = sumList (L.map fun i => sumList (f i)) := by
@@ -57,7 +57,7 @@ theorem sumList_flatMap {α : Type*} (L : List α) (f : α → List (WD h)) :
 end Sum
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField w ∀ (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL → ∀ (a d n : ℕ) (hd : ∑ _ : Fin d, a = n) (σ : LocIrr w a) (σ' : LocIrr w n) …`.
+A detailed English derivation is pending.
 -/
 theorem rec_spehQuot : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)),

@@ -26,25 +26,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `: CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap c.F K₁).injective`. Take `⟨hdom, -, -, hconst⟩` from `GlobalTheory.ArcConst.algebraic_const E H Dw K₁`. Take `⟨f₀, hf₀⟩` from `hconst c.F (algebraMap c.F (ArcS Dw K₁))`. Establish `hι : φ.comp (arcι Dw K₁) = ψ.comp (arcι Dw K₁)` using `RingHom.ext fun p => hφψ _`. Use `letI : Algebra c.F T := (φ.comp (algebraMap c.F (ArcS Dw K₁))).toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Set `φ' : ArcS Dw K₁ →ₐ[c.F] T` to `{ φ with commutes' := fun _ => rfl }`. Set `ψ' : ArcS Dw K₁ →ₐ[c.F] T` to `{ ψ with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `ψ (algebraMap c.F (ArcS Dw K₁) r) = φ (algebraMap c.F (ArcS Dw K₁) r)`. Rewrite using `[hf₀]`. Conclude with `(RingHom.congr_fun hι _).symm }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁⟩` from `hev.bc _ _ φ' y₀`. Take `⟨y₂, hy₂⟩` from `hev.bc _ _ ψ' y₀`. Take `⟨z₁, hz₁⟩` from `hev.bc _ _ φ' yF`. Take `⟨z₂, hz₂⟩` from `hev.bc _ _ ψ' yF`. Establish `hS` using `GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c O β Y K₁ b₀ A χ W e th hth _ _ y₀ hy₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁ : IsArcFr W e th (φ.comp (arcι Dw K₁)) y₁` using `hS.2 hY T φ' y₁ hy₁`. Establish `a₂ : IsArcFr W e th (ψ.comp (arcι Dw K₁)) y₂` using `hS.2 hY T ψ' y₂ hy₂`. Rewrite `a₂` using `[← hι]`. Take `rfl : y₂ = y₁` from `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c O β Y K₁ b₀ A χ W e th hth _ _ y₁ a₁).1 hY y₂ a₂`. Establish `cS` using `GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (ArcS Dw K₁)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cT` using `GlobalTheory.Frames.frChg_calculus E H Dw l Xo c T`. Establish `c₁` using `(cS.2.2.1 T φ' _ _ _ _ _ _ hchg hy₁).1 hz₁`. Establish `c₂` using `(cS.2.2.1 T ψ' _ _ _ _ _ _ hchg hy₂).1 hz₂`. Establish `hM : ∀ τ, (letM Dw K₁ τ).map ψ' = b τ * (letM Dw K₁ τ).map φ'` using `fun τ => by`. Use extensionality with `i k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hX τ i k`. Establish `hζ : ψ' (cst Dw ζ) = 1 * φ' (cst Dw ζ)`. Rewrite using `[one_mul]`. Conclude with `(RingHom.congr_fun hι _).symm`. Rewrite `c₂` using `[funext hM, hζ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₃ : FrChg b 1 z₁ z₂` using `(cT.1 _ b _ 1 _ _ _ c₁).2 c₂`. Establish `hbu : ∀ τ i, b τ i i ≠ 0` using `fun τ i => by`. Establish `hu` using `((GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c T b 1 z₁).2.2.1 z₂ c₃).1 τ`. Rewrite `hu` using `[Matrix.det_of_lowerTriangular (b τ) (fun i j hij => hb τ i j hij)]`. Conclude with `(isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => b τ i i) (Finset.mem_univ i)) hu).ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Set `t : Ix Dw → Tˣ` to `fun o => match o with`. Consider the case `none => 1`. Consider the case `some x => Units.mk0 (b x.1 x.2 x.2) (hbu x.1 x.2)`. Establish `hbor : FrBor t z₁ z₂` using `(cT.2.2.2 t z₁ z₂).2 ⟨b, fun _ _ => rfl, hb, c₃⟩`. Establish `eS` using `(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a n F hF (ArcS Dw K₁)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eT` using `((GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a n F hF T).2 inferInstance).1 t z₁ z₂ hbor`. Rewrite `eT` using `[eS T φ' yF z₁ hz₁, eS T ψ' yF z₂ hz₂]`. Establish `hw : wchar (ex Dw a n) t = ∏ τ, ∏ i, b τ i i ^ a (τ, (i : ℕ))`. Rewrite using `[wchar, Fintype.prod_option, Fintype.prod_sigma]`. Simplify using `[t, ex]`.
-
-Rewrite `eT` using `[hw]`. Conclude with `eT`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_letters_equivariant (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.EvLaws Xo c)
     {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} (hY : Mono Y.j)
@@ -112,7 +110,7 @@ theorem evR_letters_equivariant (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTh
   exact eT
 
 /- English proof (translation)
-Take `⟨ζ, -, -, -, -, e₀, y₀, -, hy₀, hc⟩` from `GlobalTheory.ArcQ.exists_normalForm h1 h2 E H Dw l Xo c K₁ d`. Conclude with `⟨ζ, e₀, y₀, hy₀, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArcDatum.exists_normal_tangent (h1 : Out.Laws) (h2 : Out.Laws2)
     {K₁ : Type} [Field K₁] [Algebra c.F K₁] [Algebra c.F (ArcS Dw K₁)] (d : ArcDatum Xo c K₁) :
@@ -123,9 +121,7 @@ theorem ArcDatum.exists_normal_tangent (h1 : Out.Laws) (h2 : Out.Laws2)
   exact ⟨ζ, e₀, y₀, hy₀, hc⟩
 
 /- English proof (translation)
-Introduce `h1 h2 E _ _ _ H Dw l Xo c hev K₁ _ _ _ d a n F hF`. Take `⟨ζ, e₀, y₀, hy₀, hc⟩` from `d.exists_normal_tangent h1 h2`. Establish `hth : ThNZ d.th`. Take `⟨_, _, _, _, hne, -⟩` from `d.isArc3`. Conclude with `(GlobalTheory.ThetaOverField.nonzero_generates h1 h2 K₁ _ d.th).1.1 hne`.
-
-Conclude with `GlobalTheory.BorelAlg.exists_isHomogeneous_of_equivariant E H Dw K₁ a _ fun T _ φ ψ b hφψ hb hX => evR_letters_equivariant h1 h2 hev (GlobalTheory.ThetaShiftProofs.mono_j d.Y (mono_spMap_subtype _)) d.W e₀ d.th hth ζ y₀ d.yF hy₀ hc a n F hF T φ ψ b hφψ hb hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evR_arc_isHomogeneous : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), GlobalTheory.Reg.EvLaws Xo c → ∀ (K₁ : Type) [Field K₁] [Algebra c.F K₁] [Algebra c.F (ArcS Dw K₁)] (d : ArcDatum Xo c K₁) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (F : Rul Xo c), F ∈ sec Xo c a n → ∃ P : MvPolynomial (ArcLt Dw) (LaurentSeries K₁), algebraMap _ (ArcS Dw K₁) P = evR Xo c F d.yF ∧ P.IsHomogeneous (∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), a (τ, (i : ℕ))) := by
   intro h1 h2 E _ _ _ H Dw l Xo c hev K₁ _ _ _ d a n F hF

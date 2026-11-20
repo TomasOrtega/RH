@@ -17,16 +17,16 @@ variable {ι : Type} [Fintype ι] {K : ι → Type} [∀ i, AddCommGroup (K i)] 
 def tform (w : ∀ i, Module.Dual ℂ (K i)) : (⨂[ℂ] i, K i) →ₗ[ℂ] ℂ := GlobalTheory.MultilinearContraction.prodForm w
 
 /- English proof (translation)
-Conclude with `GlobalTheory.MultilinearContraction.prodForm_tprod w v`.
+A detailed English derivation is pending.
 -/
 theorem tform_tprod (w : ∀ i, Module.Dual ℂ (K i)) (v : ∀ i, K i) :
     tform w (PiTensorProduct.tprod ℂ v) = ∏ i, w i (v i) := by
   exact GlobalTheory.MultilinearContraction.prodForm_tprod w v
 
 /- English proof (translation)
-Set `b` to `fun i => Module.Basis.ofVectorSpace ℂ (K i)`. Set `B` to `Basis.piTensorProduct b`. Use `B.ext_elem fun p => ?_` and prove the remaining obligations. Establish `: B.coord p = tform fun i => (b i).coord (p i)`. Use extensionality with `v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[tform_tprod, B, Basis.piTensorProduct_repr_tprod_apply]`. Establish `h2` using `h fun i => (b i).coord (p i)`. Rewrite `h2` using `[← this]`. Simplify using `using h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_tform {t t' : ⨂[ℂ] i, K i} (h : ∀ w, tform w t = tform w t') : t = t' := by
   let b := fun i => Module.Basis.ofVectorSpace ℂ (K i)
@@ -46,16 +46,14 @@ def ctr (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) : (⨂[ℂ] i, K i) →ₗ[�
   PiTensorProduct.lift (ctrM i w)
 
 /- English proof (translation)
-Simplify using `[ctr, ctrM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ctr_tprod (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) (v : ∀ i, K i) :
     ctr i w (PiTensorProduct.tprod ℂ v) = (∏ j ∈ Finset.univ.erase i, w j (v j)) • v i := by
   simp [ctr, ctrM]
 
 /- English proof (translation)
-Establish `: ctr i w ∘ₗ intersection_update_fsHerm_neg_one i f = f ∘ₗ ctr i w`. Use extensionality with `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, position_tprod, ctr_tprod, Function.update_self, map_smul]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
-
-Conclude with `LinearMap.congr_fun this t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ctr_mapFactor (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) (f : Module.End ℂ (K i)) (t : ⨂[ℂ] i, K i) :
     ctr i w (intersection_update_fsHerm_neg_one i f t) = f (ctr i w t) := by
@@ -68,7 +66,7 @@ theorem ctr_mapFactor (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) (f : Module.En
   exact LinearMap.congr_fun this t
 
 /- English proof (translation)
-Establish `: tform w = w i ∘ₗ ctr i w`. Use extensionality with `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, tform_tprod, ctr_tprod, map_smul, smul_eq_mul]`. Rewrite using `[Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Conclude with `LinearMap.congr_fun this t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tform_eq (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) (t : ⨂[ℂ] i, K i) :
     tform w t = w i (ctr i w t) := by
@@ -80,11 +78,11 @@ theorem tform_eq (i : ι) (w : ∀ i, Module.Dual ℂ (K i)) (t : ⨂[ℂ] i, K 
   exact LinearMap.congr_fun this t
 
 /- English proof (translation)
-Use `eq_of_tform fun w => ?_` and prove the remaining obligations. Rewrite using `[tform_eq i, tform_eq i, ctr_mapFactor]`. Use `congr 1`. Set `T : Module.End ℂ (K i)` to `ctr i w ∘ₗ Φ ∘ₗ (PiTensorProduct.tprod ℂ (s := K)).toLinearMap x i`. Establish `hT : ∀ z, T z = ctr i w (Φ (PiTensorProduct.tprod ℂ (Function.update x i z)))` using `fun z => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `ha.2 T (fun g => by`. Use extensionality with `z`. Use `LinearMap.congr_fun (h g) (PiTensorProduct.tprod ℂ (Function.update x i z))` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, position_tprod, Function.update_self, Function.update_idem] at this`. Simplify using `only [LinearMap.comp_apply, hT, this, ctr_mapFactor])`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hT (x i)`. Rewrite `h1` using `[Function.update_eq_self]`. Rewrite using `[position_tprod, ← hT, ← h1, hc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comm_mapFactor_of_absIrr {G : Type} (i : ι) (a : G → Module.End ℂ (K i)) (ha : AbsIrr a)
     (Φ : Module.End ℂ (⨂[ℂ] i, K i)) (h : ∀ g, Φ ∘ₗ intersection_update_fsHerm_neg_one i (a g) = intersection_update_fsHerm_neg_one i (a g) ∘ₗ Φ)
@@ -107,13 +105,13 @@ theorem comm_mapFactor_of_absIrr {G : Type} (i : ι) (a : G → Module.End ℂ (
   simp
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, Φ ∘ₗ PiTensorProduct.map (fun i => if i ∈ s then f i else LinearMap.id) = PiTensorProduct.map (fun i => if i ∈ s then f i else LinearMap.id) ∘ₗ Φ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: PiTensorProduct.map (fun j => if j ∈ insert i s then f j else LinearMap.id) = intersection_update_fsHerm_neg_one i (f i) ∘ₗ PiTensorProduct.map (fun i => if i ∈ s then f i else LinearMap.id)`. Use extensionality with `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, PiTensorProduct.map_tprod, position_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hi]`. Simplify using `[hj]`. Rewrite using `[this, ← LinearMap.comp_assoc, h, LinearMap.comp_assoc, ih, LinearMap.comp_assoc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comm_map (Φ : Module.End ℂ (⨂[ℂ] i, K i))
     (h : ∀ i (f : Module.End ℂ (K i)), Φ ∘ₗ intersection_update_fsHerm_neg_one i f = intersection_update_fsHerm_neg_one i f ∘ₗ Φ) (f : ∀ i, Module.End ℂ (K i)) :
@@ -139,15 +137,13 @@ theorem comm_map (Φ : Module.End ℂ (⨂[ℂ] i, K i))
   simpa using key Finset.univ
 
 /- English proof (translation)
-Distinguish the cases in `hn : ∀ i, ∃ e : K i, e ≠ 0`. Use `choose e he using hn`. Establish `: ∀ i, ∃ w : Module.Dual ℂ (K i), w (e i) = 1` using `fun i => Module.Projective.exists_dual_eq_one ℂ (he i)`. Use `choose w hw using this`. Use `⟨tform w (Φ (PiTensorProduct.tprod ℂ e)), ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `hc` using `comm_map Φ (fun i f => by`. Use extensionality with `y`. Conclude with `comm_mapFactor_of_absIrr i (a i) (ha i) Φ (h i) f y) (fun i => (w i).smulRight (x i))`. Establish `hm : PiTensorProduct.map (fun i => (w i).smulRight (x i)) = (tform w).smulRight (PiTensorProduct.tprod ℂ x)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `[tform_tprod, MultilinearMap.map_smul_univ]`. Use `LinearMap.congr_fun hc (PiTensorProduct.tprod ℂ e)` as an intermediate fact. Rewrite `this` using `[hm]`. Simplify `this` using `[tform_tprod, hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `push Not at hn`. Take `⟨i, hi⟩` from `hn`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `: PiTensorProduct.tprod ℂ x = 0` using `MultilinearMap.map_coord_zero _ i (hi _)`.
-
-Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalar_of_comm (ι : Type) [Fintype ι] (K : ι → Type) [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)]
     (G : ι → Type) (a : ∀ i, G i → Module.End ℂ (K i)) (ha : ∀ i, AbsIrr (a i))

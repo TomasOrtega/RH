@@ -11,11 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.Cover.ZeroAtFibre
 
 /- English proof (translation)
-Introduce `F _ _ Y V p hp W hW U f hf x hxU hpx hreg`. Rewrite using `[zeroAt_iff]`. Use `⟨hreg, fun hu => ?_⟩` and prove the remaining obligations. Take `⟨N, hxN, hN⟩` from `hu.exists_nhds`. Take `⟨v, e, y, z, yt, hv, hyW, hz, hyt, hU, -⟩` from `GlobalTheory.Mean4O.Cover.ThroughFibre.exists_algPt_through F Y V p hp W hW (U ⊓ N) x ⟨hxU, hxN⟩ hpx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : yt (IsLocalRing.closedPoint e.O) ∈ U ⊓ N` using `hU (Set.mem_univ _)`. Establish `h1` using `GlobalTheory.NormExt.w_valAt_eq_one e yt (hN _ hc.2)`. Rewrite `h1` using `[hyt]`. Establish `h2` using `hf v hv e y hyW z yt hz hyt (fun q _ => (hU (Set.mem_univ q)).1)`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h2`.
+A detailed English derivation is pending.
 -/
 theorem zeroAt_of_w_lt_one : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime → ∀ (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens) (f : V.X.functionField), (∀ v : HeightOneSpectrum (𝓞 F), resP v = p → ∀ (e : TrueGeo.Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ U → e.w (valAt (z ≫ V.j) f) < 1) → ∀ x ∈ U, ¬ IsUnit (p : V.X.presheaf.stalk x) → RegAt x f → ZeroAt x f := by
   intro F _ _ Y V p hp W hW U f hf x hxU hpx hreg

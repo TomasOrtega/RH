@@ -11,9 +11,9 @@ noncomputable section
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r f`. Use function extensionality and compare the values at `x`. Simplify using `[LinearMap.baseChange_tmul, TensorProduct.piScalarRightHom_tmul, funPermRep_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add, map_add]`.
+Treat this case separately.
 -/
 theorem piScalarRight_baseChange_funPermRep {G X : Type*} [Group G] [MulAction G X] [Fintype X]
     [DecidableEq X] (g : G) (y : ℝ ⊗[ℤ] (X → ℤ)) :
@@ -39,7 +39,7 @@ theorem logLatticeProdMap_apply (m : logLattice L) (n : ℤ) :
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-Take `⟨m, n⟩` from `x`. Use function extensionality and compare the values at `w`. Simplify using `[logLatticeProdMap_apply, Representation.prod_apply_apply, coe_logLatticeRep, funPermRep_apply]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem logLatticeProdMap_comm (g : L ≃ₐ[K] L) (x : logLattice L × ℤ) :
     logLatticeProdMap (((logLatticeRep K L).prod (Representation.trivial ℤ (L ≃ₐ[K] L) ℤ)) g x) =
@@ -50,15 +50,15 @@ theorem logLatticeProdMap_comm (g : L ≃ₐ[K] L) (x : logLattice L × ℤ) :
     funPermRep_apply]
 
 /- English proof (translation)
-Use `LinearIndependent.sum_type (linearIndependent_logLattice_basis L b) ?_ ?_` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Conclude with `one_ne_zero`. Set `s : (InfinitePlace L → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun y => ∑ w, y w map_add' := fun y z => by simp [Finset.sum_add_distrib] map_smul' := fun c y => by simp [Finset.mul_sum] }`. Establish `hs : Submodule.span ℝ (Set.range fun i => (b i : InfinitePlace L → ℝ)) ≤ LinearMap.ker s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨x, hx⟩` from `(b i).2`. Express the relevant statement in the definitionally equal form `∑ w, (b i : InfinitePlace L → ℝ) w = 0`. Rewrite using `[← hx]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_fullLog L x`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy1 hy2`. Rewrite `hy2` using `[Set.range_const, Submodule.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hy2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : s (c • 1) = 0` using `hs hy1`. Establish `h2 : s (c • 1) = c * Fintype.card (InfinitePlace L)`. Simplify using `[s, Finset.sum_const]`. Rewrite `h1` using `[h2]`. Establish `h3 : (Fintype.card (InfinitePlace L) : ℝ) ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Rewrite `h1` using `[mul_eq_zero, or_iff_left h3]`. Rewrite using `[h1, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_logLattice_one {ι : Type*} (b : Basis ι ℤ (logLattice L)) :
     LinearIndependent ℝ (Sum.elim (fun i => (b i : InfinitePlace L → ℝ))
@@ -93,21 +93,21 @@ theorem linearIndependent_logLattice_one {ι : Type*} (b : Basis ι ℤ (logLatt
     rw [h1, zero_smul]
 
 /- English proof (translation)
-Set `bM` to `Module.Free.chooseBasis ℤ (logLattice L)`. Set `b` to `bM.prod (Basis.singleton Unit ℤ)`. Set `B` to `Algebra.TensorProduct.basis ℝ b`. Set `E` to `(logLatticeProdMap (L := L)).liftBaseChange ℝ`. Set `v` to `Sum.elim (fun i => (bM i : InfinitePlace L → ℝ)) (fun _ : Unit => (1 : InfinitePlace L → ℝ))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hEB : ∀ j, E (B j) = v j`. Introduce `j`. Rewrite using `[Algebra.TensorProduct.basis_apply, LinearMap.liftBaseChange_tmul, one_smul]`. Break down `j with i | u` into its components or cases. Simplify using `[b, v, Basis.prod_apply, logLatticeProdMap_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[b, v, Basis.prod_apply, logLatticeProdMap_apply]`. Establish `hli : LinearIndependent ℝ v` using `linearIndependent_logLattice_one bM`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (logLattice L) ⊕ Unit) = finrank ℝ (InfinitePlace L → ℝ)`. Rewrite using `[Fintype.card_sum, Fintype.card_unit, Module.finrank_fintype_fun_eq_card, ← Module.finrank_eq_card_chooseBasisIndex, finrank_logLattice, rank]`. Establish `: 0 < Fintype.card (InfinitePlace L)` using `Fintype.card_pos`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank hcard`. Establish `hsurj : Function.Surjective E`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨B j, hEB j⟩`. Establish `hdim : finrank ℝ (ℝ ⊗[ℤ] (logLattice L × ℤ)) = finrank ℝ (InfinitePlace L → ℝ)`. Rewrite using `[Module.finrank_eq_card_basis B, hcard]`. Establish `hinj : Function.Injective E` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).2 hsurj`. Establish `hbij : Function.Bijective E` using `⟨hinj, hsurj⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P` to `TensorProduct.piScalarRight ℤ ℝ ℝ (InfinitePlace L)`. Set `e : ℝ ⊗[ℤ] (logLattice L × ℤ) ≃ₗ[ℝ] ℝ ⊗[ℤ] (InfinitePlace L → ℤ)` to `(LinearEquiv.ofBijective E hbij).trans P.symm`. Establish `hE : ∀ (g : L ≃ₐ[K] L) y, E ((((logLatticeRep K L).prod (Representation.trivial ℤ (L ≃ₐ[K] L) ℤ)) g).baseChange ℝ y) = funPermRep ℝ (L ≃ₐ[K] L) (InfinitePlace L) g (E y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul r x`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.liftBaseChange_tmul, LinearMap.liftBaseChange_tmul, map_smul, logLatticeProdMap_comm]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add, map_add]`. Establish `he : ∀ (g : L ≃ₐ[K] L) y, e ((((logLatticeRep K L).prod (Representation.trivial ℤ (L ≃ₐ[K] L) ℤ)) g).baseChange ℝ y) = (funPermRep ℤ (L ≃ₐ[K] L) (InfinitePlace L) g).baseChange ℝ (e y)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Introduce `g y`. Apply `P.injective` to reduce the goal to its premises. Simplify using `only [e, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[piScalarRight_baseChange_funPermRep, LinearEquiv.apply_symm_apply, LinearEquiv.ofBijective_apply, LinearEquiv.ofBijective_apply, hE]`. Rewrite using `[← cycHerbrand_eq_of_real_equiv _ _ σ e he, cycHerbrand_prod _ _ σ (hasHerbrandQuotient_cycSubOne_of_finite _ hσ) (hasHerbrandQuotient_cycSubOne_of_finite _ hσ), cycHerbrand_trivial_int]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_logLatticeRep_mul_card {σ : L ≃ₐ[K] L} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     cycHerbrand (logLatticeRep K L) σ * Fintype.card (L ≃ₐ[K] L) =
@@ -172,9 +172,9 @@ variable [IsGalois K L]
 open scoped Classical in
 
 /- English proof (translation)
-Establish `h1` using `cycHerbrand_logLatticeRep_mul_card hσ`. Rewrite `h1` using `[cycHerbrand_funPermRep hσ, prod_card_stabilizer_infinitePlace]`. Establish `h2 : (Fintype.card (L ≃ₐ[K] L) : ℚ) = finrank K L`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Establish `h3 : (finrank K L : ℚ) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Module.finrank_pos.ne'` after adjusting the coercions. Rewrite using `[cycHerbrand_unitsRep_eq_logLattice hσ, eq_div_iff h3, ← h2, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_unitsRep {σ : L ≃ₐ[K] L} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     cycHerbrand (unitsRep K L) σ =

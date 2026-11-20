@@ -12,7 +12,7 @@ open GlobalTheory.ZH ReciprocityTheory.ChartRestriction.G.Out Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ZH.EndoExtend.hypS_and_endo_and_iso_extend` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FEndoLbIsoSymmetryHypothesisExtendNormalModel.lean&line=173#L173)
 -/

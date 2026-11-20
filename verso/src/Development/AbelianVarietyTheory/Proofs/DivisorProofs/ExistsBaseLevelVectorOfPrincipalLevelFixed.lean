@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.BaseVec
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun y : MonoidAlgebra K H => y.coeff (g * h)) (hz (MonoidAlgebra.single g 1))`. Simplify `e.symm` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_conj_of_central {K : Type} [Field K] {H : Type} [Group H] (z : MonoidAlgebra K H)
     (hz : ∀ b, b * z = z * b) (g h : H) : z.coeff (g * h * g⁻¹) = z.coeff h := by
@@ -37,13 +37,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Simplify using `[LevCh.dat0, datY]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseLevelDatum_level_eq (P' : LevelP R.Pg D.R.r ℂ) : (R.dat0 P').P = P' := by
   simp [LevCh.dat0, datY]
 
 /- English proof (translation)
-Use `show x ∈ GfC (Yc D 0) ∧ (finE (Yc D 0) x ∈ parLev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 P') ∧ rTup (R.βY 0) (R.dat0 P') (finE (Yc D 0) x) ∈ (R.dat0 P').P.H) ↔ _`. Rewrite using `[baseLevelDatum_level_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_levS (P' : LevelP R.Pg D.R.r ℂ) (x : GA D (Yc D 0)) :
     x ∈ levS _ (R.βY 0) (R.dat0 P') ↔ x ∈ GfC (Yc D 0) ∧ finE (Yc D 0) x ∈ parLev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 R.triv) ∧
@@ -54,7 +54,7 @@ theorem mem_levS (P' : LevelP R.Pg D.R.r ℂ) (x : GA D (Yc D 0)) :
   rfl
 
 /- English proof (translation)
-Simplify using `[levChi, levFn, LevCh.dat0, datY]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem principalRowLevelCharacter_trivial (P' : LevelP R.Pg D.R.r ℂ) (x : GA D (Yc D 0)) :
     levChi _ (R.βY 0) (R.dat0 P') x = ((ext1 P'.H P'.chi (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) x)) : ℂˣ) : ℂ) := by
@@ -62,9 +62,9 @@ theorem principalRowLevelCharacter_trivial (P' : LevelP R.Pg D.R.r ℂ) (x : GA 
   rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_levS]`. Take `⟨hx1, hx2, hx3⟩` from `hx`. Establish `hyi` using `Subgroup.inv_mem _ hy2`. Use `⟨(GfC _).mul_mem ((GfC _).mul_mem ((GfC _).inv_mem hy1) hx1) hy1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hyi hx2) hy2`. Rewrite using `[map_mul, map_mul, map_inv, rTup_mul (Subgroup.mul_mem _ hyi hx2) hy2, rTup_mul hyi hx2, rTup_inv hy2]`. Establish `: rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) x) = 1` using `Subgroup.mem_bot.1 hx3`. Rewrite using `[this, mul_one, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_principal {x y : GA D (Yc D 0)} (hx : x ∈ levS _ (R.βY 0) (R.dat0 R.triv)) (hy1 : y ∈ GfC (Yc D 0))
     (hy2 : finE (Yc D 0) y ∈ parLev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 R.triv)) :
@@ -81,9 +81,9 @@ theorem conj_mem_principal {x y : GA D (Yc D 0)} (hx : x ∈ levS _ (R.βY 0) (R
     exact Subgroup.one_mem _
 
 /- English proof (translation)
-Rewrite using `[mem_levS]`. Establish `hi` using `Subgroup.inv_mem _ hκ.2.1`. Use `⟨(GfC _).mul_mem ((GfC _).inv_mem hκ.1) hκ'.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Conclude with `Subgroup.mul_mem _ hi hκ'.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_bot.2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, rTup_mul hi hκ'.2.1, rTup_inv hκ.2.1, hκ.2.2, hκ'.2.2]`. Conclude with `inv_mul_cancel g0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_div_principal {g0 : G0 R.Pg D.R.r} {κ κ' : GA D (Yc D 0)}
     (hκ : IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) g0 κ) (hκ' : IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) g0 κ') :
@@ -101,51 +101,43 @@ end Levels
 open Formalism.IndefR.principalLevelFrame in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hOk hC hne n PY π v hvS hv0 hvT hgood`. Establish `hL` using `GlobalTheory.DimFull.liftsY' hC`. Establish `hex : ∀ g : G, ∃ κ : Formalism.AUTREP.GAf D.host.E n, IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) (PY.ψ κ)`. Introduce `g`. Take `⟨κ, hκ⟩` from `hL (R.eG g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `PY.onto κ hκ.1`. Conclude with `⟨h, hκ⟩`. Use `choose k hk using hex`. Use `set J0 := PY.ψ ⁻¹' levS _ (R.βY 0) (R.dat0 R.triv) with hJ0`. Establish `hvfix : ∀ c ∈ J0, Formalism.L2.NG.rt D.host.E n c v = v` using `fun c hc => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hvT c hc`. Use `set Ws : Submodule ℂ (Formalism.AUTREP.GAf D.host.E n → ℂ) := Submodule.span ℂ (Set.range fun g => Formalism.L2.NG.rt D.host.E n (k g) v) with hWs`. Establish `hfix : ∀ w ∈ Ws, ∀ c ∈ J0, Formalism.L2.NG.rt D.host.E n c w = w`. Introduce `w hw c hc`. Proceed by induction on `hw using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Establish `hc' : (k g)⁻¹ * c * k g ∈ J0`. Rewrite using `[hJ0, Set.mem_preimage]`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `GlobalTheory.BaseVec.conj_mem_principal R hc (hk g).1 (hk g).2.1`. Rewrite using `[rt_rt, show c * k g = k g * ((k g)⁻¹ * c * k g) by group, ← rt_rt, hvfix _ hc']`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul a x _ hx => rw [map_smul, hx]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : ∀ g h, ∀ w ∈ Ws, Formalism.L2.NG.rt D.host.E n (k g) (Formalism.L2.NG.rt D.host.E n (k h) w) = Formalism.L2.NG.rt D.host.E n (k (g * h)) w`. Introduce `g h w hw`. Establish `hl : IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG (g * h)) (PY.ψ (k g * k h))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GfC _).mul_mem (hk g).1 (hk h).1`. Rewrite using `[map_mul, map_mul]`. Conclude with `Subgroup.mul_mem _ (hk g).2.1 (hk h).2.1`. Rewrite using `[map_mul, map_mul, rTup_mul (hk g).2.1 (hk h).2.1, (hk g).2.2, (hk h).2.2]`. Conclude with `(map_mul R.eG g h).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (k (g * h))⁻¹ * (k g * k h) ∈ J0`. Rewrite using `[hJ0, Set.mem_preimage]`. Rewrite using `[map_mul, map_inv]`. Conclude with `GlobalTheory.BaseVec.lift_div_principal R (hk (g * h)) hl`. Rewrite using `[rt_rt, show k g * k h = k (g * h) * ((k (g * h))⁻¹ * (k g * k h)) by group, ← rt_rt, hfix w hw _ hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hk1 : k 1 ∈ J0`. Rewrite using `[hJ0, Set.mem_preimage, GlobalTheory.BaseVec.mem_levS]`. Use `⟨(hk 1).1, (hk 1).2.1, Subgroup.mem_bot.2 ?_⟩` and prove the remaining obligations. Rewrite using `[(hk 1).2.2]`. Conclude with `map_one R.eG`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hvWs : v ∈ Ws`. Establish `: Formalism.L2.NG.rt D.host.E n (k 1) v ∈ Ws` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `this` using `[hvfix _ hk1]`. Then use the resulting hypothesis. Establish `hstab : ∀ g, ∀ w ∈ Ws, Formalism.L2.NG.rt D.host.E n (k g) w ∈ Ws`. Introduce `g w hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Rewrite using `[hprod g h v hvWs]`. Conclude with `Submodule.subset_span ⟨g * h, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Ws.add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Ws.smul_mem a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Set `ρ : Representation ℂ G Ws` to `{ toFun := fun g => (Formalism.L2.NG.rt D.host.E n (k g)).restrict (fun w hw => hstab g w hw) map_one' := LinearMap.ext fun w => Subtype.ext (hfix w w.2 _ hk1) map_mul' := fun g h => LinearMap.ext fun w => Subtype.ext (hprod g h w w.2).symm }`. Use `haveI : FiniteDimensional ℂ Ws := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hX : ∀ χ ∈ A.X, IsAbsIrrChar χ` using `hOk.irr`. Establish `hcen : ∀ g h : G, RealDat.eC (A` using `A) D.what₂.embLL (g * h * g⁻¹) = RealDat.eC (A := A) D.what₂.embLL h := fun g h => by`. Unfold `RealDat.eC`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.BaseVec.coeff_conj_of_central _ (fun b => idemOf_central A.X hX b) g h]`. Establish `hgoodv : ∑ g, RealDat.eC (A` using `A) D.what₂.embLL g • Formalism.L2.NG.rt D.host.E n (k g) v = v := hgood k hk`. Establish `hgoodW : ∀ w ∈ Ws, ∑ g, RealDat.eC (A` using `A) D.what₂.embLL g • Formalism.L2.NG.rt D.host.E n (k g) w = w := by`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Simplify using `only [hprod _ h v hvWs]`. Use `conv_rhs => rw [← hgoodv]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, hprod h _ v hvWs]`. Use `Fintype.sum_equiv (MulAut.conj h⁻¹).toEquiv _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`. Rewrite using `[hcen, show h * (h⁻¹ * g * h⁻¹⁻¹) = g * h by group]`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => simp only [map_add, smul_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `smul a x _ hx`. Simplify using `only [map_smul]`. Simplify using `only [smul_comm _ a, ← Finset.smul_sum, hx]`. Establish `hbot : (⊤ : Submodule ℂ Ws) ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0 : (⟨v, hvWs⟩ : Ws) ∈ (⊥ : Submodule ℂ Ws)` using `h ▸ Submodule.mem_top`. Conclude with `hv0 (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 h0))`. Take `⟨u, -, hu0, hu⟩` from `GlobalTheory.Hk3.exists_level_vector D.what₂.embLL A.X F.P0 F.ψ0 ρ ⊤ hX hne (fun _ => le_top) hbot (fun u _ => Subtype.ext (by`. Rewrite using `[Submodule.coe_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_smul]`. Conclude with `hgoodW u u.2))`. Use `⟨(u : Formalism.AUTREP.GAf D.host.E n → ℂ), ?_, fun h => hu0 (Subtype.ext h), ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact π.stable _ _ hvS)) u.2`. Introduce `κ hκ`.
-
-Take `⟨h1, h2, h3⟩` from `(GlobalTheory.BaseVec.mem_levS R _ (PY.ψ κ)).1 hκ`. Establish `hgP : R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ))) ∈ F.P0` using `h3`. Establish `hl : IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG (R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ))))) (PY.ψ κ)` using `⟨h1, h2, (MulEquiv.apply_symm_apply R.eG _).symm⟩`. Establish `hc : (k (R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ)))))⁻¹ * κ ∈ J0`. Rewrite using `[hJ0, Set.mem_preimage]`.
-
-Rewrite using `[map_mul, map_inv]`. Conclude with `GlobalTheory.BaseVec.lift_div_principal R (hk _) hl`. Establish `e1 : Formalism.L2.NG.rt D.host.E n κ (u : _ → ℂ) = Formalism.L2.NG.rt D.host.E n (k (R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ))))) u` using `by conv_lhs => rw [show κ = k (R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ)))) * ((k (R.eG.symm (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (PY.ψ κ)))))⁻¹ * κ) by group]`. Rewrite using `[← rt_rt, hfix u u.2 _ hc]`. Establish `e2` using `congrArg Subtype.val (hu ⟨_, hgP⟩)`.
-
-Rewrite using `[e1]`. Use `e2.trans ?_` and prove the remaining obligations. Use `show _ = levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F false)) (PY.ψ κ) • _`. Rewrite using `[GlobalTheory.BaseVec.principalRowLevelCharacter_trivial, Submodule.coe_smul]`. Use `congr 1`.
-
-Conclude with `((congrArg (fun u : ℂˣ => (u : ℂ)) (extendOne_of_mem (R.levR F false).chi h3)).trans rfl).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_base_vec : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → (∀ χ ∈ A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ {n : ℕ} (PY : principalLevelFrame.RowPsi (Yc D 0) n) (π : Formalism.L2.NG.FinTyp D.host.E n) (v : Formalism.AUTREP.GAf D.host.E n → ℂ), v ∈ π.S → v ≠ 0 → principalLevelFrame.IsTypeVec (PY.ψ ⁻¹' levS _ (R.βY 0) (R.dat0 R.triv)) (fun _ => 1) v → (∀ κ : G → Formalism.AUTREP.GAf D.host.E n, (∀ g, IsLevelLift (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) (PY.ψ (κ g))) → ∑ g, RealDat.eC (A := A) D.what₂.embLL g • Formalism.L2.NG.rt D.host.E n (κ g) v = v) → ∃ x ∈ π.S, x ≠ 0 ∧ principalLevelFrame.IsTypeVec (PY.ψ ⁻¹' levS _ (R.βY 0) (R.dat0 (R.levR F false))) (fun κ => levChi _ (R.βY 0) (R.dat0 (R.levR F false)) (PY.ψ κ)) x := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hOk hC hne n PY π v hvS hv0 hvT hgood

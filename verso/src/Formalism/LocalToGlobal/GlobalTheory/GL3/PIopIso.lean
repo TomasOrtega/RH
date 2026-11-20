@@ -12,14 +12,14 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Cl
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_left (T : Tor D) (x x' y : VC D N N') :
     Hf D T (x + x') y = Hf D T x y + Hf D T x' y := by
   simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_herm (T : Tor D) (x y : VC D N N') :
     Hf D T y x = starRingEnd ℂ (Hf D T x y) := by
@@ -33,21 +33,21 @@ def cf (T : Tor D) (x y : VC D N N') : ℂ :=
   Complex.exp (-((Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ)))
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.WeilRepresentation.heisenberg_cocycle _ (Hf D T) (Hf_add_left T) (Hf_herm T) G x y z`.
+A detailed English derivation is pending.
 -/
 theorem U_U (T : Tor D) (x y : VC D N N') (G : VC D N N' → ℂ) (z : VC D N N') :
     U D T x (U D T y G) z = cf T x y * U D T (x + y) G z :=
   Formalism.HermitianLattices.WeilRepresentation.heisenberg_cocycle _ (Hf D T) (Hf_add_left T) (Hf_herm T) G x y z
 
 /- English proof (translation)
-Simplify using `only [U]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem U_smul (T : Tor D) (x : VC D N N') (c : ℂ) (G : VC D N N' → ℂ) (z : VC D N N') :
     U D T x (fun w => c * G w) z = c * U D T x G z := by
   simp only [U]; ring
 
 /- English proof (translation)
-Simplify using `only [U, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem U_zero_fn (T : Tor D) (x : VC D N N') (z : VC D N N') :
     U D T x (fun _ => (0 : ℂ)) z = 0 := by
@@ -57,7 +57,7 @@ def SemiChar (T : Tor D) (La' : AddSubgroup (VC D N N')) : Prop :=
   ∀ x ∈ La', ∀ y ∈ La', al D T (x + y) = al D T x * al D T y * cf T x y
 
 /- English proof (translation)
-The claim follows from `funext (hG.2 y hy)`.
+A detailed English derivation is pending.
 -/
 theorem fix_eq (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La') {y : VC D N N'} (hy : y ∈ La') :
@@ -65,7 +65,7 @@ theorem fix_eq (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC D N N' → �
   funext (hG.2 y hy)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fix_eq T hG hy]`. Rewrite using `[U_smul, U_U]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem two_step (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La') {y : VC D N N'} (hy : y ∈ La') (x z : VC D N N') :
@@ -74,9 +74,9 @@ theorem two_step (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC D N N' → 
   rw [U_smul, U_U]; ring
 
 /- English proof (translation)
-Introduce `x hx y hy`. Take `⟨z0, hz0⟩` from `hne`. Establish `h1` using `hG.2 x hx (z0 - (x + y))`. Rewrite `h1` using `[two_step T hG hy]`. Establish `h2` using `hG.2 (x + y) (La'.add_mem hx hy) (z0 - (x + y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : U D T (x + y) G (z0 - (x + y)) ≠ 0`. Simplify using `only [U, sub_add_cancel]`. Conclude with `mul_ne_zero hz0 (Complex.exp_ne_zero _)`. Conclude with `(mul_right_cancel₀ hU (h2.trans h1.symm))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem semiChar_of_ne_zero (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La') (hne : ∃ z, G z ≠ 0) : SemiChar T La' := by
@@ -91,7 +91,7 @@ theorem semiChar_of_ne_zero (T : Tor D) {La' : AddSubgroup (VC D N N')} {G : VC 
   exact (mul_right_cancel₀ hU (h2.trans h1.symm))
 
 /- English proof (translation)
-Rewrite using `[two_step T hG hy₁ x z, hS x hx y hy₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_shift (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : SemiChar T La₂)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) {x y : VC D N N'} (hx : x ∈ La₂)
@@ -100,7 +100,7 @@ theorem rep_shift (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : Semi
   rw [two_step T hG hy₁ x z, hS x hx y hy₂]
 
 /- English proof (translation)
-Rewrite `hab` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `hb : (b : VC D N N') = (a : VC D N N') + ((-a + b : La₂) : VC D N N')`. Simplify using the standard rewrite rules. Rewrite using `[hb]`. Conclude with `rep_shift T hS hG a.2 hab (-a + b).2 z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_indep (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : SemiChar T La₂)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) (a b : La₂)
@@ -115,7 +115,7 @@ theorem term_indep (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : Sem
   exact rep_shift T hS hG a.2 hab (-a + b).2 z
 
 /- English proof (translation)
-The claim follows from `term_indep T hS hG a _ (QuotientAddGroup.out_eq' _).symm z`.
+A detailed English derivation is pending.
 -/
 theorem term_out (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : SemiChar T La₂)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) (a : La₂) (z : VC D N N') :
@@ -133,7 +133,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Cl
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Unfold `Hf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Hf_diff (T : Tor D) (x : VC D N N') :
     Differentiable ℂ (fun z : VC D N N' => Hf D T z x) := by
@@ -141,7 +141,7 @@ theorem Hf_diff (T : Tor D) (x : VC D N N') :
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ (fun z : VC D N N' => G (z + x))` using `hG.comp (differentiable_id.add_const x)`. Conclude with `h1.mul (((Hf_diff T x).const_mul (-(Real.pi : ℂ))).sub_const _).cexp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem U_diff (T : Tor D) (x : VC D N N') {G : VC D N N' → ℂ} (hG : Differentiable ℂ G) :
     Differentiable ℂ (U D T x G) := by
@@ -150,26 +150,24 @@ theorem U_diff (T : Tor D) (x : VC D N N') {G : VC D N N' → ℂ} (hG : Differe
   exact h1.mul (((Hf_diff T x).const_mul (-(Real.pi : ℂ))).sub_const _).cexp
 
 /- English proof (translation)
-Simplify using `only [U, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem U_sum (T : Tor D) {Q : Type*} [Fintype Q] (x : VC D N N') (F : Q → VC D N N' → ℂ)
     (z : VC D N N') : U D T x (fun w => ∑ q, F q w) z = ∑ q, U D T x (F q) z := by
   simp only [U, Finset.sum_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hfin : Finite (La₂ ⧸ La₁.addSubgroupOf La₂)`. Use `swap`. Establish `hinf : Infinite (La₂ ⧸ La₁.addSubgroupOf La₂)` using `not_finite_iff_infinite.mp hfin`. Establish `h0 : (La₁.addSubgroupOf La₂).index = 0` using `AddSubgroup.index_eq_zero_iff_infinite.mpr hinf`. Establish `hI : Iop D T La₁ La₂ G = fun _ => 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Iop, h0, Nat.cast_zero, Real.sqrt_zero, Complex.ofReal_zero, inv_zero, zero_mul]`. Rewrite using `[hI]`. Conclude with `⟨differentiable_const 0, fun x _ z => by rw [U_zero_fn, mul_zero]⟩`. Use `haveI := Fintype.ofFinite (La₂ ⧸ La₁.addSubgroupOf La₂)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set c : ℂ := ((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) with hc`. Use `set f : La₂ ⧸ La₁.addSubgroupOf La₂ → VC D N N' → ℂ := fun q w => al D T ((Quotient.out q : La₂) : VC D N N') * U D T ((Quotient.out q : La₂) : VC D N N') G w with hf`. Establish `hI : Iop D T La₁ La₂ G = fun w => c * ∑ q, f q w`. Use function extensionality and compare the values at `w`. Simplify using `only [Iop, finsum_eq_sum_of_fintype]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Rewrite using `[hI]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `Differentiable.const_mul` to reduce the goal to its premises. Conclude with `Differentiable.fun_sum fun q _ => (U_diff T _ hG.1).const_mul _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `x hx z`. Rewrite using `[U_smul, U_sum]`. Use `show al D T x * (c * ∑ q, U D T x (f q) z) = c * ∑ q, f q z`. Rewrite using `[mul_left_comm, Finset.mul_sum]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ q, al D T x * U D T x (f q) z = f ((⟨x, hx⟩ : La₂) + q) z`. Introduce `q`. Simplify using `only [hf]`. Rewrite using `[U_smul, U_U, term_indep T hS hG (⟨x, hx⟩ + Quotient.out q)]`. Rewrite using `[AddSubgroup.coe_add, hS x hx _ (Quotient.out q).2]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[QuotientAddGroup.out_eq', QuotientAddGroup.mk_add, QuotientAddGroup.out_eq']`. Repeatedly rewrite using `[key]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft ((⟨x, hx⟩ : La₂) : La₂ ⧸ La₁.addSubgroupOf La₂)) _ _ (fun q => rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iop_mem_ThSp (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : SemiChar T La₂)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) : Iop D T La₁ La₂ G ∈ ThSp D T La₂ := by
@@ -222,11 +220,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Cl
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Establish `htop : La₁.addSubgroupOf La₂ = ⊤` using `AddSubgroup.addSubgroupOf_eq_top.mpr hle`. Establish `hidx : (La₁.addSubgroupOf La₂).index = 1` using `AddSubgroup.index_eq_one.mpr htop`. Establish `hsub : Subsingleton (La₂ ⧸ La₁.addSubgroupOf La₂)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using QuotientAddGroup.induction_on with | H a => ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `b using QuotientAddGroup.induction_on with | H b => ?_`. Rewrite using `[QuotientAddGroup.eq, htop]`. Conclude with `AddSubgroup.mem_top _`. Use `letI : Unique (La₂ ⧸ La₁.addSubgroupOf La₂) := { default := 0, uniq := fun a => Subsingleton.elim a 0 }`. Use function extensionality and compare the values at `z`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iop, hidx, Nat.cast_one, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul]`. Rewrite using `[finsum_unique]`. Conclude with `hG.2 _ (hle (Quotient.out (default : La₂ ⧸ La₁.addSubgroupOf La₂)).2) z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iop_of_le (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hle : La₂ ≤ La₁)
     {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) : Iop D T La₁ La₂ G = G := by
@@ -257,20 +255,20 @@ def HfInt (T : Tor D) (La' : AddSubgroup (VC D N N')) : Prop :=
     Hf D T x y = (((a : ℝ) / Real.sqrt D.host.d : ℝ) : ℂ) + (b : ℂ) * Complex.I
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_pos.mpr (by exact_mod_cast D.host.hyp.2.1.pos)`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_d_pos (D : D7) : 0 < Real.sqrt D.host.d :=
   Real.sqrt_pos.mpr (by exact_mod_cast D.host.hyp.2.1.pos)
 
 /- English proof (translation)
-Rewrite using `[Hf_herm T (y + y') x, Hf_add_left, map_add, ← Hf_herm, ← Hf_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_add_right (T : Tor D) (x y y' : VC D N N') :
     Hf D T x (y + y') = Hf D T x y + Hf D T x y' := by
   rw [Hf_herm T (y + y') x, Hf_add_left, map_add, ← Hf_herm, ← Hf_herm]
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.im (Hf_herm T x x)`. Rewrite `h` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Hf_self_im (T : Tor D) (x : VC D N N') : (Hf D T x x).im = 0 := by
   have h := congrArg Complex.im (Hf_herm T x x)
@@ -278,19 +276,19 @@ theorem Hf_self_im (T : Tor D) (x : VC D N N') : (Hf D T x x).im = 0 := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[Hf_herm T x y, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_re_swap (T : Tor D) (x y : VC D N N') : (Hf D T y x).re = (Hf D T x y).re := by
   rw [Hf_herm T x y, Complex.conj_re]
 
 /- English proof (translation)
-Take `⟨a, b, hab, h⟩` from `hI x hx x hx`. Establish `hs` using `sqrt_d_pos D`. Establish `hb : (b : ℝ) = 0`. Use `Hf_self_im T x` as an intermediate fact. Rewrite `this` using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hb' : b = 0` using `by exact_mod_cast hb`. Rewrite `hab` using `[hb', sub_zero]`. Take `⟨m, hm⟩` from `hab`. Establish `hre : (Hf D T x x).re = 2 * m / Real.sqrt D.host.d`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h, hm]`. Simplify using `[hb']`. Expand and normalize the polynomial expressions, which then agree. Use `⟨m, hre, ?_⟩` and prove the remaining obligations. Rewrite using `[hre]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: Real.sqrt D.host.d / 2 * (2 * (m : ℝ) / Real.sqrt D.host.d) = m`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, round_intCast]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem self_int (T : Tor D) {La' : AddSubgroup (VC D N N')} (hI : HfInt T La')
     {x : VC D N N'} (hx : x ∈ La') :
@@ -314,14 +312,14 @@ theorem self_int (T : Tor D) {La' : AddSubgroup (VC D N N')} (hI : HfInt T La')
   rw [this, round_intCast]
 
 /- English proof (translation)
-Establish `: n = m + (n - m)` using `by ring`. Rewrite using `[this, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), h.neg_one_zpow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_one_zpow_congr {n m : ℤ} (h : Even (n - m)) : (-1 : ℂ) ^ n = (-1 : ℂ) ^ m := by
   have : n = m + (n - m) := by ring
   rw [this, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), h.neg_one_zpow, mul_one]
 
 /- English proof (translation)
-Rewrite using `[cf, hb, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cf_int (T : Tor D) (x y : VC D N N') (b : ℤ) (hb : (Hf D T x y).im = b) :
     cf T x y = (-1 : ℂ) ^ (-b) := by
@@ -331,15 +329,15 @@ theorem cf_int (T : Tor D) (x y : VC D N N') (b : ℤ) (hb : (Hf D T x y).im = b
   ring
 
 /- English proof (translation)
-Introduce `x hx y hy`. Establish `hs` using `sqrt_d_pos D`. Take `⟨mx, hxre, hxr⟩` from `self_int T hI hx`. Take `⟨my, hyre, hyr⟩` from `self_int T hI hy`. Take `⟨ms, hsre, hsr⟩` from `self_int T hI (La'.add_mem hx hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab, h⟩` from `hI x hx y hy`. Establish `hre : (Hf D T x y).re = a / Real.sqrt D.host.d` using `by rw [h]; simp`. Establish `him : (Hf D T x y).im = b` using `by rw [h]; simp`. Establish `hexp : (Hf D T (x + y) (x + y)).re = (Hf D T x x).re + (Hf D T y y).re + 2 * (Hf D T x y).re`. Rewrite using `[Hf_add_left, Hf_add_right, Hf_add_right, Complex.add_re, Complex.add_re, Complex.add_re, Hf_re_swap T x y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hms : ms = mx + my + a`. Rewrite `hexp` using `[hsre, hxre, hyre, hre]`. Establish `h2 : (2 * (ms : ℝ)) = 2 * mx + 2 * my + 2 * a`. Clear denominators, using `at hexp` for the nonvanishing conditions.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(by linarith : (ms : ℝ) = mx + my + a)` after adjusting the coercions. Simplify using `only [al]`. Rewrite using `[hsr, hxr, hyr, cf_int T x y b him, ← zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), ← zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0)]`. Apply `neg_one_zpow_congr` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hms]`. Establish `: mx + my + a - (mx + my + -b) = (a - b) + 2 * b` using `by ring`. Rewrite using `[this]`. Conclude with `hab.add (even_two_mul b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiChar_of_HfInt (T : Tor D) {La' : AddSubgroup (VC D N N')} (hI : HfInt T La') :
     SemiChar T La' := by
@@ -377,9 +375,9 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Classical
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (AddSubgroup.inclusion hle).toIntLinearMap` using `AddSubgroup.inclusion_injective hle`. Use `haveI : Module.Finite ℤ La₂ := Module.Finite.of_injective _ hinj`. Use `haveI : Module.Finite ℤ (La₂ ⧸ La₁.addSubgroupOf La₂) := Module.Finite.of_surjective (QuotientAddGroup.mk' (La₁.addSubgroupOf La₂)).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `q using QuotientAddGroup.induction_on with | H a => ?_`. Use `⟨⟨k, mem_nonZeroDivisors_of_ne_zero hk⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k • (a : La₂ ⧸ La₁.addSubgroupOf La₂) = 0`. Rewrite using `[← QuotientAddGroup.mk_zsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_zsmul]`. Conclude with `hkR _ (hle a.2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quot_of_smul {V : Type*} [AddCommGroup V] (La₁ La₂ R : AddSubgroup V)
     [Module.Finite ℤ R] (hle : La₂ ≤ R) (k : ℤ) (hk : k ≠ 0) (hkR : ∀ z ∈ R, k • z ∈ La₁) :
@@ -402,13 +400,13 @@ theorem finite_quot_of_smul {V : Type*} [AddCommGroup V] (La₁ La₂ R : AddSub
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hM' : (M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Use function extensionality and compare the values at `τ i j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, FL.Phi, FL.ins, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using `only [and_self, if_true, zsmul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `h`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) h`. Introduce `b _ hb`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Simplify using `[Ne.symm hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem Phi_smul_eq {N N' : ℕ} (δ : ℂ) (M : ℤ) (hM : M ≠ 0) (n : ℕ)
     (A : Fin N' → Fin N → 𝓞 D.host.E) :
@@ -431,9 +429,9 @@ theorem Phi_smul_eq {N N' : ℕ} (δ : ℂ) (M : ℤ) (hM : M ≠ 0) (n : ℕ)
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Take `⟨M, hM, hup⟩` from `FL.La_upper D L₂ L₂' h₂ cc δ`. Take `⟨n, hn, hlow⟩` from `FL.La_lower D L₁ L₁' h₁ cc hcc δ`. Use `haveI : Module.Finite ℤ (FL.Phi D (N := N) (N' := N') (δ / M)).range := Module.Finite.of_surjective (FL.Phi D (N := N) (N' := N') (δ / M)).rangeRestrict.toIntLinearMap (AddMonoidHom.rangeRestrict_surjective _)`. Use `finite_quot_of_smul _ _ _ hup ((n : ℤ) * M) (mul_ne_zero (by exact_mod_cast hn) hM) ?_` and prove the remaining obligations. Introduce and unpack `z ⟨A, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Phi_smul_eq δ M hM n A]`. Conclude with `AddSubgroup.sum_mem _ fun i0 _ => AddSubgroup.sum_mem _ fun j0 _ => hlow i0 j0 (A i0 j0)`.
+A detailed English derivation is pending.
 -/
 theorem La_index_finite (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ) {N N' : ℕ}
     (L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
@@ -453,7 +451,7 @@ theorem La_index_finite (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (
   exact AddSubgroup.sum_mem _ fun i0 _ => AddSubgroup.sum_mem _ fun j0 _ => hlow i0 j0 (A i0 j0)
 
 /- English proof (translation)
-Use `haveI := La_index_finite cc hcc δ L₁ L₂ L₁' L₂' h₁ h₂`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem La_index_ne_zero (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ) {N N' : ℕ}
     (L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E))

@@ -21,27 +21,23 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FrameCoordUnit
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν A _ ξ g e he σ U h hU L _ _ io yL hyL z₀ hz₀ w hwc hwt hwe`. Establish `ht1 : ∀ i, IsTanAt z₀.x (w i ≫ ν.φ)` using `fun i => by`. Use `(GlobalTheory.LocM.BaseMdl.tan_push ν (hwt i).1).1 (hwt i)` as an intermediate fact. Rewrite using `[hz₀]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose g₁ hg₁ using fun i => (z₀.basis σ (w i ≫ ν.φ) (ht1 i) (hwe i)).exists`. Establish `hub : ∀ j, z₀.u σ j ≫ Xo.univ.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ yL ≫ r ≫ pullback.fst _ _` using `fun j => by`. Rewrite using `[← hz₀]`. Conclude with `(z₀.tan σ j).1`. Use `choose q hq1 hq2 using fun j => GlobalTheory.LocM.BaseMdl.exists_lift ν (x' := yL) (hub j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqt : ∀ j, IsTanAtG Y.oF.t yL (q j)` using `fun j => (GlobalTheory.LocM.BaseMdl.tan_push ν (hq2 j)).2 (by rw [hq1, ← hz₀]; exact z₀.tan σ j)`. Establish `hqt' : ∀ j, IsTanAtG Y.t (spMap io ≫ ξ) (q j ≫ Y.m.φ)` using `fun j => by`. Rewrite using `[← hyL]`. Conclude with `(GlobalTheory.LocM.BaseMdl.tan_push Y.m (hq2 j)).1 (hqt j)`. Use `choose Q hQ using fun j => (he.2 L io (q j ≫ Y.m.φ) (hqt' j)).exists`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqb : ∀ j (a : L), (spMap (epsMul a) ≫ q j) ≫ Y.oF.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ yL` using `fun j a => by rw [Category.assoc, hq2, ← Category.assoc, GlobalTheory.LocM.BaseMdl.epsMul_comp]`. Establish `hcomb : ∀ i, IsCombAtG Y.oF.t yL q (g₁ i) (w i)` using `fun i => by`. Set `u : Fin (Dw.mult σ) → (tEpsG yL ⟶ Y.oF.t.G)` to `fun j => Over.homMk (spMap (epsMul (g₁ i j)) ≫ q j) (hqb j _)`. Establish `hc : IsCombAtG Y.oF.t yL q (g₁ i) (List.ofFn u).prod.left` using `⟨u, fun _ => rfl, rfl⟩`. Establish `hcb : (List.ofFn u).prod.left ≫ Y.oF.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ yL` using `Over.w (List.ofFn u).prod`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2` using `(GlobalTheory.LocM.BaseMdl.comb_push ν hq2 (g₁ i) hcb).1 hc`. Establish `hq1' : (fun j => q j ≫ ν.φ) = z₀.u σ` using `funext hq1`. Rewrite `hc2` using `[hq1', ← hz₀]`. Establish `heq : (List.ofFn u).prod.left ≫ ν.φ = w i ≫ ν.φ` using `GlobalTheory.FlatModel.LiftBC.isCombAtG_unique Xo.univ.t hc2 (hg₁ i)`. Establish `heq2 : (List.ofFn u).prod.left = w i` using `ν.cart.1.hom_ext heq (hcb.trans (hwt i).1.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heq2]`. Conclude with `hc`. Establish `hwt' : ∀ i, IsTanAtG Y.t (spMap io ≫ ξ) (w i ≫ Y.m.φ)` using `fun i => by`. Rewrite using `[← hyL]`. Conclude with `(GlobalTheory.LocM.BaseMdl.tan_push Y.m (hwt i).1).1 (hwt i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomb' : ∀ i, IsCombAtG Y.t (spMap io ≫ ξ) (fun j => q j ≫ Y.m.φ) (g₁ i) (w i ≫ Y.m.φ)` using `fun i => by`. Rewrite using `[← hyL]`. Conclude with `(GlobalTheory.LocM.BaseMdl.comb_push Y.m hq2 (g₁ i) (hwt i).1).1 (hcomb i)`. Establish `hbt : ∀ b, IsTanAtG Y.t (spMap io ≫ ξ) (spMap (dualMap io) ≫ e b)` using `(GlobalTheory.FlatModel.isTanBasis_bc he io).1`. Establish `hcoef : ∀ i b, io (U i b) = ∑ j, Q j b * g₁ i j` using `fun i b => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.TangentLinear.isCombAtG_mulVec (fun b => spMap (dualMap io) ≫ e b) hbt (fun j => q j ≫ Y.m.φ) (Matrix.of fun b j => Q j b) (g₁ i) (w i ≫ Y.m.φ) (fun j => hQ j) (hcomb' i)`. Establish `h2 : IsCombAtG Y.t (spMap io ≫ ξ) (fun b => spMap (dualMap io) ≫ e b) (fun b => io (U i b)) (w i ≫ Y.m.φ)`. Rewrite using `[← hyL]`. Conclude with `hwc i`. Use `(he.2 L io (w i ≫ Y.m.φ) (hwt' i)).unique h2 h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun this b` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Use `⟨Matrix.of g₁, ?_, fun i => hg₁ i⟩` and prove the remaining obligations. Set `M : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) L` to `Matrix.of fun j k' => ∑ b, Q j b * io (h k' b)`. Establish `hdet : io (pairDet h U) = (Matrix.of g₁ * M).det`.
-
-Rewrite using `[pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, hcoef, Matrix.mul_apply, M, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations. Establish `hu` using `hU.map io`. Rewrite `hu` using `[hdet, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

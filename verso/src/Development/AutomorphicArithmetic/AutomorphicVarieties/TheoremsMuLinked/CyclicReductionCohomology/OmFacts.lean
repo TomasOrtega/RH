@@ -4,17 +4,15 @@ import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l hl O _ _ _ hO _`. Take `⟨-, hf, hc⟩` from `hO`. Establish `hlm : (l : O) ∈ maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ m : ℕ, ((l : Om O m)) ^ m = 0` using `fun m => by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (maximalIdeal O ^ m)), ← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hlm m)`. Use `⟨fun h2 => ?_, fun m => ⟨?_, ?_, fun x => ?_, fun a ha => ?_, fun Γ _ f hf => hf m⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : (2 : O) ∈ maximalIdeal O` using `hu`. Rewrite `h` using `[← IsLocalRing.residue_eq_zero_iff, map_ofNat]`. Establish `h' : ((2 : ℕ) : ResidueField O) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[CharP.cast_eq_zero_iff (ResidueField O) l]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (O ⧸ maximalIdeal O) := hf`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) m`. Use `cardQuot_pow_of_prime (IsDiscreteValuationRing.not_a_field O) (i := m)` as an intermediate fact. Rewrite `this` using `[Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[nsmul_eq_mul, Nat.cast_pow, hpow, zero_mul]`. Establish `h : a - 1 ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) m) := by`. Rewrite using `[RingHom.mem_ker, map_sub, ha, map_one, sub_self]`. Rewrite `h` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h`.
-
-Establish `e : a = 1 + b * (l : ℤ_[l]) ^ m` using `by rw [hb]; ring`. Rewrite using `[e]`. Simplify using `only [map_add, map_one, map_mul, map_pow, map_natCast, hpow, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.omFacts :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O], (l ≠ 2 → IsUnit (2 : O)) ∧ ∀ m : ℕ, Finite (Om O m) ∧ Nat.card (Om O m) = Nat.card (ResidueField O) ^ m ∧ (∀ x : Om O m, l ^ m • x = 0) ∧ (∀ a : ℤ_[l], PadicInt.toZModPow m a = 1 → algebraMap O (Om O m) (algebraMap ℤ_[l] O a) = 1) ∧ ∀ (Γ : Type) [TopologicalSpace Γ] (f : Γ → O), AdicCont (maximalIdeal O) f → IsLocallyConstant fun g => algebraMap O (Om O m) (f g) := by

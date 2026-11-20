@@ -59,9 +59,9 @@ def ATrans : Prop := ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F],
   ∃ t : F, IsIntegral ℤ t ∧ ∀ v, |x v + sg v t| ≤ C
 
 /- English proof (translation)
-Introduce `F _ _ _ hd c hc χ hχ`. Take `⟨m, hm, hχ⟩` from `hχ`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Use `⟨inferInstance, (h1 F c hc χ).1, ?_, fun h => ?_, (h2 F c hc χ).1, (h2 F c hc χ).2.1, (h2 F c hc χ).2.2, (h3 F c hc χ).1, (h3 F c hc χ).2, (h1 F c hc χ).2, h4 F c hc χ, h5 F c hc χ, h6 F c hc χ, h7 F c hc χ⟩` and prove the remaining obligations. Rewrite using `[← Fintype.one_lt_card_iff_nontrivial, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, ← IsTotallyReal.finrank]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h0 : ‖((χ h : ℂˣ) : ℂ)‖ ^ m = 1` using `by rw [← norm_pow, ← Units.val_pow_eq_pow_val, hχ h]; simp`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dAx_of (h1 : DCount) (h2 : DHt) (h3 : DMul) (h4 : DProd) (h5 : DMink) (h6 : DNormal) (h7 : DCnt) : DAx := by
   intro F _ _ _ hd c hc χ hχ

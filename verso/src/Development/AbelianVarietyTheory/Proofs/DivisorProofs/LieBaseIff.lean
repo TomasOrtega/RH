@@ -31,7 +31,7 @@ def LieWit {Bg : Scheme.{0}} (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z)
       IsLieMet O.s.T.Z O.κ.e q jB πB (E a) _ (embB D a) (!a.2) hr G (h a) (u a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Bg, jB, πB, pb, u, G, h1, h2, h3, h4, h5, h6⟩`. Conclude with `⟨Bg, jB, πB, u, G, pb, h1, h2, h3, h4, h5, h6⟩`. Introduce and unpack `⟨Bg, jB, πB, u, G, pb, h1, h2, h3, h4, h5, h6⟩`. Conclude with `⟨Bg, jB, πB, pb, u, G, h1, h2, h3, h4, h5, h6⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lieBase_iff : LieBase O B R c q E h ↔ ∃ (Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z)
     (u : ∀ a, FrAssign O.s.T.Z (E a) (rkB D.what₂.Tau O.N O.j a) jB) (G : ∀ σ', EigMet O.s.T.Z σ'),

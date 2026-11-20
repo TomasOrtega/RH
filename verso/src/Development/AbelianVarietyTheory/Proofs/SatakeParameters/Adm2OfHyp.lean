@@ -16,13 +16,13 @@ namespace GlobalTheory.GalClose
 open GlobalTheory.CuspRep
 
 /- English proof (translation)
-Introduce `W _`. Distinguish the cases in `h : W = ⊥`. Use `⟨⊤, fun g v _ => Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `isCompl_bot_top`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : W = ⊤`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `h0 : v 0 ≠ 0` using `fun e => hv0 (funext fun j => by rw [Subsingleton.elim j 0, e]; rfl)`. Use `eq_top_iff.2 fun u _ => ?_` and prove the remaining obligations. Establish `: u = (u 0 / v 0) • v` using `funext fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim j 0, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ h0]`. Rewrite using `[this]`. Conclude with `W.smul_mem _ hv`. Use `⟨⊥, fun g v hv => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `Matrix.mulVec_zero _`. Rewrite using `[hW]`. Conclude with `isCompl_top_bot`.
+A detailed English derivation is pending.
 -/
 theorem isSSRep_rankOne {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin 1) k) : IsSSRep ρ := by
   intro W _
@@ -41,11 +41,11 @@ theorem isSSRep_rankOne {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin
     · rw [hW]; exact isCompl_top_bot
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Break down `Nat.eq_zero_or_pos a with rfl | ha1` into its components or cases. Use `haveI := P.cg.zero`. Conclude with `isEmptyElim π`. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (P.cg.e a π).1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk : CG.mk π₀ = (P.cg.e a π).1` using `hπ₀`. Establish `hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ` using `fun τ => by`. Rewrite using `[P.cg.inf, CGu.infChar, ← hmk]`. Establish `hr₀ : (CG.mk π₀).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hinf]`. Then use the resulting hypothesis. Take `⟨w₀, hw⟩` from `(hRP D.host.E a ha1 π₀ hr₀).1`. Use `⟨(w₀ : ℂ), fun τ => ?_⟩` and prove the remaining obligations. Establish `hc : τ.comp (D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E).toRingEquiv.toRingHom = (starRingEnd ℂ).comp τ` using `RingHom.ext fun x => GlobalTheory.SplitRowProbe.conj_sqrt D.host τ x`. Rewrite using `[hc, hinf, hinf, hw]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem purity (hRP : GlobalTheory.Published.RegularAlgebraicPurity) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D)
     (a : ℕ) (π : D.naut.CG a) (hr : D.naut.ralg π) : ∃ w₀ : ℂ, ∀ τ : D.host.E →+* ℂ,
@@ -69,9 +69,9 @@ theorem purity (hRP : GlobalTheory.Published.RegularAlgebraicPurity) (hL : Globa
   rw [hc, hinf, hinf, hw]
 
 /- English proof (translation)
-Establish `h0 : (1 - ((1 : ℕ) : ℝ)) / 2 = 0` using `by norm_num`. Take `⟨ρ, hc, h1, h2⟩` from `GlobalTheory.T.exists_galois_character_of_algebraic hPr.fin hPr.art hPr.chA hPr.chP hL D P i π 0 (fun τ z hz => by`. Take `⟨n, hn⟩` from `((D.naut.ralg_def π).1 hr τ).2 z hz`. Conclude with `⟨n, by rw [hn]; simp⟩)`. Use `⟨ρ, hc, isSSRep_rankOne ρ, fun w hw => ⟨by rw [h0]; exact h1 w hw, ?_⟩, fun w hw => ⟨(h2 w hw).1, fun τ hτ => ?_, by rw [h0]; exact (h2 w hw).2.1⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.RowTie.tempered_of_rank_le_one D P.T (GlobalTheory.TempClose.rankOneUnitary hPr.fin hL D P) 1 π le_rfl w`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[(h2 w hw).2.2 τ hτ, D.naut.jumpsInf_def i π τ hr]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankOne (hPr : GlobalTheory.NRows.Hypotheses₂) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (i : D.nd.Loc)
     (π : D.naut.CG 1) (hr : D.naut.ralg π) :
@@ -93,9 +93,7 @@ theorem rankOne (hPr : GlobalTheory.NRows.Hypotheses₂) (hL : GlobalTheory.Publ
     simp
 
 /- English proof (translation)
-Introduce `hPr hL D P i`. Use `⟨fun a ha π hc hr => ?_, fun a π hr => purity hPr.clo hL D P a π hr, fun χ s hs => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge a 2 with ha2 | ha2` into its components or cases. Take `rfl : a = 1` from `by omega`. Conclude with `rankOne hPr hL D P i π hr`.
-
-Conclude with `GlobalTheory.GalFirstClause.galRep_rankTwo hPr.fin hPr.gal hPr.car hPr.clo hL D P i a ha2 π hc hr`. Conclude with `GlobalTheory.T.exists_galois_character_of_algebraic hPr.fin hPr.art hPr.chA hPr.chP hL D P i χ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.adm2 D := by
   intro hPr hL D P i

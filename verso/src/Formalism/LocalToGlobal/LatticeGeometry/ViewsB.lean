@@ -51,21 +51,21 @@ def fcCast {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (p : ℕ)
   cast (congrArg (fun Z : DV.ShimX D.what₂.Tau => Z.FibComp p) e).symm η
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `y`. Conclude with `⟨y, rfl⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem fcCast_surj {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (p : ℕ) :
     Function.Surjective (fcCast U h lev hlev e p) := by
   subst e; intro y; exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fcCast_bd {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (p : ℕ) (η : U.pad.FibComp p) :
     Y.fibInBd p (fcCast U h lev hlev e p η) ↔ ¬ (U.pad.loc p).abAt η := by
   subst e; exact Iff.rfl
 
 /- English proof (translation)
-Substitute `e; exact ⟨c, 1, one_pos, fun τ i => by simp [toShimX, PadPkg.degDR]⟩` using the available equality.
+Substitute using the available equality.
 -/
 theorem curveDR_of {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (p : ℕ) (c : Y.CurveDR p) :
     ∃ (CC : (U.pad.loc p).Crv) (m : ℕ), 0 < m ∧ ∀ τ (i : Fin Y.N),
@@ -73,7 +73,7 @@ theorem curveDR_of {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (
   subst e; exact ⟨c, 1, one_pos, fun τ i => by simp [toShimX, PadPkg.degDR]⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hHT p n Z' hp hn hZ c`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem curveHT_of {Y : DV.ShimX D.what₂.Tau} (e : Y = toShimX U h lev hlev) (hHT : CurveHTDom U) (p n : ℕ)
     (Z' : (U.pad.loc p).Mdl) (hp : p.Prime) (hn : 3 ≤ n)
@@ -108,7 +108,7 @@ def tieOf (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ 
   curveDR p _ _ _ _ c := curveDR_of (U (dat i)) (hI i) _ _ (hT.shv (dat i) (hI i)) p c
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Substitute `hκ` using the available equality. Conclude with `⟨tieOf X levPr hlev U hT hHT I dat hI i⟩`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem tie_of_eq (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime)
     (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w) (hT : CompatibleLevelPrimes X levPr hlev U)

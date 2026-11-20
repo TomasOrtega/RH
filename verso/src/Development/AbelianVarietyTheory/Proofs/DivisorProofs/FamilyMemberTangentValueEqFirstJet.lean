@@ -21,13 +21,13 @@ def vH (x : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+
   (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.comp (x.appLE U ⊤ h).hom
 
 /- English proof (translation)
-Rewrite using `[valF, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_eq (x : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) : valF x U a = vH x U h a := by
   rw [valF, dif_pos h]; rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ f) ⁻¹ᵁ W` using `fun q hq => e (h hq)`. Rewrite using `[valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.appLE_comp_appLE x f W U ⊤ e h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_appLE {x : Sp F ⟶ X} {U : X.Opens} (f : X ⟶ Y) (W : Y.Opens) (e : U ≤ f ⁻¹ᵁ W)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(Y, W)) : valF x U ((f.appLE W U e).hom a) = valF (x ≫ f) W a := by
@@ -36,7 +36,7 @@ theorem valF_appLE {x : Sp F ⟶ X} {U : X.Opens} (f : X ⟶ Y) (W : Y.Opens) (e
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `fun q hq => e (h hq)`. Rewrite using `[valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.map_appLE x h (homOfLE e).op]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_res {x : Sp F ⟶ X} {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, U)) : valF x V ((X.presheaf.map (homOfLE e).op).hom a) = valF x U a := by
@@ -45,7 +45,7 @@ theorem valF_res {x : Sp F ⟶ X} {U V : X.Opens} (e : V ≤ U)
   rfl
 
 /- English proof (translation)
-Rewrite using `[valF_eq x U h]`. Conclude with `(a.isUnit.map _).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_unit_ne (x : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)ˣ) : valF x U a.val ≠ 0 := by
   rw [valF_eq x U h]
@@ -54,18 +54,18 @@ theorem valF_unit_ne (x : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (
 variable {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h k _ hq => Set.mem_iInter.1 (h hq) k, fun h _ hq => Set.mem_iInter.2 fun k => h k hq⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_wchart {r : Sp F ⟶ Y} {j : K → L.ι} :
     ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (r ≫ φ k) ⁻¹ᵁ L.U (j k) :=
   ⟨fun h k _ hq => Set.mem_iInter.1 (h hq) k, fun h _ hq => Set.mem_iInter.2 fun k => h k hq⟩
 
 /- English proof (translation)
-Establish `h2 : ⊤ ≤ r ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')` using `fun q hq => ⟨h hq, h' hq⟩`. Establish `c` using `congrArg (vH r (LB.wchart L φ j ⊓ LB.wchart L φ j') h2) (s.compat j j')`. Use `erw [map_mul] at c`. Use `(valF_res inf_le_left h2 _).symm.trans ((valF_eq _ _ h2 _).trans (c.trans (congrArg₂ (· * ·) ?_ ((valF_eq _ _ h2 _).symm.trans (valF_res inf_le_right h2 _)))))` and prove the remaining obligations. Set `ψ : Γ(Y, LB.wchart L φ j ⊓ LB.wchart L φ j')ˣ →* F` to `(vH r (LB.wchart L φ j ⊓ LB.wchart L φ j') h2).toMonoidHom.comp (Units.coeHom _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ψ (∏ k, _) = _`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Units.coeHom F) ((Units.map (vH r (LB.wchart L φ j ⊓ LB.wchart L φ j') h2).toMonoidHom) _) = _`. Rewrite using `[map_zpow, map_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← valF_appLE (φ k) _ (le_inf (inf_le_left.trans (LB.wchart_le L φ j k)) (inf_le_right.trans (LB.wchart_le L φ j' k))) h2, valF_eq _ _ h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valF_sec (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) (j j' : K → L.ι)
     (h : ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ j) (h' : ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ j') :
@@ -98,7 +98,7 @@ def jet (W : E) (f : E → ℂ) (x : E) : DualNumber ℂ :=
   TrivSqZeroExt.inl (f x) + TrivSqZeroExt.inr (fderiv ℂ f x W)
 
 /- English proof (translation)
-Unfold `jet`. Rewrite using `[fderiv_fun_mul hf hg]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jet_mul (W : E) {f g : E → ℂ} {x : E} (hf : DifferentiableAt ℂ f x) (hg : DifferentiableAt ℂ g x) :
     jet W (fun z => f z * g z) x = jet W f x * jet W g x := by
@@ -107,13 +107,13 @@ theorem jet_mul (W : E) {f g : E → ℂ} {x : E} (hf : DifferentiableAt ℂ f x
   ext <;> simp <;> ring
 
 /- English proof (translation)
-Simplify using `[jet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jet_const (W : E) (c : ℂ) (x : E) : jet W (fun _ => c) x = TrivSqZeroExt.inl c := by
   simp [jet]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [jet_const]`. Consider the case `succ k ih`. Simplify using `only [pow_succ]`. Rewrite using `[jet_mul W (hf.fun_pow k) hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_pow (W : E) {f : E → ℂ} {x : E} (hf : DifferentiableAt ℂ f x) (k : ℕ) :
     jet W (fun z => f z ^ k) x = jet W f x ^ k := by
@@ -124,14 +124,14 @@ theorem jet_pow (W : E) {f : E → ℂ} {x : E} (hf : DifferentiableAt ℂ f x) 
     rw [jet_mul W (hf.fun_pow k) hf, ih]
 
 /- English proof (translation)
-Unfold `jet`. Rewrite using `[h.fderiv_eq, h.eq_of_nhds]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_congr (W : E) {f g : E → ℂ} {x : E} (h : f =ᶠ[nhds x] g) : jet W f x = jet W g x := by
   unfold jet
   rw [h.fderiv_eq, h.eq_of_nhds]
 
 /- English proof (translation)
-Unfold `jet`. Rewrite using `[fderiv_comp_add_left]`. Simplify using `only [add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_add (W : E) (f : E → ℂ) (c : E) : jet W (fun z => f (c + z)) 0 = jet W f c := by
   unfold jet
@@ -145,7 +145,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionR
   (ν : NumOf D ℂ N) (d : AB N.toNumB g)
 
 /- English proof (translation)
-Use `d.ex_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : d.ex 0 = 1 := by
   have := d.ex_add 0 0
@@ -153,15 +153,15 @@ theorem ex_zero : d.ex 0 = 1 := by
   exact mul_eq_left.1 this.symm
 
 /- English proof (translation)
-The claim follows from `congrArg (·.left) (lift_snd (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex z)))`.
+A detailed English derivation is pending.
 -/
 theorem ptB_prB (z : Fin g → ℂ) : ptB ν d z ≫ (DegPre.prB D ℂ).left = (ν.eA (d.ex z)).left :=
   congrArg (·.left) (lift_snd (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex z)))
 
 /- English proof (translation)
-Establish `e2 : lift (𝟙 (TF (R` using `R) ℂ)) (ν.eA (d.ex z)) ≫ toUnit _ ≫ D.c (ν.eX α) = ν.eA (d.ex ct) := by`. Rewrite using `[← hc, ν.c_eq, ← Category.assoc, comp_toUnit]`. Use `fin_cases k`. Conclude with `ptB_prB ν d z`. Use `congrArg (·.left) (?_ : lift (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex z)) ≫ (DegPre.prB D ℂ * (toUnit _ ≫ D.c (ν.eX α))) = ν.eA (d.ex (ct + z)))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonObj.comp_mul, e2, lift_snd, add_comm, d.ex_add, map_mul]`. Conclude with `congrArg (·.left) e2`. Use `congrArg (·.left) (?_ : lift (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex z)) ≫ toUnit _ ≫ η[D.P.A] = ν.eA (d.ex 0))` and prove the remaining obligations. Rewrite using `[ex_zero, map_one, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptB_fam {α : N.X} {ct : Fin g → ℂ} (hc : N.c α = d.ex ct) (z : Fin g → ℂ) (k : Fin 4) :
     ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) k = (ν.eA (d.ex (![z, ct + z, ct, 0] k))).left := by
@@ -181,7 +181,7 @@ theorem ptB_fam {α : N.X} {ct : Fin g → ℂ} (hc : N.c α = d.ex ct) (z : Fin
 variable {ν d}
 
 /- English proof (translation)
-Use `(G.hol ((DegPre.prB D ℂ).left ⁻¹ᵁ D.P.L.U i) 0).1` as an intermediate fact. Simplify using `only [← ptB_prB]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem open_chart (G : Geo ν d) (i : D.P.L.ι) : IsOpen {z | ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ D.P.L.U i} := by
   have := (G.hol ((DegPre.prB D ℂ).left ⁻¹ᵁ D.P.L.U i) 0).1
@@ -189,21 +189,21 @@ theorem open_chart (G : Geo ν d) (i : D.P.L.ι) : IsOpen {z | ⊤ ≤ (ν.eA (d
   exact this
 
 /- English proof (translation)
-The claim follows from `(G.fr_hol _).differentiableAt ((open_chart G _).mem_nhds (ν.good _))`.
+A detailed English derivation is pending.
 -/
 theorem frG_diff (G : Geo ν d) (x : Fin g → ℂ) : DifferentiableAt ℂ (G.frG (ν.J (ν.eA (d.ex x)).left)) x :=
   (G.fr_hol _).differentiableAt ((open_chart G _).mem_nhds (ν.good _))
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ ptB ν d z ⁻¹ᵁ LB.wchart D.P.L (DegPre.famφ D ℂ (ν.eX α)) (fun k => ν.J (ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) k))` using `mem_wchart.2 fun _ => ν.good _`. Establish `e` using `valF_sec (s.s (ν.eX α)) (ptB ν d z) j _ h h'`. Establish `e' : valF (ptB ν d z) _ ((s.s (ν.eX α)).f (fun k => ν.J (ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) k))) = f α (d.ex z) * ν.rg ^ k` using `(hs α (d.ex z)).symm`. Establish `key : ∀ l : Fin 4, ∃ u : ℂ, u ≠ 0 ∧ valF (ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) l) (D.P.L.U (j l) ⊓ D.P.L.U (ν.J (ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) l))) (D.P.L.g (j l) (ν.J (ptB ν d z ≫ DegPre.famφ D ℂ (ν.eX α) l))).val = u ∧ G.frG (j l) (![z, ct + z, ct, 0] l) = u * (d.fr (![z …` using `fun l => by`. Establish `h1` using `mem_wchart.1 h l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, the goal using `[ptB_fam ν d hc]`. Establish `h2 : ⊤ ≤ (ν.eA (d.ex (![z, ct + z, ct, 0] l))).left ⁻¹ᵁ (D.P.L.U (j l) ⊓ D.P.L.U (ν.J (ν.eA (d.ex (![z, ct + z, ct, 0] l))).left))` using `fun q hq => ⟨h1 hq, ν.good _ hq⟩`. Conclude with `⟨_, valF_unit_ne _ _ h2 _, rfl, by rw [G.fr_compat _ _ _ h2, G.fr_eq]⟩`. Use `choose u hu0 hu1 hu2 using key`. Establish `e3` using `e.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun l _ => congrArg (· ^ DegPre.famε k l) (hu1 l)) e')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, Fin.prod_univ_four]`. Establish `a0 : G.frG (j 0) z = u 0 * (d.fr z * ν.rg)` using `hu2 0`. Establish `a1 : G.frG (j 1) (ct + z) = u 1 * (d.fr (ct + z) * ν.rg)` using `hu2 1`. Establish `a2 : G.frG (j 2) ct = u 2 * (d.fr ct * ν.rg)` using `hu2 2`. Establish `a3 : G.frG (j 3) 0 = u 3 * (d.fr 0 * ν.rg)` using `hu2 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a0, a1, a2, a3, d.fr_zero]`. Express the relevant statement in the definitionally equal form `u 0 ^ ((k : ℤ) - 1) * u 1 ^ (1 : ℤ) * u 2 ^ (-1 : ℤ) * u 3 ^ (1 : ℤ) * _ * _ * _ = _`. Rewrite using `[zpow_sub₀ (hu0 0), zpow_natCast]`. Simplify using `only [zpow_one, _root_.zpow_neg, Units.val_one, mul_pow]`. Rewrite using `[div_eq_mul_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(u 0 ^ k * u 1 * u 3 * ν.rg ^ k * ν.rg ^ 2) * hφ z + (u 0 ^ k * u 1 * u 3 * ν.rg ^ k * ν.rg ^ 2) * (f α (d.ex z) * d.fr ct * d.fr z) * (u 2 * (u 2)⁻¹ * mul_inv_cancel₀ (hu0 0) + mul_inv_cancel₀ (hu0 2))`.
+A detailed English derivation is pending.
 -/
 theorem val_fam (G : Geo ν d) {k : ℕ} {s : Fam D ℂ k} {f : N.X → N.A → ℂ} {α : N.X} {ct : Fin g → ℂ} {φ : (Fin g → ℂ) → ℂ}
     (hs : ν.FamV s f) (hc : N.c α = d.ex ct)
@@ -243,11 +243,9 @@ theorem val_fam (G : Geo ν d) {k : ℕ} {s : Fam D ℂ k} {f : N.X → N.A → 
       (u 2 * (u 2)⁻¹ * mul_inv_cancel₀ (hu0 0) + mul_inv_cancel₀ (hu0 2))
 
 /- English proof (translation)
-Establish `h0 : redE ℂ ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]`. Use `congr 1`. Set `ρ : TF (R` to `R) ℂ ⟶ TE R ℂ := Over.homMk (redE ℂ) (by`. Express the relevant statement in the definitionally equal form `redE ℂ ≫ spMap (algebraMap ℂ (DualNumber ℂ)) ≫ _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Category.assoc, h0, Category.id_comp])`. Use `congrArg (·.left) (?_ : ρ ≫ lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R := R) ℂ) b = lift (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex 0)))` and prove the remaining obligations. Rewrite using `[comp_lift, ex_zero, map_one]`. Use `congr 1`. Conclude with `Over.OverMorphism.ext h0`.
-
-Conclude with `Over.OverMorphism.ext hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem red_eq (b : TE R ℂ ⟶ D.P.A) (hb : redE ℂ ≫ b.left = (DegPre.zeroF D ℂ).left) :
     redE ℂ ≫ (lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R := R) ℂ) b).left = ptB ν d 0 := by
@@ -272,17 +270,17 @@ namespace GlobalTheory.MBLow.Cl
 open JetF
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D _ _ _ N ν g d G b W hb hD k s f α ct φ hs hc hφ hf`. Set `j : Fin 4 → D.P.L.ι` to `fun l => ν.J (ptB ν d 0 ≫ DegPre.famφ D ℂ (ν.eX α) l)`. Establish `hU : ⊤ ≤ ptB ν d 0 ⁻¹ᵁ LB.wchart D.P.L (DegPre.famφ D ℂ (ν.eX α)) j` using `mem_wchart.2 fun _ => ν.good _`. Establish `j0 : j 0 = ν.J (ν.eA (d.ex 0)).left` using `congrArg ν.J (ptB_fam ν d hc 0 0)`. Establish `j1 : j 1 = ν.J (ν.eA (d.ex ct)).left` using `congrArg ν.J ((ptB_fam ν d hc 0 1).trans (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j2 : j 2 = ν.J (ν.eA (d.ex ct)).left` using `congrArg ν.J (ptB_fam ν d hc 0 2)`. Establish `j3 : j 3 = ν.J (ν.eA (d.ex 0)).left` using `congrArg ν.J (ptB_fam ν d hc 0 3)`. Set `h : (Fin g → ℂ) → ℂ` to `fun z => valF (ptB ν d z) (LB.wchart D.P.L (DegPre.famφ D ℂ (ν.eX α)) j) ((s.s (ν.eX α)).f j)`. Establish `e1 : sE (s.s (ν.eX α)) (lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R` using `R) ℂ) b).left ν.J = jet W h 0 := by`. Establish `ej : (fun l => ν.J (redE ℂ ≫ (lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R` using `R) ℂ) b).left ≫ DegPre.famφ D ℂ (ν.eX α) l)) = j := funext fun l => congrArg ν.J ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (red_eq b hb)))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `sE`. Rewrite using `[ej]`. Conclude with `hD _ _ hU`. Take `⟨ho, hd⟩` from `G.hol _ ((s.s (ν.eX α)).f j)`. Establish `hn` using `ho.mem_nhds hU`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : DifferentiableAt ℂ h 0` using `hd.differentiableAt hn`. Establish `d0` using `frG_diff G 0`. Establish `dc : DifferentiableAt ℂ (fun z => G.frG (ν.J (ν.eA (d.ex ct)).left) (ct + z)) 0`. Use `DifferentiableAt.comp (g := G.frG (ν.J (ν.eA (d.ex ct)).left)) (f := fun z => ct + z) 0 ?_ (by fun_prop)` and prove the remaining obligations. Rewrite using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `frG_diff G ct`. Establish `ev : (fun z => h z * G.frG (ν.J (ν.eA (d.ex ct)).left) ct * G.frG (ν.J (ν.eA (d.ex 0)).left) z) =ᶠ[nhds 0] fun z => φ z * G.frG (ν.J (ν.eA (d.ex 0)).left) z ^ k * G.frG (ν.J (ν.eA (d.ex ct)).left) (ct + z) * G.frG (ν.J (ν.eA (d.ex 0)).left) 0` using `by filter_upwards [hn] with z hz`. Use `val_fam G hs hc hf j z hz` as an intermediate fact. Rewrite `this` using `[j0, j1, j2, j3]`. Then use the resulting hypothesis. Use `jet_congr W ev` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[jet_mul W (hh.mul_const _) d0, jet_mul W hh (differentiableAt_const _), jet_const, jet_mul W (((hφ 0).fun_mul (d0.fun_pow k)).fun_mul dc) (differentiableAt_const _), jet_const, jet_mul W ((hφ 0).fun_mul (d0.fun_pow k)) dc, jet_mul W (hφ 0) (d0.fun_pow k), jet_pow W d0, jet_add]`. Rewrite using `[e1]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem sE_fam_eq_jet : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g : ℕ) (d : AB N.toNumB g) (G : Geo ν d) (b : TE R ℂ ⟶ D.P.A) (W : Fin g → ℂ), redE ℂ ≫ b.left = (DegPre.zeroF D ℂ).left → IsD ν d W b → ∀ (k : ℕ) (s : Fam D ℂ k) (f : N.X → N.A → ℂ) (α : N.X) (ct : Fin g → ℂ) (φ : (Fin g → ℂ) → ℂ), ν.FamV s f → N.c α = d.ex ct → Differentiable ℂ φ → (∀ z, f α (d.ex z) * d.fr ct * d.fr z = φ z * (d.fr z : ℂ) ^ k * d.fr (ct + z)) → sE (s.s (ν.eX α)) (lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R := R) ℂ) b).left ν.J * TrivSqZeroExt.inl (G.frG (ν.J (ν.eA (d.ex ct)).left) ct) * (TrivSqZeroExt.inl (G.frG (ν.J (ν.eA (d.ex 0)).left) 0) + TrivSqZeroExt.inr (fderiv ℂ (G.frG (ν.J (ν.eA (d.ex 0)).left)) 0 W) : DualNumber ℂ) = (TrivSqZeroExt.inl (φ 0) + TrivSqZeroExt.inr (fderiv ℂ φ 0 W)) * (TrivSqZeroExt.inl (G.frG (ν.J (ν.eA (d.ex 0)).left) 0) + TrivSqZeroExt.inr (fderiv ℂ (G.frG (ν.J (ν.eA (d.ex 0)).left)) 0 W) : DualNumber ℂ) ^ k * (TrivSqZeroExt.inl (G.frG (ν.J (ν.eA (d.ex ct)).left) ct) + TrivSqZeroExt.inr (fderiv ℂ (G.frG (ν.J (ν.eA (d.ex ct)).left)) ct W) : DualNumber ℂ) * TrivSqZeroExt.inl (G.frG (ν.J (ν.eA (d.ex 0)).left) 0) := by
   intro R _ _ _ _ D _ _ _ N ν g d G b W hb hD k s f α ct φ hs hc hφ hf

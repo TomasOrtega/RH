@@ -5,7 +5,7 @@ universe u_1 u_2 u_3
 namespace GlobalTheory.InjectiveAlgebraHomExistence
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective _ _).2 hB`. Use `haveI : FaithfulSMul A K := (faithfulSMul_iff_algebraMap_injective _ _).2 hK`. Conclude with `⟨IsAlgClosed.lift⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_algHom_of_injective {A : Type u_1} {B : Type u_2} {K : Type u_3}
     [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Field K] [IsAlgClosed K]
@@ -17,15 +17,15 @@ theorem exists_algHom_of_injective {A : Type u_1} {B : Type u_2} {K : Type u_3}
   exact ⟨IsAlgClosed.lift⟩
 
 /- English proof (translation)
-Establish `hp : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Take `⟨Q, -, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := S) (RingHom.ker ψ) ⊥ (by`. Introduce `r hr`. Establish `h0 : algebraMap R S r = 0` using `by simpa using hr`. Establish `: r = 0` using `hinj (by simpa using h0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[this])`. Set `f : R ⧸ RingHom.ker ψ →+* S ⧸ Q` to `Ideal.quotientMap Q (algebraMap R S) hQp.ge`. Establish `hf : Function.Injective f` using `Ideal.quotientMap_injective' hQp.le`. Use `letI : Algebra (R ⧸ RingHom.ker ψ) (S ⧸ Q) := f.toAlgebra`. Use `letI : Algebra (R ⧸ RingHom.ker ψ) K := (RingHom.kerLift ψ).toAlgebra`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.IsIntegral (R ⧸ RingHom.ker ψ) (S ⧸ Q) := by`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨P, hP, hs⟩` from `Algebra.IsIntegral.isIntegral (R := R) s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P.map (Ideal.Quotient.mk _), hP.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (algebraMap (R ⧸ RingHom.ker ψ) (S ⧸ Q)).comp (Ideal.Quotient.mk _) = (Ideal.Quotient.mk Q).comp (algebraMap R S)`. Use extensionality with `r`. Both sides reduce to the same expression. Rewrite using `[Polynomial.eval₂_map, hc, ← Polynomial.hom_eval₂, hs, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g⟩ : Nonempty ((S ⧸ Q) →ₐ[R ⧸ RingHom.ker ψ] K)` from `exists_algHom_of_injective hf (RingHom.kerLift_injective ψ)`. Use `⟨(g : (S ⧸ Q) →+* K).comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Use `g.commutes (Ideal.Quotient.mk _ r)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_comp_algebraMap_eq {R : Type u_1} {S : Type u_2} {K : Type u_3}
     [CommRing R] [CommRing S] [Field K] [IsAlgClosed K] [Algebra R S] [Algebra.IsIntegral R S]

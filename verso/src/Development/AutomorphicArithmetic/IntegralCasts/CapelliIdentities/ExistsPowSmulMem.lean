@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ _ ϖ hϖ A B hA hB`. Establish `h1 : ∀ x ∈ Submodule.span K (↑B : Set X), ∃ d : O, d ≠ 0 ∧ d • x ∈ B`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, B.smul_mem _ hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, B.smul_mem _ B.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨e, he, hey⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Use `B.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `B.smul_mem _ hdx`. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `B.smul_mem _ hey`. Consider the case `smul r x _ hx`. Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨⟨n, e⟩, hne⟩` from `IsLocalization.surj (nonZeroDivisors O) r`. Use `⟨d * e, mul_ne_zero hd (nonZeroDivisors.ne_zero e.2), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (e : O) • r • x = n • x`. Rewrite using `[← algebraMap_smul K (e : O), smul_smul, mul_comm, hne, algebraMap_smul]`. Rewrite using `[mul_smul, h, smul_smul, mul_comm, mul_smul]`. Conclude with `B.smul_mem _ hdx`. Establish `h2 : ∀ x : X, ∃ k : ℕ, ϖ ^ k • x ∈ B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨d, hd, hdx⟩` from `h1 x (hB ▸ Submodule.mem_top)`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hd hϖ`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Conclude with `B.smul_mem _ hdx`. Use `choose f hf using h2`. Take `⟨s, rfl⟩` from `hA`. Use `⟨s.sup f, fun a ha => ?_⟩` and prove the remaining obligations. Proceed by induction on `ha using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le (Finset.le_sup (f := f) (Finset.mem_coe.1 hx))`. Rewrite using `[hm, add_comm, pow_add, mul_smul]`. Conclude with `B.smul_mem _ (hf x)`. Consider the case `zero => exact B.smul_mem _ B.zero_mem`.
-
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `B.add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `B.smul_mem _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsPowSmulMem.exists_pow_smul_mem :
     ∀ {O K X : Type} [inst : CommRing O] [inst_1 : IsDomain O]

@@ -21,14 +21,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 instance borelIdele : BorelSpace (AE F E)ˣ := ⟨rfl⟩
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaSum_smul' {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     thetaSum F (c • Φ) = c * thetaSum F Φ := by
   simp only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta, map_smul, thetaSum_smul']`. Conclude with `integral_const_mul c _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (c : ℂ)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h : UA σ W.J) : M.I om (c • Φ) h = c * M.I om Φ h := by
@@ -36,7 +36,7 @@ theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (o
   exact integral_const_mul c _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_mul_transpose {R : Type} [CommRing R] {n d : ℕ} (y : Fin n → R) (x : Fin d → R)
     (N : Matrix (Fin d) (Fin d) R) : Matrix.vecMulVec y x * Nᵀ = Matrix.vecMulVec y (N *ᵥ x) := by
@@ -47,7 +47,7 @@ theorem vecMulVec_mul_transpose {R : Type} [CommRing R] {n d : ℕ} (y : Fin n �
   ring
 
 /- English proof (translation)
-Establish `: (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E)`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `r s`. Simplify using `[cA, GlobalTheory.ThK.Inhab.conj_conj h]`. Conclude with `AlgHom.congr_fun this x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x := by
   have : (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E) := by
@@ -57,7 +57,7 @@ theorem cA_cA (h : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x := by
   exact AlgHom.congr_fun this x
 
 /- English proof (translation)
-Establish `: Units.map (cA σ).toMonoidHom x = GlobalTheory.Doubling.conjUnit σ x`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression. Rewrite using `[this, GlobalTheory.Doubling.absE_conjUnit]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem absE_cA (x : (AE F E)ˣ) : absE F E (Units.map (cA σ).toMonoidHom x) = absE F E x := by
   have : Units.map (cA σ).toMonoidHom x = GlobalTheory.Doubling.conjUnit σ x := by
@@ -71,9 +71,9 @@ end GlobalTheory.ConeSmallLaw
 namespace GlobalTheory.ConeSmallLaw
 
 /- English proof (translation)
-Establish `h1 : mat m *ᵥ incV F H'.x = t.1 • incV F H'.x` using `hL.1`. Simplify using `only [actAB, shiftB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.smul_mul]`. Rewrite using `[vecMulVec_mul_transpose, show ((m : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = mat m from rfl, h1, Matrix.vecMulVec_smul, smul_smul]`. Use `congr 1`. Establish `e1 : (t : AE F E) = cA σ ((Units.map (cA σ).toMonoidHom t : (AE F E)ˣ) : AE F E)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `[cA_cA hcm]`. Rewrite using `[Units.val_mul, map_mul, mul_assoc, e1, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_shiftB {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) {n n₁ d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁} (H : Plane E n n₁)
@@ -89,9 +89,9 @@ theorem act_shiftB {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [Units.val_mul, map_mul, mul_assoc, e1, ← map_mul, Units.inv_mul, map_one, mul_one]
 
 /- English proof (translation)
-Establish `hspl` using `T.weil'.isUSplitting`. Establish `hΨ' : om' (k, h) Ψ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))` using `hspl.pres _ _ hΨ`. Establish `h1 : om' (k, m * h) Ψ = om' (1, m) (om' (k, h) Ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `h2 : G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (1, m) (om' (k, h) Ψ)) = om' (1, m) (G.M'.co.rho B.ψ (shiftB σ H H' (l * (Units.map (cA σ).toMonoidHom t)⁻¹)) (om' (k, h) Ψ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hspl.impl (1, m) _ _ hΨ']`. Use `congr 1`. Conclude with `(act_shiftB T.base.cm H H' t m hL l).symm`. Establish `hρ` using `GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ T.base.std (shiftB σ H H' (l * (Units.map (cA σ).toMonoidHom t)⁻¹)) _ hΨ'`. Rewrite using `[h1, h2, GlobalTheory.T.eisenstein_evaluation_triple_torus hKP F E σ B a b G G₁ H H' cfg e' he' X om om' om₁ om₁' T T₁ t m hL _ hρ, I_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrand_levi (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b}
@@ -117,7 +117,7 @@ theorem integrand_levi (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [Numbe
   rw [h1, h2, GlobalTheory.T.eisenstein_evaluation_triple_torus hKP F E σ B a b G G₁ H H' cfg e' he' X om om' om₁ om₁' T T₁ t m hL _ hρ, I_smul]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hG.even`. Establish `h1` using `hG.lt`. Establish `h2 : 2 * ((a - (b + 2)) / 2 + 1) + b = a` using `by omega`. Establish `h3 : (2 * (((a - (b + 2)) / 2 + 1 : ℕ) : ℝ) + b : ℝ) = a` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} (hG : G.IsGood B) :
@@ -129,7 +129,7 @@ theorem exp_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   linarith
 
 /- English proof (translation)
-Rewrite using `[inv_pow, mul_inv, inv_inv, inv_div]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem scalar_id (A Bt R P : ℂ) (hA : A ≠ 0) (hB : Bt ≠ 0) (hR : R ≠ 0) (N : ℕ) :
     A * P * (A / Bt * (R⁻¹) ^ N)⁻¹ = Bt * (P * R ^ N) := by
@@ -137,7 +137,7 @@ theorem scalar_id (A Bt R P : ℂ) (hA : A ≠ 0) (hB : Bt ≠ 0) (hR : R ≠ 0)
   field_simp
 
 /- English proof (translation)
-Establish `h` using `map_mul (absE F E) l l⁻¹`. Rewrite `h` using `[mul_inv_cancel, map_one]`. Establish `: absE F E l ≠ 0` using `left_ne_zero_of_mul_eq_one h.symm`. Conclude with `pos_iff_ne_zero.mpr this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absE_pos {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (l : (AE F E)ˣ) :
     (0 : ℝ) < absE F E l := by
@@ -147,21 +147,19 @@ theorem absE_pos {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact_mod_cast pos_iff_ne_zero.mpr this
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' T T₁ Φ' hΦ' t m hL h`. Establish `hS : Φ' ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))`. Use `Submodule.span_le.mpr ?_ hΦ'` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, hv, -, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hv, T.geo.hM'.std] with v h1 h2`. Rewrite using `[h1, h2]`. Take `⟨u, hu⟩ : ∃ u : (AE F E)ˣ, u = (Units.map (cA σ).toMonoidHom t)⁻¹` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : ℕ, N = (a - (b + 2)) / 2 + 1` from `⟨_, rfl⟩`. Rewrite using `[← hN]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hν0 : ∀ l : (AE F E)ˣ, (X.ν l : ℂ) ≠ 0` using `fun l => Circle.coe_ne_zero _`. Establish `habs0 : ∀ l : (AE F E)ˣ, ((absE F E l : ℝ) : ℂ) ≠ 0` using `fun l => Complex.ofReal_ne_zero.mpr (absE_pos l).ne'`. Establish `hin : ∀ k : K, (∫ l, G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, m * h) Φ'))) 1 * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ (N : ℂ) ∂μ) = ((X.α t : ℂ) * (((absE F E t : ℝ) ^ ((b : ℝ) / 2) : ℝ) : ℂ)) * ((X.ν u : ℂ) * ((absE F E u : ℝ) : ℂ) ^ N)⁻¹ * ∫ l, G₁.M'.I om₁ …`. Introduce `k`. Rewrite using `[← integral_mul_right_eq_self (μ := μ) (fun l => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1 * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ (N : ℂ)) u, ← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integrand_levi hKP cfg he' T T₁ t m hL k.1 h Φ' hS l, ← hu]`. Establish `h1` using `hν0 u`. Establish `h2` using `habs0 u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.cpow_natCast, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul, mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hα` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' T) t`. Establish `hβ` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV T) t`. Establish `hνu : X.ν u = X.α t / X.β t`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_inv, Chars.ν, MonoidHom.div_apply, hα, hβ, inv_div_inv, inv_div]`. Establish `habsu : ((absE F E u : ℝ) : ℂ) = (((absE F E t : ℝ) : ℂ))⁻¹`. Rewrite using `[hu, map_inv, absE_cA, NNReal.coe_inv, Complex.ofReal_inv]`. Establish `hr` using `absE_pos t`. Use `show GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (N : ℂ) (m * h) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.ConeSmall.coneI`. Rewrite using `[integral_congr_ae (Eventually.of_forall hin), integral_const_mul]`. Use `congr 1`. Rewrite using `[show (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ) = (((absE F E t : ℝ) ^ ((b : ℝ) / 2) : ℝ) : ℂ) * ((absE F E t : ℝ) : ℂ) ^ N by`. Rewrite using `[← exp_add T.geo, ← hN, Real.rpow_add hr, Real.rpow_natCast, Complex.ofReal_mul, Complex.ofReal_pow]]`.
-
-Rewrite using `[hνu, habsu, Circle.coe_div]`. Conclude with `scalar_id _ _ _ _ (Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (habs0 t) N`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneI_law : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

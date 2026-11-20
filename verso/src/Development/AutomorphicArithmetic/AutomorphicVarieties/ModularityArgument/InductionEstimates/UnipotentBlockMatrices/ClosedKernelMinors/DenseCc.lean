@@ -8,7 +8,7 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x => β x • v` using `hβ.smul continuous_const`. Establish `h2 : HasCompactSupport fun x => β x • v` using `hc.smul_right (f' := fun _ => v)`. Establish `h3 : MemLp (fun x => β x • v) 2 (volume : Measure ℝ)` using `h1.memLp_of_hasCompactSupport h2`. Conclude with `⟨h3.toLp _, h3.coeFn_toLp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem ex_rep (d : ℕ) (β : ℝ → ℂ) (v : Eu d) (hβ : Continuous β) (hc : HasCompactSupport β) :
     ∃ u : L (Eu d), ∀ᵐ x : ℝ, u x = β x • v := by
@@ -18,13 +18,13 @@ private theorem ex_rep (d : ℕ) (β : ℝ → ℂ) (v : Eu d) (hβ : Continuous
   exact ⟨h3.toLp _, h3.coeFn_toLp⟩
 
 /- English proof (translation)
-Establish `hli : LocallyIntegrable (fun x => w x) (volume : Measure ℝ)` using `(Lp.memLp w).locallyIntegrable (by norm_num)`. Use `hU.ae_eq_zero_of_integral_contDiff_smul_eq_zero (hli.locallyIntegrableOn U) ?_` and prove the remaining obligations. Introduce `g hg hc hs`. Establish `hint : Integrable (fun x => g x • w x) (volume : Measure ℝ)` using `hli.integrable_smul_left_of_hasCompactSupport hg.continuous hc`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_zero_right, ← integral_inner hint]`. Establish `hβ : Continuous fun x => (g x : ℂ)` using `Complex.continuous_ofReal.comp hg.continuous`. Establish `hβc : HasCompactSupport fun x => (g x : ℂ)` using `hc.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Take `⟨u, hu⟩` from `ex_rep d _ v hβ hβc`. Establish `h0` using `hw _ v u hβ hβc (fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: g x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hs h)`. Simplify using `[this]) hu`. Rewrite `h0` using `[L2.inner_def]`. Rewrite using `[← h0]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hu] with x hx`. Rewrite using `[hx, inner_smul_left, Complex.conj_ofReal, ← Complex.coe_smul, inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orth_zero (d : ℕ) (U : Set ℝ) (hU : IsOpen U) (w : L (Eu d))
     (hw : ∀ (β : ℝ → ℂ) (v : Eu d) (u : L (Eu d)), Continuous β → HasCompactSupport β → (∀ x, x ∉ U → β x = 0) →
@@ -51,13 +51,13 @@ private theorem orth_zero (d : ℕ) (U : Set ℝ) (hU : IsOpen U) (w : L (Eu d))
   rw [hx, inner_smul_left, Complex.conj_ofReal, ← Complex.coe_smul, inner_smul_right]
 
 /- English proof (translation)
-Introduce `d`. Use `⟨?_, ex_rep d, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, eq_bot_iff]`. Introduce `w hw`. Establish `h` using `orth_zero d univ isOpen_univ w fun β v u h1 h2 _ h4 => (Submodule.mem_orthogonal _ _).1 hw u (Submodule.subset_span ⟨β, v, h1, h2, h4⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_bot]`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [h, Lp.coeFn_zero (Eu d) 2 (volume : Measure ℝ)] with x hx h0`. Rewrite using `[hx (mem_univ x), h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s u hu`. Rewrite using `[← Submodule.topologicalClosure_coe, ← Submodule.orthogonal_orthogonal_eq_closure, SetLike.mem_coe, Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `h` using `orth_zero d (Ioi s) isOpen_Ioi w fun β v u h1 h2 h3 h4 => (Submodule.mem_orthogonal _ _).1 hw u (Submodule.subset_span ⟨β, v, h1, h2, fun x hx => h3 x (fun h => not_lt.2 hx h), h4⟩)`. Rewrite using `[L2.inner_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [h, hu] with x h1 h2`. Break down `le_or_gt x s with hx | hx` into its components or cases. Simplify using `[h2 hx]`. Simplify using `[h1 hx]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.denseCc :
     ∀ (d : ℕ), Dense ((Submodule.span ℂ {u : L (Eu d) | ∃ (β : ℝ → ℂ) (v : Eu d), Continuous β ∧ HasCompactSupport β ∧ ∀ᵐ x : ℝ, u x = β x • v} :

@@ -9,17 +9,15 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.DefU.AU
 
 /- English proof (translation)
-Introduce `E _ _ _ n π w σ σ' hw h h'`. Take `⟨U, rfl⟩` from `AU.mk_surjective π`. Take `⟨σ, rfl⟩` from `Quotient.exists_rep (s := SmIrr.setoid _) σ`. Take `⟨σ', rfl⟩` from `Quotient.exists_rep (s := SmIrr.setoid _) σ'`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, -, -, hc⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w`. Set `s : GL (Fin n) (w.adicCompletion E) →* UA E n` to `(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom`. Establish `hs : ∀ y, cLoc w (s y) = y` using `fun y => by`. Use `he (e.symm y)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `key : ∀ τ : SmIrr (GL (Fin n) (w.adicCompletion E)), U.IsLocComp w τ → ∃ f : τ.ρ.IntertwiningMap (U.rep.comp s), f ≠ 0`. Introduce and unpack `τ ⟨-, f, h0, hf, h2⟩`. Use `⟨⟨f.codRestrict U.V hf, fun y => LinearMap.ext fun v => Subtype.ext ?_⟩, fun e0 => h0 ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 (e.symm y) v`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ((cLoc w).comp (locU n w).subtype) (e.symm y) = y` using `hs y`. Rewrite `h3` using `[hy]`. Conclude with `h3`. Conclude with `LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun e0 v)`. Take `⟨f, hf⟩` from `key σ h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f', hf'⟩` from `key σ' h'`. Establish `hcomm : ∀ g : UA E n, ∃ u, ∀ y, Commute ((s u)⁻¹ * g) (s y)` using `fun g => ⟨e (r g), fun y => by`. Establish `: s (e (r g)) = (r g : UA E n)` using `congrArg Subtype.val (e.symm_apply_apply (r g))`. Rewrite using `[this]`. Conclude with `hc g (e.symm y)⟩`.
-
-Conclude with `Quotient.sound ((GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ U.rep s σ.ρ σ'.ρ U.isIrreducible_rep σ.irred σ'.irred hcomm f hf).2 f' hf')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLoc_unique_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AU E n)
     (w : HeightOneSpectrum (𝓞 E)) (σ σ' : Irr (GL (Fin n) (w.adicCompletion E))),

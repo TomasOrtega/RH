@@ -20,9 +20,9 @@ def SRel {h n' n : ℕ} {B' B : Type} [CommRing B'] [CommRing B] {ζ' : B'} {ζ 
   ∃ φ, SRelBy c' c d' d f φ
 
 /- English proof (translation)
-Unfold `SRel SRelBy SiegPB`. Simplify using `only [pow_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hpb, ⟨φ₂, hsq, hiso⟩, hlev⟩`. Conclude with `⟨φ, φ₂, hpb, hsq, hiso, hlev⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨φ, φ₂, hpb, hsq, hiso, hlev⟩`. Conclude with `⟨φ, hpb, ⟨φ₂, hsq, hiso⟩, hlev⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem sRel_one_one_iff {h n : ℕ} {B' B : Type} [CommRing B'] [CommRing B] {ζ' : B'} {ζ : B} {S' S : Scheme.{0}}
     {s' : S' ⟶ Sp B'} {s : S ⟶ Sp B} (c' : SiegPre h n ζ' s') (c : SiegPre h n ζ s) (f : S' ⟶ S) :

@@ -20,18 +20,18 @@ namespace KleimanNefF
 variable {F : Type} [Field F] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hV.1, (NumbersDVR.VocabMultiHomogIdeal.proof NumbersDVR.VocabMultiHomog.proof F K ι V).1 hV.2.1, hV.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMultiProjPrime_dvr [DecidableEq K] {V : Ideal (MRingOver F ι)} (hV : IsMultiProjPrime V) :
     NumbersDVR.IsMultiProjPrime (R := F) (ι := ι) V :=
   ⟨hV.1, (NumbersDVR.VocabMultiHomogIdeal.proof NumbersDVR.VocabMultiHomog.proof F K ι V).1 hV.2.1, hV.2.2⟩
 
 /- English proof (translation)
-Establish `hVd` using `isMultiProjPrime_dvr hV.1`. Establish `hrel : FieldNumbers.relDim V = ((n + 1 : ℕ) : WithBot (WithTop ℤ))` using `(FieldNumbers.CutRegular.relDim_eq_natCast_iff V (n + 1)).2 hV.2`. Establish `key : ∀ (s : MRingOver F ι) (b : K → ℕ), NumbersDVR.IsMultiHomog s b → s ∉ V → ReciprocityTheory.ChartRestriction.G.Geo.divCycle V s W ≠ 0 → IsProjVarF W n`. Introduce `s b hs hsV hne`. Establish `hne' : NumbersDVR.divCycle V s W ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← NumbersDVR.VocabDivCycle.proof F K ι V s W]`. Conclude with `hne` after adjusting the coercions. Take `⟨hW1, hW2⟩` from `FieldNumbers.DivCycleSupport.full F K ι V hVd n hrel b s hs hsV W hne'`. Conclude with `⟨⟨hW1.isPrime, (NumbersDVR.VocabMultiHomogIdeal.proof NumbersDVR.VocabMultiHomog.proof F K ι W).2 hW1.multiHomog, hW1.relevant⟩, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W n).1 hW2⟩`. Rewrite `hW` using `[Finsupp.mem_support_iff, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply, Finsupp.mapRange_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hfW : ReciprocityTheory.ChartRestriction.G.Geo.divCycle V f W = 0`. Use `key g bg hg hgV fun h => hW ?_` and prove the remaining obligations. Rewrite using `[hfW, h]`. Simplify using the standard rewrite rules. Conclude with `key f bf hf hfV hfW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isProjVarF_of_mem_support [DecidableEq K] {V : Ideal (MRingOver F ι)} {n : ℕ}
     (hV : IsProjVarF V (n + 1)) {f g : MRingOver F ι} {bf bg : K → ℕ}
@@ -59,13 +59,13 @@ theorem isProjVarF_of_mem_support [DecidableEq K] {V : Ideal (MRingOver F ι)} {
   · exact key f bf hf hfV hfW
 
 /- English proof (translation)
-Establish `hJ : IsFieldIntersection (F` using `F) (ι := ι) (fun V _ L => NumbersDVR.intNum F V L) := NumbersDVR.IntNumIsFieldIntersection.full F K ι`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `V L hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose i hi using hV.1.2.2`. Conclude with `(hI.1 V L i hV hi).trans (hJ.1 V L i hV hi).symm`. Consider the case `succ n ih`. Introduce `V L hV`. Take `⟨bf, bg, f, g, hf, hg, hfV, hgV, hb⟩` from `FieldNumbers.ExistsForm.full F K ι V (isMultiProjPrime_dvr hV.1) (L (Fin.last n))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsRatSection V (L (Fin.last n)) f g` using `⟨bf, bg, (NumbersDVR.VocabMultiHomog.proof F K ι f bf).2 hf, (NumbersDVR.VocabMultiHomog.proof F K ι g bg).2 hg, hfV, hgV, fun k => congrFun hb k⟩`. Establish `e1 : I V (n + 1) L = ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval (fun W => I W n (Fin.init L)) (ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv V f g)`. Establish `h` using `hI.2 V n (Fin.init L) (L (Fin.last n)) f g hV hs`. Rewrite `h` using `[Fin.snoc_init_self]`. Then use the resulting hypothesis. Establish `e2 : NumbersDVR.intNum F V L = ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval (fun W => NumbersDVR.intNum F W (Fin.init L)) (ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv V f g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hJ.2 V n (Fin.init L) (L (Fin.last n)) f g hV hs`. Rewrite `h` using `[Fin.snoc_init_self]`. Then use the resulting hypothesis. Rewrite using `[e1, e2, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval]`. Use `Finsupp.sum_congr fun W hW => ?_` and prove the remaining obligations. Rewrite using `[ih W _ (isProjVarF_of_mem_support hV hf hg hfV hgV hW)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_intNum [DecidableEq K] {I : IFamily F ι} (hI : IsFieldIntersection I) :
     ∀ (n : ℕ) (V : Ideal (MRingOver F ι)) (L : Fin n → K → ℤ), IsProjVarF V n →
@@ -98,7 +98,7 @@ theorem eq_intNum [DecidableEq K] {I : IFamily F ι} (hI : IsFieldIntersection I
     rw [ih W _ (isProjVarF_of_mem_support hV hf hg hfV hgV hW)]
 
 /- English proof (translation)
-Rewrite using `[eq_intNum hI n V _ hV, eq_intNum hI n V _ hV, eq_intNum hI n V _ hV]`. Establish `hVd` using `isMultiProjPrime_dvr hV.1`. Conclude with `FieldNumbers.IntNumAdd.full F K ι V hVd.multiHomog hVd.relevant n ((FieldNumbers.CutRegular.relDim_eq_natCast_iff V n).2 hV.2) L j x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_update_add₂ {I : IFamily F ι} (hI : IsFieldIntersection I) {V : Ideal (MRingOver F ι)} {n : ℕ}
     (hV : IsProjVarF V n) (L : Fin n → K → ℤ) (j : Fin n) (x y : K → ℤ) :
@@ -110,9 +110,9 @@ theorem map_update_add₂ {I : IFamily F ι} (hI : IsFieldIntersection I) {V : I
     ((FieldNumbers.CutRegular.relDim_eq_natCast_iff V n).2 hV.2) L j x y
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h` using `map_update_add₂ hI hV L j 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, zero_smul, zero_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ m ih`. Rewrite using `[Nat.cast_succ, add_smul, one_smul, map_update_add₂ hI hV, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsmul_position {I : IFamily F ι} (hI : IsFieldIntersection I) {V : Ideal (MRingOver F ι)} {n : ℕ}
     (hV : IsProjVarF V n) (L : Fin n → K → ℤ) (j : Fin n) (m : ℕ) (x : K → ℤ) :
@@ -130,19 +130,19 @@ theorem nsmul_position {I : IFamily F ι} (hI : IsFieldIntersection I) {V : Idea
 end KleimanNefF
 
 /- English proof (translation)
-Introduce `F _ K _ ι _ I V n a hI hV hnef`. Set `_ : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Set `H : K → ℤ` to `fun _ => ((1 : ℕ) : ℤ)`. Set `c : Finset (Fin n) → ℤ` to `fun S => I V n (fun i => if i ∈ S then H else a i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ q : ℕ, 1 ≤ q → 0 ≤ ∑ S : Finset (Fin n), (q : ℤ) ^ Sᶜ.card * c S`. Introduce `q hq`. Establish `hamp` using `fun j => hKA F K ι I V n (a j) q 1 hI hV (hnef j) hq le_rfl`. Use `choose p hp hgen _ using hamp`. Set `B : Fin n → K → ℤ` to `fun j => p j • (q • a j + H)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ I V n B` using `hGP F K ι I V n B hI hV hgen`. Establish `hposition : ∀ (L : Fin n → K → ℤ) (i : Fin n), I V n (Function.update L i (B i)) = ((q : ℤ) * p i) * I V n (Function.update L i (a i)) + (p i : ℤ) * I V n (Function.update L i H)`. Introduce `L i`. Establish `e : B i = ((q * p i : ℕ) : ℤ) • a i + ((p i : ℕ) : ℤ) • H`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, Pi.add_apply, Pi.smul_apply]`. Simplify using `only [H, nsmul_eq_mul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, KleimanNefF.map_update_add₂ hI hV, KleimanNefF.nsmul_position hI hV, KleimanNefF.nsmul_position hI hV]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp` using `Kleiman.sum_expand_positions (I V n) B a (fun _ => H) (fun i => (q : ℤ) * p i) (fun i => (p i : ℤ)) hposition`. Establish `hw : ∀ S : Finset (Fin n), (∏ i ∈ S, (p i : ℤ)) * (∏ i ∈ Sᶜ, ((q : ℤ) * p i)) = (∏ i, (p i : ℤ)) * (q : ℤ) ^ Sᶜ.card`. Introduce `S`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, ← mul_assoc, mul_comm _ ((q : ℤ) ^ _), mul_assoc, Finset.prod_mul_prod_compl, mul_comm]`. Simplify using `only [hw, mul_assoc] at hexp`. Rewrite `hexp` using `[← Finset.mul_sum]`. Establish `hprod : 0 < ∏ i, (p i : ℤ)` using `Finset.prod_pos fun i _ => by exact_mod_cast hp i`. Rewrite `hB` using `[hexp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_nonneg_iff_of_pos_left hprod).mp hB`. Establish `h0` using `Kleiman.nonneg_of_poly c key`. Simplify `h0` using `[c]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem KleimanNefF.proof (hKA : KH.KAmpStatement) (hGP : GeneratedProductNonneg.Statement) :
     KH.KleimanNefFStatement := by

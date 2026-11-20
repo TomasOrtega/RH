@@ -12,9 +12,9 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_box]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_of_le (hM i j) (hy j)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_box {n : Type} [Fintype n] {M : Matrix n n k} (hM : IntM M) {c : kˣ} {y : n → k}
     (hy : y ∈ box n c) : M *ᵥ y ∈ box n c := by
@@ -26,21 +26,21 @@ theorem mulVec_mem_box {n : Type} [Fintype n] {M : Matrix n n k} (hM : IntM M) {
   exact mul_le_of_le_one_of_le (hM i j) (hy j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.toBlocks₁₁, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_mul {n : Type} [Fintype n] (M N : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) :
     (M * N).toBlocks₁₁ = M.toBlocks₁₁ * N.toBlocks₁₁ := by
   ext i j; simp [Matrix.mul_apply, Matrix.toBlocks₁₁, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_one {n : Type} [Fintype n] [DecidableEq n] :
     (1 : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k).toBlocks₁₁ = 1 := by
   ext i j; simp [Matrix.toBlocks₁₁, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `(r | r) (c | c)`. Simplify using `[withCol, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toBlocks₁₁]`. Simplify using `[withCol, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toBlocks₁₁, Matrix.mulVec, dotProduct]`. Conclude with `r.elim0`. Conclude with `r.elim0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem withCol_mul {n n' : Type} [Fintype n] (κ : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) (x₀ : Matrix n n' k)
     (y : n → k) : κ * withCol x₀ y = withCol (κ.toBlocks₁₁ * x₀) (κ.toBlocks₁₁ *ᵥ y) := by
@@ -51,9 +51,9 @@ theorem withCol_mul {n n' : Type} [Fintype n] (κ : Matrix (n ⊕ Fin 0) (n ⊕ 
   · exact r.elim0
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, mem_box, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Pi.smul_apply, smul_eq_mul]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hc : 0 < valuation k (c : k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).2 c.ne_zero`. Rewrite using `[inv_mul_le_iff₀ hc, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_eq_preimage {n : Type} (c : kˣ) :
     (box n c : Set (n → k)) = (fun y : n → k => ((c⁻¹ : kˣ) : k) • y) ⁻¹' Set.pi Set.univ fun _ => (𝒪[k] : Set k) := by
@@ -67,16 +67,16 @@ theorem box_eq_preimage {n : Type} (c : kˣ) :
   rw [inv_mul_le_iff₀ hc, mul_one]
 
 /- English proof (translation)
-Rewrite using `[box_eq_preimage]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => (valuation k).isOpen_integer).preimage (continuous_const_smul _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_box {n : Type} [Fintype n] (c : kˣ) : IsOpen (box n c : Set (n → k)) := by
   rw [box_eq_preimage]
   exact (isOpen_set_pi Set.finite_univ fun _ _ => (valuation k).isOpen_integer).preimage (continuous_const_smul _)
 
 /- English proof (translation)
-Establish `hK : IsCompact (𝒪[k] : Set k)` using `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace 𝒪[k]))`. Establish `e : (box n c : Set (n → k)) = (fun y : n → k => (c : k) • y) '' Set.pi Set.univ fun _ => (𝒪[k] : Set k)`. Rewrite using `[box_eq_preimage, Set.image_eq_preimage_of_inverse]`. Introduce `y`. Simplify using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `y`. Simplify using `[smul_smul]`. Rewrite using `[e]`. Conclude with `(isCompact_univ_pi fun _ => hK).image (continuous_const_smul _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box {n : Type} [Fintype n] (c : kˣ) : IsCompact (box n c : Set (n → k)) := by
   have hK : IsCompact (𝒪[k] : Set k) := isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace 𝒪[k]))
@@ -88,9 +88,9 @@ theorem isCompact_box {n : Type} [Fintype n] (c : kˣ) : IsCompact (box n c : Se
   exact (isCompact_univ_pi fun _ => hK).image (continuous_const_smul _)
 
 /- English proof (translation)
-Take `⟨t, -, ht⟩` from `(isCompact_box (n := n) c₁).elim_nhds_subcover (fun y => (fun z => z - y) ⁻¹' (box n c₂ : Set (n → k))) (fun y _ => ((isOpen_box c₂).preimage (continuous_id.sub continuous_const)).mem_nhds (by show y - y ∈ box n c₂; rw [sub_self]; exact zero_mem _))`. Use `(t.finite_toSet.image (Submodule.Quotient.mk (p := box n c₂))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨z, hz, hyz⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Use `⟨z, hz, (Submodule.Quotient.eq _).2 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem hyz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_image_box {n : Type} [Fintype n] (c₁ c₂ : kˣ) :
     ((Submodule.Quotient.mk (p := box n c₂)) '' (box n c₁ : Set (n → k))).Finite := by
@@ -105,7 +105,7 @@ theorem finite_image_box {n : Type} [Fintype n] (c₁ c₂ : kˣ) :
   rw [← neg_sub]; exact neg_mem hyz
 
 /- English proof (translation)
-Unfold `om at hx`. Use `right_ne_zero_of_mul hx` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem om_one_ne {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (h : GL b k) (Φ : Matrix b a k → ℂ) (x : Matrix b a k) (hx : om μ 1 h Φ x ≠ 0) : Φ ((h⁻¹ : GL b k).val * x) ≠ 0 := by
@@ -114,7 +114,7 @@ theorem om_one_ne {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decidabl
   simpa using this
 
 /- English proof (translation)
-Unfold `om at *`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mul] at *`. Conclude with `mul_ne_zero (left_ne_zero_of_mul hx) (h (right_ne_zero_of_mul hx))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_g_ne {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (g : GL a k) (Φ : Matrix b a k → ℂ) (x x' : Matrix b a k) (hx : om μ g 1 Φ x ≠ 0)
@@ -129,11 +129,9 @@ namespace GlobalTheory.QPl.CoupStab
 open GlobalTheory.StepData GlobalTheory.SplitWeil
 
 /- English proof (translation)
-Establish `hPhi : ∀ x, T.Phi s 0 rfl x ≠ 0 → T.Phi s 0 rfl (κ.val * x) ≠ 0`. Introduce `x hx`. Establish `e` using `congrFun ((hL.1 s 0 rfl).2 ⟨κ⁻¹, inv_mem hκ⟩) x`. Establish `hr : om (T.mu (s + 1)) 1 (κ⁻¹ : GL (X (s + 1) ⊕ Fin 0) k) (T.Phi s 0 rfl) x ≠ 0`. Rewrite using `[e, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (Units.ne_zero _) hx`. Simplify using `using om_one_ne _ _ _ _ hr`. Unfold `Chain.Psi at *`. Use `om_g_ne _ _ _ _ _ h fun h' => ?_` and prove the remaining obligations. Rewrite using `[← withCol_mul, Matrix.mul_assoc]`.
-
-Conclude with `hPhi _ h'`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] {Z : Type} [Fintype Z] [DecidableEq Z]
@@ -152,15 +150,15 @@ theorem psi_ne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNon
   exact hPhi _ h'
 
 /- English proof (translation)
-Introduce `D c v χ Q`. Establish `hB : ∀ {g : GL (Q.X (Q.s + 1) ⊕ Fin 0) Q.k}, g ∈ (Q.T.lev (Q.s + 1) 0 rfl).J → IntM g.val.toBlocks₁₁` using `fun hg i j => intM_of_mem_KO (Q.le _ _ _ hg) (.inl i) (.inl j)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(finite_image_box Q.c₁ Q.c₂).subset (by rintro _ ⟨y, hy, rfl, -⟩; exact ⟨y, hy, rfl⟩)`. Introduce `yb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ yb`. Use `⟨1, one_mem _, y, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, toBlocks₁₁_one, Matrix.one_mulVec]`. Introduce and unpack `_ _ ⟨g, hg, y, rfl, rfl⟩`. Use `⟨g⁻¹, inv_mem hg, _, rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← toBlocks₁₁_mul, Units.inv_mul, toBlocks₁₁_one, Matrix.one_mulVec]`. Introduce and unpack `_ _ _ ⟨g, hg, y, rfl, h1⟩ ⟨g', hg', y', h2, h3⟩`. Use `⟨g' * g, mul_mem hg' hg, y, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← h3, Units.val_mul, toBlocks₁₁_mul, ← Matrix.mulVec_mulVec]`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_sub]`. Conclude with `mulVec_mem_box (hB hg') ((Submodule.Quotient.eq _).1 (h1.trans h2.symm))`. Introduce and unpack `_ ⟨y₁, -, rfl, g, hg, x₀, hΨ⟩ _ ⟨κ, hκ, y, hy, rfl⟩`. Establish `hd : y - y₁ ∈ box _ Q.c₂` using `(Submodule.Quotient.eq _).1 hy`. Establish `hΨy : Q.T.Psi g x₀ y ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[show y = y₁ + (y - y₁) by abel, (Q.adapt g hg x₀ y₁).2 _ hd]; exact hΨ`. Conclude with `⟨_, mulVec_mem_box (hB hκ) ((Q.adapt g hg x₀ y).1 hΨy), rfl, g, hg, _, psi_ne Q.T Q.laws hκ g x₀ y hΨy⟩`.
+A detailed English derivation is pending.
 -/
 theorem coupIdx_stab : ∀ (D : D7) (c : Comm D) (v : VCom c) χ (Q : QAt v χ), (Q.T.coupIdx Q.A (box _ Q.c₁) (box _ Q.c₂)).Finite ∧ (∀ yb, SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb yb) ∧ (∀ yb yb', SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb yb' → SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb' yb) ∧ (∀ yb yb' yb'', SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb yb' → SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb' yb'' → SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb yb'') ∧ ∀ yb ∈ Q.T.coupIdx Q.A (box _ Q.c₁) (box _ Q.c₂), ∀ yb', SameOrb (Q.T.lev (Q.s + 1) 0 rfl).J (box _ Q.c₂) yb yb' → yb' ∈ Q.T.coupIdx Q.A (box _ Q.c₁) (box _ Q.c₂) := by
   intro D c v χ Q

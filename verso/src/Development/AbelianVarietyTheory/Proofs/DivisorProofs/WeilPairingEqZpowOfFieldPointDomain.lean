@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.WeilRoot
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN.ne'⟩`. Use `set y : Oˣ := w * (ζ ^ m)⁻¹ with hy`. Establish `hyN : y ^ N = 1`. Rewrite using `[hy, _root_.mul_pow, hw, _root_.one_mul, inv_pow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow, inv_one]`. Establish `hζ' : IsPrimitiveRoot (ζ : O) N` using `IsPrimitiveRoot.coe_units_iff.2 hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hiy⟩` from `hζ'.eq_pow_of_pow_eq_one (ξ := (y : O)) (by rw [← Units.val_pow_eq_pow_val, hyN, Units.val_one])`. Establish `hκ : IsPrimitiveRoot (κ ζ) N`. Establish `: NeZero (N : K)` using `⟨by simpa using (hu.map κ).ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic N κ]`. Conclude with `(hζ'.isRoot_cyclotomic hN).map`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκy : κ (y : O) = 1`. Establish `h' : κ (w : O) = κ ((ζ ^ m : Oˣ) : O)` using `congrArg (fun u : Kˣ => (u : K)) h`. Rewrite using `[hy, Units.val_mul, map_mul, h', ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `hi0 : i = 0`. Establish `h1 : κ (ζ : O) ^ i = 1` using `by rw [← map_pow, hiy, hκy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hκ.dvd_of_pow_eq_one i h1` as an intermediate fact. Conclude with `Nat.eq_zero_of_dvd_of_lt this hi`. Establish `hy1 : y = 1` using `Units.ext (by rw [← hiy, hi0, pow_zero, Units.val_one])`. Rewrite `hy1` using `[hy]`. Conclude with `mul_inv_eq_one.1 hy1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zpow_of_map_eq {O K : Type} [CommRing O] [IsDomain O] [Field K] (κ : O →+* K) {N : ℕ} (hN : 0 < N)
     (hu : IsUnit (N : O)) {ζ w : Oˣ} (hζ : IsPrimitiveRoot ζ N) (hw : w ^ N = 1) (m : ℤ)
@@ -63,27 +63,27 @@ namespace GlobalTheory.WeilRoot
 open GlobalTheory.CechPic GlobalTheory.DiagPairing
 
 /- English proof (translation)
-Introduce `O _ _ A _ _ hA P hPP N hN hNu u v hu hv ζ hζ m K _ κ H k _ ρ`. Take `⟨⟨hP, h₁, h₂, -⟩, hamp, -⟩` from `hPP`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over (Sp O)) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y + pc hP x' y` using `fun T x x' y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG (Sp O) A _ hA hD hamp P hP h₁ h₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over (Sp O)) (x y y' : T ⟶ A), pc hP x (y * y') = pc hP x y + pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG (Sp O) A _ hA hD hamp P hP h₁ h₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `lifts : ∀ z : 𝟙_ (Over (Sp O)) ⟶ A, z ^ N = 1 → ∀ p : (𝟙_ (Over (Sp O))).left, ∃ V : (𝟙_ (Over (Sp O))).left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz p => by`. Take `⟨θ, hθ⟩` from `exists_theta_diag hP hB hB' (k := N) (Out.overResι ⊤ ≫ z) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`. Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG hA hD (lifts u hu) (lifts v hv)`. Take `⟨c₁, hc₁⟩` from `CommutatorPairing.exists_weilIs hG hA hD (lifts 1 (one_pow N)) (lifts v hv)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD hc₁ hc₁`. Rewrite `h11` using `[_root_.mul_one]`. Establish `e₁ : c₁ = 1` using `mul_eq_left.1 (CommutatorPairing.weilIs_unique hG hA hD h11 hc₁)`. Establish `pw : ∀ n : ℕ, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (u ^ (n + 1)) v (c₀ ^ (n + 1))`. Introduce `n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa using hc₀`. Consider the case `succ n ih`. Rewrite using `[pow_succ u (n + 1), pow_succ c₀ (n + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD ih hc₀`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `pw (N - 1)`. Rewrite `hp` using `[Nat.sub_add_cancel hN, hu]`. Establish `hc₀N : c₀ ^ N = 1` using `CommutatorPairing.weilIs_unique hG hA hD hp (e₁ ▸ hc₁)`. Take `⟨w, rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 c₀`. Establish `hwN : w ^ N = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.Ex.Specialise.unitOn_bijective.1` to reduce the goal to its premises. Establish `e : unitOn (w ^ N) = unitOn w ^ N` using `by unfold unitOn; exact map_pow _ _ _`. Rewrite using `[e, hc₀N]`. Unfold `unitOn`. Conclude with `(map_one _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `spec : ∀ (F : Type) [Field F] (σ : O →+* F), Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (toUnit (Over.mk (spMap σ)) ≫ u) (toUnit (Over.mk (spMap σ)) ≫ v) (unitOn (Units.map σ.toMonoidHom w))`. Introduce `F _ σ`. Establish `hN'` using `CommPairing.weilIs_pull hG hA hD (toUnit (Over.mk (spMap σ))) hc₀`. Establish `hl : (toUnit (Over.mk (spMap σ))).left = spMap σ` using `rfl`. Rewrite `hN'` using `[hl, GlobalTheory.Ex.Specialise.map_unitOn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hN'`. Establish `e` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 (CommutatorPairing.weilIs_unique hG hA hD (spec K κ) H)`. Establish `hw : w = ζ ^ m` using `eq_zpow_of_map_eq κ hN hNu hζ hwN m e`. Rewrite using `[← hw]`. Conclude with `spec k ρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_zpow_of_fieldPoint : ∀ (O : Type) [CommRing O] [IsDomain O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), IsPPol A P → ∀ (N : ℕ), 0 < N → IsUnit (N : O) → ∀ (u v : 𝟙_ (Over (Sp O)) ⟶ A), u ^ N = 1 → v ^ N = 1 → ∀ (ζ : Oˣ), IsPrimitiveRoot ζ N → ∀ (m : ℤ) (K : Type) [Field K] (κ : O →+* K), Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (toUnit (Over.mk (spMap κ)) ≫ u) (toUnit (Over.mk (spMap κ)) ≫ v) (unitOn (Units.map κ.toMonoidHom (ζ ^ m))) → ∀ (k : Type) [Field k] (ρ : O →+* k), Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (toUnit (Over.mk (spMap ρ)) ≫ u) (toUnit (Over.mk (spMap ρ)) ≫ v) (unitOn (Units.map ρ.toMonoidHom (ζ ^ m))) := by
   intro O _ _ A _ _ hA P hPP N hN hNu u v hu hv ζ hζ m K _ κ H k _ ρ

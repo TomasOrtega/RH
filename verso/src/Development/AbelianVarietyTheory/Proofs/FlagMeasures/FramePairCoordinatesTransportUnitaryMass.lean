@@ -18,20 +18,18 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_smul_pointwise_iff_exists _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma mem_smul_lat (n : S.GLV) (Λ : Submodule L.O S.V) (v : S.V) :
     v ∈ n • Λ ↔ ∃ y ∈ Λ, n y = v :=
   Submodule.mem_smul_pointwise_iff_exists _ _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -, h2⟩`. Use `⟨h1, fun b => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `sub_eq_zero.1 (h2 _ (Submodule.mem_sup_left (FrameOnto.mem_spanTo S _ b.2)))`. Conclude with `sub_eq_zero.1 (h2 _ (Submodule.mem_sup_right (FrameOnto.mem_spanTo S _ b.2)))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : ∀ v ∈ S.ME, g v = v`. Establish `: S.ME ≤ LinearMap.eqLocus (g : S.V →ₗ[E] S.V) LinearMap.id`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `(h2 i).1`. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `(h2 i).2`. Conclude with `fun v hv => this hv`. Use `⟨h1, fun v => ⟨fun hv => ?_, fun hv => ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← g.injective (h3 _ hv)]` and apply the resulting hypothesis. Rewrite using `[h3 v hv]` and apply the resulting hypothesis. Rewrite using `[h3 v hv, sub_self]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_riemannRochSpace_iff_regularAt_everywhere (g : S.GLV) : g ∈ S.H0 ↔ (∀ x y, S.h (g x) (g y) = S.h x y) ∧
     ∀ b, g (S.f b) = S.f b ∧ g (S.f' b) = S.f' b := by
@@ -60,7 +58,7 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M 
 variable {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Rewrite using `[← c.e.injective hxy]` and apply the resulting hypothesis. Introduce `hx`. Conclude with `⟨v, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma mem_lat (Λ : Submodule M.L.O V) (v : V) : c.e v ∈ c.lat Λ ↔ v ∈ Λ := by
   constructor
@@ -69,9 +67,9 @@ lemma mem_lat (Λ : Submodule M.L.O V) (v : V) : c.e v ∈ c.lat Λ ↔ v ∈ Λ
   · intro hx; exact ⟨v, hx, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Take `⟨v, rfl⟩` from `c.e.surjective v`. Rewrite using `[mem_lat, mem_smul_lat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c.e y, (mem_lat c _ _).2 hy, grp_apply c g y⟩`. Introduce and unpack `⟨y, hy, h⟩`. Take `⟨y, rfl⟩` from `c.e.surjective y`. Rewrite `h` using `[grp_apply]`. Conclude with `⟨y, (mem_lat c _ _).1 hy, c.e.injective h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 lemma lat_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
     c.lat (LocNG.img g Λ) = c.grp g • c.lat Λ := by
@@ -89,9 +87,9 @@ lemma lat_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
 open ValuativeRel in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HL.hf`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => enter [2, x]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun x _ ↦ Finset.sum_congr rfl fun l _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma hf_sum_smul_left {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {m : ℕ}
@@ -110,33 +108,29 @@ private lemma hf_sum_smul_left {F : Type} [Field F] [ValuativeRel F] [Topologica
 open ValuativeRel in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Take `⟨s, ⟨hlow, hdiag⟩, hns⟩` from `_root_.GlobalTheory.HL.FrameOnto.exists_matrix S g T hg n hn`. Establish `hpair : ∀ (c : Fin (r + 1) → E) (a : Fin r), _root_.GlobalTheory.HL.hf L S.Hm (∑ i, c i • g i) (es a) = c a.castSucc`. Introduce `c a`. Rewrite using `[hf_sum_smul_left]`. Simplify using `[hes]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hform : ∀ a b, _root_.GlobalTheory.HL.hf L S.Hm (n (g b)) (es a) = s a.castSucc b`. Introduce `a b`. Rewrite using `[hns b, hpair]`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hint`. Establish `hcoef : ∀ i b, s i b ∈ L.O`. Introduce `i b`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `lt_or_eq_of_le (Fin.le_last b) with hb | hb` into its components or cases. Rewrite using `[hlow _ _ hb]`. Conclude with `zero_mem _`. Rewrite using `[hb, hdiag]`. Conclude with `one_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cast a`. Rewrite using `[← hform]`. Conclude with `hint a b`. Use `set Λ := Submodule.span L.O (Set.range g)`. Establish `hle : Λ ≤ Λ.comap ((n.restrictScalars L.O : S.V ≃ₗ[L.O] S.V) : S.V →ₗ[L.O] S.V)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Express the relevant statement in the definitionally equal form `n (g j) ∈ Λ`. Rewrite using `[hns j]`. Use `Submodule.sum_mem _ fun i _ ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem Λ (⟨s i j, hcoef i j⟩ : L.O) (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hsub : n • Λ ≤ Λ` using `Submodule.map_le_iff_le_comap.2 hle`. Establish `hsup : Λ ≤ n • Λ`. Establish `key : ∀ m : ℕ, ∀ j : Fin (r + 1), (j : ℕ) < m → g j ∈ n • Λ`. Introduce `m`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro j hj`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnj : n (g j) ∈ n • Λ` using `Submodule.smul_mem_pointwise_smul _ _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hsplit : n (g j) = g j + ∑ i ∈ Finset.univ.erase j, s i j • g i`. Rewrite using `[hns j, ← Finset.add_sum_erase _ _ (Finset.mem_univ j), hdiag, one_smul]`. Establish `hrest : ∑ i ∈ Finset.univ.erase j, s i j • g i ∈ n • Λ`. Use `Submodule.sum_mem _ fun i hi ↦ ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hi) with hij | hij` into its components or cases. Establish `hgi` using `ih i (by have := Fin.lt_def.1 hij; omega)`. Conclude with `Submodule.smul_mem _ (⟨s i j, hcoef i j⟩ : L.O) hgi`. Rewrite using `[hlow _ _ hij, zero_smul]`. Conclude with `zero_mem _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: g j = n (g j) - ∑ i ∈ Finset.univ.erase j, s i j • g i`. Rewrite using `[hsplit]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hnj hrest`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `key (j + 1) j (Nat.lt_succ_self _)`. Conclude with `le_antisymm hsub hsup`. Introduce `hstab a b`.
-
-Establish `hmem : n (g b) ∈ Submodule.span L.O (Set.range g)`. Rewrite using `[← hstab]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 hmem`. Rewrite using `[← hd]`.
-
-Establish `: (∑ i, d i • g i) = ∑ i, (d i : E) • g i` using `rfl`. Rewrite using `[this, hpair]`. Conclude with `(d a.castSucc).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma unipotent_pairing_integral_iff_mem_stabilizer_lemma {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
@@ -222,57 +216,51 @@ open ValuativeRel in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H r k P S c`. Establish `hSt : ∀ g, g ∈ P.St ↔ c.grp g ∈ S.St` using `(_root_.GlobalTheory.HL.CoordUnip.transport M hOK H r k P S c).2.2.2.1`. Establish `hconj : ∀ g v, c.grp g (c.e v) = c.e (g v)` using `_root_.GlobalTheory.HL.CoordUnip.grp_apply c`. Establish `hinj : Function.Injective c.lat` using `Submodule.map_injective_of_injective (f := ((c.e.restrictScalars M.L.O : V ≃ₗ[M.L.O] S.V) : V →ₗ[M.L.O] S.V)) c.e.injective`. Establish `hsurj : Function.Surjective c.lat` using `Submodule.map_surjective_of_surjective (f := ((c.e.restrictScalars M.L.O : V ≃ₗ[M.L.O] S.V) : V →ₗ[M.L.O] S.V)) c.e.surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hequiv : ∀ g Λ, c.lat (_root_.Formalism.MainNotions.S.LocNG.img g Λ) = c.grp g • c.lat Λ`. Introduce `g Λ`. Express the relevant statement in the definitionally equal form `(Λ.map _).map _ = (Λ.map _).map _`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `v`. Simplify using `[hconj]`. Establish `hAut : ∀ g Λ, g ∈ _root_.Formalism.MainNotions.S.LocNG.Aut Λ ↔ c.grp g ∈ MulAction.stabilizer S.GLV (c.lat Λ)`. Introduce `g Λ`. Establish `hcl : _root_.Formalism.MainNotions.S.LocNG.Aut Λ = (MulAction.stabilizer S.GLV (c.lat Λ)).comap c.grp.toMonoidHom`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `_root_.Formalism.MainNotions.S.LocNG.Aut`. Use `le_antisymm ((Subgroup.closure_le _).2 fun g hg ↦ ?_) (fun g hg ↦ Subgroup.subset_closure ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.grp g • c.lat Λ = c.lat Λ`. Rewrite using `[← hequiv]`. Conclude with `congrArg c.lat hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `c.grp g • c.lat Λ = c.lat Λ at hg`. Rewrite `hg` using `[← hequiv]`. Conclude with `hinj hg`. Rewrite using `[hcl]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ x y, S.h x y = _root_.GlobalTheory.HL.hf M.L S.Hm x y` using `fun _ _ ↦ rfl`. Establish `hH0 : ∀ g, c.grp g ∈ S.H0 ↔ ((∀ x y, H.h (g x) (g y) = H.h x y) ∧ ∀ b, g (P.A.f b) = P.A.f b ∧ g (P.B.f b) = P.B.f b)`. Introduce `g`. Establish `hfix : (∀ v ∈ S.ME, c.grp g v = v) ↔ ∀ b, g (P.A.f b) = P.A.f b ∧ g (P.B.f b) = P.B.f b`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h b`. Establish `hf : S.f b ∈ S.ME` using `Submodule.mem_sup_left (_root_.GlobalTheory.HL.FrameOnto.mem_spanTo S S.f (i := b) b.isLt)`. Establish `hf' : S.f' b ∈ S.ME` using `Submodule.mem_sup_right (_root_.GlobalTheory.HL.FrameOnto.mem_spanTo S S.f' (i := b) b.isLt)`. Establish `h1` using `h _ hf`. Establish `h2` using `h _ hf'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[c.f_eq, hconj]`. Rewrite `h2` using `[c.f'_eq, hconj]`. Conclude with `⟨c.e.injective h1, c.e.injective h2⟩`. Introduce `h v hv`. Establish `hle : S.ME ≤ LinearMap.eqLocus ((c.grp g : S.V ≃ₗ[E] S.V) : S.V →ₗ[E] S.V) LinearMap.id`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `_root_.GlobalTheory.HL.Frames.ME _root_.GlobalTheory.HL.Frames.spanTo`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Express the relevant statement in the definitionally equal form `c.grp g (S.f b) = S.f b`. Rewrite using `[c.f_eq, hconj, (h b).1]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨b, -, rfl⟩`. Express the relevant statement in the definitionally equal form `c.grp g (S.f' b) = S.f' b`. Rewrite using `[c.f'_eq, hconj, (h b).2]`. Conclude with `hle hv`. Unfold `_root_.GlobalTheory.HL.Frames.H0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.mem_inf, ← hfix]`. Unfold `_root_.GlobalTheory.HL.isomG _root_.GlobalTheory.HL.unipOn`. Simplify using `only [Subgroup.mem_mk, Set.mem_setOf_eq, Submodule.mem_bot, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hiso, -, hfx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨fun x y ↦ ?_, hfx⟩` and prove the remaining obligations. Rewrite using `[← c.h_eq, ← hconj, ← hconj, hS, hiso, ← hS, c.h_eq]`. Introduce and unpack `⟨hiso, hfx⟩`. Use `⟨fun x y ↦ ?_, fun v ↦ ⟨fun hv ↦ ?_, fun hv ↦ ?_⟩, hfx⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `c.e.surjective x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `c.e.surjective y`. Rewrite using `[← hS, ← hS, hconj, hconj, c.h_eq, c.h_eq, hiso]`. Use `hfx _ hv` as an intermediate fact. Rewrite `hv` using `[(c.grp g).injective this]`. Conclude with `hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfx v hv]`. Conclude with `hv`. Establish `hUW0 : ∀ g, g ∈ P.UW0 ↔ c.grp g ∈ S.H0`. Introduce `g`. Establish `hcl : P.UW0 = S.H0.comap c.grp.toMonoidHom`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `_root_.Formalism.MainNotions.S.LocNG.FPair.UW0`. Use `le_antisymm ((Subgroup.closure_le _).2 fun g hg ↦ ?_) (fun g hg ↦ Subgroup.subset_closure ?_)` and prove the remaining obligations. Conclude with `(hH0 g).2 hg`. Conclude with `(hH0 g).1 hg`. Rewrite using `[hcl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hK0 : ∀ g, g ∈ P.K0 ↔ c.grp g ∈ S.K0`. Establish `hX : ∀ g, (g ∈ P.St ∧ ∀ (a : Fin r) (b : Fin (r + 1)), H.h (g (P.A.f b)) (P.A.es a) ∈ M.L.O ∧ H.h (g (P.B.f b)) (P.B.es a) ∈ M.L.O) ↔ c.grp g ∈ S.K0`. Introduce `g`. Establish `hA : ∀ a b, H.h (g (P.A.f b)) (P.A.es a) = _root_.GlobalTheory.HL.hf M.L S.Hm (c.grp g (S.f b)) (S.es a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[c.f_eq, c.es_eq, hconj, ← hS, c.h_eq]`. Establish `hB : ∀ a b, H.h (g (P.B.f b)) (P.B.es a) = _root_.GlobalTheory.HL.hf M.L S.Hm (c.grp g (S.f' b)) (S.es' a)`. Introduce `a b`. Rewrite using `[c.f'_eq, c.es'_eq, hconj, ← hS, c.h_eq]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `_root_.GlobalTheory.HL.Frames.K0`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_inf, hSt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hst, hint⟩`. Establish `hst'` using `hst`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.HL.Frames.St at hst'`. Rewrite `hst'` using `[Subgroup.mem_inf]`. Use `⟨⟨hst, (unipotent_pairing_integral_iff_mem_stabilizer_lemma S S.f S.es S.T S.gram S.dual _ hst'.1).1 fun a b ↦ ?_⟩, (unipotent_pairing_integral_iff_mem_stabilizer_lemma S S.f' S.es' S.T' S.gram' S.dual' _ hst'.2).1 fun a b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hA]`. Conclude with `(hint a b).1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB]`. Conclude with `(hint a b).2`. Introduce and unpack `⟨⟨hst, h1⟩, h2⟩`. Establish `hst'` using `hst`. Unfold `_root_.GlobalTheory.HL.Frames.St at hst'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hst'` using `[Subgroup.mem_inf]`. Use `⟨hst, fun a b ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `(unipotent_pairing_integral_iff_mem_stabilizer_lemma S S.f S.es S.T S.gram S.dual _ hst'.1).2 h1 a b`. Rewrite using `[hB]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(unipotent_pairing_integral_iff_mem_stabilizer_lemma S S.f' S.es' S.T' S.gram' S.dual' _ hst'.2).2 h2 a b`. Introduce `g`. Establish `hcl : P.K0 = S.K0.comap c.grp.toMonoidHom`. Unfold `_root_.Formalism.MainNotions.S.LocNG.FPair.K0`. Use `le_antisymm ((Subgroup.closure_le _).2 fun g hg ↦ ?_) (fun g hg ↦ Subgroup.subset_closure ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(hX g).1 hg`. Conclude with `(hX g).2 hg`. Rewrite using `[hcl]`. Both sides reduce to the same expression. Establish `hrel : ∀ A B : Subgroup S.GLV, (A.comap c.grp.toMonoidHom).relIndex (B.comap c.grp.toMonoidHom) = A.relIndex B`.
-
-Introduce `A B`. Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective c.grp.surjective]`. Use `⟨hUW0, hK0, ⟨hinj, hsurj⟩, hequiv, hAut, fun t ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : P.St ⊓ _root_.Formalism.MainNotions.S.LocNG.Aut t.abelian₂ = (S.St ⊓ MulAction.stabilizer S.GLV (c.lat t.abelian₂)).comap c.grp.toMonoidHom`. Use extensionality with `g`.
-
-Rewrite using `[Subgroup.mem_inf, hSt, hAut]`. Both sides reduce to the same expression. Establish `h2 : P.K0 = S.K0.comap c.grp.toMonoidHom`. Use extensionality with `g`. Conclude with `hK0 g`.
-
-Unfold `_root_.Formalism.MainNotions.S.LocNG.mu _root_.GlobalTheory.HL.Frames.mu _root_.Formalism.MainNotions.S.LocNG.volRel _root_.GlobalTheory.HL.invVol`. Rewrite using `[h1, h2, hrel, hrel, one_div_div]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.CoordMass.transport :
     ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]

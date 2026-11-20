@@ -6,19 +6,19 @@ import Development.AutomorphicArithmetic.ThickFrames.TilesLe
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
 /- English proof (translation)
-Unfold `ind`. Conclude with `if_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem ngl_ind_pos {q : Prop} (h : q) : ind q = 1 := by
   unfold ind
   exact if_pos h
 /- English proof (translation)
-Unfold `ind`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ngl_ind_nonneg (q : Prop) : 0 ≤ ind q := by
   unfold ind
   split_ifs <;> norm_num
 /- English proof (translation)
-Unfold `ind`. Use `split_ifs with hq`. Conclude with `h1 hq`. Conclude with `h0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem ngl_ind_le {q : Prop} {x : ℝ} (h0 : 0 ≤ x) (h1 : q → 1 ≤ x) : ind q ≤ x := by
   unfold ind
@@ -27,23 +27,21 @@ private theorem ngl_ind_le {q : Prop} {x : ℝ} (h0 : 0 ≤ x) (h1 : q → 1 ≤
   · exact h0
 
 /- English proof (translation)
-Take `⟨_, _, h_sum, h_mono, _, h_restr, _⟩` from `expectation_spec p`. Combine the equalities or inequalities in the displayed calculation. Apply `h_mono _ _ _ (fun a _ => hp a)` to reduce the goal to its premises. Introduce `U hU`. Apply `ngl_ind_le (Finset.sum_nonneg (fun i _ => ngl_ind_nonneg _))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hq`. Use `push_neg at hq`. Take `⟨i, hi, hc⟩` from `hq`. Establish `hsub : U ∩ (window n i L ∩ (Finset.range n).erase i₀) = U ∩ window n i L`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_inter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, _⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2, hU h1⟩`. Establish `hle : (insert i₀ U ∩ window n i L).card ≤ (U ∩ window n i L).card + 1`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_inter, Finset.mem_insert] at hx ⊢`. Break down `hx with ⟨h1 | h1, h2⟩` into its components or cases. Conclude with `Or.inl h1`. Conclude with `Or.inr ⟨h1, h2⟩`. Use `_ ≤ (U ∩ window n i L).card + 1 := Finset.card_insert_le _ _`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK'' : K' ≤ (U ∩ (window n i L ∩ (Finset.range n).erase i₀)).card`. Rewrite using `[hsub]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ i ∈ Finset.range n, exP p ((Finset.range n).erase i₀) (fun U => ind (K' ≤ (U ∩ (window n i L ∩ (Finset.range n).erase i₀)).card)) := h_sum _ _ (fun i U => ind (K' ≤ (U ∩ (window n i L ∩ (Finset.range n).erase i₀)).card))`.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = ∑ i ∈ Finset.range n, exP p (window n i L ∩ (Finset.range n).erase i₀) (fun T => ind (K' ≤ T.card)) := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Conclude with `h_restr _ _ (fun T => ind (K' ≤ T.card)) Finset.inter_subset_right`. Use `_ ≤ ∑ _i ∈ Finset.range n, b := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Apply `hb` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Unfold `window`.
-
-Conclude with `Finset.card_image_le`. Use `_ = L := Finset.card_range L`. Use `_ = n * b := by`. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem ngl_windows_le (p : ℕ → ℝ) (hp : ∀ a, 0 ≤ p a ∧ p a ≤ 1) (n i₀ L K K' : ℕ)
     (hK : K' ≤ K) (b : ℝ)
@@ -110,17 +108,17 @@ private theorem ngl_windows_le (p : ℕ → ℝ) (hp : ∀ a, 0 ≤ p a ∧ p a 
         rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `p δ n L₂ K r u M₀ G' N₁ i₀ hp hδ0 hδ1 hu hn`. Take `⟨_, h_add, _, h_mono, _, _, _⟩` from `expectation_spec p`. Establish `hp1 : ∀ a, 0 ≤ p a ∧ p a ≤ 1` using `fun a => ⟨le_trans (by positivity) (hp a).1, le_trans (hp a).2 hδ1⟩`. Establish `hpδ : ∀ (A : Finset ℕ), ∀ a ∈ A, 0 ≤ p a ∧ p a ≤ δ` using `fun A a _ => ⟨(hp1 a).1, (hp a).2⟩`. Establish `hA : exP p ((range n).erase i₀) (fun U => ind (¬ CondA n (insert i₀ U) L₂ K)) ≤ n * ((L₂.choose K : ℝ) * δ ^ K)` using `ngl_windows_le p hp1 n i₀ L₂ K K le_rfl _ (fun A hA => (tail_le p δ A L₂ K (hpδ A) hδ0 hδ1 hA).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : exP p ((range n).erase i₀) (fun U => ind (¬ CondIntervals n (insert i₀ U) G' N₁)) ≤ n * binUpper G' δ (N₁ - 1)` using `ngl_windows_le p hp1 n i₀ G' N₁ (N₁ - 1) (Nat.sub_le _ _) _ (fun A hA => (tail_le p δ A G' (N₁ - 1) (hpδ A) hδ0 hδ1 hA).2)`. Establish `hT` using `tiles_le p δ n r u M₀ i₀ hp hδ0 hδ1 hu hn`. Establish `hsplit : exP p ((range n).erase i₀) (fun U => ind (¬ GoodOrbitIntervalTileCondition n (insert i₀ U) L₂ K r u M₀ G' N₁)) ≤ exP p ((range n).erase i₀) (fun U => (ind (¬ CondA n (insert i₀ U) L₂ K) + ind (¬ CondTiles n (insert i₀ U) r u M₀)) + ind (¬ CondIntervals n (insert i₀ U) G' …`. Apply `h_mono _ _ _ (fun a _ => hp1 a)` to reduce the goal to its premises. Introduce `U _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `ngl_ind_nonneg (¬ CondA n (insert i₀ U) L₂ K)`. Establish `e2` using `ngl_ind_nonneg (¬ CondTiles n (insert i₀ U) r u M₀)`. Establish `e3` using `ngl_ind_nonneg (¬ CondIntervals n (insert i₀ U) G' N₁)`. Apply `ngl_ind_le (by linarith)` to reduce the goal to its premises. Introduce `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GoodOrbitIntervalTileCondition at hq`. Distinguish the cases in `ha : CondA n (insert i₀ U) L₂ K`. Distinguish the cases in `hb : CondTiles n (insert i₀ U) r u M₀`. Establish `hc : ¬ CondIntervals n (insert i₀ U) G' N₁` using `fun hc => hq ⟨ha, hb, hc⟩`. Rewrite using `[ngl_ind_pos hc]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[ngl_ind_pos hb]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[ngl_ind_pos ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsum : exP p ((range n).erase i₀) (fun U => (ind (¬ CondA n (insert i₀ U) L₂ K) + ind (¬ CondTiles n (insert i₀ U) r u M₀)) + ind (¬ CondIntervals n (insert i₀ U) G' N₁)) = exP p ((range n).erase i₀) (fun U => ind (¬ CondA n (insert i₀ U) L₂ K)) + exP p ((range n).erase i₀) (fun …`. Rewrite using `[h_add _ (fun U => ind (¬ CondA n (insert i₀ U) L₂ K) + ind (¬ CondTiles n (insert i₀ U) r u M₀)) (fun U => ind (¬ CondIntervals n (insert i₀ U) G' N₁)), h_add _ (fun U => ind (¬ CondA n (insert i₀ U) L₂ K)) (fun U => ind (¬ CondTiles n (insert i₀ U) r u M₀))]`. Rewrite `hsplit` using `[hsum]`. Establish `hA' : (n : ℝ) * ((L₂.choose K : ℝ) * δ ^ K) = n * (L₂.choose K : ℝ) * δ ^ K` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.not_good_le :
     ∀ (p : ℕ → ℝ) (δ : ℝ) (n L₂ K r u M₀ G' N₁ i₀ : ℕ), (∀ a, 3 / 4 * δ ≤ p a ∧ p a ≤ δ) → 0 ≤ δ → δ ≤ 1 → 1 ≤ u →

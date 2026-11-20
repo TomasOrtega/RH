@@ -54,7 +54,7 @@ def trd : 𝓞 E →ₗ[ℤ] ℤ :=
         exact_mod_cast this }
 
 /- English proof (translation)
-The claim follows from `(A.δ_int x).choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem trd_spec (x : 𝓞 E) : ((A.trd x : ℤ) : ℚ) = Algebra.trace ℚ E (A.δ * x) := (A.δ_int x).choose_spec.symm
 
@@ -109,20 +109,16 @@ structure Facts (n : ℕ) : Prop where
   dom : A.Dom n
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[A.bar_eq, A.bar_eq, IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_bar (x : 𝓞 E) : A.bar (A.bar x) = x := by
   ext
   rw [A.bar_eq, A.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Use `⟨ { toFun := fun x => Matrix.of fun _ _ => x invFun := fun M => M 0 0 left_inv := fun x => rfl right_inv := fun M => by` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := fun x y => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use the proof step `map_add' := fun x y => by`. Use extensionality with `i j`.
-
-Both sides reduce to the same expression. Use the proof step `commutes' := fun r => by`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
-
-Simplify using `[Matrix.algebraMap_matrix_apply] }⟩`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem splitOne (q : ℕ) [Fact q.Prime] :
     Nonempty ((𝓞 E ⊗[ℤ] ℤ_[q]) ≃ₐ[𝓞 E] Matrix (Fin 1) (Fin 1) (𝓞 E ⊗[ℤ] ℤ_[q])) := by
@@ -145,7 +141,7 @@ theorem splitOne (q : ℕ) [Fact q.Prime] :
         simp [Matrix.algebraMap_matrix_apply] }⟩
 
 /- English proof (translation)
-Establish `h : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0`. Rewrite using `[← A.tr_eq, ← A.nm_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun y : 𝓞 E => A.τ₀ (y : E)) h`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem root : (A.τ₀ (A.ω : E)) ^ 2 - A.tr * A.τ₀ (A.ω : E) + A.nm = 0 := by
   have h : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0 := by
@@ -206,9 +202,9 @@ theorem datum_toG {n : ℕ} (h : A.Facts n) (q q' : ℕ) [Fact q.Prime] [Fact q'
     (A.datum h q hs hp).toG = (A.datum h q' hs' hp').toG := rfl
 
 /- English proof (translation)
-Rewrite using `[H, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show IsCMField.complexConj E _ = _`. Rewrite using `[← A.bar_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [hd, dg, map_mul, map_neg, A.c_real]`. Apply the tactic sequence `split_ifs <;> simp [A.c_real]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem herm (n : ℕ) : ((A.H n).map (cj E))ᵀ = A.H n := by
   rw [H, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]
@@ -221,7 +217,7 @@ theorem herm (n : ℕ) : ((A.H n).map (cj E))ᵀ = A.H n := by
   split_ifs <;> simp [A.c_real]
 
 /- English proof (translation)
-Introduce `h`. Establish `hn` using `A.c_neg`. Establish `h0 : A.c = 0` using `RingOfIntegers.ext (by simpa using h)`. Rewrite `hn` using `[h0]`. Simplify using `at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem c_ne : (A.c : E) ≠ 0 := by
   intro h
@@ -231,7 +227,7 @@ theorem c_ne : (A.c : E) ≠ 0 := by
   simp at hn
 
 /- English proof (translation)
-Unfold `H`. Rewrite using `[Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `A.c_ne` as an intermediate fact. Apply the tactic sequence `unfold hd dg; split_ifs <;> simp [this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_ne (n : ℕ) : (A.H n).det ≠ 0 := by
   unfold H

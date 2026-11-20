@@ -9,7 +9,7 @@ open GlobalTheory.CharDepth TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CharDepth.eigen_pair_mem_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCanonicalGaugeEigenvectorPairingIntegral.lean&line=16#L16)
 -/

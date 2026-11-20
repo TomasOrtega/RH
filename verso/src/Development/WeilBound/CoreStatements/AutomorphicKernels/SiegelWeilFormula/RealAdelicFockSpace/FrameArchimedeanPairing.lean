@@ -20,11 +20,11 @@ namespace Psi
 variable {d : SD σ}
 
 /- English proof (translation)
-Establish `hf : finOne F • M.trace = 0` using `by rw [← Matrix.trace_smul, hM, Matrix.trace_zero]`. Establish `hf' : finOne F * d.tt M = 0`. Unfold `SD.tt`. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, hf, map_zero]`. Rewrite using `[d.std.2.2 _ (Place.at_of_finOne hf'), Dense.trace_evI d.cm.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `SD.tt`. Rewrite using `[Dense.ext_trace d.cm (d.B.emb w), Dense.piInf_cA d.cm]`. Establish `: piInf (d.B.emb w) M.trace = (d.cw w M).trace` using `by simp [Matrix.trace, SD.cw, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_tt_arch (M : Mx F E d.n d.n) (hM : finOne F • M = 0) :
     d.B.ψ (d.tt M) = Complex.exp (-(2 * Real.pi * Complex.I) * ((∑ w, 2 * ((d.cw w M).trace).re : ℝ) : ℂ)) := by
@@ -42,7 +42,7 @@ theorem psi_tt_arch (M : Mx F E d.n d.n) (hM : finOne F • M = 0) :
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[SD.cw, GlobalTheory.RealScalar.piInf_realAd_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_realAd (w : InfinitePlace F) {p q : Type} (t : ℝ) (Y : Matrix p q (AE F E)) :
     d.cw w (realAd F t • Y) = (t : ℂ) • d.cw w Y := by
@@ -50,26 +50,26 @@ theorem cw_realAd (w : InfinitePlace F) {p q : Type} (t : ℝ) (Y : Matrix p q (
   simp [SD.cw, GlobalTheory.RealScalar.piInf_realAd_smul]
 
 /- English proof (translation)
-The claim follows from `(exists_tw R W).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tw_spec (R : RD d) (W : Mx F E d.m d.n) :
     finOne F • tw R W = 0 ∧ ∀ w, d.cw w (tw R W) = (-(((R.sg w : ℤ) : ℂ) * R.ζ)) • d.cw w W :=
   (exists_tw R W).choose_spec
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (R : RD d) (w : InfinitePlace F) : ((R.sg w : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[KW.cw_gram, cw_realAd, (tw_spec R W).2, KW.cw_loc R w W, KW.cw_loc R w X]`. Establish `h3 : ((R.fr w).1 * (Matrix.of (R.loc w X)).map star).map star = (R.fr w).1.map star * Matrix.of (R.loc w X)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `KW.zeta_ne R`. Establish `e` using `KW.frJ R w`. Simplify using `only [Matrix.transpose_smul, Matrix.smul_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul]`. Establish `h4 : ((Matrix.of (R.loc w W)).map star)ᵀ = (Matrix.of (R.loc w W))ᴴ` using `rfl`. Rewrite using `[h4]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(t : ℂ)) * sg_sq R w`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cw_gram_tw (R : RD d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) (w : InfinitePlace F) :
     d.cw w (d.gram (realAd F t • tw R W) X) =
@@ -94,7 +94,7 @@ theorem cw_gram_tw (R : RD d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n
         linear_combination (-(t : ℂ)) * sg_sq R w
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem re_trace_loc (R : RD d) (w : InfinitePlace F) (W X : Mx F E d.m d.n) :
     (((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w X)).trace).re =
@@ -105,9 +105,9 @@ theorem re_trace_loc (R : RD d) (w : InfinitePlace F) (W X : Mx F E d.m d.n) :
   simp [Complex.mul_re]
 
 /- English proof (translation)
-Simplify using `only [arc, PiLp.inner_apply, EuclideanSpace.equiv, real_inner_eq_re_inner, RCLike.inner_apply, conj_trivial]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_arc (R : RD d) (W X : Mx F E d.m d.n) :
     ⟪arc R W, arc R X⟫_ℝ =
@@ -124,7 +124,7 @@ theorem inner_arc (R : RD d) (W X : Mx F E d.m d.n) :
   ring
 
 /- English proof (translation)
-Unfold `SD.gram`. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, smul_comm, (tw_spec R W).1]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fin_gram_tw (R : RD d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) :
     finOne F • d.gram (realAd F t • tw R W) X = 0 := by
@@ -133,7 +133,7 @@ theorem fin_gram_tw (R : RD d) (W : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.
   simp
 
 /- English proof (translation)
-Simplify using `only [hTens, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem hTens_trace {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type} [Fintype α]
     [Fintype β] (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
@@ -151,7 +151,7 @@ theorem hTens_trace {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E 
               Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Unfold `spf symp`. Rewrite using `[hTens_trace, neg_one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem spf_eq (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     spf d x y = Algebra.trace (AF F) (AE F E)
@@ -160,7 +160,7 @@ theorem spf_eq (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
   rw [hTens_trace, neg_one_mul]
 
 /- English proof (translation)
-Rewrite using `[Dense.trace_evI d.cm.1]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Dense.ext_trace d.cm (d.B.emb w), Dense.piInf_cA d.cm, Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_evI_trace (z : AE F E) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (Algebra.trace (AF F) (AE F E) z)) =
@@ -171,11 +171,9 @@ theorem trace_evI_trace (z : AE F E) :
   ring
 
 /- English proof (translation)
-Establish `ha : evI F (⅟(2 : AF F)) * 2 = 1`. Establish `e1 : evI F (1 : AF F) = 1` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F 1 = 1`. Conclude with `map_one _`. Establish `e2 : evI F (2 : AF F) = 2`. Rewrite using `[show (2 : AF F) = 1 + 1 by norm_num, Dense.evI_add, e1]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2, ← Dense.evI_mul, invOf_mul_self, e1]`. Establish `hb : algebraMap ℝ (mixedEmbedding.mixedSpace F) (⅟2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2, ← map_mul, invOf_mul_self, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, mul_one]`.
-
-Use `_ = (evI F (⅟(2 : AF F)) * 2) * algebraMap ℝ (mixedEmbedding.mixedSpace F) (⅟2) := by ring`. Use `_ = _ := by rw [ha, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evI_half : evI F (⅟(2 : AF F)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (⅟2) := by
   have ha : evI F (⅟(2 : AF F)) * 2 = 1 := by
@@ -193,11 +191,11 @@ theorem evI_half : evI F (⅟(2 : AF F)) = algebraMap ℝ (mixedEmbedding.mixedS
     _ = _ := by rw [ha, one_mul]
 
 /- English proof (translation)
-Establish `hf : finOne F * Algebra.trace (AF F) (AE F E) z = 0`. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, hz, map_zero]`. Establish `hf' : finOne F * -(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z) = 0`. Rewrite using `[mul_neg, mul_left_comm, hf, mul_zero, neg_zero]`. Rewrite using `[d.std.2.2 _ (Place.at_of_finOne hf')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Establish `e : evI F (-(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z)) = -(algebraMap ℝ (mixedEmbedding.mixedSpace F) (⅟2) * evI F (Algebra.trace (AF F) (AE F E) z))`. Rewrite using `[← evI_half, ← Dense.evI_mul]`. Conclude with `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) _`. Rewrite using `[e, map_neg, ← Algebra.smul_def, LinearMap.map_smul, trace_evI_trace, smul_eq_mul, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_neg_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[invOf_eq_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_neg_half_trace (z : AE F E) (hz : finOne F • z = 0) :
     d.B.ψ (-(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) z)) =
@@ -219,11 +217,11 @@ theorem psi_neg_half_trace (z : AE F E) (hz : finOne F • z = 0) :
   ring
 
 /- English proof (translation)
-Establish `e1 : (c • A * B1ᵀ).map star = star c • (A.map star * (B1.map star)ᵀ)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[e1, Matrix.transpose_mul, Matrix.transpose_smul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, smul_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_line {p q r : Type} [Fintype p] [Fintype q] [Fintype r] [DecidableEq q]
     (A : Matrix p q ℂ) (B1 B2 : Matrix r q ℂ) (Jw : Matrix p p ℂ) (Dw : Matrix r r ℂ) (a c : ℂ) :
@@ -242,9 +240,9 @@ theorem trace_line {p q r : Type} [Fintype p] [Fintype q] [Fintype r] [Decidable
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x => x.map (d.B.emb w).1) R.hε`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at h`. Establish `cst : (d.b.1.map σ).map (d.B.emb w).1 = (d.b.1.map (d.B.emb w).1).map star`. Use extensionality with `i j`. Conclude with `d.cm.2.2.2 (d.B.emb w).1 (d.b.1 i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[cst]`. Use extensionality with `i j`. Use `congrFun (congrFun h (Sum.inr i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.toCols₁, Matrix.toCols₂, Matrix.one_apply, Matrix.smul_apply, apply_ite]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frame_archimedean_pairing (R : RD d) (w : InfinitePlace F) :
     ((d.b.1.toCols₂).map (d.B.emb w).1)ᵀ * (dbl d.Y.J).map (d.B.emb w).1 *
@@ -259,33 +257,33 @@ theorem frame_archimedean_pairing (R : RD d) (w : InfinitePlace F) :
   simpa [Matrix.mul_apply, Matrix.toCols₁, Matrix.toCols₂, Matrix.one_apply, Matrix.smul_apply, apply_ite] using this
 
 /- English proof (translation)
-Apply the tactic sequence `rcases R.hζ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_zeta (R : RD d) : ((R.ε : ℤ) : ℂ) * star R.ζ * R.ζ⁻¹ = -1 := by
   rcases R.hζ with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h1, h2]
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, SD.cw, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_trace (w : InfinitePlace F) {ι : Type} [Fintype ι] (M : Matrix ι ι (AE F E)) : piInf (d.B.emb w) M.trace = (d.cw w M).trace := by
   simp [Matrix.trace, SD.cw, map_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dbl_incM : dbl (incM F d.Y.J) = incM F (dbl d.Y.J) := by
   ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]
 
 /- English proof (translation)
-Rewrite using `[piInf_trace]`. Establish `hcw : d.cw w (((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • tw R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ) = (((s : ℂ) • d.cw w W) * ((d.b.1.toCols₂).map (d.B.emb w).1)ᵀ)ᵀ * d.A.J.map (d.B.emb w).1 * ((((t : ℂ) * (-(((R.sg w …`. Simplify using `only [SD.cw, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[dbl_incM]`. Establish `c1` using `cw_realAd (d := d) w s W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2` using `cw_realAd (d := d) w t (tw R W)`. Establish `c3` using `(tw_spec R W).2 w`. Establish `c4` using `Krd.cw_incM d w d.A.J`. Establish `c5` using `Krd.cw_incM d w d.b.1.toCols₁`. Establish `c6` using `Krd.cw_incM d w d.b.1.toCols₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c7` using `Krd.cw_incM d w (dbl d.Y.J)`. Establish `c8` using `Place.cw_cA d w ((realAd F t • tw R W) * (incM F d.b.1.toCols₁)ᵀ)`. Simplify using `only [SD.cw, Matrix.map_mul, Matrix.transpose_map] at c1 c2 c3 c4 c5 c6 c7 c8`. Rewrite using `[c8, c1, c2, c3, c4, c5, c6, c7, smul_smul]`. Rewrite using `[hcw, trace_line, frame_archimedean_pairing, Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, ← KW.cw_gram, R.cw_gram w W, Matrix.trace_smul, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `KW.zeta_ne R`. Establish `e` using `eps_zeta R`. Establish `sq` using `sg_sq R w`. Use `push_cast`. Simplify using `only [star_mul', star_neg, Complex.star_def, Complex.conj_ofReal, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Complex.star_def]`. Take the linear combination `(-(s : ℂ) * t * (((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w W)).trace) * ((R.sg w : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ)) * e + ((s : ℂ) * t * ((Matrix.of (R.loc w W))ᴴ * Matrix.of (R.loc w W)).trace) * sq`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem piInf_hT (R : RD d) (W : Mx F E d.m d.n) (s t : ℝ) (w : InfinitePlace F) :
     piInf (d.B.emb w) ((((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J *
@@ -327,9 +325,9 @@ open Psi
 variable {d : SD σ}
 
 /- English proof (translation)
-Rewrite using `[psi_tt_arch _ (fin_gram_tw R W t X), inner_arc]`. Use `congr 1`. Establish `e : ∀ w, ((d.cw w (d.gram (realAd F t • tw R W) X)).trace).re = -t * ∑ i, ∑ j, ((R.loc w W i j).re * (R.loc w X i j).re + (R.loc w W i j).im * (R.loc w X i j).im)` using `fun w => by`. Rewrite using `[cw_gram_tw, Matrix.trace_smul, smul_eq_mul, ← re_trace_loc]`. Simplify using `[Complex.mul_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [← Finset.sum_neg_distrib, ← Finset.mul_sum]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem psi_tw' (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (t : ℝ) (X : Mx F E d.m d.n) :
     d.B.ψ (d.tt (d.gram (realAd F t • tw R W) X)) =
@@ -347,11 +345,11 @@ theorem psi_tw' (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (t : �
   ring_nf
 
 /- English proof (translation)
-Establish `hx : finOne F • ((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ) = 0`. Rewrite using `[← Matrix.smul_mul, smul_comm, hW, smul_zero, Matrix.zero_mul]`. Establish `hz : finOne F • (-(((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • tw R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ).trace) = 0`. Rewrite using `[smul_neg, ← Matrix.trace_smul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[spf_eq, psi_neg_half_trace _ hz]`. Use `congr 1`. Establish `e : ∀ w, (piInf (d.B.emb w) (-(((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)ᵀ * incM F d.A.J * ((realAd F t • tw R W) * (incM F d.b.1.toCols₁)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ).trace)).re = -(s * t) * ∑ i, ∑ j, ((R.loc w W i j).re * (R.loc w W i j).re + (R.loc w W i j).im * (R …`. Introduce `w`. Rewrite using `[map_neg, piInf_hT, ← re_trace_loc, Complex.neg_re, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, ← inner_arc, real_inner_self_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_sp' (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (s t : ℝ) :
     d.B.ψ (-(⅟(2 : AF F) * spf d ((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)

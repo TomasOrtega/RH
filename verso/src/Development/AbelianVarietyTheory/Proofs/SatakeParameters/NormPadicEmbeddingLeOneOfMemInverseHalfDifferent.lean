@@ -15,7 +15,7 @@ open scoped Pointwise
 namespace GlobalTheory.EigenGenerator
 
 /- English proof (translation)
-Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_int {C : Type} [NormedField C] [IsUltrametricDist C] {x : C} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
@@ -25,7 +25,7 @@ theorem norm_le_one_of_int {C : Type} [NormedField C] [IsUltrametricDist C] {x :
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_int (map_isIntegral_int ρ a.isIntegral_coe)`.
+A detailed English derivation is pending.
 -/
 theorem norm_map_le_one {E : Type} [Field E] {l : ℕ} [Fact l.Prime] (ρ : E →+* ℂ_[l]) (a : 𝓞 E) :
     ‖ρ (a : E)‖ ≤ 1 := norm_le_one_of_int (map_isIntegral_int ρ a.isIntegral_coe)
@@ -45,7 +45,7 @@ def primeOf {E : Type} [Field E] {l : ℕ} [Fact l.Prime] (ρ : E →+* ℂ_[l])
     exact mul_lt_one_of_nonneg_of_lt_one_right (norm_map_le_one ρ c) (norm_nonneg _) ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_primeOf {E : Type} [Field E] {l : ℕ} [Fact l.Prime] (ρ : E →+* ℂ_[l]) (a : 𝓞 E) :
     a ∈ primeOf ρ ↔ ‖ρ (a : E)‖ < 1 := Iff.rfl
@@ -62,13 +62,13 @@ instance primeOf_isPrime {E : Type} [Field E] {l : ℕ} [Fact l.Prime] (ρ : E �
     exact absurd hab (not_lt.2 (one_le_mul_of_one_le_of_one_le hcon.1 hcon.2))
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_eq {l : ℕ} [Fact l.Prime] (n : ℕ) : ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[l])‖ := by
   rw [← map_natCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap']
 
 /- English proof (translation)
-Rewrite using `[mem_primeOf, RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast, norm_natCast_eq]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_primeOf' {E : Type} [Field E] {l : ℕ} [hl : Fact l.Prime] (ρ : E →+* ℂ_[l]) : (l : 𝓞 E) ∈ primeOf ρ := by
   rw [mem_primeOf, RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast, norm_natCast_eq]
@@ -77,11 +77,11 @@ theorem natCast_mem_primeOf' {E : Type} [Field E] {l : ℕ} [hl : Fact l.Prime] 
 variable (D : D7) {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `hnot : ¬ D.host.𝔟 ≤ primeOf ρ` using `UpperTheory.Ram.half_not_le D.host _ (UpperTheory.Ram.QSq_notMem D.host (Ideal.IsPrime.ne_top inferInstance) hl.out h2 hq (natCast_mem_primeOf' ρ))`. Take `⟨z, hz, hzP⟩` from `Set.not_subset.1 hnot`. Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (Formalism.L2.Pj.b_ne_bot D)`. Unfold `Host.AA0 at ha`. Rewrite `ha` using `[FractionalIdeal.mem_inv_iff hB]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `(FractionalIdeal.mem_one_iff _).1 (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩))`. Establish `h1 : 1 ≤ ‖ρ (z : D.host.E)‖` using `not_lt.1 hzP`. Establish `h3 : ‖ρ a‖ * ‖ρ (z : D.host.E)‖ ≤ 1`. Rewrite using `[← norm_mul, ← map_mul]`. Use `norm_map_le_one ρ w` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, hw]`. Then use the resulting hypothesis. Conclude with `(le_mul_of_one_le_right (norm_nonneg _) h1).trans h3`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_padicEmbedding_le_one_of_mem_inverseHalfDifferent (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q) (ρ : D.host.E →+* ℂ_[l]) {a : D.host.E}
     (ha : a ∈ D.host.AA0) : ‖ρ a‖ ≤ 1 := by
@@ -102,13 +102,11 @@ theorem norm_padicEmbedding_le_one_of_mem_inverseHalfDifferent (h2 : l ∉ D.hos
   exact (le_mul_of_one_le_right (norm_nonneg _) h1).trans h3
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `set σ : D.host.E ≃ₐ[D.host.K] D.host.E := (GlobalTheory.InducedType.galK D.host (D.eTau τ))⁻¹ * GlobalTheory.InducedType.galK D.host (D.eTau τ') with hσ`. Establish `hρ : ∀ x, rhoH D lam τ (σ x) = rhoH D lam τ' x`. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[rhoH_apply, rhoH_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (GlobalTheory.InducedType.galK D.host (D.eTau τ) (σ x)) = D.host.φ₀ (GlobalTheory.InducedType.galK D.host (D.eTau τ') x)`. Rewrite using `[← AlgEquiv.mul_apply, hσ, mul_inv_cancel_left]`. Establish `h1 : σ = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `UpperTheory.Ram.inertiaK_trivial D.host hl.out h2 hq (primeOf (rhoH D lam τ)) (natCast_mem_primeOf' _) σ fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_primeOf]`. Establish `: ((σ • x - x : 𝓞 D.host.E) : D.host.E) = σ x - x` using `rfl`. Rewrite using `[this, map_sub, hρ, norm_sub_rev]`. Conclude with `hcon x`.
-
-Rewrite `h1` using `[hσ, inv_mul_eq_one]`. Conclude with `hne (D.eTau.injective ((GlobalTheory.InducedType.galK_bijective D.host).1 h1)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q) {τ τ' : D.what₂.Tau} (hne : τ' ≠ τ) :
     ∃ x : 𝓞 D.host.E, 1 ≤ ‖rhoH D lam τ x - rhoH D lam τ' x‖ := by
@@ -136,7 +134,7 @@ theorem exists_sep (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (hq : l 
 variable (M : IntermediateField ℚ ℂ) [NumberField M]
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) s).algHom M.val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Qbar (s : M) : (s : ℂ) ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -146,7 +144,7 @@ def lamM (lam : Qbar →+* ℂ_[l]) : M →+* ℂ_[l] :=
   lam.comp ((M.val : M →+* ℂ).codRestrict Qbar (mem_Qbar M))
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (mem_Qbar M s)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamM_apply (lam : Qbar →+* ℂ_[l]) (s : M) : lamM M lam s = lamC lam (s : ℂ) := by
   unfold lamC
@@ -158,7 +156,7 @@ variable (hM : ∀ τ x, embT D τ x ∈ M)
 def embM (τ : D.what₂.Tau) : D.host.E →+* M := (embT D τ).codRestrict M (hM τ)
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos (hM τ x)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftM_eq (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.liftM M (embT D τ x) = embM D M hM τ x := by
   unfold TaylorLogMetric.liftM
@@ -166,7 +164,7 @@ theorem liftM_eq (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.liftM M (
   rfl
 
 /- English proof (translation)
-Rewrite using `[lamM_apply, rhoH_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamM_embM (lam : Qbar →+* ℂ_[l]) (τ : D.what₂.Tau) (x : D.host.E) :
     lamM M lam (embM D M hM τ x) = rhoH D lam τ x := by
@@ -174,13 +172,13 @@ theorem lamM_embM (lam : Qbar →+* ℂ_[l]) (τ : D.what₂.Tau) (x : D.host.E)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, rfl⟩` from `hv`. Use `Submodule.subset_span ⟨x • a, Submodule.smul_mem _ x ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `beta_reduce`. Rewrite using `[liftM_eq D M hM, liftM_eq D M hM, Algebra.smul_def, map_mul]`. Consider the case `zero`. Use `(mmM D M).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add v w _ _ hv hw`. Use `(mmM D M).add_mem hv hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Simplify using `[mul_add]`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c v _ hv`. Use `(mmM D M).smul_mem c hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Simplify using `[Algebra.smul_def, mul_left_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_mmM (x : 𝓞 D.host.E) {v : D.what₂.Tau → M} (hv : v ∈ mmM D M) :
     (fun τ => embM D M hM τ x * v τ) ∈ mmM D M := by
@@ -206,11 +204,11 @@ theorem mul_mem_mmM (x : 𝓞 D.host.E) {v : D.what₂.Tau → M} (hv : v ∈ mm
 
 include hM in
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, rfl⟩` from `hv`. Simplify using `only`. Rewrite using `[liftM_eq D M hM, lamM_embM]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_padicEmbedding_le_one_of_mem_inverseHalfDifferent D h2 hq _ ha`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw`. Rewrite using `[Pi.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hv hw)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c v _ hv`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, norm_mul]`. Conclude with `mul_le_one₀ (norm_map_le_one _ c) (norm_nonneg _) hv`.
+A detailed English derivation is pending.
 -/
 theorem norm_coord_le (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q) (τ : D.what₂.Tau)
     {v : D.what₂.Tau → M} (hv : v ∈ mmM D M) : ‖lamM M lam (v τ)‖ ≤ 1 := by
@@ -230,13 +228,13 @@ theorem norm_coord_le (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (hq :
 
 include hM in
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨_, Submodule.subset_span ⟨1, Formalism.L2.Pj.one_mem_inverse_halfDifferent D, rfl⟩, by simp, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[liftM_eq D M hM]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `insert τ' S _ ih`. Rewrite `hS` using `[Finset.mem_insert, not_or]`. Take `⟨v, hv, hv0, hv1⟩` from `ih hS.2`. Take `⟨x, hx⟩` from `exists_sep D lam h2 hq (Ne.symm hS.1)`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `c : 𝓞 M` to `⟨embM D M hM τ' x, map_isIntegral_int _ x.isIntegral_coe⟩`. Establish `hc : algebraMap (𝓞 M) M c = embM D M hM τ' x` using `rfl`. Use `⟨_, (mmM D M).sub_mem (mul_mem_mmM D M hM x hv) ((mmM D M).smul_mem c hv), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, Algebra.smul_def, hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `sub_self _`. Simplify using `[hv0 t ht]`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, Algebra.smul_def, hc, ← sub_mul, map_mul, map_sub, lamM_embM, lamM_embM, norm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le hx hv1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vanishing (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q) (τ : D.what₂.Tau)
     (S : Finset D.what₂.Tau) (hS : τ ∉ S) :
@@ -268,13 +266,13 @@ end GlobalTheory.EigenGenerator
 open GlobalTheory.EigenGenerator in
 
 /- English proof (translation)
-Introduce `D l _ lam h2 hq M _ hM τ s hs`. Rewrite using `[← lamM_apply]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h1 : s ∈ ellT D M τ` using `by rw [hs]; exact Submodule.mem_span_singleton_self s`. Use `norm_coord_le D M hM lam h2 hq τ (Submodule.mem_comap.1 h1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨v, hv, hv0, hv1⟩` from `exists_vanishing D M hM lam h2 hq τ (Finset.univ.erase τ) (Finset.notMem_erase _ _)`. Establish `h1 : v τ ∈ ellT D M τ`. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Use `hv using 1` and compare the differences between its conclusion and the goal.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hv0 t (Finset.mem_erase.2 ⟨ht, Finset.mem_univ _⟩)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ht]`. Rewrite `h1` using `[hs, Submodule.mem_span_singleton]`. Take `⟨c, hc⟩` from `h1`. Rewrite `hv1` using `[← hc, Algebra.smul_def, map_mul, norm_mul]`. Conclude with `hv1.trans (mul_le_of_le_one_left (norm_nonneg _) (norm_map_le_one _ c))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EigenGenerator.norm_generator_eq_one : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (lam : Qbar →+* ℂ_[l]), l ∉ D.host.small → l ≠ D.host.q → ∀ (M : IntermediateField ℚ ℂ) [NumberField M], (∀ τ x, embT D τ x ∈ M) → ∀ (τ : D.what₂.Tau) (s : M), ellT D M τ = Submodule.span (𝓞 M) {s} → ‖lamC lam (s : ℂ)‖ = 1 := by
   intro D l _ lam h2 hq M _ hM τ s hs

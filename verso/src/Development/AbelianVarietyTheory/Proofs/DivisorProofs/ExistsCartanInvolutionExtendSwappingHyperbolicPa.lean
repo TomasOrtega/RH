@@ -9,7 +9,7 @@ namespace GlobalTheory.CartanPlane
 open Matrix
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, star_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec_map {m k : Type} [Fintype k] (B : Matrix m k ℂ) (v : k → ℂ) :
     star (B *ᵥ v) = B.map star *ᵥ star v := by
@@ -17,7 +17,7 @@ theorem star_mulVec_map {m k : Type} [Fintype k] (B : Matrix m k ℂ) (v : k →
   simp [mulVec, dotProduct, star_sum]
 
 /- English proof (translation)
-Rewrite using `[star_mulVec_map, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_transpose, dotProduct_comm (A *ᵥ u), dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_mulVec {m k l : Type} [Fintype m] [Fintype k] [Fintype l] (A : Matrix m k ℂ) (B : Matrix m l ℂ)
     (M : Matrix m m ℂ) (u : k → ℂ) (v : l → ℂ) :
@@ -26,7 +26,7 @@ theorem form_mulVec {m k l : Type} [Fintype m] [Fintype k] [Fintype l] (A : Matr
     dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Establish `h : ∀ i j, star (M i j) = M j i` using `fun i j => by rw [← conjTranspose_apply, hM]`. Simplify using `only [dotProduct, mulVec, star_sum, star_mul', star_star, Pi.star_apply, Finset.mul_sum, h]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_swap {m : Type} [Fintype m] (M : Matrix m m ℂ) (hM : Mᴴ = M) (x y : m → ℂ) :
     y ⬝ᵥ M *ᵥ star x = star (x ⬝ᵥ M *ᵥ star y) := by
@@ -37,7 +37,7 @@ theorem herm_swap {m : Type} [Fintype m] (M : Matrix m m ℂ) (hM : Mᴴ = M) (x
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[single_dotProduct, mulVec_single]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_form {m : Type} [Fintype m] [DecidableEq m] (A B : Matrix m m ℂ)
     (h : ∀ x y : m → ℂ, x ⬝ᵥ A *ᵥ star y = x ⬝ᵥ B *ᵥ star y) : A = B := by
@@ -51,49 +51,47 @@ namespace GlobalTheory.CartanPlane
 open Matrix
 
 /- English proof (translation)
-Introduce `n n₁ M X Yv ι P θ₁ hn hM hXX hYY hXY hιX hιY hPι hθ₁`. Substitute `hn` using the available equality. Use `set M₁ := ιᵀ * M * ι.map star with hM₁`. Establish `hYX : Yv ⬝ᵥ M *ᵥ star X = 1` using `by rw [herm_swap M hM, hXY]; simp`. Establish `hιuX : ∀ u, (ι *ᵥ u) ⬝ᵥ M *ᵥ star X = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, hιX, zero_dotProduct]`. Establish `hιuY : ∀ u, (ι *ᵥ u) ⬝ᵥ M *ᵥ star Yv = 0`. Introduce `u`. Rewrite using `[dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, hιY, zero_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXιu : ∀ u, X ⬝ᵥ M *ᵥ star (ι *ᵥ u) = 0` using `by intro u; rw [herm_swap M hM, hιuX, star_zero]`. Establish `hYιu : ∀ u, Yv ⬝ᵥ M *ᵥ star (ι *ᵥ u) = 0` using `by intro u; rw [herm_swap M hM, hιuY, star_zero]`. Establish `hιι : ∀ u u', (ι *ᵥ u) ⬝ᵥ M *ᵥ star (ι *ᵥ u') = u ⬝ᵥ M₁ *ᵥ star u'` using `fun u u' => form_mulVec ι ι M u u'`. Establish `hexp : ∀ u (a b : ℂ) u' (a' b' : ℂ), (ι *ᵥ u + a • X + b • Yv) ⬝ᵥ M *ᵥ star (ι *ᵥ u' + a' • X + b' • Yv) = u ⬝ᵥ M₁ *ᵥ star u' + a * star b' + b * star a'`. Introduce `u a b u' a' b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_dotProduct, star_add, mulVec_add, dotProduct_add, smul_dotProduct, star_smul, mulVec_smul, dotProduct_smul, hιι, hιuX, hιuY, hXιu, hYιu, hXX, hYY, hXY, hYX, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcY : ∀ u (a b : ℂ), (ι *ᵥ u + a • X + b • Yv) ⬝ᵥ M *ᵥ star Yv = a`. Introduce `u a b`. Use `hexp u a b 0 0 1` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hcX : ∀ u (a b : ℂ), (ι *ᵥ u + a • X + b • Yv) ⬝ᵥ M *ᵥ star X = b`. Introduce `u a b`. Use `hexp u a b 0 1 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdec : ∀ z : Fin (n₁ + 2) → ℂ, ∃ (u : Fin n₁ → ℂ) (a b : ℂ), z = ι *ᵥ u + a • X + b • Yv`. Set `Φ : ((Fin n₁ → ℂ) × (Fin 2 → ℂ)) →ₗ[ℂ] (Fin (n₁ + 2) → ℂ)` to `(Matrix.toLin' ι).comp (LinearMap.fst ℂ _ _) + ((LinearMap.proj (R := ℂ) (φ := fun _ : Fin 2 => ℂ) 0).smulRight X).comp (LinearMap.snd ℂ _ _) + ((LinearMap.proj (R := ℂ) (φ := fun _ : Fin 2 => ℂ) 1).smulRight Yv).comp (LinearMap.snd ℂ _ _)`. Establish `hΦ : ∀ p, Φ p = ι *ᵥ p.1 + p.2 0 • X + p.2 1 • Yv` using `fun p => by simp [Φ]`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, w⟩ h0`. Rewrite `h0` using `[hΦ]`. Establish `ha` using `hcY u (w 0) (w 1)`. Establish `hb` using `hcX u (w 0) (w 1)`. Simplify using `only at h0 ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha`, `hb` using `[h0, zero_dotProduct]`. Establish `hu : ι *ᵥ u = 0` using `by rw [← ha, ← hb] at h0; simpa using h0`. Establish `: u = 0` using `by rw [← one_mulVec u, ← hPι, ← mulVec_mulVec, hu, mulVec_zero]`. Use `Prod.ext this ?_` and prove the remaining obligations. Apply the tactic sequence `ext i; fin_cases i <;> simp [← ha, ← hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [Module.finrank_prod])).mp hinj`. Introduce `z`. Take `⟨p, hp⟩` from `hsurj z`. Conclude with `⟨p.1, p.2 0, p.2 1, by rw [← hp, hΦ]⟩`. Use `set vX := M *ᵥ star X with hvX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set vY := M *ᵥ star Yv with hvY`. Use `set C₁ : Matrix (Fin n₁) (Fin (n₁ + 2)) ℂ := P - vecMulVec (P *ᵥ X) vY - vecMulVec (P *ᵥ Yv) vX with hC₁`. Use `set θ : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) ℂ := ι * θ₁ * C₁ + vecMulVec Yv vY + vecMulVec X vX with hθdef`. Establish `hθ : ∀ u (a b : ℂ), θ *ᵥ (ι *ᵥ u + a • X + b • Yv) = ι *ᵥ (θ₁ *ᵥ u) + b • X + a • Yv`. Introduce `u a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ha : vY ⬝ᵥ (ι *ᵥ u + a • X + b • Yv) = a` using `by rw [dotProduct_comm]; exact hcY u a b`. Establish `hb : vX ⬝ᵥ (ι *ᵥ u + a • X + b • Yv) = b` using `by rw [dotProduct_comm]; exact hcX u a b`. Establish `hC : C₁ *ᵥ (ι *ᵥ u + a • X + b • Yv) = u`. Rewrite using `[hC₁, sub_mulVec, sub_mulVec, vecMulVec_mulVec, vecMulVec_mulVec, ha, hb, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, mulVec_mulVec, hPι, one_mulVec]`. Simplify using `only [op_smul_eq_smul]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hθdef, add_mulVec, add_mulVec, vecMulVec_mulVec, vecMulVec_mulVec, ha, hb, ← mulVec_mulVec, ← mulVec_mulVec, hC]`. Simplify using `only [op_smul_eq_smul]`. Normalize the expressions using the abelian group laws. Establish `hext : ∀ A B : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) ℂ, (∀ u (a b : ℂ), A *ᵥ (ι *ᵥ u + a • X + b • Yv) = B *ᵥ (ι *ᵥ u + a • X + b • Yv)) → A = B`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `A B h`. Apply `ext_of_mulVec_single` to reduce the goal to its premises. Introduce `i`. Take `⟨u, a, b, hz⟩` from `hdec (Pi.single i 1)`. Rewrite using `[hz, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hθ₁θ₁ : ∀ u, θ₁ *ᵥ (θ₁ *ᵥ u) = u` using `fun u => by rw [mulVec_mulVec, hθ₁.1, one_mulVec]`. Establish `hiso₁ : ∀ u u', (θ₁ *ᵥ u) ⬝ᵥ M₁ *ᵥ star (θ₁ *ᵥ u') = u ⬝ᵥ M₁ *ᵥ star u'` using `fun u u' => by`. Rewrite using `[form_mulVec, hθ₁.2.1]`. Establish `hre : ∀ c : ℂ, (c * star c).re = Complex.normSq c` using `fun c => by`. Simplify using `[Complex.mul_re, Complex.normSq_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨θ, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `hext` to reduce the goal to its premises. Introduce `u a b`. Rewrite using `[← mulVec_mulVec, hθ, hθ, hθ₁θ₁, one_mulVec]`. Apply `ext_form` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Rewrite using `[← form_mulVec]`. Take `⟨u, a, b, rfl⟩` from `hdec x`. Take `⟨u', a', b', rfl⟩` from `hdec y`. Rewrite using `[hθ, hθ, hexp, hexp, hiso₁]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Take `⟨u, a, b, rfl⟩` from `hdec x`. Rewrite using `[hθ, hexp, Complex.add_re, Complex.add_re, hre, hre]`. Distinguish the cases in `hu : u = 0`.
+Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Establish `hab : a ≠ 0 ∨ b ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hx` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[h.1, h.2]`. Simplify using `only [mulVec_zero, zero_dotProduct, Complex.zero_re, zero_add]`. Break down `hab with h | h` into its components or cases. Use `Complex.normSq_pos.mpr h` as an intermediate fact. Use `Complex.normSq_nonneg b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `Complex.normSq_pos.mpr h` as an intermediate fact. Use `Complex.normSq_nonneg a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hθ₁.2.2 u hu` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Complex.normSq_nonneg b` as an intermediate fact. Use `Complex.normSq_nonneg a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply `ext_of_mulVec_single` to reduce the goal to its premises. Introduce `j`.
-
-Use `hθ (Pi.single j 1) 0 0` as an intermediate fact. Simplify using `only [zero_smul, add_zero] at this`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, this]`. Use `hθ 0 1 0` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem extend_swap : ∀ (n n₁ : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (X Yv : Fin n → ℂ) (ι : Matrix (Fin n) (Fin n₁) ℂ)
     (P : Matrix (Fin n₁) (Fin n) ℂ) (θ₁ : Matrix (Fin n₁) (Fin n₁) ℂ), n = n₁ + 2 → Mᴴ = M →

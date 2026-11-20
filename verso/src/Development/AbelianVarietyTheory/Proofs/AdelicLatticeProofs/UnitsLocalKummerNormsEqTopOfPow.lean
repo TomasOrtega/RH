@@ -7,11 +7,11 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `p F L _ _ _ φ δ r hp hδ hr`. Establish `hφ : φ δ ≠ 0` using `(map_ne_zero φ).2 hδ`. Establish `hsep : (X ^ p - C (φ δ) : L[X]).Separable` using `separable_X_pow_sub_C (φ δ) (Nat.cast_ne_zero.2 hp.ne') hφ`. Establish `hm : (X ^ p - C (φ δ) : L[X]).Monic` using `monic_X_pow_sub_C _ hp.ne'`. Establish `: IsReduced (AdjoinRoot (X ^ p - C (φ δ) : L[X]))` using `(Ideal.isRadical_iff_quotient_reduced _).1 (isRadical_iff_span_singleton.1 hsep.squarefree.isRadical)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite L (AdjoinRoot (X ^ p - C (φ δ) : L[X]))` using `(AdjoinRoot.powerBasis' hm).finite`. Set `ψ : AdjoinRoot (X ^ p - C (φ δ) : L[X]) →ₐ[L] L` to `AdjoinRoot.liftAlgHom _ (AlgHom.id L L) r (by simp [hr])`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[mem_kNorm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.CNorm.exists_unit_norm_eq_of_algHom L _ ψ (φ (x : F)) ((map_ne_zero φ).2 x.ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem kNorm_eq_top_of_pow : ∀ (p : ℕ) (F L : Type) [Field F] [Field L] [CharZero L] (φ : F →+* L) (δ : F) (r : L), 0 < p → δ ≠ 0 → r ^ p = φ δ → kNorm p φ δ = ⊤ := by
   intro p F L _ _ _ φ δ r hp hδ hr

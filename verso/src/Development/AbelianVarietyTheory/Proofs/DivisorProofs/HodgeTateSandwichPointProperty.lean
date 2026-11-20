@@ -10,21 +10,19 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilInt
 namespace GlobalTheory.HTLat.KerShape
 
 /- English proof (translation)
-Take `⟨B, hB, hB1, hB2⟩` from `GlobalTheory.PointGroup.exists_form P.integers G ζ hζ`. Establish `hk : GlobalTheory.PointGroup.KerIsLie G B` using `(GlobalTheory.DetInv.HTKer.ker_hodgeTateLinear p C v O ε hε H G ζ B P.integers hζ hB).1`. Take `⟨ξ, hξ0, hξ⟩` from `GlobalTheory.PointGroup.exists_ker_of_lie P.integers hB1.2 hk (l x)`. Set `j : G.Tate →ₗ[ℤ_[p]] P.T` to `P.tateGt.subtype ∘ₗ e.toLinearMap`. Establish `hBc : ∀ s t, B s (c t) = pairT P.A P.eps (j s) t` using `fun s t => hζ.1 ((hB s (c t)).symm.trans (hc s t))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcφ : ∀ s, c (j s) = tateMap G G.dual O φ s` using `fun s => hB2.1 (LinearMap.ext fun s' => hζ.1 ((hB s' _).symm.trans ((hc s' (j s)).trans ((hφ s' s).symm.trans (hB s' _)))))`. Establish `h1 : ∀ (z : O ⊗[ℤ_[p]] G.Tate) t, P.pairV (P.inclT (j.baseChange O z)) (1 ⊗ₜ t) = algebraMap O C (TensorProduct.rid ℤ_[p] O ((B.flip (c t)).baseChange O z))` using `fun z t => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a s`. Rewrite using `[LinearMap.baseChange_tmul, Point.inclT_tmul, Point.pairV_tmul, LinearMap.baseChange_tmul, LinearMap.flip_apply, hBc, TensorProduct.rid_tmul, _root_.mul_one, Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `h2 : P.bLie x = P.inclT (j.baseChange O ξ)` using `P.eq_of_pairV fun t => by`. Rewrite using `[h1, hξ, hl, Point.pairV_bLie]`. Establish `h3 : ∀ χ, dlog G χ = omegaMap _ _ G.bidual.hom (hodgeTate G.dual χ)` using `fun χ => by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hodgeTate_apply, ← dualHom_bidual_inv, dlog_tateMap, ← LinearMap.comp_apply, ← omegaMap_comp, Iso.hom_inv_id, omegaMap_id, LinearMap.id_apply]`. Establish `h4 : ∀ (z : O ⊗[ℤ_[p]] G.Tate) x', (P.al (j.baseChange O z)).1 x' = l x' (omegaMap _ _ G.bidual.hom (omegaDualMap G G.dual φ (G.hodgeTateLinear z)))` using `fun z x' => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Submodule.coe_add, Pi.add_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a s`. Rewrite using `[LinearMap.baseChange_tmul, Point.al_tmul, hodgeTateLinear_tmul, map_smul, map_smul, map_smul, ← hodgeTate_tateMap, ← h3, ← hcφ, hl]`. Both sides reduce to the same expression. Establish `h5 : P.al (j.baseChange O ξ) = 0` using `Subtype.ext (funext fun x' => by`. Rewrite using `[h4, hξ0, map_zero, map_zero, map_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Rewrite using `[h2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.alC _ = 0`. Rewrite using `[Point.alC_inclT, h5, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `clear hξ0 hξ h2 h5`. Proceed by induction on `ξ using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `tmul a s`. Rewrite using `[LinearMap.baseChange_tmul, Point.inclT_tmul]`. Conclude with `Submodule.tmul_mem_baseChange_of_mem _ (e s).2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bLie_mem_W_and_tateGt (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]

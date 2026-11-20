@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.SliceOpDecay
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (le_max_of_le_left (norm_nonneg _))).2 fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl i => exact (norm_le_pi_norm (z ∘ Sum.inl) i).trans (le_max_left _ _)`. Consider the case `inr j => exact (norm_le_pi_norm (z ∘ Sum.inr) j).trans (le_max_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem norm_le_max_comp {V : Type} [NormedAddCommGroup V] {κ κ₁' : Type} [Fintype κ] [Fintype κ₁']
     (z : κ ⊕ κ₁' → V) : ‖z‖ ≤ max ‖z ∘ Sum.inl‖ ‖z ∘ Sum.inr‖ := by
@@ -20,9 +20,9 @@ theorem norm_le_max_comp {V : Type} [NormedAddCommGroup V] {κ κ₁' : Type} [F
   | inr j => exact (norm_le_pi_norm (z ∘ Sum.inr) j).trans (le_max_right _ _)
 
 /- English proof (translation)
-Establish `h` using `pow_le_pow_left₀ (norm_nonneg z) (norm_le_max_comp z) k`. Break down `le_total ‖z ∘ Sum.inl‖ ‖z ∘ Sum.inr‖ with hle | hle` into its components or cases. Rewrite `h` using `[max_eq_right hle]`. Combine the linear relations using `[pow_nonneg (norm_nonneg (z ∘ Sum.inl)) k]`. Rewrite `h` using `[max_eq_left hle]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[pow_nonneg (norm_nonneg (z ∘ Sum.inr)) k]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pow_norm_le_add {V : Type} [NormedAddCommGroup V] {κ κ₁' : Type} [Fintype κ] [Fintype κ₁']
     (z : κ ⊕ κ₁' → V) (k : ℕ) : ‖z‖ ^ k ≤ ‖z ∘ Sum.inl‖ ^ k + ‖z ∘ Sum.inr‖ ^ k := by
@@ -32,23 +32,21 @@ theorem pow_norm_le_add {V : Type} [NormedAddCommGroup V] {κ κ₁' : Type} [Fi
   · rw [max_eq_left hle] at h; linarith [pow_nonneg (norm_nonneg (z ∘ Sum.inr)) k]
 
 /- English proof (translation)
-Take `⟨s1, C1, hC1, h1⟩` from `clm_sup_bound P {(k, 0)}`. Take `⟨s2, C2, hC2, h2⟩` from `clm_sup_bound P {(0, 0)}`. Set `sh : ℕ × ℕ → ℕ × ℕ` to `fun i => (k + i.1, i.2)`. Use `⟨s1 ∪ s2.image sh, C1 + C2, add_nonneg hC1 hC2, fun f z => ?_⟩` and prove the remaining obligations. Use `set F := schwartzSeminormFamily ℂ (κ ⊕ κ' → V) ℂ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set x := z ∘ Sum.inl`. Use `set y := z ∘ Sum.inr`. Use `set g := sliceR f x`. Establish `hq : qOp P f z = P g y` using `rfl`. Use `set S := (s1 ∪ s2.image sh).sup F f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hS0 : 0 ≤ S` using `apply_nonneg _ _`. Establish `hy : ‖y‖ ^ k * ‖P g y‖ ≤ C1 * S`. Establish `a1 : ‖y‖ ^ k * ‖P g y‖ ≤ SchwartzMap.seminorm ℂ k 0 (P g)`. Use `SchwartzMap.le_seminorm ℂ k 0 (P g) y` as an intermediate fact. Simplify `this` using `[norm_iteratedFDeriv_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a2` using `h1 g`. Simplify using `only [Finset.sup_singleton, SchwartzMap.schwartzSeminormFamily_apply] at a2`. Establish `a3 : s1.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) g ≤ S`. Use `Seminorm.finset_sup_apply_le hS0 fun i hi => ?_` and prove the remaining obligations. Establish `w` using `GlobalTheory.SliceWeight.pow_norm_mul_seminorm_sliceR_le V κ κ' f 0 i.1 i.2 x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [pow_zero, one_mul, zero_add] at w`. Use `le_trans (b := SchwartzMap.seminorm ℂ _ _ f) w ?_` and prove the remaining obligations. Establish `: F i f ≤ S` using `Seminorm.le_finset_sup_apply (Finset.mem_union_left _ hi)`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ‖x‖ ^ k * ‖P g y‖ ≤ C2 * S`. Establish `a1 : ‖P g y‖ ≤ SchwartzMap.seminorm ℂ 0 0 (P g)` using `SchwartzMap.norm_le_seminorm ℂ (P g) y`. Establish `a2` using `h2 g`. Simplify using `only [Finset.sup_singleton, SchwartzMap.schwartzSeminormFamily_apply] at a2`. Establish `a3 : ‖x‖ ^ k * s2.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) g ≤ S`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ‖x‖ ^ k * s2.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) g = s2.sup (schwartzSeminormFamily ℂ (κ' → V) ℂ) (((‖x‖ ^ k : ℝ) : ℂ) • g)`. Rewrite using `[map_smul_eq_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg (norm_nonneg _) _)]`. Rewrite using `[e]`. Use `Seminorm.finset_sup_apply_le hS0 fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_smul_eq_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg (norm_nonneg _) _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `w` using `GlobalTheory.SliceWeight.pow_norm_mul_seminorm_sliceR_le V κ κ' f k i.1 i.2 x`. Use `le_trans (b := SchwartzMap.seminorm ℂ _ _ f) w ?_` and prove the remaining obligations. Establish `: F (sh i) f ≤ S` using `Seminorm.le_finset_sup_apply (Finset.mem_union_right _ (Finset.mem_image_of_mem sh hi))`. Simplify `this` using `[F, sh, SchwartzMap.schwartzSeminormFamily_apply]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (k : ℕ) :

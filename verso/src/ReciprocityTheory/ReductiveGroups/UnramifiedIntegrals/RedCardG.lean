@@ -11,17 +11,17 @@ namespace ReciprocityTheory.ChartRestriction.L1
 namespace CardG
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Establish `: Finset.univ.filter (fun w : F × F => u * w.1 + v * w.2 = 0) = Finset.univ.image (fun t : F => (-(v * t) / u, t))`. Use extensionality with `⟨x, y⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`. Introduce and unpack `⟨t, e, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Finset.card_image_of_injective _ (fun s t e => (Prod.mk.inj e).2), Finset.card_univ]`. Establish `: Finset.univ.filter (fun w : F × F => u * w.1 + v * w.2 = 0) = Finset.univ.image (fun t : F => (t, -(u * t) / v))`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `⟨x, y⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `⟨x, rfl, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`. Introduce and unpack `⟨t, rfl, e⟩`. Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Finset.card_image_of_injective _ (fun s t e => (Prod.mk.inj e).1), Finset.card_univ]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_line {F : Type} [Field F] [Fintype F] (u v : F) (h : u ≠ 0 ∨ v ≠ 0) :
     (Finset.univ.filter (fun w : F × F => u * w.1 + v * w.2 = 0)).card = Fintype.card F := by
@@ -52,15 +52,13 @@ theorem card_line {F : Type} [Field F] [Fintype F] (u v : F) (h : u ≠ 0 ∨ v 
     rw [this, Finset.card_image_of_injective _ (fun s t e => (Prod.mk.inj e).1), Finset.card_univ]
 
 /- English proof (translation)
-Distinguish the cases in `hab : a ≠ 0 ∨ b ≠ 0`. Rewrite using `[← card_line a b hab]`. Use `congr 1`. Use extensionality with `⟨x, y⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨fun e => e.1, fun e => ⟨e, ?_⟩⟩` and prove the remaining obligations. Break down `hab with h | h` into its components or cases. Apply `mul_left_cancel₀ h` to reduce the goal to its premises. Take the linear combination `c * e + y * hdet`. Apply `mul_left_cancel₀ h` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `d * e - x * hdet`. Use `push Not at hab`. Take `⟨ha, hb⟩` from `hab`. Establish `hcd : c ≠ 0 ∨ d ≠ 0`. Assume the negation of the conclusion as `hcd`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hcd`. Conclude with `hne ⟨ha, hb, hcd.1, hcd.2⟩`. Rewrite using `[← card_line c d hcd]`. Use `congr 1`. Use extensionality with `⟨x, y⟩`.
-
-Simplify using `[ha, hb]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_ker {F : Type} [Field F] [Fintype F] (a b c d : F) (hdet : a * d - b * c = 0)
     (hne : ¬ (a = 0 ∧ b = 0 ∧ c = 0 ∧ d = 0)) :
@@ -89,9 +87,9 @@ theorem card_ker {F : Type} [Field F] [Fintype F] (a b c d : F) (hdet : a * d - 
     simp [ha, hb]
 
 /- English proof (translation)
-Establish `hi` using `LinearIndependent.pair_iff.mp L.indep ((m - m' : ℤ) : ℝ) ((n - n' : ℤ) : ℝ) (by`. Simplify using `only [Complex.real_smul]`. Use `push_cast`. Take the linear combination `h)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Use `hi.1` as an intermediate fact. Establish `h2 : m - m' = 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Use `hi.2` as an intermediate fact. Establish `h2 : n - n' = 0` using `by exact_mod_cast this`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -108,13 +106,13 @@ theorem coord_unique (L : PeriodPair) {m n m' n' : ℤ}
     omega
 
 /- English proof (translation)
-Establish `hpc : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hp`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨m', n', e⟩` from `PeriodPair.mem_lattice.mp hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `coord_unique L (m := m) (n := n) (m' := p * m') (n' := p * n') (by` as an intermediate fact. Rewrite using `[h, ← e]`. Use `push_cast`. Use the proof step `ring)`. Conclude with `⟨⟨m', this.1⟩, ⟨n', this.2⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨m', rfl⟩, ⟨n', rfl⟩⟩`. Use `PeriodPair.mem_lattice.mpr ⟨m', n', ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hpc` to reduce the goal to its premises. Rewrite using `[← h]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mem_iff (L : PeriodPair) (p : ℕ) (hp : p ≠ 0) {z : ℂ} {m n : ℤ}
     (h : (m : ℂ) * L.ω₁ + n * L.ω₂ = p * z) :
@@ -138,7 +136,7 @@ def co (L : PeriodPair) (z : ℂ) : ℤ × ℤ :=
   else 0
 
 /- English proof (translation)
-Rewrite using `[co, dif_pos h]`. Conclude with `(PeriodPair.mem_lattice.mp h).choose_spec.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_spec (L : PeriodPair) {z : ℂ} (h : z ∈ L.lattice) :
     ((co L z).1 : ℂ) * L.ω₁ + ((co L z).2 : ℂ) * L.ω₂ = z := by
@@ -150,47 +148,43 @@ end CardG
 open CardG
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨⟨hS1, hS2, hS3⟩, hdisj⟩` from `hT.kerReps`. Take `⟨a, b, c, d, h1, h2, -, hn⟩` from `Ker.matrix_data L β hβ`. Establish `hpc : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hdetZ : a * d - b * c = (p : ℤ) * M`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((a * d - b * c : ℤ) : ℝ) = (((p : ℤ) * M : ℤ) : ℝ)`. Rewrite using `[← hn, hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdet : (a : ZMod p) * d - b * c = 0`. Use `congrArg (fun k : ℤ => (k : ZMod p)) hdetZ` as an intermediate fact. Simplify using `using this`. Establish `hne : ¬ ((a : ZMod p) = 0 ∧ (b : ZMod p) = 0 ∧ (c : ZMod p) = 0 ∧ (d : ZMod p) = 0)`. Simplify using `only [ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩, ⟨d', rfl⟩⟩`. Apply `hM` to reduce the goal to its premises. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `: (M : ℤ) = p * (a' * d' - b' * c')`. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdetZ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Int.natCast_dvd_natCast.mp ⟨_, this⟩`. Establish `hmul : ∀ {z : ℂ} {m n : ℤ}, (m : ℂ) * L.ω₁ + n * L.ω₂ = p * z → (β * z ∈ L.lattice ↔ (a : ZMod p) * m + b * n = 0 ∧ (c : ZMod p) * m + d * n = 0)`. Introduce `z m n e`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `mem_iff L p hp.ne_zero (z := β * z) (m := a * m + b * n) (n := c * m + d * n) (by` as an intermediate fact. Use `push_cast`. Take the linear combination `β * e - (m : ℂ) * h1 - (n : ℂ) * h2)`. Rewrite using `[this]`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set S := T ∪ T.image (fun P => -P) with hSdef`. Use `set K := Finset.univ.filter (fun w : ZMod p × ZMod p => (a : ZMod p) * w.1 + b * w.2 = 0 ∧ (c : ZMod p) * w.1 + d * w.2 = 0) with hK`. Establish `hKcard : K.card = p`. Use `card_ker (a : ZMod p) b c d hdet hne` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[ZMod.card]`. Rewrite using `[hK]`. Use `this` and compare the differences between its conclusion and the goal. Establish `h0K : (0 : ZMod p × ZMod p) ∈ K` using `by simp [hK]`. Establish `hcardS : (S.filter (fun P => β * P ∈ L.lattice)).card = 2 * (T.filter (fun P => β * P ∈ L.lattice)).card`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `himg : (T.image (fun P => -P)).filter (fun P => β * P ∈ L.lattice) = (T.filter (fun P => β * P ∈ L.lattice)).image (fun P => -P)`. Use extensionality with `Q`. Simplify using `only [Finset.mem_filter, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨P, hP, rfl⟩, hQ⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨P, ⟨hP, ?_⟩, rfl⟩` and prove the remaining obligations. Use `neg_mem hQ` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨P, ⟨hP, hQ⟩, rfl⟩`. Use `⟨⟨P, hP, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `neg_mem hQ` as an intermediate fact. Simplify using `using this`. Rewrite using `[hSdef, Finset.filter_union, Finset.card_union_of_disjoint (Finset.disjoint_filter_filter hdisj), himg, Finset.card_image_of_injective _ neg_injective]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbij : (S.filter (fun P => β * P ∈ L.lattice)).card = (K.erase 0).card`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Finset.card_nbij (fun z => (((co L (p * z)).1 : ZMod p), ((co L (p * z)).2 : ZMod p)))` to reduce the goal to its premises. Introduce `P hP`. Take `⟨hPS, hPβ⟩` from `Finset.mem_filter.mp hP`. Establish `e` using `co_spec L (hS1 P hPS).1`. Rewrite using `[Finset.mem_coe, Finset.mem_erase]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Apply `(hS1 P hPS).2` to reduce the goal to its premises. Rewrite using `[mem_iff L p hp.ne_zero e]`. Conclude with `Prod.mk.inj h0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK, Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, (hmul e).mp hPβ⟩`. Introduce `P hP Q hQ hPQ`. Establish `hPS` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hP)).1`. Establish `hQS` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hQ)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `eP` using `co_spec L (hS1 P hPS).1`. Establish `eQ` using `co_spec L (hS1 Q hQS).1`. Apply `hS2 P hPS Q hQS` to reduce the goal to its premises. Rewrite using `[mem_iff L p hp.ne_zero (m := (co L (p * P)).1 - (co L (p * Q)).1) (n := (co L (p * P)).2 - (co L (p * Q)).2) (by push_cast; linear_combination eP - eQ)]`. Take `⟨e1, e2⟩` from `Prod.mk.inj hPQ`.
+Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Conclude with `⟨sub_eq_zero.mpr e1, sub_eq_zero.mpr e2⟩`. Introduce and unpack `⟨x, y⟩ hxy`. Take `⟨hxy0, hxyK⟩` from `Finset.mem_erase.mp (Finset.mem_coe.mp hxy)`. Take `⟨m, rfl⟩` from `ZMod.intCast_surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, rfl⟩` from `ZMod.intCast_surjective y`. Use `set z : ℂ := ((m : ℂ) * L.ω₁ + n * L.ω₂) / p with hz`. Establish `ez : (m : ℂ) * L.ω₁ + n * L.ω₂ = p * z` using `by rw [hz]; field_simp`. Establish `hzp : (p : ℂ) * z ∈ L.lattice` using `PeriodPair.mem_lattice.mpr ⟨m, n, ez⟩`. Establish `hzL : z ∉ L.lattice`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_iff L p hp.ne_zero ez]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `hxy0 (by rw [e1, e2]; rfl)`. Establish `hzβ : β * z ∈ L.lattice` using `(hmul ez).mpr (Finset.mem_filter.mp hxyK).2`. Take `⟨P, hPS, hzP⟩` from `hS3 z hzp hzL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `eP` using `co_spec L (hS1 P hPS).1`. Use `⟨P, Finset.mem_coe.mpr (Finset.mem_filter.mpr ⟨hPS, ?_⟩), ?_⟩` and prove the remaining obligations. Establish `: β * P = β * z - β * (z - P)` using `by ring`. Rewrite using `[this]`. Conclude with `sub_mem hzβ (hβ _ hzP)`.
-
-Use `(mem_iff L p hp.ne_zero (m := m - (co L (p * P)).1) (n := n - (co L (p * P)).2) (by push_cast; linear_combination ez - eP)).mp hzP` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `Prod.ext (sub_eq_zero.mp this.1).symm (sub_eq_zero.mp this.2).symm`. Rewrite using `[← hcardS, hbij, Finset.card_erase_of_mem h0K, hKcard]`. Use `hp.pos` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_G (L : PeriodPair) (β : ℂ) (hβ : MulStable L β) (p M : ℕ) (hp : p.Prime) (hp2 : p ≠ 2)
     (hN : Complex.normSq β = ((p * M : ℕ) : ℝ)) (hM : ¬ p ∣ M) (T : Finset ℂ)

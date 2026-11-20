@@ -13,12 +13,12 @@ def epsOfC {k : ℕ} (s : Finset (SV k)) (b : SV k → A0 k) (l m : A0 k) : ℂ 
   (√(Matrix.gram ℝ fun u : s => b u).det : ℝ) * ∏ u ∈ s, (Complex.I * (⟪l, b u⟫_ℝ : ℝ) - (⟪m, b u⟫_ℝ : ℝ))⁻¹
 
 /- English proof (translation)
-Simplify using `[eLC, eL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eLC_zero {k : ℕ} (l H : A0 k) : eLC l 0 H = eL l H := by simp [eLC, eL]
 
 /- English proof (translation)
-Simplify using `[epsOfC, epsOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsOfC_zero {k : ℕ} (s : Finset (SV k)) (b : SV k → A0 k) (l : A0 k) : epsOfC s b l 0 = epsOf s b l := by
   simp [epsOfC, epsOf]

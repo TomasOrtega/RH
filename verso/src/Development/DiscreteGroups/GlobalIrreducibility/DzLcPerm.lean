@@ -12,9 +12,9 @@ namespace DiscreteGroups.sglob.DzLc
 variable {F : Type} [Field F] {N : ℕ}
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge (b l) (b i) with h | h` into its components or cases. Rewrite using `[hX h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY l j (le_trans hij h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem strict_left_mul {b : Fin N → ℕ} {X Y : Matrix (Fin N) (Fin N) F}
     (hX : X.BlockTriangular b) (hY : GlobalTheory.FiniteGL.IsStrictBlock b Y) : GlobalTheory.FiniteGL.IsStrictBlock b (X * Y) := by
@@ -26,11 +26,9 @@ theorem strict_left_mul {b : Fin N → ℕ} {X Y : Matrix (Fin N) (Fin N) F}
   · rw [hY l j (le_trans hij h), mul_zero]
 
 /- English proof (translation)
-Establish `hpi : ((p⁻¹ : GL (Fin N) F) : Matrix (Fin N) (Fin N) F).BlockTriangular b`. Set `_` to `p.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hp`. Establish `h1 : (p : Matrix (Fin N) (Fin N) F) * ((p⁻¹ : GL (Fin N) F) : Matrix (Fin N) (Fin N) F) = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e : ((p * u * p⁻¹ : GL (Fin N) F) : Matrix (Fin N) (Fin N) F) - 1 = (p : Matrix (Fin N) (Fin N) F) * ((u : Matrix (Fin N) (Fin N) F) - 1) * ((p⁻¹ : GL (Fin N) F) : Matrix (Fin N) (Fin N) F)`. Rewrite using `[Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, h1]`. Use `GlobalTheory.FiniteGL.mem_unipRadical.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[e, Matrix.mul_assoc]`.
-
-Conclude with `strict_left_mul hp (GlobalTheory.FiniteGL.IsStrictBlock.mul_blockTriangular (GlobalTheory.FiniteGL.mem_unipRadical.1 hu) hpi) i j hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unipRadical {b : Fin N → ℕ} {p u : GL (Fin N) F}
     (hp : (p : Matrix (Fin N) (Fin N) F).BlockTriangular b) (hu : u ∈ GlobalTheory.FiniteGL.unipRadical F b) :
@@ -51,7 +49,7 @@ theorem conj_mem_unipRadical {b : Fin N → ℕ} {p u : GL (Fin N) F}
     (GlobalTheory.FiniteGL.IsStrictBlock.mul_blockTriangular (GlobalTheory.FiniteGL.mem_unipRadical.1 hu) hpi) i j hij
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `: (i : ℕ) ≤ j` using `hij`. Simplify using `only [GlobalTheory.FiniteGL.twoBlocks]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem monotone_twoBlocks (a : ℕ) : Monotone (GlobalTheory.FiniteGL.twoBlocks N a) := by
   intro i j hij
@@ -60,9 +58,9 @@ theorem monotone_twoBlocks (a : ℕ) : Monotone (GlobalTheory.FiniteGL.twoBlocks
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `p hp`. Use `Subgroup.mem_normalizer_iff.2 fun u => ⟨fun hu => conj_mem_unipRadical hp hu, fun hu => ?_⟩` and prove the remaining obligations. Establish `hp' : p⁻¹ ∈ GroundTheory.Automorphic.Iwasawa.blockUpper F N b` using `inv_mem hp`. Use `conj_mem_unipRadical hp' hu` as an intermediate fact. Establish `e : p⁻¹ * (p * u * p⁻¹) * p⁻¹⁻¹ = u` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem blockUpper_le_normalizer (b : Fin N → ℕ) :
     GroundTheory.Automorphic.Iwasawa.blockUpper F N b ≤
@@ -75,13 +73,11 @@ theorem blockUpper_le_normalizer (b : Fin N → ℕ) :
   rwa [e] at this
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `h`. Establish `hN : 0 < N` using `x.pos`. Establish `hex : ∃ m, ∃ hm : m < N, f ⟨m, hm⟩ ≠ f ⟨0, hN⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hxy ((hcon x x.2).trans (hcon y y.2).symm)`. Take `⟨hm, hne⟩` from `Nat.find_spec hex`. Use `⟨Nat.find hex, ?_, hm, fun i j hi hj => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h0 | h0` into its components or cases. Conclude with `absurd (congrArg f (Fin.ext h0 : (⟨Nat.find hex, hm⟩ : Fin N) = ⟨0, hN⟩)) hne`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h1 : f i = f ⟨0, hN⟩`. Assume the negation of the conclusion as `hc`. Conclude with `Nat.find_min hex hi ⟨i.2, hc⟩`. Establish `h2 : f ⟨Nat.find hex, hm⟩ ≤ f j` using `hf (show (⟨Nat.find hex, hm⟩ : Fin N) ≤ j from hj)`.
-
-Establish `h3 : f ⟨0, hN⟩ ≤ f ⟨Nat.find hex, hm⟩` using `hf (show (⟨0, hN⟩ : Fin N) ≤ ⟨Nat.find hex, hm⟩ from Nat.zero_le _)`. Rewrite using `[h1]`. Conclude with `lt_of_lt_of_le (lt_of_le_of_ne h3 (Ne.symm hne)) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cut (f : Fin N → ℕ) (hf : Monotone f) (h : ∃ x y, f x ≠ f y) :
     ∃ a, 0 < a ∧ a < N ∧ ∀ i j : Fin N, (i : ℕ) < a → a ≤ (j : ℕ) → f i < f j := by
@@ -107,35 +103,33 @@ theorem exists_cut (f : Fin N → ℕ) (hf : Monotone f) (h : ∃ x y, f x ≠ f
     exact lt_of_lt_of_le (lt_of_le_of_ne h3 (Ne.symm hne)) h2
 
 /- English proof (translation)
-Take `⟨β, hβ⟩ : ∃ β : Fin N → ℕ, β = fun x => ((GlobalTheory.SmGL.blk e x : Fin s) : ℕ)` from `⟨_, rfl⟩`. Establish `hβe : ∀ c (i : Fin (d c)), β (e ⟨c, i⟩) = c` using `fun c i => by subst hβ; simp`. Choose the witnesses or unpack the hypotheses as in `⟨x0, y0, hxy⟩ : ∃ x y, β x ≠ β y := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `he` to reduce the goal to its premises. Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_` and prove the remaining obligations. Take `⟨-, hdiag⟩` from `GlobalTheory.SmGL.mem_unipRad.1 hu`. Use `Matrix.GeneralLinearGroup.ext fun x y => ?_` and prove the remaining obligations. Take `⟨⟨c, i⟩, rfl⟩` from `e.surjective x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c', j⟩, rfl⟩` from `e.surjective y`. Establish `hcc : c = c'`. Use `hcon (e ⟨c, i⟩) (e ⟨c', j⟩)` as an intermediate fact. Rewrite `this` using `[hβe, hβe]`. Conclude with `Fin.ext this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hcc` using the available equality. Rewrite using `[hdiag c i j]`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`. Take `⟨ν, hν⟩ : ∃ ν : Equiv.Perm (Fin N), ν = Tuple.sort β` from `⟨_, rfl⟩`. Establish `hmono : Monotone (β ∘ ν)` using `hν ▸ Tuple.monotone_sort β`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha0, haN, hcut⟩` from `exists_cut (β ∘ ν) hmono ⟨ν.symm x0, ν.symm y0, by simpa using hxy⟩`. Establish `h12 : (ν.symm.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) F) * ν.toPEquiv.toMatrix = 1`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`. Use extensionality with `u v`. Simplify using `[PEquiv.toMatrix_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h21 : (ν.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) F) * ν.symm.toPEquiv.toMatrix = 1`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`. Use extensionality with `u v`. Simplify using `[PEquiv.toMatrix_apply, Matrix.one_apply]`. Set `Q : GL (Fin N) F` to `⟨_, _, h12, h21⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∀ X : GL (Fin N) F, ∀ u v, ((Q * X * Q⁻¹ : GL (Fin N) F) : Matrix (Fin N) (Fin N) F) u v = (X : Matrix (Fin N) (Fin N) F) (ν.symm u) (ν.symm v)`. Introduce `X u v`. Use `show (((ν.symm.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) F) * (X : Matrix (Fin N) (Fin N) F) * ν.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) F)) u v = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Q, a, ha0, haN, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxe` using `GlobalTheory.FiniteGL.mem_unipRadical.1 hx`. Establish `key : ∀ p q : Fin N, (x : Matrix (Fin N) (Fin N) F) p q ≠ (1 : Matrix (Fin N) (Fin N) F) p q → β (ν p) < β (ν q)`. Introduce `p q hpq`. Distinguish the cases in `hp : (p : ℕ) < a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hq : a ≤ (q : ℕ)`. Conclude with `hcut p q hp hq`. It suffices to derive a contradiction. Apply `hpq` to reduce the goal to its premises. Apply the tactic sequence `have h := hxe p q (by unfold GlobalTheory.FiniteGL.twoBlocks; split_ifs <;> omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `h`. It suffices to derive a contradiction. Apply `hpq` to reduce the goal to its premises. Apply the tactic sequence `have h := hxe p q (by unfold GlobalTheory.FiniteGL.twoBlocks; split_ifs <;> omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `h`. Use `GlobalTheory.SmGL.mem_unipRad.2 ⟨GlobalTheory.SmGL.mem_parab.2 fun u v huv => ?_, fun c i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ x u v]`. Establish `hne : u ≠ v` using `fun h => by subst h; exact lt_irrefl _ huv`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : Matrix (Fin N) (Fin N) F) (ν.symm u) (ν.symm v) = 0` using `Matrix.one_apply_ne fun h => hne (ν.symm.injective h)`. Assume the negation of the conclusion as `hc`. Establish `h2` using `key (ν.symm u) (ν.symm v) (by rw [h1]; exact hc)`. Simplify using `only [Equiv.apply_symm_apply] at h2`. Establish `h3 : β v < β u` using `by rw [hβ]; exact huv`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_asymm h2 h3`. Rewrite using `[hQ x]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h` using `hxe (ν.symm (e ⟨c, i⟩)) (ν.symm (e ⟨c, i⟩)) le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Matrix.sub_apply, sub_eq_zero, Matrix.one_apply_eq]`. Rewrite using `[h, Matrix.one_apply_eq]`. Establish `hne : e ⟨c, i⟩ ≠ e ⟨c, j⟩` using `fun h => hij (by simpa using e.injective h)`. Rewrite using `[Matrix.one_apply_ne hij]`. Assume the negation of the conclusion as `hc`.
-
-Establish `h2` using `key _ _ (by rwa [Matrix.one_apply_ne (fun h => hne (ν.symm.injective h))])`. Simplify using `only [Equiv.apply_symm_apply] at h2`. Rewrite `h2` using `[hβe, hβe]`. Conclude with `lt_irrefl _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perm_conj {s : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin N)
     (he : GlobalTheory.SmGL.unipRad F e ≠ ⊥) :

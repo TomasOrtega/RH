@@ -10,7 +10,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.TwGen
 
 /- English proof (translation)
-Use extensionality with `V a`. Express the relevant statement in the definitionally equal form `(GlobalTheory.QCoh.sectionHom (φ.app ⊤ s)).app V a = φ.app V ((GlobalTheory.QCoh.sectionHom s).app V a)`. Rewrite using `[GlobalTheory.QCoh.sectionHom_app, GlobalTheory.QCoh.sectionHom_app, Scheme.Modules.Hom.app_smul, GlobalTheory.Twist.app_resM]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sectionHom_app_comp {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G) (s : Γ(F, ⊤)) :
     GlobalTheory.QCoh.sectionHom (φ.app ⊤ s) = GlobalTheory.QCoh.sectionHom s ≫ φ := by
@@ -20,7 +20,7 @@ theorem sectionHom_app_comp {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G) (s
     GlobalTheory.Twist.app_resM]
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]`. Use `GlobalTheory.Twist.zhom_ext fun V t i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Twist.zcoord ((GlobalTheory.Twist.twistZZeroIso G hH).hom.app V (u.app V t)) i = GlobalTheory.Twist.zcoord ((GlobalTheory.Twist.map (GlobalTheory.lbZPow H 0) u).app V ((GlobalTheory.Twist.twistZZeroIso F hH).hom.app V t)) i`. Rewrite using `[GlobalTheory.Twist.zcoord_twistZZeroIso_hom_app, GlobalTheory.Twist.zcoord_map_app, GlobalTheory.Twist.zcoord_twistZZeroIso_hom_app, GlobalTheory.Twist.app_resM]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistZZeroIso_inv_naturality {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB)
     {F G : X.Modules} (u : F ⟶ G) :
@@ -35,7 +35,7 @@ theorem twistZZeroIso_inv_naturality {X : Scheme.{0}} {H : ReciprocityTheory.Cha
     GlobalTheory.Twist.zcoord_twistZZeroIso_hom_app, GlobalTheory.Twist.app_resM]
 
 /- English proof (translation)
-Simplify using `only [genHom, Category.assoc, twistZZeroIso_inv_naturality hH u]`. Rewrite using `[sectionHom_app_comp]`. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (GlobalTheory.Twist.twistZAddIso_naturality_assoc hH (add_neg_cancel n) u (GlobalTheory.Twist.twistZZeroIso G hH).inv))` and prove the remaining obligations. Conclude with `Category.assoc (GlobalTheory.Twist.map (GlobalTheory.lbZPow H (-n)) (GlobalTheory.QCoh.sectionHom b)) (GlobalTheory.Twist.map (GlobalTheory.lbZPow H (-n)) (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) u)) ((GlobalTheory.Twist.twistZAddIso G hH (add_neg_cancel n)).hom ≫ (Globa …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genHom_map_app {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB)
     {F G : X.Modules} (u : F ⟶ G) (n : ℤ) (b : Γ(GlobalTheory.twistZ F H n, ⊤)) :
@@ -49,7 +49,7 @@ theorem genHom_map_app {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.
     ((GlobalTheory.Twist.twistZAddIso G hH (add_neg_cancel n)).hom ≫ (GlobalTheory.Twist.twistZZeroIso G hH).inv)
 
 /- English proof (translation)
-Introduce and unpack `X H hH P S n _ ⟨b', rfl⟩`. Conclude with `imageSubobject_le _ (genHom hH n b') (genHom_map_app hH S.arrow n b').symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem genSub_le : ∀ {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB) {P : X.Modules}
     (S : Subobject P) (n : ℤ) (b : Γ(GlobalTheory.twistZ P H n, ⊤)), b ∈ twSecs H n S → genSub hH n b ≤ S := by

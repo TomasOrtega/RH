@@ -14,7 +14,7 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.PdNotType.pD_not_type` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGeneratorNotMemTwistPlace.lean&line=16#L16)
 -/

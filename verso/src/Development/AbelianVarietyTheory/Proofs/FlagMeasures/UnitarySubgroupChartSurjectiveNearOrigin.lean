@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.GaugeSubChartSurj
 
 /- English proof (translation)
-Establish `hf' : HasStrictFDerivAt f (ContinuousLinearMap.id ℝ M) (ι 0)` using `by rwa [map_zero]`. Establish `h1` using `hf'.comp (0 : V) ι.hasStrictFDerivAt`. Establish `h2` using `p.hasStrictFDerivAt.comp (0 : V) h1`. Establish `h3 : p.comp ((ContinuousLinearMap.id ℝ M).comp ι) = (ContinuousLinearEquiv.refl ℝ V : V →L[ℝ] V)` using `by ext1 x; exact hp x`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `h2.map_nhds_eq_of_equiv`. Simplify using `only [map_zero, h0] at h4`. Establish `h5 : Tendsto (fun y => f (ι y)) (𝓝 0) (𝓝 0)`. Use `h1.continuousAt.tendsto` as an intermediate fact. Simplify `this` using `only [map_zero, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h6 : (fun y => f (ι y)) ⁻¹' ball 0 δ ∈ 𝓝 (0 : V)` using `h5 (ball_mem_nhds 0 hδ)`. Establish `h7` using `image_mem_map (m := fun y => p (f (ι y))) h6`. Rewrite `h7` using `[h4]`. Take `⟨ρ, hρ, hsub⟩` from `Metric.mem_nhds_iff.1 h7`. Use `⟨ρ, hρ, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hyx⟩` from `hsub (mem_ball_zero_iff.2 hx)`. Conclude with `⟨y, mem_ball_zero_iff.1 hy, hyx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ball_subset {V M : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     [NormedAddCommGroup M] [NormedSpace ℝ M] (ι : V →L[ℝ] M) (p : M →L[ℝ] V)
@@ -58,7 +58,7 @@ def coord (E : Fin d → Matrix (Fin n) (Fin n) ℂ) :
   map_smul' c X := by ext i; simp
 
 /- English proof (translation)
-Use extensionality with `k`. Express the relevant statement in the definitionally equal form `(((∑ i, x i • E i) * (E k)ᴴ).trace).re = x k`. Simplify using `only [Matrix.sum_mul, Matrix.smul_mul, Matrix.trace_sum, Matrix.trace_smul, Complex.re_sum, Complex.smul_re, hE]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coord_comb (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) (x : EuclideanSpace ℝ (Fin d)) :
@@ -72,9 +72,9 @@ theorem coord_comb (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
 open scoped Matrix.Norms.Frobenius in
 
 /- English proof (translation)
-Introduce `n ε A d E hA hE hs δ hδ`. Take `⟨ρ, hρ, h⟩` from `exists_ball_subset (LinearMap.toContinuousLinearMap (comb E)) (LinearMap.toContinuousLinearMap (coord E)) (coord_comb E hE) (f := fun Y => NormedSpace.exp Y - 1) (HasStrictFDerivAt.sub_const (f := NormedSpace.exp) 1 CompactDualExists.exp_strict) (sub_eq_zero.2 (NormedSpace.exp_ze …`. Use `⟨ρ, hρ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `h x hx`. Establish `hm : comb E y ∈ A ∧ Formalism.REAL.inG ε (comb E y)` using `(hs (∑ i, y i • E i)).2 (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨GaugeConst.expJ ε ⟨comb E y, hm.2⟩, GaugeSubExists.exp_sub_one_mem A hA hm.1, ?_, hyx⟩` and prove the remaining obligations. Rewrite using `[GaugeConst.sqrt_hs]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_surj : ∀ (n : ℕ) (ε : Fin n → Bool) (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (d : ℕ) (E : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A) → (∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) → (∀ X, (X ∈ A ∧ Formalism.REAL.inG ε X) ↔ X ∈ Submodule.span ℝ (Set.range E)) → ∀ δ : ℝ, 0 < δ → ∃ ρ : ℝ, 0 < ρ ∧ ∀ x : EuclideanSpace ℝ (Fin d), ‖x‖ < ρ → ∃ g : Formalism.REAL.UJ ε, uMat g - 1 ∈ A ∧ Real.sqrt (Formalism.REAL.hs (uMat g - 1)) < δ ∧ (WithLp.toLp 2 (fun i => (((uMat g - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d)) = x := by
   intro n ε A d E hA hE hs δ hδ

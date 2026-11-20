@@ -5,9 +5,9 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Introduce `N k χ G _ hC hχ`. Use `⟨{ toFun := G slash_action_eq' := fun A hA => ?_ holo' := hC.1 zero_at_cusps' := fun {c} hc => hC.2 c (hc.mono ?_) }, rfl⟩` and prove the remaining obligations. Take `⟨A, hA, rfl⟩` from `hA`. Establish `hA0 : A ∈ Gamma0 N` using `Gamma1_in_Gamma0 N hA`. Establish `h11 : ((mat A 1 1 : ℤ) : ZMod N) = 1` using `((Gamma1_mem N A).1 hA).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hχ A hA0` as an intermediate fact. Rewrite `this` using `[h11, map_one, one_smul, ModularForm.SL_slash]`. Conclude with `this`. Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨γ, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspForm_of_chiInv : ∀ (N : ℕ) (k : ℤ) (χ : DirichletCharacter ℂ N) (G : ℍ → ℂ), 0 < N →
     CuspAll k G → ChiInv k N N χ G → ∃ f : CuspForm (Gamma1 N) k, ⇑f = G := by

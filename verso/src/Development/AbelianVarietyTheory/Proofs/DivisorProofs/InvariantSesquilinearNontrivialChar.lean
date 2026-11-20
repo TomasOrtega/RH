@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.OffDiagVanish
 
 /- English proof (translation)
-Introduce `_ k _ _ _ _ n d ν _ _ hU hν Bf hG hH`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.SplitFlip.exists_isUnif (k := k)`. Use `GlobalTheory.T.full_rank_box_separation k n d ϖ hϖ Bf ?_` and prove the remaining obligations. Introduce `Y₁ Y₂ h₁ h₂ hD`. Take `⟨i₀, j₀, g, h, hint, hrow, hcol, hcol2, hS⟩` from `GlobalTheory.T.full_rank_normal_form_valuation k n d Y₁ Y₂ h₁ h₂ hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.invariant_bilinear_double_coset k n d ν ϖ hϖ Bf hG hH Y₁ Y₂ g h (GlobalTheory.T.invariant_bilinear_nontrivial_character k n d ν ϖ hϖ hU hν Bf hG hH i₀ j₀ _ _ hint hrow hcol hcol2 hS)`.
+A detailed English derivation is pending.
 -/
 theorem offDiag_vanish : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → ν ≠ 1 →

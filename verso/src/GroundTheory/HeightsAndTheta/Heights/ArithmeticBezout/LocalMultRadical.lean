@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal W (Localization.AtPrime W), ← IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes (Localization.AtPrime W) W J hW, ← IsLocalization.map_radical W.primeCompl (Localization.AtPrime W) J, hJ.radical]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_maximalIdeal_of_isRadical {A : Type*} [CommRing A] {J W : Ideal A} [W.IsPrime]
     (hJ : J.IsRadical) (hW : W ∈ J.minimalPrimes) :
@@ -17,7 +17,7 @@ theorem map_eq_maximalIdeal_of_isRadical {A : Type*} [CommRing A] {J W : Ideal A
     ← IsLocalization.map_radical W.primeCompl (Localization.AtPrime W) J, hJ.radical]
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1`. Unfold `localMult`. Rewrite using `[dif_pos hWp, map_eq_maximalIdeal_of_isRadical hJ hW]`. Establish `: IsSimpleModule (Localization.AtPrime W) (Localization.AtPrime W ⧸ IsLocalRing.maximalIdeal (Localization.AtPrime W))` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _))`. Rewrite using `[Module.length_eq_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -33,9 +33,9 @@ theorem localMult_eq_one_of_isRadical {A : Type*} [CommRing A] {J W : Ideal A} (
   rfl
 
 /- English proof (translation)
-Establish `hval : fundCycle J W ≠ 0` using `Finsupp.mem_support_iff.mp hW`. Establish `hrel : W ∈ relComps J`. Assume the negation of the conclusion as `h`. Apply `hval` to reduce the goal to its premises. Unfold `fundCycle`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finsupp.onFinset_apply, if_neg h]`. Unfold `fundCycle`. Rewrite using `[Finsupp.onFinset_apply, if_pos hrel]`. Conclude with `localMult_eq_one_of_isRadical hJ hrel.1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fundCycle_apply_of_isRadical {R : Type*} [CommRing R] [IsNoetherianRing R] {n : ℕ}
     {J : Ideal (MvPolynomial (Fin n) R)} (hJ : J.IsRadical) {W : Ideal (MvPolynomial (Fin n) R)}

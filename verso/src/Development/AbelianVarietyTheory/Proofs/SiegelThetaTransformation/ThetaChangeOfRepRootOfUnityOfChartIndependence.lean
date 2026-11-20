@@ -23,11 +23,11 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨k, hk, h2⟩` from `h2`. Establish `e : ∀ B : ℕ, ((Real.sqrt (B : ℝ) : ℝ) : ℂ) ^ 2 = (B : ℂ)` using `fun B => by`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg B)]`. Simplify using the standard rewrite rules. Establish `hA' : (A : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨2 * m * k, by positivity, ?_⟩` and prove the remaining obligations. Establish `e2 : (t * b * ((Real.sqrt (A' : ℝ) : ℝ) : ℂ) / (b' * ((Real.sqrt (A : ℝ) : ℝ) : ℂ))) ^ 2 = t ^ 2 * (b ^ 2 * (A' : ℂ)) / (b' ^ 2 * (A : ℂ))`. Rewrite using `[div_pow, mul_pow, mul_pow, mul_pow, e, e, _root_.mul_assoc]`. Establish `hne : (b' ^ 2 * (A : ℂ)) ^ m ≠ 0` using `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hb') hA')`. Establish `e3 : (t ^ 2 * (b ^ 2 * (A' : ℂ)) / (b' ^ 2 * (A : ℂ))) ^ m = (t ^ 2 * D) ^ m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_pow, mul_pow (t ^ 2), h1, mul_pow _ D, div_eq_iff hne, mul_pow (t ^ 2) D]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_mul, pow_mul, e2, e3, ← pow_mul, mul_comm m k, pow_mul, h2, one_pow]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem changeRoot_scalar_isMu (t b b' D : ℂ) (A A' m : ℕ) (hb' : b' ≠ 0) (hA : A ≠ 0) (hm : 0 < m)
     (h1 : (b ^ 2 * (A' : ℂ)) ^ m = (b' ^ 2 * (A : ℂ) * D) ^ m) (h2 : IsMu (t ^ 2 * D)) :
@@ -46,21 +46,19 @@ theorem changeRoot_scalar_isMu (t b b' D : ℂ) (A A' m : ℕ) (hb' : b' ≠ 0) 
   rw [pow_mul, pow_mul, e2, e3, ← pow_mul, mul_comm m k, pow_mul, h2, one_pow]
 
 /- English proof (translation)
-Take `⟨r, g, X, bas, idx, e, hr, eL, hS, hr', hL, hrow, hy⟩` from `hfib`. Distinguish the cases in `hne : Nonempty (FrPt Xo c ℂ)`. Use `swap`. Conclude with `⟨1, isMu_one, fun _ _ _ _ _ _ _ _ _ y => (hne ⟨y⟩).elim⟩`. Take `⟨y1⟩` from `hne`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLaws : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨t, -, ht⟩` from `GlobalTheory.Phase.ChangePt.change_at_point hC E H Dw l Xo c r g X bas idx e Dw.p n hr eL hS hr' hn hL hrow nab hnab Λ h hU hh hT hT'`. Take `⟨m, hm, hbeta⟩` from `GlobalTheory.BetaChange.beta_sq_compare E H Dw l c n Λ h b b' hU hh hb hb'`. Take `⟨hP, hΛ⟩ : _ ∧ _` from `⟨fun a => (GlobalTheory.PushKeeps.push_keeps E H Dw l c n a h hh).1, ((GlobalTheory.PushKeeps.push_keeps E H Dw l c n 0 h hh).2 Λ).1 hU⟩`. Use `set A := ((Λ).Ln.toAddSubgroup.addSubgroupOf (Λ).La.toAddSubgroup).index ^ (Dw.p + Dw.q) with hAdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A' := ((actLat h Λ).Ln.toAddSubgroup.addSubgroupOf (actLat h Λ).La.toAddSubgroup).index ^ (Dw.p + Dw.q) with hA'def`. Establish `hb0 : algebraMap c.F ℂ b ≠ 0` using `(map_ne_zero _).2 hb.1`. Establish `hb0' : algebraMap c.F ℂ b' ≠ 0` using `(map_ne_zero _).2 hb'.1`. Establish `hA : A ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hb.2.2 (algebraMap c.F ℂ)`. Rewrite `h1` using `[← Nat.cast_pow, ← hAdef, h0, Nat.cast_zero, pow_eq_zero_iff two_ne_zero, norm_eq_zero]`. Conclude with `hb0 h1`. Establish `hsq : ((Real.sqrt (A : ℝ) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero hA))).ne'`. Take `⟨y₀, t₀, x, L, -, hx, hSD, ⟨F⟩⟩` from `hy y1`. Establish `hmu` using `(ht x L y₀ F hx hSD).1`. Establish `hbeta'` using `congrArg (algebraMap c.F ℂ) hbeta`. Simplify using `only [map_pow, map_mul, map_natCast, map_prod] at hbeta'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, changeRoot_scalar_isMu t _ _ _ A A' m hb0' hA hm hbeta' hmu, ?_⟩` and prove the remaining obligations. Introduce `w hw N N' hN hN' a P hPa y v v' hv hv'`. Take `⟨y₀, t₀, x, L, hB, hx, hSD, ⟨F⟩⟩` from `hy y`. Establish `ex1` using `(GlobalTheory.shortThetaValue_existsUnique_natural hLaws hC E H Dw l Xo c nab hnab n Λ N hU hT hN a P hPa w b).1 ℂ`. Establish `ex2` using `(GlobalTheory.shortThetaValue_existsUnique_natural hLaws hC E H Dw l Xo c nab hnab n (actLat h Λ) N' hΛ hT' hN' a _ (hP a P hPa) w b').1 ℂ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, -⟩` from `ex1 y₀`. Take `⟨u', hu', -⟩` from `ex2 y₀`. Establish `k1` using `(ex1 y).unique hv ((GlobalTheory.thetaValue_weight hLaws hC E H Dw l Xo c nab hnab ℂ y₀ y t₀ hB n a P).2 hPa w Λ b N u hu)`. Establish `k2` using `(ex2 y).unique hv' ((GlobalTheory.thetaValue_weight hLaws hC E H Dw l Xo c nab hnab ℂ y₀ y t₀ hB n a _).2 (hP a P hPa) w _ b' N' u' hu')`. Establish `k3` using `(ht x L y₀ F hx hSD).2 w hw N N' hN hN' a P hPa b b' u u' hb.1 hb'.1 hu hu'`.
-
-Establish `k4 : u' = t * algebraMap c.F ℂ b * ((Real.sqrt (A' : ℝ) : ℝ) : ℂ) / (algebraMap c.F ℂ b' * ((Real.sqrt (A : ℝ) : ℝ) : ℂ)) * u`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero hb0' hsq), ← _root_.mul_assoc]`. Conclude with `k3`. Rewrite using `[k1, k2, k4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem changeRoot_complex (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ]
@@ -126,15 +124,13 @@ theorem changeRoot_complex (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.C
   rw [k1, k2, k4]; ring
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c _ nab n hs bad hbad Λ h b b' hU hh hT hT' hb hb'`. Take `⟨-, hodd, hn, hnab⟩` from `hs`. Establish `hLaws : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `triv : ∀ Λ : GenLat E n, Λ.TrivAt bad → Λ.TrivAt l.M` using `fun Λ ⟨k, hk, h1⟩ => ⟨k, hk.coprime_dvd_right hbad.2.2.1, h1⟩`. Establish `hT` using `triv _ hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'` using `triv _ hT'`. Take `⟨s, hfib⟩` from `GlobalTheory.Dict.exists_anFib_all_points E H Dw l Xo c hodd.pos n hn`. Take `⟨z, hz, hid⟩` from `@changeRoot_complex hC E _ _ _ H Dw l Xo c s.toAlgebra _ nab hnab n hn hfib Λ h b b' hU hh hT hT' hb hb'`. Establish `hP` using `fun a => (GlobalTheory.PushKeeps.push_keeps E H Dw l c n a h hh).1`. Establish `hΛ` using `((GlobalTheory.PushKeeps.push_keeps E H Dw l c n 0 h hh).2 Λ).1 hU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `J : Type` to `{p : ((Fin n → LevQ Dw l) → c.F) × ℕ × ℕ × ((E →+* ℂ) × ℕ → ℕ) × MvPolynomial (LtN Dw n) c.F // FixesDatum c h p.1 ∧ Λ.LevOK p.2.1 l.M ∧ (actLat h Λ).LevOK p.2.2.1 l.M ∧ p.2.2.2.2 ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => p.2.2.2.1 (τ, i))}`. Establish `ex1` using `fun j : J => GlobalTheory.shortThetaValue_existsUnique_natural hLaws hC E H Dw l Xo c nab hnab n Λ j.1.2.1 hU hT j.2.2.1 j.1.2.2.2.1 j.1.2.2.2.2 j.2.2.2.2 j.1.1 b`. Establish `ex2` using `fun j : J => GlobalTheory.shortThetaValue_existsUnique_natural hLaws hC E H Dw l Xo c nab hnab n (actLat h Λ) j.1.2.2.1 hΛ hT' j.2.2.2.1 j.1.2.2.2.1 _ (hP _ _ j.2.2.2.2) j.1.1 b'`. Use `choose u hu using fun (j : J) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) => ((ex1 j).1 S y).exists`. Use `choose u' hu' using fun (j : J) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) => ((ex2 j).1 S y).exists`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z₀, hz₀, hfin⟩` from `GlobalTheory.ConstRatio.exists_ratio E H Dw l Xo c s J u u' (fun j S T _ _ _ _ φ y y' hy => (ex1 j).2 S T φ y y' hy _ _ (hu j S y) (hu j T y')) (fun j S T _ _ _ _ φ y y' hy => (ex2 j).2 S T φ y y' hy _ _ (hu' j S y) (hu' j T y')) z hz (fun j y => hid j.1.1 j.2.1 _ _ j.2.2.1 j.2.2 …`. Use `⟨z₀, hz₀, ?_⟩` and prove the remaining obligations. Introduce `w hw N N' hN hN' a P hPa S _ _ y v v' hv hv'`. Set `j : J` to `⟨(w, N, N', a, P), hw, hN, hN', hPa.1⟩`. Rewrite using `[((ex1 j).1 S y).unique hv (hu j S y), ((ex2 j).1 S y).unique hv' (hu' j S y)]`.
-
-Conclude with `hfin j S y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem changeRoot_of_chartIndep : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c) (n : ℕ), ChangeRoot Xo c nab n := by
   intro hC E _ _ _ H Dw l Xo c _ nab n hs bad hbad Λ h b b' hU hh hT hT' hb hb'

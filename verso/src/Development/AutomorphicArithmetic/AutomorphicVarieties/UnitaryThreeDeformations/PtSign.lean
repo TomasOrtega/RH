@@ -4,21 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `f hf hs`. Set `P : (σ →₀ ℕ) → σ → Prop` to `fun n i => ∃ h : ∃ k ∈ s, n k ≠ 0, h.choose = i`. Set `g : σ → MvPowerSeries σ O` to `fun i m => if P (m + Finsupp.single i 1) i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0`. Establish `hg : ∀ i m, MvPowerSeries.coeff m (g i) = if P (m + Finsupp.single i 1) i then MvPowerSeries.coeff (m + Finsupp.single i 1) f else 0` using `fun _ _ => rfl`. Use `⟨g, fun i m hm => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg] split_ifs`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_add]`. Introduce `h`. Apply `hm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (Finsupp.weight wt) (Finsupp.single i 1) = wt i`. Apply the tactic sequence `rw [Finsupp.weight_apply, Finsupp.sum_single_index] <;> simp`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `key : ∀ n i, MvPowerSeries.coeff n (MvPowerSeries.X i * g i) = if P n i then MvPowerSeries.coeff n f else 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `n i`. Rewrite using `[MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul]`. Distinguish the cases in `hle : Finsupp.single i 1 ≤ n`. Rewrite using `[if_pos hle, one_mul, hg, tsub_add_cancel_of_le hle]`. Establish `hP : ¬ P n i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨h, hc⟩`. Apply `hle` to reduce the goal to its premises. Rewrite using `[Finsupp.single_le_iff, ← hc]`. Conclude with `Nat.one_le_iff_ne_zero.mpr h.choose_spec.2`. Rewrite using `[if_neg hle, if_neg hP]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[key]`. Distinguish the cases in `h : ∃ k ∈ s, n k ≠ 0`. Establish `hP : ∀ i, P n i ↔ h.choose = i` using `fun i => ⟨fun ⟨_, e⟩ => e, fun e => ⟨h, e⟩⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hP]`. Rewrite using `[Finset.sum_ite_eq, if_pos h.choose_spec.1]`. Establish `hP : ∀ i, ¬ P n i` using `fun i ⟨h', _⟩ => h h'`. Simplify using `only [hP, if_false, Finset.sum_const_zero]`. Use `push_neg at h`.
-
-Conclude with `hs n h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wtPart_decomp {O σ : Type} [CommRing O] (wt : σ → ℤ) (j : ℤ) (s : Finset σ) :
     ∀ f ∈ wtPart O wt j, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0) →
@@ -68,21 +66,19 @@ private theorem wtPart_decomp {O σ : Type} [CommRing O] (wt : σ → ℤ) (j : 
       exact hs n h
 
 /- English proof (translation)
-Use `haveI := W.fin`. Establish `hmemz : ∀ i, W.z i ∈ Sring O u` using `fun i => mem_Sring u (j := W.wt i) (by rw [← hW.part]; exact W.z_mem i)`. Establish `hzero : ∀ i, W.wt i ∉ M → ξ ⟨W.z i, hmemz i⟩ = 0`. Introduce `i hi`. Take `⟨g, a, b, hη, hw, hz⟩` from `hW.var i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hab : a ≠ b`. Introduce and unpack `rfl`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hw]`. Simplify using `[wt]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrz : ((F.rz R) g).mat a b = 0` using `by show algebraMap O R ((((tor O) (F.Ψ g) : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) a b) = 0`. Rewrite using `[tor_val, Matrix.diagonal_apply_ne _ hab, map_zero]`. Establish `h1 : ξ ⟨W.z i, hmemz i⟩ = ptMat u ξ g a b` using `by show ξ ⟨W.z i, hmemz i⟩ = ξ ⟨(u g).mat a b, _⟩`. Use `congr 1`. Conclude with `Subtype.ext (show W.z i = (u g).mat a b by rw [hz, hrz, sub_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `h g hη a b (hw ▸ hi)`. Rewrite `hx` using `[← hW.part]`. Take `⟨f, hf, hfx⟩` from `hx`. Substitute `hfx` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `s` to `Finset.univ.filter (fun i => W.wt i ∉ M)`. Establish `hs : ∀ n : W.σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0`. Introduce `n hn`. Apply `hf` to reduce the goal to its premises. Introduce `hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[← hw, Finsupp.weight_apply]`. Use `AddSubmonoid.sum_mem M fun c hc => ?_` and prove the remaining obligations. Distinguish the cases in `hcM : W.wt c ∈ M`. Conclude with `nsmul_mem hcM _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd (hn c (by simp [s, hcM])) (Finsupp.mem_support_iff.mp hc)`. Take `⟨g, hg, hfg⟩` from `wtPart_decomp W.wt j s f hf hs`. Establish `hmemg : ∀ i, W.π (g i) ∈ Sring O u` using `fun i => mem_Sring u (j := j - W.wt i) (by rw [← hW.part]; exact ⟨g i, hg i, rfl⟩)`. Establish `hsum : (⟨W.π.toLinearMap f, mem_Sring u (by rw [← hW.part]; exact ⟨f, hf, rfl⟩)⟩ : Sring O u) = ∑ i ∈ s, (⟨W.z i, hmemz i⟩ : Sring O u) * ⟨W.π (g i), hmemg i⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `[hfg, map_sum, WPres.z]`. Rewrite using `[hsum, map_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hzero i (Finset.mem_filter.mp hi).2, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vanish_of_entries {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ]
     (F : Frame O G Γ ι) {R : Type} [CommRing R] [Algebra O R] (u : Γ →* GG 3 R) (W : WPres O ℤ R)
@@ -136,17 +132,13 @@ private theorem vanish_of_entries {O : Type} [CommRing O] [IsLocalRing O] {G Γ 
   rw [map_mul, hzero i (Finset.mem_filter.mp hi).2, zero_mul]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ hg₁ R _ _ _ u hu K _ _ ξ r hr`. Take `⟨W, hW, _⟩` from `exists_adapted F hF g₁ hg₁ u hu`. Establish `hent : ∀ g a b, (r g).mat a b = ptMat u ξ g a b` using `fun g a b => by rw [(hr g).2]`. Set `Mp : AddSubmonoid ℤ` to `{ carrier := {n | 0 ≤ n} add_mem' := by`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show 0 ≤ a + b`. Conclude with `add_nonneg ha hb`. Use the proof step `zero_mem' := le_refl (0 : ℤ) }`. Set `Mn : AddSubmonoid ℤ` to `{ carrier := {n | n ≤ 0} add_mem' := by`. Introduce `a b ha hb`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a + b ≤ 0`. Conclude with `add_nonpos ha hb`. Use the proof step `zero_mem' := le_refl (0 : ℤ) }`. Establish `hMp : ∀ n : ℤ, n ∈ Mp ↔ 0 ≤ n` using `fun _ => Iff.rfl`. Establish `hMn : ∀ n : ℤ, n ∈ Mn ↔ n ≤ 0` using `fun _ => Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun hU j hj x hx => ?_, fun hv g hg a b hab => ?_⟩, ⟨fun hL j hj x hx => ?_, fun hv g hg a b hab => ?_⟩⟩` and prove the remaining obligations. Use `vanish_of_entries F u W hW ξ Mp (fun g hg a b hab => ?_) j (by rw [hMp]; omega) x hx` and prove the remaining obligations. Rewrite using `[← hent]`. Conclude with `hU g ((MonoidHom.mem_ker).mpr hg) a b (by rw [hMp] at hab; omega)`. Rewrite using `[hent]`.
-
-Conclude with `hv (wt a b) hab _ (entry_mem u g a b)`. Use `vanish_of_entries F u W hW ξ Mn (fun g hg a b hab => ?_) j (by rw [hMn]; omega) x hx` and prove the remaining obligations. Rewrite using `[← hent]`. Conclude with `hL g ((MonoidHom.mem_ker).mpr hg) a b (by rw [hMn] at hab; omega)`. Rewrite using `[hent]`.
-
-Conclude with `hv (wt a b) hab _ (entry_mem u g a b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.isPtHom_sign :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

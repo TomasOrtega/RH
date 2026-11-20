@@ -52,9 +52,7 @@ def goodS (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Set (ℂ × Mt k r 
   {q | Tz k r z * Tz k r z' < Complex.normSq q.1 ∧ Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ UWset k r z'}
 
 /- English proof (translation)
-Establish `hn : Measurable (fun ζ : ℂ => Complex.normSq ζ)` using `Complex.continuous_normSq.measurable`. Establish `hz : Measurable (zWeight k (Tz k r z) (Tz k r z'))`. Unfold `zWeight`. Conclude with `Measurable.ite (measurableSet_le measurable_const hn) ((hn.sub measurable_const).pow_const _) measurable_const`. Unfold `wD`.
-
-Conclude with `Measurable.ite (measurableSet_lt measurable_const hn) (ENNReal.measurable_ofReal.comp hz) measurable_const`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meas_wD : Measurable (wD k r z z') := by
   have hn : Measurable (fun ζ : ℂ => Complex.normSq ζ) := Complex.continuous_normSq.measurable
@@ -66,9 +64,9 @@ theorem meas_wD : Measurable (wD k r z z') := by
   exact Measurable.ite (measurableSet_lt measurable_const hn) (ENNReal.measurable_ofReal.comp hz) measurable_const
 
 /- English proof (translation)
-Establish `e : (fun ζ : ℂ => (fun i j => secP k r z z' μsec ζ i j : Fin (k + 1) → Fin (k + 1) → ℂ)) = {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}.piecewise (fun ζ => (fun i j => μsec ζ i j : Fin (k + 1) → Fin (k + 1) → ℂ)) (fun _ => (fun i j => (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) …`. Use function extensionality and compare the values at `ζ`. Apply the tactic sequence `by_cases h : Tz k r z * Tz k r z' < Complex.normSq ζ <;> simp [secP, Set.piecewise, h]`. Rewrite using `[e]`. Use `ContinuousOn.measurable_piecewise ?_ continuousOn_const (isOpen_lt continuous_const Complex.continuous_normSq).measurableSet` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hs.1 i j).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem meas_secP (hs : IsSection k r z z' μsec) :
     Measurable (fun ζ : ℂ => (fun i j => secP k r z z' μsec ζ i j : Fin (k + 1) → Fin (k + 1) → ℂ)) := by
@@ -84,7 +82,7 @@ theorem meas_secP (hs : IsSection k r z z' μsec) :
   exact continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hs.1 i j).continuousOn
 
 /- English proof (translation)
-Establish `e : embWb k r = fun μ => MB.Em k r * μ * (MB.Em k r)ᵀ + (1 - MB.Em k r * (MB.Em k r)ᵀ)`. Use function extensionality and compare the values at `fun μ => MB.emb_eq μ`. Rewrite using `[e]`. Conclude with `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).add continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_emb : Continuous (embWb k r) := by
   have e : embWb k r = fun μ => MB.Em k r * μ * (MB.Em k r)ᵀ + (1 - MB.Em k r * (MB.Em k r)ᵀ) :=
@@ -93,7 +91,7 @@ theorem cont_emb : Continuous (embWb k r) := by
   exact ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).add continuous_const
 
 /- English proof (translation)
-Rewrite using `[HU.invM_smul]`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `(measurable_inv.comp HU.detF_cont.measurable).mul ((measurable_pi_apply j).comp ((measurable_pi_apply i).comp HU.adjF_cont.measurable))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meas_invM : Measurable (HU.invM : Mt k r → Mt k r) := by
   rw [HU.invM_smul]
@@ -106,7 +104,7 @@ def gC (k r : ℕ) (p : (Fin (k + 1) → Fin (k + 1) → ℂ) × Mt k r × Mt k 
   fun i j => (Matrix.of p.2.1 * embWb k r (Matrix.of p.1) * Matrix.of p.2.2) i j
 
 /- English proof (translation)
-Establish `hA : Continuous (fun p : (Fin (k + 1) → Fin (k + 1) → ℂ) × Mt k r × Mt k r => (Matrix.of p.2.1 : Mat k r))` using `continuous_fst.comp continuous_snd`. Establish `hB : Continuous (fun p : (Fin (k + 1) → Fin (k + 1) → ℂ) × Mt k r × Mt k r => embWb k r (Matrix.of p.1))` using `cont_emb.comp continuous_fst`. Establish `hC : Continuous (fun p : (Fin (k + 1) → Fin (k + 1) → ℂ) × Mt k r × Mt k r => (Matrix.of p.2.2 : Mat k r))` using `continuous_snd.comp continuous_snd`. Conclude with `continuous_pi fun i => continuous_pi fun j => ((hA.matrix_mul hB).matrix_mul hC).matrix_elem i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_gC : Continuous (gC k r) := by
   have hA : Continuous (fun p : (Fin (k + 1) → Fin (k + 1) → ℂ) × Mt k r × Mt k r => (Matrix.of p.2.1 : Mat k r)) :=
@@ -118,7 +116,7 @@ theorem cont_gC : Continuous (gC k r) := by
   exact continuous_pi fun i => continuous_pi fun j => ((hA.matrix_mul hB).matrix_mul hC).matrix_elem i j
 
 /- English proof (translation)
-Establish `h` using `(cont_gC (k := k) (r := r)).measurable.comp (((meas_secP hs).comp measurable_fst).prodMk ((measurable_fst.comp measurable_snd).prodMk (meas_invM.comp (measurable_snd.comp measurable_snd))))`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_chartF (hs : IsSection k r z z' μsec) : Measurable (chartF k r z z' μsec) := by
   have h := (cont_gC (k := k) (r := r)).measurable.comp (((meas_secP hs).comp measurable_fst).prodMk
@@ -126,7 +124,7 @@ theorem meas_chartF (hs : IsSection k r z z' μsec) : Measurable (chartF k r z z
   exact h
 
 /- English proof (translation)
-Establish `hid : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Use `show Continuous (fun x : Mt k r => star z ⬝ᵥ (Hpk k r *ᵥ (Matrix.of x *ᵥ z')))`. Conclude with `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const (Continuous.matrix_mulVec hid continuous_const))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_zF : Continuous (zF k r z z') := by
   have hid : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) := continuous_id
@@ -135,7 +133,7 @@ theorem cont_zF : Continuous (zF k r z z') := by
     (Continuous.matrix_mulVec hid continuous_const))
 
 /- English proof (translation)
-Unfold `herm`. Use `conv_lhs => rw [← hw]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_fix {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * H * g = H) (w : Fin n → ℂ)
     (hw : g *ᵥ w = w) (v : Fin n → ℂ) : herm H (g *ᵥ v) w = herm H v w := by
@@ -144,13 +142,13 @@ theorem herm_fix {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * H * g
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, MB.Em, wbPart, ite_mul, one_mul, zero_mul]`. Distinguish the cases in `hi : MB.mid k r i`. Rewrite using `[Finset.sum_eq_single (MB.midx hi)]`. Rewrite using `[if_pos (MB.wI_midx hi).symm, MB.wI_midx hi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m _ hm`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hm (MB.wI_inj (h.symm.trans (MB.wI_midx hi).symm))`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero]`. Use `(hw i ?_).symm` and prove the remaining obligations. Simplify using `only [MB.mid, not_and_or, not_le] at hi`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m _`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hi (by rw [h]; exact MB.mid_wI m)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inWb_eq {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) : MB.Em k r *ᵥ wbPart k r w = w := by
   ext i
@@ -174,14 +172,14 @@ theorem inWb_eq {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) : MB.Em k r 
       exact hi (by rw [h]; exact MB.mid_wI m)
 
 /- English proof (translation)
-Rewrite using `[MB.emb_eq, Matrix.add_mul, MB.Q_Em, add_zero, Matrix.mul_assoc, MB.EmT_Em, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_mul_Em (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     embWb k r μ * MB.Em k r = MB.Em k r * μ := by
   rw [MB.emb_eq, Matrix.add_mul, MB.Q_Em, add_zero, Matrix.mul_assoc, MB.EmT_Em, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec u (embWb k r μ) (MB.Em k r), emb_mul_Em, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ (Hpk k r) (MB.Em k r), MB.Hpk_Em, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_chain (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (u : Fin (k + 1) → ℂ) :
     Hpk k r *ᵥ (embWb k r μ *ᵥ (MB.Em k r *ᵥ u)) = MB.Em k r *ᵥ (Hb k *ᵥ (μ *ᵥ u)) := by
@@ -189,7 +187,7 @@ theorem hpk_chain (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (u : Fin (k + 1)
     Matrix.mulVec_mulVec _ (Hpk k r) (MB.Em k r), MB.Hpk_Em, ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, MB.Em_conjT, MB.EmT_Em, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem em_dot (u : Fin (k + 1) → ℂ) (Y : Fin (k + 1) → ℂ) :
     star (MB.Em k r *ᵥ u) ⬝ᵥ (MB.Em k r *ᵥ Y) = star u ⬝ᵥ Y := by
@@ -197,7 +195,7 @@ theorem em_dot (u : Fin (k + 1) → ℂ) (Y : Fin (k + 1) → ℂ) :
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← inWb_eq hz, ← inWb_eq hz']`. Unfold `herm`. Rewrite using `[hpk_chain, em_dot]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hz : inWb k r z) (hz' : inWb k r z') :
     herm (Hpk k r) (embWb k r μ *ᵥ z') z = herm (Hb k) (μ *ᵥ wbPart k r z') (wbPart k r z) := by
@@ -206,16 +204,16 @@ theorem herm_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hz : inWb k r z)
   rw [hpk_chain, em_dot]
 
 /- English proof (translation)
-Unfold `secP`. Conclude with `if_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem secP_eq {ζ : ℂ} (h : Tz k r z * Tz k r z' < Complex.normSq ζ) : secP k r z z' μsec ζ = μsec ζ := by
   unfold secP
   exact if_pos h
 
 /- English proof (translation)
-Take `⟨hζ, hh, hh'⟩` from `hq`. Establish `hu'` using `HU.isUnit_of_uh hh'.1`. Establish `hinv : (Matrix.of q.2.2 : Mat k r)⁻¹ *ᵥ z' = z'` using `by conv_lhs => rw [← hh'.2.2]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu', Matrix.one_mulVec]`. Use `show herm (Hpk k r) ((Matrix.of q.2.1 * embWb k r (secP k r z z' μsec q.1) * (Matrix.of q.2.2)⁻¹) *ᵥ z') z = q.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hinv, ← Matrix.mulVec_mulVec, herm_fix (Hpk k r) (Matrix.of q.2.1) hh.1 z hh.2.2, secP_eq hζ, herm_emb _ hD.z_mem hD.z'_mem]`. Conclude with `(hD.sec.2 q.1 hζ).2`.
+A detailed English derivation is pending.
 -/
 theorem zF_chart (hD : WbData k r z z' μW μW' a a' μsec) {q : ℂ × Mt k r × Mt k r} (hq : q ∈ goodS k r z z') :
     zF k r z z' (chartF k r z z' μsec q) = q.1 := by
@@ -230,7 +228,7 @@ theorem zF_chart (hD : WbData k r z z' μW μW' a a' μsec) {q : ℂ × Mt k r �
   exact (hD.sec.2 q.1 hζ).2
 
 /- English proof (translation)
-Take `⟨hζ, hh, hh'⟩` from `hq`. Establish `sub : ∀ {w : Fin (2 * r + k + 1) → ℂ} {g : Mat k r}, g ∈ UWset k r w → g ∈ UWb k r` using `fun hg => ⟨hg.1, hg.2.1⟩`. Use `show Matrix.of q.2.1 * embWb k r (secP k r z z' μsec q.1) * (Matrix.of q.2.2)⁻¹ ∈ UWb k r`. Rewrite using `[secP_eq hζ]`. Conclude with `HU.uwb_mul (HU.uwb_mul (sub hh) (MB.emb_mem_UWb (hD.sec.2 q.1 hζ).1)) (HU.uwb_inv (sub hh'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_chart (hD : WbData k r z z' μW μW' a a' μsec) {q : ℂ × Mt k r × Mt k r} (hq : q ∈ goodS k r z z') :
     Matrix.of (chartF k r z z' μsec q) ∈ UWb k r := by
@@ -242,20 +240,20 @@ theorem mem_chart (hD : WbData k r z z' μW μW' a a' μsec) {q : ℂ × Mt k r 
   exact HU.uwb_mul (HU.uwb_mul (sub hh) (MB.emb_mem_UWb (hD.sec.2 q.1 hζ).1)) (HU.uwb_inv (sub hh'))
 
 /- English proof (translation)
-Unfold `wD`. Conclude with `if_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wD_zero_off {ζ : ℂ} (h : ¬ Tz k r z * Tz k r z' < Complex.normSq ζ) : wD k r z z' ζ = 0 := by
   unfold wD
   exact if_neg h
 
 /- English proof (translation)
-Use `hD.haarW.1` as an intermediate fact. Use `hD.haarW'.1` as an intermediate fact. Establish `h1 : (volume : Measure ℂ).withDensity (wD k r z z') {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}ᶜ = 0`. Rewrite using `[withDensity_apply_eq_zero' meas_wD.aemeasurable]`. Conclude with `measure_mono_null (fun ζ hζ => (hζ.1 (wD_zero_off hζ.2)).elim) measure_empty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : (goodS k r z z')ᶜ ⊆ ({ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}ᶜ ×ˢ Set.univ) ∪ (Set.univ ×ˢ ({x : Mt k r | Matrix.of x ∉ UWset k r z} ×ˢ Set.univ)) ∪ (Set.univ ×ˢ (Set.univ ×ˢ {x : Mt k r | Matrix.of x ∉ UWset k r z'}))`. Introduce `q hq`. Simplify using `only [goodS, Set.mem_compl_iff, Set.mem_ofPred_eq, not_and_or] at hq`. Break down `hq with h | h | h` into its components or cases. Conclude with `Or.inl (Or.inl ⟨h, trivial⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative.
 
-Conclude with `Or.inl (Or.inr ⟨trivial, h, trivial⟩)`. Conclude with `Or.inr ⟨trivial, trivial, h⟩`. Use `measure_mono_null hsub (measure_union_null (measure_union_null ?_ ?_) ?_)` and prove the remaining obligations. Rewrite using `[srcM, Measure.prod_prod, h1, zero_mul]`. Rewrite using `[srcM, Measure.prod_prod, Measure.prod_prod, hD.haarW.2.2.1, zero_mul, mul_zero]`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[srcM, Measure.prod_prod, Measure.prod_prod, hD.haarW'.2.2.1, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem src_null (hD : WbData k r z z' μW μW' a a' μsec) : srcM k r z z' μW μW' (goodS k r z z')ᶜ = 0 := by
   have := hD.haarW.1
@@ -280,7 +278,7 @@ theorem src_null (hD : WbData k r z z' μW μW' a a' μsec) : srcM k r z z' μW 
   · rw [srcM, Measure.prod_prod, Measure.prod_prod, hD.haarW'.2.2.1, mul_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Use `measure_mono_null (fun ζ hζ => ?_) (Measure.addHaar_sphere (volume : Measure ℂ) (0 : ℂ) (Real.sqrt c))` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_not] at hζ`. Rewrite using `[mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem circle_ae (c : ℝ) : ∀ᵐ ζ : ℂ ∂volume, Complex.normSq ζ ≠ c := by
   rw [ae_iff]
@@ -289,17 +287,15 @@ theorem circle_ae (c : ℝ) : ∀ᵐ ζ : ℂ ∂volume, Complex.normSq ζ ≠ c
   rw [mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Use `hD.haarW.1` as an intermediate fact. Use `hD.haarW'.1` as an intermediate fact. Establish `hF` using `meas_chartF hD.sec`. Establish `hΦ : Measurable (fun q => φ (chartF k r z z' μsec q))` using `hφ.comp hF`. Rewrite using `[nuR, lintegral_map hφ hF, srcM, lintegral_prod _ hΦ.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ meas_wD hΦ.lintegral_prod_right']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `rhsW`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [circle_ae (Tz k r z * Tz k r z')] with ζ hζ`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[lintegral_prod (fun y : Mt k r × Mt k r => φ (chartF k r z z' μsec (ζ, y))) (hΦ.comp measurable_prodMk_left).aemeasurable]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : Tz k r z * Tz k r z' < Complex.normSq ζ`. Establish `hw : wD k r z z' ζ = ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ)`. Unfold `wD`. Conclude with `if_pos h`. Rewrite using `[hw]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `lintegral_congr fun x => lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hc : chartF k r z z' μsec (ζ, x, y) = fun i j => (Matrix.of x * embWb k r (μsec ζ) * (Matrix.of y)⁻¹) i j`. Unfold `chartF`. Rewrite using `[secP_eq h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg φ hc.symm`. Establish `hlt : Complex.normSq ζ < Tz k r z * Tz k r z'` using `lt_of_le_of_ne (not_lt.1 h) hζ`. Establish `hz : zWeight k (Tz k r z) (Tz k r z') ζ = 0`. Unfold `zWeight`. Conclude with `if_neg (not_le.2 hlt)`.
-
-Rewrite using `[wD_zero_off h, hz, ENNReal.ofReal_zero, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr (hD : WbData k r z z' μW μW' a a' μsec) (φ : Mt k r → ℝ≥0∞) (hφ : Measurable φ) :
     rhsW k r z z' μW μW' μsec φ = ∫⁻ x, φ x ∂nuR k r z z' μW μW' μsec := by
@@ -334,11 +330,11 @@ theorem repr (hD : WbData k r z z' μW μW' a a' μsec) (φ : Mt k r → ℝ≥0
     rw [wD_zero_off h, hz, ENNReal.ofReal_zero, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[withDensity_apply _ measurableSet_closedBall]`. Use `lt_of_le_of_lt (setLIntegral_mono' measurableSet_closedBall (g := fun _ => ENNReal.ofReal (((n : ℝ) ^ 2) ^ (k - 1))) ?_) ?_` and prove the remaining obligations. Introduce `ζ hζ`. Unfold `wD`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Unfold `zWeight`. Rewrite using `[if_pos h.le]`. Establish `h1 : Complex.normSq ζ ≤ (n : ℝ) ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) (mem_closedBall_zero_iff.1 hζ) 2`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) _`. Simplify using the standard rewrite rules. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wvol_lt (hT : 0 ≤ Tz k r z * Tz k r z') (n : ℕ) :
     (volume : Measure ℂ).withDensity (wD k r z z') (Metric.closedBall 0 n) < ⊤ := by
@@ -360,13 +356,11 @@ theorem wvol_lt (hT : 0 ≤ Tz k r z * Tz k r z') (n : ℕ) :
     exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top
 
 /- English proof (translation)
-Use `hD.haarW.1` as an intermediate fact. Use `hD.haarW'.1` as an intermediate fact. Establish `hF` using `meas_chartF hD.sec`. Establish `hA : MeasurableSet {x : Mt k r | ‖zF k r z z' x‖ ≤ n}` using `(isClosed_le cont_zF.norm continuous_const).measurableSet`. Rewrite using `[nuR, Measure.map_apply hF hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : chartF k r z z' μsec ⁻¹' {x | ‖zF k r z z' x‖ ≤ n} ⊆ (Metric.closedBall (0 : ℂ) n ×ˢ Set.univ) ∪ (goodS k r z z')ᶜ`. Introduce `q hq`. Distinguish the cases in `hg : q ∈ goodS k r z z'`. Use `left`. Use `⟨?_, trivial⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq' : ‖q.1‖ ≤ n`. Rewrite using `[← zF_chart hD hg]`. Conclude with `hq`. Conclude with `mem_closedBall_zero_iff.2 hq'`. Conclude with `Or.inr hg`.
-
-Use `lt_of_le_of_lt (measure_mono hsub) (lt_of_le_of_lt (measure_union_le _ _) ?_)` and prove the remaining obligations. Rewrite using `[src_null hD, add_zero, srcM, Measure.prod_prod, ← Set.univ_prod_univ, Measure.prod_prod, hD.massW, hD.massW']`. Conclude with `ENNReal.mul_lt_top (wvol_lt (mul_pos hD.T_pos hD.T'_pos).le n) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top)`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_aSet_lt (hD : WbData k r z z' μW μW' a a' μsec) (n : ℕ) :
     nuR k r z z' μW μW' μsec {x | ‖zF k r z z' x‖ ≤ n} < ⊤ := by
@@ -394,7 +388,7 @@ theorem nu_aSet_lt (hD : WbData k r z z' μW μW' a a' μsec) (n : ℕ) :
     (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top)
 
 /- English proof (translation)
-Use `⟨⟨⟨fun n => {x | ‖zF k r z z' x‖ ≤ (n : ℝ)}, fun _ => trivial, fun n => nu_aSet_lt hD n, ?_⟩⟩⟩` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_nat_ge ‖zF k r z z' x‖`. Conclude with `⟨n, hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nu_sigmaFinite (hD : WbData k r z z' μW μW' a a' μsec) : SigmaFinite (nuR k r z z' μW μW' μsec) := by
   refine ⟨⟨⟨fun n => {x | ‖zF k r z z' x‖ ≤ (n : ℝ)}, fun _ => trivial, fun n => nu_aSet_lt hD n, ?_⟩⟩⟩
@@ -403,17 +397,15 @@ theorem nu_sigmaFinite (hD : WbData k r z z' μW μW' a a' μsec) : SigmaFinite 
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-Use `hD.haarW.1` as an intermediate fact. Use `hD.haarW'.1` as an intermediate fact. Introduce `h0`. Establish `h1 : nuR k r z z' μW μW' μsec Set.univ = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[nuR, Measure.map_apply (meas_chartF hD.sec) MeasurableSet.univ, Set.preimage_univ, srcM, ← Set.univ_prod_univ, Measure.prod_prod, ← Set.univ_prod_univ, Measure.prod_prod, hD.massW, hD.massW']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Establish `hc : 0 ≤ Tz k r z * Tz k r z'` using `(mul_pos hD.T_pos hD.T'_pos).le`. Establish `hEo : IsOpen {ζ : ℂ | Tz k r z * Tz k r z' + 1 < Complex.normSq ζ}` using `isOpen_lt continuous_const Complex.continuous_normSq`. Establish `hEn : ({ζ : ℂ | Tz k r z * Tz k r z' + 1 < Complex.normSq ζ}).Nonempty`. Use `⟨((Tz k r z * Tz k r z' + 2 : ℝ) : ℂ), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Tz k r z * Tz k r z' + 1 < Complex.normSq _`. Rewrite using `[Complex.normSq_ofReal]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE` using `hEo.measure_pos (volume : Measure ℂ) hEn`. Establish `hle : volume {ζ : ℂ | Tz k r z * Tz k r z' + 1 < Complex.normSq ζ} ≤ (volume : Measure ℂ).withDensity (wD k r z z') {ζ : ℂ | Tz k r z * Tz k r z' + 1 < Complex.normSq ζ}`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[withDensity_apply _ hEo.measurableSet, ← setLIntegral_one]`. Use `setLIntegral_mono' hEo.measurableSet fun ζ hζ => ?_` and prove the remaining obligations. Establish `hζ' : Tz k r z * Tz k r z' + 1 < Complex.normSq ζ` using `hζ`. Establish `hD' : Tz k r z * Tz k r z' < Complex.normSq ζ` using `by linarith`. Unfold `wD zWeight`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hD', if_pos hD'.le, ← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (one_le_pow₀ (by linarith))`. Conclude with `(ne_of_gt (lt_of_lt_of_le hE (hle.trans (measure_mono (Set.subset_univ _))))) h`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd (ENNReal.ofReal_eq_zero.1 h) (not_le.2 hD.a_pos)`.
-
-Conclude with `absurd (ENNReal.ofReal_eq_zero.1 h) (not_le.2 hD.a'_pos)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem nu_ne_zero (hD : WbData k r z z' μW μW' a a' μsec) : nuR k r z z' μW μW' μsec ≠ 0 := by
   have := hD.haarW.1
@@ -447,9 +439,9 @@ theorem nu_ne_zero (hD : WbData k r z z' μW μW' a a' μsec) : nuR k r z z' μW
     · exact absurd (ENNReal.ofReal_eq_zero.1 h) (not_le.2 hD.a'_pos)
 
 /- English proof (translation)
-Establish `hl : Measurable (lmulM s : Mt k r → Mt k r)` using `(HU.lmulM_cont s).measurable`. Use extensionality with `A hA`. Establish `e : ((lmulM s) ⁻¹' A).indicator (1 : Mt k r → ℝ≥0∞) = fun x => A.indicator 1 (lmulM s x)`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[Measure.map_apply hl hA, ← lintegral_indicator_one (hl hA), ← lintegral_indicator_one hA, ← repr hD _ (measurable_one.indicator (hl hA)), ← repr hD _ (measurable_one.indicator hA), e, hInv k r z z' μW μW' a a' μsec hD s hs _ (measurable_one.indicator hA)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_inv (hInv : RhsWInv) (hD : WbData k r z z' μW μW' a a' μsec) (s : Mat k r) (hs : s ∈ UWb k r) :
     (nuR k r z z' μW μW' μsec).map (lmulM s) = nuR k r z z' μW μW' μsec := by
@@ -463,9 +455,9 @@ theorem nu_inv (hInv : RhsWInv) (hD : WbData k r z z' μW μW' a a' μsec) (s : 
     hInv k r z z' μW μW' a a' μsec hD s hs _ (measurable_one.indicator hA)]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 ((((isCompact_closedBall (0 : lieE (UWb k r)) 1).image (continuous_expChart k r (UWb k r))).image cont_zF).isBounded)`. Take `⟨n, hn⟩` from `exists_nat_ge C`. Use `⟨1, one_pos, fun ρ hρ hρ1 => lt_of_le_of_lt (measure_mono ?_) (nu_aSet_lt hD n)⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hC _ ⟨_, ⟨y, Metric.ball_subset_closedBall (Metric.ball_subset_ball hρ1.le hy), rfl⟩, rfl⟩).trans hn`.
+A detailed English derivation is pending.
 -/
 theorem nu_ball (hD : WbData k r z z' μW μW' a a' μsec) :
     ∃ ε > 0, ∀ ρ : ℝ, 0 < ρ → ρ < ε → nuR k r z z' μW μW' μsec (bBall k r ρ) < ⊤ := by
@@ -483,9 +475,9 @@ end ZetaZeros
 open ZetaZeros in
 
 /- English proof (translation)
-Introduce `k r z z' μW μW' a a' μsec hD`. Use `hD.haarW.1` as an intermediate fact. Use `hD.haarW'.1` as an intermediate fact. Use `⟨nuR k r z z' μW μW' μsec, ⟨nu_sigmaFinite hD, nu_ne_zero hD, ?_, fun s hs => nu_inv hInv hD s hs⟩, nu_ball hD, fun φ hφ => repr hD φ hφ⟩` and prove the remaining obligations. Rewrite using `[nuR, Measure.map_apply (meas_chartF hD.sec) (s := {x : Mt k r | Matrix.of x ∉ UWb k r}) HU.amb_closed.isOpen_compl.measurableSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `measure_mono_null (fun q hq hg => hq (mem_chart hD hg)) (src_null hD)`.
+A detailed English derivation is pending.
 -/
 theorem rhsHaar_of (hInv : RhsWInv) : RhsHaar := by
   intro k r z z' μW μW' a a' μsec hD

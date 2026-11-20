@@ -7,11 +7,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `l _ C`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `C.ε_root 0`. Rewrite `h` using `[C.ζ_zero, map_one]`. Conclude with `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `h` using `C.ε_root 1`. Establish `h2 : rootT C.ε 1 = 1` using `h1`. Rewrite `h` using `[h2]`. Apply `C.ζ_one` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[map_one, ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem core_isEps : ∀ (l : ℕ) [Fact l.Prime], ∀ C : Core l, IsEps C.ε := by
   intro l _ C

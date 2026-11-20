@@ -6,15 +6,15 @@ namespace ReciprocityTheory.DiscreteGroups.LocalClassField.RecCyc
 open _root_.Neutral.B1 ReciprocityTheory.Coh Function
 
 /- English proof (translation)
-Establish `hn : 0 < Fintype.card G` using `Fintype.card_pos`. Establish `ho : orderOf g₀ = Fintype.card G`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card]`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Take `⟨j, hj⟩ : ((Int.gcd k (Fintype.card G : ℤ) : ℕ) : ℤ) ∣ k` from `Int.gcd_dvd_left ..`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩ : Int.gcd k (Fintype.card G : ℤ) ∣ Fintype.card G` from `Int.natCast_dvd_natCast.1 (Int.gcd_dvd_right ..)`. Generalize the expression as in `Int.gcd k (Fintype.card G : ℤ) = d at hj he`. Establish `hd0 : 0 < d` using `Nat.pos_of_dvd_of_pos ⟨e, he⟩ hn`. Establish `he0 : 0 < e` using `Nat.pos_of_ne_zero (by rintro rfl; simp at he)`. Establish `h1 : g₀ ^ e = 1`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hr e ⟨j, ?_⟩` and prove the remaining obligations. Establish `hd' : (d : ℚ) ≠ 0` using `by exact_mod_cast hd0.ne'`. Rewrite `hk` using `[hj, he]`. Move the coercions through the operations in `at hk`. Apply `mul_left_cancel₀ hd'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Fintype.card G ∣ e` using `ho ▸ orderOf_dvd_of_pow_eq_one h1`. Rewrite `h2` using `[he]`. Establish `h3 : d * e ≤ 1 * e` using `by simpa using Nat.le_of_dvd he0 h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.le_of_mul_le_mul_right h3 he0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isCoprime_of_gen {G : Type} [Group G] [Fintype G] (g₀ : G) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (r : ℚ)
     (hr : ∀ e : ℕ, (∃ j : ℤ, (e : ℚ) * r = j) → g₀ ^ e = 1) (k : ℤ) (hk : (k : ℚ) = Fintype.card G * r) :
@@ -43,9 +43,9 @@ theorem isCoprime_of_gen {G : Type} [Group G] [Fintype G] (g₀ : G) (hg : ∀ g
   omega
 
 /- English proof (translation)
-Establish `hn : 0 < Nat.card (Additive G)` using `Nat.card_pos`. Establish `hmem : ∀ g, f g ∈ AddSubgroup.zmultiples (QuotientAddGroup.mk ((1 : ℚ) / (Nat.card (Additive G) : ℕ)) : QZ)` using `fun g => qz_mem_zmultiples hn _ (by rw [← map_nsmul, card_nsmul_eq_zero', map_zero])`. Establish `hf' : Injective (f.codRestrict _ hmem)` using `fun a b h => hf (congrArg Subtype.val h)`. Establish `h1 : IsAddCyclic (Additive G)` using `isAddCyclic_of_injective _ hf'`. Establish `h2 : IsCyclic G` using `isAddCyclic_additive_iff.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsCyclic.exists_generator`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_injective {G : Type} [Group G] [Finite G] (f : Additive G →+ QZ) (hf : Injective f) :
     ∃ g₀ : G, ∀ g, g ∈ Subgroup.zpowers g₀ := by
@@ -59,11 +59,11 @@ theorem exists_gen_of_injective {G : Type} [Group G] [Finite G] (f : Additive G 
   exact IsCyclic.exists_generator
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Establish `h1` using `sum_defect_smul M a b (fun g => by rw [hb]; exact hza g) g₀`. Establish `h2` using `sum_defect hm g₀`. Generalize the expression as in `(∑ σ, m ![σ, g₀]) = k at h1 h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨u, v, huv⟩` from `isCoprime_of_gen g₀ hg (t g₀) hr k h2`. Establish `h3 : ∑ g, M.rho g a = (Fintype.card G : ℤ) • a`. Rewrite using `[Finset.sum_congr rfl fun g _ => ha g]`. Simplify using the standard rewrite rules. Use `⟨u • b.1 ![g₀] + v • a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_zsmul]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.smul_sum, ← h1, h3, smul_smul, smul_smul, ← add_smul, huv, one_smul]`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨b, hb⟩` from `exists_cobound_of_norm M hm y`. Conclude with `⟨b, Subtype.ext (funext fun g => by rw [hb, hza])⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem defect_mem_B_iff {R : Type} [CommRing R] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (M : TRep R G) [Fintype G] [DiscreteTopology G] {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
@@ -91,13 +91,13 @@ theorem defect_mem_B_iff {R : Type} [CommRing R] {G : Type} [Group G] [Topologic
 variable {p : ℕ} [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-The claim follows from `(mem_multOf_iff_fixed (le_refl K) _).1 (ofK_mem p K a) σ (fun y hy => σ.commutes ⟨y, hy⟩)`.
+A detailed English derivation is pending.
 -/
 theorem kbarRep_ofK (σ : GK p K) (a : Additive Kˣ) : kbarRep p K σ (ofK p K a) = ofK p K a :=
   (mem_multOf_iff_fixed (le_refl K) _).1 (ofK_mem p K a) σ (fun y hy => σ.commutes ⟨y, hy⟩)
 
 /- English proof (translation)
-Use `⟨Units.mk0 ⟨((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p), hx⟩ (fun h => (Additive.toMul x : (PadicAlgCl p)ˣ).ne_zero (congrArg Subtype.val h)), ?_⟩` and prove the remaining obligations. Conclude with `Units.ext rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ofK_eq (x : KbarMult p) (hx : x ∈ multOf p K) : ∃ a : Kˣ, ofK p K (Additive.ofMul a) = x := by
   refine ⟨Units.mk0 ⟨((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p), hx⟩
@@ -117,18 +117,18 @@ Both sides reduce to the same expression.
 theorem kToLayer_val [(subG p K L).Normal] (a : Additive Kˣ) : (kToLayer p K L a).1 = ofK p K a := rfl
 
 /- English proof (translation)
-The claim follows from `(layer_invariant_iff _).2 (ofK_mem p K a) g`.
+A detailed English derivation is pending.
 -/
 theorem kToLayer_rho [(subG p K L).Normal] (g : GalLK p K L) (a : Additive Kˣ) :
     (layer p K L).rho g (kToLayer p K L a) = kToLayer p K L a :=
   (layer_invariant_iff _).2 (ofK_mem p K a) g
 
 /- English proof (translation)
-Establish `key : ∀ g : GK p K, χ.1 (Additive.ofMul (QuotientGroup.mk g : GalLK p K L).out) = χ.1 (Additive.ofMul g)`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (subG p K L) g`. Rewrite using `[hh, ofMul_mul, map_add, hχ h.1 h.2, add_zero]`. Use `⟨fun q => (χ.1 (Additive.ofMul q.out)).out, fun s => ?_, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← QuotientGroup.isOpenQuotientMap_mk.isQuotientMap.isOpen_preimage]`. Establish `h1 : IsLocallyConstant fun g : GK p K => (χ.1 (Additive.ofMul g)).out` using `IsLocallyConstant.comp (f := fun g : GK p K => χ.1 (Additive.ofMul g)) χ.2 (fun x : QZ => x.out)`. Use `h1 s using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[QuotientAddGroup.out_eq', key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_layer [(subG p K L).Normal] (χ : charGrp (GK p K)) (hχ : TrivOn p K L χ) :
     ∃ tb : GalLK p K L → ℚ, IsLocallyConstant tb ∧
@@ -147,7 +147,7 @@ theorem exists_lift_layer [(subG p K L).Normal] (χ : charGrp (GK p K)) (hχ : T
   · rw [QuotientAddGroup.out_eq', key]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_defect (t := fun g : GK p K => tb (QuotientGroup.mk g)) χ.1 htb`. Use `⟨fun q => m fun i => (q i).out, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Simplify using `only [QuotientGroup.mk_mul, QuotientGroup.out_eq']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_defect_layer [(subG p K L).Normal] (χ : charGrp (GK p K)) (tb : GalLK p K L → ℚ)
     (htb : ∀ g : GK p K, (QuotientAddGroup.mk (tb (QuotientGroup.mk g)) : QZ) = χ.1 (Additive.ofMul g)) :
@@ -158,7 +158,7 @@ theorem exists_defect_layer [(subG p K L).Normal] (χ : charGrp (GK p K)) (tb : 
   simp only [QuotientGroup.mk_mul, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Use `(isPairClass_pairBr a χ).unique ⟨fun g => tb (QuotientGroup.mk g), fun g => mb fun i => QuotientGroup.mk (g i), (layerInf p K L).hom.f 2 z, by rw [← (layerInf p K L).hom.comm, hz, map_zero], htb.comp_continuous continuous_quot_mk, hχ, fun g => hmb _, fun g => ?_, rfl⟩` and prove the remaining obligations. Use `show (z.1 fun i => QuotientGroup.mk (g i)).1 = _`. Rewrite using `[hza]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairBr_eq_layerInf [(subG p K L).Normal] (a : Kˣ) (χ : charGrp (GK p K)) (tb : GalLK p K L → ℚ)
     (htb : IsLocallyConstant tb)
@@ -175,9 +175,9 @@ theorem pairBr_eq_layerInf [(subG p K L).Normal] (a : Kˣ) (χ : charGrp (GK p K
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_normGrp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Use `⟨toLayer p ⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← normHom_layer h, kToLayer_val]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Introduce and unpack `⟨y, hy⟩`. Use `⟨y.1, layer_val_mem h y, ?_⟩` and prove the remaining obligations. Rewrite using `[normHom_layer h, hy, kToLayer_val]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_normGrp_iff_layer (h : K ≤ L) [(subG p K L).Normal] [Fintype (GalLK p K L)] (a : Kˣ) :
     a ∈ normGrp p K L ↔ ∃ y : (layer p K L).V, ∑ g, (layer p K L).rho g y = kToLayer p K L (Additive.ofMul a) := by

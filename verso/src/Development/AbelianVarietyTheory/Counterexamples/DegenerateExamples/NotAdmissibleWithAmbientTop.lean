@@ -23,21 +23,19 @@ Both sides reduce to the same expression.
 theorem atPlace_eq (D : D7) (k : Fin 2) (v : D.nd.PlG k) (a) : atPlace D k v a = plHom D k v a := rfl
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_center_iff, atPlace_eq]`. Introduce `b`. Use `set kv : (Σ k : Fin 2, D.nd.PlG k) := ⟨k, v⟩ with hkv`. Establish `hof : ∀ h, plHom D k v (MonoidAlgebra.of ℂ _ h) = MonoidAlgebra.of ℂ (G0g D.nd) (Pi.mulSingle kv h)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[plHom, kv]`. Establish `hcomm : ∀ g' : G0g D.nd, g' kv = 1 → ∀ y, Commute (MonoidAlgebra.of ℂ (G0g D.nd) g') (plHom D k v y)`. Introduce `g' hg' y`. Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hof]`. Use `show _ * _ = _ * _`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = kv`. Substitute `hj` using the available equality. Simplify using `[hg']`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Consider the case `add x y hx hy`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add]`. Conclude with `hx.add_right hy`. Consider the case `smul r x hx`. Establish `e : plHom D k v (r • x) = r • plHom D k v x`. Simplify using `only [plHom, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `hx.smul_right r`. Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of g`. Establish `hg : g = (Pi.mulSingle kv (g kv) : G0g D.nd) * ((Pi.mulSingle kv (g kv) : G0g D.nd)⁻¹ * g)` using `(mul_inv_cancel_left _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((Pi.mulSingle kv (g kv) : G0g D.nd)⁻¹ * g : G0g D.nd) kv = 1` using `by simp`. Establish `hc : Commute (MonoidAlgebra.of ℂ (G0g D.nd) g) (plHom D k v a)`. Rewrite using `[hg, map_mul, ← hof]`. Use `Commute.mul_left ?_ (hcomm _ h1 a)` and prove the remaining obligations. Conclude with `(Commute.map (ha (MonoidAlgebra.of ℂ _ (g kv))).symm (plHom D k v))`.
-
-Conclude with `hc.eq`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem atPlace_central (D : D7) (k : Fin 2) (v : D.nd.PlG k)
     (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) (ha : ∀ b, a * b = b * a) :
@@ -86,9 +84,9 @@ theorem atPlace_central (D : D7) (k : Fin 2) (v : D.nd.PlG k)
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
 /- English proof (translation)
-Take `⟨S, -, hsum⟩` from `D.ntypes.eSer_sum k`. Establish `h1 : (∑ f ∈ S, (⟨atPlace D k v (D.ntypes.eSer k f), atPlace_central D k v _ (D.ntypes.eSer_central k f)⟩ : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finsetSum, atPlace_eq, ← map_sum, hsum, map_one, OneMemClass.coe_one]`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hne`. Apply `hF` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1, map_sum, LinearMap.sum_apply]`. Use `_ = 0 := Finset.sum_eq_zero fun f _ => hne f`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_acts (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V]
     (cen : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)) →ₐ[ℂ] Module.End ℂ V)
@@ -111,7 +109,7 @@ theorem exists_acts (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V]
     _ = 0 := Finset.sum_eq_zero fun f _ => hne f
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_acts D (D.ntypes.cenMt μ j) k v F hF`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[NTypes.onMt, dif_pos (atPlace_central D k v _ (D.ntypes.eSer_central k f))]`. Conclude with `hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_onMt (D : D7) (μ j) (k : Fin 2) (v : D.nd.PlG k) (F : D.what₂.Mt μ j) (hF : F ≠ 0) :
     ∃ f, D.ntypes.onMt μ j (atPlace D k v (D.ntypes.eSer k f)) F ≠ 0 := by
@@ -121,7 +119,7 @@ theorem exists_onMt (D : D7) (μ j) (k : Fin 2) (v : D.nd.PlG k) (F : D.what₂.
   exact hf
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_acts D (D.ntypes.cenAmb μ) k v F hF`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[NTypes.onAmb, dif_pos (atPlace_central D k v _ (D.ntypes.eSer_central k f))]`. Conclude with `hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_onAmb (D : D7) (μ) (k : Fin 2) (v : D.nd.PlG k) (F : D.what₂.Amb μ) (hF : F ≠ 0) :
     ∃ f, D.ntypes.onAmb μ (atPlace D k v (D.ntypes.eSer k f)) F ≠ 0 := by
@@ -131,11 +129,11 @@ theorem exists_onAmb (D : D7) (μ) (k : Fin 2) (v : D.nd.PlG k) (F : D.what₂.A
   exact hf
 
 /- English proof (translation)
-Establish `hm : ∀ b : Fin N → K, (Formalism.CyclotomicNorms.monicOf b).Monic ∧ (Formalism.CyclotomicNorms.monicOf b).natDegree = N` using `fun b => ⟨Formalism.CyclotomicNorms.Sqf.monic_monicOf b, Formalism.CyclotomicNorms.Sqf.natDegree_monicOf b⟩`. Establish `hfw : ∀ b : Fin N → K, (π (Formalism.CyclotomicNorms.monicOf b)).Monic ∧ (π (Formalism.CyclotomicNorms.monicOf b)).natDegree = N` using `fun b => (hπ _).2 (hm b)`. Establish `hbw : ∀ b : Fin N → K, (π.symm (Formalism.CyclotomicNorms.monicOf b)).Monic ∧ (π.symm (Formalism.CyclotomicNorms.monicOf b)).natDegree = N`. Introduce `b`. Use `hm b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← Equiv.apply_symm_apply π (Formalism.CyclotomicNorms.monicOf b)]`. Conclude with `(hπ _).1 this`. Establish `back : ∀ p : K[X], p.Monic → p.natDegree = N → Formalism.CyclotomicNorms.monicOf (fun i : Fin N => p.coeff i) = p` using `fun p hp hd => Formalism.CyclotomicNorms.Sqf.monicOf_coeffs p hp hd`. Establish `cf : ∀ (b : Fin N → K), (fun i : Fin N => (Formalism.CyclotomicNorms.monicOf b).coeff i) = b` using `fun b => funext fun i => Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt b i`. Use `⟨{ toFun := fun b i => (π (Formalism.CyclotomicNorms.monicOf b)).coeff i invFun := fun b i => (π.symm (Formalism.CyclotomicNorms.monicOf b)).coeff i left_inv := fun b => ?_ right_inv := fun b => ?_ }, fun b => back _ (hfw b).1 (hfw b).2⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (fun i : Fin N => (π.symm (Formalism.CyclotomicNorms.monicOf fun i : Fin N => (π (Formalism.CyclotomicNorms.monicOf b)).coeff i)).coeff i) = b`. Rewrite using `[back _ (hfw b).1 (hfw b).2, Equiv.symm_apply_apply, cf]`. Use `show (fun i : Fin N => (π (Formalism.CyclotomicNorms.monicOf fun i : Fin N => (π.symm (Formalism.CyclotomicNorms.monicOf b)).coeff i)).coeff i) = b`. Rewrite using `[back _ (hbw b).1 (hbw b).2, Equiv.apply_symm_apply, cf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_monicOf_of_perm {K : Type} [Field K] (N : ℕ) (π : Equiv.Perm K[X])
     (hπ : ∀ f, ((π f).Monic ∧ (π f).natDegree = N) ↔ (f.Monic ∧ f.natDegree = N)) :
@@ -165,7 +163,7 @@ private theorem exists_equiv_monicOf_of_perm {K : Type} [Field K] (N : ℕ) (π 
     rw [back _ (hbw b).1 (hbw b).2, Equiv.apply_symm_apply, cf]
 
 /- English proof (translation)
-Use `choose e he using fun kv : (Σ k : Fin 2, D.nd.PlG k) => exists_equiv_monicOf_of_perm (K := ZMod (D.host.g kv.1)) D.R.r (π kv.1) (mon kv.1)`. Conclude with `⟨Equiv.piCongrRight e, fun a kv => he kv (a kv)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_monicOf_sigma_places (D : D7) [∀ k, Fact (D.host.g k).Prime] (π : ∀ k : Fin 2, Equiv.Perm (ZMod (D.host.g k))[X])
     (mon : ∀ k f, ((π k f).Monic ∧ (π k f).natDegree = D.R.r) ↔ (f.Monic ∧ f.natDegree = D.R.r)) :
@@ -197,13 +195,11 @@ def relTypes (D : D7) (P : Relabel D) : NTypes D.naut :=
       rw [hS, hS]; exact (P.lab k f).symm }
 
 /- English proof (translation)
-Establish `: ∀ k, Fact (D.host.g k).Prime` using `fun k => ⟨D.host.g_prime k⟩`. Take `⟨e, he⟩` from `exists_equiv_monicOf_sigma_places D P.π P.mon`. Simplify using `only [NTypes.e0]`. Use `congr 2`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_rhs => rw [← finsum_comp_equiv e]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `hfun : (fun k v => Formalism.CyclotomicNorms.monicOf (e a ⟨k, v⟩)) = fun k v => P.π k (Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩))`. Use function extensionality and compare the values at `k v`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `he a ⟨k, v⟩`. Establish `hcond : D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (e a ⟨k, v⟩)) ↔ D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩))`. Rewrite using `[hfun]`. Conclude with `P.good _`. Use `split_ifs with h1 h2 h2`.
-
-Conclude with `Finset.prod_congr rfl fun kv _ => by rw [he a kv]; rfl`. Conclude with `absurd (hcond.mpr h1) h2`. Conclude with `absurd (hcond.mp h2) h1`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relabel_types_e0 (D : D7) (P : Relabel D) : (relTypes D P).e0 = D.ntypes.e0 := by
   have : ∀ k, Fact (D.host.g k).Prime := fun k => ⟨D.host.g_prime k⟩
@@ -239,9 +235,9 @@ def rel (D : D7) (P : Relabel D) : D7 :=
     mtpar_tie := D.mtpar_tie }
 
 /- English proof (translation)
-Use `⟨rfl, relabel_types_e0 D P, fun hr => hm ?_⟩` and prove the remaining obligations. Take `⟨f0, hf0⟩` from `exists_onMt D μ j k v F h0`. Establish `hL : f0 = D.ntypes.labPar k σ v` using `h.2.1 μ j h1 h2 σ k v f0 F hF hf0`. Substitute `hL` using the available equality. Establish `hne : D.ntypes.onMt μ j (atPlace D k v (D.ntypes.eSer k (P.π k ((P.π k).symm (D.ntypes.labPar k σ v))))) F ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[Equiv.apply_symm_apply]` and apply the resulting hypothesis. Establish `e` using `hr.2.1 μ j h1 h2 σ k v _ F hF hne`. Establish `e2` using `congrArg (P.π k) e`. Rewrite `e2` using `[Equiv.apply_symm_apply]`. Conclude with `e2.symm`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_admissible_relabel (D : D7) (P : Relabel D) (h : adm3 D) (μ j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (σ : D.ntypes.Par) (F) (hF : F ∈ D.ntypes.MtPar μ j σ) (h0 : F ≠ 0) (k : Fin 2) (v : D.nd.PlG k)
@@ -260,7 +256,7 @@ theorem not_admissible_relabel (D : D7) (P : Relabel D) (h : adm3 D) (μ j) (h1 
   exact e2.symm
 
 /- English proof (translation)
-Establish `hf' : IsLabel D k f` using `hf`. Use `show (D.ntypes.eSer k (P.π k f)).coeff.mapRange τ (map_zero τ) = (D.ntypes.eSer k (P.π k (labAct D τ k f))).coeff`. Rewrite using `[hc τ k f hf']`. Conclude with `h.1 τ k _ ((P.lab k f).2 hf')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_rel (D : D7) (P : Relabel D) (h : adm3 D)
     (hc : ∀ τ k f, IsLabel D k f → P.π k (labAct D τ k f) = labAct D τ k (P.π k f))
@@ -307,13 +303,13 @@ section Dual
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[reverse_natDegree, natTrailingDegree_eq_zero.mpr (Or.inr h), Nat.sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_rev {q : K[X]} (h : q.coeff 0 ≠ 0) : q.reverse.natDegree = q.natDegree := by
   rw [reverse_natDegree, natTrailingDegree_eq_zero.mpr (Or.inr h), Nat.sub_zero]
 
 /- English proof (translation)
-Use `show reflect q.reverse.natDegree q.reverse = q`. Rewrite using `[deg_rev h]`. Conclude with `reflect_reflect`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rev_rev {q : K[X]} (h : q.coeff 0 ≠ 0) : q.reverse.reverse = q := by
   show reflect q.reverse.natDegree q.reverse = q
@@ -321,7 +317,7 @@ theorem rev_rev {q : K[X]} (h : q.coeff 0 ≠ 0) : q.reverse.reverse = q := by
   exact reflect_reflect
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h`. Rewrite `hf` using `[mul_coeff_zero]`. Conclude with `left_ne_zero_of_mul hf`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_of_dvd {q f : K[X]} (h : q ∣ f) (hf : f.coeff 0 ≠ 0) : q.coeff 0 ≠ 0 := by
   obtain ⟨r, rfl⟩ := h
@@ -329,7 +325,7 @@ theorem coeff_of_dvd {q f : K[X]} (h : q ∣ f) (hf : f.coeff 0 ≠ 0) : q.coeff
   exact left_ne_zero_of_mul hf
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h`. Rewrite using `[reverse_mul_of_domain]`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rev_dvd {q f : K[X]} (h : q ∣ f) : q.reverse ∣ f.reverse := by
   obtain ⟨r, rfl⟩ := h
@@ -337,7 +333,7 @@ theorem rev_dvd {q f : K[X]} (h : q ∣ f) : q.reverse ∣ f.reverse := by
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Establish `hd : q.reverse.natDegree = 0` using `natDegree_eq_of_degree_eq_some (isUnit_iff_degree_eq_zero.mp hu)`. Rewrite `hd` using `[deg_rev h]`. Rewrite using `[eq_C_of_natDegree_eq_zero hd]`. Conclude with `isUnit_C.mpr (Ne.isUnit h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_rev {q : K[X]} (h : q.coeff 0 ≠ 0) (hu : IsUnit q.reverse) : IsUnit q := by
   have hd : q.reverse.natDegree = 0 := natDegree_eq_of_degree_eq_some (isUnit_iff_degree_eq_zero.mp hu)
@@ -348,11 +344,9 @@ theorem unit_of_rev {q : K[X]} (h : q.coeff 0 ≠ 0) (hu : IsUnit q.reverse) : I
 def dl (f : K[X]) : K[X] := C (f.coeff 0)⁻¹ * f.reverse
 
 /- English proof (translation)
-Take `⟨hm, hd, h0⟩` from `h`. Establish `hrd : f.reverse.natDegree = N` using `by rw [deg_rev h0, hd]`. Establish `hlc : f.reverse.leadingCoeff = f.coeff 0`. Rewrite using `[reverse_leadingCoeff, trailingCoeff_eq_coeff_zero h0]`. Establish `hc0 : f.reverse.coeff 0 = 1` using `by rw [coeff_zero_reverse, hm.leadingCoeff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (C (f.coeff 0)⁻¹ * f.reverse).leadingCoeff = 1`. Rewrite using `[leadingCoeff_mul, leadingCoeff_C, hlc, inv_mul_cancel₀ h0]`. Use `show (C (f.coeff 0)⁻¹ * f.reverse).natDegree = N`. Rewrite using `[natDegree_C_mul (inv_ne_zero h0), hrd]`.
-
-Use `show (C (f.coeff 0)⁻¹ * f.reverse).coeff 0 = _`. Rewrite using `[coeff_C_mul, hc0, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_lab {N : ℕ} {f : K[X]} (h : f.Monic ∧ f.natDegree = N ∧ f.coeff 0 ≠ 0) :
     (dl f).Monic ∧ (dl f).natDegree = N ∧ (dl f).coeff 0 = (f.coeff 0)⁻¹ := by
@@ -370,7 +364,7 @@ theorem dl_lab {N : ℕ} {f : K[X]} (h : f.Monic ∧ f.natDegree = N ∧ f.coeff
     rw [coeff_C_mul, hc0, mul_one]
 
 /- English proof (translation)
-Establish `h3` using `(dl_lab h).2.2`. Rewrite using `[show dl (dl f) = C ((dl f).coeff 0)⁻¹ * (dl f).reverse from rfl, h3, inv_inv, show dl f = C (f.coeff 0)⁻¹ * f.reverse from rfl, reverse_mul_of_domain, reverse_C, rev_rev h.2.2, ← mul_assoc, ← C_mul, mul_inv_cancel₀ h.2.2, C_1, one_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem dl_dl {N : ℕ} {f : K[X]} (h : f.Monic ∧ f.natDegree = N ∧ f.coeff 0 ≠ 0) : dl (dl f) = f := by
   have h3 := (dl_lab h).2.2
@@ -379,18 +373,18 @@ theorem dl_dl {N : ℕ} {f : K[X]} (h : f.Monic ∧ f.natDegree = N ∧ f.coeff 
     rev_rev h.2.2, ← mul_assoc, ← C_mul, mul_inv_cancel₀ h.2.2, C_1, one_mul]
 
 /- English proof (translation)
-Use `show q.reverse ∣ C (f.coeff 0)⁻¹ * f.reverse`. Conclude with `dvd_mul_of_dvd_right (rev_dvd h) _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_dl {q f : K[X]} (h : q ∣ f) : q.reverse ∣ dl f := by
   show q.reverse ∣ C (f.coeff 0)⁻¹ * f.reverse
   exact dvd_mul_of_dvd_right (rev_dvd h) _
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `key : ∀ n : ℕ, (0 : L) ^ n = ((0 : L) ^ n)⁻¹` using `fun n => by`. Apply the tactic sequence `rcases n with _ | n <;> simp`. Unfold `Formalism.CyclotomicNorms.primeToPart`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[inv_zero]`. Conclude with `key _`. Establish `ho : orderOf x⁻¹ = orderOf x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← orderOf_units, Units.val_inv_eq_inv_val, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `_ = orderOf (Units.mk0 x hx) := orderOf_inv _`. Use `_ = orderOf x := by rw [← orderOf_units, Units.val_mk0]`. Unfold `Formalism.CyclotomicNorms.primeToPart`. Rewrite using `[ho, inv_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptp_inv (l : ℕ) {L : Type} [Field L] (x : L) :
     Formalism.CyclotomicNorms.primeToPart l x⁻¹ = (Formalism.CyclotomicNorms.primeToPart l x)⁻¹ := by
@@ -410,13 +404,11 @@ theorem ptp_inv (l : ℕ) {L : Type} [Field L] (x : L) :
     rw [ho, inv_pow]
 
 /- English proof (translation)
-Take `⟨hm, hd, h0⟩` from `h`. Establish `hdl` using `dl_lab ⟨hm, hd, h0⟩`. Unfold `Formalism.CyclotomicNorms.rootsBar at hx ⊢`. Establish `hx2 : eval x ((dl f).map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))) = 0` using `(mem_roots ((hdl.1.map _).ne_zero)).mp hx`. Rewrite `hx2` using `[eval_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mem_roots ((hm.map _).ne_zero)).mpr ?_` and prove the remaining obligations. Use `show eval x⁻¹ (f.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))) = 0`. Rewrite using `[eval_map]`. Establish `hx' : eval₂ (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) x f.reverse = 0`. Rewrite `hx2` using `[show dl f = C (f.coeff 0)⁻¹ * f.reverse from rfl, eval₂_mul, eval₂_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp hx2).resolve_left ((_root_.map_ne_zero _).mpr (inv_ne_zero h0))`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx'` using `[eval₂_at_zero, coeff_zero_reverse, hm.leadingCoeff, map_one]`. Conclude with `one_ne_zero hx'`.
-
-Set `_` to `invertibleOfNonzero (inv_ne_zero hx0)`. Rewrite using `[← eval₂_reverse_eq_zero_iff, invOf_eq_inv, inv_inv]`. Conclude with `hx'`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_dl {g : ℕ} [Fact g.Prime] {N : ℕ} {f : (ZMod g)[X]} (h : f.Monic ∧ f.natDegree = N ∧ f.coeff 0 ≠ 0)
     {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ Formalism.CyclotomicNorms.rootsBar (dl f)) : x⁻¹ ∈ Formalism.CyclotomicNorms.rootsBar f := by
@@ -441,9 +433,9 @@ theorem root_dl {g : ℕ} [Fact g.Prime] {N : ℕ} {f : (ZMod g)[X]} (h : f.Moni
   exact hx'
 
 /- English proof (translation)
-Establish `hr0 : q.reverse.coeff 0 ≠ 0`. Rewrite using `[coeff_zero_reverse]`. Conclude with `leadingCoeff_ne_zero.mpr hq.ne_zero`. Use `irreducible_iff.mpr ⟨fun hu => hq.not_isUnit (unit_of_rev h0 hu), fun a b hab => ?_⟩` and prove the remaining obligations. Establish `e : q = a.reverse * b.reverse` using `by rw [← reverse_mul_of_domain, ← hab, rev_rev h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hq.isUnit_or_isUnit e with hu | hu` into its components or cases. Use `left`. Conclude with `unit_of_rev (coeff_of_dvd (by rw [hab]; exact dvd_mul_right a b) hr0) hu`. Use `right`. Conclude with `unit_of_rev (coeff_of_dvd (by rw [hab]; exact dvd_mul_left b a) hr0) hu`.
+A detailed English derivation is pending.
 -/
 private theorem irreducible_reverse_of_coeff_zero_ne_zero {q : K[X]} (h0 : q.coeff 0 ≠ 0) (hq : Irreducible q) :
     Irreducible q.reverse := by
@@ -459,17 +451,17 @@ private theorem irreducible_reverse_of_coeff_zero_ne_zero {q : K[X]} (h0 : q.coe
     exact unit_of_rev (coeff_of_dvd (by rw [hab]; exact dvd_mul_left b a) hr0) hu
 
 /- English proof (translation)
-Take `⟨ha, hb, hc, hd, he, hf⟩` from `h`. Establish `hdl0 : ∀ v, (dl (f v)).coeff 0 ≠ 0` using `fun v => by`. Rewrite using `[(dl_lab (ha v)).2.2]`. Conclude with `inv_ne_zero (ha v).2.2`. Use `⟨fun v => ⟨(dl_lab (ha v)).1, (dl_lab (ha v)).2.1, hdl0 v⟩, fun v => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Establish `hq0 : q.coeff 0 ≠ 0` using `coeff_of_dvd (dvd_trans (dvd_mul_right q q) hq) (hdl0 v)`. Establish `h2 : q.reverse * q.reverse ∣ f v`. Use `dvd_dl hq` as an intermediate fact. Rewrite `this` using `[dl_dl (ha v), reverse_mul_of_domain]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `unit_of_rev hq0 (hb v _ h2)`. Introduce `ℓ hℓ hB v x hx y hy hxy`. Use `hc ℓ hℓ hB v _ (root_dl (ha v) hx) _ (root_dl (ha v) hy) (by rw [ptp_inv, ptp_inv, hxy])` as an intermediate fact. Conclude with `inv_injective this`. Introduce `ℓ hℓ hg v j x hx heq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `hd ℓ hℓ hg v j _ (root_dl (ha v) hx)` to reduce the goal to its premises. Simplify using `only at heq`. Rewrite using `[ptp_inv, heq, Units.val_inv_eq_inv_val, map_inv₀, ptp_inv, inv_inv]`. Introduce `a ha1 ha2`. Take `⟨v, hv⟩` from `he a ha1 ha2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨v, fun ⟨q, hq, hqd⟩ => hv ⟨q.reverse, ?_, ?_⟩⟩` and prove the remaining obligations. Use `dvd_dl hq` as an intermediate fact. Rewrite `this` using `[dl_dl (ha v)]`. Then use the resulting hypothesis. Rewrite using `[deg_rev (coeff_of_dvd hq (hdl0 v)), hqd]`. Take `⟨v, q, hirr, hq, hp, h1, h2⟩` from `hf`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0` using `coeff_of_dvd hq (ha v).2.2`. Use `⟨v, q.reverse, irreducible_reverse_of_coeff_zero_ne_zero hq0 hirr, dvd_dl hq, ?_⟩` and prove the remaining obligations. Rewrite using `[deg_rev hq0]`. Conclude with `⟨hp, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_dl {N g : ℕ} [Fact g.Prime] {PP J : Type} (f : PP → (ZMod g)[X]) (χ : PP → J → (ZMod g)ˣ)
     (h : Formalism.CyclotomicNorms.IsGood N g f χ) : Formalism.CyclotomicNorms.IsGood N g (fun v => dl (f v)) (fun v j => (χ v j)⁻¹) := by
@@ -509,7 +501,7 @@ def dualFun (D : D7) (k : Fin 2) (f : (ZMod (D.host.g k))[X]) : (ZMod (D.host.g 
   open Classical in if IsLabel D k f then dualLab D k f else f
 
 /- English proof (translation)
-Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Establish `h'` using `dl_lab (N := D.R.r) h`. Use `show (dl f).Monic ∧ (dl f).natDegree = D.R.r ∧ (dl f).coeff 0 ≠ 0`. Conclude with `⟨h'.1, h'.2.1, by rw [h'.2.2]; exact inv_ne_zero h.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem label_dual (D : D7) (k : Fin 2) {f} (h : IsLabel D k f) : IsLabel D k (dualLab D k f) := by
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -518,11 +510,11 @@ theorem label_dual (D : D7) (k : Fin 2) {f} (h : IsLabel D k f) : IsLabel D k (d
   exact ⟨h'.1, h'.2.1, by rw [h'.2.2]; exact inv_ne_zero h.2.2⟩
 
 /- English proof (translation)
-Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Introduce `f`. Distinguish the cases in `h : IsLabel D k f`. Establish `e1 : dualFun D k f = dualLab D k f` using `by unfold dualFun; rw [if_pos h]`. Establish `e2 : dualFun D k (dualLab D k f) = dualLab D k (dualLab D k f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `dualFun`. Rewrite using `[if_pos (label_dual D k h)]`. Rewrite using `[e1, e2]`. Conclude with `dl_dl (N := D.R.r) h`. Unfold `dualFun`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h]`.
+A detailed English derivation is pending.
 -/
 theorem dualFun_invol (D : D7) (k : Fin 2) : Function.Involutive (dualFun D k) := by
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -537,11 +529,11 @@ theorem dualFun_invol (D : D7) (k : Fin 2) : Function.Involutive (dualFun D k) :
     rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Unfold `NTypes.goodTuple at h ⊢`. Introduce `k`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h1, h2⟩` from `h k`. Establish `e : (fun v => dualFun D k (t k v)) = fun v => dl (t k v)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Unfold `dualFun`. Rewrite using `[if_pos (show IsLabel D k (t k v) from h1.1 v)]`. Both sides reduce to the same expression. Use `show Formalism.CyclotomicNorms.IsGood _ _ (fun v => dualFun D k (t k v)) _ ∧ Formalism.CyclotomicNorms.IsGood _ _ (fun v => dualFun D k (t k v)) _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨by simpa only [inv_inv] using good_dl _ _ h2, good_dl _ _ h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_dualFun (D : D7) (t : Tup2 D) (h : D.ntypes.goodTuple t) :
     D.ntypes.goodTuple (fun k v => dualFun D k (t k v)) := by
@@ -581,7 +573,7 @@ def dualRel (D : D7) : Relabel D where
     exact e ▸ this
 
 /- English proof (translation)
-Use `not_admissible_relabel D (dualRel D) h μ j h1 h2 σ F hF h0 k v ?_` and prove the remaining obligations. Use `show dualFun D k (D.ntypes.labPar k σ v) ≠ D.ntypes.labPar k σ v`. Unfold `dualFun`. Rewrite using `[if_pos hl]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_admissible_dual_relabel (D : D7) (h : adm3 D) (μ j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (σ : D.ntypes.Par) (F) (hF : F ∈ D.ntypes.MtPar μ j σ) (h0 : F ≠ 0) (k : Fin 2) (v : D.nd.PlG k)
@@ -596,9 +588,9 @@ theorem not_admissible_dual_relabel (D : D7) (h : adm3 D) (μ j) (h1 : 1 ≤ j) 
   exact hm
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨f, hf⟩` from `exists_onAmb D μ k v F h0`. Establish `hT : F ∈ (⊤ : Submodule ℂ (D.what₂.Amb μ))` using `Submodule.mem_top`. Establish `e1` using `hA.2.2 μ σ k v f F hT hf`. Establish `e2` using `hA.2.2 μ σ' k v f F hT hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne (e1.symm.trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem not_admissible_with_ambient_top (D : D7) (μ) (F : D.what₂.Amb μ) (h0 : F ≠ 0) (σ σ' : D.ntypes.Par)
     (k : Fin 2) (v : D.nd.PlG k)
@@ -612,9 +604,9 @@ theorem not_admissible_with_ambient_top (D : D7) (μ) (F : D.what₂.Amb μ) (h0
   exact hne (e1.symm.trans e2)
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `(μ : D.what₂.Tup) σ' k v f (F : D.what₂.Amb μ) hF hne`. Establish `hF' : F ∈ (⊥ : Submodule ℂ (D.what₂.Amb μ))` using `hF`. Establish `hF0 : @Eq (D.what₂.Amb μ) F 0` using `(Submodule.mem_bot ℂ).mp hF'`. Establish `hne' : D.ntypes.onAmb μ (atPlace D k v (D.ntypes.eSer k f)) F ≠ 0` using `hne`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hne' (by rw [hF0]; exact map_zero _)).elim`.
+A detailed English derivation is pending.
 -/
 theorem admissible_with_ambient_bot (D : D7) (h : adm3 D) : adm3 (GlobalTheory.GoodProjectorTest.withAmb D fun _ _ => ⊥) := by
   refine ⟨h.1, h.2.1, ?_⟩

@@ -44,21 +44,21 @@ def pushGen (h : IsGrpPullback B A zV Ψ) : (epsOver T.V T.V ⟶ B) →* (epsAt 
 variable {T zV}
 
 /- English proof (translation)
-Simplify using `[pushAt, preHom, pushHom, pushPt, idU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pushAt_left (h : IsGrpPullback B A zV Ψ) (v : epsOver T.V T.V ⟶ B) :
     (pushAt T zV h v).left = v.left ≫ Ψ := by
   simp [pushAt, preHom, pushHom, pushPt, idU]
 
 /- English proof (translation)
-Simplify using `[pushGen, preHom, pushAt_left, GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pushGen_left (h : IsGrpPullback B A zV Ψ) (v : epsOver T.V T.V ⟶ B) :
     (pushGen T zV h v).left =
       Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (algebraMap T.V T.Fr))) ≫ v.left ≫ Ψ := by
   simp [pushGen, preHom, pushAt_left, GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase]
 /- English proof (translation)
-Substitute `hf` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem key_lemma' {X : Scheme.{0}} {A : CategoryTheory.Over X} [GrpObj A] {Y : Scheme.{0}} (zV : Y ⟶ X)
     {f : Y ⟶ X} (hf : f = zV) :
@@ -67,7 +67,7 @@ private theorem key_lemma' {X : Scheme.{0}} {A : CategoryTheory.Over X} [GrpObj 
   rfl
 
 /- English proof (translation)
-Use `congrArg CategoryTheory.Over.Hom.left (map_one (pushHom h T'))` as an intermediate fact. Simplify `this` using `[pushHom, pushPt]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem one_left_comp_of_isGrpPullback_over {X : Scheme.{0}} {A : CategoryTheory.Over X} [GrpObj A] {Tb : CDVR}
     {zV : Spec (CommRingCat.of Tb.V) ⟶ X} {B : CategoryTheory.Over (Spec (CommRingCat.of Tb.V))} [GrpObj B]
@@ -77,7 +77,7 @@ private theorem one_left_comp_of_isGrpPullback_over {X : Scheme.{0}} {A : Catego
   simpa [pushHom, pushPt] using this
 
 /- English proof (translation)
-Establish `hf : (ptOver T.V T.V).hom ≫ zV = zV`. Simplify using `[ptOver, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]`. Rewrite using `[← key_lemma' zV hf]`. Conclude with `one_left_comp_of_isGrpPullback_over h (ptOver T.V T.V)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_left (h : IsGrpPullback B A zV Ψ) :
     (1 : ptOver T.V T.V ⟶ B).left ≫ Ψ = (1 : CategoryTheory.Over.mk zV ⟶ A).left := by
@@ -87,7 +87,7 @@ theorem one_left (h : IsGrpPullback B A zV Ψ) :
   exact one_left_comp_of_isGrpPullback_over h (ptOver T.V T.V)
 
 /- English proof (translation)
-Establish `e : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom) ≫ v.left = (1 : ptOver T.V T.V ⟶ B).left` using `hv`. Use `show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom) ≫ (pushAt T zV h v).left = (1 : CategoryTheory.Over.mk zV ⟶ A).left`. Rewrite using `[pushAt_left, ← Category.assoc, e]`. Conclude with `one_left h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAt_push (h : IsGrpPullback B A zV Ψ) {v : epsOver T.V T.V ⟶ B} (hv : IsTan v) :
     IsTanAt A zV (pushAt T zV h v) := by
@@ -99,9 +99,9 @@ theorem isTanAt_push (h : IsGrpPullback B A zV Ψ) {v : epsOver T.V T.V ⟶ B} (
   exact one_left h
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom) ≫ v.left = (1 : ptOver T.V T.V ⟶ B).left`. Establish `hv' : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom) ≫ (pushAt T zV h v).left = (1 : CategoryTheory.Over.mk zV ⟶ A).left` using `hv`. Rewrite `hv'` using `[pushAt_left, ← Category.assoc, ← one_left h]`. Use `h.1.hom_ext hv' ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, CategoryTheory.Over.w v, CategoryTheory.Over.w (1 : ptOver T.V T.V ⟶ B), epsOver_hom, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ptOver, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]`.
+A detailed English derivation is pending.
 -/
 theorem isTan_of_push (h : IsGrpPullback B A zV Ψ) {v : epsOver T.V T.V ⟶ B}
     (hv : IsTanAt A zV (pushAt T zV h v)) : IsTan v := by
@@ -116,9 +116,9 @@ theorem isTan_of_push (h : IsGrpPullback B A zV Ψ) {v : epsOver T.V T.V ⟶ B}
   simp [ptOver, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]
 
 /- English proof (translation)
-Establish `hw : v.left ≫ A.hom = (epsOver T.V T.V).hom ≫ zV`. Rewrite using `[CategoryTheory.Over.w v, epsOver_hom]`. Both sides reduce to the same expression. Use `⟨CategoryTheory.Over.homMk (h.1.lift v.left (epsOver T.V T.V).hom hw) (h.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pushAt_left]`. Conclude with `h.1.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushAt_surj (h : IsGrpPullback B A zV Ψ) (v : epsAt zV ⟶ A) :
     ∃ v' : epsOver T.V T.V ⟶ B, pushAt T zV h v' = v := by
@@ -138,7 +138,7 @@ variable {X : Scheme.{0}} {A : CategoryTheory.Over X} [GrpObj A] {R : Type} [Com
   {x : Spec (CommRingCat.of R) ⟶ X} {EC : Type} [AddCommGroup EC] [Module R EC]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.sum_nil, List.map_nil, List.prod_nil]`. Conclude with `MC.pt_zero`. Consider the case `cons a l ih => rw [List.sum_cons, MC.add, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pt_list_sum (MC : LieModel A x EC) (l : List EC) : MC.pt l.sum = (l.map MC.pt).prod := by
   induction l with
@@ -148,7 +148,7 @@ theorem pt_list_sum (MC : LieModel A x EC) (l : List EC) : MC.pt l.sum = (l.map 
   | cons a l ih => rw [List.sum_cons, MC.add, ih, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Rewrite using `[← List.sum_ofFn, pt_list_sum, List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_sum (MC : LieModel A x EC) {r : ℕ} (f : Fin r → EC) :
     MC.pt (∑ i, f i) = (List.ofFn fun i => MC.pt (f i)).prod := by
@@ -156,7 +156,7 @@ theorem pt_sum (MC : LieModel A x EC) {r : ℕ} (f : Fin r → EC) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff {O : Type} [CommRing O] (ρ : O →+* Module.End R EC) (σ : O →+* R) (w : EC) :
     w ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρ σ ↔ ∀ a, ρ a w = σ a • w := by
@@ -171,31 +171,29 @@ variable (T : CDVR) {X : Scheme.{0}} (zV : Spec (CommRingCat.of T.V) ⟶ X) {A :
   {B : CategoryTheory.Over (Spec (CommRingCat.of T.V))} [GrpObj B] {Ψ : B.left ⟶ A.left}
 
 /- English proof (translation)
-Establish `hue' : ∀ i a, (ub i ≫ aB a).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul (σ a))) ≫ (ub i).left` using `hue`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V (FractionRing T.V)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `w ⟨hwL, hwE⟩`. Take `⟨v, hvt, hvl⟩` from `(hL w).1 hwL`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨v', rfl⟩` from `pushAt_surj h v`. Establish `hv't` using `isTan_of_push h hvt`. Establish `hwE' : ∀ a, ρC a w = ((algebraMap T.V T.Fr).comp σ) a • w` using `(mem_eigSp_iff _ _ _).1 hwE`. Establish `hpw : MC.pt w = pushGen T zV h v'`. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pushGen_left, hvl, pushAt_left]`. Establish `hv'e : ∀ a, (v' ≫ aB a).left = Spec.map (CommRingCat.ofHom (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (σ a))) ≫ v'.left`. Introduce `a`. Establish `hp` using `isTanAt_push h hv't`. Establish `ht1 : GlobalTheory.CompanionTheory.Ar.IsTanAt A zV (pushAt T zV h v' ≫ aA a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp'` using `hp`. Unfold `GlobalTheory.CompanionTheory.Ar.IsTanAt at hp' ⊢`. Rewrite using `[CategoryTheory.Over.comp_left, ← Category.assoc, hp', ← CategoryTheory.Over.comp_left]`. Use `hA a` as an intermediate fact. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht2 : GlobalTheory.CompanionTheory.Ar.IsTanAt A zV (GlobalTheory.CompanionTheory.Ar.LieTangent.epsScale zV (σ a) ≫ pushAt T zV h v')` using `isTanAt_scale (σ a) hp`. Establish `eq1 : pushAt T zV h v' ≫ aA a = GlobalTheory.CompanionTheory.Ar.LieTangent.epsScale zV (σ a) ≫ pushAt T zV h v'`. Use `GlobalTheory.CompanionTheory.Ar.LieTangent.tan_ext hinj ht1 ht2 ?_` and prove the remaining obligations. Establish `e1` using `congrArg CategoryTheory.Over.Hom.left (hρ a w)`. Rewrite `e1` using `[hwE' a, MC.smul, hpw, CategoryTheory.Over.comp_left, pushGen_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [CategoryTheory.Over.comp_left, pushAt_left, Category.assoc] at e1 ⊢`. Rewrite using `[← e1]`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.LieTangent.epsScale, CategoryTheory.Over.homMk_left]`. Simplify using `only [← Category.assoc, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_dual_eps]`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CategoryTheory.Over.comp_left, Category.assoc, hc a, ← Category.assoc, ← pushAt_left h v', ← CategoryTheory.Over.comp_left, eq1, CategoryTheory.Over.comp_left, pushAt_left]`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.LieTangent.epsScale, CategoryTheory.Over.homMk_left, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[CategoryTheory.Over.w (v' ≫ aB a), Category.assoc, CategoryTheory.Over.w v', epsOver_hom]`. Conclude with `(GlobalTheory.CompanionTheory.Ar.LieTangent.spec_eps_alg (σ a)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨cf, hcf⟩` from `hub v' hv't hv'e`. Take `⟨u, hu, hv'u⟩` from `hcf`. Establish `hw : w = ∑ i, cf i • yb i`. Apply `MC.inj` to reduce the goal to its premises. Rewrite using `[hpw, pt_sum, hv'u, map_list_prod, List.map_ofFn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `congrArg List.ofFn` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Function.comp_apply, pushGen_left, hu i, ← algebraMap_smul T.Fr (cf i) (yb i), MC.smul, hyb i]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap]`. Rewrite using `[show Spec.map (CommRingCat.ofHom (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (cf i))) = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul (cf i))) from rfl, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_dual_eps]`. Rewrite using `[hw]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨(hL _).2 ⟨pushAt T zV h (ub i), isTanAt_push h (hut i), by rw [hyb i, pushAt_left]⟩, ?_⟩` and prove the remaining obligations. Use `show yb i ∈ GlobalTheory.CompanionTheory.Ar.eigSp ρC ((algebraMap T.V T.Fr).comp σ)`. Rewrite using `[mem_eigSp_iff]`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `MC.inj` to reduce the goal to its premises. Apply `CategoryTheory.Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hρ a (yb i), MC.smul, CategoryTheory.Over.comp_left, hyb i]`. Simplify using `only [Category.assoc]`. Rewrite using `[← hc a, ← Category.assoc (ub i).left, ← CategoryTheory.Over.comp_left, hue' i a]`.
-
-Simplify using `only [← Category.assoc, GlobalTheory.CompanionTheory.Ar.LieTangent.spec_dual_eps]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigen_span_lie_basis (h : IsGrpPullback B A zV Ψ) {O : Type} [CommRing O] (aA : O → (A ⟶ A))
     (hA : ∀ a, IsMonHom (aA a)) (aB : O → (B ⟶ B)) (hc : ∀ a, (aB a).left ≫ Ψ = Ψ ≫ (aA a).left)
@@ -287,7 +285,7 @@ end Main
 end GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.EigSpan
 
 /- English proof (translation)
-Introduce `E _ _ _ H X tX T zV G Ψ h hc EC _ _ _ _ MC ρC hρ σ r ub hut hue hub yb hyb L hL`. Conclude with `eigen_span_lie_basis T zV h tX.act.act tX.act.hom G.act.act hc MC ρC hρ σ ub hut hue hub yb hyb L hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.EigSpan.eig_span :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (tX : SAB H X) (T : CDVR) (zV : Spec (CommRingCat.of T.V) ⟶ X) (G : SAB H (Spec (CommRingCat.of T.V))) (Ψ : G.G.left ⟶ tX.G.left), IsGrpPullback G.G tX.G zV Ψ → (∀ a, (G.act.act a).left ≫ Ψ = Ψ ≫ (tX.act.act a).left) → ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC] (MC : LieModel tX.G (FinRd.Roots.gen T zV) EC) (ρC : 𝓞 E →+* Module.End T.Fr EC), MC.IsActOf tX.act.act ρC → ∀ (σ : 𝓞 E →+* T.V) (r : ℕ) (ub : Fin r → (epsOver T.V T.V ⟶ G.G)), (∀ i, IsTan (ub i)) → (∀ i a, (ub i ≫ G.act.act a).left = Spec.map (CommRingCat.ofHom (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (σ a))) ≫ (ub i).left) → (∀ w : epsOver T.V T.V ⟶ G.G, IsTan w → (∀ a, (w ≫ G.act.act a).left = Spec.map (CommRingCat.ofHom (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (σ a))) ≫ w.left) → ∃ cf : Fin r → T.V, IsComb ub cf w) → ∀ yb : Fin r → EC, (∀ i, (MC.pt (yb i)).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (algebraMap T.V T.Fr))) ≫ (ub i).left ≫ Ψ) → ∀ L : Submodule T.V EC, (∀ w, w ∈ L ↔ ∃ v : GlobalTheory.CompanionTheory.Ar.epsAt zV ⟶ tX.G, GlobalTheory.CompanionTheory.Ar.IsTanAt tX.G zV v ∧ (MC.pt w).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (algebraMap T.V T.Fr))) ≫ v.left) → L ⊓ (GlobalTheory.CompanionTheory.Ar.eigSp ρC ((algebraMap T.V T.Fr).comp σ)).restrictScalars T.V = Submodule.span T.V (Set.range yb) := by

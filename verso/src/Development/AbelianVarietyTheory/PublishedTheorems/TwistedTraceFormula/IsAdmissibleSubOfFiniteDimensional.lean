@@ -18,13 +18,13 @@ def kFinVec (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[�
   GlobalTheory.KFiniteVectors.kFiniteVectors ε σ
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_kFinVec {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H} :
     v ∈ kFinVec ε σ ↔ IsKFin ε σ v := Iff.rfl
 
 /- English proof (translation)
-Introduce and unpack `g hg v ⟨S, hS, hv, hSK⟩`. Conclude with `⟨S, hS, hSK g hg v hv, hSK⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isKStableOn_kFinVec (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsKStableOn ε σ (kFinVec ε σ) := by
@@ -47,21 +47,21 @@ def IsGKHom {H₁ H₂ : Type} [NormedAddCommGroup H₁] [InnerProductSpace ℂ 
     ∀ X ∈ lieSet ε, ∀ v w : kFinVec ε σ₁, (w : H₁) = dRep σ₁ X v → (e w : H₂) = dRep σ₂ X (e v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ h => h, fun _ _ _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGKHom_id (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsGKHom ε σ σ LinearMap.id :=
   ⟨fun _ _ _ _ h => h, fun _ _ _ _ h => h⟩
 
 /- English proof (translation)
-Introduce `_` and use `Submodule.finiteDimensional_of_le (sSup_le fun _ hS => hS.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdmissibleSub_of_finiteDimensional (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (V : Submodule ℂ H) [FiniteDimensional ℂ V] : IsAdmissibleSub ε σ V :=
   fun _ => Submodule.finiteDimensional_of_le (sSup_le fun _ hS => hS.1)
 
 /- English proof (translation)
-Introduce `Λ` and use `haveI := h Λ Submodule.finiteDimensional_of_le (sSup_le_sSup (t := {S | S ≤ W ∧ IsKTypeOf ε σ Λ S}) fun _ hS => ⟨hS.1.trans hle, hS.2⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAdmissibleSub.mono {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V W : Submodule ℂ H}
     (h : IsAdmissibleSub ε σ W) (hle : V ≤ W) : IsAdmissibleSub ε σ V := fun Λ =>
@@ -73,7 +73,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `he : ∀ a b, ContDiff ℝ ∞ fun t : Fin k → ℝ => ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) a b` using `fun a b => (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).contDiff.comp (GlobalTheory.GardingVec.contDiff_expProd Xs)`. Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiff.sum fun s _ => contDiff_const.mul (contDiff_prod fun i _ => he _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_det_expProd {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod).det := by
@@ -87,7 +87,7 @@ theorem contDiff_det_expProd {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) �
 end
 
 /- English proof (translation)
-Use `⟨⟨by simp, fun a _ b _ => by ext; simp [smul_smul, mul_comm]⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖g.det‖ = 1` using `by simpa using (GlobalTheory.Published.det_isURepOn ε).1.2.1 g hg 1`. Simplify using `[norm_smul, h1]`. Establish `: Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.det • v` using `(continuous_id.matrix_det).smul continuous_const`. Simplify using `using this.continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isURepOn_det (ε : Fin n → Bool) : IsURepOn (UJset ε) (fun g => g.det • (1 : H →L[ℂ] H)) := by
   refine ⟨⟨by simp, fun a _ b _ => by ext; simp [smul_smul, mul_comm]⟩, fun g hg v => ?_, fun v => ?_⟩
@@ -98,9 +98,9 @@ theorem isURepOn_det (ε : Fin n → Bool) : IsURepOn (UJset ε) (fun g => g.det
     simpa using this.continuousOn
 
 /- English proof (translation)
-Establish `hK : IsKStableOn ε (fun g => g.det • (1 : H →L[ℂ] H)) V` using `fun g _ v hv => V.smul_mem _ hv`. Use `⟨⟨fun v _ k Xs _ => ?_, fun v hv => ⟨V, inferInstance, hv, hK⟩, hK, fun X _ v hv => ?_⟩, isAdmissibleSub_of_finiteDimensional _ _ _⟩` and prove the remaining obligations. Conclude with `(contDiff_det_expProd Xs).smul contDiff_const`. Establish `h1 : ContDiff ℝ ∞ fun t : ℝ => (NormedSpace.exp (t • X)).det`. Use `(contDiff_det_expProd (fun _ : Fin 1 => X)).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun (t : ℝ) (_ : Fin 1) => t)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Function.comp_def]`. Establish `h2` using `((h1.differentiable (by simp)) 0).hasDerivAt.smul_const v`. Establish `h3 : dRep (fun g => g.det • (1 : H →L[ℂ] H)) X v = _` using `h2.deriv`. Rewrite using `[h3]`. Conclude with `V.smul_mem _ hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGKSub_det (ε : Fin n → Bool) (V : Submodule ℂ H) [FiniteDimensional ℂ V] :
     IsGKSub ε (fun g => g.det • (1 : H →L[ℂ] H)) V ∧ IsAdmissibleSub ε (fun g => g.det • (1 : H →L[ℂ] H)) V := by
@@ -118,7 +118,7 @@ theorem isGKSub_det (ε : Fin n → Bool) (V : Submodule ℂ H) [FiniteDimension
     exact V.smul_mem _ hv
 
 /- English proof (translation)
-Establish `h1 : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Express the relevant statement in the definitionally equal form `kᴴ * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_UJset_of_mem_Kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     k ∈ UJset ε := by
@@ -127,7 +127,7 @@ theorem mem_UJset_of_mem_Kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) 
   rw [Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Express the relevant statement in the definitionally equal form `kᴴᴴ * Jm ε * kᴴ = Jm ε`. Rewrite using `[Matrix.conjTranspose_conjTranspose, hk.2, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjTranspose_mem_UJset_of_mem_Kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     kᴴ ∈ UJset ε := by
@@ -136,9 +136,9 @@ theorem conjTranspose_mem_UJset_of_mem_Kset {ε : Fin n → Bool} {k : Matrix (F
   rw [Matrix.conjTranspose_conjTranspose, hk.2, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hm : ∀ t : ℝ, σ (NormedSpace.exp (t • X)) v ∈ W` using `fun t => hW _ (GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) hX t) v hv`. Unfold `dRep`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun t : ℝ => σ (NormedSpace.exp (t • X)) v) 0`. Use `hc.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.1 hd.hasDerivAt) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(W.restrictScalars ℝ).smul_mem _ (W.sub_mem (hm t) (hm 0))`. Rewrite using `[deriv_zero_of_not_differentiableAt hd]`. Conclude with `W.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_mem_of_isClosed {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {W : Submodule ℂ H}
     (hc : IsClosed (W : Set H)) (hW : ∀ g ∈ UJset ε, ∀ w ∈ W, σ g w ∈ W) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -155,11 +155,11 @@ theorem dRep_mem_of_isClosed {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) 
     exact W.zero_mem
 
 /- English proof (translation)
-Establish `hk1` using `mem_UJset_of_mem_Kset hk`. Establish `hk2` using `conjTranspose_mem_UJset_of_mem_Kset hk`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hW k hk1 _ (W.starProjection_apply_mem x)) fun w hw => ?_` and prove the remaining obligations. Establish `h1 : σ k (σ kᴴ w) = w`. Use `hU.1.2 k hk1 kᴴ hk2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show k * kᴴ = 1 from Matrix.mem_unitaryGroup_iff.1 hk.1, hU.1.1]`. Conclude with `(congrArg (fun A : H →L[ℂ] H => A w) this).symm`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ k : H →ₗ[ℂ] H), hU.2.1 k hk1⟩`. Establish `h2` using `L.inner_map_map (x - W.starProjection x) (σ kᴴ w)`. Rewrite `h2` using `[W.starProjection_inner_eq_zero x _ (hW _ hk2 w hw)]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `inner ℂ (σ k (x - W.starProjection x)) (σ k (σ kᴴ w)) = 0 at h2`. Rewrite `h2` using `[h1, map_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem starProjection_comm {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hU : IsURepOn (UJset ε) σ) {W : Submodule ℂ H} [W.HasOrthogonalProjection]
@@ -209,13 +209,11 @@ section Consequences
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hsub : IsGKSub ε σ (V ⊓ W)` using `⟨fun v hv => hV.smooth v hv.1, fun v hv => hV.kFin v hv.1, fun k hk v hv => ⟨hV.kStable k hk v hv.1, hW k (mem_UJset_of_mem_Kset hk) v hv.2⟩, fun X hX v hv => ⟨hV.lieStable X hX v hv.1, dRep_mem_of_isClosed hc hW hX hv.2⟩⟩`. Break down `hirr _ inf_le_left hsub with h0 | h1` into its components or cases. Use `left`. Establish `: CompleteSpace W` using `hc.completeSpace_coe`. Establish `hperp : V ≤ Wᗮ` using `fun v hv => by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hvS, hSK⟩` from `hV.kFin v hv`. Establish `hPW` using `W.starProjection_apply_mem v`. Establish `hfin : IsKFin ε σ (W.starProjection v)`. Use `⟨S.map (W.starProjection : H →ₗ[ℂ] H), inferInstance, ⟨v, hvS, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨σ k x, hSK k hk x hx, starProjection_comm hU hW hk x⟩`. Establish `hmem : W.starProjection v ∈ V ⊓ W` using `⟨(h n ε H σ hU V hV hA).2 _ (hle hPW) hfin, hPW⟩`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `(Submodule.starProjection_apply_eq_zero_iff W).1 hmem`. Establish `hcl : V.topologicalClosure ≤ Wᗮ` using `V.topologicalClosure_minimal hperp W.isClosed_orthogonal`.
-
-Conclude with `(W.orthogonal_disjoint).eq_bot_of_le (hle.trans hcl)`. Conclude with `Or.inr (le_antisymm hle (V.topologicalClosure_minimal (inf_eq_left.1 h1) hc))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem AdmissibleClosure.irreducible (h : AdmissibleClosure) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -245,7 +243,7 @@ theorem AdmissibleClosure.irreducible (h : AdmissibleClosure) {H : Type} [Normed
   · exact Or.inr (le_antisymm hle (V.topologicalClosure_minimal (inf_eq_left.1 h1) hc))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(det_isURepOn ε).1, (det_isURepOn ε).2.1, eq_top_iff.2 fun v _ => (det_isURepOn ε).2.2 v, isGKHom_id _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem infinitesimalEquivalence_hyp_det (ε : Fin n → Bool) :
     IsURepOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧ IsIrredOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧

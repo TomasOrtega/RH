@@ -13,9 +13,9 @@ namespace CrystallineSemistableComparison.Onto
 open Pb HT
 
 /- English proof (translation)
-Establish `heq : MvPolynomial.eval₂Hom f (g ∘ e) = (MvPolynomial.eval₂Hom f g).comp (MvPolynomial.renameEquiv R e).toRingEquiv.toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[heq]`. Conclude with `RingHom.Etale.respectsIso.2 _ _ h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_reindex {R S : Type} [CommRing R] [CommRing S] {σ τ : Type} (f : R →+* S) (g : τ → S) (e : σ ≃ τ)
     (h : (MvPolynomial.eval₂Hom f g).Etale) : (MvPolynomial.eval₂Hom f (g ∘ e)).Etale := by
@@ -36,17 +36,17 @@ def BChart.coordV {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (
   etale := etale_reindex _ _ _ c.etale
 
 /- English proof (translation)
-Establish `hJ : RingHom.ker σ = (RingHom.ker ρ).map φ`. Use `le_antisymm hker ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite `ha` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, hsq, RingHom.comp_apply, ha, map_zero]`. Set `_` to `φ.toAlgebra`. Establish `: Algebra.Etale A B` using `hφ`. Set `I` to `RingHom.ker ρ`. Set `eA : A ⧸ I ≃+* A'` to `RingHom.quotientKerEquivOfSurjective hρ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eB : B ⧸ I.map (algebraMap A B) ≃+* B'` to `(Ideal.quotEquivOfEq hJ.symm).trans (RingHom.quotientKerEquivOfSurjective hσ)`. Set `T : TensorProduct A (A ⧸ I) B ≃+* B'` to `((Algebra.TensorProduct.comm A (A ⧸ I) B).toRingEquiv.trans (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).symm.toRingEquiv).trans eB`. Establish `hE : (algebraMap (A ⧸ I) (TensorProduct A (A ⧸ I) B)).Etale`. Rewrite using `[RingHom.etale_algebraMap]`. Use `infer_instance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ψ = (T.toRingHom.comp (algebraMap (A ⧸ I) (TensorProduct A (A ⧸ I) B))).comp eA.symm.toRingHom`. Use extensionality with `a'`. Take `⟨a, rfl⟩` from `hρ a'`. Establish `h1 : eA.symm (ρ a) = Ideal.Quotient.mk I a`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, h1]`. Express the relevant statement in the definitionally equal form `ψ (ρ a) = eB ((Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).symm (TensorProduct.tmul A (1 : B) (Ideal.Quotient.mk I a)))`. Rewrite using `[Algebra.TensorProduct.quotIdealMapEquivTensorQuot_symm_tmul, Algebra.smul_def, mul_one]`. Establish `h2 : σ (φ a) = ψ (ρ a)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, hsq, RingHom.comp_apply]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `RingHom.Etale.respectsIso.2 _ _ (RingHom.Etale.respectsIso.1 _ _ hE)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_quot {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRing B] [CommRing B']
     (φ : A →+* B) (ρ : A →+* A') (σ : B →+* B') (ψ : A' →+* B') (hφ : φ.Etale) (hρ : Function.Surjective ρ)
@@ -89,7 +89,7 @@ theorem etale_of_quot {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRing B]
   exact RingHom.Etale.respectsIso.2 _ _ (RingHom.Etale.respectsIso.1 _ _ hE)
 
 /- English proof (translation)
-Simplify using `only [strV]`. Rewrite using `[← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem strV_comp {K : Type} [CommRing K] {W Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z) (V : Z.Opens) :
     strV (i ≫ q) (i ⁻¹ᵁ V) = (i.app V).hom.comp (strV q V) := by
@@ -120,15 +120,15 @@ def BChart.coordI {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (
       simp
 
 /- English proof (translation)
-Establish `H : IsPullback (𝟙 X) f f (𝟙 Y)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `hpb0` using `Scheme.Hom.isPullback_resLE H (US := U) (UT := U') (UX := V) (by simpa using h) e (UY := V ⊓ f ⁻¹ᵁ U') (by simp)`. Simplify using `only [Scheme.Hom.resLE_id] at hpb0`. Establish `hpb : IsPullback (X.homOfLE (inf_le_left : V ⊓ f ⁻¹ᵁ U' ≤ V)) (f.resLE U' (V ⊓ f ⁻¹ᵁ U') inf_le_right) (f.resLE U V e) (Y.homOfLE h)` using `hpb0`. Establish `: IsAffine V.toScheme` using `hV`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine U.toScheme` using `hU`. Establish `: IsAffine U'.toScheme` using `hU'`. Establish `hW : IsAffineOpen (V ⊓ f ⁻¹ᵁ U')` using `IsAffine.of_isIso hpb.isoPullback.hom`. Use `⟨hW, ?_⟩` and prove the remaining obligations. Establish `: IsAffine (V ⊓ f ⁻¹ᵁ U').toScheme` using `hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : IsPullback (Spec.map (X.homOfLE (inf_le_left : V ⊓ f ⁻¹ᵁ U' ≤ V)).appTop) (Spec.map (f.resLE U' (V ⊓ f ⁻¹ᵁ U') inf_le_right).appTop) (Spec.map (f.resLE U V e).appTop) (Spec.map (Y.homOfLE h).appTop)` using `hpb.of_iso (Scheme.isoSpec _) (Scheme.isoSpec _) (Scheme.isoSpec _) (Scheme.isoSpec _) (Scheme.isoSpec_hom_naturality _).symm (Scheme.isoSpec_hom_naturality _).symm (Scheme.isoSpec_hom_naturality _).symm (Scheme.isoSpec_hom_naturality _).symm`. Establish `hR : IsPullback (X.homOfLE (inf_le_left : V ⊓ f ⁻¹ᵁ U' ≤ V)).appTop.op (f.resLE U' (V ⊓ f ⁻¹ᵁ U') inf_le_right).appTop.op (f.resLE U V e).appTop.op (Y.homOfLE h).appTop.op`. Use `IsPullback.of_map Scheme.Spec ?_ hS` and prove the remaining obligations. Rewrite using `[← op_comp, ← op_comp, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, hpb.w]`. Establish `hP` using `hR.unop.flip`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hP.of_iso U.topIso V.topIso U'.topIso (V ⊓ f ⁻¹ᵁ U').topIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Scheme.Opens.topIso, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Quiver.Hom.unop_op, Scheme.Hom.app_eq_appLE, Scheme.Hom.resLE_appLE, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Simplify using `only [Scheme.Opens.topIso, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Quiver.Hom.unop_op, Scheme.homOfLE_appTop, ← Functor.map_comp]`. Both sides reduce to the same expression. Simplify using `only [Scheme.Opens.topIso, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Quiver.Hom.unop_op, Scheme.homOfLE_appTop, ← Functor.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Scheme.Opens.topIso, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Quiver.Hom.unop_op, Scheme.Hom.app_eq_appLE, Scheme.Hom.resLE_appLE, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem pushout_res {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V : X.Opens} (hU : IsAffineOpen U)
     (hU' : IsAffineOpen U') (hV : IsAffineOpen V) (h : U' ≤ U) (e : V ≤ f ⁻¹ᵁ U) :
@@ -173,35 +173,33 @@ theorem pushout_res {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V : X.Ope
       Scheme.Hom.app_eq_appLE, Scheme.Hom.resLE_appLE, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Use `set e := MvPolynomial.eval₂Hom φ.hom u with he`. Use `set e' := MvPolynomial.eval₂Hom φ'.hom (g'.hom ∘ u) with he'`. Use `set K' := (RingHom.ker e).map (MvPolynomial.map g.hom) with hK'`. Establish `hw : ∀ r, g'.hom (φ.hom r) = φ'.hom (g.hom r)` using `fun r => RingHom.congr_fun (congrArg CommRingCat.Hom.hom hP.w) r`. Establish `hcomm : e'.comp (MvPolynomial.map g.hom) = g'.hom.comp e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[he, he', hw]`. Introduce `i`. Simplify using `[he, he']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKle : K' ≤ RingHom.ker e'`. Rewrite using `[hK', Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Rewrite `hp` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, hcomm, RingHom.comp_apply, hp, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `sQ : S →+* MvPolynomial ι R' ⧸ K'` to `(Ideal.quotientMap K' (MvPolynomial.map g.hom) Ideal.le_comap_map).comp (RingHom.quotientKerEquivOfSurjective hs).symm.toRingHom`. Establish `hsQ : ∀ p, sQ (e p) = Ideal.Quotient.mk K' (MvPolynomial.map g.hom p)`. Introduce `p`. Establish `h1 : (RingHom.quotientKerEquivOfSurjective hs).symm (e p) = Ideal.Quotient.mk (RingHom.ker e) p`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Simplify using `only [sQ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, h1, Ideal.quotientMap_mk]`. Set `rQ : R' →+* MvPolynomial ι R' ⧸ K'` to `(Ideal.Quotient.mk K').comp MvPolynomial.C`. Establish `w' : φ ≫ CommRingCat.ofHom sQ = g ≫ CommRingCat.ofHom rQ`. Use extensionality with `r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `sQ (φ.hom r) = rQ (g.hom r)`. Establish `hr : φ.hom r = e (MvPolynomial.C r)` using `by simp [he]`. Rewrite using `[hr, hsQ]`. Simplify using `[rQ]`. Set `h` to `hP.desc (CommRingCat.ofHom sQ) (CommRingCat.ofHom rQ) w'`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : ∀ s, h.hom (g'.hom s) = sQ s` using `fun s => RingHom.congr_fun (congrArg CommRingCat.Hom.hom (hP.inl_desc _ _ w')) s`. Establish `hr : ∀ r, h.hom (φ'.hom r) = rQ r` using `fun r => RingHom.congr_fun (congrArg CommRingCat.Hom.hom (hP.inr_desc _ _ w')) r`. Set `eb : MvPolynomial ι R' ⧸ K' →+* S'` to `Ideal.Quotient.lift K' e' (fun a ha => hKle ha)`. Establish `heb : ∀ s', eb (h.hom s') = s'`. Establish `hid : h ≫ CommRingCat.ofHom eb = 𝟙 S'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `hP.hom_ext` to reduce the goal to its premises. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `eb (h.hom (g'.hom s)) = g'.hom s`. Rewrite using `[hl]`. Take `⟨p, rfl⟩` from `hs s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsQ]`. Express the relevant statement in the definitionally equal form `e' (MvPolynomial.map g.hom p) = g'.hom (e p)`. Rewrite using `[← RingHom.comp_apply, hcomm, RingHom.comp_apply]`. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `eb (h.hom (φ'.hom r)) = φ'.hom r`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr]`. Simplify using `[rQ, eb, he']`. Introduce `s'`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom hid) s'`. Establish `hbe : (h.hom.comp eb).comp (Ideal.Quotient.mk K') = Ideal.Quotient.mk K'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Express the relevant statement in the definitionally equal form `h.hom (e' (MvPolynomial.C r)) = _`. Rewrite using `[show e' (MvPolynomial.C r) = φ'.hom r by simp [he'], hr]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Express the relevant statement in the definitionally equal form `h.hom (e' (MvPolynomial.X i)) = _`. Rewrite using `[show e' (MvPolynomial.X i) = g'.hom (u i) by simp [he'], hl, show u i = e (MvPolynomial.X i) by simp [he], hsQ]`. Simplify using the standard rewrite rules. Use `⟨fun s' => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨p, hp⟩` from `Ideal.Quotient.mk_surjective (h.hom s')`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[← heb s', ← hp]`. Both sides reduce to the same expression. Use `le_antisymm (fun p hp => ?_) hKle` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hp` using `[RingHom.mem_ker]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hpp` using `RingHom.congr_fun hbe p`. Simplify using `only [RingHom.comp_apply] at hpp`. Rewrite using `[← hpp]`.
-
-Express the relevant statement in the definitionally equal form `h.hom (e' p) = 0`. Rewrite using `[hp, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pres_base_change {R S R' S' : CommRingCat.{0}} {φ : R ⟶ S} {g : R ⟶ R'} {g' : S ⟶ S'} {φ' : R' ⟶ S'}
     (hP : IsPushout φ g g' φ') {ι : Type} (u : ι → S) (hs : Function.Surjective (MvPolynomial.eval₂Hom φ.hom u)) :
@@ -329,7 +327,7 @@ def BChart.resC {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (Co
     tauto
 
 /- English proof (translation)
-Conclude with `⟨fun V' h hV' => ⟨c.resC V' h hV', fun j => rfl, fun k => rfl⟩, ⟨c.coordV⟩, ⟨c.coordI⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem chartLaws_A (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z)
     [IsClosedImmersion i] (π : Y ⟶ Z) (d : ℕ) (V : Z.Opens) (c : BChart q i π d V) :

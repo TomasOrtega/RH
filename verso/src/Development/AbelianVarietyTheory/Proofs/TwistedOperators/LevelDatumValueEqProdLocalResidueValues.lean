@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.StepVec
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem level_character_congr {E : Type} [Field E] [NumberField E] {Pg : Finset (Formalism.L2.DIV.Pl E)} {r : ℕ}
     {P Q : Formalism.L2.DIV.LevelP Pg r ℂ} (h : P = Q) (x : Formalism.L2.DIV.G0 Pg r) (hx : x ∈ P.H) (hx' : x ∈ Q.H) :
@@ -18,21 +18,19 @@ theorem level_character_congr {E : Type} [Field E] [NumberField E] {Pg : Finset 
   subst h; rfl
 
 /- English proof (translation)
-Introduce `D a b L χ Hl cl hP y`. Establish `hmem : ∀ x, x ∈ L.P.H ↔ ∀ PP, x PP ∈ Hl PP`. Introduce `x`. Rewrite using `[hP]`. Simplify using `[Formalism.L2.DIV.LevelP.ofLocal, Subgroup.mem_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hall : ∀ PP : ↥L.Pg, LowZero a (y PP.1) ∧ ∃ g : GL (Fin a) (Formalism.L2.DIV.kP PP.1), ((g : GL (Fin a) _) : Matrix (Fin a) (Fin a) _) = topL a (y PP.1) ∧ g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t) ∧ Formalism.L2.DIV.upperLeftBlock L.hr g ∈ Hl PP`. Establish `hG : (∀ PP ∈ L.Pg, LowZero a (y PP)) ∧ ∃ g : ∀ PP : ↥L.Pg, GL (Fin a) (Formalism.L2.DIV.kP PP.1), (∀ PP : ↥L.Pg, ((g PP : GL (Fin a) _) : Matrix (Fin a) (Fin a) _) = topL a (y PP.1)) ∧ (∀ PP : ↥L.Pg, g PP ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t)) ∧ (fun PP => …` using `⟨fun PP hPP => (hall ⟨PP, hPP⟩).1, fun PP => (hall PP).2.choose, fun PP => (hall PP).2.choose_spec.1, fun PP => (hall PP).2.choose_spec.2.1, (hmem _).2 fun PP => (hall PP).2.choose_spec.2.2⟩`. Establish `key : ∀ PP, hG.2.choose PP = (hall PP).2.choose` using `fun PP => Units.ext ((hG.2.choose_spec.1 PP).trans ((hall PP).2.choose_spec.1).symm)`. Rewrite using `[omegaG, dif_pos hG]`. Establish `hloc : ∀ PP : ↥L.Pg, gLoc L PP.1 (Hl PP) (cl PP) (χ PP.1) (y PP.1) = ((cl PP ⟨Formalism.L2.DIV.upperLeftBlock L.hr (hall PP).2.choose, (hall PP).2.choose_spec.2.2⟩ : ℂˣ) : ℂ) * (∏ i ∈ Finset.range L.s, ((L.cg (i + 1) PP.1 (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf L.r L.t) (i …` using `fun PP => by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gLoc, dif_pos (hall PP)]`. Rewrite using `[Finset.prod_congr rfl fun PP _ => hloc PP]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Establish `hx' : (fun PP => Formalism.L2.DIV.upperLeftBlock L.hr (hG.2.choose PP)) ∈ (Formalism.L2.DIV.LevelP.ofLocal Hl cl).H`. Rewrite using `[← hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG.2.choose_spec.2.2`. Use `congr 1`. Use `congr 1`. Rewrite using `[level_character_congr hP _ _ hx', ← Units.coe_prod]`. Use `congrArg Units.val ((MonoidHom.finsetProd_apply _ _ _).trans (Finset.prod_congr rfl fun PP _ => ?_))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (cl PP) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `congrArg (Formalism.L2.DIV.upperLeftBlock L.hr) (key PP)`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[key PP]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key PP]`. Establish `hG : ¬ ((∀ PP ∈ L.Pg, LowZero a (y PP)) ∧ ∃ g : ∀ PP : ↥L.Pg, GL (Fin a) (Formalism.L2.DIV.kP PP.1), (∀ PP : ↥L.Pg, ((g PP : GL (Fin a) _) : Matrix (Fin a) (Fin a) _) = topL a (y PP.1)) ∧ (∀ PP : ↥L.Pg, g PP ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t)) ∧ (fun PP …`. Introduce and unpack `⟨h1, g, hg1, hg2, hg3⟩`. Conclude with `hall fun PP => ⟨h1 PP.1 PP.2, g PP, hg1 PP, hg2 PP, (hmem _).1 hg3 PP⟩`. Use `push_neg at hall`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨PP, hPP⟩` from `hall`. Rewrite using `[omegaG, dif_neg hG]`. Use `(Finset.prod_eq_zero (Finset.mem_univ PP) ?_).symm` and prove the remaining obligations. Rewrite using `[gLoc, dif_neg]`. Introduce and unpack `⟨h1, g, hg1, hg2, hg3⟩`.
-
-Conclude with `hPP h1 g hg1 hg2 hg3`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem omegaG_eq_prod_gLoc : ∀ (D : D7) (a b : ℕ) (L : Formalism.L2.DIV.LevDat D.host.E ℂ a)
     (χ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)

@@ -23,7 +23,7 @@ noncomputable def rk {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (τ : Tor
   letI := τ.addCommGroup; Module.finrank ℤ τ.X
 
 /- English proof (translation)
-Use `haveI : IsMonHom (pullCompIso (spMap e) x G).symm.hom := inferInstanceAs (IsMonHom (pullCompIso (spMap e) x G).inv)`. Conclude with `⟨torusExtOfIso (pullCompIso (spMap e) x G).symm (GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Arch.AbPartBC.torusExtBC (spMap e) τ), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] {K K' : Type} [Field K] [Field K'] (x : Sp K ⟶ S)
     (τ : TorusExtension ((Over.pullback x).obj G)) (e : K →+* K') :
@@ -34,13 +34,13 @@ theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] {K K' : Type} [Field
     (GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Arch.AbPartBC.torusExtBC (spMap e) τ), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.card_torsion_mul_card_toric_torsion k G E g 2 hG dG h2]`. Use `congr 1`. Use `letI := E.addCommGroup`. Use `letI := E.grpB`. Use `haveI := E.free`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := E.finite`. Use `haveI := E.i_hom`. Establish `hk` using `E.isKernel`. Take `⟨e⟩` from `GlobalTheory.SemiAbTorsionCount.nonempty_torus_points_mulEquiv k E.X`. Take `⟨-, hcard⟩` from `GlobalTheory.SemiAbTorsionCount.divisible_and_card e 2 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `i` to `IsMonHom.monoidHom E.i (𝟙_ (Over (Sp k)))`. Establish `hi : Function.Injective i` using `fun a b h => hk.hom_ext h (toUnit_unique _ _)`. Use `hcard.symm.trans ?_` and prove the remaining obligations. Use `Nat.card_eq_of_bijective (fun t => ⟨i t.1, by rw [← map_pow, t.2, map_one], t.1, rfl⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (hi (congrArg Subtype.val h))`. Introduce and unpack `⟨x, hx, t, rfl⟩`. Establish `hx₁ : i t ^ 2 = 1` using `hx`. Conclude with `⟨⟨t, hi (by rw [map_pow, hx₁, map_one])⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_field (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (E : TorusExtension G) (g : ℕ)
     (hG : IsSemiAbelian G) (dG : SmoothOfRelativeDimension g G.hom) (h2 : ((2 : ℕ) : k) ≠ 0) :
@@ -67,9 +67,9 @@ theorem card_field (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpOb
     exact ⟨⟨t, hi (by rw [map_pow, hx₁, map_one])⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hg' : SmoothOfRelativeDimension g ((Over.pullback t).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) dG`. Rewrite using `[← card_field k _ E g (IsSemiAbelian.pullback t G hG) hg' h2]`. Use `congr 1`. Set `e` to `GlobalTheory.TorsionLift.ptsEquiv t G (𝟙_ (Over (Sp k))) t (Category.id_comp t)`. Use `(Nat.card_congr (e.toEquiv.subtypeEquiv fun x => ?_)).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show x ^ 2 = 1 ↔ e x ^ 2 = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_point {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (g : ℕ)
     (dG : SmoothOfRelativeDimension g G.hom) (k : Type) [Field k] [IsAlgClosed k] (h2 : ((2 : ℕ) : k) ≠ 0)
@@ -85,17 +85,15 @@ theorem card_point {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian 
   rw [← map_pow, MulEquiv.map_eq_one_iff]
 
 /- English proof (translation)
-Set `F` to `AlgebraicClosure K`. Use `haveI := hG.smooth`. Take `⟨τF, hτF⟩` from `exists_ext G x τ (algebraMap K F)`. Establish `hc` using `card_point G hG g dG F (by exact_mod_cast (two_ne_zero : (2 : F) ≠ 0)) _ τF`. Rewrite `hc` using `[hτF]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : Nat.card {p : Over.mk (spMap (algebraMap K F) ≫ x) ⟶ G // p ^ 2 = 1} ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, zero_mul]`. Conclude with `(pow_ne_zero _ two_ne_zero) hc.symm`. Use `haveI := Nat.finite_of_card_ne_zero hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u` to `(Finite.equivFin {p : Over.mk (spMap (algebraMap K F) ≫ x) ⟶ G // p ^ 2 = 1}).symm`. Use `choose T hT using fun j => GlobalTheory.TorsionRat.exists_finset_over G x (u j).1`. Set `s : Set F` to `⋃ j, (T j : Set F)`. Use `haveI : Finite s := (Set.finite_iUnion fun j => (T j).finite_toSet).to_subtype`. Set `L` to `IntermediateField.adjoin K s`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨L, inferInstance, inferInstance, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, ?_⟩` and prove the remaining obligations. Introduce and unpack `y rfl`. Take `⟨τ', hτ'⟩` from `exists_ext G x τ (algebraMap K L)`. Use `choose P hP using fun j => hT j L ((Set.subset_iUnion (fun j => (T j : Set F)) j).trans (IntermediateField.subset_adjoin _ _))`. Set `c₀ : Over.mk (spMap (algebraMap K F) ≫ x) ⟶ Over.mk (spMap (algebraMap K L) ≫ x)` to `Over.homMk (spMap (algebraMap L F)) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `spMap (algebraMap L F) ≫ spMap (algebraMap K L) ≫ x = spMap (algebraMap K F) ≫ x`. Rewrite using `[← Category.assoc, GlobalTheory.TorsionRat.sp_comp]`. Use the proof step `rfl)`. Establish `hc₀ : ∀ j, c₀ ≫ P j = (u j).1` using `fun j => Over.OverMorphism.ext (hP j)`. Use `⟨τ', _, P, fun a b h => u.injective (Subtype.ext ?_), fun j => ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc₀, ← hc₀, h]`. Use `GlobalTheory.TorsionRat.comp_injective (algebraMap L F) c₀ rfl ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, hc₀, (u j).2, MonObj.comp_one]`. Rewrite using `[hτ']`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_points {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (g : ℕ)
     (dG : SmoothOfRelativeDimension g G.hom) (K : Type) [Field K] [CharZero K] (x : Sp K ⟶ S)
@@ -142,9 +140,9 @@ end PositivityTheory.Xgn.StratumGenericTorsion
 
 open PositivityTheory.Xgn.StratumGenericTorsion in
 /- English proof (translation)
-Introduce `S G _ hG g dG L _ _ z`. Take `⟨L₁, _, _, h₁, ⟨τ₁⟩⟩` from `exists_finite_torusExtension_fibre S G hG L z`. Use `haveI : CharZero L₁ := charZero_of_injective_algebraMap (algebraMap L L₁).injective`. Take `⟨K, _, _, h₂, H⟩` from `exists_points G hG g dG L₁ _ τ₁`. Use `letI : Algebra L K := ((algebraMap L₁ K).comp (algebraMap L L₁)).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsScalarTower L L₁ K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨K, inferInstance, inferInstance, Module.Finite.trans L₁ K, ?_⟩` and prove the remaining obligations. Conclude with `H _ (by rw [← Category.assoc, GlobalTheory.TorsionRat.sp_comp])`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.stratum_generic_torsion_points : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ g : ℕ, SmoothOfRelativeDimension g G.hom → ∀ (L : Type) [Field L] [CharZero L] (z : Sp L ⟶ S), ∃ (L' : Type) (_ : Field L') (_ : Algebra L L'), FiniteDimensional L L' ∧ ∃ (τ : TorusExtension ((Over.pullback (spMap (algebraMap L L') ≫ z)).obj G)) (m : ℕ) (P : Fin m → (Over.mk (spMap (algebraMap L L') ≫ z) ⟶ G)), Function.Injective P ∧ (∀ i, P i ^ 2 = 1) ∧ (letI := τ.addCommGroup; m * 2 ^ Module.finrank ℤ τ.X = 2 ^ (2 * g)) := by
   intro S G _ hG g dG L _ _ z

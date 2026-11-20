@@ -18,19 +18,15 @@ noncomputable section
 namespace GlobalTheory.XTermBound
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K hK e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Take `⟨U, hU, hU0⟩` from `GlobalTheory.T.config_a_stabilizer_theta_real hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦ h`. Take `⟨m, c, φ, hφ, hint⟩` from `GlobalTheory.T.config_a_stabilizer_theta_finite hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦ h`. Take `⟨s, C₁, hC₁t, hC₁⟩` from `GlobalTheory.T.sobolev_bound_finite_family hKP F E σ B b a' G₁ X om₁ om₁' hT₁ m φ hφ`. Use `⟨U, hU, fun N => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose Cj hCj using fun j : Fin m => GlobalTheory.T.config_a_stabilizer_theta_global hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦ h U hU (c j) N s`. Use `⟨C₁ * ENNReal.ofReal (∑ j, |Cj j|), ENNReal.mul_ne_top hC₁t ENNReal.ofReal_ne_top, ?_⟩` and prove the remaining obligations. Introduce `k hk l`. Use `set r : ℝ := (1 + ∑ i, ∑ v : InfinitePlace F, ‖(GlobalTheory.XTermMaj.crd F E (l : AE F E) i).1 v‖) ^ (-(N : ℝ)) with hr`. Distinguish the cases in `hl : (fun i => (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2) ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose f hf hfb using fun j => hCj j k hk l hl`. Establish `hD : e (G.M.co.rho B.ψ (shiftA H H' l) (om (k, h) Φ)) = ∑ j, pureA F (f j) (φ j)`. Use function extensionality and compare the values at `x`. Rewrite using `[hint k hk l x, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pureA, hf j, RingEquiv.symm_apply_apply]`. Establish `hmaj : GlobalTheory.XTermMaj.maj F E N U (l : AE F E) = ENNReal.ofReal r`. Simplify using `only [GlobalTheory.XTermMaj.maj, Set.indicator_of_mem hl, hr]`. Establish `hr0 : 0 ≤ r` using `Real.rpow_nonneg (by positivity) _`. Rewrite using `[hD, hmaj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(hC₁ f).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Rewrite using `[← ENNReal.ofReal_mul (Finset.sum_nonneg fun j _ => abs_nonneg _), Finset.sum_mul]`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun j _ => mul_nonneg (abs_nonneg _) hr0)]`.
-
-Use `Finset.sum_le_sum fun j _ => ENNReal.ofReal_le_ofReal ((hfb j).trans ?_)` and prove the remaining obligations. Use `gcongr`. Conclude with `le_abs_self _`. Rewrite using `[hU0 k hk l hl]`. Simplify using `only [map_zero, thetaSum, Pi.zero_apply, tsum_zero, enorm_zero, lintegral_zero]`.
-
-Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bound : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

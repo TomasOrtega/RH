@@ -29,20 +29,20 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {P : WtPar Dw} (R : Choice TF.X Z U P)
 
 /- English proof (translation)
-The claim follows from `(ProdChart.restr_mul _ _ _ _).trans (by rw [H0.restr_ofSec]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem restr_mulPole (j : ℕ) (f : H0 R.str (R.adj j) ⊤) :
     H0.restr le_top (R.mulPole j ⊤ f) = R.mulPole j R.off (H0.restr le_top f) :=
   (ProdChart.restr_mul _ _ _ _).trans (by rw [H0.restr_ofSec]; rfl)
 
 /- English proof (translation)
-The claim follows from `((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv (R.Δ₁.nowhereZero_pow R.str (R.notMem_support h₁) j)).injective`.
+A detailed English derivation is pending.
 -/
 theorem mulPole_injective (h₁ : FreeOnOpen TF.X Z U P.u₁) (j : ℕ) : Function.Injective (R.mulPole j R.off) :=
   ((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv (R.Δ₁.nowhereZero_pow R.str (R.notMem_support h₁) j)).injective
 
 /- English proof (translation)
-The claim follows from `nowhereZero_of_exists fun y hy => by obtain ⟨i, hi⟩ := exists_chart R.Δ₁.isLB y exact ⟨fun _ => i, mem_zpow_U.2 hi, by rw [R.Δ₁.germ_pow R.str 0 i y hy hi, pow_zero]; exact isUnit_one⟩`.
+A detailed English derivation is pending.
 -/
 theorem nowhereZero_pow_zero : NowhereZero (H0.ofSec R.str ⊤ (R.Δ₁.pow 0)) := nowhereZero_of_exists fun y hy => by
   obtain ⟨i, hi⟩ := exists_chart R.Δ₁.isLB y
@@ -53,15 +53,15 @@ end GlobalTheory.HSApp.Sandwich
 open GlobalTheory.HSApp.Sandwich in
 
 /- English proof (translation)
-Introduce `hP hG E _ _ _ H Dw l Xo c TF Z r U P R ω hF h₁`. Establish `key` using `fun (j : ℕ) m => GlobalTheory.T.canonical_ideal_weight_section hP hG E H Dw l Xo c TF Z hF R.toModif ω _ _ (P.kap_add j) m`. Use `⟨fun j hj => ?_, fun hj => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Set `e` to `R.adjEquiv ω.ω ω.unit h₁ j (P.kap_add j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Take `⟨m, hm⟩` from `(R.bijective_pullOff (isLB_L₀ TF.X Z (P.wt j))).2 (e.symm (H0.restr le_top f))`. Establish `hmul : H0.restr le_top (R.mulPole j ⊤ f) = (((common₀ TF.X Z).pull R.σ).canChart R.K.isLB (P.kap_add j)).mul ω.ω (R.pullOff m)`. Rewrite using `[restr_mulPole, hm]`. Use `R.mulPole_adjEquiv ω.ω ω.unit h₁ j (P.kap_add j) (e.symm (H0.restr le_top f))` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨g, hg, hgm⟩` from `(key j m).2 ⟨R.mulPole j ⊤ f, hmul⟩`. Take `⟨c', hc'⟩` from `hj.2 hg`. Use `⟨c', ?_⟩` and prove the remaining obligations. Use `show e (R.pullOff (cuspSec TF.X Z U _ c')) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hc', hgm, hm, LinearEquiv.apply_symm_apply]`. Introduce and unpack `_ ⟨c', rfl⟩`. Take `⟨s, hs, hsr⟩` from `hj.1 c'`. Take `⟨g, hg⟩` from `(key 0 _).1 ⟨s, hs, hsr⟩`. Take `⟨f, hf⟩` from `((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv (nowhereZero_pow_zero R)).surjective g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, mulPole_injective R h₁ 0 ?_⟩` and prove the remaining obligations. Rewrite using `[← restr_mulPole, mulPole_adjSec]`. Conclude with `(congrArg (H0.restr le_top) hf).trans hg`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSApp.sandwich : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)

@@ -19,15 +19,15 @@ def topNil (I : Ideal R) (T : κ → Module.End R M) : Submodule R M where
     rw [map_smul]; exact Submodule.smul_mem _ c h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_topNil {I : Ideal R} {T : κ → Module.End R M} {m : M} :
     m ∈ topNil I T ↔ ∀ i (j : ℕ), ∀ᶠ r : ℕ in atTop, (T i ^ r) m ∈ (I ^ j • ⊤ : Submodule R M) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_topNil]`. Use `forall₂_congr fun i j => ⟨fun h => h.exists, fun ⟨r, hr⟩ => ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop r] with s hs`. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Rewrite using `[add_comm r t, pow_add, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (I ^ j • ⊤ : Submodule R M).map (T i ^ t) ≤ I ^ j • ⊤`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hle ⟨_, hr, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_topNil_iff_exists {I : Ideal R} {T : κ → Module.End R M} {m : M} :
     m ∈ topNil I T ↔ ∀ i (j : ℕ), ∃ r : ℕ, (T i ^ r) m ∈ (I ^ j • ⊤ : Submodule R M) := by
@@ -58,9 +58,9 @@ abbrev SplitAlg : Type := MvPolynomial (Fin n) R ⧸ splitIdeal P n
 def SplitAlg.root (i : Fin n) : SplitAlg P n := Ideal.Quotient.mk _ (MvPolynomial.X i)
 
 /- English proof (translation)
-Establish `h2 : (∏ i : Fin n, (X - C (MvPolynomial.X i : MvPolynomial (Fin n) R)) - P.map MvPolynomial.C).map (Ideal.Quotient.mk (splitIdeal P n)) = 0`. Use extensionality with `k`. Rewrite using `[coeff_map, coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`. Rewrite `h2` using `[Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_map, sub_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_sub, map_X, map_C] at h2`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem SplitAlg.prod_root :
     ∏ i : Fin n, (X - C (SplitAlg.root P n i)) = P.map (algebraMap R (SplitAlg P n)) := by
@@ -90,7 +90,7 @@ def SplitAlg.lift {A : Type} [CommRing A] [Algebra R A] (a : Fin n → A)
     exact h4
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval a (MvPolynomial.X i) = a i`. Conclude with `MvPolynomial.aeval_X a i`.
+A detailed English derivation is pending.
 -/
 theorem SplitAlg.lift_root {A : Type} [CommRing A] [Algebra R A] (a : Fin n → A)
     (h : ∏ i : Fin n, (X - C (a i)) = P.map (algebraMap R A)) (i : Fin n) :
@@ -99,7 +99,7 @@ theorem SplitAlg.lift_root {A : Type} [CommRing A] [Algebra R A] (a : Fin n → 
   exact MvPolynomial.aeval_X a i
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Conclude with `h i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SplitAlg.hom_ext {A : Type} [CommRing A] [Algebra R A] {f g : SplitAlg P n →ₐ[R] A}
     (h : ∀ i, f (SplitAlg.root P n i) = g (SplitAlg.root P n i)) : f = g := by

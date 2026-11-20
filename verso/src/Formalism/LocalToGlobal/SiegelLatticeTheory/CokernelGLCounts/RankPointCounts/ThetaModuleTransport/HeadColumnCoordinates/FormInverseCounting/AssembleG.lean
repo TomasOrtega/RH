@@ -14,7 +14,7 @@ namespace Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic
 variable {E : Type} [CommRing E] (O : Subring E) {r : ℕ}
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, mul_comm (Ring.inverse _), mul_assoc, Ring.inverse_mul_cancel _ hu, mul_one, Matrix.adjugate_fin_succ_eq_det_submatrix]`. Simplify using `[Fin.succAbove_last, ← two_mul, pow_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kap_mul_det (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det) :
     kap O Z * (Z.map O.subtype).det = ((Z.map O.subtype).submatrix Fin.castSucc Fin.castSucc).det := by
@@ -24,7 +24,7 @@ theorem kap_mul_det (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.m
   simp [Fin.succAbove_last, ← two_mul, pow_mul]
 
 /- English proof (translation)
-Establish `h1` using `kap_mul_det O Z₁ hu₁`. Establish `h2` using `kap_mul_det O Z₂ hu₂`. Rewrite `hrel` using `[← h1, ← h2]`. Apply `(hu₁.mul hu₂).mul_right_cancel` to reduce the goal to its premises. Take the linear combination `-hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem kap_eq (Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu₁ : IsUnit (Z₁.map O.subtype).det)
     (hu₂ : IsUnit (Z₂.map O.subtype).det)
@@ -38,23 +38,19 @@ theorem kap_eq (Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu₁ : IsUni
   linear_combination -hrel
 
 /- English proof (translation)
-Introduce `E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hrel hG₁ hG₂`. Set `t : O` to `⟨T, hT⟩`. Set `t' : O` to `⟨T', hT'⟩`. Establish `hk : kap O Z₂ = kap O Z₁` using `kap_eq O Z₁ Z₂ hu₁ hu₂ hrel`. Establish `hη₂ : EtaNZD O cj Z₂ (t : E) (t' : E)` using `fun u h => eta_nzd O cj hcj Z₂ hu₂ T T' hG₂ u h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf'` using `hf E O cj hcj hO r t t' hcT hcT' Z₁ Z₂ hu₁ hu₂ hk hG₁ hG₂`. Establish `hb'` using `hb E O cj hcj hO r t t' hcT hcT' Z₁ Z₂ hu₁ hu₂ hk hG₁ hG₂`. Use `choose F hF using hf'`. Use `choose B hBmem hB using hb'`. Establish `lamP : ∀ (p : PairSet O cj hO Z₁ Z₂) (m : MbMod Z₁), lamLQ O Z₂ hu₂ (p.1.1 m) = lamLQ O Z₁ hu₁ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p m`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨y₂, hy₂⟩` from `Submodule.Quotient.mk_surjective _ (p.1.1 (Submodule.Quotient.mk y))`. Rewrite using `[← hy₂]`. Conclude with `lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 y y₂ hy₂.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `lamSP : ∀ (p : PairSet O cj hO Z₁ Z₂) (m : MbMod (cjT O cj hO Z₁)), lamSQ O cj hO Z₂ hu₂ (p.1.2 m) = lamSQ O cj hO Z₁ hu₁ m`. Introduce `p m`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨y₂, hy₂⟩` from `Submodule.Quotient.mk_surjective _ (p.1.2 (Submodule.Quotient.mk y))`. Rewrite using `[← hy₂]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `p.2.2.1 y y₂ hy₂.symm`. Use `Nat.card_congr { toFun := fun θ => F θ.1 θ.2 invFun := fun p => ⟨B p, hBmem p⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Introduce and unpack `⟨θ, hθ⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d`. Take `⟨Y, rfl⟩` from `Submodule.Quotient.mk_surjective _ d`. Use `show B (F θ hθ) (Submodule.Quotient.mk Y) = θ (Submodule.Quotient.mk Y)`. Rewrite using `[elim_eta O Y, mk_elim O cj hO Z₁ t t', map_add, map_add, (hB _).1, (hB _).2, (hF θ hθ).1, (hF θ hθ).2]`. Introduce `p set q := F (B p) (hBmem p)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `hF (B p) (hBmem p)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext (LinearEquiv.ext fun m => ?_) (LinearEquiv.ext fun m => ?_)` and prove the remaining obligations. Use `uniqL O cj hO Z₂ hu₂ t t' hη₂ _ _ ?_ ?_` and prove the remaining obligations. Use `show iL O cj hO Z₂ t t' (q.1.1 m) = iL O cj hO Z₂ t t' (p.1.1 m)`.
-
-Rewrite using `[← hq.1, (hB p).1]`. Use `show lamLQ O Z₂ hu₂ (q.1.1 m) = lamLQ O Z₂ hu₂ (p.1.1 m)`. Rewrite using `[lamP, lamP]`. Use `uniqR O cj hO Z₂ hu₂ t t' hη₂ _ _ ?_ ?_` and prove the remaining obligations. Use `show iR O cj hO Z₂ t t' (q.1.2 m) = iR O cj hO Z₂ t t' (p.1.2 m)`.
-
-Rewrite using `[← hq.2, (hB p).2]`. Use `show lamSQ O cj hO Z₂ hu₂ (q.1.2 m) = lamSQ O cj hO Z₂ hu₂ (p.1.2 m)`. Rewrite using `[lamSP, lamSP]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepPairG_of_fwd_bwd (hf : FwdEx) (hb : BwdEx) : StepPairG := by
   intro E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hrel hG₁ hG₂
@@ -110,7 +106,7 @@ theorem stepPairG_of_fwd_bwd (hf : FwdEx) (hb : BwdEx) : StepPairG := by
         rw [lamSP, lamSP]
 
 /- English proof (translation)
-Introduce `E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hrel hG₁ hG₂`. Rewrite using `[h E O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hrel hG₁ hG₂]`. Conclude with `Nat.card_congr (Equiv.ofBijective _ ⟨stepInj E O cj hcj hO r Z₁ Z₂ hu₁ hu₂, stepAdjG E O cj hcj hO r Z₁ Z₂ hu₁ hu₂⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algAll_of (h : StepPairG) : Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.ThetaMbeU.AlgAll := by
   intro E _ O cj hcj hO r T T' hT hT' hcT hcT' Z₁ Z₂ hu₁ hu₂ hrel hG₁ hG₂

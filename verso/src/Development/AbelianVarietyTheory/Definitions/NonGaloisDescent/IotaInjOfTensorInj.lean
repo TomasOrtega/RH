@@ -19,14 +19,14 @@ namespace GlobalTheory.MemLoc.RingsModel
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨C⟩` from `nonempty_core l`. Conclude with `⟨C, phiB_injective l, (ULaws.u_laws l C).2.2.2.1, fun K b hb => InvDR.invariants_BdR l C K b hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_core_facts (l : ℕ) [Fact l.Prime] : ∃ C : Core l, C.PhiInj ∧ C.IotaInj ∧ C.InvdR := by
   obtain ⟨C⟩ := nonempty_core l
   exact ⟨C, phiB_injective l, (ULaws.u_laws l C).2.2.2.1, fun K b hb => InvDR.invariants_BdR l C K b hb⟩
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero C.ι).2 fun b hb => ?_` and prove the remaining obligations. Use `h 1 (fun _ => 1) ?_ (fun _ => b) (by simp [hb]) 0` and prove the remaining obligations. Conclude with `linearIndependent_unique_iff.2 one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iotaInj_of_tensorInj (C : Core l) (h : C.TensorInj) : C.IotaInj := by
   refine (injective_iff_map_eq_zero C.ι).2 fun b hb => ?_
@@ -34,9 +34,9 @@ theorem iotaInj_of_tensorInj (C : Core l) (h : C.TensorInj) : C.IotaInj := by
   exact linearIndependent_unique_iff.2 one_ne_zero
 
 /- English proof (translation)
-Establish `h1 : Per.σB g C.tB = algebraMap (Per.Acris l) (Per.Bcris l) (sigA g C.t)`. Use `plusToB_sig g (algebraMap (Per.Acris l) (BcrisP l) C.t)` as an intermediate fact. Rewrite `this` using `[sigP_alg, plusToB_alg, plusToB_alg]`. Conclude with `this.symm`. Rewrite using `[h1, TAct.t_act l C g, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `(ULaws.u_laws l C).2.2.2.1` to reduce the goal to its premises. Rewrite using `[C.ι_j, InvDR.j_alg, ← C.o_sec.z]`. Conclude with `(C.ι_u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (((C.χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]))).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_tB (C : Core l) (g : GQ l) :
     Per.σB g C.tB = C.qB (((C.χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * C.tB := by
@@ -51,7 +51,7 @@ theorem sigma_tB (C : Core l) (g : GQ l) :
   exact (C.ι_u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (((C.χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]))).symm
 
 /- English proof (translation)
-Use `plusToB_phi (algebraMap (Per.Acris l) (BcrisP l) C.t)` as an intermediate fact. Rewrite `this` using `[phiP_alg, plusToB_alg, plusToB_alg, TPhi.t_phi l C, map_mul, map_natCast]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_tB (C : Core l) : Per.φB l C.tB = ((l : ℕ) : Per.Bcris l) * C.tB := by
   have := plusToB_phi (algebraMap (Per.Acris l) (BcrisP l) C.t)
@@ -59,9 +59,9 @@ theorem phi_tB (C : Core l) : Per.φB l C.tB = ((l : ℕ) : Per.Bcris l) * C.tB 
   exact this.symm
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg C.ι h`. Rewrite `h2` using `[map_mul, map_one, C.ι_plusToB, Core.tB, C.ι_j, ← map_mul, ← map_one (algebraMap (Per.BdRp l) (Per.BdR l))]`. Establish `h3` using `congrArg (Per.θD l) ((BdRField.bdR_isField l).2.1 h2)`. Establish `h4 : Per.θD l (C.j C.t) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(core_t_unit_fil l C).2.1` as an intermediate fact. Rewrite `this` using `[← (thetaD_onto_ker l).2]`. Conclude with `this`. Rewrite `h3` using `[map_mul, h4, mul_zero, map_one]`. Conclude with `zero_ne_one h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_t_not_plus (C : Core l) (x : BcrisP l) : plusToB l x * C.tB ≠ 1 := by
   intro h
@@ -79,14 +79,14 @@ theorem inv_t_not_plus (C : Core l) (x : BcrisP l) : plusToB l x * C.tB ≠ 1 :=
 variable {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B, h.u]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qB_of_fits (h : Fits T C) (x : ℚ_[l]) : T.eB (algebraMap ℚ_[l] P.R.B x) = C.qB x := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B, h.u]
   rfl
 
 /- English proof (translation)
-Introduce `b hφ hF`. Take `⟨b, rfl⟩` from `T.eB.surjective b`. Take `⟨K⟩ : Nonempty (FinExt l)` from `⟨⟨⊥, inferInstance⟩⟩`. Take `⟨c, hc⟩` from `(P.PD K).fund b (by rw [P.PD_φ]; apply T.eB.injective; rw [T.frob, hφ]) (by rw [T.fil, P.PD_ι, h.ι]; exact hF)`. Conclude with `⟨c, by rw [← qB_of_fits h, hc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fund_of_fits (h : Fits T C) : C.Fund := by
   intro b hφ hF
@@ -98,9 +98,9 @@ theorem fund_of_fits (h : Fits T C) : C.Fund := by
   exact ⟨c, by rw [← qB_of_fits h, hc]⟩
 
 /- English proof (translation)
-Introduce `K b hb`. Take `⟨b, rfl⟩` from `T.eB.surjective b`. Take `⟨c, hc⟩` from `(P.PD K).invB b fun g => by`. Rewrite using `[P.PD_actB]`. Apply `T.eB.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[T.actB]`. Conclude with `hb g g.2`. Use `⟨⟨c, c.2.2⟩, c.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.u, ← hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem invB_of_fits (h : Fits T C) : C.InvB := by
   intro K b hb
@@ -112,7 +112,7 @@ theorem invB_of_fits (h : Fits T C) : C.InvB := by
   rfl
 
 /- English proof (translation)
-Take `⟨T⟩` from `h`. Conclude with `T.eD.toMulEquiv.isField (BdRField.bdR_isField l).2.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isField_of_isStd (h : GlobalTheory.Per.IsStd P AI) : IsField P.R.BdR := by
   obtain ⟨T⟩ := h

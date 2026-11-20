@@ -12,15 +12,13 @@ namespace GlobalTheory.LTChar
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨z, hz⟩ : ∃ z : Om l, dist y (z : ℂ_[l]) < ε / 2` from `UniformSpace.Completion.denseRange_coe.exists_dist_lt y (half_pos hε)`. Set `F` to `adjExt (z : Om l)`. Use `haveI := F.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH : IsOpen ((F.1.fixingSubgroup : Subgroup (GQ l)) : Set (GQ l))` using `IntermediateField.fixingSubgroup_isOpen F.1`. Establish `hU : IsOpen {g : GQ l | g₀⁻¹ * g ∈ F.1.fixingSubgroup}` using `hH.preimage (continuous_const.mul continuous_id)`. Establish `hg₀ : g₀ ∈ {g : GQ l | g₀⁻¹ * g ∈ F.1.fixingSubgroup}`. Simplify using `only [Set.mem_setOf_eq, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hU.mem_nhds hg₀] with g hg`. Establish `hgz : g z = g₀ z`. Establish `h` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg z (mem_adjExt z)`. Rewrite `h` using `[AlgEquiv.mul_apply]`. Establish `h'` using `congrArg g₀ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h'` using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Then use the resulting hypothesis. Establish `e : Formalism.Per.σC g y - Formalism.Per.σC g₀ y = Formalism.Per.σC g (y - z) + Formalism.Per.σC g₀ ((z : ℂ_[l]) - y)`. Rewrite using `[map_sub, map_sub, GlobalTheory.RingBasics.σC_coe, GlobalTheory.RingBasics.σC_coe, hgz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dist_eq_norm, e]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbit_cont (y : ℂ_[l]) : Continuous fun g : GQ l => Formalism.Per.σC g y := by
   refine continuous_iff_continuousAt.2 fun g₀ => ?_

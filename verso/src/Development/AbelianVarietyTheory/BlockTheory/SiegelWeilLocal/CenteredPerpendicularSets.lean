@@ -28,7 +28,7 @@ def InCen (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n
   InNil s J W Y ∧ ∀ u ∈ perpSet s J W, Y *ᵥ u = 0
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩ <;> simp [IsSkew, perpSet, Formalism.UG.hform]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inCen_zero (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n → A)) :
     InCen s J W 0 := by
@@ -62,7 +62,7 @@ def normAt (x : I.GA) (Y : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ)
   Real.sqrt (∑ v, Formalism.REAL.hs (uMat (x.1 v)⁻¹ * (I.P v)⁻¹ * Y v * I.P v * uMat (x.1 v)))
 
 /- English proof (translation)
-Simplify using `[normAt, Formalism.REAL.hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normAt_zero (x : I.GA) : normAt I x 0 = 0 := by
   simp [normAt, Formalism.REAL.hs]
@@ -71,7 +71,7 @@ def nextSize {a : ℕ} (τ : Fin a → ℝ) (i : Fin a) : ℝ :=
   if h : (i : ℕ) + 1 < a then τ ⟨(i : ℕ) + 1, h⟩ else 1 / 2
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [nextSize]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : nextSize ![(1 : ℝ) / 8, 1 / 4] 0 = 1 / 4 ∧ nextSize ![(1 : ℝ) / 8, 1 / 4] 1 = 1 / 2 := by
   constructor <;> simp [nextSize]

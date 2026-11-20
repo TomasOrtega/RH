@@ -32,18 +32,18 @@ namespace GlobalTheory.ArcData
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sab {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f t
   exact ⟨_, ⟨m⟩⟩
 
 /- English proof (translation)
-Take `⟨PP', cub, sym, adj, prim, m₂, hm₂⟩` from `sabPull Out.CubePf.cubePull x t`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₂`. Establish `cancel : ∀ (t' : SAB H (Sp K)) (p : Sp K ⟶ Y.X) (_ : p = y ≫ Y.j) (n : SABMap t' Y.t p), Nonempty (SABMap t' Y.oF.t y)`. Introduce `t' p hp n`. Substitute `hp` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n).choose⟩`. Take `⟨m₃⟩` from `cancel _ _ hy.symm n`. Establish `h₂ : LBIso PP'.L (t.PP.L.pull m₂.φ)` using `m₂.lin.imp fun _ h => h.1`. Rewrite `h₂` using `[hm₂]`. Establish `h₃ : LBIso PP'.L (Y.oF.t.PP.L.pull m₃.φ)` using `m₃.lin.imp fun _ h => h.1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL` using `LB.isLB_pull t.PP.isLB (pullback.fst t.G.hom x)`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 Y.oF.proper, amplePt _ _ y _ _ m₃.φ m₃.cart _ _ Y.oF.t.PP.isLB hL (LBIso.trans hL PP'.isLB (LB.isLB_pull Y.oF.t.PP.isLB _) h₂.symm h₃) Y.oF.ample Y.oF.ktriv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem polAt_of_point {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O]
     {β : O →+* c.F} (Y : Model Xo c β) {S : Scheme.{0}} {χ : S ⟶ Y.X} {t : SAB H S} (m : SABMap t Y.t χ)
@@ -65,7 +65,7 @@ theorem polAt_of_point {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff 
       (LBIso.trans hL PP'.isLB (LB.isLB_pull Y.oF.t.PP.isLB _) h₂.symm h₃) Y.oF.ample Y.oF.ktriv⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `h`. Use `letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal V)`. Conclude with `⟨⟨⟨inferInstance, inferInstance, inferInstance, h₂⟩, h₂, h₃, inferInstance, inferInstance⟩, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem admissible_maximal_ideal_of_complete_dvr_char_zero {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (h : CDvr V) :
     admitted V (IsLocalRing.maximalIdeal V) ∧ IsPrincipalIdealRing (V ⧸ IsLocalRing.maximalIdeal V) := by
@@ -74,7 +74,7 @@ theorem admissible_maximal_ideal_of_complete_dvr_char_zero {V : Type} [CommRing 
   exact ⟨⟨⟨inferInstance, inferInstance, inferInstance, h₂⟩, h₂, h₃, inferInstance, inferInstance⟩, inferInstance⟩
 
 /- English proof (translation)
-Use `⟨inferInstance, ?_, algebraRat.charZero _⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdvr_powerSeries (K : Type) [Field K] [CharZero K] : CDvr (PowerSeries K) := by
   refine ⟨inferInstance, ?_, algebraRat.charZero _⟩
@@ -82,9 +82,9 @@ theorem cdvr_powerSeries (K : Type) [Field K] [CharZero K] : CDvr (PowerSeries K
   infer_instance
 
 /- English proof (translation)
-Establish `hk : Ideal.span {(PowerSeries.X : PowerSeries O)} = RingHom.ker (PowerSeries.constantCoeff (R` using `O)) := by`. Use extensionality with `f`. Rewrite using `[Ideal.mem_span_singleton, PowerSeries.X_dvd_iff, RingHom.mem_ker]`. Establish `e : (PowerSeries O ⧸ Ideal.span {(PowerSeries.X : PowerSeries O)}) ≃+* O` using `(Ideal.quotEquivOfEq hk).trans (RingHom.quotientKerEquivOfSurjective PowerSeries.constantCoeff_surj)`. Use `⟨⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, ?_, charZero_of_injective_ringHom (PowerSeries.C_injective (R := O)), hk ▸ RingHom.ker_isPrime _, IsIntegrallyClosed.of_equiv e.symm⟩, IsPrincipalIdealRing.of_surjective e.symm.toRingHom e.symm.surjective⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem powerSeries_dvr_admissible_X_ideal (O : Type) [CommRing O] [IsDomain O] [CharZero O] [IsDiscreteValuationRing O]
     (h : IsAdicComplete (IsLocalRing.maximalIdeal O) O) :
@@ -101,13 +101,13 @@ theorem powerSeries_dvr_admissible_X_ideal (O : Type) [CommRing O] [IsDomain O] 
   infer_instance
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((algebraMap V (FractionRing V)).comp φ)` using `(IsFractionRing.injective V _).comp hφ`. Set `gam : FractionRing (PowerSeries O') →+* FractionRing V` to `IsFractionRing.lift hinj`. Establish `hg : ∀ r, gam (algebraMap _ _ r) = algebraMap V _ (φ r)` using `fun r => IsFractionRing.lift_algebraMap hinj r`. Establish `hsq : spMap gam ≫ y ≫ Y.j = jK V ≫ spMap φ ≫ χ`. Rewrite using `[← hχ, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `r`. Conclude with `hg r`. Take `⟨W, _, _, _, io, hW, hio, hfin, hA⟩` from `(hT.2 V hV φ gam hg _ hsq).2 hX`. Establish `hA' : Y.HasArcData a (IsLocalRing.maximalIdeal W) (io.comp (φ.comp (PowerSeries.C (R` using `O')))) (io (φ PowerSeries.X)) (spMap io ≫ spMap φ ≫ χ) := hA`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ⟨m⟩⟩` from `exists_sab (spMap φ ≫ χ) Y.t`. Establish `hsq' : (spMap gam ≫ y) ≫ Y.j = jK V ≫ spMap φ ≫ χ` using `(Category.assoc _ _ _).trans hsq`. Establish `hS` using `GlobalTheory.T.closedFibre_split_of_arcData_finite_extension h₁ h₂ h₃ h₄ h₅ h₆ E H D l Xo c W₀ Y O' b a V hV _ _ hC hX _ _ hsq' t m W hW io hio hfin hA'`. Take `⟨hadm, hpid⟩` from `admissible_maximal_ideal_of_complete_dvr_char_zero hV`. Take `⟨P, hPt⟩` from `GlobalTheory.LN.UnifPrime.exists_pelUnif h₁ h₂ h₃ h₄ h₅ hE hU hP E H V _ hadm hpid t (polAt_of_point Y m _ _ hsq') hS (GlobalTheory.ThetaLocal.thetaNZ_of_pushInvertible E H _ _ hp V _ t m)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hV.2.2` as an intermediate fact. Establish `hloc : IsLocalHom io` using `hfin.to_isIntegral.isLocalHom hio`. Conclude with `GlobalTheory.T.arcData_descends_from_completeDVR h₁ h₂ h₃ h₄ h₅ h₆ hH E H D l Xo c W₀ Y O' b a V _ _ _ hadm.1 (IsLocalRing.maximalIdeal.isMaximal V).ne_top (hφ.comp PowerSeries.C_injective) _ _ hsq' t m P hPt W hW io hio (IsLocalRing.map_maximalIdeal_le io) (fun h => hX (isUnit_o …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasArcData_trait (h₁ : Laws) (h₂ : Laws2) (h₃ : Laws3) (h₄ : Laws4) (h₅ : Laws5) (h₆ : Laws6) (hE : Ega)
     (hU : USt) (hP : PelSt) (hH : HomExtSt) {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}
@@ -142,17 +142,15 @@ theorem hasArcData_trait (h₁ : Laws) (h₂ : Laws2) (h₃ : Laws3) (h₄ : Law
     (IsLocalRing.map_maximalIdeal_le io) (fun h => hX (isUnit_of_map_unit io _ h)) (fun x hx => (hC x hx).map io) hA'
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄ h₅ h₆ hE hU hP hH E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a ϖ hb hp y χ hχ hT`. Break down `hb with ⟨hf, -⟩ | ⟨hd, hϖ, hc⟩` into its components or cases. Use `letI := hf.toField`. Establish `h` using `hasArcData_trait h₁ h₂ h₃ h₄ h₅ h₆ hE hU hP hH Y a hp y χ hχ hT (cdvr_powerSeries O') (RingHom.id _) Function.injective_id PowerSeries.X_prime.not_unit (fun x hx => (IsUnit.mk0 x hx).map (PowerSeries.C (R := O')))`. Establish `e : spMap (RingHom.id (PowerSeries O')) = 𝟙 _` using `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e, Category.id_comp, PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `h`. Establish `hi` using `IsFractionRing.injective O' (FractionRing O')`. Establish `hX : ¬ IsUnit (PowerSeries.map (algebraMap O' (FractionRing O')) PowerSeries.X)`. Rewrite using `[PowerSeries.map_X]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PowerSeries.X_prime.not_unit`. Establish `hC : ∀ x, x ≠ 0 → IsUnit (PowerSeries.map (algebraMap O' (FractionRing O')) (PowerSeries.C x))` using `fun x hx => by`. Rewrite using `[PowerSeries.map_C]`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero_iff _ hi).2 hx)).map _`. Establish `hV` using `cdvr_powerSeries (FractionRing O')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hasArcData_trait h₁ h₂ h₃ h₄ h₅ h₆ hE hU hP hH Y a hp y χ hχ hT hV _ (PowerSeries.map_injective _ hi) hX hC`. Take `⟨t, ⟨m⟩⟩` from `exists_sab χ Y.t`. Establish `hS` using `GlobalTheory.splitOver_of_hasArcData h₁ h₂ h₃ hH E H D l Xo c W₀ Y O' b a hd χ t m (by`. Establish `e : (PowerSeries.map (algebraMap O' (FractionRing O'))).comp (PowerSeries.C (R` using `O')) = (PowerSeries.C (R := FractionRing O')).comp (algebraMap O' _) := RingHom.ext fun x => PowerSeries.map_C (algebraMap O' (FractionRing O')) x`. Rewrite `h` using `[e, PowerSeries.map_X]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h)`. Take `⟨hadm, hpid⟩` from `powerSeries_dvr_admissible_X_ideal O' (hϖ.maximalIdeal_eq ▸ hc)`. Take `⟨P, hPt⟩` from `GlobalTheory.LN.UnifPrime.exists_pelUnif h₁ h₂ h₃ h₄ h₅ hE hU hP E H _ _ hadm hpid t (polAt_of_point Y m _ _ hχ.symm) hS (GlobalTheory.ThetaLocal.thetaNZ_of_pushInvertible E H _ _ hp _ _ t m)`. Use `hadm.2.2.1` as an intermediate fact. Use `GlobalTheory.T.arcData_descends_from_completeDVR h₁ h₂ h₃ h₄ h₅ h₆ hH E H D l Xo c W₀ Y O' b a _ _ _ _ hadm.1 hadm.2.2.2.1.ne_top PowerSeries.C_injective _ _ hχ.symm t m P hPt _ hV _ (PowerSeries.map_injective _ hi) ?_ hX hC h` and prove the remaining obligations.
-
-Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Conclude with `hX`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasArcData_of_traitData : Laws → Laws2 → Laws3 → Laws4 → Laws5 → Laws6 → Ega → USt → PelSt → HomExtSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b) (ϖ : O'), ArcBase O' ϖ → PushInvertible Y.t.G Y.t.PP.L → ∀ (y : Sp (FractionRing (PowerSeries O')) ⟶ Xo.XF c) (χ : Sp (PowerSeries O') ⟶ Y.X), jK _ ≫ χ = y ≫ Y.j → TraitData Y a (RingHom.id _) y → Y.HasArcData a (Ideal.span {(PowerSeries.X : PowerSeries O')}) (PowerSeries.C (R := O')) PowerSeries.X χ := by
   intro h₁ h₂ h₃ h₄ h₅ h₆ hE hU hP hH E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a ϖ hb hp y χ hχ hT

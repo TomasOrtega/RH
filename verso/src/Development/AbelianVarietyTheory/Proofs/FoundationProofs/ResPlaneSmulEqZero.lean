@@ -21,51 +21,51 @@ def redL (c : Coef l) (x : Qbar l) : ResL c :=
   if h : x ∈ c.O then Ideal.Quotient.mk _ ⟨x, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[redL, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem redL_of_mem (c : Coef l) {x : Qbar l} (h : x ∈ c.O) :
     redL c x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : c.O)}) ⟨x, h⟩ := by
   simp [redL, h]
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem redL_add (c : Coef l) {x y : Qbar l} (hx : x ∈ c.O) (hy : y ∈ c.O) :
     redL c (x + y) = redL c x + redL c y := by
   rw [redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.add_mem hx hy), ← map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.sub_mem hx hy), ← map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem redL_sub (c : Coef l) {x y : Qbar l} (hx : x ∈ c.O) (hy : y ∈ c.O) :
     redL c (x - y) = redL c x - redL c y := by
   rw [redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.sub_mem hx hy), ← map_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem redL_mul (c : Coef l) {x y : Qbar l} (hx : x ∈ c.O) (hy : y ∈ c.O) :
     redL c (x * y) = redL c x * redL c y := by
   rw [redL_of_mem c hx, redL_of_mem c hy, redL_of_mem c (c.O.mul_mem hx hy), ← map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c c.O.zero_mem]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redL_zero (c : Coef l) : redL c 0 = 0 := by
   rw [redL_of_mem c c.O.zero_mem]; exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c c.O.one_mem]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redL_one (c : Coef l) : redL c 1 = 1 := by
   rw [redL_of_mem c c.O.one_mem]; exact map_one _
 
 /- English proof (translation)
-Rewrite using `[redL_of_mem c h, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho⟩`. Use `⟨o, o.2, ?_⟩` and prove the remaining obligations. Establish `: ((o * ((l : ℕ) : c.O) : c.O) : Qbar l) = x` using `congrArg Subtype.val ho`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨o, ho, rfl⟩`. Use `⟨⟨o, ho⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem redL_eq_zero_iff (c : Coef l) {x : Qbar l} (h : x ∈ c.O) :
     redL c x = 0 ↔ ∃ o ∈ c.O, x = (l : Qbar l) * o := by
@@ -86,14 +86,14 @@ instance (c : Coef l) : TopologicalSpace (ResPlane c) := ⊥
 instance (c : Coef l) : DiscreteTopology (ResPlane c) := ⟨rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : c.O)})), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resL_natCast_l (c : Coef l) : ((l : ℕ) : ResL c) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : c.O)})), Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show (l ^ 1) • (m i : ResL c) = 0`. Rewrite using `[nsmul_eq_mul, pow_one, resL_natCast_l, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resPlane_smul_eq_zero (c : Coef l) (m : ResPlane c) : (l ^ 1) • m = 0 := by
   funext i
@@ -116,7 +116,7 @@ def resMV (c : Coef l) (B : Matrix (Fin 2) (Fin 2) (ResL c)) : ResPlane c →+ R
   map_add' m m' := Matrix.mulVec_add B m m'
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [wRed, mat, map_one, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `redL_one c`. Conclude with `redL_zero c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wRed_one (c : Coef l) (W : R2 Ω l) : wRed c W 1 = 1 := by
   ext i j
@@ -126,7 +126,7 @@ theorem wRed_one (c : Coef l) (W : R2 Ω l) : wRed c W 1 = 1 := by
   · exact redL_zero c
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e : mat W (s * t) i j = mat W s i 0 * mat W t 0 j + mat W s i 1 * mat W t 1 j`. Simplify using `only [mat, map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [wRed, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[e, redL_add c (c.O.mul_mem (hO _ _ _) (hO _ _ _)) (c.O.mul_mem (hO _ _ _) (hO _ _ _)), redL_mul c (hO _ _ _) (hO _ _ _), redL_mul c (hO _ _ _) (hO _ _ _)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wRed_mul (c : Coef l) (W : R2 Ω l) (hO : ∀ s i j, mat W s i j ∈ c.O) (s t : G ℚ Ω) :
     wRed c W (s * t) = wRed c W s * wRed c W t := by
@@ -156,7 +156,7 @@ theorem resAct_apply (c : Coef l) (W : R2 Ω l) (hO : ∀ s i j, mat W s i j ∈
     resAct c W hO s m = (wRed c W s *ᵥ (m : Fin 2 → ResL c) : Fin 2 → ResL c) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `show wRed c W a *ᵥ (m : Fin 2 → ResL c) = m`. Establish `: wRed c W a = wRed c W 1` using `by unfold wRed mat; rw [ha, map_one]`. Rewrite using `[this, wRed_one]`. Conclude with `Matrix.one_mulVec _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resAct_eq_one (c : Coef l) (W : R2 Ω l) (hO : ∀ s i j, mat W s i j ∈ c.O) {a : G ℚ Ω} (ha : W a = 1) :
     resAct c W hO a = 1 := by
@@ -184,11 +184,11 @@ def resCoc (c : Coef l) (W : R2 Ω l) (z : G ℚ Ω → Fin 2 → Qbar l) (y : F
   fun s i => redL c ((l : Qbar l) * z s i - (mat W s *ᵥ y - y) i)
 
 /- English proof (translation)
-Take `⟨-, h2, -, h4, -, -⟩` from `hz`. Use function extensionality and compare the values at `i`. Establish `hWa : mat W (s * a) = mat W s` using `by simp only [mat, map_mul, hN a ha, mul_one]`. Establish `hza : (mat W s *ᵥ z a) i ∈ c.O`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `c.O.add_mem (c.O.mul_mem (hO _ _ _) (h4 a ha 0)) (c.O.mul_mem (hO _ _ _) (h4 a ha 1))`. Establish `hd : z (s * a) i - z s i ∈ c.O`. Use `c.O.add_mem (h2 s a i) hza` as an intermediate fact. Simplify using `using this`. Establish `e : (l : Qbar l) * z (s * a) i - (mat W (s * a) *ᵥ y - y) i = ((l : Qbar l) * z s i - (mat W s *ᵥ y - y) i) + (l : Qbar l) * (z (s * a) i - z s i)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWa]`. Expand and normalize the polynomial expressions, which then agree. Use `show redL c _ = redL c _`. Rewrite using `[e, redL_add c (hzy s i) (c.O.mul_mem (c.O.natCast_mem l) hd), (redL_eq_zero_iff c (c.O.mul_mem (c.O.natCast_mem l) hd)).2 ⟨_, hd, rfl⟩, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCoc_mul_ker (c : Coef l) (W : R2 Ω l) (S : Finset Pl) (A : ValuationSubring Ω)
     (hO : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, W a = 1)
@@ -211,7 +211,7 @@ theorem resCoc_mul_ker (c : Coef l) (W : R2 Ω l) (S : Finset Pl) (A : Valuation
   rw [e, redL_add c (hzy s i) (c.O.mul_mem (c.O.natCast_mem l) hd), (redL_eq_zero_iff c (c.O.mul_mem (c.O.natCast_mem l) hd)).2 ⟨_, hd, rfl⟩, add_zero]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (NS Ω (S : Set Pl)) s`. Use `show resCoc c W z y ((toGS Ω (S : Set Pl) s).out) = _`. Establish `e : (toGS Ω (S : Set Pl) s).out = s * h` using `hh`. Rewrite using `[e]`. Conclude with `resCoc_mul_ker c W S A hO hN hz y hzy s h ((QuotientGroup.eq_one_iff (h : G ℚ Ω)).2 h.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descS_resCoc_toGS (c : Coef l) (W : R2 Ω l) (S : Finset Pl) (A : ValuationSubring Ω)
     (hO : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, W a = 1)

@@ -26,13 +26,13 @@ private def latt {O K ι : Type} [CommRing O] [Field K] (τ : ι → (O →+* K)
     simp [pt]
 
 /- English proof (translation)
-Introduce `hS hT hO O K ι _ _ _ _ τ hτ N hN k a Q hQ`. Establish `hspan : Submodule.span K ((latt τ N k : AddSubgroup (ι × Fin k → K)) : Set (ι × Fin k → K)) = ⊤` using `hT O K ι τ hτ N hN k`. Establish `hd` using `hS K (ι × Fin k) (latt τ N k) (pt τ a) hspan`. Establish `hd2` using `hO K (ι × Fin k) _ hd Q hQ`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hd2` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxQ⟩`. Take `⟨β, hβ⟩ : ∃ β : Fin k → O, x - pt τ a = pt τ (fun s => N * β s)` from `hx`. Establish `hxe : x = pt τ (fun s => a s + N * β s)`. Rewrite using `[sub_eq_iff_eq_add.mp hβ]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Simplify using `[pt, add_comm]`. Use `hP x ⟨fun s => a s + N * β s, fun s => ?_, ?_, hxe⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← hxe]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxQ`.
+A detailed English derivation is pending.
 -/
 theorem denseCoset_of : DenseSub → SpanTop → DenseOff → DenseCoset := by
   intro hS hT hO O K ι _ _ _ _ τ hτ N hN k a Q hQ

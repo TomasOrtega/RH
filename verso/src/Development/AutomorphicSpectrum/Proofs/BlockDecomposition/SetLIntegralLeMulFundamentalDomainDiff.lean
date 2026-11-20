@@ -5,15 +5,15 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Unfolding
 
 /- English proof (translation)
-Establish `hmeas : ∀ γ : Γ, Measurable (fun x : G => S.indicator h (γ • x))` using `fun γ => (hh.indicator hS).comp (measurable_const_smul γ)`. Establish `h1 : ∫⁻ x in S, h x ∂μ = ∑' γ : Γ, ∫⁻ x in F, S.indicator h (γ • x) ∂μ`. Rewrite using `[← lintegral_indicator hS]`. Conclude with `hF.lintegral_eq_tsum'' _`. Establish `hpt : ∀ x, ∑' γ : Γ, S.indicator h (γ • x) ≤ N * Tᶜ.indicator h x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ T`. Establish `hz : ∀ γ : Γ, S.indicator h (γ • x) = 0` using `fun γ => by`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hmem`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hST γ γ.2 x (by simpa [Subgroup.smul_def] using hmem) hx`. Simplify using `[hz]`. Establish `hrew : ∀ γ : Γ, S.indicator h (γ • x) = ({γ : Γ | (γ : G) * x ∈ S}).indicator (fun _ => h x) γ` using `fun γ => by`. Distinguish the cases in `hg : (γ : G) * x ∈ S`. Rewrite using `[Set.indicator_of_mem (s := {γ : Γ | (γ : G) * x ∈ S}) (by exact hg), Subgroup.smul_def, smul_eq_mul, Set.indicator_of_mem hg, hinv γ γ.2 x]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (s := {γ : Γ | (γ : G) * x ∈ S}) (by exact hg), Subgroup.smul_def, smul_eq_mul, Set.indicator_of_notMem hg]`. Repeatedly rewrite using `[hrew]`. Rewrite using `[← tsum_subtype, ENNReal.tsum_set_const, Set.indicator_of_mem (show x ∈ Tᶜ from hx)]`. Use `gcongr`. Establish `hc` using `ENat.toENNReal_le.mpr (hN x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hc`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_indicator hT.compl, Set.inter_comm, Set.diff_eq]`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_fundamentalDomain_diff {G : Type} [Group G] [MeasurableSpace G]
     [MeasurableMul G] (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]

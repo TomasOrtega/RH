@@ -21,9 +21,7 @@ theorem twistRep_apply {H V : Type} [Group H] [AddCommGroup V] [Module ℂ V] (�
     (ν : H →* ℂˣ) (x : H) : twistRep ρ ν x = ((ν x : ℂˣ) : ℂ) • ρ x := rfl
 
 /- English proof (translation)
-Set `f : Subrepresentation (twistRep ρ ν) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Use `S.toSubmodule.smul_mem (((ν g)⁻¹ : ℂˣ) : ℂ) (S.apply_mem_toSubmodule g hv)` as an intermediate fact. Simplify `this⟩` using `[twistRep_apply, smul_smul]`. Use `invFun := fun S => ⟨S.toSubmodule, fun g v hv => S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule g hv)⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `f.isSimpleOrder_iff.2 h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIrreducible_twistRep {H V : Type} [Group H] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ H V} (h : ρ.IsIrreducible) (ν : H →* ℂˣ) :
@@ -40,7 +38,7 @@ theorem isIrreducible_twistRep {H V : Type} [Group H] [AddCommGroup V] [Module �
   exact f.isSimpleOrder_iff.2 h
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, hc⟩` from `hχ`. Use `⟨n, twistRep ρ ν, isIrreducible_twistRep hρ ν, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [hc, Representation.character, twistRep_apply, map_smul, smul_eq_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isIrrChar_mul_char {H : Type} [Group H] {χ : H → ℂ} (hχ : IsIrrChar ℂ ℂ χ) (ν : H →* ℂˣ) :
     IsIrrChar ℂ ℂ (fun x => χ x * ((ν x : ℂˣ) : ℂ)) := by
@@ -55,21 +53,19 @@ end GlobalTheory.CliffTwo
 open GlobalTheory.CliffTwo in
 
 /- English proof (translation)
-Introduce `G Γ _ _ _ _ φ s hp hs χ χ' hχ hχ'`. Use `haveI : Finite (G ⋊[φ] Γ) := Finite.of_equiv _ (SemidirectProduct.equivProd (φ := φ)).symm`. Use `haveI : Fact (Nat.card Γ).Prime := ⟨hp⟩`. Establish `hgen : ∀ t : Γ, t ∈ Subgroup.zpowers s`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[zpowers_eq_top_of_prime_card rfl hs]`. Discharge the goal by the elementary cases of `trivial`. Establish `hζ` using `Complex.isPrimitiveRoot_exp (Nat.card Γ) hp.ne_zero`. Take `⟨η, hη1, -, hsum⟩` from `GlobalTheory.Shin.CosetFourier.fourier_coset_sums G Γ φ s hgen _ hζ`. Establish `hS` using `(hsum χ χ').2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Distinguish the cases in `h0 : ∑ᶠ g, χ (inl g * inr s) * star (χ' (inl g * inr s)) = 0`. Conclude with `Or.inl h0`. Use `right`. Establish `hne : ∑ a ∈ Finset.range (Nat.card Γ), Complex.exp (2 * ↑Real.pi * Complex.I / ↑(Nat.card Γ)) ^ a * ∑ᶠ x, χ x * star (χ' x * (η x : ℂ) ^ a) ≠ 0`. Rewrite using `[← hS]; exact mul_ne_zero (by exact_mod_cast hp.ne_zero) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Establish `hT : ∑ᶠ x, χ x * star (χ' x * (η x : ℂ) ^ a) ≠ 0` using `right_ne_zero_of_mul ha`. Establish `hpow : ∀ x, ((η ^ a) x : ℂ) = (η x : ℂ) ^ a` using `fun x => by simp`. Establish `hψ : IsIrrChar ℂ ℂ (fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ))` using `isIrrChar_mul_char hχ' (η ^ a)`. Use `⟨η ^ a, fun g => by simp [hη1], fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Establish `hne' : χ ≠ fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)` using `fun e => hx (congrFun e x)`. Apply the tactic sequence `have hpair : pair χ (fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)) = 0 := by first | exact GlobalTheory.BI.pair_eq_zero_of_isIrrChar_ne (G ⋊[φ] Γ) χ _ hχ hψ hne' | exact GlobalTheory.BI.pair_eq_zero_of_isIrrChar_ne χ _ hχ hψ hne' | exact GlobalTheory.BI.pair_eq_zero_of_isIrrChar_ne hχ …`. Establish `hvirt : (fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)) ∈ Virt ℂ ℂ (G ⋊[φ] Γ)`. Take `⟨n, ρ, -, hc⟩` from `hψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.subset_closure ⟨n, ρ, hc⟩`. Apply the tactic sequence `have hstar : ∀ g, star ((fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)) g) = (fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)) g⁻¹ := by first | exact GlobalTheory.CuspGL.star_virt_eq_inv (G ⋊[φ] Γ) _ hvirt | exact GlobalTheory.CuspGL.star_virt_eq_inv _ hvirt | exact GlobalTheory.CuspGL.star_vir …`. Apply `hT` to reduce the goal to its premises. Establish `hcard : (Nat.card (G ⋊[φ] Γ) : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `: ∑ᶠ x, χ x * star (χ' x * (η x : ℂ) ^ a) = ∑ᶠ x, χ x * (fun x => χ' x * (((η ^ a) x : ℂˣ) : ℂ)) x⁻¹`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `x`. Establish `hx` using `hstar x`. Simplify using `only [hpow] at hx ⊢`. Rewrite using `[← hx]`.
-
-Rewrite using `[this]`. Unfold `pair at hpair`. Conclude with `(mul_eq_zero.1 hpair).resolve_left (inv_ne_zero hcard)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Shin.coset_pair_eq_zero_or_twist :
     ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ] (φ : Γ →* MulAut G) (s : Γ),

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker f).subtype f.rangeRestrict (Submodule.subtype_injective _) f.surjective_rangeRestrict (LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))]`. Conclude with `add_le_add (Module.length_le_of_injective g hg) (Module.length_le_of_injective (LinearMap.range f).subtype (Submodule.subtype_injective _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_le_of_ker_le {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] {C : Type} [AddCommGroup C] [Module R C] (f : A →ₗ[R] B)
@@ -16,29 +16,27 @@ private theorem length_le_of_ker_le {R A B : Type} [CommRing R] [AddCommGroup A]
     (Module.length_le_of_injective (LinearMap.range f).subtype (Submodule.subtype_injective _))
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ U' U h 𝒟 ι _ D hD hcov`. Use `set X := (LocSel ρ U' 𝒟).comap (resU ρ h) with hX`. Establish `key0 : ∀ x ∈ X, ∀ D' ∈ 𝒟, resU ρ (le_trans inf_le_left h : U' ⊓ D' ≤ U) x = 0`. Introduce `x hx D' hD'`. Establish `e` using `(mem_locSel.mp (Submodule.mem_comap.mp hx)) D' hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[resU_resU]`. Conclude with `e`. Establish `key : ∀ x ∈ X, ∀ D' ∈ 𝒟, resU ρ (inf_le_inf_right D' h) (resU ρ (inf_le_left : U ⊓ D' ≤ U) x) = 0`. Introduce `x hx D' hD'`. Rewrite using `[resU_resU]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `key0 x hx D' hD'`. Set `f : X →ₗ[R] (∀ i, LinearMap.ker (resU ρ (inf_le_inf_right (D i) h)))` to `LinearMap.pi fun i => LinearMap.codRestrict _ ((resU ρ (inf_le_left : U ⊓ D i ≤ U)).comp X.subtype) (fun x => LinearMap.mem_ker.mpr (key x.1 x.2 (D i) (hD i)))`. Establish `hmem : ∀ y ∈ LinearMap.ker f, ((y : H1U ρ U)) ∈ LocSel ρ U 𝒟`. Introduce `y hy`. Establish `hy' : ∀ i, resU ρ (inf_le_left : U ⊓ D i ≤ U) (y : H1U ρ U) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Simplify `congrArg Subtype.val (congrFun (LinearMap.mem_ker.mp hy) i)` using `[f]`. Rewrite using `[mem_locSel]`. Introduce `D' hD'`. Break down `hcov D' hD' with hle | ⟨i, u, hu, hconj⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e` using `resU_resU ρ (le_inf hle inf_le_right : U ⊓ D' ≤ U' ⊓ D') (le_trans inf_le_left h) (y : H1U ρ U)`. Rewrite `e` using `[key0 _ y.2 D' hD', map_zero]`. Conclude with `e.symm`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (y : H1U ρ U)`. Establish `h0` using `hy' i`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0`, the goal using `[← hz]`. Rewrite `h0`, the goal using `[resU_mk_eq_zero]`. Take `⟨m, hm⟩` from `h0`. Use `⟨ρ u m - z.1 ⟨u, hu⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `hvU : (v : G) ∈ U` using `(Subgroup.mem_inf.mp v.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwD : u⁻¹ * (v : G) * u ∈ D i` using `hconj v v.2`. Establish `hwU : u⁻¹ * (v : G) * u ∈ U` using `U.mul_mem (U.mul_mem (U.inv_mem hu) hvU) hu`. Establish `e1 : z.1 ⟨u⁻¹ * (v : G) * u, hwU⟩ = ρ (u⁻¹ * (v : G) * u) m - m` using `hm ⟨u⁻¹ * (v : G) * u, Subgroup.mem_inf.mpr ⟨hwU, hwD⟩⟩`. Establish `hc` using `z.2.2`. Establish `c1` using `hc ⟨v, hvU⟩ ⟨u, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `c2` using `hc ⟨u, hu⟩ ⟨u⁻¹ * (v : G) * u, hwU⟩`. Establish `eq : (⟨v, hvU⟩ * ⟨u, hu⟩ : U) = ⟨u, hu⟩ * ⟨u⁻¹ * (v : G) * u, hwU⟩` using `Subtype.ext (by simp [mul_assoc])`. Rewrite `c1` using `[eq, c2, e1]`. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype] at c1`. Establish `hr : ρ u (ρ (u⁻¹ * (v : G) * u) m) = ρ v (ρ u m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`. Rewrite `c1` using `[map_sub, hr]`. Use `show z.1 ⟨v, hvU⟩ = _`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_sub_of_add_eq c1.symm]`. Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Set `g : LinearMap.ker f →ₗ[R] LocSel ρ U 𝒟` to `LinearMap.codRestrict _ (X.subtype.comp (LinearMap.ker f).subtype) (fun y => hmem y.1 y.2)`. Establish `hg : Function.Injective g`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg Subtype.val hab`. Conclude with `e`.
-
-Establish `e` using `length_le_of_ker_le f g hg`. Rewrite `e` using `[Module.length_pi_of_fintype]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selLocal :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

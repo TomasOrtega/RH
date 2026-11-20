@@ -25,7 +25,7 @@ def PJ (j : ℕ) : Prop :=
 
 include hB hs in
 /- English proof (translation)
-Establish `h1 : ∀ᶠ z in 𝓝[≠] s₀, z ∈ B` using `nhdsWithin_le_nhds (hB.mem_nhds hs)`. Establish `h2 : ∀ᶠ z in 𝓝[≠] s₀, z ≠ s₀` using `self_mem_nhdsWithin`. Conclude with `h1.and h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_mem_ne : ∀ᶠ z in 𝓝[≠] s₀, z ∈ B ∧ z ≠ s₀ := by
   have h1 : ∀ᶠ z in 𝓝[≠] s₀, z ∈ B := nhdsWithin_le_nhds (hB.mem_nhds hs)
@@ -33,7 +33,7 @@ theorem eventually_mem_ne : ∀ᶠ z in 𝓝[≠] s₀, z ∈ B ∧ z ≠ s₀ :
   exact h1.and h2
 
 /- English proof (translation)
-Establish `h` using `hlin 1 0 0 continuous_zero continuous_zero (fun _ _ _ => rfl) (fun _ _ _ => rfl)`. Rewrite `h` using `[one_smul, add_zero, one_mul]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lam_zero' {l : (G → ℂ) → ℂ}
     (hlin : ∀ (a : ℂ) (F F' : G → ℂ), Continuous F → Continuous F' → (∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) →
@@ -43,7 +43,7 @@ theorem lam_zero' {l : (G → ℂ) → ℂ}
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `hlin a F 0 hF continuous_zero hi (fun _ _ _ => rfl)`. Rewrite `h` using `[lam_zero' Γ hlin, add_zero, add_zero]`. Rewrite using `[← h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem lam_smul' {l : (G → ℂ) → ℂ}
     (hlin : ∀ (a : ℂ) (F F' : G → ℂ), Continuous F → Continuous F' → (∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) →
@@ -56,11 +56,11 @@ theorem lam_smul' {l : (G → ℂ) → ℂ}
 
 include hB hs in
 /- English proof (translation)
-Take `⟨H, hHc, hH0, hHe⟩` from `hloc`. Establish `hev : ∀ᶠ z in 𝓝[≠] s₀, l (ehat E s₀ j z) = (z - s₀) ^ (k₀ - j) * d1 z * H z` using `by filter_upwards [hHe, eventually_mem_ne s₀ B hB hs] with z hz hzB`. Establish `hcg : Continuous (ehat E s₀ j z)` using `hP.1.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hzB.1, trivial⟩)`. Establish `hig : ∀ γ ∈ Γ, ∀ g, ehat E s₀ j z (γ * g) = ehat E s₀ j z g` using `hP.2.2.2.1 z hzB.1`. Establish `hEz : E z = fun g => (z - s₀) ^ j * ehat E s₀ j z g` using `funext (hP.2.2.1 z hzB.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[hEz, lam_smul' Γ hlin _ _ hcg hig]`. Establish `hne : (z - s₀) ^ j ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hzB.2)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[hz, ← mul_assoc, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hj]`. Establish `h1 : Tendsto (fun z => l (ehat E s₀ j z)) (𝓝[≠] s₀) (𝓝 (l (ehat E s₀ j s₀)))` using `hcont.tendsto.mono_left nhdsWithin_le_nhds`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hca : ContinuousAt (fun z => (z - s₀) ^ (k₀ - j) * d1 z * H z) s₀` using `(((continuousAt_id.sub continuousAt_const).pow _).mul hd1).mul hHc`. Establish `h2` using `hca.tendsto.mono_left (nhdsWithin_le_nhds (s := {s₀}ᶜ))`. Simplify using `only [sub_self] at h2`. Rewrite using `[← hH0]`. Conclude with `tendsto_nhds_unique (h1.congr' hev) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_limit {j : ℕ} (hj : j ≤ k₀) (hP : PJ Γ T s₀ B E cz j) (l : (G → ℂ) → ℂ)
     (hlin : ∀ (a : ℂ) (F F' : G → ℂ), Continuous F → Continuous F' → (∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) →
@@ -90,9 +90,9 @@ theorem lam_limit {j : ℕ} (hj : j ≤ k₀) (hP : PJ Γ T s₀ B E cz j) (l : 
 
 include hB hs in
 /- English proof (translation)
-Establish `hFc : Continuous (ehat E s₀ j s₀)` using `hP.1.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hs, trivial⟩)`. Establish `hFi` using `hP.2.2.2.1 s₀ hs`. Establish `hl : ∀ l ∈ Λ, l (ehat E s₀ j s₀) = 0`. Introduce `l hl`. Rewrite using `[lam_limit Γ T I1 s₀ B hB hs E cz k₀ d1 hj.le hP l (hΛlin l hl) (hΛcont l hl _ hP.1 hP.2.1 hP.2.2.2.1) hd1 (hΛloc l hl), zero_pow (Nat.sub_ne_zero_of_lt hj), zero_mul, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `h1` using `hTsing _ hFc hFi hl g`. Establish `h2` using `hP.2.2.2.2 s₀ hs g`. Rewrite `h2` using `[h1, sub_self]`. Conclude with `(mul_eq_zero.mp h2.symm).resolve_left hcz0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish {j : ℕ} (hj : j < k₀) (hP : PJ Γ T s₀ B E cz j) (hd1 : ContinuousAt d1 s₀) (hcz0 : cz 0 ≠ 0)
     (hΛlin : ∀ l ∈ Λ, ∀ (a : ℂ) (F F' : G → ℂ), Continuous F → Continuous F' → (∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) →
@@ -119,23 +119,21 @@ theorem vanish {j : ℕ} (hj : j < k₀) (hP : PJ Γ T s₀ B E cz j) (hd1 : Con
 
 include hB hs in
 /- English proof (translation)
-Take `⟨hc1, hd1'⟩` from `hDS G B s₀ (ehat E s₀ j) hB hs hP.1 hP.2.1 hvan`. Establish `hrel : ∀ z ∈ B, z ≠ s₀ → ∀ g, ehat E s₀ (j + 1) z g = (z - s₀)⁻¹ * ehat E s₀ j z g`. Introduce `z _ hne g`. Use `show dslope (fun w => ehat E s₀ j w g) s₀ z = _`. Rewrite using `[dslope_of_ne _ hne, slope_def_field, hvan g, sub_zero, div_eq_inv_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgen : ∀ z ∈ B, z ≠ s₀ → ∀ g, T (ehat E s₀ (j + 1) z) g = cz (z - s₀) * ehat E s₀ (j + 1) z g`. Introduce `z hz hne g`. Establish `hFc : Continuous (ehat E s₀ j z)` using `hP.1.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hz, trivial⟩)`. Establish `key : T (ehat E s₀ (j + 1) z) g = (z - s₀)⁻¹ * T (ehat E s₀ j z) g`. Establish `h` using `hTlin ((z - s₀)⁻¹) (ehat E s₀ j z) (fun _ => 0) hFc continuous_const g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hT0 g, add_zero]`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hrel z hz hne x]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[key, hP.2.2.2.2 z hz g, hrel z hz hne g]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hc1, hd1', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz g`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hne : z = s₀`. Substitute `hne` using the available equality. Rewrite using `[hP.2.2.1 z hz g, hvan g, sub_self, mul_zero, zero_pow (Nat.succ_ne_zero j), zero_mul]`. Rewrite using `[hP.2.2.1 z hz g, hrel z hz hne g, pow_succ, mul_assoc, ← mul_assoc (z - s₀), mul_inv_cancel₀ (sub_ne_zero.mpr hne), one_mul]`. Introduce `z hz γ hγ g`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hne : z = s₀`. Substitute `hne show dslope (fun w => ehat E z j w (γ * g)) z z = dslope (fun w => ehat E z j w g) z z` using the available equality. Rewrite using `[dslope_same, dslope_same]`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Use `filter_upwards [hB.mem_nhds hz] with w hw`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hP.2.2.2.1 w hw γ hγ g`. Rewrite using `[hrel z hz hne, hrel z hz hne, hP.2.2.2.1 z hz γ hγ g]`. Introduce `z hz g`. Distinguish the cases in `hne : z = s₀`. Substitute `hne` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ContinuousOn (fun w => T (ehat E z (j + 1) w) g) B` using `hTcont _ hc1 hd1' g`. Establish `hBc : ContinuousAt (fun w => cz (w - z) * ehat E z (j + 1) w g) z` using `((hcz.comp (continuous_id.sub continuous_const)).continuousAt).mul ((hd1' g).continuousOn.continuousAt (hB.mem_nhds hz))`. Establish `hlim1` using `(hA.continuousAt (hB.mem_nhds hz)).tendsto.mono_left (nhdsWithin_le_nhds (s := {z}ᶜ))`. Establish `hlim2` using `hBc.tendsto.mono_left (nhdsWithin_le_nhds (s := {z}ᶜ))`. Establish `heq : (fun w => T (ehat E z (j + 1) w) g) =ᶠ[𝓝[≠] z] (fun w => cz (w - z) * ehat E z (j + 1) w g)` using `by filter_upwards [eventually_mem_ne z B hB hz] with w hw`.
-
-Conclude with `hgen w hw.1 hw.2 g`. Conclude with `tendsto_nhds_unique (hlim1.congr' heq) hlim2`. Conclude with `hgen z hz hne g`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step {j : ℕ} (hDS : DslopeFam) (hP : PJ Γ T s₀ B E cz j) (hvan : ∀ g, ehat E s₀ j s₀ g = 0)
     (hcz : Continuous cz)
@@ -196,19 +194,17 @@ theorem step {j : ℕ} (hDS : DslopeFam) (hP : PJ Γ T s₀ B E cz j) (hvan : �
 
 include hB hs in
 /- English proof (translation)
-Establish `hT0 : ∀ g, T (fun _ => 0) g = 0` using `hTsing (fun _ => 0) continuous_const (fun _ _ _ => rfl) (fun l hl => lam_zero' Γ (hΛlin l hl))`. Establish `hP0 : PJ Γ T s₀ B E cz 0` using `⟨hEc, hEh, fun z _ g => by rw [pow_zero, one_mul]; rfl, hEi, hTE⟩`. Establish `hall : ∀ j, j ≤ k₀ → PJ Γ T s₀ B E cz j`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Conclude with `hP0`. Consider the case `succ i ih`. Introduce `hi`. Establish `hPi` using `ih (Nat.le_of_succ_le hi)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `vanish Γ Λ T I1 s₀ B hB hs E cz k₀ d1 hi hPi hd1 hcz0 hΛlin hΛcont hΛloc hTsing`. Conclude with `step Γ T s₀ B hB hs E cz hDS hPi hv hcz hTlin hT0 hTcont`. Establish `hPk` using `hall k₀ le_rfl`. Use `⟨ehat E s₀ k₀, hPk.1, hPk.2.1, hPk.2.2.1, ?_⟩` and prove the remaining obligations. Establish `hFc : Continuous (ehat E s₀ k₀ s₀)` using `hPk.1.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hs, trivial⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFi` using `hPk.2.2.2.1 s₀ hs`. Establish `hl : ∀ l ∈ Λ, l (fun x => (-d1 s₀) * I1 x + ehat E s₀ k₀ s₀ x) = 0`. Introduce `l hl`. Establish `h1` using `lam_limit Γ T I1 s₀ B hB hs E cz k₀ d1 le_rfl hPk l (hΛlin l hl) (hΛcont l hl _ hPk.1 hPk.2.1 hPk.2.2.2.1) hd1 (hΛloc l hl)`. Establish `h2` using `hΛlin l hl (-d1 s₀) I1 (ehat E s₀ k₀ s₀) hI1c hFc hI1i hFi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[Nat.sub_self, pow_zero, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hz` using `hTsing (fun x => (-d1 s₀) * I1 x + ehat E s₀ k₀ s₀ x) (show Continuous (fun x => (-d1 s₀) * I1 x + ehat E s₀ k₀ s₀ x) from (continuous_const.mul hI1c).add hFc) (fun γ hγ g => by show -d1 s₀ * I1 (γ * g) + ehat E s₀ k₀ s₀ (γ * g) = -d1 s₀ * I1 g + ehat E s₀ k₀ s₀ g`. Rewrite using `[hI1i γ hγ g, hFi γ hγ g]) hl`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hTlin (-d1 s₀) I1 (ehat E s₀ k₀ s₀) hI1c hFc g`. Rewrite `h3` using `[hz g, hTI g, hPk.2.2.2.2 s₀ hs g, sub_self]`. Establish `h4 : cz 0 * (ehat E s₀ k₀ s₀ g - d1 s₀ * I1 g) = 0` using `by linear_combination -h3`. Break down `mul_eq_zero.mp h4 with h | h` into its components or cases. Conclude with `absurd h hcz0`.
-
-Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem core (hDS : DslopeFam) (hcz : Continuous cz) (hcz0 : cz 0 ≠ 0) (hd1 : ContinuousAt d1 s₀)
     (hΛlin : ∀ l ∈ Λ, ∀ (a : ℂ) (F F' : G → ℂ), Continuous F → Continuous F' → (∀ γ ∈ Γ, ∀ g, F (γ * g) = F g) →

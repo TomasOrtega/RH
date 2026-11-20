@@ -20,13 +20,11 @@ noncomputable section
 namespace GlobalTheory.ClosedFibreDvd
 
 /- English proof (translation)
-Distinguish the cases in `ht : Ideal.span {a} = ⊤`. Rewrite using `[ht]`. Discharge the goal by the elementary cases of `trivial`. Use `haveI : Nontrivial (O ⧸ Ideal.span {a}) := Ideal.Quotient.nontrivial_iff.2 ht`. Use `haveI : IsLocalRing (O ⧸ Ideal.span {a}) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : IsLocalHom (Ideal.Quotient.mk (Ideal.span {a}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (O ⧸ Ideal.span {a})) (maximalIdeal.isMaximal _).ne_top, Ideal.mem_iInf]`. Introduce `n`. Establish `hle : Ideal.map (Ideal.Quotient.mk (Ideal.span {a})) (Ideal.span {a} ⊔ maximalIdeal O ^ (n + 1)) ≤ maximalIdeal (O ⧸ Ideal.span {a}) ^ n`. Rewrite using `[Ideal.map_sup, Ideal.map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_quotient_self]`. Conclude with `bot_le`. Use `le_trans ?_ (Ideal.pow_le_pow_right (Nat.le_succ n))` and prove the remaining obligations. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun r hr => map_nonunit _ r hr) _`.
-
-Conclude with `hle (Ideal.mem_map_of_mem _ (h n))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_span_of_forall_pow {O : Type} [CommRing O] [IsNoetherianRing O] [IsLocalRing O] (a s : O)
     (h : ∀ n : ℕ, s ∈ Ideal.span {a} ⊔ maximalIdeal O ^ (n + 1)) : s ∈ Ideal.span {a} := by
@@ -49,13 +47,11 @@ theorem mem_span_of_forall_pow {O : Type} [CommRing O] [IsNoetherianRing O] [IsL
   exact hle (Ideal.mem_map_of_mem _ (h n))
 
 /- English proof (translation)
-Introduce `a ha`. Use `haveI : Nontrivial (X.presheaf.stalk (j z) ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hI`. Use `haveI : IsLocalRing (X.presheaf.stalk (j z) ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Establish `hl : IsLocalHom (Ideal.Quotient.mk I)` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `e : ℓ (IsLocalRing.closedPoint _) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `j.isEmbedding.injective` to reduce the goal to its premises. Use `(congrArg (fun q => q (IsLocalRing.closedPoint _)) hℓ).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (X.fromSpecStalk (j z)) (IsLocalRing.comap_closedPoint (Ideal.Quotient.mk I))).trans Scheme.fromSpecStalk_closedPoint`. Set `ψ` to `H.presheaf.stalkSpecializes (specializes_of_eq e) ≫ Scheme.stalkClosedPointTo ℓ`. Establish `hψ : j.stalkMap z ≫ ψ = CommRingCat.ofHom (Ideal.Quotient.mk I)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (j z)), ← hℓ, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk_assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk_assoc]`. Establish `hψ'` using `congrArg (fun q => q.hom a) hψ`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hψ'`. Rewrite `hψ'` using `[RingHom.mem_ker.1 ha, map_zero]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 hψ'.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_stalkMap_le {X H : Scheme.{0}} (j : H ⟶ X) [IsClosedImmersion j] (z : H)
     (I : Ideal (X.presheaf.stalk (j z))) (hI : I ≠ ⊤)
@@ -87,23 +83,23 @@ def cstHom {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (x : X) : R
   ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Sp R).presheaf.germ ⊤ (p x) trivial ≫ p.stalkMap x).hom
 
 /- English proof (translation)
-Rewrite using `[cst, gs_stalkMap p x ⊤ trivial, gs_eq _ _ ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cstHom_apply {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (x : X) (c : R) :
     cstHom p x c = cst p x c := by
   rw [cst, gs_stalkMap p x ⊤ trivial, gs_eq _ _ ⊤ trivial]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.fromSpecStalk_eq, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromSpecStalk_comp {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (x : X) :
     X.fromSpecStalk x ≫ p = Spec.map (CommRingCat.ofHom (cstHom p x)) := by
   rw [← Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.fromSpecStalk_eq, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Set `L : R ⧸ J →+* X.presheaf.stalk ((fs ≫ k) z) ⧸ I` to `Ideal.Quotient.lift J ((Ideal.Quotient.mk I).comp (cstHom p _)) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hJ (Ideal.mem_map_of_mem _ ha)))`. Establish `w : ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ X.fromSpecStalk _) ≫ h) ≫ π = Spec.map (CommRingCat.ofHom L) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))`. Rewrite using `[Category.assoc, Category.assoc, hh, fromSpecStalk_comp, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨hP.lift _ _ w, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, hP.lift_fst, Category.assoc, hk, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {R : Type} [CommRing R] (J : Ideal R) {X Y P : Scheme.{0}} (π : Y ⟶ Sp R) (p : X ⟶ Sp R)
     (fs : P ⟶ Y) (sn : P ⟶ Spec (CommRingCat.of (R ⧸ J)))
@@ -122,7 +118,7 @@ theorem exists_lift {R : Type} [CommRing R] (J : Ideal R) {X Y P : Scheme.{0}} (
   rw [← Category.assoc, hP.lift_fst, Category.assoc, hk, Category.comp_id]
 
 /- English proof (translation)
-Establish `e` using `gs_pull (𝟙 X) p (r z) ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a)`. Rewrite `e` using `[Category.id_comp]`. Conclude with `(congrArg (r.stalkMap z).hom e.symm).trans ((gs_stalkMap r z (p ⁻¹ᵁ ⊤) trivial _).symm.trans (gs_pull r p z ⊤ trivial _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_stalkMap' {V : Type} [CommRing V] {X Z : Scheme.{0}} (r : Z ⟶ X) (p : X ⟶ Sp V) (z : Z) (a : V) :
     (r.stalkMap z).hom (cst p (r z) a) = cst (r ≫ p) z a := by
@@ -132,35 +128,27 @@ theorem cst_stalkMap' {V : Type} [CommRing V] {X Z : Scheme.{0}} (r : Z ⟶ X) (
     (gs_pull r p z ⊤ trivial _))
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ U σ f g q hE hM x hx j hxj`. Use `haveI : IsNoetherianRing R := hR.1.1`. Use `haveI : Smooth G.hom := U.semi.smooth`. Establish `lam : (snd (𝟙_ (Over (Sp R))) G).left ≫ (λ_ G).inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.hom_inv_id, Over.id_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `lam' : (λ_ G).inv.left ≫ (snd (𝟙_ (Over (Sp R))) G).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.inv_hom_id, Over.id_left]`. Establish `lamA' : (λ_ D.P.A).inv.left ≫ (snd (𝟙_ (Over (Sp R))) D.P.A).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.inv_hom_id, Over.id_left]`. Establish `toU : ∀ {Y : Over (Sp R)} (h : Y ⟶ 𝟙_ (Over (Sp R))), h.left = Y.hom` using `fun h => by simpa using Over.w h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `hpG : (snd (𝟙_ (Over (Sp R))) G).left ≫ G.hom = (𝟙_ (Over (Sp R)) ⊗ G).hom` using `Over.w _`. Use `haveI : IsIso (snd (𝟙_ (Over (Sp R))) G).left := ⟨⟨(λ_ G).inv.left, lam, lam'⟩⟩`. Use `haveI : LocallyOfFiniteType (𝟙_ (Over (Sp R)) ⊗ G).hom := by rw [← hpG]; infer_instance`. Use `haveI : IsLocallyNoetherian (𝟙_ (Over (Sp R)) ⊗ G).left := LocallyOfFiniteType.isLocallyNoetherian (𝟙_ (Over (Sp R)) ⊗ G).hom`. It suffices to establish `H : gs (𝟙 _) x (LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j) (σ.f j) ∈ Ideal.span {cst (𝟙_ (Over (Sp R)) ⊗ G).hom x q} by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 H`. Conclude with `⟨t, by rw [← ht, mul_comm]⟩`. Use `mem_span_of_forall_pow _ _ fun e => ?_` and prove the remaining obligations. Establish `hxg : G.hom ((snd (𝟙_ (Over (Sp R))) G).left x) = closedPoint R`. Rewrite using `[← Scheme.Hom.comp_apply, hpG]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hx`. Use `haveI : Nontrivial (R ⧸ maximalIdeal R ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (maximalIdeal.isMaximal R).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Use `haveI : IsLocalRing (R ⧸ maximalIdeal R ^ (e + 1)) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `hl : IsLocalHom (Ideal.Quotient.mk (maximalIdeal R ^ (e + 1)))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hw : thick R (maximalIdeal R) e (closedPoint _) = closedPoint R`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsLocalRing.comap_closedPoint (Ideal.Quotient.mk (maximalIdeal R ^ (e + 1)))` as an intermediate fact. Conclude with `this`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := thick R (maximalIdeal R) e) _ _ (hxg.trans hw.symm)`. Establish `hzx : (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z = x`. Rewrite using `[Scheme.Hom.comp_apply, hz, ← Scheme.Hom.comp_apply, lam]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Substitute `hzx` using the available equality. Establish `hc : IsClosedImmersion (thick R (maximalIdeal R) e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `haveI : IsIso (λ_ G).inv.left := ⟨⟨(snd (𝟙_ (Over (Sp R))) G).left, lam', lam⟩⟩`. Use `haveI : IsClosedImmersion (pullback.fst G.hom (thick R (maximalIdeal R) e)) := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsClosedImmersion (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) := inferInstance`. Establish `hmap : Ideal.map (cstHom (𝟙_ (Over (Sp R)) ⊗ G).hom ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z)) (maximalIdeal R ^ (e + 1)) ≤ maximalIdeal _ ^ (e + 1)`. Rewrite using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun c hc' => ?_) _` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, cstHom_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 (cst_not_isUnit _ _ hx hc'))`. Establish `hker : RingHom.ker ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left).stalkMap z).hom ≤ maximalIdeal _ ^ (e + 1)`. Establish `hI : Ideal.map (cstHom (𝟙_ (Over (Sp R)) ⊗ G).hom ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z)) (maximalIdeal R ^ (e + 1)) ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top (hmap.trans (Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Take `⟨ℓ, hℓ⟩` from `exists_lift (maximalIdeal R ^ (e + 1)) G.hom (𝟙_ (Over (Sp R)) ⊗ G).hom (pullback.fst _ _) (pullback.snd _ _) (IsPullback.of_hasPullback _ _) (λ_ G).inv.left (snd (𝟙_ (Over (Sp R))) G).left hpG lam z _ le_rfl`. Conclude with `(ker_stalkMap_le _ z _ hI ℓ hℓ).trans hmap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨S, hS⟩` from `hE e`. Take `⟨JG, hJG⟩` from `GlobalTheory.UU.exists_good_pt U.P.L.isLB z`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt D.P.isLB z`. Establish `h3 : ((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) ≫ (fst (𝟙_ (Over (Sp R))) D.P.A).left = (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) ≫ (fst (𝟙_ (Over (Sp R))) G).left`. Rewrite using `[toU, toU, Category.assoc, Category.assoc, Over.w (λ_ D.P.A).inv, Over.w (λ_ G).inv, Over.w (U.gt e).pG, pullback.condition]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `key` using `(hS _ (𝟙 _) (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) ((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) (by rw [Category.assoc, lam', Category.comp_id, Category.id_comp]; rfl) (by rw [Category.assoc, lamA', Category.comp_id, Category.id_comp]) h3 z JG J hJG hJ).2`. Establish `aux : ∀ {O : Type} [CommRing O] (u : Oˣ) (a b : O) (I : Ideal O), (u : O) ^ 1 * a = b → b ∈ I → a ∈ I` using `fun u a b I h hb => by`. Rewrite `h` using `[pow_one]`. Rewrite using `[← u.inv_mul_cancel_left a, h]`.
-
-Conclude with `I.mul_mem_left _ hb`. Establish `hq : ((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) ≫ (𝟙_ (Over (Sp R)) ⊗ D.P.A).hom = (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) ≫ (𝟙_ (Over (Sp R)) ⊗ G).hom`. Rewrite using `[Category.assoc, Category.assoc, Over.w (λ_ D.P.A).inv, Over.w (λ_ G).inv, Over.w (U.gt e).pG, pullback.condition]`. Both sides reduce to the same expression. Establish `hmem : sval σ (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z JG ∈ Ideal.span {cst ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) ≫ (𝟙_ (Over (Sp R)) ⊗ G).hom) z q}`.
-
-Use `aux _ _ _ _ key (Ideal.sum_mem _ fun α _ => ?_)` and prove the remaining obligations. Establish `hF : sval (f α) ((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) z J = cst (((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) ≫ (𝟙_ (Over (Sp R)) ⊗ D.P.A).hom) z q * sval (g α) ((U.gt e).pG.left ≫ (λ_ D.P.A).inv.left) z J` using `secIsMul_gs (hM α) _ z _ (hJ.mem _ _)`. Rewrite using `[hF, hq, _root_.mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hπ : ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left).stalkMap z).hom (gs (𝟙 _) ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z) (LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j) (σ.f j)) ∈ Ideal.span {cst ((pullba …`.
-
-Establish `e1` using `gs_stalkMap (pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z _ hxj (σ.f j)`. Use `erw [← e1, sec_trans σ _ z hxj (hJG.mem _ _)]`. Conclude with `Ideal.mul_mem_left _ _ hmem`. Take `⟨t', ht'⟩` from `Ideal.mem_span_singleton'.1 hπ`. Take `⟨t, rfl⟩` from `(pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left).stalkMap_surjective z t'`.
-
-Use `Submodule.mem_sup.2 ⟨t * cst (𝟙_ (Over (Sp R)) ⊗ G).hom ((pullback.fst G.hom (thick R (maximalIdeal R) e) ≫ (λ_ G).inv.left) z) q, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), _, hker ?_, add_sub_cancel _ _⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, cst_stalkMap', ht', sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_dvd_of_expT_dvd : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (σ : U.SecGT (𝟙_ _) 1) (f g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α) (q : R), U.ExpT (𝟙_ _) 1 σ f → (∀ α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q (f α) (g α)) → ∀ (x : (𝟙_ (Over (Sp R)) ⊗ G).left), (𝟙_ (Over (Sp R)) ⊗ G).hom x = closedPoint R → ∀ (j : Fin 1 → U.P.L.L.ι), x ∈ LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j → ∃ t, gs (𝟙 _) x (LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j) (σ.f j) = cst (𝟙_ (Over (Sp R)) ⊗ G).hom x q * t := by
   intro R _ _ _ hR D A G _ _ U σ f g q hE hM x hx j hxj

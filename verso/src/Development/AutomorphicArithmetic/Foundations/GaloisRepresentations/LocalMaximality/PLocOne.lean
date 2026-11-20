@@ -5,33 +5,27 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set I : Ideal O := RingHom.ker ev with hI`. Use `set N : Submodule O (Ω[L⁄ℂ]) := Submodule.span O (Set.range fun l => D ℂ L (t l : L)) with hN`. Use `set M : Submodule O (Ω[L⁄ℂ]) := Submodule.span O (Set.range fun w : O => D ℂ L (w : L)) with hM`. Establish `hvM : D ℂ L (v : L) ∈ M` using `Submodule.subset_span ⟨v, rfl⟩`. It suffices to establish `hMN : M ≤ N from hMN hvM`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Submodule.le_of_le_smul_of_le_jacobson_bot (I := I)` to reduce the goal to its premises. Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType ℂ B).out set G : Submodule O (Ω[L⁄ℂ]) := Submodule.span O ((fun b : B => D ℂ L (b : L)) '' (s : Set B)) with hG`. Establish `hB : ∀ b : B, D ℂ L (b : L) ∈ G`. Introduce `b`. Establish `hb : b ∈ Algebra.adjoin ℂ (s : Set B)` using `hs ▸ Algebra.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `algebraMap r => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Subalgebra.coe_add, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `mul y z _ _ hy hz`. Rewrite using `[Subalgebra.coe_mul, Derivation.leibniz]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem G (⟨y, hBO y.2⟩ : O) hz) (Submodule.smul_mem G (⟨z, hBO z.2⟩ : O) hy)`. Establish `hGM : M = G`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hM, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨b, hb0, hbw⟩` from `hden w`. Take `⟨u, hu⟩` from `hunit _ hb0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1 : D ℂ L ((b : L) * (w : L)) ∈ G` using `hB ⟨_, hbw⟩`. Rewrite `h1` using `[Derivation.leibniz]`. Establish `h2 : (⟨b, hBO b.2⟩ : O) • D ℂ L (w : L) ∈ G`. Establish `h4` using `Submodule.sub_mem G h1 (Submodule.smul_mem G w (hB b))`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[Subalgebra.smul_def]`. Establish `h3` using `Submodule.smul_mem G (↑u⁻¹ : O) h2`. Rewrite `h3` using `[← hu, smul_smul, Units.inv_mul, one_smul]`. Conclude with `h3`. Rewrite using `[hG, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨b, _, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨b, hBO b.2⟩, rfl⟩`. Rewrite using `[hGM]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`. Introduce `y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `z`. Apply `hunit` to reduce the goal to its premises. Establish `hy0 : ev y = 0` using `hy`. Simplify using `[hy0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hM, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨a, ha⟩` from `hmax (w - algebraMap ℂ O (ev w)) (by simp)`. Establish `hD : D ℂ L (w : L) = ∑ l, ((a l : O) • D ℂ L (t l : L) + (t l : O) • D ℂ L (a l : L))`. Establish `h1 : (w : L) = algebraMap ℂ L (ev w) + ∑ l, (a l : L) * (t l : L)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `congrArg (fun u : O => (u : L)) ha`. Move the coercions through the operations in `at h5`. Take the linear combination `h5`. Rewrite using `[h1, map_add, Derivation.map_algebraMap, zero_add, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Derivation.leibniz]`. Both sides reduce to the same expression. Use `show D ℂ L (w : L) ∈ _`. Rewrite using `[hD]`. Use `Submodule.sum_mem _ fun l _ => Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
-
-Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩))`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Apply `Submodule.smul_mem_smul` to reduce the goal to its premises. Use `show ev (t l) = 0`. Conclude with `ht l`.
-
-Conclude with `Submodule.subset_span ⟨a l, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem locOne_nak {L : Type} [Field L] [Algebra ℂ L] (B O : Subalgebra ℂ L)
     [Algebra.FiniteType ℂ B] (hBO : B ≤ O) (ev : O →ₐ[ℂ] ℂ) (hunit : ∀ u : O, ev u ≠ 0 → IsUnit u)
@@ -110,17 +104,15 @@ private theorem locOne_nak {L : Type} [Field L] [Algebra ℂ L] (B O : Subalgebr
       · exact Submodule.subset_span ⟨a l, rfl⟩
 
 /- English proof (translation)
-Introduce `hMax hVal F L _ _ _ _ _ _ d x hc hred e v hv`. Take `⟨hle, ⟨ev, hev⟩, hbv, hinv⟩` from `hVal L (rB ℂ L (xv x) {0}) e.1`. Use `haveI := hc.smooth 0`. Use `haveI : Algebra.FiniteType ℂ (rB ℂ L (xv x) {0}) := inferInstance`. Establish `hevB : ∀ b : rB ℂ L (xv x) {0}, ev ⟨b, hle b.2⟩ = e.1 b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Take `⟨h, hb⟩` from `(hev _ _).1 (hbv b)`. Conclude with `hb`. Establish `hunit : ∀ u : loc (rB ℂ L (xv x) {0}) e.1, ev u ≠ 0 → IsUnit u`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h0, h1⟩` from `hinv u (ev u) ((hev _ _).2 ⟨u.2, rfl⟩) hu`. Conclude with `IsUnit.of_mul_eq_one (⟨_, h1⟩ : loc (rB ℂ L (xv x) {0}) e.1) (Subtype.ext (mul_inv_cancel₀ h0))`. Establish `hden : ∀ v : loc (rB ℂ L (xv x) {0}) e.1, ∃ b : rB ℂ L (xv x) {0}, ev ⟨b, hle b.2⟩ ≠ 0 ∧ (b : L) * v ∈ rB ℂ L (xv x) {0}`. Introduce `v`. Take `⟨b, hb, hbv'⟩` from `v.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨b, by rw [hevB]; exact hb, hbv'⟩`. Set `t : Fin d → loc (rB ℂ L (xv x) {0}) e.1` to `fun l => ⟨tt L x l, hle (tco_mem ℂ L (xv x) l)⟩`. Establish `ht : ∀ l, ev (t l) = 0` using `fun l => (hevB ⟨_, tco_mem ℂ L (xv x) l⟩).trans (e.2 l)`. Establish `hmax : ∀ v : loc (rB ℂ L (xv x) {0}) e.1, ev v = 0 → ∃ a : Fin d → loc (rB ℂ L (xv x) {0}) e.1, v = ∑ l, a l * t l`. Introduce `v h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨a, ha, hv'⟩` from `hMax F L d x hc hred e v ((hev _ _).2 ⟨v.2, h0⟩)`. Use `⟨fun l => ⟨a l, ha l⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hv', AddSubmonoidClass.coe_finset_sum]`. Both sides reduce to the same expression. Establish `hmem` using `locOne_nak _ _ hle ev hunit hden t ht hmax ⟨v, hv⟩`.
-
-Take `⟨c, hc'⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hmem`. Conclude with `⟨fun l => c l, fun l => (c l).2, hc'.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.locOne_of :
     LocMax → ValBasic → LocOne := by

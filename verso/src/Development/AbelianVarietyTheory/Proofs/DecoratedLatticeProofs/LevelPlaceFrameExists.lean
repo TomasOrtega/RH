@@ -26,15 +26,13 @@ noncomputable section
 namespace GlobalTheory.LineAtG
 
 /- English proof (translation)
-Establish `hId : GlobalTheory.Core.Mi.IdE W.S.X` using `hW.bot.idE`. Use `set v0 : Fin (D.sp.Y 0).rank → AE D := fun i => Formalism.L2.Theta.incA D (W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i))) with hv0`. Establish `hv : (fun i => c * Formalism.L2.Theta.incA D (W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i)))) = c • v0` using `rfl`. Rewrite using `[hv]`. Use `set x : GA D (D.sp.Y 0) := (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) with hxdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set E : GA D (D.sp.Y 0) := embA B.d B.o (a₀ * a) with hEdef`. Use `set b : GA D (D.sp.Y 0) := (show GA D (D.sp.Y 0) from f.g.b 0) with hbdef`. Establish `hx : Matrix.mulVec (Formalism.L2.Theta.mt (D.sp.Y 0) x) v0 = v0`. Use `GlobalTheory.MiTop.fixAux W.S.X W.Q.instEq hId {W.S.X.eR ⟨0, hr⟩} _ rfl x ?_` and prove the remaining obligations. Establish `e : iotaX W.S.X W.Q.instEq x = (1, W.S.X.xu u)` using `(iotaX W.S.X W.Q.instEq).apply_symm_apply _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Use `⟨Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(W.S.X.xu_fix u ⟨0, hr⟩).1`. Establish `hE : Matrix.mulVec (Formalism.L2.Theta.mt (D.sp.Y 0) E⁻¹) v0 = v0`. Use `GlobalTheory.MiTop.fixAux W.S.X W.Q.instEq hId (Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet W.S.X u) (W.S.X.eR ⟨0, hr⟩) (Or.inl (Or.inl ⟨⟨0, hr⟩, rfl⟩)) E⁻¹ ?_` and prove the remaining obligations. Conclude with `(B.tieH E⁻¹).1 ((embA B.d B.o).range.inv_mem ⟨a₀ * a, rfl⟩)`. Establish `e : (tOf f B a₀ a)⁻¹ = b⁻¹ * (E⁻¹ * x)` using `by show (x⁻¹ * E * b)⁻¹ = _`.
-
-Simplify using `only [mul_inv_rev, inv_inv, mul_assoc]`. Rewrite using `[e]`. Use `show Matrix.mulVec (Formalism.L2.Theta.mt (D.sp.Y 0) b⁻¹ * (Formalism.L2.Theta.mt (D.sp.Y 0) E⁻¹ * Formalism.L2.Theta.mt (D.sp.Y 0) x)) (c • v0) = _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul, Matrix.mulVec_smul, hx, hE]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tOf_fix_first {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (hW : PkHyp W) (hr : 1 ≤ D.R.rS) (u : D.what₂.Word) (f : FamCh W u)
     (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (a₀ a : GA D (D.sp.X 0)) (c : AE D) :
@@ -70,9 +68,9 @@ theorem tOf_fix_first {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formal
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hy' : ∀ i, (fun i => y * Formalism.L2.Theta.incA D (ε i)) i ∈ GlobalTheory.FinPl.idAt D (· = v)` using `fun i => Ideal.mul_mem_right _ _ hy`. Rewrite using `[GlobalTheory.StMoves.mem_latV_iff_latLoc V L hL v _ (GlobalTheory.FinPl.KOpen.supp_mulVec V _ t⁻¹ hy'), GlobalTheory.FinPl.KOpen.fin_mulVec, GlobalTheory.AdelicU.vecLoc_mulVec, map_inv, map_inv]`. Establish `hv : GlobalTheory.AdelicU.vecLoc v (finPart D ∘ fun i => y * Formalism.L2.Theta.incA D (ε i)) = GlobalTheory.AdelicU.vecLoc v (finPart D ∘ fun _ : Fin 1 => y) 0 • fun i => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) ⊗ₜ[D.host.F] ε i`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, GlobalTheory.AdelicU.vecLoc, Pi.smul_apply, smul_eq_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[hv]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_latLoc_line_iff {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (L : GlobalTheory.FinPl.Lat V) (hL : L.FG) (v : GlobalTheory.FinPl.Pl D) (t : GA D V)
     (ε : Fin V.rank → D.host.E) (y : AE D) (hy : y ∈ GlobalTheory.FinPl.idAt D (· = v)) :
@@ -94,17 +92,17 @@ theorem mem_latLoc_line_iff {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (L : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW hr v hv`. Use `⟨fun i => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) ⊗ₜ[D.host.F] W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i)), ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ (u : D.what₂.Word) (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), Placed f B ∧ ∃ a₀ a, IsAt f B a₀ a`. Take `⟨u₀, f₀, B₀, hP₀, b₀₀, b₀₁, hA₀⟩` from `hex`. Choose the witnesses or unpack the hypotheses as in `⟨hτ, hm⟩ : Nonempty (D.host.E →ₐ[D.host.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) ∧ 0 < D.R.m := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨PP, hPP, rfl⟩` from `hv`. Take `⟨k, _, _, _, _, ι, v', o, n, G, pl, -, -, -, -, -, hGR, -⟩` from `hP₀`. Establish `hs` using `(G (pl.symm ⟨PP, hPP⟩)).hs`. Use `⟨?_, by omega⟩` and prove the remaining obligations. Take `⟨w, τ, -, hw⟩` from `GlobalTheory.AdelicU.Supp.isIdemAt_iff_exists.1 (hGR.idem (pl.symm ⟨PP, hPP⟩)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[Equiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `PP = GlobalTheory.AdelicU.splitPrime τ at hw`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.AdelicU.splitPrime_under]`. Conclude with `⟨τ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hΛ` using `(GlobalTheory.T.self_dual_lattice_frame_chain W hW 0 hm).1`. Use `haveI : Submodule.IsLattice D.host.E ((pk W).ΛY 0) := hΛ.1`. Establish `hfg : ((pk W).ΛY 0).FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Take `⟨α, hα⟩` from `GlobalTheory.T.exists_unit_multipliers_line_in_movedLattice_split D v hτ _ ((pk W).ΛY 0) hΛ.1 ((GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram …`. Use `⟨α, fun u f B hP a₀ a hA c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hα c]`. Take `⟨y, hy, hyc⟩` from `GlobalTheory.StMoves.exists_supp_vecLoc_eq (D := D) (n := 1) v fun _ => c`. Establish `hc : GlobalTheory.AdelicU.vecLoc v (finPart D ∘ fun _ : Fin 1 => y 0) 0 = c` using `congrFun hyc 0`. Rewrite using `[← hc]`. Use `(mem_latLoc_line_iff (D.sp.Y 0) ((pk W).ΛY 0) hfg v _ (fun i => W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i))) (y 0) (hy 0)).trans (Iff.trans ?_ (mem_latLoc_line_iff (D.sp.Y 0) ((pk W).ΛY 0) hfg v _ (fun i => W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ ( …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[tOf_fix_first W hW hr, tOf_fix_first W hW hr]`. Conclude with `GlobalTheory.T.placed_bessel_pair_central W hW hr u u₀ f f₀ B B₀ hP hP₀ a₀ a b₀₀ b₀₁ hA hA₀ v hv (y 0) (hy 0)`. Conclude with `⟨1, fun u f B hP a₀ a hA c => absurd ⟨u, f, B, hP, a₀, a, hA⟩ hex⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_atG : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (∃ PP ∈ (pk W).Pg, PP.under (𝓞 D.host.F) = v) → ∃ (e : Fin (D.sp.Y 0).rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E) (α : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ), ∀ u (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), Placed f B → ∀ a₀ a, IsAt f B a₀ a → ∀ c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, Matrix.mulVec ((GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v (tOf f B a₀ a)))⁻¹).val (c • e) ∈ GlobalTheory.AdelicU.latLoc D.host.F ((pk W).ΛY 0) v ↔ ((α⁻¹ : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E) * c ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v := by
   intro D L hT Gi Gl Kc Yd cX ex W hW hr v hv

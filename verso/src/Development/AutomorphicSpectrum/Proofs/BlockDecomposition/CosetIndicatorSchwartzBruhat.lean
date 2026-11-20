@@ -11,11 +11,9 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.WS.Coset
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ n x`. Establish `hB : IsClopen (valBall F n : Set F)` using `⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_valBall n), isOpen_valBall n⟩`. Establish `hP : IsClopen ((valBall F n : Set F) ×ˢ (valBall F n : Set F))` using `hB.prod hB`. Establish `hS : {v : F × F | v - x ∈ Ln F n} = (fun v : F × F => v - x) ⁻¹' ((valBall F n : Set F) ×ˢ (valBall F n : Set F))` using `rfl`. Establish `hC : IsClopen {v : F × F | v - x ∈ Ln F n}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Conclude with `hP.preimage (continuous_id.sub continuous_const)`. Establish `hK : IsCompact {v : F × F | v - x ∈ Ln F n}`. Rewrite using `[hS]`. Conclude with `(Homeomorph.subRight x).isCompact_preimage.2 ((isCompact_valBall n).prod (isCompact_valBall n))`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(LocallyConstant.indicator (1 : LocallyConstant (F × F) ℂ) hC).isLocallyConstant`. Conclude with `HasCompactSupport.intro hK fun v hv => Set.indicator_of_notMem hv _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSB_cosetInd : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F), GlobalTheory.CompanionTheory.WS.IsSB (GlobalTheory.CompanionTheory.WS.cosetInd n x) := by
   intro F _ _ _ _ _ _ n x

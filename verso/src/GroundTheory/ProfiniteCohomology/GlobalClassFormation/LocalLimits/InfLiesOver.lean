@@ -18,7 +18,7 @@ variable {K : FiniteSubfield} {v : NumberField.InfinitePlace K.1}
   {F E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] [Fact (F ≤ E)]
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq, ← NumberField.InfinitePlace.comap_comp, ← IsScalarTower.algebraMap_eq, ← GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq]`. Conclude with `w'.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_liesOver (w' : v.placesOver E.1) :
     ((w' : NumberField.InfinitePlace E.1).comap (algebraMap F.1 E.1)).LiesOver v := by
@@ -27,9 +27,9 @@ theorem comap_liesOver (w' : v.placesOver E.1) :
   exact w'.2
 
 /- English proof (translation)
-Establish `h` using `(denseRange_coe v).equalizer ((NumberField.LiesOver.continuous_completionMap).comp (continuous_algebraMap v.Completion u.Completion)) (continuous_algebraMap v.Completion w'.Completion) (funext fun a ↦ ?_)`. Conclude with `congrFun h c`. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `algebraMap u.Completion w'.Completion (algebraMap v.Completion _ (algebraMap K.1 v.Completion (WithAbs.ofAbs a))) = algebraMap v.Completion _ (algebraMap K.1 v.Completion (WithAbs.ofAbs a))`. Rewrite using `[← IsScalarTower.algebraMap_apply K.1 v.Completion u.Completion, ← IsScalarTower.algebraMap_apply K.1 v.Completion w'.Completion, IsScalarTower.algebraMap_apply K.1 F.1, ← IsScalarTower.algebraMap_apply F.1, IsScalarTower.algebraMap_apply K.1 E.1 w'.Completion, IsScalarTower.alge …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem completionMap_algebraMap_completion (u : NumberField.InfinitePlace F.1)
     (w' : NumberField.InfinitePlace E.1) [w'.LiesOver u] [u.LiesOver v] [w'.LiesOver v]
@@ -68,7 +68,7 @@ def infCompletionEmbeddingBelow (u : v.placesOver F.1)
       exact (infCompletionEmbedding ι E).commutes c }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infCompletionEmbedding ι E (algebraMap u.1.Completion _ (algebraMap F.1 _ x)) = ι x`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply F.1 E.1, infCompletionEmbedding_algebraMap]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infCompletionEmbeddingBelow_algebraMap (u : v.placesOver F.1)
     [(infPlaceOfEmbedding ι E : NumberField.InfinitePlace E.1).LiesOver
@@ -93,7 +93,7 @@ instance liesOver_infPlaceOfEmbedding :
   exact this
 
 /- English proof (translation)
-Establish `: infCompletionEmbeddingBelow ι F E (infPlaceOfEmbedding ι F) = infCompletionEmbedding ι F` using `algHom_ext_infCompletion F fun x ↦ by`. Rewrite using `[infCompletionEmbeddingBelow_algebraMap, infCompletionEmbedding_algebraMap]`. Conclude with `DFunLike.congr_fun this a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infCompletionEmbedding_completionMap
     (a : (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion) :

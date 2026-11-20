@@ -27,7 +27,7 @@ noncomputable def groupCohomologyResGalUnitsIso (H : Subgroup Gal(L/K)) (n : ℕ
     (fun _ => LinearMap.ext fun _ => rfl) n
 
 /- English proof (translation)
-The claim follows from `(isZero_groupCohomology_one_galUnits (fixedField H) L).of_iso (groupCohomologyResGalUnitsIso H 1)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_res_galUnits (H : Subgroup Gal(L/K)) :
     IsZero (groupCohomology (Rep.res H.subtype (galUnits.{u} K L)) 1) :=
@@ -46,11 +46,11 @@ def openNormalOfNormal (N : Subgroup Gal(L/K)) [N.Normal] : OpenNormalSubgroup G
   isNormal' := inferInstance
 
 /- English proof (translation)
-Establish `h1` using `isZero_groupCohomology_one_res_galUnits (K := K) (L := L) N`. Establish `hinj` using `GroundTheory.GroupCoh.inflation_two_injective (A := galUnits.{u} K L) (S := N) h1`. Establish `hex` using `GroundTheory.GroupCoh.range_inflation_two_eq_ker_restriction (A := galUnits.{u} K L) (S := N) h1`. Use `set res := (GroundTheory.GroupCoh.restriction (galUnits.{u} K L) N 2).hom`. Use `set infl := (GroundTheory.GroupCoh.inflation (galUnits.{u} K L) N 2).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (groupCohomology (galUnits.{u} K L) 2) = Nat.card (LinearMap.range res) * Nat.card (LinearMap.ker res)`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker res), Nat.card_congr (LinearMap.quotKerEquivRange res).toEquiv, mul_comm]`. Establish `hker : Nat.card (LinearMap.ker res) = Nat.card (groupCohomology (galUnits.{u} K (fixedField N)) 2)`. Rewrite using `[← hex, ← Nat.card_congr (LinearEquiv.ofInjective infl hinj).toEquiv]`. Conclude with `Nat.card_congr (groupCohomologyQuotientGalUnitsIso (openNormalOfNormal N) 2).toLinearEquiv.toEquiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : Nat.card (LinearMap.range res) ∣ Nat.card (groupCohomology (galUnits.{u} (fixedField N) L) 2)`. Rewrite using `[← Nat.card_congr (groupCohomologyResGalUnitsIso N 2).toLinearEquiv.toEquiv]`. Conclude with `AddSubgroup.card_addSubgroup_dvd_card (LinearMap.range res).toAddSubgroup`. Rewrite using `[hcard, hker, ← Module.finrank_mul_finrank K (fixedField N) L, mul_comm (Module.finrank K _)]`. Conclude with `Nat.mul_dvd_mul (hrange.trans hLE) hEK`.
+A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_galUnits_dvd_of_normal (N : Subgroup Gal(L/K)) [N.Normal]
     (hLE : Nat.card (groupCohomology (galUnits.{u} (fixedField N) L) 2) ∣
@@ -86,11 +86,11 @@ end Step
 section Solvable
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hN`. Use `push Not at hN`. Establish `: Nontrivial G`. Assume the negation of the conclusion as `ht`. Rewrite `ht` using `[not_nontrivial_iff_subsingleton]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h inferInstance`. Establish `: IsSimpleGroup G` using `{ eq_bot_or_eq_top_of_normal := fun N hN' => by`. Distinguish the cases in `hb : N = ⊥`. Conclude with `Or.inl hb`. Conclude with `Or.inr (hN N hN' hb) }`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcomm` using `(IsSimpleGroup.comm_iff_isSolvable (G := G)).2 inferInstance`. Set `_ : CommGroup G` to `{ (inferInstance : Group G) with mul_comm := hcomm }`. Conclude with `h IsSimpleGroup.isCyclic`.
+A detailed English derivation is pending.
 -/
 theorem exists_normal_ne_bot_ne_top_of_not_isCyclic {G : Type*} [Group G] [Group.IsSolvable G]
     (h : ¬IsCyclic G) : ∃ N : Subgroup G, N.Normal ∧ N ≠ ⊥ ∧ N ≠ ⊤ := by
@@ -114,15 +114,13 @@ end Solvable
 section Bound
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ hn`. Substitute `hn` using the available equality. Distinguish the cases in `hcyc : IsCyclic Gal(L/K)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Conclude with `(natCard_groupCohomology_two_galUnits_of_isCyclic (K := K) (L := L)).dvd`. Use `GroundTheory.LocalField.isSolvable_algEquiv (K := K) (L := L)` as an intermediate fact. Take `⟨N, hN, hbot, htop⟩` from `exists_normal_ne_bot_ne_top_of_not_isCyclic hcyc`. Establish `hpos : 0 < Module.finrank K (fixedField N)` using `Module.finrank_pos`. Establish `hLE : Module.finrank (fixedField N) L = Nat.card N` using `finrank_fixedField_eq_card N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `Module.finrank_mul_finrank K (fixedField N) L`. Establish `hcardG : Nat.card Gal(L/K) = Module.finrank K L` using `IsGalois.card_aut_eq_finrank K L`. Establish `hNlt : Nat.card N < Module.finrank K L`. Rewrite using `[← hcardG]`. Conclude with `lt_of_le_of_ne (Subgroup.card_le_card_group N) fun h => htop ((Subgroup.card_eq_iff_eq_top N).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hN1 : 1 < Nat.card N` using `(Subgroup.one_lt_card_iff_ne_bot N).2 hbot`. Apply `natCard_groupCohomology_two_galUnits_dvd_of_normal N` to reduce the goal to its premises. Conclude with `ih _ (by rw [hLE]; exact hNlt) (fixedField N) L rfl`. Use `ih _ ?_ K (fixedField N) rfl` and prove the remaining obligations. Rewrite using `[← hmul, hLE]`.
-
-Conclude with `lt_mul_right hpos hN1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_galUnits_dvd_of_finrank (n : ℕ) :
     ∀ (K L : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
@@ -163,14 +161,14 @@ variable {K L : Type u} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-The claim follows from `natCard_groupCohomology_two_galUnits_dvd_of_finrank _ K L rfl`.
+A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_galUnits_dvd :
     Nat.card (groupCohomology (galUnits.{u} K L) 2) ∣ Module.finrank K L :=
   natCard_groupCohomology_two_galUnits_dvd_of_finrank _ K L rfl
 
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero fun h => Module.finrank_pos.ne' (Nat.eq_zero_of_zero_dvd (h ▸ natCard_groupCohomology_two_galUnits_dvd))`.
+A detailed English derivation is pending.
 -/
 theorem finite_groupCohomology_two_galUnits :
     Finite (groupCohomology (galUnits.{u} K L) 2) :=

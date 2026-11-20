@@ -5,9 +5,9 @@ namespace GlobalTheory.TendstoOfIntegrals
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter Topology
 
 /- English proof (translation)
-Set `A : (v : HeightOneSpectrum (NumberField.RingOfIntegers L)) → Set (v.adicCompletion L)` to `fun v ↦ (v.adicCompletionIntegers L : Set (v.adicCompletion L))`. Set `g : ι → (v : HeightOneSpectrum (NumberField.RingOfIntegers L)) → A v` to `fun i v ↦ ⟨_, hf i v⟩`. Set `c : (v : HeightOneSpectrum (NumberField.RingOfIntegers L)) → A v` to `fun v ↦ ⟨_, hb v⟩`. Establish `hg : Tendsto g l (𝓝 c)` using `tendsto_pi_nhds.2 fun v ↦ tendsto_subtype_rng.2 (hl v)`. Establish `hemb` using `RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (NumberField.RingOfIntegers L) ↦ v.adicCompletion L) (A := A) (𝓕 := cofinite)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hemb.continuous.tendsto c).comp hg`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_of_forall_integral {L : Type} [Field L] [NumberField L] {ι : Type} {l : Filter ι}
     (f : ι → FiniteAdeleRing (NumberField.RingOfIntegers L) L)
@@ -39,7 +39,7 @@ theorem tendsto_of_forall_integral {L : Type} [Field L] [NumberField L] {ι : Ty
 end GlobalTheory.TendstoOfIntegrals
 
 /- English proof (translation)
-Introduce `L _ _ ι l f b hf hb hl`. Conclude with `GlobalTheory.TendstoOfIntegrals.tendsto_of_forall_integral f b hf hb hl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TendstoOfIntegrals.target_check : ∀ {L : Type} [inst : Field L] [inst_1 : NumberField L] {ι : Type} {l : Filter ι} (f : ι → IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers L) L) (b : IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers L) L), (∀ (i : ι) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)), (f i : (a : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)) → IsDedekindDomain.HeightOneSpectrum.adicCompletion L a) v ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers L v) → (∀ (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)), (b : (a : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)) → IsDedekindDomain.HeightOneSpectrum.adicCompletion L a) v ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers L v) → (∀ (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)), Filter.Tendsto (fun (i : ι) ↦ (f i : (a : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)) → IsDedekindDomain.HeightOneSpectrum.adicCompletion L a) v) l (nhds ((b : (a : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)) → IsDedekindDomain.HeightOneSpectrum.adicCompletion L a) v))) → Filter.Tendsto f l (nhds b) := by
   intro L _ _ ι l f b hf hb hl

@@ -8,11 +8,11 @@ namespace GlobalTheory
 
 open NumberField in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨MvPolynomial.C a, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, MvPolynomial.map_X, _root_.Formalism.L2.DIV.blockAct_X]`. Use `mul_mem hp (sum_mem fun b _ => mul_mem ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.C ⟨U v.1 v.2.1 b, hU _ _ _⟩, by simp⟩`. Conclude with `⟨MvPolynomial.X (v.1, b, v.2.2), by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma blockAct_map_mem_range_map_of_entries_mem {K : Type} [Field K] (K₀ : Subfield K) {ι : Type} [Fintype ι] {n : ℕ}
     (U : ι → Matrix (Fin n) (Fin n) K) (hU : ∀ τ a b, U τ a b ∈ K₀)
@@ -33,13 +33,11 @@ private lemma blockAct_map_mem_range_map_of_entries_mem {K : Type} [Field K] (K�
 
 open NumberField in
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `hF`. Establish `hdet : ∀ τ, (g τ : Matrix (Fin n) (Fin n) K).det ∈ K₀`. Introduce `τ`. Establish `hM : (g τ : Matrix (Fin n) (Fin n) K) = (Matrix.of fun a b => (⟨(g τ : Matrix _ _ K) a b, hg τ a b⟩ : K₀)).map K₀.subtype`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[hM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem _`. Establish `hd : _root_.Formalism.L2.DIV.detTwK lam g ∈ K₀`. Rewrite using `[_root_.Formalism.L2.DIV.detTw_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `exact prod_mem fun τ _ => by first | exact pow_mem (hdet τ) _ | exact zpow_mem (hdet τ) _`. Unfold `_root_.Formalism.L2.DIV.actP _root_.Formalism.L2.DIV.trAct`. Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply, MvPolynomial.smul_eq_C_mul]`. Use `mul_mem ⟨MvPolynomial.C ⟨_, hd⟩, by simp⟩ (blockAct_map_mem_range_map_of_entries_mem K₀ _ ?_ P)` and prove the remaining obligations. Introduce `τ a b`.
-
-Conclude with `hg τ b a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma actP_mem_range_map_of_entries_mem {K : Type} [Field K] (K₀ : Subfield K) {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) (g : ι → GL (Fin n) K)
@@ -67,19 +65,17 @@ private lemma actP_mem_range_map_of_entries_mem {K : Type} [Field K] (K₀ : Sub
 open NumberField in
 
 /- English proof (translation)
-Introduce `E K ι _ _ _ _ _ n emb K₀ lam hemb γ i j`. Establish `hbase : ∀ l, _root_.Formalism.L2.DIV.bVVfun K lam l ∈ (MvPolynomial.map K₀.subtype).range`. Introduce `l`. Take `⟨P, hP⟩` from `_root_.Formalism.L2.DIV.bVVfun_int K lam l`. Rewrite using `[hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.Formalism.L2.DIV.fk_int_mem K₀ P`. Establish `key : ∀ x : _root_.Formalism.L2.DIV.VV K lam, (x : _root_.Formalism.L2.DIV.Pol K ι n) ∈ (MvPolynomial.map K₀.subtype).range → (_root_.Formalism.L2.DIV.bVV K lam).repr x i ∈ K₀`. Introduce `x hx`. Use `_root_.Formalism.L2.DIV.fk_descent K₀ (_root_.Formalism.L2.DIV.bVVfun K lam) (_root_.Formalism.L2.DIV.bVVfun_spec K lam).1 hbase (fun l => (_root_.Formalism.L2.DIV.bVV K lam).repr x l) ?_ i` and prove the remaining obligations. Establish `hs` using `congrArg Subtype.val ((_root_.Formalism.L2.DIV.bVV K lam).sum_repr x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, _root_.Formalism.L2.DIV.bVV_coe] at hs`. Rewrite using `[hs]`. Conclude with `hx`. Establish `hj : ((_root_.Formalism.L2.DIV.bVV K lam j : _root_.Formalism.L2.DIV.VV K lam) : _root_.Formalism.L2.DIV.Pol K ι n) ∈ (MvPolynomial.map K₀.subtype).range`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[_root_.Formalism.L2.DIV.bVV_coe]`. Conclude with `hbase j`. Prove the components needed by the constructor for the conclusion. Apply `key` to reduce the goal to its premises. Unfold `_root_.Formalism.L2.DIV.rhoV`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.comp_apply, _root_.Formalism.L2.DIV.rhoK_coe]`. Use `actP_mem_range_map_of_entries_mem K₀ lam _ ?_ hj` and prove the remaining obligations. Introduce `τ a b`. Rewrite using `[_root_.Formalism.L2.DIV.embGL_coe]`. Conclude with `hemb τ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `key` to reduce the goal to its premises. Unfold `_root_.Formalism.L2.DIV.rhoVr`. Rewrite using `[MonoidHom.comp_apply, _root_.Formalism.L2.DIV.rhoK_coe]`. Use `actP_mem_range_map_of_entries_mem K₀ lam _ ?_ hj` and prove the remaining obligations. Introduce `τ a b`.
-
-Rewrite using `[MonoidHom.comp_apply, _root_.Formalism.L2.DIV.invTrK_coe, _root_.Formalism.L2.DIV.embGL_inv, _root_.Formalism.L2.DIV.embGL_coe]`. Conclude with `hemb τ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.coefAction_repr_mem_subfield : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Fintype ι] {n : ℕ} (emb : ι → E →+* K) (K₀ : Subfield K) (lam : ι → _root_.Formalism.BasicNotions.DomWeight n), (∀ τ x, emb τ x ∈ K₀) → ∀ (g : GL (Fin n) E) i j, (_root_.Formalism.L2.DIV.bVV K lam).repr (_root_.Formalism.L2.DIV.rhoV emb lam g (_root_.Formalism.L2.DIV.bVV K lam j)) i ∈ K₀ ∧ (_root_.Formalism.L2.DIV.bVV K lam).repr (_root_.Formalism.L2.DIV.rhoVr emb lam g (_root_.Formalism.L2.DIV.bVV K lam j)) i ∈ K₀ := by
   intro E K ι _ _ _ _ _ n emb K₀ lam hemb γ i j

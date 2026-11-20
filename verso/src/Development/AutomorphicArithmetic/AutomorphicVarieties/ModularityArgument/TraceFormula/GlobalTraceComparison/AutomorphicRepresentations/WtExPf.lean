@@ -6,9 +6,9 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComp
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC
 
 /- English proof (translation)
-Introduce `E _ _ _ n π hreg`. Establish `h : ∀ φ : E →+* ℂ, ∃ lam : DomWeight n, π.HasInfChar φ (infOfWeight lam)` using `fun φ => by`. Establish `hm : π.HasInfChar φ ((CG.mk π).infChar φ)` using `GlobalTheory.CuspRep.hasInfChar_infChar_of_commute E n (fun τ u o => GlobalTheory.SpehInfChar.cap_commute_act τ u o) (CG.mk π) φ`. Take `⟨lam, hl⟩` from `DiscreteGroups.T1.G.reg_of hreg hm`. Conclude with `⟨lam, hl ▸ hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose lamE hlam using h`. Conclude with `⟨lamE, hlam⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.wtEx_pf :
     WtEx := by

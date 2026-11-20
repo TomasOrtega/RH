@@ -9,15 +9,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `set π : W →* D ⧸ V := (QuotientGroup.mk' V).comp i with hπdef`. Establish `hopen : ∀ d : D, IsOpen {y : D | d⁻¹ * y ∈ V}` using `fun d => hV.preimage (continuous_mul_left d⁻¹)`. Establish `hπ : Function.Surjective π`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H d`. Take `⟨s, hs⟩` from `hi.exists_mem_open (hopen d) ⟨d, by simp⟩`. Conclude with `⟨s, (QuotientGroup.eq.mpr hs).symm⟩`. Establish `hker : π.ker ≤ χ.ker`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[MonoidHom.mem_ker]`. Apply `hχ` to reduce the goal to its premises. Simplify `hw` using `[hπdef, QuotientGroup.eq_one_iff]`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective π hπ`. Use `⟨((QuotientGroup.lift π.ker χ hker).comp e.symm.toMonoidHom).comp (QuotientGroup.mk' V), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{y : D | x⁻¹ * y ∈ V}, hopen x, by simp, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `: (QuotientGroup.mk' V y) = QuotientGroup.mk' V x` using `(QuotientGroup.eq.mpr hy).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, this]`. Introduce `s`. Establish `h1 : QuotientGroup.mk' V (i s) = e (QuotientGroup.mk s)` using `rfl`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, h1, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem ce_ext {D W B : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [Group W] [Group B]
     (i : W →* D) (hi : DenseRange i) (χ : W →* B) (V : Subgroup D) [V.Normal] (hV : IsOpen (V : Set D))
@@ -50,7 +50,7 @@ private theorem ce_ext {D W B : Type} [Group D] [TopologicalSpace D] [IsTopologi
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨s, hs⟩` from `hi.exists_mem_open ((hf.isOpen_fiber (f x)).inter (hg.isOpen_fiber (g x))) ⟨x, rfl, rfl⟩`. Establish `h1 : f (i s) = f x` using `hs.1`. Establish `h2 : g (i s) = g x` using `hs.2`. Rewrite using `[← h1, ← h2, h s]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ce_eq {D W Y : Type} [TopologicalSpace D] {i : W → D} (hi : DenseRange i) {f g : D → Y}
     (hf : IsLocallyConstant f) (hg : IsLocallyConstant g) (h : ∀ s, f (i s) = g (i s)) : f = g := by
@@ -61,25 +61,23 @@ private theorem ce_eq {D W Y : Type} [TopologicalSpace D] {i : W → D} (hi : De
   rw [← h1, ← h2, h s]
 
 /- English proof (translation)
-Establish `key : ∀ x y : R, (∀ N, Ideal.Quotient.mk (I ^ N) x = Ideal.Quotient.mk (I ^ N) y) → x = y`. Introduce `x y h`. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := I)]`. Introduce `n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq.mp (h n)`. Use `choose φ hφc hφs using H`. Set `r : ℕ → D → R` to `fun n g => Function.surjInv Ideal.Quotient.mk_surjective (φ n g)`. Establish `hr : ∀ n g, Ideal.Quotient.mk (I ^ n) (r n g) = φ n g` using `fun n g => Function.surjInv_eq Ideal.Quotient.mk_surjective (φ n g)`. Establish `hcomp : ∀ m n, m ≤ n → ∀ g, Ideal.Quotient.mk (I ^ m) (r n g) = φ m g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m n hmn`. Establish `hle : I ^ n ≤ I ^ m` using `Ideal.pow_le_pow_right hmn`. Establish `hfun : (fun g => Ideal.Quotient.mk (I ^ m) (r n g)) = fun g => Ideal.Quotient.factor hle (φ n g)`. Use function extensionality and compare the values at `g`. Rewrite using `[← hr n g, Ideal.Quotient.factor_mk]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `ce_eq hi (f := fun g => Ideal.Quotient.factor hle (φ n g)) (g := fun g => φ m g) ((hφc n).comp _) (hφc m) (fun s => by show Ideal.Quotient.factor hle (φ n (i s)) = φ m (i s)`. Rewrite using `[hφs n s, hφs m s, Ideal.Quotient.factor_mk])`. Introduce `g`. Conclude with `(congrFun hfun g).trans (congrFun h2 g)`. Establish `hlim : ∀ g, ∃ L : R, ∀ n, Ideal.Quotient.mk (I ^ n) L = φ n g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := I) (fun n => r n g) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Apply `Ideal.Quotient.eq.mp` to reduce the goal to its premises. Rewrite using `[hcomp m m le_rfl, hcomp m n hmn])`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `hL n` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[← hr n g]`. Conclude with `(Ideal.Quotient.eq.mpr this).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose f hf using hlim`. Establish `fmul : ∀ a b, f (a * b) = f a * f b` using `fun a b => key _ _ fun N => by rw [map_mul, hf, hf, hf, map_mul]`. Establish `f1 : f 1 = 1` using `key _ _ fun N => by rw [hf, map_one, map_one]`. Set `u : D → Rˣ` to `fun g => ⟨f g, f g⁻¹, by rw [← fmul, mul_inv_cancel, f1], by rw [← fmul, inv_mul_cancel, f1]⟩`. Set `ψ : D →* Rˣ` to `{ toFun := u, map_one' := Units.ext f1, map_mul' := fun a b => Units.ext (fmul a b) }`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψv : ∀ g, ((ψ g : Rˣ) : R) = f g` using `fun g => rfl`. Establish `hψc : UpperTheory.V.Alg.AdicCont I (fun g => (ψ g : R))`. Introduce `N`. Establish `: (fun g => Ideal.Quotient.mk (I ^ N) ((ψ g : Rˣ) : R)) = fun g => φ N g` using `funext fun g => hf g N`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hφc N`. Establish `hψs : ∀ s, ψ (i s) = χ s` using `fun s => Units.ext (key _ _ fun N => by rw [hψv, hf, hφs])`. Use `⟨ψ, ⟨hψc, hψs⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ' ⟨hc, hs⟩`. Use extensionality with `g`.
-
-Use `key _ _ fun N => ?_` and prove the remaining obligations. Establish `h3` using `ce_eq hi (f := fun g => Ideal.Quotient.mk (I ^ N) ((ψ' g : Rˣ) : R)) (g := fun g => Ideal.Quotient.mk (I ^ N) ((ψ g : Rˣ) : R)) (hc N) (hψc N) (fun s => by show Ideal.Quotient.mk (I ^ N) ((ψ' (i s) : Rˣ) : R) = Ideal.Quotient.mk (I ^ N) ((ψ (i s) : Rˣ) : R)`. Rewrite using `[hs s, hψs s])`. Conclude with `congrFun h3 g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ce_lim {D W R : Type} [Group D] [TopologicalSpace D] [Group W] [CommRing R] (I : Ideal R)
     [IsAdicComplete I R] (i : W →* D) (hi : DenseRange i) (χ : W →* Rˣ)
@@ -143,21 +141,17 @@ private theorem ce_lim {D W R : Type} [Group D] [TopologicalSpace D] [Group W] [
   exact congrFun h3 g
 
 /- English proof (translation)
-Establish `hO : IsOpen {σ : Ine (F` using `F) A | χ (ineIncl h σ) = 1} := hχ.isOpen_fiber 1`. Take `⟨O, hOo, hOeq⟩` from `isOpen_induced_iff.mp hO`. Establish `h1O : (1 : G F Ω) ∈ O`. Establish `: (1 : Ine (F` using `F) A) ∈ {σ : Ine (F := F) A | χ (ineIncl h σ) = 1} := by simp`. Rewrite `this` using `[← hOeq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨U, hUO⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hOo h1O`. Use `haveI hUfi : U.toSubgroup.FiniteIndex := U.toOpenSubgroup.finiteIndex_of_finite_quotient`. Establish `he : U.toSubgroup.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hn : 0 < Nat.card B` using `Nat.card_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ζ, hζ⟩` from `GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree F Ω A w h (U.toSubgroup.index * Nat.card B) (Nat.mul_pos (Nat.pos_of_ne_zero he) hn)`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ}) := IntermediateField.adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic ζ).isIntegral`. Establish `hfix` using `IntermediateField.fixingSubgroup_isOpen (IntermediateField.adjoin F {ζ})`. Take `⟨V, hV⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (hfix.inter U.isOpen') ⟨one_mem _, one_mem U.toSubgroup⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨V.toSubgroup, inferInstance, V.isOpen', ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hsV` using `hV hs`. Establish `hsζ : (s : G F Ω) ζ = ζ` using `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hsV.1 ζ (IntermediateField.mem_adjoin_simple_self F ζ)`. Establish `hsU : (s : G F Ω) ∈ U.toSubgroup` using `hsV.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `hζ s hsζ`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) s`. Establish `hfr : χ (frob h) ^ deg s = 1`. Rewrite using `[hm, zpow_mul, zpow_natCast, mul_comm, pow_mul, pow_card_eq_one', one_pow, one_zpow]`. Establish `hpow : ((frob h : Weil h) : G F Ω) ^ deg s ∈ U.toSubgroup`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, zpow_mul, zpow_natCast, pow_mul]`. Conclude with `Subgroup.zpow_mem _ (Subgroup.pow_mem _ (Subgroup.pow_index_mem _ _) _) _`. Establish `hτeq : ineIncl h τ = (frob h ^ deg s)⁻¹ * s` using `eq_inv_mul_of_mul_eq hτ.symm`. Establish `hτU : ((ineIncl h τ : Weil h) : G F Ω) ∈ U.toSubgroup`. Rewrite using `[hτeq, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_zpow]`.
-
-Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hpow) hsU`. Establish `hτ1 : χ (ineIncl h τ) = 1`. Establish `: τ ∈ {σ : Ine (F` using `F) A | χ (ineIncl h σ) = 1} := by`. Rewrite using `[← hOeq]`. Conclude with `hUO hτU`.
-
-Conclude with `this`. Rewrite using `[hτ, map_mul, map_zpow, hfr, hτ1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ce_open {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) {B : Type} [Group B] [Finite B] (χ : Weil h →* B)
@@ -207,17 +201,15 @@ private theorem ce_open {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   rw [hτ, map_mul, map_zpow, hfr, hτ1, one_mul]
 
 /- English proof (translation)
-Introduce `_ F Ω _ _ _ _ _ A w h a ha R _ _ _ _ _ ξ hξ`. Use `set i : Weil h →* Dec (F := F) A := Subgroup.inclusion (Weil_le_Dec h) with hi_def`. Establish `hi : DenseRange i` using `UpperTheory.weil_group_dense_in_galois_group F Ω w A h`. Use `set χ : Weil h →* Rˣ := ξ.comp a with hχ_def`. Establish `H : ∀ N : ℕ, ∃ ψ : Dec (F` using `F) A →* R ⧸ IsLocalRing.maximalIdeal R ^ N, IsLocallyConstant ψ ∧ ∀ s, ψ (i s) = Ideal.Quotient.mk _ (χ s : R) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `N`. Use `haveI : Finite (R ⧸ IsLocalRing.maximalIdeal R) := (inferInstance : Finite (IsLocalRing.ResidueField R))`. Use `haveI : Finite (R ⧸ IsLocalRing.maximalIdeal R ^ N) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) N`. Set `χN : Weil h →* (R ⧸ IsLocalRing.maximalIdeal R ^ N)ˣ` to `(Units.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ N)).toMonoidHom).comp χ`. Establish `hloc : IsLocallyConstant fun σ : Ine (F` using `F) A => χN (ineIncl h σ) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `IsLocallyConstant.desc _ (fun u : (R ⧸ IsLocalRing.maximalIdeal R ^ N)ˣ => (u : R ⧸ IsLocalRing.maximalIdeal R ^ N)) ?_ Units.val_injective` and prove the remaining obligations. Conclude with `(hξ N).comp_continuous ha.cont`. Take `⟨V, hVn, hVo, hV⟩` from `ce_open h χN hloc`. Set `V' : Subgroup (Dec (F` to `F) A) := V.comap (Dec (F := F) A).subtype`. Use `haveI : V'.Normal := hVn.comap _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hV'o : IsOpen (V' : Set (Dec (F` using `F) A)) := hVo.preimage continuous_subtype_val`. Take `⟨ψ, hψl, hψ⟩` from `ce_ext i hi χN V' hV'o (fun s hs => hV s hs)`. Use `⟨(Units.coeHom _).comp ψ, hψl.comp (fun u : (R ⧸ IsLocalRing.maximalIdeal R ^ N)ˣ => (u : R ⧸ IsLocalRing.maximalIdeal R ^ N)), fun s => ?_⟩` and prove the remaining obligations. Use `show ((ψ (i s) : (R ⧸ IsLocalRing.maximalIdeal R ^ N)ˣ) : R ⧸ IsLocalRing.maximalIdeal R ^ N) = _`. Rewrite using `[hψ s]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨ψ, ⟨hψc, hψs⟩, huniq⟩` from `ce_lim (IsLocalRing.maximalIdeal R) i hi χ H`. Use `⟨ψ, ⟨hψc, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `s g hgs _`. Establish `hg : g = i s` using `Subtype.ext hgs`.
-
-Rewrite using `[hg, hψs]`. Both sides reduce to the same expression. Introduce and unpack `ψ' ⟨hc, hon⟩`. Conclude with `huniq ψ' ⟨hc, fun s => hon s (i s) rfl trivial⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.charExt :
     GlobalArtinReciprocity → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion F)ˣ), IsLocalArtin h a → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [Finite (IsLocalRing.ResidueField R)] (ξ : (w.adicCompletion F)ˣ →* Rˣ), UpperTheory.V.Alg.AdicCont (IsLocalRing.maximalIdeal R) (fun x => (ξ x : R)) → ∃! ψ : ↥(Dec (F := F) A) →* Rˣ, UpperTheory.V.Alg.AdicCont (IsLocalRing.maximalIdeal R) (fun g => (ψ g : R)) ∧ OnArt a ψ Set.univ ξ := by

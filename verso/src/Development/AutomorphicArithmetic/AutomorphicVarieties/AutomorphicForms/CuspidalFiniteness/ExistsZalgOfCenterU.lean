@@ -20,11 +20,11 @@ def toArch (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) : TR
   Submodule.inclusion fun φ h => UpperTheory.isArchSmooth_of_contDiff_chart F a φ h
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[uAction_ι_apply]`. Use `set Y := (isExpLieAlgebra F a).ofLie (Fb.lieEq F a X)`. Establish `h1` using `(isExpLieAlgebra F a).hasDerivAt_rightDeriv ((toArch F a φ).2 g) Y 1`. Set `T : ArchMatrix F a →ₗ[ℝ] TR.Lie F a` to `{ toFun := fun Z => TR.toL ((Fb.matEq F a).symm Z) map_add' := fun _ _ => map_add (Fb.matEq F a).symm _ _ map_smul' := fun _ _ => map_smul (Fb.matEq F a).symm _ _ }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (Fb.matEq F a (Matrix.of X)) 0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h3`. Establish `h4` using `((LinearMap.toContinuousLinearMap T).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h3).congr_deriv (show _ = X from (Fb.matEq F a).symm_apply_apply (Matrix.of X))`. Establish `h2` using `TR.hasDerivAt_curve φ g (fun t => (Fb.grpEq F a).symm ((isExpLieAlgebra F a).expG (t • Y))) X (by simp) h4`. Use `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [archSlice_apply, one_mul, ← Fb.infEmb_grpEq, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uAction_lieEq (X : TR.Lie F a) (φ : TR.Sm F a) :
     uAction (UniversalEnvelopingAlgebra.ι ℝ (Fb.lieEq F a X)) (toArch F a φ) = toArch F a (TR.lie F a X φ) := by
@@ -49,9 +49,9 @@ theorem uAction_lieEq (X : TR.Lie F a) (φ : TR.Sm F a) :
 open Classical in
 
 /- English proof (translation)
-Set `e : TR.Lie F a ≃ₗ[ℝ] (InfinitePlace F × Fin a × Fin a → ℝ)` to `{ toFun := fun X l => X l.2.1 l.2.2 l.1 invFun := fun f i j v => f (v, i, j) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `⟨Module.Basis.ofEquivFun e, fun ⟨v, i, j⟩ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i' j' v'`. Simplify using `only [Module.Basis.coe_ofEquivFun]`. Express the relevant statement in the definitionally equal form `(Pi.single (v, i, j) (1 : ℝ) : InfinitePlace F × Fin a × Fin a → ℝ) (v', i', j') = Matrix.single i j (Pi.single v (1 : ℝ) : TR.Rinf F) i' j' v'`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `by_cases hi : i = i' <;> by_cases hj : j = j' <;> by_cases hv : v = v' <;>`. Simplify using `[Pi.single_apply, Matrix.single_apply, hi, hj, hv, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem exists_stdBasis (F : Type) [Field F] [NumberField F] (a : ℕ) :
     ∃ b : Module.Basis (InfinitePlace F × Fin a × Fin a) ℝ (TR.Lie F a),
@@ -71,19 +71,19 @@ theorem exists_stdBasis (F : Type) [Field F] [NumberField F] (a : ℕ) :
     simp [Pi.single_apply, Matrix.single_apply, hi, hj, hv, eq_comm]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_stdBasis F a`. Establish `hm : ∀ (v v' : InfinitePlace F) (i j k l : Fin a), Matrix.of (b (v, i, j)) * Matrix.of (b (v', k, l)) = if j = k ∧ v = v' then Matrix.of (b (v, i, l)) else 0`. Introduce `v v' i j k l`. Simplify using `only [hb, Equiv.apply_symm_apply]`. Distinguish the cases in `h : j = k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same]`. Distinguish the cases in `hv : v = v'`. Substitute `hv` using the available equality. Simplify using `[← Pi.single_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (Pi.single v 1 * Pi.single v' 1 : TR.Rinf F) = 0`. Apply the tactic sequence `funext w; by_cases h1 : w = v <;> simp [Pi.single_apply, h1, hv]`. Simplify using `[this, hv]`. Simplify using `[Matrix.single_mul_single_of_ne _ _ _ _ h, h]`. Establish `h` using `UpperTheory.map_center_envelopingProductGL_mem_capelliAlgebra _ _ a (b.map (Fb.lieEq F a)) (fun v i j k l => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Module.Basis.map_apply, ← Fb.lieEq_lie, hm, map_sub, and_true]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> first | rfl | exact map_zero _)`. Use the proof step `(fun v v' hv i j k l => by`. Simplify using `only [Module.Basis.map_apply, ← Fb.lieEq_lie, hm, hv, hv.symm, and_false, if_false, sub_self, map_zero])`. Use `_ (uAction (K := F) (n := a)) z hz`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `S : Subalgebra ℂ (Module.End ℂ (archSmooth F a) × Module.End ℂ (TR.Sm F a))` to `{ carrier := {p | ∀ φ, p.1 (toArch F a φ) = toArch F a (p.2 φ)} mul_mem' := fun {x y} hx hy φ => (congrArg x.1 (hy φ)).trans (hx _) add_mem' := fun {x y} hx hy φ => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, LinearMap.add_apply, map_add, hx φ, hy φ]`. Use the proof step `algebraMap_mem' := fun c φ => (map_smul (toArch F a) c φ).symm }`. Establish `hle : capAlg (fun v i j => uAction (UniversalEnvelopingAlgebra.ι ℝ (b.map (Fb.lieEq F a) (v, i, j)))) ≤ (S ⊓ (TR.Zalg F a).comap (AlgHom.snd ℂ _ _)).map (AlgHom.fst ℂ _ _)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨v, u, rfl⟩`. Set `E : Fin a → Fin a → S` to `fun i j => ⟨(uAction (UniversalEnvelopingAlgebra.ι ℝ (b.map (Fb.lieEq F a) (v, i, j))), TR.Eop v i j), fun φ => by`. Rewrite using `[Module.Basis.map_apply, hb]`. Conclude with `uAction_lieEq _ φ⟩`. Use `⟨(Formalism.REAL.qdet E u : S), ⟨(Formalism.REAL.qdet E u).2, ?_⟩, map_qdet ((AlgHom.fst ℂ _ _).comp S.val) E u⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Algebra.subset_adjoin ⟨v, u - ((a : ℂ) - 1) / 2, ?_⟩` and prove the remaining obligations. Rewrite using `[TR.cap, sub_add_cancel]`. Conclude with `map_qdet ((AlgHom.snd ℂ _ _).comp S.val) E u`. Take `⟨p, ⟨h1, h2⟩, h3⟩` from `hle h`. Conclude with `⟨p.2, h2, fun φ => h3 ▸ h1 φ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_Zalg_of_centerU {z : UEnv F a} (hz : z ∈ (isExpLieAlgebra F a).centerU) :
     ∃ z' ∈ TR.Zalg F a, ∀ φ, uAction z (toArch F a φ) = toArch F a (z' φ) := by
@@ -130,7 +130,7 @@ theorem exists_Zalg_of_centerU {z : UEnv F a} (hz : z ∈ (isExpLieAlgebra F a).
   exact ⟨p.2, h2, fun φ => h3 ▸ h1 φ⟩
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm F a) => z φ) '' TR.Zalg F a)).map (toArch F a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `exists_Zalg_of_centerU hz`. Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isZFinite_toArch {φ : TR.Sm F a}
     (h : FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm F a) => z φ) '' TR.Zalg F a))) :
@@ -142,7 +142,7 @@ theorem isZFinite_toArch {φ : TR.Sm F a}
   exact ⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩
 
 /- English proof (translation)
-The claim follows from `h.left isSmooth := ⟨(toArch F a φ).2, fun g => Filter.eventually_of_mem (h.level.mem_nhds (show TR.finRep F a 1 φ = φ by rw [map_one]; rfl)) fun k hk => by rw [Fb.finEmb_eq]; exact congrFun (congrArg Subtype.val hk) g⟩ isKFinite := UpperTheory.isKFinite_totallyRealModel_of_isKFin …`.
+A detailed English derivation is pending.
 -/
 theorem isAutomorphicForm_of {φ : TR.Sm F a} (h : TR.IsAutForm φ) : IsAutomorphicForm φ.1 where
   isLeftInvariant := h.left
@@ -154,21 +154,21 @@ theorem isAutomorphicForm_of {φ : TR.Sm F a} (h : TR.IsAutForm φ) : IsAutomorp
   hasModerateGrowth := UpperTheory.moderateGrowth_totallyRealModel_of_moderateGrowth F a φ h.left h.level h.growth
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAutomorphicForm_of h.1, UpperTheory.constantTerm_eq_zero_of_isCuspidal F a φ.1 h.1.left (isAutomorphicForm_of h.1).continuous h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cuspForms_of (φ : TR.Sm F a) (h : TR.IsCuspForm φ) : φ.1 ∈ cuspForms F a :=
   ⟨isAutomorphicForm_of h.1, UpperTheory.constantTerm_eq_zero_of_isCuspidal F a φ.1 h.1.left (isAutomorphicForm_of h.1).continuous h.2⟩
 
 /- English proof (translation)
-Set `e : ℝ` to `UnitaryAdmissible.centralExp F a`. Set `S : Submodule ℂ (cuspForms F a)` to `LinearMap.ker (Polynomial.aeval (uActionCusp F a (laplacianU F a (b.map (Fb.lieEq F a)))) P) ⊓ LinearMap.ker (lieActionCusp F a (UnitaryAdmissible.centralZ F a) - ((e : ℂ) * c) • 1) ⊓ ⨅ u : L, LinearMap.ker (finRepCusp F a u.1 - 1)`. Establish `hS : FiniteDimensional ℂ S` using `UnitaryAdmissible.finiteDimensional_of_eigen (b.map (Fb.lieEq F a)) P hP hd ((e : ℂ) * c) (L.subgroupOf (AdelicGLn.integralFiniteGL F a)) (hL.preimage continuous_subtype_val) S fun φ hφ => ⟨hφ.1.1, sub_eq_zero.1 hφ.1.2, fun u hu => sub_eq_zero.1 ((Submodule.mem_iInf _).1 hφ.2 ⟨u. …`. Set `incl : cuspForms F a →ₗ[ℂ] archSmooth F a` to `Submodule.inclusion (cuspForms_le_automorphicForms.trans automorphicForms_le_archSmooth)`. Establish `hi : Function.Injective incl` using `Submodule.inclusion_injective _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj : Function.Injective (toArch F a)` using `Submodule.inclusion_injective _`. Use `UnitaryAdmissible.finiteDimensional_of_map_mem (E := S.map incl) (toArch F a) (fun φ hφ => ?_) fun φ _ h => hj (h.trans (map_zero _).symm)` and prove the remaining obligations. Use `(Submodule.span_le (p := (S.map incl).comap (toArch F a))).2 ?_ hφ` and prove the remaining obligations. Introduce and unpack `φ ⟨h1, h2, h3, h4⟩`. Establish `hψ : incl ⟨φ.1, hc φ h1⟩ = toArch F a φ` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨φ.1, hc φ h1⟩, ⟨⟨hi ?_, sub_eq_zero.2 (hi ?_)⟩, (Submodule.mem_iInf _).2 fun u => sub_eq_zero.2 ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[map_aeval_apply_of_intertwine incl (B := uAction (laplacianU F a (b.map (Fb.lieEq F a)))) (fun _ => rfl), hψ, ← map_aeval_apply_of_intertwine (toArch F a) (A := ∑ l, TR.lie F a (b l) * TR.lie F a (b l)), h3, map_zero, map_zero]`. Introduce `m`. Simplify using `only [laplacianU, map_sum, map_mul, LinearMap.sum_apply, Module.End.mul_apply, Module.Basis.map_apply, uAction_lieEq]`. Establish `hz : UnitaryAdmissible.centralZ F a = Fb.lieEq F a (e • TR.oneL F a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[map_smul, UnitaryAdmissible.coe_centralZ, Algebra.algebraMap_eq_smul_one, ← Fb.lieEq_oneL]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `uAction (UniversalEnvelopingAlgebra.ι ℝ (UnitaryAdmissible.centralZ F a)) (toArch F a φ) = toArch F a (((e : ℂ) * c) • φ)`. Rewrite using `[hz, uAction_lieEq, map_smul, LinearMap.smul_apply, h4, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finEmb F a u.1) = φ.1 g`. Rewrite using `[Fb.finEmb_eq]`. Conclude with `congrFun (congrArg Subtype.val (h2 u.1 u.2)) g`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenFinite_of (hc : ∀ φ : TR.Sm F a, TR.IsCuspForm φ → φ.1 ∈ cuspForms F a) (ι : Type) [Fintype ι]
     (b : Module.Basis ι ℝ (TR.Lie F a)) (P : Polynomial ℂ) (hP : P.Monic) (hd : 0 < P.natDegree) (c : ℂ)

@@ -13,21 +13,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.NonzeroTypeTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h rc hrc n χ ho`. Take `⟨a, ha, ε, -, H⟩` from `hrc`. Take `⟨μ, hμs, hμ⟩` from `a1 E Ω A w h a ha n χ ho`. Take `⟨G, σ, hG⟩` from `gr (w.adicCompletion E) n μ hμs`. Establish `hcond : ∀ π : SmIrr (GL (Fin n) (w.adicCompletion E)), Cond h rc χ ho π ↔ IsTwSphProd π.ρ G.d G.hd G.μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `π`. Establish `e` using `gm E Ω A w h a ha ε rc H P.loc G.s G.d G.μ G.smooth (a6 gi E Ω A w h a ha n G) (IrrGL.of π.ρ π.smooth π.irred) G.hd`. Rewrite using `[← a5 _ n π.V π.ρ π.smooth π.irred G.s G.d G.hd G.μ, ← e]`. Unfold `Cond`. Use `and_congr_right fun _ => forall_congr' fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[a3 E Ω A w h a ha n χ ho μ hμ G σ hG s]`. Take `⟨hJK, h1J, hmul, hinv, hne, hKCo, h1KC, hKCJ, hlam1, hst, hfin, hv0m, hv00, hv0e⟩` from `cp (w.adicCompletion E) n G`. Establish `hK : KO (w.adicCompletion E) (Fin n) = GlobalTheory.LFun.KGL w n` using `SphCompletion.KO_completion w n`. Rewrite using `[← hK]`. Set `J : Subgroup ↥(KO (w.adicCompletion E) (Fin n))` to `{ carrier := {j | (j : GL (Fin n) (w.adicCompletion E)) ∈ G.JSet} mul_mem' := fun {x y} hx hy => (hmul _ hx _ hy).1 one_mem' := h1J inv_mem' := fun {x} hx => hinv _ hx }`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `lam : ↥J →* ℂˣ` to `{ toFun := fun j => Units.mk0 (G.lam ((j : ↥(KO (w.adicCompletion E) (Fin n))) : GL (Fin n) (w.adicCompletion E))) (hne _ j.2) map_one' := Units.ext (by simpa using hlam1 1 h1KC) map_mul' := fun x y => Units.ext (by simpa using (hmul _ x.2 _ y.2).2) }`. Establish `hlamv : ∀ j : ↥J, ((lam j : ℂˣ) : ℂ) = G.lam ((j : ↥(KO (w.adicCompletion E) (Fin n))) : GL (Fin n) (w.adicCompletion E))` using `fun _ => rfl`. Take `⟨m, V0, e, he, hre, heq, hsm⟩` from `a4 _ G.V0sp hfin (fun φ hφ k' => hst φ hφ k') (a7 _ n G hKCo h1KC)`. Take `⟨v0, hv0⟩ : G.v0 ∈ LinearMap.range e` from `hre ▸ hv0m`. Establish `hU : IsOpen {j : ↥(KO (w.adicCompletion E) (Fin n)) | (j : GL (Fin n) (w.adicCompletion E)) ∈ KC _ n G.lev}` using `hKCo.preimage continuous_subtype_val`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨J, lam, m, V0, v0, ?_, ?_, hsm, fun h0 => hv00 (by rw [← hv0, h0, map_zero]), fun j => he ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_of_mem_nhds J (Filter.mem_of_superset (hU.mem_nhds (show (1 : ↥(KO (w.adicCompletion E) (Fin n))) ∈ _ from h1KC)) fun j hj => hKCJ hj)`. Conclude with `Subgroup.isOpen_of_mem_nhds lam.ker (Filter.mem_of_superset ((hU.preimage continuous_subtype_val).mem_nhds (show (1 : ↥J) ∈ _ from h1KC)) fun j hj => MonoidHom.mem_ker.2 (Units.ext (by`. Rewrite using `[hlamv]`. Conclude with `hlam1 _ hj)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq, hv0, hv0e _ j.2, map_smul, hv0, hlamv]`. Introduce and unpack `π ⟨x, hx, hxj⟩`. Rewrite using `[hcond]`. Use `cm P _ n G π.V π.ρ π.smooth π.irred ⟨x, hx, fun g hg => ?_⟩` and prove the remaining obligations. Use `hxj ⟨⟨g, hJK hg⟩, hg⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hlamv]`. Then use the resulting hypothesis. Introduce `π hc`. Rewrite `hc` using `[hcond]`. Take `⟨f, hf, hfeq⟩` from `ge _ n G π.V π.ρ hc`. Set `e' : (Fin m → ℂ) →ₗ[ℂ] ↥G.V0sp` to `LinearMap.codRestrict G.V0sp e fun v => hre ▸ LinearMap.mem_range_self e v`.
-
-Use `⟨f ∘ₗ e', hf.comp fun v v' hvv => he (congrArg Subtype.val hvv), fun κ v => ?_⟩` and prove the remaining obligations. Conclude with `hfeq κ (e' v) (e' (V0 κ v)) (heq κ v)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem typeData_of (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) (a1 : ArtinTransferDecompositionCharacter) (a3 : LocalArtinCharacterProduct) (a4 : FiniteDimensionalTranslationCoordinates) (a5 : TwistedSphericalRepresentative) (a6 : DistinctOnUnitsDistinctOnInertia)
     (a7 : SmoothVectorsFixedByCongruence) (gm : GMain) (ge : GEmb) (gi : ArtinInertiaProp) (cm : GlobalTheory.Mem.LiteralAutomorphy.LitN → Need_CMain) (cp : Need_CProps) (gr : Need_Grp) :
@@ -81,7 +79,7 @@ theorem typeData_of (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) (a1 : ArtinTra
     exact hfeq κ (e' v) (e' (V0 κ v)) (heq κ v)
 
 /- English proof (translation)
-The claim follows from `nz_of_typeData k2 k3 k4 (typeData_of P a1 a3 a4 a5 a6 a7 gm ge gi cm cp gr)`.
+A detailed English derivation is pending.
 -/
 theorem nz_of_steps (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) (k2 : SmoothRepIrreducibleSubcontainingVector) (k3 : SmoothRepMinimalSubrepresentation) (k4 : SchurInjectiveFromIrreducible) (a1 : ArtinTransferDecompositionCharacter) (a3 : LocalArtinCharacterProduct)
     (a4 : FiniteDimensionalTranslationCoordinates) (a5 : TwistedSphericalRepresentative) (a6 : DistinctOnUnitsDistinctOnInertia) (a7 : SmoothVectorsFixedByCongruence) (gm : GMain) (ge : GEmb) (gi : ArtinInertiaProp)

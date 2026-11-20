@@ -31,9 +31,9 @@ def TruncKer : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommR
     pull _ (sch.map (Spec.map φ')) (tw q i) n x = 0 → pull _ (sch.map (Spec.map e)) (tw q i) n x = 0 → x = 0
 
 /- English proof (translation)
-Introduce `hH q _ i n A Y φ hq P hpush het hlow hcok D d hD hpts Y' w φ' hpo`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨E, e, Y'', u, φ'', he, hs, hE, hpo', hxE⟩` from `hK hH q i n φ hq P hpush het hlow D d hD hpts Y' w φ' hpo x hx`. Establish `hptsE : LocPts q i φ (d ≫ e)` using `hP hH q i φ d e hq hpts he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpoE : IsPushout φ (d ≫ e) (w ≫ u) φ''` using `hpo.paste_vert hpo'`. Conclude with `hT hH q i n φ hq P hpush het hlow D d hD Y' w φ' hpo E e Y'' u φ'' he hs hE hpo' (hcok D d hD hpts Y' w φ' hpo) (hcok E (d ≫ e) hE hptsE Y'' (w ≫ u) φ'' hpoE) x hx hxE`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem KerLoc_of (hK : KillKer) (hP : PtsEt) (hT : TruncKer) : KerLoc := by
   intro hH q _ i n A Y φ hq P hpush het hlow hcok D d hD hpts Y' w φ' hpo

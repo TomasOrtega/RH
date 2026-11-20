@@ -20,7 +20,7 @@ variable {D : D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Take `⟨h, hmk⟩` from `hrep`. Establish `hGF` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' F0 t.lam (hrows.1 t.lam t.mem)).1`. Express the relevant statement in the definitionally equal form `_ = Gt t.lam (lf D F0) (PD D t.lam (lf D F0) u') t.cls`. Rewrite using `[← hmk]`. Conclude with `(Gt_mk hGF ⟨F', h⟩).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gval_eq_G (hrows : IsRowReps D F0 what₂) {t : Term D u u' F0 what₂}
     {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} (hrep : Rep t.lam (lf D F0) (PD D t.lam (lf D F0) u') t.cls F') :
@@ -32,7 +32,7 @@ theorem gval_eq_G (hrows : IsRowReps D F0 what₂) {t : Term D u u' F0 what₂}
   exact (Gt_mk hGF ⟨F', h⟩).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F', hN.1, hG, ⟨L, U, hN.2.2.1, hN.2.2.2.1, hN.2.2.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem atPt_of_normRep {t : Term D u u' F0 what₂} {w : Point D.host.E (D.R.rS + 1)}
     {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {L U : MatR D} (hN : NormRep t w F' L U)
@@ -40,11 +40,11 @@ theorem atPt_of_normRep {t : Term D u u' F0 what₂} {w : Point D.host.E (D.R.rS
   ⟨F', hN.1, hG, ⟨L, U, hN.2.2.1, hN.2.2.2.1, hN.2.2.2.2⟩⟩
 
 /- English proof (translation)
-Establish `hex : t.relevant ∧ t.generic ∧ ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × MatR D × MatR D, NormRep t x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨hr, hg, ⟨(w, F', L, U), hN⟩⟩`. Unfold `vRdef`. Rewrite using `[dif_pos hex]`. Establish `hx` using `hex.2.2.choose_spec`. Use `set x := hex.2.2.choose with hxdef`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGx : Gval (lf D F0) x.2.1 ≠ 0`. Rewrite using `[gval_eq_G hrows hx.1, ← gval_eq_G hrows hN.1]`. Conclude with `hG`. Establish `hw : x.1 = w` using `cell_point_unique_of_term_fun (Formalism.L2.SG.Closed.TermFun_holds D u u') hrows t x.1 w (atPt_of_normRep hx hGx) (atPt_of_normRep hN hG)`. Establish `hx' : NormRep t w x.2.1 x.2.2.1 x.2.2.2` using `hw ▸ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : volIdx D u u' F0 what₂ δ M t x.1 x.2.1 x.2.2.1 = volIdx D u u' F0 what₂ δ M t w x.2.1 x.2.2.1` using `by rw [hw]`. Rewrite using `[e1]`. Conclude with `hV δ M hAg t w x.2.1 F' x.2.2.1 x.2.2.2 L U hr hg hx' hGx hN hG`.
+A detailed English derivation is pending.
 -/
 theorem vRdef_eq_of (hV : Formalism.L2.SG.Pf.RelativeIndexFlags.VolumeIndexRepresentationNonzero D u u' F0 what₂) (hrows : IsRowReps D F0 what₂)
     (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
@@ -70,9 +70,9 @@ theorem vRdef_eq_of (hV : Formalism.L2.SG.Pf.RelativeIndexFlags.VolumeIndexRepre
   exact hV δ M hAg t w x.2.1 F' x.2.2.1 x.2.2.2 L U hr hg hx' hGx hN hG
 
 /- English proof (translation)
-Unfold `vRdef`. Use `split_ifs with h`. Establish `hx` using `h.2.2.choose_spec`. Establish `hGx : Gval (lf D F0) h.2.2.choose.2.1 ≠ 0` using `by rw [gval_eq_G hrows hx.1]; exact hG`. Take `⟨h1, h2⟩` from `hFin δ M hAg t _ _ _ _ h.1 h.2.1 hx hGx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `volIdx`. Conclude with `div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero h1)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero h2))`. Conclude with `one_pos`.
+A detailed English derivation is pending.
 -/
 theorem vRdef_pos_of (hFin : Formalism.L2.SG.Pf.RelativeIndexFlags.VolIdxFinP D u u' F0 what₂) (hrows : IsRowReps D F0 what₂)
     (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
@@ -89,7 +89,7 @@ theorem vRdef_pos_of (hFin : Formalism.L2.SG.Pf.RelativeIndexFlags.VolIdxFinP D 
   · exact one_pos
 
 /- English proof (translation)
-Introduce `δ M` and use `Formalism.L2.SG.Pf.StabilizerIndexVolumes.volume_index_finite_of_hyps D u u' F0 what₂ δ M hyps Formalism.L2.SG.Pf.StabilizerIndexVolumes.commens Formalism.L2.SG.Pf.StabilizerIndexVolumes.stClosed (hDel δ M) (Formalism.L2.SG.Pf.StabilizerIndexVolumes.volume_index_a_stable D u u' F …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem volIdxFinP_of (hyps : Formalism.L2.SG.Pf.StabilizerIndexVolumes.Hyps D u u' F0 what₂)
     (hDel : ∀ δ M, Formalism.L2.SG.Pf.StabilizerIndexVolumes.DeltaAE D δ M)
@@ -102,7 +102,7 @@ theorem volIdxFinP_of (hyps : Formalism.L2.SG.Pf.StabilizerIndexVolumes.Hyps D u
     (Formalism.L2.SG.Pf.StabilizerIndexVolumes.volume_index_b_congruence D u u' F0 what₂ δ M)
 
 /- English proof (translation)
-The claim follows from `volume_index_representation_of_data D u u' F0 what₂ hyps.1 hyps.2.1 hyps.2.2.1 hyps.2.2.2.1 hyps.2.2.2.2.1 hyps.2.2.2.2.2 (volIdxFinP_of hyps hDel hAbdd hAcong)`.
+A detailed English derivation is pending.
 -/
 theorem volume_index_representation_of_hyps (hyps : Formalism.L2.SG.Pf.StabilizerIndexVolumes.Hyps D u u' F0 what₂)
     (hDel : ∀ δ M, Formalism.L2.SG.Pf.StabilizerIndexVolumes.DeltaAE D δ M)

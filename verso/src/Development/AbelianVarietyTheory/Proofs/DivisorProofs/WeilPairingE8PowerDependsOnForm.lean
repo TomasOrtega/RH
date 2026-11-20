@@ -24,11 +24,11 @@ open GlobalTheory.PairingOfLam GlobalTheory.DescentPairing GlobalTheory.AdjointO
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hyf : (y ≫ f) ^ n = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`. Establish `hyc : (y ≫ f') ^ n = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`. Establish `hzg : (z ≫ g) ^ n = 1` using `by rw [← MonObj.pow_comp, hz, MonObj.one_comp]`. Take `⟨e', hr⟩` from `WeilCube.exists_isRatio cN n _ _ hyf hzg`. Establish `he'` using `(WeilCube.weilIs_iff cN hG hA hyf hzg hr e').2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(WeilCube.weilIs_iff cN hG hA hyf hzg hr e).2 (unit_ext fun p _ => ?_)` and prove the remaining obligations. Take `⟨t, ht, v⟩` from `exists_gen_lam hG hA cN p₀ hT f' g' n y hyc`. Take `⟨t', ht', v'⟩` from `exists_gen_lam hG hA cN p₀ hT f g n y hyf`. Use `choose J hJ using fun χ : T.left ⟶ A.left => exists_chart N.isLB (χ p)`. Establish `r` using `val_ratio N.isLB N.isLB H _ t ht t' ht' (fst T B).left (WeilCube.surj_fst hG hB T) (lift (𝟙 T) z).left (lift (𝟙 T) (1 : T ⟶ B)).left (by rw [← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, lift_fst_assoc, lift_fst_assoc, MonObj.comp_pow, MonObj.comp_pow, lift_snd, lift_ …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `r` using `[v z e hz he p J hJ, v' z e' hz he' p J hJ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `r'` using `congrArg Additive.ofMul r`. Simplify using `only [ofMul_mul, ofMul_inv] at r'`. Take the linear combination `(norm := abel) r'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weilIs_of_lbIso {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {N : RigLB A}
@@ -57,9 +57,9 @@ theorem weilIs_of_lbIso {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [I
   linear_combination (norm := abel) r'
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `hP.2 B (fun a => 𝟙 B ^ s a)`. Establish `h : ∀ (T : Over S) (x : T ⟶ B) (a : Fin 8), (x ≫ f) ≫ pr a = x ^ s a` using `fun T x a => by`. Rewrite using `[Category.assoc, hf a]`. Conclude with `(map_zpow (PrimPic.preH (G := B) x) _ _).trans (congrArg (· ^ s a) (Category.comp_id x))`. Use `⟨f, isMonHom_of_mul f fun T x y => ?_, h⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hP.2 T fun a => ((x * y) ≫ f) ≫ pr a).unique (fun a => rfl) fun a => ?_` and prove the remaining obligations. Use `haveI := hP.1 a`. Rewrite using `[MonObj.mul_comp, h, h, h, mul_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj B] {pr : Fin 8 → (A ⟶ B)} (hP : IsProd pr)
     (s : Fin 8 → ℤ) : ∃ f : B ⟶ A, IsMonHom f ∧ ∀ (T : Over S) (x : T ⟶ B) (a : Fin 8), (x ≫ f) ≫ pr a = x ^ s a := by
@@ -73,9 +73,9 @@ theorem exists_hom {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj B] {pr : F
   rw [MonObj.mul_comp, h, h, h, mul_zpow]
 
 /- English proof (translation)
-Establish `hl : ∀ (k : ℤ) (u v : T ⟶ B), PrimPic.lam (GlobalTheory.CechPic.cls M.L M.isLB) (u ^ k) v = k • PrimPic.lam (GlobalTheory.CechPic.cls M.L M.isLB) u v` using `fun k u v => map_zsmul (PrimPic.lamHom M cub v) k (Additive.ofMul u)`. Establish `hr : ∀ (k : ℤ) (u v : T ⟶ B), PrimPic.lam (GlobalTheory.CechPic.cls M.L M.isLB) u (v ^ k) = k • PrimPic.lam (GlobalTheory.CechPic.cls M.L M.isLB) u v` using `fun k u v => by`. Rewrite using `[PrimPic.lam_comm, hl, PrimPic.lam_comm]`. Simplify using `only [PrimPic.bil, hl, hr, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_smul, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bil_zpow {B : Over S} [GrpObj B] [IsCommMonObj B] (M : RigLB B) (cub : CubicalStr B M) {T : Over S}
     (m : Matrix (Fin 8) (Fin 8) ℤ) (s t : Fin 8 → ℤ) (x y : T ⟶ B) :
@@ -93,15 +93,15 @@ theorem bil_zpow {B : Over S} [GrpObj B] [IsCommMonObj B] (M : RigLB B) (cub : C
   ring
 
 /- English proof (translation)
-Introduce `W _ gQ K _ _ P' B _ _ M pr hF hP hE N _ s t s' t' hst p q hp hq x y x' y' hx hy hx' hy' c hc`. Use `letI := P'.isAb.comm`. Take `⟨cub⟩` from `hF.2.2.1`. Take `⟨r, hr, ⟨cL⟩⟩` from `GlobalTheory.PolAV_exists_cubical GlobalTheory.abelianSchemeLaws_all.1.cube P'`. Take `⟨f, hfm, hf⟩` from `exists_hom hP s`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgm, hg⟩` from `exists_hom hP t`. Take `⟨f', hfm', hf'⟩` from `exists_hom hP s'`. Take `⟨g', hgm', hg'⟩` from `exists_hom hP t'`. Establish `ex : x = p ≫ f` using `(hP.2 _ fun u => p ^ s u).unique hx (hf _ p)`. Establish `ey : y = q ≫ g` using `(hP.2 _ fun u => q ^ t u).unique hy (hg _ q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex' : x' = p ≫ f'` using `(hP.2 _ fun u => p ^ s' u).unique hx' (hf' _ p)`. Establish `ey' : y' = q ≫ g'` using `(hP.2 _ fun u => q ^ t' u).unique hy' (hg' _ q)`. Substitute `ex ey ex' ey'` using the available equality. Establish `hc₁ : (cubeLB P'.A ![fst B B ≫ f', snd B B ≫ g'] P'.L).IsLB` using `LB.isLB_linComb P'.isLB _ _`. Establish `hc₂ : (cubeLB P'.A ![fst B B ≫ f, snd B B ≫ g] P'.L).IsLB` using `LB.isLB_linComb P'.isLB _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H : LBIso (cubeLB P'.A ![fst B B ≫ f', snd B B ≫ g'] P'.L) (cubeLB P'.A ![fst B B ≫ f, snd B B ≫ g] P'.L)`. Use `(GlobalTheory.CechPic.cls_eq_iff hc₁ hc₂).1 ?_` and prove the remaining obligations. Rewrite using `[PrimPic.cube_class_e8Bundle_eighth_power W pr hP.1 P'.L P'.isLB M cub hE, PrimPic.cube_class_e8Bundle_eighth_power W pr hP.1 P'.L P'.isLB M cub hE,`. Use function extensionality and compare the values at `(hf _ (fst B B)), funext (hg _ (snd B B)), funext (hf' _ (fst B B)), funext (hg' _ (snd B B)),`. Use `bil_zpow M cub, bil_zpow M cub, hst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `: Subsingleton (Out.baseOver (Sp K)).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Conclude with `weilIs_of_lbIso GlobalTheory.abelianSchemeLaws_all.1.globalFns P'.isAb hF.1 cL f' g' f g H (T := Out.baseOver (Sp K)) (default : PrimeSpectrum K) (fun _ => Subsingleton.elim _ _) N p q hp hq c hc`.
+A detailed English derivation is pending.
 -/
 theorem weilIs_of_form_eq : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ) (K : Type) [Field K] [IsAlgClosed K] (P' : PolAV (Sp K))
   (B : Over (Sp K)) [GrpObj B] [IsCommMonObj B] (M : RigLB B) (pr : Fin 8 → (P'.A ⟶ B)),

@@ -18,21 +18,21 @@ def ChartEnergySwapInvariant.Statement : Prop :=
       chartMixedEnergy M N k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (0 + 1 + 1)) (Fin (0 + 1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (0 + 1 + 1)) (Fin (0 + 1 + 1)) ℂ).PosDef :=
   ⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one⟩
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [swapFirstTwo, PEquiv.toMatrix_toPEquiv_mulVec]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (w : ℂ) : swapFirstTwo 0 *ᵥ ![1, w] = ![w, 1] := by
   ext i
   fin_cases i <;> simp [swapFirstTwo, PEquiv.toMatrix_toPEquiv_mulVec]
 
 /- English proof (translation)
-Simplify using `[swapFirstTwo, PEquiv.toMatrix_apply]`.
+Simplify using the standard rewrite rules.
 -/
 example (e : ℕ) : swapFirstTwo e 0 1 = 1 := by
   simp [swapFirstTwo, PEquiv.toMatrix_apply]

@@ -41,14 +41,14 @@ def xLastQ (dV : HypDec V V₀ (ρ + 1)) (dW : HypDec W W₀ ρ) (z' : Fin W₀.
   (Matrix.of fun y (i : Fin (ρ + 1)) => besselAuxiliaryVectors dW z' i y) * dV.qX
 
 /- English proof (translation)
-The claim follows from `rat_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem rat_xZeroQ (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) : rat (xZeroQ dV dW) = dV.extX W (xZero dW) := rat_mul _ _
 
 /- English proof (translation)
-Rewrite using `[xLastQ, rat_mul, HypDec.extX_apply]`. Use `congrArg₂ _ (funext fun y => funext fun i => ?_) rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `incA D (besselAuxiliaryVectors dW z' i y) = Fin.snoc (α := fun _ => AE D) (dW.jX y) ((dW.j0 *ᵥ ratV z') y) i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, besselAuxiliaryVectors, Fin.val_last, if_neg (lt_irrefl _), if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (ratV_mulVec _ _) y`. Rewrite using `[Fin.snoc_castSucc, besselAuxiliaryVectors, Fin.val_castSucc, if_pos i.2, colN_fin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rat_xLastQ (dV : HypDec V V₀ (ρ + 1)) (dW : HypDec W W₀ ρ) (z' : Fin W₀.rank → D.host.E) :
     rat (xLastQ dV dW z') = dV.extX W (xLast dW z') := by
@@ -61,7 +61,7 @@ theorem rat_xLastQ (dV : HypDec V V₀ (ρ + 1)) (dW : HypDec W W₀ ρ) (z' : F
   · rw [Fin.snoc_castSucc, besselAuxiliaryVectors, Fin.val_castSucc, if_pos i.2, colN_fin]; rfl
 
 /- English proof (translation)
-Distinguish the cases in `hi : i < ρ`. Rewrite using `[colN_eq_mulVec _ hi, colN_eq_mulVec _ hi, mulVec_mulVec, Matrix.mul_assoc, qX_e, Matrix.mul_one]`. Rewrite using `[colN, colN, dif_neg hi, dif_neg hi, mulVec_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_qX_colN {m : ℕ} (d : HypDec V V₀ ρ) (M : Matrix (Fin m) (Fin ρ) D.host.E) (i : ℕ) :
     (M * d.qX) *ᵥ colN d.e i = colN M i := by
@@ -121,7 +121,7 @@ structure IsRule (β : ∀ j c, j + c = 2 * s + 1 → LatFrame (Fv D.host.F v) (
       (β (2 * i + 1) (2 * (σ + 1)) (by omega)) (β (2 * (i + 1)) (2 * σ + 1) (by omega))
 
 /- English proof (translation)
-Rewrite using `[normScale, Finset.prod_congr rfl (g := fun _ => θ⁻¹) fun l hl => by`. Rewrite using `[coef, if_pos (by have := Finset.mem_range.1 hl; omega), map_one, one_div], Finset.prod_const, Finset.card_range,`. Use the proof step `inv_pow, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normScale_coef {θ : Fv D.host.F v} (p : ℕ) (a : D.host.E) (t₀ : Fv D.host.F v) {i : ℕ} (hi : i < p) :
     normScale θ (fun i => τ (coef p a i)) t₀ i = t₀ / θ ^ i := by
@@ -130,14 +130,14 @@ theorem normScale_coef {θ : Fv D.host.F v} (p : ℕ) (a : D.host.E) (t₀ : Fv 
     inv_pow, div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite using `[mulVec_smul, ← comp_mulVec, besselAuxiliaryVectors, fourierJacobiVectors, if_pos h, if_pos h, xZeroQ, mul_qX_colN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xZeroQ_first {V V₀ W W₀ : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (z) (h : 0 < ρ)
     (t : Fv D.host.F v) : (xZeroQ dV dW).map τ *ᵥ (t • (τ ∘ besselAuxiliaryVectors dV z 0)) = t • (τ ∘ fourierJacobiVectors dW 0) := by
   rw [mulVec_smul, ← comp_mulVec, besselAuxiliaryVectors, fourierJacobiVectors, if_pos h, if_pos h, xZeroQ, mul_qX_colN]
 
 /- English proof (translation)
-Establish `h : τ D.host.xi0 • (τ ∘ fourierJacobiVectors dV 0) = τ ∘ fourierJacobiVectors (srcDec dV) 0`. Rewrite using `[fourierJacobiVectors_source, if_pos σ.succ_pos]`. Conclude with `funext fun y => (map_mul τ _ _).symm`. Rewrite using `[mul_smul, h, mulVec_smul, ← comp_mulVec, fourierJacobiVectors, if_pos σ.succ_pos, xLastQ, mul_qX_colN, colN, dif_pos σ.succ_pos]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xLastQ_first {V V₀ W W₀ : HSp D} {σ : ℕ} (dV : HypDec V V₀ (σ + 1)) (dW : HypDec W W₀ σ) (z) (t : Fv D.host.F v) :
     (xLastQ (srcDec dV) dW z).map τ *ᵥ ((t * τ D.host.xi0) • (τ ∘ fourierJacobiVectors dV 0)) = t • (τ ∘ besselAuxiliaryVectors dW z 0) := by
@@ -148,15 +148,15 @@ theorem xLastQ_first {V V₀ W W₀ : HSp D} {σ : ℕ} (dV : HypDec V V₀ (σ 
   rfl
 
 /- English proof (translation)
-Establish `hx : τ D.host.xi0 ≠ 0` using `(map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero`. Use `choose βE hE hE' using fun i ρ (h : i + ρ = s) => exists_isBesFrame hψ (C.dE i ρ h) (C.oE i (Nat.le.intro h)) (C.line i (Nat.le.intro h)) τ hx (γ (2 * i)) (pow_ne_zero ρ hx)`. Use `choose βO hO hO' using fun i ρ (h : i + ρ = s) => exists_isFJFrameT hψ (C.dO i ρ h) (C.line i (Nat.le.intro h)) τ hx (γ (2 * i + 1)) (pow_ne_zero ρ hx)`. Establish `glue (j c : ℕ) (h : j + c = 2 * s + 1) : ∃ b : LatFrame (Fv D.host.F v) (n j ⊕ Fin c) (Fin (Y j).rank), (∀ i ρ h', j = 2 * i → HEq b (βE i ρ h')) ∧ ∀ i ρ h', j = 2 * i + 1 → HEq b (βO i ρ h')`. Take `⟨i, rfl | rfl⟩` from `Nat.even_or_odd' j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ρ, rfl⟩ : ∃ ρ, c = 2 * ρ + 1` from `⟨s - i, by omega⟩`. Use `⟨βE i ρ (by omega), fun i' ρ' h' e => ?_, fun i' ρ' h' e => by omega⟩` and prove the remaining obligations. Take `rfl : i = i'` from `by omega`. Take `rfl : ρ = ρ'` from `by omega`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ρ, rfl⟩ : ∃ ρ, c = 2 * ρ` from `⟨s - i, by omega⟩`. Use `⟨βO i ρ (by omega), fun i' ρ' h' e => by omega, fun i' ρ' h' e => ?_⟩` and prove the remaining obligations. Take `rfl : i = i'` from `by omega`. Take `rfl : ρ = ρ'` from `by omega`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose β h1 h2 using glue`. Establish `e1 (i ρ h h') : β (2 * i) (2 * ρ + 1) h = βE i ρ h'` using `eq_of_heq (h1 _ _ h i ρ h' rfl)`. Establish `e2 (i ρ h h') : β (2 * i + 1) (2 * ρ) h = βO i ρ h'` using `eq_of_heq (h2 _ _ h i ρ h' rfl)`. Use `⟨β, fun i ρ h => e1 i ρ _ h ▸ hE i ρ h, fun i ρ h => e2 i ρ _ h ▸ hO i ρ h, ?_, fun i ρ h _ h0 => ?_, fun i σ h _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[e1 0 s _ (Nat.zero_add s), (hE' 0 s _).2, normScale_coef τ _ _ _ s.lt_succ_self, div_self (pow_ne_zero _ hx), one_smul, besselAuxiliaryVectors, if_neg (lt_irrefl _), if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1 i ρ _ h, e2 i ρ _ h, (hE' i ρ h).2, (hO' i ρ h).2, normScale_coef τ _ _ _ ρ.succ_pos, normScale_coef τ _ _ _ (show 0 < ρ by omega), xZeroQ_first τ _ _ _ (by omega)]`. Rewrite using `[e1 (i + 1) σ _ (by omega), e2 i _ _ h, (hE' _ _ _).2, (hO' _ _ h).2, normScale_coef τ _ _ _ σ.succ_pos, normScale_coef τ _ _ _ σ.succ_pos, pow_zero, div_one, div_one, pow_succ, xLastQ_first]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isRule : ∃ β, IsRule C ψ hψ τ γ β := by
   have hx : τ D.host.xi0 ≠ 0 := (map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero
@@ -194,7 +194,7 @@ theorem exists_isRule : ∃ β, IsRule C ψ hψ τ γ β := by
 variable {C ψ hψ τ γ} {β : ∀ j c, j + c = 2 * s + 1 → LatFrame (Fv D.host.F v) (n j ⊕ Fin c) (Fin (Y j).rank)}
 
 /- English proof (translation)
-The claim follows from `(isFJFrameS_srcDec_iff _ hz _).2 (H.odd i ρ h)`.
+A detailed English derivation is pending.
 -/
 theorem IsRule.source (H : IsRule C ψ hψ τ γ β) (i ρ : ℕ) (h : i + ρ = s)
     (hz : hQ (C.L i) (C.ζ i) (C.ζ i) = hQ (C.L (i + 1)) (C.ζ (i + 1)) (C.ζ (i + 1))) :
@@ -202,7 +202,7 @@ theorem IsRule.source (H : IsRule C ψ hψ τ γ β) (i ρ : ℕ) (h : i + ρ = 
   (isFJFrameS_srcDec_iff _ hz _).2 (H.odd i ρ h)
 
 /- English proof (translation)
-Introduce `e` and use `by have h1 := congrFun (congrFun (rows_mul_cols b) i) i simp [Matrix.mul_apply, cols_apply, e] at h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vec_ne_zero {k ι Z : Type} [Field k] [Fintype ι] [DecidableEq ι] [Fintype Z] [DecidableEq Z] (b : LatFrame k ι Z)
     (i : ι) : vec b i ≠ 0 := fun e => by
@@ -210,15 +210,15 @@ theorem vec_ne_zero {k ι Z : Type} [Field k] [Fintype ι] [DecidableEq ι] [Fin
   simp [Matrix.mul_apply, cols_apply, e] at h1
 
 /- English proof (translation)
-Establish `hx : τ D.host.xi0 ≠ 0` using `(map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero`. Proceed by induction on `i generalizing ρ with`. Consider the case `zero`. Take `rfl : ρ = s` from `by omega`. Take `⟨t₀, ht⟩` from `(H.even 0 ρ h).exists_scale hψ _ _ h1 (C.line 0 ρ.zero_le)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `ht.2 ⟨ρ, by omega⟩`. Establish `h3` using `vec_ne_zero (β (2 * 0) (2 * ρ + 1) (by omega)) (.inr ⟨ρ, by omega⟩)`. Rewrite `h2` using `[normScale_coef τ _ _ _ ρ.lt_succ_self, besselAuxiliaryVectors, if_neg (lt_irrefl _), if_pos rfl, H.start]`. Rewrite `h3` using `[H.start]`. Take `rfl : t₀ = τ D.host.xi0 ^ ρ` from `(div_eq_one_iff_eq (pow_ne_zero _ hx)).1 (smul_left_injective _ h3 (h2.symm.trans (one_smul _ _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ht`. Consider the case `succ i ih`. Establish `h' : i + (ρ + 1) = s` using `by omega`. Take `⟨t₀, ht⟩` from `(H.even (i + 1) ρ h).exists_scale hψ _ _ h1 (C.line _ (by omega))`. Establish `h2` using `H.stepOdd i _ h' (by omega) (by omega)`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `H.stepEven i _ h' (by omega) (by omega)`. Establish `h4` using `vec_ne_zero (β (2 * (i + 1)) (2 * ρ + 1) (by omega)) (.inr ⟨0, by omega⟩)`. Rewrite `h2` using `[(ih _ h').2, normScale_coef τ _ _ _ (Nat.succ_pos _), xZeroQ_first τ _ _ _ ρ.succ_pos]`. Rewrite `h3` using `[h2, pow_zero, div_one, pow_succ, xLastQ_first, ht.2, normScale_coef τ _ _ _ ρ.succ_pos, pow_zero, div_one]`. Rewrite `h4` using `[ht.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : t₀ = τ D.host.xi0 ^ ρ` from `smul_left_injective _ (right_ne_zero_of_smul h4) h3`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem IsRule.isScaled_even (H : IsRule C ψ hψ τ γ β) (h1 : weilChar ψ hψ τ ≠ 1) (i ρ : ℕ) (h : i + ρ = s) :
     IsScaled _ _ τ ((C.dE i ρ h).i₀ * (C.oE i (Nat.le.intro h)).iA) (besselAuxiliaryVectors (C.dE i ρ h) (C.z₀ i ρ h)) (γ (2 * i))
@@ -249,7 +249,7 @@ theorem IsRule.isScaled_even (H : IsRule C ψ hψ τ γ β) (h1 : weilChar ψ h�
     exact ht
 
 /- English proof (translation)
-Rewrite using `[(H.isScaled_even h1 i ρ h).2, normScale_coef τ _ _ _ ρ.lt_succ_self, div_self (pow_ne_zero _ ((map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero)), one_smul, besselAuxiliaryVectors, if_neg (lt_irrefl _), if_pos rfl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsRule.middle (H : IsRule C ψ hψ τ γ β) (h1 : weilChar ψ hψ τ ≠ 1) (i ρ : ℕ) (h : i + ρ = s) :
     vec (β (2 * i) (2 * ρ + 1) (by omega)) (.inr ⟨ρ, by omega⟩) = τ ∘ C.z i ρ h := by
@@ -272,7 +272,7 @@ def locGLs {ι : Type} [Fintype ι] [DecidableEq ι] (β : ∀ v : S, LatFrame (
     commute_locGL_locGL V _ _ (fun e => h (Subtype.ext e)) _ _ x y
 
 /- English proof (translation)
-The claim follows from `MonoidHom.noncommPiCoprod_mulSingle (fun v : S => locGL V (τ v) (β v)) v g`.
+A detailed English derivation is pending.
 -/
 theorem locGLs_mulSingle [DecidableEq S] {ι : Type} [Fintype ι] [DecidableEq ι]
     (β : ∀ v : S, LatFrame (Fv D.host.F v) ι (Fin V.rank)) (v : S) (g : GL ι (Fv D.host.F v)) :
@@ -280,7 +280,7 @@ theorem locGLs_mulSingle [DecidableEq S] {ι : Type} [Fintype ι] [DecidableEq �
   MonoidHom.noncommPiCoprod_mulSingle (fun v : S => locGL V (τ v) (β v)) v g
 
 /- English proof (translation)
-Establish `h : (locGLs V τ β).range ≤ GfC V` using `(MonoidHom.noncommPiCoprod_range (fun v : S => locGL V (τ v) (β v))).trans_le (iSup_le fun v _ ⟨x, e⟩ => e ▸ locGL_mem_GfC V (τ v) (β v) x)`. Conclude with `h ⟨g, rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locGLs_mem_GfC {ι : Type} [Fintype ι] [DecidableEq ι] (β : ∀ v : S, LatFrame (Fv D.host.F v) ι (Fin V.rank))
     (g : ∀ v : S, GL ι (Fv D.host.F v)) : locGLs V τ β g ∈ GfC V := by
@@ -298,12 +298,12 @@ def posAt (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) : (GA D V → ℂ) �
 def pos1 (l : (GA D V → ℂ) → ℂ) : (GA D V → ℂ) → ℂ := posAt V τ β ν (fun _ => c / 2 + 1) (fun _ => 1) l
 
 /- English proof (translation)
-The claim follows from `exList_self _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem posAt_self (p : S → ℕ) (l : (GA D V → ℂ) → ℂ) : posAt V τ β ν p p l = l := exList_self _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[pos1, posAt, Finset.univ_unique, Finset.toList_singleton]`. Conclude with `exTo_of_ge _ _ (Nat.le_add_left 1 _) l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem positionOne_of_unique [Unique S] (l : (GA D V → ℂ) → ℂ) :
     pos1 V τ β ν l = downIter (ν default) (locReg V (τ default) (β default)) 1 (c / 2) l := by
@@ -311,7 +311,7 @@ theorem positionOne_of_unique [Unique S] (l : (GA D V → ℂ) → ℂ) :
   exact exTo_of_ge _ _ (Nat.le_add_left 1 _) l
 
 /- English proof (translation)
-Rewrite using `[posAt, Finset.univ_eq_empty, Finset.toList_empty]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem posAt_of_isEmpty [IsEmpty S] (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) : posAt V τ β ν p q l = l := by
   rw [posAt, Finset.univ_eq_empty, Finset.toList_empty]; rfl
@@ -319,7 +319,7 @@ theorem posAt_of_isEmpty [IsEmpty S] (p q : S → ℕ) (l : (GA D V → ℂ) →
 variable {V} {U : Submodule ℂ (GA D V → ℂ)} (hU : IsFinStable V U)
 
 /- English proof (translation)
-The claim follows from `(exList_law ν _ (fun v => locRepOn V (τ v) (β v) U hU) (T := Subtype.val) (fun _ _ _ => rfl) (fun _ => (one_mul _).symm) p q _ F).trans (one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem posAt_coe (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) (F : U) : posAt V τ β ν p q l F =
     exList ν (fun v => locRepOn V (τ v) (β v) U hU) p q (Finset.univ : Finset S).toList (fun F : U => l F) F :=
@@ -329,14 +329,14 @@ theorem posAt_coe (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) (F : U) : pos
 include hU in
 
 /- English proof (translation)
-Rewrite using `[posAt_coe τ β ν hU p q l ⟨F, hF⟩, posAt_coe τ β ν hU p q l' ⟨F, hF⟩, funext fun F : U => h F F.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem posAt_congr (p q : S → ℕ) {l l' : (GA D V → ℂ) → ℂ} (h : ∀ F ∈ U, l F = l' F) {F : GA D V → ℂ} (hF : F ∈ U) :
     posAt V τ β ν p q l F = posAt V τ β ν p q l' F := by
   rw [posAt_coe τ β ν hU p q l ⟨F, hF⟩, posAt_coe τ β ν hU p q l' ⟨F, hF⟩, funext fun F : U => h F F.2]
 
 /- English proof (translation)
-The claim follows from `(exList_law ν _ (fun v => locReg V (τ v) (β v)) (T := rTrans x) (fun v g F => funext fun y => by change F (y * x * _) = F (y * _ * x) rw [mul_assoc, mul_assoc, (commute_locGL V (τ v) (β v) g (hx v)).eq]) (fun _ => (one_mul _).symm) p q _ F).trans (one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem posAt_rTrans (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) {x : GA D V}
     (hx : ∀ v : S, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v x = 1) (F : GA D V → ℂ) :
@@ -347,7 +347,7 @@ theorem posAt_rTrans (p q : S → ℕ) (l : (GA D V → ℂ) → ℂ) {x : GA D 
     (one_mul _)
 
 /- English proof (translation)
-Take `⟨l₁, e, h⟩` from `exList_isNEquiv ν hψ hψ1 (fun v => isSmoothRep_locRepOn V (τ v) (β v) hU hU') (fun u v huv g h F => Subtype.ext (funext fun y => by`. Express the relevant statement in the definitionally equal form `F.1 (y * _ * _) = F.1 (y * _ * _)`. Rewrite using `[mul_assoc, mul_assoc, (commute_locGL_locGL V _ _ (fun e => huv (Subtype.ext e)) _ _ g h).eq])) hp hq l₀ hl`. Use the proof step `(Finset.nodup_toList Finset.univ)`. Conclude with `⟨l₁, fun F => by rw [posAt_coe τ β ν hU, funext h₀, e], fun v => by simpa using h v⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem posAt_isNEquiv [∀ v, (ν v).IsAddHaarMeasure] (hU' : U ≤ levelFun V) {ψv : ∀ v : S, AddChar (Fv D.host.F v) Circle}
     (hψ : ∀ v, Continuous (ψv v)) (hψ1 : ∀ v, ψv v ≠ 1) {p q : S → ℕ} (hp : ∀ v, 1 ≤ p v ∧ p v ≤ c)
@@ -374,7 +374,7 @@ def besPos (q : S → ℕ) (φ : GA D A → ℂ) : (GA D V → ℂ) → ℂ :=
 def besPos1 (φ : GA D A → ℂ) : (GA D V → ℂ) → ℂ := besPos τ β ν ψ d o ζ μ 𝓕 νN 𝓝 (fun _ => 1) φ
 
 /- English proof (translation)
-Rewrite using `[pos1, show c / 2 = ρ by omega]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem besPos1_eq (hc : c = 2 * ρ + 1) (φ : GA D A → ℂ) :
     besPos1 τ β ν ψ d o ζ μ 𝓕 νN 𝓝 φ = pos1 V τ β ν (besPer ψ 1 d o ζ μ 𝓕 νN 𝓝 φ) := by
@@ -452,7 +452,7 @@ end Periods
 section Examples
 
 /- English proof (translation)
-Introduce `e` and use `by obtain ⟨y, hy⟩ := h have h1 := coe_locChar ψ hψ a (y / a) rw [e, mul_div_cancel₀ _ ha] at h1 exact hy h1.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locChar_ne_one {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : ∀ x, ‖ψ x‖ = 1)
     {v : HeightOneSpectrum (𝓞 F)} (h : ∃ y, psiV F ψ v y ≠ 1) {a : Fv F v} (ha : a ≠ 0) : locChar ψ hψ a ≠ 1 := fun e => by
@@ -462,16 +462,16 @@ theorem locChar_ne_one {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F)
   exact hy h1.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_locChar h.1.1 _ _, locChar_ne_one _ (GlobalTheory.StdCharLocal.psiV_ne_one D ψ h v) ((map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero)⟩`.
+Supply the required witnesses or components.
 -/
 theorem weilChar_spec {ψ : AddChar (AF D.host.F) ℂ} (h : IsStdChar D ψ (-1)) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     Continuous (weilChar ψ h.1.2.1 τ) ∧ weilChar ψ h.1.2.1 τ ≠ 1 :=
   ⟨continuous_locChar h.1.1 _ _, locChar_ne_one _ (GlobalTheory.StdCharLocal.psiV_ne_one D ψ h v) ((map_ne_zero τ).2 cmHost_imaginaryGenerator_ne_zero)⟩
 
 /- English proof (translation)
-Establish `h1 : piW τ (idem τ) = 1`. Express the relevant statement in the definitionally equal form `splitProj τ (compFin _ _ v (idem τ)) = 1`. Rewrite using `[GlobalTheory.EmbChart.compFin_idem, GlobalTheory.AdelicU.splitProj_splitIdem]`. Establish `h2 : piW τ (cA D (idem τ)) = 0`. Express the relevant statement in the definitionally equal form `splitProj τ (compFin _ _ v (cA D (idem τ))) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.compFin_tensAt, map_sub, map_one, GlobalTheory.AdelicU.splitProj_splitIdem, sub_self]`. Establish `h3 : idem τ ∈ locIdeal D v` using `tensAt_mem _`. Rewrite using `[psiE, trace_of_mem τ (Ideal.mul_mem_right _ _ h3), map_mul (cA D), map_mul (piW τ), map_mul (piW τ) (cA D _), h1, h2, zero_mul, add_zero, one_mul, map_mul, piW_incA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weilChar_piW (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (x : AE D) :
     (weilChar ψ hψ τ (piW τ x) : ℂ) = psiE ψ (idem τ * (incA D D.host.xi0 * x)) := by
@@ -541,7 +541,7 @@ def exChain (D : D7) : ChainDec (exY D) (exX D) 1 where
     simp [Examples₂.sgn]⟩
 
 /- English proof (translation)
-Take `⟨v, ⟨τ⟩⟩` from `GlobalTheory.AdelicU.exists_split_place (isCMExt_host D)`. Conclude with `⟨v, τ, exists_isRule _ _ _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) :
     ∃ (v : HeightOneSpectrum (𝓞 D.host.F)) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v),
@@ -550,18 +550,18 @@ example (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) :
   exact ⟨v, τ, exists_isRule _ _ _ _ _⟩
 
 /- English proof (translation)
-Simplify using `[coef, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (a : D.host.E) : (List.range 4).map (coef 3 (-a)) = [1, 1, -a, -1] := by simp [coef, List.range_succ]
 
 /- English proof (translation)
-Simplify using `[normScale, coef, List.range_succ, Finset.prod_range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (a : D.host.E) : (List.range 3).map (normScale 1 (coef 2 (-a)) 1) = [1, 1, -a] := by
   simp [normScale, coef, List.range_succ, Finset.prod_range_succ]
 
 /- English proof (translation)
-Rewrite using `[map_piW_locGL, conj_val]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * g.val * (1 : Matrix _ _ _) = _`. Rewrite using `[Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 example (V : HSp D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (g : GL (Fin V.rank) (Fv D.host.F v)) :
     (mt V (locGL V τ (LatFrame.refl _ _) g)).map (piW τ) = g.val := by
@@ -570,9 +570,9 @@ example (V : HSp D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (g : GL (Fin 
   rw [Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨fun v => isEmptyElim v, fun F _ Φ => ?_⟩` and prove the remaining obligations. Establish `h : fjInt τ β ρ b F Φ = fun _ => b F` using `funext fun x => by`. Rewrite using `[fjInt, Finset.prod_of_isEmpty, one_mul, Subsingleton.elim (fun v => GlobalTheory.RootEx.colE c (ρ + 1) (x v)) 1, map_one]`. Conclude with `congrArg b (funext fun y => congrArg F (mul_one y))`. Rewrite using `[h, Measure.pi_of_empty]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨integrable_const _, by simp⟩`.
+A detailed English derivation is pending.
 -/
 example (V : HSp D) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (U : Submodule ℂ (GA D V → ℂ)) (ρ : ℕ) (τ β ν ψv)
     (b : (GA D V → ℂ) → ℂ) : IsFJBase (S := ∅) (n := n) (c := c) τ β ν U ψv ρ (fun F _ => b F) b := by

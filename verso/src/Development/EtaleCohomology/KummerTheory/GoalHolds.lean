@@ -9,7 +9,7 @@ import Development.EtaleCohomology.KummerTheory.FinLimit
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-The claim follows from `goal_of LateralTheory.Fin.LH.intersectionNumber_baseChange LateralTheory.Fin.SHInv.intersectionNumber_baseChange LateralTheory.Fin.Stalk.intersectionNumber_baseChange LateralTheory.Fin.Bock.intersectionNumber_baseChange LateralTheory.Fin.AdicDeg.intersectionNumber_baseChange Late …`.
+A detailed English derivation is pending.
 -/
 theorem goal_holds : GOAL :=
   goal_of LateralTheory.Fin.LH.intersectionNumber_baseChange LateralTheory.Fin.SHInv.intersectionNumber_baseChange LateralTheory.Fin.Stalk.intersectionNumber_baseChange LateralTheory.Fin.Bock.intersectionNumber_baseChange

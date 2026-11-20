@@ -28,19 +28,17 @@ structure XiHypD {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) : Prop where
 variable {W Λ Ch sel mu cst Am u Ξ}
 
 /- English proof (translation)
-Introduce `i c c' x`. Distinguish the cases in `hi : i < R.m`. Establish `hp` using `((stepGSD W Λ u i).outSec.rep c).2`. Establish `hp'` using `((stepGSD W Λ u (i + 1)).outSec.rep c').2`. Establish `h` using `unfTh_stepCD W Ch sel mu cst Am σ₀ H.sig u H.T_pos hi (jet_in_weight_space_chain W u hi) (H.smooth i hi) (H.rat i hi) (repN W Λ u i c) (repFr W Λ sel mu u i c) (repN W Λ u (i + 1) c') (repFr W Λ sel mu u (i + 1) c') ⟨hp.lat, hp.uni⟩ ⟨hp'.lat, hp'.uni⟩ (Ξ i ((stepGSD W Λ u i).outS …`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `H.rho i hi c c'`. Establish `hx` using `H.chi_ne i hi c c'`. Use `set r := σ₀ (rhoK W Λ G.chr u i c : X.K) * σ₀ (rhoK' W Λ G.chr u i c' : X.K) with hrdef`. Establish `h0 : r ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `rhoK_norm G u i c` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `rhoK'_norm G u i c'` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hs : σ₀ (scalK Ch sel mu cst i (repN W Λ u i c) (repFr W Λ sel mu u i c) (repN W Λ u (i + 1) c') (repFr W Λ sel mu u (i + 1) c')) * (Am.chiF (R.N i) (R.N (i + 1)) (repN W Λ u i c) (repN W Λ u (i + 1) c'))⁻¹ = r`. Rewrite using `[← hr, mul_assoc, mul_inv_cancel₀ hx, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[hs]`. Use function extensionality and compare the values at `(y' : FrS X σ₀ (R.N (i + 1)))`. Establish `hy` using `congrFun h y'`. Use `Eq.trans ?_ (congrArg (fun z : ℂ => r⁻¹ * z) hy).symm` and prove the remaining obligations. Use `show _ = r⁻¹ * (r * _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ h0, one_mul]`. Both sides reduce to the same expression. Establish `hi' : R.m ≤ i` using `Nat.le_of_not_lt hi`. Establish `hk : (xiKK hE i).k ((stepGSD W Λ u i).outSec.rep c) ((stepGSD W Λ u (i + 1)).outSec.rep c') = 0` using `kerOf_zero _ _ _ _ _ _ _ _ _ (H.above i hi' _ _)`. Establish `ht : (xiTheta W Λ sel mu cst Am u Ξ).Th i c c' = fun _ => 0` using `thDat_zero Am _ _ _ _ _ _ (H.above i hi' _ _)`.
-
-Rewrite using `[hk, ht, unfTh_zero]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiTheta_tieD {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (hE : XiEquiv W Λ Ch sel mu cst Am u Ξ) (H : XiHypD W Λ Ch sel mu cst Am u Ξ G) :
     (xiTheta W Λ sel mu cst Am u Ξ).Comparison₂ G (xiKK hE) := by
@@ -111,7 +109,7 @@ structure KerRefHypD {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (Gc : ChGlo
 variable {W Ch sel S cst Am u m2}
 
 /- English proof (translation)
-The claim follows from `xiEquiv_one H.hX H.hPr (fixE_colLevSym Ch H.hm) (matEquiv_mu0D W Ch sel S cst _ Am u m2 (by have := H.hm; omega) H.hPr H.thHyp H.idx H.xiLaw) (coupling_index_set_finite sel _ cst _ u m2 _) (cp1EquivOn_mu0D W Ch sel S cst _ Am u m2 (by have := H.hm; omega) H.hPr H.thHyp H.idx _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem KerRefHypD.xiEquiv {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc : ChGlob X R.m} (H : KerRefHypD W Ch sel S cst Am u m2 G Gc) :
     XiEquiv W (colLevSym Ch) Ch sel (mu0 X.F X.E X.K S) cst Am u (symXi Ch sel S cst u m2) :=
@@ -125,7 +123,7 @@ theorem KerRefHypD.xiEquiv {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc :
         _ _ _ _ H.topLaw (lastRow_colLevSym Ch H.hm)))
 
 /- English proof (translation)
-The claim follows from `H.sig T_pos := (H.hPr.T_prime u).pos smooth := fun i hi => (anaStepD_of_thHypD W Ch sel _ cst Am u m2 H.hm H.thHyp i hi).2.1 rat := fun i hi => (anaStepD_of_thHypD W Ch sel _ cst Am u m2 H.hm H.thHyp i hi).2.2 chi_ne := H.chi_ne rho := H.rho above := fun i hi p p' x => refXi1_abo …`.
+A detailed English derivation is pending.
 -/
 theorem KerRefHypD.xiHyp {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc : ChGlob X R.m} (H : KerRefHypD W Ch sel S cst Am u m2 G Gc) :
     XiHypD W (colLevSym Ch) Ch sel (mu0 X.F X.E X.K S) cst Am u (symXi Ch sel S cst u m2) G where

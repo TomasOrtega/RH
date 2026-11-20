@@ -14,27 +14,23 @@ variable {R F V : Type*} [CommRing R] [IsDedekindDomain R] [Field F] [Algebra R 
   [IsFractionRing R F] [AddCommGroup V] [Module F V] [Module R V] [IsScalarTower R F V]
 
 /- English proof (translation)
-Set `: Field (R ⧸ 𝔭)` to `Ideal.Quotient.field 𝔭`. Establish `: Module.Finite R M` using `Module.Finite.iff_fg.2 hfg`. Set `Q` to `M ⧸ (𝔭 • ⊤ : Submodule R M)`. Establish `: Module.Finite (R ⧸ 𝔭) Q` using `Module.Finite.of_restrictScalars_finite R _ _`. Set `b` to `Module.finBasis (R ⧸ 𝔭) Q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose x hx using fun i => Submodule.Quotient.mk_surjective _ (b i)`. Establish `hli : LinearIndependent F (M.subtype ∘ x)`. Use `Ideal.FinrankQuotientMap.linearIndependent_of_nontrivial (S := R ⧸ 𝔭) F ?_ M.subtype M.injective_subtype (Submodule.mkQ (𝔭 • ⊤ : Submodule R M)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.mk_ker]`. Conclude with `h𝔭.ne_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (Submodule.mkQ (𝔭 • ⊤ : Submodule R M)) ∘ x = b`. Use function extensionality and compare the values at `i`. Conclude with `hx i`. Rewrite using `[this]`. Conclude with `b.linearIndependent`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsup : (⊤ : Submodule R M) ≤ Submodule.span R (Set.range x) ⊔ 𝔭 • ⊤`. Introduce `v _`. Establish `hv : (Submodule.Quotient.mk v : Q) ∈ Submodule.span (R ⧸ 𝔭) (Set.range b)` using `b.mem_span _`. Rewrite `hv` using `[← @Submodule.restrictScalars_mem R, Submodule.restrictScalars_span R (R ⧸ 𝔭) Ideal.Quotient.mk_surjective]`. Establish `hb : Set.range b = (Submodule.mkQ (𝔭 • ⊤ : Submodule R M)) '' Set.range x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hx i).symm`. Rewrite `hv` using `[hb, ← Submodule.map_span]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, e⟩` from `Submodule.mem_map.1 hv`. Rewrite `e` using `[Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `: v = y - (y - v)` using `by abel`. Rewrite using `[this]`. Conclude with `sub_mem (Submodule.mem_sup_left hy) (Submodule.mem_sup_right e)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs1, hs⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (Module.Finite.fg_top (R := R) (M := M)) le_rfl hsup`. Establish `hs𝔭 : s ∉ 𝔭` using `fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Use `sub_mem h hs1` as an intermediate fact. Simplify using `using this))`. Establish `hsv : ∀ v : M, s • v ∈ Submodule.span R (Set.range x)` using `fun v => hs (Submodule.smul_mem_pointwise_smul v s ⊤ trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs0 : algebraMap R F s ≠ 0`. Introduce `h0`. Establish `: s = 0` using `(IsFractionRing.injective R F) (by rw [h0, map_zero])`. Conclude with `hs𝔭 (this ▸ 𝔭.zero_mem)`. Establish `hsp : ⊤ ≤ Submodule.span F (Set.range (M.subtype ∘ x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hspan, Submodule.span_le]`. Introduce `v hv`. Establish `h1` using `hsv ⟨v, hv⟩`. Establish `h2 : (s • v : V) ∈ Submodule.span F (Set.range (M.subtype ∘ x))`. Establish `h3 : M.subtype (s • ⟨v, hv⟩) ∈ (Submodule.span R (Set.range x)).map M.subtype` using `Submodule.mem_map_of_mem h1`.
-
-Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `Submodule.span_le_restrictScalars R F _ h3`. Establish `h4 : v = (algebraMap R F s)⁻¹ • (s • v)`. Rewrite using `[← algebraMap_smul F s v, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[h4]`.
-
-Conclude with `Submodule.smul_mem _ _ h2`. Use `finrank_eq_card_basis (Basis.mk hli hsp)` as an intermediate fact. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_quot (M : Submodule R V) (hfg : M.FG)
     (hspan : Submodule.span F (M : Set V) = ⊤) (𝔭 : Ideal R) [h𝔭 : 𝔭.IsMaximal] :
@@ -98,49 +94,47 @@ section Lagrangian
 variable {k : Type} [Field k] (τ : k →+* k) {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
 
 /- English proof (translation)
-Set `φ : V → V →ₗ[k] k` to `fun y => { toFun := f y, map_add' := hadd y, map_smul' := hsm y }`. Establish `hφ : ∀ y x, φ y x = f y x` using `fun _ _ => rfl`. Establish `hadd' : ∀ y y' x, f (y + y') x = f y x + f y' x`. Introduce `y y' x`. Rewrite using `[hsy x (y + y'), hadd, map_add, ← hsy, ← hsy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm' : ∀ (a : k) y x, f (a • y) x = τ a * f y x`. Introduce `a y x`. Rewrite using `[hsy x (a • y), hsm, map_mul, ← hsy]`. Establish `hz : ∀ x y, f x y = 0 → f y x = 0` using `fun x y h => by rw [hsy, h, map_zero]`. Take `⟨U, hU, hmax⟩` from `(set_has_maximal_iff_noetherian (R := k) (M := V)).2 inferInstance {U | ∀ x ∈ U, ∀ y ∈ U, f y x = 0} ⟨⊥, fun x hx y _ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(Submodule.mem_bot k).1 hx]`. Conclude with `(φ y).map_zero⟩`. Set `P : Submodule k V` to `⨅ y : U, LinearMap.ker (φ y)`. Establish `hP : ∀ x, x ∈ P ↔ ∀ y ∈ U, f y x = 0`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [P, Submodule.mem_iInf, LinearMap.mem_ker, hφ, Subtype.forall]`. Establish `hUP : U ≤ P` using `fun x hx => (hP x).2 (hU x hx)`. Establish `hiso : ∀ x ∈ P, f x x = 0 → x ∈ U`. Introduce `x hx hxx`. Assume the negation of the conclusion as `hxU`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmax (U ⊔ k ∙ x) ?_ (lt_of_le_of_ne le_sup_left fun h => hxU ?_)` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨u, hu, a', ha', rfl⟩` from `Submodule.mem_sup.1 ha`. Take `⟨u', hu', b', hb', rfl⟩` from `Submodule.mem_sup.1 hb`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 ha'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hb'`. Rewrite using `[hadd, hadd', hadd', hsm, hsm, hsm', hsm', hU u hu u' hu', (hP x).1 hx u' hu', hz _ _ ((hP x).1 hx u hu), hxx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdim : finrank k P + finrank k U = finrank k V`. Set `b` to `Module.finBasis k U`. Set `ψ : V →ₗ[k] (Fin (finrank k U) → k)` to `LinearMap.pi fun i => φ (b i)`. Establish `hker : LinearMap.ker ψ = P`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hP, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `h1 : ∀ i, f (b i) x = 0` using `fun i => congrFun h i`. Establish `h2 : ∀ z ∈ Submodule.span k (Set.range b), f (z : U) x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `z hz'`. Proceed by induction on `hz' using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨i, rfl⟩ := hz`. Conclude with `h1 i`. Consider the case `zero => exact hz _ _ (φ x).map_zero`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add z w _ _ h1 h2 => rw [Submodule.coe_add, hadd', h1, h2, add_zero]`. Consider the case `smul a z _ h1 => rw [Submodule.coe_smul, hsm', h1, mul_zero]`. Conclude with `h2 ⟨y, hy⟩ (b.mem_span _)`. Introduce `h`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h _ (b i).2`. Establish `hrange : LinearMap.range ψ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨g, hg0, hg⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hg0` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `a : Fin (finrank k U) → k` to `fun i => g (Pi.single i 1)`. Establish `hga : ∀ v, g v = ∑ i, v i * a i`. Introduce `v`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ g v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Establish `h0 : ((∑ i, τ (a i) • b i : U) : V) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hnd` to reduce the goal to its premises. Introduce `y`. Establish `h1 : g (ψ y) = 0` using `hg ⟨y, rfl⟩`. Rewrite `h1` using `[hga]`. Rewrite using `[← hφ, Submodule.coe_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg τ h1`. Rewrite `h2` using `[map_sum, map_zero]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hφ, hsm, map_mul, hsy (b i) y, mul_comm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h1` using `Fintype.linearIndependent_iff.1 b.linearIndependent _ (Subtype.ext h0)`. Establish `h2 : ∀ i, a i = 0` using `fun i => by rw [← hτ (a i), h1 i, map_zero]`. Use extensionality with `v`. Simplify using `[hga, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `LinearMap.finrank_range_add_finrank_ker ψ` as an intermediate fact. Rewrite `this` using `[hker, hrange, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Use `⟨U, fun x => ⟨fun hx => hU x hx, fun hx => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hxP` using `(hP x).2 hx`. Establish `hxx : f x x ≠ 0` using `fun h => hxU (hiso x hxP h)`. Establish `hPe : P = U ⊔ k ∙ x`. Use `le_antisymm (fun y hy => ?_) (sup_le hUP ((Submodule.span_singleton_le_iff_mem _ _).2 hxP))` and prove the remaining obligations. Set `y'` to `y - (f x y / f x x) • x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'P : y' ∈ P` using `P.sub_mem hy (P.smul_mem _ hxP)`. Establish `hxy : f x y' = 0`. Rewrite using `[← hφ, map_sub, map_smul, hφ, hφ, smul_eq_mul, div_mul_cancel₀ _ hxx, sub_self]`. Take `⟨a, ha⟩` from `hN (-(f y' y') / f x x) (by rw [map_div₀, map_neg, ← hsy, ← hsy])`. Establish `h1 : y' + a • x ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hiso _ (P.add_mem hy'P (P.smul_mem _ hxP)) ?_` and prove the remaining obligations. Rewrite using `[hadd, hadd', hadd', hsm, hsm, hsm', hsm', hxy, hz _ _ hxy, ← mul_assoc, ha, div_mul_cancel₀ _ hxx]`. Expand and normalize the polynomial expressions, which then agree. Establish `: y = (y' + a • x) + (f x y / f x x - a) • x`. Simplify using `only [y', sub_smul]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup h1 (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))`. Establish `hx0 : x ≠ 0` using `fun h => hxU (h ▸ U.zero_mem)`. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq U (k ∙ x)`.
-
-Establish `h2 : U ⊓ (k ∙ x) = ⊥` using `((Submodule.disjoint_span_singleton' hx0).2 hxU).eq_bot`. Rewrite `h1` using `[h2, finrank_bot, finrank_span_singleton hx0, ← hPe]`. Take `⟨m, hm⟩` from `hev`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_lagrangian (hτ : ∀ x, τ (τ x) = x) (hN : ∀ z, τ z = z → ∃ a, a * τ a = z)
     (hev : Even (finrank k V)) (f : V → V → k) (hadd : ∀ y x x', f y (x + x') = f y x + f y x')
@@ -263,31 +257,31 @@ theorem map_algebraMap (σ : E →+* E) (o : 𝓞 E) :
     σ (algebraMap (𝓞 E) E o) = algebraMap (𝓞 E) E (conjO σ o) := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (hσ _)`.
+A detailed English derivation is pending.
 -/
 theorem conjO_conjO {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) (o : 𝓞 E) : conjO σ (conjO σ o) = o :=
   RingOfIntegers.ext (hσ _)
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def]`. Conclude with `A.coeToSubmodule.smul_mem o hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mul_mem (A : FractionalIdeal (𝓞 E)⁰ E) (o : 𝓞 E) {z : E} (hz : z ∈ A) : algebraMap (𝓞 E) E o * z ∈ A := by
   rw [← Algebra.smul_def]; exact A.coeToSubmodule.smul_mem o hz
 
 /- English proof (translation)
-The claim follows from `A.coeToSubmodule.add_mem hz hw`.
+A detailed English derivation is pending.
 -/
 theorem add_mem' (A : FractionalIdeal (𝓞 E)⁰ E) {z w : E} (hz : z ∈ A) (hw : w ∈ A) : z + w ∈ A :=
   A.coeToSubmodule.add_mem hz hw
 
 /- English proof (translation)
-Rewrite using `[mul_inv_cancel₀ hb]`. Conclude with `FractionalIdeal.one_mem_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_mul_inv {b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) : (1 : E) ∈ b * b⁻¹ := by
   rw [mul_inv_cancel₀ hb]; exact FractionalIdeal.one_mem_one _
 
 /- English proof (translation)
-Use `FractionalIdeal.mul_mem_mul hz hu` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ hb, mul_one, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_inv_mem {A b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {z u : E} (hz : z ∈ A * b) (hu : u ∈ b⁻¹) :
     u * z ∈ A := by
@@ -295,9 +289,9 @@ theorem mul_inv_mem {A b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {z u : 
   rwa [mul_assoc, mul_inv_cancel₀ hb, mul_one, mul_comm] at this
 
 /- English proof (translation)
-Establish `key : ∀ r ∈ b * b⁻¹, r * z ∈ A`. Introduce `r hr`. Use `FractionalIdeal.mul_induction_on (C := fun r => r * z ∈ A) hr (fun t ht u hu => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Use `mul_inv_mem hb (h t ht) hu` as an intermediate fact. Rewrite `this` using `[show u * (t * z) = t * u * z by ring]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[add_mul]`. Conclude with `add_mem' A hx hy`. Simplify using `using key 1 (one_mem_mul_inv hb)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cancel_mem {A b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {z : E} (h : ∀ t ∈ b, t * z ∈ A * b) : z ∈ A := by
   have key : ∀ r ∈ b * b⁻¹, r * z ∈ A := by
@@ -309,9 +303,7 @@ theorem cancel_mem {A b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {z : E} 
   simpa using key 1 (one_mem_mul_inv hb)
 
 /- English proof (translation)
-Introduce `z hz`. Use `FractionalIdeal.mul_induction_on (C := fun z => σ z ∈ A * b) hz (fun t ht u hu => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `FractionalIdeal.mul_mem_mul (hA t ht) (hb u hu)`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem' _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mul_mem {σ : E →+* E} {A b : FractionalIdeal (𝓞 E)⁰ E} (hA : ∀ z ∈ A, σ z ∈ A) (hb : ∀ z ∈ b, σ z ∈ b) :
     ∀ z ∈ A * b, σ z ∈ A * b := by
@@ -321,9 +313,9 @@ theorem conj_mul_mem {σ : E →+* E} {A b : FractionalIdeal (𝓞 E)⁰ E} (hA 
   · rw [map_add]; exact add_mem' _ hx hy
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hz`, the goal using `[FractionalIdeal.mem_inv_iff hA0]`. Introduce `y hy`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 (hz (σ y) (hA y hy))`. Use `(FractionalIdeal.mem_one_iff _).2 ⟨conjO σ o, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_algebraMap, ho, map_mul, hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inv_mem {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) {A : FractionalIdeal (𝓞 E)⁰ E} (hA0 : A ≠ 0)
     (hA : ∀ z ∈ A, σ z ∈ A) : ∀ z ∈ A⁻¹, σ z ∈ A⁻¹ := by
@@ -337,9 +329,9 @@ theorem conj_inv_mem {σ : E →+* E} (hσ : ∀ x, σ (σ x) = x) {A : Fraction
 variable {d : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ r ∈ b * b⁻¹, r • x ∈ N`. Introduce `r hr`. Use `FractionalIdeal.mul_induction_on (C := fun r => r • x ∈ N) hr (fun t ht u hu => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul]`. Use `hN t ht _ ((hL _).2 fun y hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm]`. Conclude with `mul_inv_mem hb (hx y hy) hu`. Rewrite using `[add_smul]`. Conclude with `N.add_mem hx hy`. Simplify using `using key 1 (one_mem_mul_inv hb)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_dual {h : (Fin d → E) → (Fin d → E) → E} (hsm : ∀ y (a : E) x, h y (a • x) = a * h y x)
     {A b : FractionalIdeal (𝓞 E)⁰ E} (hb : b ≠ 0) {L : Submodule (𝓞 E) (Fin d → E)}
@@ -355,7 +347,7 @@ theorem mem_of_dual {h : (Fin d → E) → (Fin d → E) → E} (hsm : ∀ y (a 
   simpa using key 1 (one_mem_mul_inv hb)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Introduce `y hy`. Establish `: y = t⁻¹ • t • y` using `by rw [smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hM y hy))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_smul {L M : Submodule (𝓞 E) (Fin d → E)} (hL : Submodule.span E (L : Set (Fin d → E)) = ⊤)
     {t : E} (ht : t ≠ 0) (hM : ∀ y ∈ L, t • y ∈ M) : Submodule.span E (M : Set (Fin d → E)) = ⊤ := by
@@ -372,25 +364,21 @@ def HasModular (h : (Fin d → E) → (Fin d → E) → E) (A : FractionalIdeal 
 variable {σ : E →+* E} {h : (Fin d → E) → (Fin d → E) → E}
 
 /- English proof (translation)
-Take `⟨L, hfg, hsp, hL⟩` from `hA`. Establish `hadd' : ∀ y y' x, h (y + y') x = h y x + h y' x`. Introduce `y y' x`. Rewrite using `[hsy x (y + y'), hadd, map_add, ← hsy, ← hsy]`. Establish `hsm' : ∀ (a : E) y x, h (a • y) x = σ a * h y x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a y x`. Rewrite using `[hsy x (a • y), hsm, map_mul, ← hsy]`. Establish `h0 : ∀ y, h y 0 = 0` using `fun y => by simpa using hsm y 0 0`. Establish `h0' : ∀ x, h 0 x = 0` using `fun x => by rw [hsy, h0, map_zero]`. Take `⟨t₀, ht₀, ht₀b⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht₀E : algebraMap (𝓞 E) E t₀ ≠ 0` using `fun e => ht₀ (RingOfIntegers.ext e)`. Establish `hb'0 : b' ≠ 0`. Introduce `e`. Establish `: σ (algebraMap (𝓞 E) E t₀) ∈ b'` using `(hb' _).2 (by rwa [hσ])`. Rewrite `this` using `[e, FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht₀E (by rw [← hσ (algebraMap (𝓞 E) E t₀), this, map_zero])`. Set `μ : E →ₗ[𝓞 E] (Fin d → E) →ₗ[𝓞 E] (Fin d → E)` to `LinearMap.mk₂ (𝓞 E) (fun t y => t • y) add_smul smul_assoc smul_add (fun c t y => smul_comm t c y)`. Set `M` to `Submodule.map₂ μ b.coeToSubmodule L`. Establish `hM : ∀ t ∈ b, ∀ y ∈ L, t • y ∈ M` using `fun t ht y hy => Submodule.apply_mem_map₂ μ ht hy`. Use `⟨M, Submodule.FG.map₂ μ (FractionalIdeal.fg_of_isNoetherianRing le_rfl b) hfg, span_eq_top_of_smul hsp ht₀E (hM _ ht₀b), fun x => ⟨fun hx y hy => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [M, Submodule.map₂_eq_span_image2] at hx hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, x, hx, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨u, hu, y, hy, rfl⟩` from `hy`. Express the relevant statement in the definitionally equal form `h (u • y) (t • x) ∈ _`. Rewrite using `[hsm, hsm', show t * (σ u * h y x) = h y x * t * σ u by ring]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mul_mem_mul ((hL x).1 hx y hy) ht) ((hb' _).2 (by rw [hσ]; exact hu))`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [h0']`. Conclude with `FractionalIdeal.zero_mem _`. Consider the case `add y y' _ _ h1 h2 => rw [hadd']`. Conclude with `add_mem' _ h1 h2`. Consider the case `smul o y _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← algebraMap_smul E o y, hsm', map_algebraMap]`. Conclude with `int_mul_mem _ _ h1`. Consider the case `zero => rw [h0]`. Conclude with `FractionalIdeal.zero_mem _`. Consider the case `add x x' _ _ h1 h2 => rw [hadd]`.
-
-Conclude with `add_mem' _ h1 h2`. Consider the case `smul o x _ h1 => rw [← algebraMap_smul E o x, hsm]`. Conclude with `int_mul_mem _ _ h1`. Use `mem_of_dual hsm hb hL M hM fun y hy => cancel_mem hb'0 fun t ht => ?_` and prove the remaining obligations. Use `hx _ (hM _ ((hb' t).1 ht) y hy)` as an intermediate fact.
-
-Rewrite `this` using `[hsm', hσ]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem HasModular.scale (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x + x') = h y x + h y x')
     (hsm : ∀ y (a : E) x, h y (a • x) = a * h y x) (hsy : ∀ x y, h y x = σ (h x y))
@@ -439,17 +427,17 @@ theorem HasModular.scale (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x
     rwa [hsm', hσ] at this
 
 /- English proof (translation)
-Establish `hint : ∀ s ∈ A⁻¹, ∀ z ∈ A, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = s * z` using `fun s hs z hz => (FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hA0).1 hs z hz)`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, z, hz, hsz⟩ : ∃ s ∈ A⁻¹, ∃ z ∈ A, s * z ∉ (p : FractionalIdeal (𝓞 E)⁰ E) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : A⁻¹ * A ≤ (p : FractionalIdeal (𝓞 E)⁰ E)` using `FractionalIdeal.mul_le.2 hcon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[inv_mul_cancel₀ hA0]`. Take `⟨x, hx, hx1⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (hle (FractionalIdeal.one_mem_one _))`. Establish `: x = 1` using `RingOfIntegers.ext hx1`. Conclude with `hp.ne_top ((Ideal.eq_top_iff_one _).2 (this ▸ hx))`. Establish `hs'` using `conj_inv_mem hσ hA0 hA s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hint s hs z hz`. Take `⟨a', ha'⟩` from `hint _ hs' z hz`. Establish `hap : a ∉ p` using `fun e => hsz ((FractionalIdeal.mem_coeIdeal _).2 ⟨a, e, ha⟩)`. Establish `key : ∀ t : 𝓞 E, t * a + conjO σ t * a' ∉ p → ∃ s : E, σ s = s ∧ s ∈ A⁻¹ ∧ ∃ z ∈ A, ∃ a : 𝓞 E, a ∉ p ∧ algebraMap (𝓞 E) E a = s * z`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (𝓞 E) E t * s + σ (algebraMap (𝓞 E) E t * s), by rw [map_add, hσ, add_comm], ?_, z, hz, _, ht, ?_⟩` and prove the remaining obligations. Use `add_mem' _ (int_mul_mem _ _ hs) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_algebraMap]`. Conclude with `int_mul_mem _ _ hs'`. Rewrite using `[map_add, map_mul, map_mul, map_mul, ha, ha', map_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h1 : 1 * a + conjO σ 1 * a' ∈ p`. Use `key θ fun h2 => ?_` and prove the remaining obligations. Establish `h3 : (conjO σ θ - θ) * a ∈ p`. Use `p.sub_mem (p.mul_mem_left (conjO σ θ) h1) h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[map_one]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `(hp.isPrime.mem_or_mem h3).elim hθ hap`. Conclude with `key 1 h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_multiplier (hσ : ∀ x, σ (σ x) = x) {A : FractionalIdeal (𝓞 E)⁰ E} (hA0 : A ≠ 0)
     (hA : ∀ z ∈ A, σ z ∈ A) (p : Ideal (𝓞 E)) (hp : p.IsMaximal) (θ : 𝓞 E) (hθ : conjO σ θ - θ ∉ p) :
@@ -485,55 +473,47 @@ theorem exists_multiplier (hσ : ∀ x, σ (σ x) = x) {A : FractionalIdeal (�
   · exact key 1 h1
 
 /- English proof (translation)
-Take `⟨L, hfg, hsp, hL⟩` from `hA`. Establish `hsm' : ∀ (a : E) y x, h (a • y) x = σ a * h y x`. Introduce `a y x`. Rewrite using `[hsy x (a • y), hsm, map_mul, ← hsy]`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `IsFractionRing.injective _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : (p : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hp0`. Take `⟨s, hsσ, hs, z₀, hz₀, a₀, ha₀p, ha₀⟩` from `exists_multiplier hσ hA0 hAσ p hp θ hθ`. Establish `hint : ∀ z ∈ A, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = s * z` using `fun z hz => (FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hA0).1 hs z hz)`. Establish `hiff : ∀ z ∈ A, ∀ a : 𝓞 E, algebraMap (𝓞 E) E a = s * z → (a ∈ p ↔ z ∈ A * (p : FractionalIdeal (𝓞 E)⁰ E))`. Introduce `z hz a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hap`. Take `⟨y, i, hi, e⟩` from `hp.exists_inv ha₀p`. Establish `e'` using `congrArg (algebraMap (𝓞 E) E) e`. Rewrite `e'` using `[map_add, map_mul, map_one, ha₀]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: z = algebraMap (𝓞 E) E y * (z₀ * algebraMap (𝓞 E) E a) + z * algebraMap (𝓞 E) E i`. Rewrite using `[ha]`. Take the linear combination `(-z) * e'`. Rewrite using `[this]`. Conclude with `add_mem' _ (int_mul_mem _ _ (FractionalIdeal.mul_mem_mul hz₀ (FractionalIdeal.mem_coeIdeal_of_mem _ hap))) (FractionalIdeal.mul_mem_mul hz (FractionalIdeal.mem_coeIdeal_of_mem _ hi))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz'`. Rewrite `hz'` using `[mul_comm]`. Use `mul_inv_mem hA0 hz' hs` as an intermediate fact. Take `⟨c, hc, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 this`. Rewrite using `[hinj (ha.trans e.symm)]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hLL : ∀ y x : L, h y x ∈ A` using `fun y x => (hL x).1 x.2 y y.2`. Use `choose g hg using fun y x : L => hint _ (hLL y x)`. Establish `gadd : ∀ y x x', g y (x + x') = g y x + g y x'` using `fun y x x' => hinj (by`. Rewrite using `[map_add, hg, hg, hg, Submodule.coe_add, hadd, mul_add])`. Establish `gsm : ∀ y (o : 𝓞 E) x, g y (o • x) = o * g y x` using `fun y o x => hinj (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hg, hg, Submodule.coe_smul, ← algebraMap_smul E o, hsm]`. Use the proof step `ring)`. Establish `gsy : ∀ x y, g y x = conjO σ (g x y)` using `fun x y => hinj (by`. Rewrite using `[← map_algebraMap, hg, hg, map_mul, hsσ, ← hsy])`. Set `G : L → L →ₗ[𝓞 E] 𝓞 E` to `fun y => { toFun := g y, map_add' := gadd y, map_smul' := gsm y }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `gp : ∀ y x, x ∈ (p • ⊤ : Submodule (𝓞 E) L) → g y x ∈ p`. Introduce `y x hx`. Use `Submodule.smul_induction_on (p := fun x => g y x ∈ p) hx (fun r hr n _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[gsm]`. Conclude with `p.mul_mem_right _ hr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[gadd]`. Conclude with `p.add_mem hu hv`. Use `letI : Field (𝓞 E ⧸ p) := Ideal.Quotient.field p`. Use `haveI : Finite (𝓞 E ⧸ p) := Ideal.finiteQuotientOfFreeOfNeBot p hp0`. Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `Q` to `L ⧸ (p • ⊤ : Submodule (𝓞 E) L)`. Use `haveI : Module.Finite (𝓞 E ⧸ p) Q := Module.Finite.of_restrictScalars_finite (𝓞 E) _ _`. Set `τ : 𝓞 E ⧸ p →+* 𝓞 E ⧸ p` to `Ideal.quotientMap p (conjO σ) hpσ`. Establish `hτ : ∀ o, τ (Ideal.Quotient.mk p o) = Ideal.Quotient.mk p (conjO σ o)` using `fun o => rfl`. Establish `hττ : ∀ x, τ (τ x) = x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨o, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hτ, hτ, conjO_conjO hσ]`. Set `π : L →ₗ[𝓞 E] Q` to `Submodule.mkQ _`. Establish `hπ : Function.Surjective π` using `Submodule.mkQ_surjective _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `choose sec hsec using hπ`. Establish `hπ : ∀ v, ∃ x, π x = v` using `fun v => ⟨sec v, hsec v⟩`. Set `f : Q → Q → 𝓞 E ⧸ p` to `fun v w => Ideal.Quotient.mk p (g (sec v) (sec w))`. Establish `hcl : ∀ y x x', π x = π x' → Ideal.Quotient.mk p (g y x) = Ideal.Quotient.mk p (g y x')`. Introduce `y x x' e`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.Quotient.eq]`. Use `gp y _ ((Submodule.Quotient.eq _).1 e)` as an intermediate fact. Rewrite `this` using `[show g y (x - x') = g y x - g y x' from (G y).map_sub x x']`. Then use the resulting hypothesis. Establish `hf : ∀ y x, f (π y) (π x) = Ideal.Quotient.mk p (g y x)`. Introduce `y x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f]`. Rewrite using `[hcl _ _ _ (hsec _), gsy, ← hτ, hcl _ _ _ (hsec _), hτ, ← gsy]`. Establish `hf0 : ∀ y x : L, f (π y) (π x) = 0 ↔ h y x ∈ A * (p : FractionalIdeal (𝓞 E)⁰ E)`. Introduce `y x`. Rewrite using `[hf, Ideal.Quotient.eq_zero_iff_mem, hiff _ (hLL y x) _ (hg y x)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, hU⟩` from `exists_lagrangian τ hττ (GlobalTheory.exists_mul_invol_eq_of_fixed _ τ hττ ⟨Ideal.Quotient.mk p θ, by`. Rewrite using `[hτ]`. Conclude with `fun e => hθ (Ideal.Quotient.eq.1 e)⟩)`. Use the proof step `(V := Q) (by rw [finrank_quot L hfg hsp p, Module.finrank_fin_fun]; exact hd) f`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y x x'`. Take `⟨y, rfl⟩` from `hπ y`. Take `⟨x, rfl⟩` from `hπ x`. Take `⟨x', rfl⟩` from `hπ x'`. Rewrite using `[← map_add, hf, hf, hf, gadd, map_add])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Introduce `y a x`. Take `⟨y, rfl⟩` from `hπ y`. Take `⟨x, rfl⟩` from `hπ x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: Ideal.Quotient.mk p a • π x = π (a • x)` using `rfl`. Rewrite using `[this, hf, hf, gsm, map_mul])`. Use the proof step `(by`. Introduce `x y`. Take `⟨y, rfl⟩` from `hπ y`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `hπ x`. Rewrite using `[hf, hf, hτ, ← gsy])`. Use the proof step `(by`. Introduce `x hx`. Take `⟨x, rfl⟩` from `hπ x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_dual hsm hP0 hL ((p • ⊤ : Submodule (𝓞 E) L).map L.subtype) (fun t ht y hy => by` as an intermediate fact. Take `⟨c, hc, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ht`. Conclude with `⟨c • ⟨y, hy⟩, Submodule.smul_mem_smul hc trivial, (algebraMap_smul E c y).symm⟩)`. Use the proof step `(x := x) (fun y hy => (hf0 ⟨y, hy⟩ x).1 (hx _))`. Take `⟨x', hx', e⟩` from `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Subtype.ext e]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hx')`. Set `M : Submodule (𝓞 E) (Fin d → E)` to `((U.restrictScalars (𝓞 E)).comap π).map L.subtype`. Establish `hM : ∀ x : L, (x : Fin d → E) ∈ M ↔ π x ∈ U` using `fun x => ⟨fun ⟨x', hx', e⟩ => Subtype.ext e ▸ hx', fun hx => ⟨x, hx, rfl⟩⟩`. Establish `hML : M ≤ L` using `Submodule.map_subtype_le _ _`.
-
-Establish `hpM : ∀ c ∈ p, ∀ y ∈ L, algebraMap (𝓞 E) E c • y ∈ M`. Introduce `c hc y hy`. Rewrite using `[algebraMap_smul]`. Use `(hM (c • ⟨y, hy⟩)).2 ?_` and prove the remaining obligations. Establish `: π (c • ⟨y, hy⟩) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.smul_mem_smul hc trivial)`.
-
-Rewrite using `[this]`. Conclude with `U.zero_mem`. Take `⟨c₀, hc₀, hc₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp0`. Use `⟨M, Submodule.FG.map _ (IsNoetherian.noetherian _), span_eq_top_of_smul hsp (fun e => hc₀0 (hinj (e.trans (map_zero _).symm))) (hpM c₀ hc₀), fun x => ⟨fun hx y hy => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hf0 ⟨y, hML hy⟩ ⟨x, hML hx⟩).1 ((hU _).1 ((hM ⟨x, hML hx⟩).1 hx) _ ((hM ⟨y, hML hy⟩).1 hy))`.
-
-Establish `hxL : x ∈ L`. Use `(hL x).2 fun y hy => cancel_mem hP0 fun t ht => ?_` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ht`. Use `hx _ (hpM _ (hpσ c hc) y hy)` as an intermediate fact. Rewrite `this` using `[hsm', map_algebraMap, conjO_conjO hσ]`. Then use the resulting hypothesis.
-
-Use `(hM ⟨x, hxL⟩).2 ((hU _).2 fun u hu => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hπ u`. Conclude with `(hf0 y ⟨x, hxL⟩).2 (hx y ((hM y).2 hu))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasModular.inert (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x + x') = h y x + h y x')
     (hsm : ∀ y (a : E) x, h y (a • x) = a * h y x) (hsy : ∀ x y, h y x = σ (h x y)) (hd : Even d)
@@ -660,29 +640,27 @@ theorem HasModular.inert (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x
     exact (hf0 y ⟨x, hxL⟩).2 (hx y ((hM y).2 hu))
 
 /- English proof (translation)
-Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `hgt I ih`. Introduce `hI0 hIσ A hA0 hAσ hA`. Establish `hcoe : ∀ J : Ideal (𝓞 E), (∀ o ∈ J, conjO σ o ∈ J) → ∀ z ∈ (J : FractionalIdeal (𝓞 E)⁰ E), σ z ∈ (J : FractionalIdeal (𝓞 E)⁰ E)`. Introduce `J hJ z hz`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Conclude with `FractionalIdeal.mem_coeIdeal_of_mem _ (hJ c hc)`. Establish `step : ∀ P : Ideal (𝓞 E), P ≠ ⊤ → (∀ o ∈ P, conjO σ o ∈ P) → I ≤ P → HasModular h (A * (P : FractionalIdeal (𝓞 E)⁰ E)) → HasModular h (A * (I : FractionalIdeal (𝓞 E)⁰ E))`. Introduce `P hPt hPσ hIP hAP`. Take `⟨J, rfl⟩` from `Ideal.dvd_iff_le.2 hIP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥` using `left_ne_zero_of_mul hI0`. Establish `hJ0 : J ≠ ⊥` using `right_ne_zero_of_mul hI0`. Establish `hP0' : (P : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hP0`. Establish `hlt : P * J < J`. Use `lt_of_le_of_ne Ideal.mul_le_right fun e => hPt ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: P * J = 1 * J` using `by rw [one_mul]; exact e`. Rewrite using `[mul_right_cancel₀ hJ0 this, Ideal.one_eq_top]`. Establish `hJσ : ∀ o ∈ J, conjO σ o ∈ J`. Introduce `o ho`. Establish `: algebraMap (𝓞 E) E (conjO σ o) ∈ (J : FractionalIdeal (𝓞 E)⁰ E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cancel_mem hP0' fun t ht => ?_` and prove the remaining obligations. Establish `h1` using `FractionalIdeal.mul_mem_mul (hcoe P hPσ t ht) (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 E)⁰ ho)`. Rewrite `h1` using `[← FractionalIdeal.coeIdeal_mul]`. Establish `h2` using `hcoe _ hIσ _ h1`. Rewrite `h2` using `[map_mul, hσ, FractionalIdeal.coeIdeal_mul, mul_comm (P : FractionalIdeal (𝓞 E)⁰ E)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 this`. Rewrite using `[← IsFractionRing.injective (𝓞 E) E e]` and apply the resulting hypothesis. Rewrite using `[FractionalIdeal.coeIdeal_mul, ← mul_assoc]`. Conclude with `ih J hlt hJ0 hJσ _ (mul_ne_zero hA0 hP0') (conj_mul_mem hAσ (hcoe P hPσ)) hAP`. Distinguish the cases in `hIt : I = ⊤`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hIt, FractionalIdeal.coeIdeal_top, mul_one]`. Conclude with `hA`. Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hIt`. Establish `hp0 : p ≠ ⊥` using `fun e => hI0 (le_bot_iff.1 (e ▸ hIp))`. Distinguish the cases in `hpσ : ∀ o ∈ p, conjO σ o ∈ p`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨θ, hθ⟩` from `hun p hp`. Conclude with `step p hp.ne_top hpσ hIp (hA.inert hσ hadd hsm hsy hd hA0 hAσ p hp hp0 hpσ θ hθ)`. Set `q : Ideal (𝓞 E)` to `p.comap (conjO σ)`. Establish `hq : ∀ o, o ∈ q ↔ conjO σ o ∈ p` using `fun o => Iff.rfl`. Establish `hpq : p ⊔ q = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp.out.2 _ (lt_of_le_of_ne le_sup_left fun e => hpσ fun o ho => ?_)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Ideal.mem_sup_right ((hq _).2 (by rwa [conjO_conjO hσ]))`. Establish `hinf : p * q = p ⊓ q` using `Ideal.mul_eq_inf_of_coprime hpq`. Use `step (p * q) (fun e => hp.ne_top (top_le_iff.1 (e ▸ Ideal.mul_le_left))) ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce `o ho`. Rewrite `ho`, the goal using `[hinf]`. Conclude with `⟨ho.2, (hq _).2 (by rw [conjO_conjO hσ]; exact ho.1)⟩`. Rewrite using `[hinf]`. Conclude with `fun o ho => ⟨hIp ho, hIp (hIσ o ho)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[FractionalIdeal.coeIdeal_mul, ← mul_assoc]`. Use `hA.scale hσ hadd hsm hsy (FractionalIdeal.coeIdeal_ne_zero.2 hp0) fun z => ⟨fun hz => ?_, fun hz => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Conclude with `FractionalIdeal.mem_coeIdeal_of_mem _ ((hq c).1 hc)`. Take `⟨c, hc, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`.
-
-Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨conjO σ c, (hq _).2 (by rwa [conjO_conjO hσ]), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_algebraMap, e, hσ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasModular.mul_ideal (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x + x') = h y x + h y x')
     (hsm : ∀ y (a : E) x, h y (a • x) = a * h y x) (hsy : ∀ x y, h y x = σ (h x y)) (hd : Even d)
@@ -748,25 +726,23 @@ theorem HasModular.mul_ideal (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h 
         rw [← map_algebraMap, e, hσ]
 
 /- English proof (translation)
-Take `⟨a, ha0, haA⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hA0`. Use `set e := algebraMap (𝓞 E) E a with he`. Establish `he0 : e ≠ 0` using `fun h => ha0 (RingOfIntegers.ext h)`. Establish `hσe0 : σ e ≠ 0` using `fun h => he0 (by rw [← hσ e, h, map_zero])`. Set `b` to `FractionalIdeal.spanSingleton (𝓞 E)⁰ e⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b'` to `FractionalIdeal.spanSingleton (𝓞 E)⁰ (σ e)⁻¹`. Establish `hb : b ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 (inv_ne_zero he0)`. Establish `hb' : b' ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 (inv_ne_zero hσe0)`. Establish `h1 : ∀ z ∈ b, σ z ∈ b'`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hz`. Rewrite using `[Algebra.smul_def, map_mul, map_algebraMap, map_inv₀]`. Conclude with `int_mul_mem _ _ (FractionalIdeal.mem_spanSingleton_self _ _)`. Establish `h2 : ∀ z ∈ b', σ z ∈ b`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hz`. Rewrite using `[Algebra.smul_def, map_mul, map_algebraMap, map_inv₀, hσ]`. Conclude with `int_mul_mem _ _ (FractionalIdeal.mem_spanSingleton_self _ _)`. Establish `hB` using `hA.scale hσ hadd hsm hsy hb (b' := b') fun z => ⟨h2 z, fun hz => hσ z ▸ h1 _ hz⟩`. Establish `hbb : ∀ z ∈ b * b', σ z ∈ b * b'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Use `FractionalIdeal.mul_induction_on (C := fun z => σ z ∈ b * b') hz (fun t ht u hu => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm (σ t)]`. Conclude with `FractionalIdeal.mul_mem_mul (h2 u hu) (h1 t ht)`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem' _ hx hy`. Establish `hB0 : A * b * b' ≠ 0` using `mul_ne_zero (mul_ne_zero hA0 hb) hb'`. Establish `hBσ : ∀ z ∈ A * b * b', σ z ∈ A * b * b'`. Rewrite using `[mul_assoc]`. Conclude with `conj_mul_mem hAσ hbb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hB1 : (1 : E) ∈ A * b * b'`. Use `FractionalIdeal.mul_mem_mul (FractionalIdeal.mul_mem_mul (int_mul_mem A (conjO σ a) haA) (FractionalIdeal.mem_spanSingleton_self (𝓞 E)⁰ e⁻¹)) (FractionalIdeal.mem_spanSingleton_self (𝓞 E)⁰ (σ e)⁻¹)` as an intermediate fact. Rewrite `this` using `[← map_algebraMap, ← he, show σ e * e * e⁻¹ * (σ e)⁻¹ = 1 by field_simp]`. Then use the resulting hypothesis. Establish `hle : (A * b * b')⁻¹ ≤ 1`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using (FractionalIdeal.mem_inv_iff hB0).1 hz 1 hB1`. Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hle`. Use `HasModular.mul_ideal hσ hadd hsm hsy hd hun I (FractionalIdeal.coeIdeal_ne_zero.1 (hI ▸ inv_ne_zero hB0)) (by` as an intermediate fact. Introduce `o ho`. Establish `h3` using `FractionalIdeal.mem_coeIdeal_of_mem (𝓞 E)⁰ (P := E) ho`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[hI]`. Establish `h4` using `conj_inv_mem hσ hB0 hBσ _ h3`. Rewrite `h4` using `[← hI]`. Take `⟨c, hc, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h4`. Rewrite `e` using `[map_algebraMap]`.
-
-Rewrite using `[← IsFractionRing.injective (𝓞 E) E e]) _ hB0 hBσ hB` and apply the resulting hypothesis. Rewrite `this` using `[hI, mul_inv_cancel₀ hB0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem HasModular.one (hσ : ∀ x, σ (σ x) = x) (hadd : ∀ y x x', h y (x + x') = h y x + h y x')
     (hsm : ∀ y (a : E) x, h y (a • x) = a * h y x) (hsy : ∀ x y, h y x = σ (h x y)) (hd : Even d)

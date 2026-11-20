@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GL2Factorization.Abs.OrthogonalTorusIntegral
 
 /- English proof (translation)
-Use `⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨B, hB, rfl⟩`. Establish `: Units.val '' (Units.val ⁻¹' B : Set ℝˣ) = B ∩ {0}ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨hu, by simp⟩`. Introduce and unpack `⟨hx, hx0⟩`. Conclude with `⟨Units.mk0 x hx0, hx, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB.inter (measurableSet_singleton _).compl`.
+A detailed English derivation is pending.
 -/
 theorem val_emb : MeasurableEmbedding (Units.val : ℝˣ → ℝ) := by
   refine ⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩
@@ -37,9 +37,7 @@ theorem val_emb : MeasurableEmbedding (Units.val : ℝˣ → ℝ) := by
   exact hB.inter (measurableSet_singleton _).compl
 
 /- English proof (translation)
-Use `set nu : Measure ℝ := volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹ with hnu`. Establish `hs : SigmaFinite nu` using `SigmaFinite.withDensity_ofReal _`. Establish `hmap : Measure.map (Units.val : ℝˣ → ℝ) mulR = nu.restrict (Set.range Units.val)` using `val_emb.map_comap nu`. Use `SigmaFinite.of_map _ val_emb.measurable.aemeasurable ?_` and prove the remaining obligations. Rewrite using `[hmap]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_mulR : SigmaFinite mulR := by
   set nu : Measure ℝ := volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹ with hnu

@@ -18,21 +18,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
 /- English proof (translation)
-Simplify using `[cf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_sub_level_kernel_detection {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     (f g : Amb LL Ks D) (i : ℤ) : cf (f - g) i = cf f i - cf g i := by
   simp [cf]
 
 /- English proof (translation)
-Simplify using `[cstD, TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constSeries_add {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     (d d' : D) : cstD (LL := LL) Ks (d + d') = cstD Ks d + cstD Ks d' := by
   simp [cstD, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Proceed by induction on `(Finset.univ : Finset (Fin q)) using Finset.induction_on with`. Consider the case `empty => simp [cstD]`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, constSeries_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem constSeries_sum {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     {q : ℕ} (d : Fin q → D) : cstD (LL := LL) Ks (∑ k, d k) = ∑ k, cstD Ks (d k) := by
@@ -42,9 +42,9 @@ theorem constSeries_sum {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGrou
   | insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, constSeries_add, ih]
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.ofPowerSeries_C, HahnSeries.C_apply, HahnModule.single_zero_smul_eq_smul]`. Simplify using `only [cstD]`. Rewrite using `[← HahnModule.of_smul]`. Use `congr 1`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[HahnSeries.coeff_smul, HahnSeries.coeff_single, HahnSeries.coeff_single]`. Use `split_ifs`. Rewrite using `[algebraMap_smul, TensorProduct.tmul_smul]`. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constSeries_C_smul {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     (r : LL) (d : D) :
@@ -61,16 +61,16 @@ theorem constSeries_C_smul {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommG
   · rw [smul_zero]
 
 /- English proof (translation)
-Simplify using `[cf, cstD, HahnSeries.coeff_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_constSeries {Ks D : Type} [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     (d : D) (i : ℤ) : cf (cstD (LL := LL) Ks d) i = if i = 0 then (1 : Ks) ⊗ₜ[LL] d else 0 := by
   simp [cf, cstD, HahnSeries.coeff_single]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hp9.2.2.2.2.1`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hQq : W.Q = W.q` using `by show (W.φA ^ (W.s - 1)) W.q = W.q`. Rewrite using `[hs1, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hQq, hu]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Q_eq_unit_mul_qP (hs1 : W.s = 1)
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) :
@@ -87,7 +87,7 @@ theorem Q_eq_unit_mul_qP (hs1 : W.s = 1)
   simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, qP]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hp9.2.2.1`. Establish `hp1 : PD.p - 1 ≠ 0` using `by have := PD.hp.two_le; omega`. Rewrite using `[hw]`. Simplify using `[letπ, zero_pow hp1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_pi0_eq_zero_of_p9ring
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
@@ -108,17 +108,17 @@ def comparisonOnLetter {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i :
     exact lvBasis_cmp_congr _ _ (C.t_add i _ _)
 
 /- English proof (translation)
-Take `⟨z, hz, hzeq⟩` from `Submodule.mem_map.1 hred`. Rewrite `hzeq` using `[LinearMap.lsmul_apply]`. Establish `key : (⟨x, hx⟩ : ↥((latOf C).N i)) = ∑ k, PowerSeries.C (a k) • (⟨e k, he k⟩ : ↥((latOf C).N i)) + (PowerSeries.X : PowerSeries O) • ⟨z, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_sum, Submodule.coe_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hzeq]`. Normalize the expressions using the abelian group laws. Establish `hF` using `congrArg (comparisonOnLetter C i) key`. Rewrite `hF` using `[map_add, map_sum]`. Establish `hC : ∀ k, comparisonOnLetter C i (PowerSeries.C (a k) • (⟨e k, he k⟩ : ↥((latOf C).N i))) = algebraMap O LL (a k) • W.cmp T ⟨C.t i (e k), he k⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Establish `hm : (baseIdOf hR).d (PowerSeries.C (a k)) • C.t i (e k) ∈ W.N T`. Rewrite using `[← C.t_smul]`. Conclude with `(PowerSeries.C (a k) • (⟨e k, he k⟩ : ↥((latOf C).N i))).2`. Establish `h0 : comparisonOnLetter C i (PowerSeries.C (a k) • (⟨e k, he k⟩ : ↥((latOf C).N i))) = W.cmp T ⟨(baseIdOf hR).d (PowerSeries.C (a k)) • C.t i (e k), hm⟩` using `lvBasis_cmp_congr (a := C.t i (PowerSeries.C (a k) • e k)) (PowerSeries.C (a k) • (⟨e k, he k⟩ : ↥((latOf C).N i))).2 hm (C.t_smul i _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Use `lvBasis_cmp_smul_const (he k) _ (a k) (fun j => ?_) hm` and prove the remaining obligations. Rewrite using `[BaseId.d_apply]`. Establish `h1 : (baseIdOf hR).ι (PowerSeries.C (a k)) = PowerSeries.C (a k)` using `(baseIdOf hR).ι.commutes (a k)`. Rewrite using `[h1, PowerSeries.constantCoeff_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : comparisonOnLetter C i ((PowerSeries.X : PowerSeries O) • (⟨z, hz⟩ : ↥((latOf C).N i))) = 0`. Establish `hm : W.π₀ • C.t i z ∈ W.N T`. Rewrite using `[← BaseId.d_X, ← C.t_smul]`. Conclude with `((PowerSeries.X : PowerSeries O) • (⟨z, hz⟩ : ↥((latOf C).N i))).2`. Establish `h0 : comparisonOnLetter C i ((PowerSeries.X : PowerSeries O) • (⟨z, hz⟩ : ↥((latOf C).N i))) = W.cmp T ⟨W.π₀ • C.t i z, hm⟩` using `lvBasis_cmp_congr (a := C.t i ((PowerSeries.X : PowerSeries O) • z)) ((PowerSeries.X : PowerSeries O) • (⟨z, hz⟩ : ↥((latOf C).N i))).2 hm (by rw [C.t_smul, BaseId.d_X])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0, lvBasis_cmp_smul_const hz W.π₀ 0 (constantCoeff_pi0_eq_zero_of_p9ring hp9) hm, map_zero, zero_smul]`. Rewrite `hF` using `[hX, add_zero, Finset.sum_congr rfl (fun k _ => hC k)]`. Conclude with `hF`.
+A detailed English derivation is pending.
 -/
 theorem comparison_of_reduction {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i : ZMod n)
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
@@ -165,9 +165,9 @@ theorem comparison_of_reduction {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR
   exact hF
 
 /- English proof (translation)
-Take `⟨z, hz, hzeq⟩` from `Submodule.mem_map.1 hγ`. Rewrite `hzeq` using `[LinearMap.lsmul_apply]`. Establish `hg : W.gamK = W.gam` using `W.gamK_eq_one hs1 hp2`. Establish `h1 : C.t i ((latOf C).γ i x) = W.γD T W.gam (C.t i x)` using `by rw [t_γ, hg]`. Establish `h2 : W.γD T W.gam (C.t i x) - C.t i x = W.π₀ ^ M • C.t i z`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, ← C.t_sub, ← hzeq, C.t_smul, map_pow, BaseId.d_X]`. Use `⟨⟨C.t i z, hz⟩, ?_, h2⟩` and prove the remaining obligations. Establish `h3 : W.γD T W.gam (C.t i x) = W.π₀ ^ M • C.t i z + C.t i x` using `by rw [← h2]; abel`. Rewrite using `[h3]`. Conclude with `(W.N T).add_mem ((W.N T).smul_mem _ hz) hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_reduction_pi0_pow {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i : ZMod n) (hs1 : W.s = 1)
     (hp2 : PD.p ≠ 2) (x : C.V) (hx : x ∈ (latOf C).N i) (M : ℕ)

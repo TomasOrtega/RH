@@ -5,9 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a = 0`. Conclude with `h0 ▸ dvd_zero _`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul a h0`. Consider the cases of `m with`. Consider the case `zero`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Simplify using `only [pow_zero, one_mul] at ha`. Conclude with `hb ha`. Consider the case `succ n => exact ⟨(p : WittVector p k) ^ n * b, by ring⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wittVector_dvd_of_coeff_zero_eq_zero (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (a : WittVector p k) (ha : a.coeff 0 = 0) :
@@ -23,7 +23,7 @@ theorem wittVector_dvd_of_coeff_zero_eq_zero (p : ℕ) [Fact p.Prime] (k : Type)
   | succ n => exact ⟨(p : WittVector p k) ^ n * b, by ring⟩
 
 /- English proof (translation)
-Introduce `h`. Use `WittVector.coeff_p_pow p k 1` as an intermediate fact. Rewrite `this` using `[pow_one, h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wittVector_natCast_ne_zero (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [CharP k p] : (p : WittVector p k) ≠ 0 := by
@@ -33,21 +33,21 @@ theorem wittVector_natCast_ne_zero (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
   simp at this
 
 /- English proof (translation)
-Introduce `p _ k _ _ _`. Use `haveI : PerfectRing k p := PerfectField.toPerfectRing p`. Use `set I : Ideal (WittVector p k) := Ideal.span {(p : WittVector p k) ^ 2} with hI`. Establish `hlift : ∀ a ∈ I, WittVector.constantCoeff a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.mp ha`. Simplify using `[map_mul, map_pow, map_natCast, CharP.cast_eq_zero]`. Set `π : (WittVector p k ⧸ I) →+* k` to `Ideal.Quotient.lift I WittVector.constantCoeff hlift`. Establish `hπ : ∀ a, π (Ideal.Quotient.mk I a) = a.coeff 0`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[π, Ideal.Quotient.lift_mk, WittVector.constantCoeff_apply]`. Establish `hp0 : π (p : WittVector p k ⧸ I) = 0`. Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero k p`. Use `⟨WittVector p k ⧸ I, inferInstance, π, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Use `⟨Ideal.Quotient.mk I (WittVector.teichmuller p r), ?_⟩` and prove the remaining obligations. Rewrite using `[hπ, WittVector.teichmuller_coeff_zero]`. Use extensionality with `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.mem_ker, hπ, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨c, rfl⟩` from `wittVector_dvd_of_coeff_zero_eq_zero p k a ha`. Conclude with `⟨Ideal.Quotient.mk I c, by rw [map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨c, hc⟩`. Rewrite using `[← hπ, hc, map_mul, hp0, zero_mul]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[← map_natCast (Ideal.Quotient.mk I), ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hx`. Establish `hpne` using `wittVector_natCast_ne_zero p k`. Establish `hac : a = (p : WittVector p k) * c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hpne` to reduce the goal to its premises. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨Ideal.Quotient.mk I c, by rw [hac, map_mul, map_natCast]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_flat_lift_mod_p_sq : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectField k], ∃ (Λ : Type) (_ : CommRing Λ) (π : Λ →+* k), Function.Surjective π ∧

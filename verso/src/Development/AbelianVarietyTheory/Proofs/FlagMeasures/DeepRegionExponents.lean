@@ -5,17 +5,17 @@ open Matrix Finset Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hX0 : 0 < X` using `by linarith`. Take `⟨Y, hYdef⟩ : ∃ Y : ℝ, Y = X ^ q` from `⟨_, rfl⟩`. Establish `hXY : X ≤ Y`. Rewrite using `[hYdef]; simpa using pow_le_pow_right₀ (by linarith : (1 : ℝ) ≤ X) hq`. Establish `hY16 : 16 ≤ Y` using `le_trans hX hXY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hτY : τ * Y ^ 11 ≤ 1`. Establish `h1 : X⁻¹ ^ (11 * q) * Y ^ 11 = 1`. Rewrite using `[hYdef, ← pow_mul, inv_pow, mul_comm q 11]`. Conclude with `inv_mul_cancel₀ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA : Y ^ 96 * τ ^ 12 * Y ^ 36 ≤ 1`. Establish `e : Y ^ 96 * τ ^ 12 * Y ^ 36 = (τ * Y ^ 11) ^ 12` using `by ring`. Rewrite using `[e]`. Conclude with `pow_le_one₀ (by positivity) hτY`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hB : be * n * g ^ 2 * X ≤ Y ^ 10`. Combine the equalities or inequalities in the displayed calculation. Establish `hC0 : 0 ≤ (Y ^ 96 * τ ^ 12) * (be * n * g ^ 2 * X)` using `by positivity`. Establish `hC : (Y ^ 96 * τ ^ 12) * (be * n * g ^ 2 * X) * 16 ^ 26 ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : Real.exp 1 < 3` using `lt_trans Real.exp_one_lt_d9 (by norm_num)`. Establish `hE' : 1 / 3 ≤ Real.exp (-1)`. Establish `h` using `one_div_le_one_div_of_le (Real.exp_pos 1) hE.le`. Rewrite using `[Real.exp_neg, ← one_div]` and apply the resulting hypothesis. Establish `hXq : X ^ (96 * q) = Y ^ 96` using `by rw [hYdef, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ0 : τ ≠ 0` using `hτ.ne'`. Establish `e : Y ^ 96 * (2 * τ) ^ 16 * (6 * be * Real.exp 1 * (289 * n / τ ^ 4)) * g ^ 2 * X = (2 ^ 16 * 6 * 289) * Real.exp 1 * ((Y ^ 96 * τ ^ 12) * (be * n * g ^ 2 * X))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hXq, e]`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem deep_exponent_core (X τ be n g : ℝ) (q : ℕ) (hX : 16 ≤ X) (hq : 1 ≤ q) (hτ : 0 < τ)
     (hτX : τ ≤ X⁻¹ ^ (11 * q)) (hbe0 : 0 ≤ be) (hbe : be ≤ X ^ 6) (hn0 : 0 ≤ n) (hn : n ≤ X)
@@ -65,57 +65,55 @@ theorem deep_exponent_core (X τ be n g : ℝ) (q : ℕ) (hX : 16 ≤ X) (hq : 1
     _ ≤ Real.exp (-1) := hE'
 
 /- English proof (translation)
-Introduce `n f q rd g b τ hn hf hq hqn hrd hb hg hτ hτP N rh be`. Establish `hN : N = n ^ 2 * f` using `rfl`. Establish `hrh : rh = (n : ℝ) ^ 2 * Real.sqrt f * g * rd * (2 * τ) ^ ((1 : ℝ) / q) / 4` using `rfl`. Establish `hbe : be = Real.sqrt n * b ^ 2 + 1.5 * (n : ℝ) ^ ((3 : ℝ) / 2) + 3 * ((8 * q * N + N : ℕ) : ℝ)` using `rfl`. Use `clear_value N rh be`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hPdef : ((n : ℝ) * f * rd * g * b) = P at hτP ⊢`. Establish `hn8 : (8 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hqn' : (q : ℝ) ≤ n`. Establish `h : q ≤ n` using `le_trans (by nlinarith) hqn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hq0 : q ≠ 0` using `by omega`. Establish `hNr : (N : ℝ) = (n : ℝ) ^ 2 * f` using `by rw [hN]; push_cast; ring`. Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Establish `hf0 : (0 : ℝ) ≤ f` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd0 : 0 ≤ rd` using `by linarith`. Establish `hg0 : 0 ≤ g` using `by linarith`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hnf : (n : ℝ) ≤ n * f` using `le_mul_of_one_le_right hn0 hf1`. Establish `hnfr : (n : ℝ) * f ≤ n * f * rd` using `le_mul_of_one_le_right (by positivity) hrd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnfrg : (n : ℝ) * f * rd ≤ n * f * rd * g` using `le_mul_of_one_le_right (by positivity) hg`. Establish `hmP : (n : ℝ) * f * rd * g ≤ P`. Rewrite using `[← hPdef]; exact le_mul_of_one_le_right (by positivity) (by linarith)`. Establish `hP16 : (16 : ℝ) ≤ P`. Rewrite using `[← hPdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[mul_le_mul (by linarith : (8 : ℝ) ≤ n * f * rd * g) hb (by norm_num) (by positivity)]`. Establish `hP0 : 0 ≤ P` using `by linarith`. Establish `hnP : (n : ℝ) ≤ P` using `by linarith`. Establish `hnfP : (n : ℝ) * f ≤ P` using `by linarith`. Establish `hgP : g ≤ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h : g ≤ n * f * rd * g` using `le_mul_of_one_le_left hg0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbP : b ≤ P`. Rewrite using `[← hPdef]; exact le_mul_of_one_le_left hb0 (by linarith)`. Establish `hnbP : (n : ℝ) * b ≤ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hPdef]; exact mul_le_mul_of_nonneg_right (by linarith) hb0`. Establish `hnmP : (n : ℝ) * (n * f * rd * g) ≤ P ^ 2`. Rewrite using `[sq]; exact mul_le_mul hnP hmP (by positivity) hP0`. Establish `hs2 : Real.sqrt n ^ 2 = n` using `Real.sq_sqrt hn0`. Establish `hs1 : 1 ≤ Real.sqrt n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt (by linarith)`. Establish `hsn : Real.sqrt n ≤ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hfs : Real.sqrt f * Real.sqrt f = f` using `Real.mul_self_sqrt hf0`. Establish `hf1s : 1 ≤ Real.sqrt f`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt hf1`. Establish `hsf : Real.sqrt f ≤ f`. Combine the equalities or inequalities in the displayed calculation. Establish `h32 : (n : ℝ) ^ ((3 : ℝ) / 2) ≤ (n : ℝ) ^ 2`. Rewrite using `[← Real.rpow_two]; exact Real.rpow_le_rpow_of_exponent_le (by linarith) (by norm_num)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hcast : ((8 * q * N + N : ℕ) : ℝ) ≤ 9 * (n : ℝ) ^ 3 * f`. Use `push_cast`. Rewrite using `[hNr]`. Combine the linear relations using `[mul_nonneg (sub_nonneg.2 hqn') (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ 2 * f), mul_nonneg (by linarith : (0 : ℝ) ≤ n - 1) (by positivity : (0 : ℝ) ≤ (n : ℝ) ^ 2 * f)]`. Establish `t1 : Real.sqrt n * b ^ 2 ≤ P ^ 2`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `t2 : (n : ℝ) ^ 2 ≤ P ^ 2` using `pow_le_pow_left₀ hn0 hnP 2`. Establish `t3 : (n : ℝ) ^ 3 * f ≤ P ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hP23 : P ^ 2 ≤ P ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbe0 : 0 ≤ be` using `by rw [hbe]; positivity`. Establish `hbeP : be ≤ 30 * P ^ 3` using `by rw [hbe]; linarith`. Establish `hP3 : (30 : ℝ) ≤ P ^ 3`. Establish `h` using `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 16) hP16 3`. Evaluate the numerical expressions using `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbe6 : be ≤ P ^ 6` using `by linarith [mul_le_mul_of_nonneg_right hP3 (by positivity : (0 : ℝ) ≤ P ^ 3)]`. Establish `hK : (n : ℝ) ^ 2 * f * g * rd * be / 2 ≤ P ^ 6`. Establish `e : (n : ℝ) ^ 2 * f * g * rd * be / 2 = (n * (n * f * rd * g)) * be / 2` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h : (n * (n * f * rd * g)) * be ≤ P ^ 2 * (30 * P ^ 3)` using `mul_le_mul hnmP hbeP hbe0 (by positivity)`. Combine the linear relations using `[mul_nonneg (pow_nonneg hP0 5) (by linarith : (0 : ℝ) ≤ P - 15)]`. Establish `hsq : ((2 * τ) ^ ((1 : ℝ) / q)) ^ q = 2 * τ`. Rewrite using `[one_div]; exact Real.rpow_inv_natCast_pow (by positivity) hq0`. Take `⟨s, hsdef⟩ : ∃ s : ℝ, s = (2 * τ) ^ ((1 : ℝ) / q)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsq`, `hrh` using `[← hsdef]`. Establish `hs0 : 0 ≤ s` using `by rw [hsdef]; positivity`. Establish `hτP' : τ * P ^ (11 * q) ≤ 1`. Establish `h1 : P⁻¹ ^ (11 * q) * P ^ (11 * q) = 1`. Rewrite using `[inv_pow]; exact inv_mul_cancel₀ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hu : (s * P ^ 11) ^ q ≤ 2 ^ q`. Combine the equalities or inequalities in the displayed calculation. Establish `hsP : s * P ^ 11 ≤ 2` using `(pow_le_pow_iff_left₀ (by positivity) (by norm_num) hq0).1 hu`. Establish `hrh0 : 0 ≤ rh` using `by rw [hrh]; positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `hP211 : P ^ 2 ≤ P ^ 11` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `hA1 : (n : ℝ) ^ 2 * Real.sqrt f * g * rd ≤ P ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h : (n : ℝ) ^ 2 * Real.sqrt f * g * rd * s ≤ P ^ 11 * s`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hl` using `Real.log_two_gt_d9`. Rewrite using `[hrh]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAeq : 2 * rh * Real.sqrt f * be = ((n : ℝ) ^ 2 * f * g * rd * be / 2) * s`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hrh]`. Take the linear combination `((n : ℝ) ^ 2 * g * rd * s * be / 2) * hfs`. Establish `hA16 : (2 * rh * Real.sqrt f * be) ^ (16 * q) ≤ P ^ (96 * q) * (2 * τ) ^ 16`. Rewrite using `[hAeq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, ← pow_mul, show 6 * (16 * q) = 96 * q by ring, show 16 * q = q * 16 by ring, pow_mul s q 16, hsq]`. Establish `hW` using `deep_exponent_core P τ be n g q hP16 hq hτ hτP hbe0 hbe6 hn0 hnP hg0 hgP`. Establish `hsq17 : (17 * Real.sqrt n / τ ^ 2) ^ 2 = 289 * (n : ℝ) / τ ^ 4`. Rewrite using `[div_pow, mul_pow, hs2, ← pow_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : Real.exp f ≤ Real.exp 1 ^ N`. Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[hNr]`. Establish `h1 : (1 : ℝ) ≤ (n : ℝ) ^ 2` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) (by linarith : (1 : ℝ) ≤ n) 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[mul_le_mul_of_nonneg_right h1 hf0]`. Establish `e1 : (2 * rh * Real.sqrt f * be) ^ (2 * (8 * q * N)) = ((2 * rh * Real.sqrt f * be) ^ (16 * q)) ^ N`. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (17 * Real.sqrt n / τ ^ 2) ^ (2 * N) = (289 * (n : ℝ) / τ ^ 4) ^ N`. Rewrite using `[pow_mul, hsq17]`. Establish `e3 : g ^ (2 * N) = (g ^ 2) ^ N` using `pow_mul g 2 N`. Rewrite using `[e1, e2, e3]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_pow]`. Use `_ ≤ Real.exp (-1) ^ N := pow_le_pow_left₀ (by positivity) hW N`. Use `_ = Real.exp (-(N : ℝ)) := by`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deep_region_exponents : ∀ (n f q : ℕ) (rd g b : ℝ) (τ : ℝ), 8 ≤ n → 1 ≤ f → 1 ≤ q → q ^ 2 ≤ n → 1 ≤ rd → 2 ≤ b → 1 ≤ g → 0 < τ → τ ≤ ((n : ℝ) * f * rd * g * b)⁻¹ ^ (11 * q) → let N : ℕ := n ^ 2 * f; let rh : ℝ := (n : ℝ) ^ 2 * Real.sqrt f * g * rd * (2 * τ) ^ ((1 : ℝ) / q) / 4; let be : ℝ := Real.sqrt n * b ^ 2 + 1.5 * (n : ℝ) ^ ((3 : ℝ) / 2) + 3 * ((8 * q * N + N : ℕ) : ℝ); rh ≤ Real.log 2 ∧ (2 * rh * Real.sqrt f * be) ^ (2 * (8 * q * N)) * ((6 * be) ^ N * Real.exp f * (17 * Real.sqrt n / τ ^ 2) ^ (2 * N)) * g ^ (2 * N) * ((n : ℝ) * f * rd * g * b) ^ N ≤ Real.exp (-(N : ℝ)) := by
   intro n f q rd g b τ hn hf hq hqn hrd hb hg hτ hτP N rh be

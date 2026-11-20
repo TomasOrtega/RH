@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ n _ ζ η z hζ hη hz hc`. Establish `hmod : ∀ m : ℕ, ζ ^ (m % n) = ζ ^ m` using `fun m => (pow_eq_pow_mod m hζ.pow_eq_one).symm`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (NeZero.ne n)`. Take `⟨β, hβ0, hβ⟩` from `UpperTheory.V.Kum.h90 K Ω (fun g => ζ ^ (z g).val) (hz.comp fun x : ZMod n => ζ ^ x.val) (fun g => pow_ne_zero _ hζ0) (fun g h => by show ζ ^ (z (g * h)).val = ζ ^ (z g).val * g (ζ ^ (z h).val)`. Rewrite using `[hc, ZMod.val_add, hmod, pow_add, ZMod.val_mul, hmod, map_pow, hη, ← pow_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsGalois K Ω := {}`. Establish `hfix : ∀ g : Ω ≃ₐ[K] Ω, g (β ^ n) = β ^ n` using `fun g => by`. Rewrite using `[map_pow, hβ g, mul_pow, ← pow_mul, mul_comm _ n, pow_mul, hζ.pow_eq_one, one_pow, one_mul]`. Take `⟨a, ha⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (β ^ n)).2 hfix`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `pow_ne_zero n hβ0 ha.symm`. Conclude with `⟨β, Units.mk0 a ha0, ha.symm, hβ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.radExists :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (n : ℕ) [NeZero n] (ζ : Ω) (η z : G K Ω → ZMod n), IsPrimitiveRoot ζ n → (∀ g : G K Ω, g ζ = ζ ^ (η g).val) → IsLocallyConstant z → (∀ g h, z (g * h) = z g + η g * z h) →

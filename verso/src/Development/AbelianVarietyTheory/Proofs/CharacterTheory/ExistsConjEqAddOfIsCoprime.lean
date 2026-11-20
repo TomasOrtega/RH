@@ -6,9 +6,9 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `hpow : ∀ (n : ℕ) (x : V), f ((a ^ n) x) = (b ^ n) (f x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n c => simp [aeval_monomial, hpow]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem intertwine_aeval_apply {F : Type} [Field F] {V W : Type} [AddCommGroup V] [Module F V] [AddCommGroup W]
     [Module F W] (f : V →ₗ[F] W) (a : Module.End F V) (b : Module.End F W) (h : ∀ x, f (a x) = b (f x))
@@ -23,13 +23,13 @@ theorem intertwine_aeval_apply {F : Type} [Field F] {V W : Type} [AddCommGroup V
   | monomial n c => simp [aeval_monomial, hpow]
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `hc`. Use `set p₁ := LinearMap.charpoly (g.restrict hg) with hp₁`. Use `set p₂ := LinearMap.charpoly (A.mapQ A g (fun x hx => hg x hx)) with hp₂`. Establish `h1 : ∀ y ∈ A, aeval g p₁ y = 0`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `intertwine_aeval_apply A.subtype (g.restrict hg) g (fun x => rfl) p₁ ⟨y, hy⟩` as an intermediate fact. Rewrite `this` using `[hp₁, LinearMap.aeval_self_charpoly]`. Simplify using `using this.symm`. Establish `h2 : ∀ y, aeval g p₂ y ∈ A`. Introduce `y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `intertwine_aeval_apply A.mkQ g (A.mapQ A g (fun x hx => hg x hx)) (fun x => rfl) p₂ y` as an intermediate fact. Rewrite `this` using `[hp₂, LinearMap.aeval_self_charpoly]`. Simplify using `using this`. Use extensionality with `x`. Establish `hx : x = aeval g p₁ (aeval g a x) + aeval g p₂ (aeval g b x)`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← LinearMap.add_apply, ← map_add, mul_comm p₁, mul_comm p₂, hab]`. Simplify using the standard rewrite rules. Rewrite using `[hx, map_add, hu.2 _ (h2 _), intertwine_aeval_apply u g g hug, h1 _ (hu.1 _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nilRad_eq_zero_of_commute {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (A : Submodule F V) (g : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A)
@@ -58,21 +58,19 @@ theorem nilRad_eq_zero_of_commute {F : Type} [Field F] {V : Type} [AddCommGroup 
   simp
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ A g hg hc h hh`. Set `N : Submodule F (Module.End F V)` to `{ carrier := nilRad A add_mem' := fun {a b} ha hb => ⟨fun x => A.add_mem (ha.1 x) (hb.1 x), fun x hx => by`. Simplify using `[ha.2 x hx, hb.2 x hx]⟩`. Use the proof step `zero_mem' := ⟨fun x => A.zero_mem, fun x _ => rfl⟩`. Use the proof step `smul_mem' := fun c a ha => ⟨fun x => A.smul_mem c (ha.1 x), fun x hx => by simp [ha.2 x hx]⟩ }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : Module.End F V →ₗ[F] Module.End F V` to `LinearMap.mulRight F g - LinearMap.mulLeft F g`. Establish `hD : ∀ u x, D u x = u (g x) - g (u x)` using `fun u x => rfl`. Establish `hDN : ∀ u ∈ N, D u ∈ N`. Introduce `u hu`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Conclude with `A.sub_mem (hu.1 _) (hg _ (hu.1 _))`. Rewrite using `[hD, hu.2 _ hx, hu.2 _ (hg _ hx)]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (D.restrict hDN)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Apply `Subtype.ext` to reduce the goal to its premises. Use `nilRad_eq_zero_of_commute A g hg hc u.1 u.2 fun x => ?_` and prove the remaining obligations. Establish `h0 : D u.1 = 0` using `congrArg Subtype.val hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hD u.1 x` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `sub_eq_zero.1 this.symm`. Take `⟨u, hu⟩` from `LinearMap.surjective_of_injective hinj ⟨h, hh⟩`. Establish `hu' : D u.1 = h` using `congrArg Subtype.val hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Take `⟨u, huA, hu0⟩` from `u`. Establish `huu : ∀ x, u (u x) = 0` using `fun x => hu0 _ (huA x)`. Use `⟨LinearEquiv.ofLinearMap (1 + u) (1 - u) ?_ ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[huu]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[huu]`. Use extensionality with `x`. Establish `h3 : u (g (u x)) = 0` using `hu0 _ (hg _ (huA x))`. Establish `h4 : h x = u (g x) - g (u x)` using `by rw [← hu']; rfl`.
-
-Simplify using `[LinearEquiv.conj_apply, h3, h4]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_conj_eq_add_of_isCoprime : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (A : Submodule F V) (g : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A),

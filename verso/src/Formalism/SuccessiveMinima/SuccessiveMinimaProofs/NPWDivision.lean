@@ -11,7 +11,7 @@ section General
 variable {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Establish `: r ^ n = r ^ i * r ^ (n - i)` using `by rw [← pow_add, Nat.add_sub_cancel' hi]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_eq (a b : ℕ → K) (r : ℝ) {n i : ℕ} (hi : i ≤ n) :
     ‖a i * b (n - i)‖ * r ^ n = (‖a i‖ * r ^ i) * (‖b (n - i)‖ * r ^ (n - i)) := by
@@ -20,7 +20,7 @@ lemma term_eq (a b : ℕ → K) (r : ℝ) {n i : ℕ} (hi : i ≤ n) :
   rw [this]; ring
 
 /- English proof (translation)
-Rewrite using `[← le_div_iff₀ (pow_pos hr j)]`. Conclude with `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) fun i => (le_div_iff₀ (pow_pos hr j)).2 (h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma series_bound (u : ℕ → ℕ → K) {r : ℝ} (hr : 0 < r) (j : ℕ) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ i, ‖u i j‖ * r ^ j ≤ C) : ‖∑' i, u i j‖ * r ^ j ≤ C := by
@@ -80,15 +80,13 @@ def iterF (G : K[X]) (N : ℕ) (H f : ℕ → K) : ℕ → ℕ → K
 
 omit [CompleteSpace K] in
 /- English proof (translation)
-Take `⟨-, hM⟩` from `wdeg_spec g r hr hg hne`. Establish `hle : ∀ k, ‖g k‖ * r ^ k ≤ gNorm g r` using `fun k => le_ciSup (gNorm_bdd_of_conv g r hg) k`. Take `⟨K0, hK0⟩` from `eventually_atTop.1 ((hg : Tendsto _ atTop _).eventually (eventually_le_nhds (half_pos hM)))`. Establish `hbdd : BddAbove {k : ℕ | ‖g k‖ * r ^ k = gNorm g r}` using `⟨K0, fun k hk => by`. Simplify using `only [Set.mem_ofPred_eq] at hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `hK0 k h.le` as an intermediate fact. Rewrite `this` using `[hk]`. Use the proof step `linarith⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : ∀ k, wdeg g r < k → ‖g k‖ * r ^ k < gNorm g r`. Introduce `k hk`. Use `lt_of_le_of_ne (hle k) fun h => ?_` and prove the remaining obligations. Establish `: k ≤ wdeg g r` using `le_csSup hbdd h`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k1, hk1T, hk1⟩` from `Finset.exists_max_image (Finset.Icc (wdeg g r + 1) (max K0 (wdeg g r + 1))) (fun k => ‖g k‖ * r ^ k) ⟨wdeg g r + 1, by simp⟩`. Establish `hk1lt : ‖g k1‖ * r ^ k1 < gNorm g r` using `hlt k1 (by simp at hk1T; omega)`. Use `⟨max (‖g k1‖ * r ^ k1 / gNorm g r) (1 / 2), le_max_of_le_right (by norm_num), max_lt ((div_lt_one hM).2 hk1lt) (by norm_num), fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[max_mul_of_nonneg _ _ hM.le]`. Distinguish the cases in `hkK : k ≤ max K0 (wdeg g r + 1)`.
-
-Use `hk1 k (by simp; omega)` as an intermediate fact. Conclude with `le_max_of_le_left (by rw [div_mul_cancel₀ _ hM.ne']; exact this)`. Conclude with `le_max_of_le_right (by have := hK0 k (by omega); linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_eps (g : ℕ → K) (r : ℝ) (hr : 0 < r) (hg : ConvOn g r) (hne : g ≠ 0) :
     ∃ ε : ℝ, 0 ≤ ε ∧ ε < 1 ∧ ∀ k, wdeg g r < k → ‖g k‖ * r ^ k ≤ ε * gNorm g r := by

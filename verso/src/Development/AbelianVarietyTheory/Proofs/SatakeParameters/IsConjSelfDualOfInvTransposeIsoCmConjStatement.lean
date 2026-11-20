@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedTh
 open NumberField Formalism.L2.Host GlobalTheory.CuspRep GlobalTheory.ContraPair
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CsdFromConj.isCsd_of_invT_conj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIsConjSelfDualOfInvTransposeIsoCmConj.lean&line=116#L116)
 -/

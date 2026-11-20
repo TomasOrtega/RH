@@ -7,9 +7,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ∀ y ∈ Submodule.span ℂ s, ⟪y, a⟫_ℂ = ⟪y, b⟫_ℂ`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [inner_add_left, inner_add_left, hy, hz]`. Consider the case `smul c y _ hy => rw [inner_smul_left, inner_smul_left, hy]`. Establish `h2 : (fun y : E => ⟪y, a⟫_ℂ) = fun y => ⟪y, b⟫_ℂ` using `Continuous.ext_on hs (by fun_prop) (by fun_prop) h1`. Conclude with `ext_inner_left ℂ fun y => congrFun h2 y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_inner_eq_on_dense_span {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {s : Set E} (hs : Dense (Submodule.span ℂ s : Set E)) {a b : E}
@@ -26,17 +26,15 @@ theorem eq_of_inner_eq_on_dense_span {E : Type*} [NormedAddCommGroup E] [InnerPr
   exact ext_inner_left ℂ fun y => congrFun h2 y
 
 /- English proof (translation)
-Establish `hn : ∀ x, ‖t x‖ = ∏ v, ‖x v‖`. Introduce `x`. Establish `h` using `hin x x`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h`. Establish `h' : ‖t x‖ ^ 2 = (∏ v, ‖x v‖) ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_pow]`. Conclude with `h` after adjusting the coercions. Conclude with `(pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun v _ => norm_nonneg _) two_ne_zero).1 h'`. Establish `hu : ∀ [DecidableEq ι] (y x : ∀ v, H v) (i : ι) (a : H i), ⟪t y, t (Function.update x i a)⟫_ℂ = ⟪y i, a⟫_ℂ * ∏ j ∈ Finset.univ.erase i, ⟪y j, x j⟫_ℂ`. Introduce `_ y x i a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hin, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Set `m : MultilinearMap ℂ H E` to `{ toFun := t map_update_add' := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `_ x i a b`. Use `eq_of_inner_eq_on_dense_span hd ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[inner_add_right, hu, hu, hu, inner_add_right, add_mul]`. Use the proof step `map_update_smul' := by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `_ x i c a`. Use `eq_of_inner_eq_on_dense_span hd ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[inner_smul_right, hu, hu, inner_smul_right, mul_assoc] }`. Use `⟨m.mkContinuous 1 fun x => ?_, fun x => rfl, hn⟩` and prove the remaining obligations.
-
-Rewrite using `[one_mul]`. Conclude with `(hn x).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_continuousMultilinearMap_of_inner_prod {ι : Type*} [Fintype ι] {H : ι → Type*}
     [∀ v, NormedAddCommGroup (H v)] [∀ v, InnerProductSpace ℂ (H v)]
@@ -78,7 +76,7 @@ theorem exists_continuousMultilinearMap_of_inner_prod {ι : Type*} [Fintype ι] 
   exact (hn x).le
 
 /- English proof (translation)
-Introduce `B` and use `exists_continuousMultilinearMap_of_inner_prod B.tens B.tens_spec.1 B.tens_spec.2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowsAut_tens_continuousMultilinear :
     ∀ B : RowsAut, ∃ m : ContinuousMultilinearMap ℂ B.H B.Hs,

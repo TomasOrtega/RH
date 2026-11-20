@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.HwTen
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.lpMinor minor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[Formalism.GradedWeylDivisibility.blockEmb, rename_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockEmb_lpMinor {ι : Type} [Fintype ι] [DecidableEq ι] (n : ℕ) (τ : ι) (l : Fin n) :
     Formalism.GradedWeylDivisibility.blockEmb ℂ τ (Formalism.GradedWeylDivisibility.lpMinor ℂ (r := n) (n := n) (l.val + 1) (by omega) (by omega)) = minor n τ l := by
@@ -21,11 +21,11 @@ theorem blockEmb_lpMinor {ι : Type} [Fintype ι] [DecidableEq ι] (n : ℕ) (τ
   simp [Formalism.GradedWeylDivisibility.blockEmb, rename_X]
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `Fin.pos s`. Establish `hd : mu.detShift = mu.w ⟨n - 1, by omega⟩` using `by simp [DomWeight.detShift, hn]`. Unfold `Formalism.GradedWeylDivisibility.nuNext DomWeight.natW`. Rewrite using `[hd]`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `mu.anti (show s ≤ ⟨s.val + 1, h⟩ from by rw [Fin.le_def]; simp)`. Establish `h2` using `mu.anti (show (⟨s.val + 1, h⟩ : Fin n) ≤ ⟨n - 1, by omega⟩ from by rw [Fin.le_def]; simp; omega)`. Use linear arithmetic over natural numbers and integers. Establish `: s = ⟨n - 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[← this]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem natW_sub_nuNext {n : ℕ} (mu : DomWeight n) (s : Fin n) :
     mu.natW s - Formalism.GradedWeylDivisibility.nuNext mu.natW s =
@@ -43,11 +43,11 @@ theorem natW_sub_nuNext {n : ℕ} (mu : DomWeight n) (s : Fin n) :
     simp
 
 /- English proof (translation)
-Introduce `ι _ _ n lam lam' hl`. Unfold `hwVec Formalism.L2.DIV.ten`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `Formalism.BasicNotions.extremal Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod, Finset.prod_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, blockEmb_lpMinor, natW_sub_nuNext]`. Use `split_ifs with h`. Use `congr 1`. Rewrite using `[← hl τ s, ← hl τ ⟨s.val + 1, h⟩]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hwVec_eq_ten : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (n : ℕ) (lam : ι → ℕ → ℤ) (lam' : ι → DomWeight n), (∀ τ (i : Fin n), (lam' τ).w i = lam τ i) → hwVec n lam = Formalism.L2.DIV.ten (fun τ => Formalism.BasicNotions.extremal ℂ n (lam' τ)) := by
   intro ι _ _ n lam lam' hl

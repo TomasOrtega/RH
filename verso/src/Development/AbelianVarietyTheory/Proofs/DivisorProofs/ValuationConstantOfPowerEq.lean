@@ -14,7 +14,7 @@ section Units
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE k).op).hom x.val = _`. Rewrite using `[← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res' {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)ˣ) :
     res k (res h x) = res (k.trans h) x := by
@@ -24,7 +24,7 @@ theorem res_res' {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)ˣ) 
   rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 _)).hom x.val = _`. Rewrite using `[X.presheaf.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_self' {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := by
   ext
@@ -33,7 +33,7 @@ theorem res_self' {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := 
   rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE k).op ≫ f.appLE V W h).hom x.val = (f.appLE U W _).hom x.val`. Rewrite using `[Scheme.Hom.map_appLE]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_pullU_res' (f : Y ⟶ X) {U V : X.Opens} (k : V ≤ U) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ V)
     (x : Γ(X, U)ˣ) :
@@ -50,7 +50,7 @@ theorem res_pullU_comp (g : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) {W : Z.Opens}
     res h (pullU g _ (pullU f U x)) = res (U := (g ≫ f) ⁻¹ᵁ U) h (pullU (g ≫ f) U x) := rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem res_pullU_congr {a b : Y ⟶ X} (e : a = b) (U : X.Opens) {W : Y.Opens}
     (h : W ≤ a ⁻¹ᵁ U) (h' : W ≤ b ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
@@ -64,7 +64,7 @@ theorem prod_punit {M : Type} [CommGroup M] (x : M) : ∏ _k : PUnit.{1}, x ^ (1
   simp
 
 /- English proof (translation)
-The claim follows from `prod_punit _`.
+A detailed English derivation is pending.
 -/
 theorem pull_g (L : LB X) (q : Y ⟶ X) (i j : PUnit → L.ι) :
     (L.pull q).g i j = res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ => q) i PUnit.unit))
@@ -73,7 +73,7 @@ theorem pull_g (L : LB X) (q : Y ⟶ X) (i j : PUnit → L.ι) :
   prod_punit _
 
 /- English proof (translation)
-Introduce `x _`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `: x ∈ q ⁻¹ᵁ L.U i` using `by rw [h]; trivial`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wchart_pull_top (L : LB X) (q : Y ⟶ X) (i : L.ι) (h : q ⁻¹ᵁ L.U i = ⊤) :
     ⊤ ≤ LB.wchart L (fun _ : PUnit => q) (fun _ => i) := by
@@ -85,9 +85,9 @@ theorem wchart_pull_top (L : LB X) (q : Y ⟶ X) (i : L.ι) (h : q ⁻¹ᵁ L.U 
 end Units
 
 /- English proof (translation)
-Use `haveI : Nontrivial R := (algebraMap R C).domain_nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : v (algebraMap R C a) < 1` using `lt_of_le_of_ne (hv.map_le_one a) (fun e => h.1 (hv.isUnit_of_one' e))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v (algebraMap R C (1 - a)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) (fun e => h.2 (hv.isUnit_of_one' e))`. Establish `h3` using `v.map_add (algebraMap R C a) (algebraMap R C (1 - a))`. Establish `h4 : algebraMap R C a + algebraMap R C (1 - a) = 1` using `by rw [← map_add]; simp`. Rewrite `h3` using `[h4, v.map_one]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h3 (max_lt h1 h2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_integers {C Γ₀ R : Type} [Field C] [LinearOrderedCommGroupWithZero Γ₀]
     {v : Valuation C Γ₀} [CommRing R] [Algebra R C] (hv : v.Integers R) : IsLocalRing R := by
@@ -105,7 +105,7 @@ theorem isLocalRing_of_integers {C Γ₀ R : Type} [Field C] [LinearOrderedCommG
   exact lt_irrefl _ (lt_of_le_of_lt h3 (max_lt h1 h2))
 
 /- English proof (translation)
-Establish `hc : q.base (IsLocalRing.closedPoint V) ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`. Use `⟨i, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations. Conclude with `((IsLocalRing.specializes_closedPoint x).map q.continuous).mem_open (L.U i).isOpen hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_chart_top {V : Type} [CommRing V] [IsLocalRing V] {X : Scheme.{0}} (L : LB X)
     (hL : L.IsLB) (q : Spec (CommRingCat.of V) ⟶ X) : ∃ i, q ⁻¹ᵁ L.U i = ⊤ := by
@@ -125,7 +125,7 @@ def chartGen (D : LB Z) {Y : Scheme.{0}} (q : Y ⟶ Z) (j₀ : D.ι) (hj₀ : q 
     (pullU q _ (D.g (j PUnit.unit) j₀))
 
 /- English proof (translation)
-Introduce `i j`. Establish `hW : (D.pull q).U i ⊓ (D.pull q).U j ≤ q ⁻¹ᵁ (D.U (i PUnit.unit) ⊓ D.U (j PUnit.unit) ⊓ D.U j₀)` using `fun x hx => ⟨⟨LB.wchart_le D (fun _ => q) i PUnit.unit hx.1, LB.wchart_le D (fun _ => q) j PUnit.unit hx.2⟩, show x ∈ q ⁻¹ᵁ D.U j₀ by rw [hj₀]; trivial⟩`. Establish `a` using `congrArg (fun x => res hW (pullU q _ x)) (hD.cocycle (i PUnit.unit) (j PUnit.unit) j₀)`. Simplify using `only [map_mul, res_pullU_res'] at a`. Conclude with `(res_res' _ _ _).trans (a.symm.trans (congrArg₂ (· * ·) (pull_g D q i j).symm (res_res' _ _ _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartGen_isGen (D : LB Z) (hD : D.IsLB) {Y : Scheme.{0}} (q : Y ⟶ Z) (j₀ : D.ι)
     (hj₀ : q ⁻¹ᵁ D.U j₀ = ⊤) : (chartGen D q j₀ hj₀).IsGen := by
@@ -146,9 +146,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {Z : Scheme.{0}} {f : Z ⟶ Spec (.of O)}
 
 /- English proof (translation)
-Introduce `p _`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (y ≫ genericι f).base p ∈ D.U j₀`. Rewrite using `[hy]`. Establish `: (Spec.map (CommRingCat.ofHom (algebraMap R C))).base p ∈ ybar ⁻¹ᵁ D.U j₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj₀]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `this`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem top_le_generic {R C : Type} [CommRing R] [Field C] [Algebra R C] (D : LB Z)
     (ybar : Spec (.of R) ⟶ Z) (y : Spec (.of C) ⟶ genericFibre f)
@@ -164,9 +164,9 @@ theorem top_le_generic {R C : Type} [CommRing R] [Field C] [Algebra R C] (D : LB
   exact this
 
 /- English proof (translation)
-Introduce `p _`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `: (Spec.map (CommRingCat.ofHom (algebraMap R C))).base p ∈ ybar ⁻¹ᵁ D.U j₀`. Rewrite using `[hj₀]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem top_le_special {R C : Type} [CommRing R] [Field C] [Algebra R C] (D : LB Z)
     (ybar : Spec (.of R) ⟶ Z) (j₀ : D.ι) (hj₀ : ybar ⁻¹ᵁ D.U j₀ = ⊤) :
@@ -178,7 +178,7 @@ theorem top_le_special {R C : Type} [CommRing R] [Field C] [Algebra R C] (D : LB
   exact this
 
 /- English proof (translation)
-Use `ext`. Simplify using `[constUnit]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem constUnit_id_ΓSpecIso {C : Type} [Field C] (u : Γ(Spec (.of C), ⊤)ˣ) :
     constUnit (𝟙 (Spec (.of C))) (Units.map (Scheme.ΓSpecIso (.of C)).hom.hom.toMonoidHom u) = u := by
@@ -186,13 +186,13 @@ theorem constUnit_id_ΓSpecIso {C : Type} [Field C] (u : Γ(Spec (.of C), ⊤)ˣ
   simp [constUnit]
 
 /- English proof (translation)
-Introduce `j W h₁ h₂`. Rewrite using `[constUnit_id_ΓSpecIso, res_res']`. Establish `htop` using `top_le_generic D ybar y hy j₀ hj₀`. Establish `hW : W ≤ y ⁻¹ᵁ ((D.pull (genericι f)).U j ⊓ (D.pull (genericι f)).U (fun _ => j₀))` using `fun p hp => ⟨h₁ hp, htop trivial⟩`. Establish `a` using `congrArg (fun x => res hW (pullU y _ x)) (hsig j (fun _ => j₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul] at a`. Establish `hle : (D.pull ybar).U j ≤ ybar ⁻¹ᵁ (D.U (j PUnit.unit) ⊓ D.U j₀)` using `fun x hx => ⟨LB.wchart_le D (fun _ => ybar) j PUnit.unit hx, show x ∈ ybar ⁻¹ᵁ D.U j₀ by rw [hj₀]; trivial⟩`. Establish `hD : W ≤ (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ybar) ⁻¹ᵁ (D.U (j PUnit.unit) ⊓ D.U j₀)` using `h₂.trans ((Spec.map (CommRingCat.ofHom (algebraMap R C))).preimage_mono hle)`. Establish `kA : (D.pull (genericι f)).U j ⊓ (D.pull (genericι f)).U (fun _ => j₀) ≤ genericι f ⁻¹ᵁ (D.U (j PUnit.unit) ⊓ D.U j₀)` using `le_inf (inf_le_left.trans (LB.wchart_le D (fun _ => genericι f) j PUnit.unit)) (inf_le_right.trans (LB.wchart_le D (fun _ => genericι f) (fun _ => j₀) PUnit.unit))`. Establish `hB : W ≤ y ⁻¹ᵁ (genericι f ⁻¹ᵁ (D.U (j PUnit.unit) ⊓ D.U j₀))` using `hW.trans (y.preimage_mono kA)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sA : res hW (pullU y _ ((D.pull (genericι f)).g j (fun _ => j₀))) = res hW (pullU y _ (res kA (pullU (genericι f) _ (D.g (j PUnit.unit) j₀))))` using `congrArg (fun x => res hW (pullU y _ x)) (pull_g D (genericι f) j (fun _ => j₀))`. Establish `sB : res hW (pullU y _ (res kA (pullU (genericι f) _ (D.g (j PUnit.unit) j₀)))) = res hB (pullU y _ (pullU (genericι f) _ (D.g (j PUnit.unit) j₀)))` using `res_pullU_res' y kA hW _`. Establish `sC : res hB (pullU y _ (pullU (genericι f) _ (D.g (j PUnit.unit) j₀))) = res hD (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ybar) _ (D.g (j PUnit.unit) j₀))` using `(res_pullU_comp y (genericι f) _ hB _).trans (res_pullU_congr hy _ hB hD _)`. Establish `sD : res hD (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ybar) _ (D.g (j PUnit.unit) j₀)) = res h₂ (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C))) _ (res hle (pullU ybar _ (D.g (j PUnit.unit) j₀))))` using `(res_pullU_comp (Spec.map (CommRingCat.ofHom (algebraMap R C))) ybar _ hD _).symm.trans (res_pullU_res' _ hle h₂ _).symm`. Establish `e1 : res hW (pullU y _ ((D.pull (genericι f)).g j (fun _ => j₀))) = res h₂ (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C))) _ ((chartGen D ybar j₀ hj₀).s j))` using `sA.trans (sB.trans (sC.trans sD))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : res hW (pullU y _ (res inf_le_right (sig.s (fun _ => j₀)))) = res (le_top.trans htop) (pullU y _ (sig.s (fun _ => j₀)))` using `res_pullU_res' _ _ _ _`. Establish `e0 : res hW (pullU y _ (res inf_le_left (sig.s j))) = res h₁ (pullU y _ (sig.s j))` using `res_pullU_res' _ _ _ _`. Rewrite `a` using `[e0, e1, e2]`. Rewrite using `[a, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCoord_chartGen {R C : Type} [CommRing R] [Field C] [Algebra R C] (D : LB Z)
     (sig : (D.pull (genericι f)).Gen) (hsig : sig.IsGen) (ybar : Spec (.of R) ⟶ Z)
@@ -247,14 +247,14 @@ end Coord
 section Val
 
 /- English proof (translation)
-Conclude with `congrArg Units.val (res_self' (U := (⊤ : Y.Opens)) k u)`.
+A detailed English derivation is pending.
 -/
 theorem res_top_val {X Y : Scheme.{0}} (g : Y ⟶ X) (k : ⊤ ≤ g ⁻¹ᵁ ⊤) (u : Γ(Y, g ⁻¹ᵁ ⊤)ˣ) :
     ((res k u : Γ(Y, ⊤)ˣ) : Γ(Y, ⊤)) = (u : Γ(Y, g ⁻¹ᵁ ⊤)) := by
   exact congrArg Units.val (res_self' (U := (⊤ : Y.Opens)) k u)
 
 /- English proof (translation)
-Establish `n` using `congrArg (fun φ => φ.hom a.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R C)))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`. Conclude with `(congrArg _ (res_top_val _ k _)).trans n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_pull_spec {R C : Type} [CommRing R] [Field C] [Algebra R C]
     (k : ⊤ ≤ Spec.map (CommRingCat.ofHom (algebraMap R C)) ⁻¹ᵁ ⊤) (a : Γ(Spec (.of R), ⊤)ˣ) :
@@ -267,7 +267,7 @@ theorem eval_pull_spec {R C : Type} [CommRing R] [Field C] [Algebra R C]
   exact (congrArg _ (res_top_val _ k _)).trans n
 
 /- English proof (translation)
-Establish `e : res h (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C))) U x) = res (le_top : ⊤ ≤ Spec.map (CommRingCat.ofHom (algebraMap R C)) ⁻¹ᵁ ⊤) (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C))) ⊤ (res hU x))` using `(res_pullU_res' _ hU le_top x).symm`. Conclude with `(congrArg (fun w : Γ(Spec (.of C), ⊤)ˣ => v ((Scheme.ΓSpecIso (.of C)).hom.hom (w : Γ(Spec (.of C), ⊤)))) e).trans ((congrArg v (eval_pull_spec (R := R) (C := C) le_top (res hU x))).trans (hv.one_of_isUnit ((res hU x).isUnit.map _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_pull_unit {R C Γ₀ : Type} [CommRing R] [Field C] [Algebra R C]
     [LinearOrderedCommGroupWithZero Γ₀] {v : Valuation C Γ₀} (hv : v.Integers R)
@@ -287,13 +287,13 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {Z : Scheme.{0}} {f : Z ⟶ Spec (.of O)}
 
 /- English proof (translation)
-Establish `hm : y ≫ genericStr f ≫ Spec.map (CommRingCat.ofHom (algebraMap O (FractionRing O))) = Spec.map (CommRingCat.ofHom ((algebraMap R C).comp φ))`. Establish `hc : genericStr f ≫ Spec.map (CommRingCat.ofHom (algebraMap O (FractionRing O))) = genericι f ≫ f` using `pullback.condition.symm`. Rewrite using `[hc, ← Category.assoc, hy, Category.assoc, hf, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `key` using `congrArg (fun m => (Scheme.ΓSpecIso (.of C)).hom.hom (m.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ))) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `nat1` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ((algebraMap R C).comp φ)))`. Establish `nat2` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap O (FractionRing O))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, Scheme.Hom.comp_appTop] at key nat1 nat2`. Use `(congrArg _ (res_top_val _ h _)).trans ?_` and prove the remaining obligations. Establish `hinv : (Scheme.ΓSpecIso (.of O)).hom.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ) = ϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `nat1`, `nat2` using `[hinv]`. Establish `h3 : (Spec.map (CommRingCat.ofHom (algebraMap O (FractionRing O)))).appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ) = (Scheme.ΓSpecIso (.of (FractionRing O))).inv.hom (algebraMap O (FractionRing O) ϖ)`. Rewrite using `[← nat2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[h3, nat1]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_constUnit {R C : Type} [CommRing R] [Field C] [Algebra R C] (ϖ : O) (hϖ : Irreducible ϖ)
     (φ : O →+* R) (ybar : Spec (.of R) ⟶ Z) (hf : ybar ≫ f = Spec.map (CommRingCat.ofHom φ))
@@ -336,7 +336,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {Z : Scheme.{0}} {f : Z ⟶ Spec (.of O)}
 
 /- English proof (translation)
-Rewrite using `[res_self']`. Simplify using `[constUnit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_constUnit_id {C : Type} [Field C] (c : Cˣ) :
     (Scheme.ΓSpecIso (.of C)).hom.hom
@@ -346,15 +346,15 @@ theorem eval_constUnit_id {C : Type} [Field C] (c : Cˣ) :
   simp [constUnit]
 
 /- English proof (translation)
-Establish `htopY` using `top_le_generic D ybar y hy j₀ hj₀`. Establish `htopS` using `top_le_special (C := C) D ybar j₀ hj₀`. Establish `h1` using `hc (fun _ => j₀) ⊤ htopY htopS`. Set `Φ` to `(res htopY).comp (pullU y ((D.pull (genericι f)).U (fun _ => j₀)))`. Establish `h2` using `(map_pow Φ _ M).symm.trans ((congrArg Φ (hpow (fun _ => j₀))).trans ((map_mul Φ _ _).trans (congrArg (· * _) (map_zpow Φ _ n))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[show Φ (sig.s (fun _ => j₀)) = _ from h1]`. Set `w : Γ(Spec (.of C), ⊤)ˣ →* Γ₀ˣ` to `Units.map (v.toMonoidWithZeroHom.toMonoidHom.comp (Scheme.ΓSpecIso (.of C)).hom.hom.toMonoidHom)`. Establish `h3` using `congrArg w h2`. Rewrite `h3` using `[map_mul, map_pow, map_mul, map_zpow]`. Establish `hw1 : w (res htopS (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C))) _ (e.s (fun _ => j₀)))) = 1` using `Units.ext (val_pull_unit hv (wchart_pull_top D ybar j₀ hj₀) htopS (e.s (fun _ => j₀)))`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hD' : ⊤ ≤ (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ybar) ⁻¹ᵁ D.U j₀` using `fun p _ => show (Spec.map (CommRingCat.ofHom (algebraMap R C))).base p ∈ ybar ⁻¹ᵁ D.U j₀ by rw [hj₀]; trivial`. Establish `hw2 : w (Φ (res (LB.wchart_le D (fun _ : PUnit => genericι f) (fun _ => j₀) PUnit.unit) (pullU (genericι f) (D.U j₀) (gen.s j₀)))) = 1`. Establish `q1 : Φ (res (LB.wchart_le D (fun _ : PUnit => genericι f) (fun _ => j₀) PUnit.unit) (pullU (genericι f) (D.U j₀) (gen.s j₀))) = res hD' (pullU (Spec.map (CommRingCat.ofHom (algebraMap R C)) ≫ ybar) (D.U j₀) (gen.s j₀))` using `(res_pullU_res' _ _ _ _).trans ((res_pullU_comp _ _ _ _ _).trans (res_pullU_congr hy _ _ hD' _))`. Rewrite using `[q1]`. Conclude with `Units.ext (val_pull_unit hv hj₀.ge hD' (pullU ybar (D.U j₀) (gen.s j₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw3 : (w (Φ (res le_top (constUnit (genericStr f) (unifUnit ϖ hϖ)))) : Γ₀) = v (algebraMap R C (φ ϖ))`. Establish `q1 : Φ (res le_top (constUnit (genericStr f) (unifUnit ϖ hϖ))) = res (le_top : ⊤ ≤ y ⁻¹ᵁ ⊤) (pullU y ⊤ (constUnit (genericStr f) (unifUnit ϖ hϖ)))` using `res_pullU_res' _ _ _ _`. Rewrite using `[q1]`. Conclude with `congrArg v (eval_constUnit ϖ hϖ φ ybar hf y hy le_top)`. Establish `hw4 : (w (res le_top (constUnit (𝟙 (Spec (.of C))) c)) : Γ₀) = v (c : C)` using `congrArg v (eval_constUnit_id c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hw1, hw2, mul_one, mul_one]`. Establish `h4` using `congrArg Units.val h3`. Rewrite `h4` using `[Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, hw4]`. Conclude with `h4.trans (congrArg (· ^ n) hw3)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_of_isCoord {R C Γ₀ : Type} [CommRing R] [Field C] [Algebra R C]
     [LinearOrderedCommGroupWithZero Γ₀] {v : Valuation C Γ₀} (hv : v.Integers R)
@@ -407,7 +407,7 @@ theorem val_of_isCoord {R C Γ₀ : Type} [CommRing R] [Field C] [Algebra R C]
 end Main
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Z f D hD sig hsig M n gen _ _ hpow`. Introduce `R C Γ₀ _ _ _ _ v hv φ _ _ ybar hf y hy`. Use `haveI := isLocalRing_of_integers hv`. Take `⟨j₀, hj₀⟩` from `exists_chart_top D hD ybar`. Conclude with `⟨⟨chartGen D ybar j₀ hj₀, _, chartGen_isGen D hD ybar j₀ hj₀, isCoord_chartGen D sig hsig ybar y hy j₀ hj₀⟩, fun e c _ hc => val_of_isCoord hv ϖ hϖ D sig M n gen hpow φ ybar hf y hy j₀ hj₀ e c hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valConst_of_powEq : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O)
     (hϖ : Irreducible ϖ) (Z : Scheme.{0}) (f : Z ⟶ Spec (.of O)) (D : LB Z), D.IsLB →

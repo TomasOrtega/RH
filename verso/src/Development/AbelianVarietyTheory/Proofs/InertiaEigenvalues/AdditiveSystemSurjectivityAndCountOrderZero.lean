@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueIn
 namespace GlobalTheory.PMonE
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `F _ _ _ _ p _ _ m _ _ e D he _ M hM b hb`. Take `⟨x, hx, -⟩` from `existsUnique_integral_gsum_eq F p m e D he M (fun i j => by simp [hM.top]) (fun n hn i j => hM.small n (by omega) i j) b hb`. Conclude with `⟨x, hx⟩`. Introduce `F _ _ _ _ p _ _ m _ _ e D he _ M hM _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, huniq⟩` from `existsUnique_integral_gsum_eq F p m e D he M (fun i j => by simp [hM.top]) (fun n hn i j => hM.small n (by omega) i j) 0 (fun i => by simp)`. Rewrite using `[Nat.mul_zero, pow_zero, Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨y, hy⟩, fun z => Subtype.ext (huniq z.1 z.2)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem glOnto_zero_and_glCount_zero : GLOnto 0 ∧ GLCount 0 := by
   constructor

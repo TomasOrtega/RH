@@ -37,7 +37,7 @@ open GlobalTheory.NormSum.AdLattice (lat)
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `W Y hr L Λ hL hΛ S hS n be be' h h'`. Use `⟨exists_transport W Y hr L Λ hL hΛ S hS n be be' h h', fun x hx x' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.adelicIsometry_transport_unique_mod_stabilizer D W Y L Λ S hS n be be' hL.1 h x hx x'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem transportSt (D : D7) : TransportSt D := by
   intro W Y hr L Λ hL hΛ S hS n be be' h h'
@@ -45,13 +45,11 @@ theorem transportSt (D : D7) : TransportSt D := by
   exact GlobalTheory.T.adelicIsometry_transport_unique_mod_stabilizer D W Y L Λ S hS n be be' hL.1 h x hx x'
 
 /- English proof (translation)
-Introduce `u π hπ Y X ι z hz L₀ f₀ hb`. Establish `hL₀ : Submodule.IsLattice D.host.E L₀` using `hb.1`. Take `⟨f, hf, hff⟩` from `GlobalTheory.T.exists_isAdelicGlueVector_of_glueBaseData D u π hπ X L₀ f₀ hb`. Take `⟨x, hx⟩` from `exists_sub_inc_mem_hat (D := D) (Λ := L₀) hL₀.span_eq_top f`. Take `⟨x₀, hx₀⟩` from `vA_surj X x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← hx₀]`. Establish `hg : IsGlueVec X u L₀ (vA X x₀)` using `hf.congr hx`. Establish `hgl : IsGlued Y X ι z u π L₀ f₀ (glueLat Y X ι z u L₀ x₀)`. Use `GlobalTheory.T.gluedLattice_prescribed_localComponents D u π Y X ι z hz L₀ x₀ f₀ hL₀ hg (fun w hw => ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[← hff w hw, smul_smul, idem_mul_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hff w hw, ← smul_sub]`. Conclude with `smul_mem_hat (idem_mem w) hx`. Establish `huniq : ∀ L, IsGlued Y X ι z u π L₀ f₀ L → L = glueLat Y X ι z u L₀ x₀` using `fun L hL => GlobalTheory.T.gluedHermitianLattice_unique D u π hπ Y X ι z L₀ f₀ L _ hL hgl`. Use `⟨⟨_, hgl, huniq⟩, fun L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[huniq L hL]`.
-
-Conclude with `GlobalTheory.T.gluedLattice_selfDual_primitive_meet D u Y X ι z hz L₀ x₀ hL₀ hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gluedSt (D : D7) : GluedSt D := by
   intro u π hπ Y X ι z hz L₀ f₀ hb
@@ -74,9 +72,9 @@ theorem gluedSt (D : D7) : GluedSt D := by
   exact GlobalTheory.T.gluedLattice_selfDual_primitive_meet D u Y X ι z hz L₀ x₀ hL₀ hg
 
 /- English proof (translation)
-Introduce `u π hπ Y X ι z hz L hSD hP`. Take `⟨hlat, x₀, hL⟩` from `GlobalTheory.T.primitive_lattice_glued_from_intersection D u Y X ι z hz L hSD hP`. Establish `hg : IsGlueVec X u (capX Y X ι L) (vA X x₀)`. Establish `key` using `GlobalTheory.T.isAdelicGlueVector_of_selfDual_primitive D u Y X ι z hz (capX Y X ι L) x₀ hlat`. Rewrite `key` using `[← hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key hSD hP`. Use `⟨fun w => idem w • vA X x₀, GlobalTheory.T.isGlueBaseData_of_isAdelicGlueVector D u π hπ X _ _ hlat hg, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.gluedLattice_prescribed_localComponents D u π Y X ι z hz (capX Y X ι L) x₀ (fun w => idem w • vA X x₀) hlat hg (fun w _ => ⟨by simp only [smul_smul, idem_mul_self], by simp only [sub_self]; exact zero_mem_hat⟩)`. Rewrite `key` using `[← hL]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ungluedSt (D : D7) : UngluedSt D := by
   intro u π hπ Y X ι z hz L hSD hP
@@ -92,7 +90,7 @@ theorem ungluedSt (D : D7) : UngluedSt D := by
   rwa [← hL] at key
 
 /- English proof (translation)
-Unfold `AdelicIsometries LamNSt`. Apply the tactic sequence `exact ⟨plIdemSt D, transportSt D, GlobalTheory.T.correctionSt_of_transportSt D (transportSt D), splitGlueSt_of D (fun n Λ Λ' hΛ hΛ' v => GlobalTheory.T.localLattice_eq_iff_idempotent_components_over D n Λ Λ' hΛ hΛ' v), GlobalTheory.T.selfDualLattice_image_adelicUnitary D, GlobalT …`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem adelicIsometries (D : D7) : AdelicIsometries D := by
   unfold AdelicIsometries LamNSt

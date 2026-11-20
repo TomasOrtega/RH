@@ -17,7 +17,7 @@ open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BoxLattice.ratFin_mem_scaledInt_iff | exact GlobalTheory.BoxLattice.ratFin_mem_scaledInt_iff | (intros; apply GlobalTheory.BoxLattice.ratFin_mem_scaledInt_iff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rational_mem_scaled_iff : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ η : κ → F, ratFin F κ η ∈ scaledInt F κ a ↔ ∃ b : κ → 𝓞 F, η = fun i => a * (b i : F) := by

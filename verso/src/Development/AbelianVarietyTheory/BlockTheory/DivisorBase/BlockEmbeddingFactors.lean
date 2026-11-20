@@ -20,7 +20,7 @@ def blockMat (b : Fin r → ℕ) (c : ℕ) : Matrix (Block b c) (Block b c) F �
     simp
 
 /- English proof (translation)
-Simplify using `[blockMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) i.2, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMat_in (b : Fin r → ℕ) (c : ℕ) (g : Matrix (Block b c) (Block b c) F) (i j : Block b c) :
     blockMat b c g i.1 j.1 = g i j := by
@@ -28,9 +28,9 @@ theorem blockMat_in (b : Fin r → ℕ) (c : ℕ) (g : Matrix (Block b c) (Block
     Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hi : b i = c <;> by_cases hj : b j = c`. Conclude with `absurd ⟨hi, hj⟩ h`. Establish `: i ≠ j` using `fun e => hj (e ▸ hi)`. Simplify using `[blockMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, this]`. Establish `: i ≠ j` using `fun e => hi (e ▸ hj)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[blockMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hj, this]`. Simplify using `[blockMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockMat_out (b : Fin r → ℕ) (c : ℕ) (g : Matrix (Block b c) (Block b c) F) (i j : Fin r)
     (h : ¬ (b i = c ∧ b j = c)) : blockMat b c g i j = (1 : Matrix (Fin r) (Fin r) F) i j := by
@@ -57,7 +57,7 @@ def blockEmb (b : Fin r → ℕ) (c : ℕ) {d : ℕ} (h : Fintype.card (Block b 
     rw [blockMat_out b c _ i j (fun e => by omega), Matrix.one_apply_ne (fun e => by rw [e] at hij; omega)]
 
 /- English proof (translation)
-Use `show blockMat b c _ _ _ = _`. Rewrite using `[blockMat_in]`. Simplify using `[toBlock]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockEmb_in (b : Fin r → ℕ) (c : ℕ) {d : ℕ} (h : Fintype.card (Block b c) = d) (g : GL (Fin d) F)
     (i j : Fin d) :
@@ -68,7 +68,7 @@ theorem blockEmb_in (b : Fin r → ℕ) (c : ℕ) {d : ℕ} (h : Fintype.card (B
   simp [toBlock]
 
 /- English proof (translation)
-The claim follows from `blockMat_out b c _ i j hij`.
+A detailed English derivation is pending.
 -/
 theorem blockEmb_out (b : Fin r → ℕ) (c : ℕ) {d : ℕ} (h : Fintype.card (Block b c) = d) (g : GL (Fin d) F)
     (i j : Fin r) (hij : ¬ (b i = c ∧ b j = c)) :
@@ -118,14 +118,14 @@ def ProductIsoIff : Prop :=
 def CuspidalProduct : Prop := ProductIrreducible ∧ ProductIsoIff
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨_, rfl⟩ _ ⟨_, rfl⟩ h`. Conclude with `absurd rfl h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 example (σ : Representation ℂ (blockTri (κ := F) (fun _ : Fin r => 0)) V) : DistinctFactors (fun _ => 0) σ := by
   rintro _ ⟨_, rfl⟩ _ ⟨_, rfl⟩ h
   exact absurd rfl h
 
 /- English proof (translation)
-Introduce and unpack `⟨d, h1, h2, -⟩`. Conclude with `h (h1.trans h2.symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 example (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (c c' : ℕ)
     (h : Fintype.card (Block b c) ≠ Fintype.card (Block b c')) : ¬ SameFactor b σ c b σ c' := by

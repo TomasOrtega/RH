@@ -8,11 +8,11 @@ open scoped Classical TensorProduct
 namespace CompanionTheory.Rg.BcB.G3
 
 /- English proof (translation)
-Introduce `E _ _ _`. Establish `hne` using `IsCMField.complexConj_ne_one E`. Establish `hz : ∃ z : E, IsCMField.complexConj E z ≠ z`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (AlgEquiv.ext fun x => by simpa using h x)`. Take `⟨z, hz⟩` from `hz`. Use `set s : E := z - IsCMField.complexConj E z with hs`. Establish `hs0 : s ≠ 0` using `fun h => hz (sub_eq_zero.1 h).symm`. Establish `hcs : IsCMField.complexConj E s = -s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hs, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : s ^ 2 ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_pow, hcs, neg_sq]`. Conclude with `⟨s, ⟨s ^ 2, hmem⟩, hs0, hcs, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem skewEx_pf : SkewEx := by
   intro E _ _ _

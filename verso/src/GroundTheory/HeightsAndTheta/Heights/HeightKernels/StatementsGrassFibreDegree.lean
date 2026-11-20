@@ -14,7 +14,7 @@ def GrassFibreDegree.Statement : Prop :=
     vertR (grassIdeal 1 1 n) (fun _ : Fin n => fsMulti (plBlocks 1 1 n)) (C (p : ℤ)) = Real.log p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Nat.prime_two⟩, grassIdeal 1 1 2, fsMulti (plBlocks 1 1 2)⟩`.
+Supply the required witnesses or components.
 -/
 example : PLift (Nat.Prime 2) × Ideal (MRing (plBlocks 1 1 2)) × HermLine (plBlocks 1 1 2) :=
   ⟨⟨Nat.prime_two⟩, grassIdeal 1 1 2, fsMulti (plBlocks 1 1 2)⟩

@@ -15,7 +15,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T in
 /- English proof (translation)
-The claim follows from `coreDesc_of absLast pullBack unitTrace oneTerm sideSum pickS pickInf tyEx termE goodEx places C.occursBasics L1.eigBasic`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.coreDesc :
     UpperTheory.ConvolutionTheory.CI → UpperTheory.ConvolutionTheory.GM.GM → UpperTheory.ConvolutionTheory.T.CoreDesc :=

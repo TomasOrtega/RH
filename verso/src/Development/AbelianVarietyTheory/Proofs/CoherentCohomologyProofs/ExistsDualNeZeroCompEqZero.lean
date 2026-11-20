@@ -7,7 +7,7 @@ namespace GlobalTheory.LengthDualFunctional
 open Module
 
 /- English proof (translation)
-Establish `hd : LinearMap.det f.dualMap = 0`. Rewrite using `[LinearMap.det_dualMap]`. Conclude with `h`. Take `⟨φ, hφ, hφ0⟩` from `(Submodule.ne_bot_iff _).mp (LinearMap.bot_lt_ker_of_det_eq_zero hd).ne'`. Conclude with `⟨φ, hφ0, by simpa [LinearMap.dualMap_apply'] using hφ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_ne_zero_comp_eq_zero {R : Type u_1} [CommRing R] [IsDomain R]
     {M : Type u_2} [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
@@ -19,7 +19,7 @@ theorem exists_dual_ne_zero_comp_eq_zero {R : Type u_1} [CommRing R] [IsDomain R
   exact ⟨φ, hφ0, by simpa [LinearMap.dualMap_apply'] using hφ⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← ne_eq, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨_, hA⟩` from `hne`. Use `haveI : IsArtinianRing R := hA`. Conclude with `IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem length_self_eq_top (R : Type u_1) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] :
     Module.length R R = ⊤ := by
@@ -30,13 +30,13 @@ theorem length_self_eq_top (R : Type u_1) [CommRing R] [IsDomain R] [IsDiscreteV
   exact IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)
 
 /- English proof (translation)
-Introduce `R _ _ _ M _ _ _ _ f h`. Take `⟨φ, hφ0, hφ⟩` from `exists_dual_ne_zero_comp_eq_zero h`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, φ m ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hφ0 (LinearMap.ext hc)`. Establish `hle : LinearMap.range f ≤ LinearMap.ker φ`. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `using congrArg (fun g => g x) hφ`. Set `ψ` to `(LinearMap.range f).liftQ φ hle`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : R →ₗ[R] M ⧸ LinearMap.range f` to `LinearMap.toSpanSingleton R _ (Submodule.Quotient.mk m)`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `r hr`. Use `congrArg ψ hr` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `[g, ψ] at this`. The claim follows by propositional logic. Use `Module.length_le_of_injective g hg` as an intermediate fact. Rewrite `this` using `[length_self_eq_top]`. Conclude with `top_le_iff.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Type u_1} [inst : CommRing R] [inst_1 : IsDomain R] [IsDiscreteValuationRing R] {M : Type u_2} [inst_3 : AddCommGroup M] [inst_4 : Module R M] [Module.Free R M] [Module.Finite R M] {f : M →ₗ[R] M}, (LinearMap.det : (M →ₗ[R] M) → R) f = (0 : R) → Module.length R (M ⧸ LinearMap.range f) = ⊤ := by
   intro R _ _ _ M _ _ _ _ f h

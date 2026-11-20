@@ -15,7 +15,7 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.OkVals
 
 /- English proof (translation)
-Introduce `a` and use `by rcases InfinitePlace.embedding_mk_eq B.embLL with e | e · rw [e] exact B.starLL_cx a · rw [e, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, B.starLL_cx a]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjAt_embLL (B : Base) : Formalism.DivisionValues.IsConjAt (InfinitePlace.mk B.embLL) := fun a => by
   rcases InfinitePlace.embedding_mk_eq B.embLL with e | e
@@ -24,28 +24,26 @@ theorem isConjAt_embLL (B : Base) : Formalism.DivisionValues.IsConjAt (InfiniteP
   · rw [e, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, B.starLL_cx a]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1 / 100, by norm_num, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => h K⟩⟩⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ev_of_forall {p : Top.Ctx → Prop} (h : ∀ K, p K) : Top.Ev p :=
   ⟨1 / 100, by norm_num, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
     ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => h K⟩⟩⟩⟩⟩
 
 /- English proof (translation)
-Take `⟨Sv, hSv, hV⟩` from `GlobalTheory.T.exists_algebraicRoots_coeffFieldContainsTwistValues`. Take `⟨So, hSo, hF⟩` from `GlobalTheory.T.exists_coefficientField_contains_heckeEigenvalues`. Unfold `Top.EvLg`. Use `ev_of_forall fun _ => ?_` and prove the remaining obligations. Unfold `Top.large₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f F F₀ Ξ => Sv P Ξ ∪ So P f F F₀ Ξ, fun _ _ _ z hz => absurd hz (Finset.notMem_empty z), ?_, ?_⟩` and prove the remaining obligations. Introduce `P f F F₀ Ξ z hz`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `hSv P Ξ z h`. Conclude with `hSo P f F F₀ Ξ z h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B f T _ hH _ _ px I hX hOk hC hR`. Establish `hL : ∀ z ∈ Sv B.toPre (Set.range I.xi) ∪ So B.toPre I.C B.KsC B.fixedCoefficientFieldInComplex (Set.range I.xi), z ∈ B.LLC`. Rewrite using `[hR, hC]`. Conclude with `hH.2`. Use `⟨hV B px I hOk fun z hz => hL z (Finset.mem_union_left _ hz), fun U Xg tr hirr => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFI` using `hF B px I hX hOk fun z hz => hL z (Finset.mem_union_right _ hz)`. Establish `hC2` using `GlobalTheory.T.rowsLifts_heckeOperators_commute B px I hX hOk`. Establish `key : ∀ τ : TupU I U, ∃ a : I.ι, I.tup a = τ.1` using `fun τ => ⟨_, tup_ixOf I τ⟩`. Establish `hH3 : ColHyp3 B.wts I.Ch I.sel (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅`. Use `⟨⟨isConjAt_embLL B, hirr, fun τ => Formalism.L2.Col.heckeOperators_commute _ _, fun τ => ?_, fun j τ => Formalism.L2.Col.heckeOperators_commute _ _, fun j τ => ?_⟩, fun τ => ?_, fun τ => ?_, fun j τ => ?_, fun j τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨a, ha⟩` from `key τ`. Rewrite using `[← ha]`. Conclude with `fun i => (hFI a).1 (Sum.inl i)`. Take `⟨a, ha⟩` from `key τ`. Rewrite using `[← ha]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun i => (hFI a).2 j (Sum.inl i)`. Take `⟨a, ha⟩` from `key τ`. Rewrite using `[← ha]`. Conclude with `(hC2 a).1`. Take `⟨a, ha⟩` from `key τ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Conclude with `fun i => (hFI a).1 (Sum.inr i)`. Take `⟨a, ha⟩` from `key τ`. Rewrite using `[← ha]`. Conclude with `(hC2 a).2 j`.
-
-Take `⟨a, ha⟩` from `key τ`. Rewrite using `[← ha]`. Conclude with `fun i => (hFI a).2 j (Sum.inr i)`. Establish `h` using `colFam3_ok B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr hH3`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem large_coefficientField_contains_twist_values : Top.EvLg fun _ B f T => ∀ (px : PreX B.toPre) (I : Col2.ColIn B px) (hX : B.fields.Ok), I.Ok → I.C = f →
     Set.range I.xi = T.set f → ValsIn I ∧ ∀ U Xg tr, (∀ χ ∈ Xg, IsAbsIrrChar χ) → (famC I hX U Xg tr).fam3.Ok3 1 := by

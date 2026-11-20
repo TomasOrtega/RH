@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.SW.TupFubini
 variable {T : Type} [MeasurableSpace T]
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `using measurable_pi_apply j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurable_cons_tail {A : Type} [MeasurableSpace A] {n : ℕ} (x : A) :
     Measurable (fun Y : Fin n → A => (Fin.cons x Y : Fin (n + 1) → A)) := by
@@ -23,7 +23,7 @@ theorem measurable_cons_tail {A : Type} [MeasurableSpace A] {n : ℕ} (x : A) :
   · simpa using measurable_pi_apply j
 
 /- English proof (translation)
-Apply `(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => A) 0).injective` to reduce the goal to its premises. Rewrite using `[MeasurableEquiv.apply_symm_apply]`. Simplify using `[MeasurableEquiv.piFinSuccAbove, Fin.insertNthEquiv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piFinSuccAbove_symm_apply {A : Type} [MeasurableSpace A] {n : ℕ} (x : A) (Y : Fin n → A) :
     (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => A) 0).symm (x, Y) = Fin.cons x Y := by
@@ -32,9 +32,9 @@ theorem piFinSuccAbove_symm_apply {A : Type} [MeasurableSpace A] {n : ℕ} (x : 
   simp [MeasurableEquiv.piFinSuccAbove, Fin.insertNthEquiv]
 
 /- English proof (translation)
-Use `set P : Measure (Fin N → T) := Measure.pi fun _ : Fin N => m with hP`. Establish `h1` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => P) 0`. Establish `h2` using `measurePreserving_funUnique P (Fin 1)`. Establish `hg : Measurable fun p : (Fin N → T) × (Fin n → Fin N → T) => ψ ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => Fin N → T) 0).symm p)` using `hψ.comp (MeasurableEquiv.measurable _)`. Rewrite using `[← h1.symm.lintegral_comp hψ, lintegral_prod _ hg.aemeasurable, ← h2.lintegral_comp hg.lintegral_prod_right']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun y => lintegral_congr fun Y => ?_` and prove the remaining obligations. Rewrite using `[piFinSuccAbove_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_tuple_succ (m : Measure T) [SigmaFinite m] (n N : ℕ)
     (ψ : (Fin (n + 1) → Fin N → T) → ℝ≥0∞) (hψ : Measurable ψ) :
@@ -55,13 +55,13 @@ theorem lintegral_tuple_succ (m : Measure T) [SigmaFinite m] (n N : ℕ)
   rfl
 
 /- English proof (translation)
-Set `e₁` to `MeasurableEquiv.piFinSuccAbove (fun _ : Fin (M + 1) => T) 0`. Establish `h₁ : MeasurePreserving e₁ (Measure.pi fun _ : Fin (M + 1) => m) (m.prod (Measure.pi fun _ : Fin M => m))` using `measurePreserving_piFinSuccAbove (fun _ : Fin (M + 1) => m) 0`. Establish `h₂` using `measurePreserving_pi (fun _ : Fin n => Measure.pi fun _ : Fin (M + 1) => m) (fun _ : Fin n => m.prod (Measure.pi fun _ : Fin M => m)) (f := fun _ => e₁) (fun _ => h₁)`. Establish `h₃` using `measurePreserving_arrowProdEquivProdArrow T (Fin M → T) (Fin n) (fun _ => m) (fun _ => Measure.pi fun _ : Fin M => m)`. Establish `h₄` using `h₃.comp h₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : (Fin n → T) × (Fin n → Fin M → T) → Fin n → Fin (M + 1) → T` to `fun p a => e₁.symm (p.1 a, p.2 a)`. Establish `hg : Measurable g`. Use `measurable_pi_iff.2 fun a => e₁.symm.measurable.comp ?_` and prove the remaining obligations. Conclude with `((measurable_pi_apply a).comp measurable_fst).prodMk ((measurable_pi_apply a).comp measurable_snd)`. Establish `hgi : ∀ Y, g ((MeasurableEquiv.arrowProdEquivProdArrow T (Fin M → T) (Fin n) ∘ fun Y a => e₁ (Y a)) Y) = Y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y`. Use function extensionality and compare the values at `a`. Conclude with `e₁.symm_apply_apply (Y a)`. Establish `hψg : Measurable (ψ ∘ g)` using `hψ.comp hg`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun c => lintegral_congr fun X => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, g]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `piFinSuccAbove_symm_apply (c a) (X a)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lintegral_tuple_first_coord (m : Measure T) [SigmaFinite m] (n M : ℕ)
     (ψ : (Fin n → Fin (M + 1) → T) → ℝ≥0∞) (hψ : Measurable ψ) :
@@ -108,13 +108,13 @@ end GlobalTheory.CompanionTheory.SW.TupFubini
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR d b lam hlam n s _ φ hφ`. Take `⟨i₁, i₂, i₃, i₄, -⟩` from `id hR`. Take `⟨k₁, k₂, k₃, k₄, -, -, -, hBorel, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Take `⟨hK, hW, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam`. Establish `: SigmaFinite (coordK R b lam)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hact : ∀ h : HA R σ J, Measurable (actW R σ J h : (Fin n → Fin (M + 1) → R ⊗[F] E) → Fin n → Fin (M + 1) → R ⊗[F] E)`. Introduce `h`. Use `hBorel n (M + 1)` as an intermediate fact. Establish `hc` using `((GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 1) J hJ R).2.2.2.2.2 n).1`. Conclude with `(hc.comp (Continuous.prodMk_right h)).measurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ y : Fin 1 → Fin (M + 1) → R ⊗[F] E, ∫⁻ Y : Fin n → Fin (M + 1) → R ⊗[F] E, φ (Fin.cons (y 0) Y) ∂(coordW R b lam n (M + 1)) = ∫⁻ c : Fin n → R ⊗[F] E, ∫⁻ X : Fin n → Fin M → R ⊗[F] E, φ (Fin.cons (y 0) (actW R σ J (s y) (fun a => Fin.cons (c a) (X a)))) ∂(coordW R b lam n …`. Introduce `y`. Establish `hinv` using `GlobalTheory.T.unitary_action_preserves_haar_local F E σ hCM (M + 1) J hJ R hR n (coordW R b lam n (M + 1)) (hW n (M + 1)) (s y)`. Establish `hf : Measurable fun Y : Fin n → Fin (M + 1) → R ⊗[F] E => φ (Fin.cons (y 0) Y)` using `hφ.comp (TupFubini.measurable_cons_tail (y 0))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Use `_ = ∫⁻ Y, φ (Fin.cons (y 0) (actW R σ J (s y) Y)) ∂(coordW R b lam n (M + 1)) := lintegral_map hf (hact (s y))`. Use `_ = _ := TupFubini.lintegral_tuple_first_coord (coordK R b lam) n M _ (hf.comp (hact (s y)))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_tuple_moving_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (lam : Measure R), lam.IsAddHaarMeasure → ∀ (n : ℕ) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ J), Measurable s → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∫⁻ X, φ X ∂(coordW R b lam (n + 1) (M + 1)) = ∫⁻ y, ∫⁻ c : Fin n → R ⊗[F] E, ∫⁻ X : Fin n → Fin M → R ⊗[F] E, φ (Fin.cons (y 0) (actW R σ J (s y) (fun a => Fin.cons (c a) (X a)))) ∂(coordW R b lam n M) ∂(Measure.pi fun _ => coordK R b lam) ∂(coordW R b lam 1 (M + 1)) := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR d b lam hlam n s _ φ hφ

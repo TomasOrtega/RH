@@ -15,27 +15,27 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p) (Y : Pend X)
 
 /- English proof (translation)
-The claim follows from `ea_restSU_of X Y (ea_restSExpV_of X (restBeta p) (th_restGcV_of X hG))`.
+A detailed English derivation is pending.
 -/
 theorem ea_restSU (hG : RestGc p) : ea_RestSU X Y :=
   ea_restSU_of X Y (ea_restSExpV_of X (restBeta p) (th_restGcV_of X hG))
 
 /- English proof (translation)
-Introduce `hA v j hj` and use `ea_A1U D Y (nm_restNorm_of_place Y v) (ea_restSU X Y hG) hJ (ea_brClass X) (ea_brNum X) hA v j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem first_theorem_place_bound (D : Formalism.BasicNotions.D7) (hG : RestGc p) (hJ : ea_BrJet X) : EntryBoundOfHypotheses X Y D :=
   fun hA v j hj =>
     ea_A1U D Y (nm_restNorm_of_place Y v) (ea_restSU X Y hG) hJ (ea_brClass X) (ea_brNum X) hA v j hj
 
 /- English proof (translation)
-Introduce `hA v j hj` and use `ea_A2U D Y (nm_restNorm_of_place Y v) (ea_restSU X Y hG) hJ (ea_brClass X) (ea_brNum X) hA v j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_lemma_place_bound (D : Formalism.BasicNotions.D7) (hG : RestGc p) (hJ : ea_BrJet X) : PlacewiseLowerBoundEvenShift X Y D :=
   fun hA v j hj =>
     ea_A2U D Y (nm_restNorm_of_place Y v) (ea_restSU X Y hG) hJ (ea_brClass X) (ea_brNum X) hA v j hj
 
 /- English proof (translation)
-Introduce `hA v j hj i hi` and use `ea_BU D Y (nm_restNorm_of_place Y v) (ea_restSU X Y hG) hJ (ea_brScale X) (ea_brClass X) (ea_brNum X) hA v j hj i hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hecke_place_bound (D : Formalism.BasicNotions.D7) (hG : RestGc p) (hJ : ea_BrJet X) : RestBU X Y D :=
   fun hA v j hj i hi =>

@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SmoothRep
 
 /- English proof (translation)
-Use `LinearMap.ext fun ψ => Subtype.ext <| funext fun x => ?_` and prove the remaining obligations. Establish `hd : DifferentiableAt ℝ (chart ψ.1 x) (toL g.val)` using `(contDiffAt_chart ψ.2 x (val_mem_invSet g)).differentiableAt (by simp)`. Establish `e1 : lmul (toL g.val) (oneL E a) = toL g.val` using `mul_one g.val`. Establish `e2 : rmul (toL g.val) (oneL E a) = toL g.val` using `one_mul g.val`. Establish `e3 : lmul (toL g.val) X = rmul (toL g.val) (toL (g.val * Matrix.of X * (g⁻¹).val))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `g.val * Matrix.of X = g.val * Matrix.of X * (g⁻¹).val * g.val`. Rewrite using `[mul_assoc (g.val * Matrix.of X), ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart ψ.1 (x * infGL E a g)) (oneL E a) X = fderiv ℝ (chart (fun y => ψ.1 (y * infGL E a g)) x) (oneL E a) (toL (g.val * Matrix.of X * (g⁻¹).val))`. Rewrite using `[chart_mul, chart_rt_inf, fderiv_comp _ (by rw [e1]; exact hd) (lmul (toL g.val)).differentiableAt, fderiv_comp _ (by rw [e2]; exact hd) (rmul (toL g.val)).differentiableAt, e1, e2, ContinuousLinearMap.fderiv, ContinuousLinearMap.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_infGL_mul_lie (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (g : GL (Fin a) (Cinf E)) (X : Lie E a) :

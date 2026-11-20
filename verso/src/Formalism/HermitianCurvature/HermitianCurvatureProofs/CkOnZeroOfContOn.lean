@@ -12,7 +12,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 /- English proof (translation)
-Use `show IsClosed {g : B.Mat k r | gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem gv_closed (k r : ℕ) : IsClosed (B.GV k r) := by
   show IsClosed {g : B.Mat k r | gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r}
@@ -20,9 +20,9 @@ theorem gv_closed (k r : ℕ) : IsClosed (B.GV k r) := by
     continuous_const
 
 /- English proof (translation)
-Establish `hcl` using `gv_closed k r`. Use `haveI : NormalSpace (B.Mat k r) := inferInstanceAs (NormalSpace (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Take `⟨g, hg⟩` from `ContinuousMap.exists_extension' hcl.isClosedEmbedding_subtypeVal (⟨fun x : B.GV k r => f x, hf.restrict⟩ : C(B.GV k r, ℂ))`. Introduce `g₀ hg₀`. Use `⟨Set.univ, fun y => g y • (1 : ℂ →L[ℂ] ℂ), isOpen_univ, Set.mem_univ _, ?_, fun y _ hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ContDiffOn ℝ 0 _ _`. Rewrite using `[contDiffOn_zero]`. Conclude with `(g.continuous.smul continuous_const).continuousOn`. Conclude with `congrArg (fun c : ℂ => c • (1 : ℂ →L[ℂ] ℂ)) (congrFun hg ⟨y, hy⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem ckOn_zero_of_contOn {k r : ℕ} (f : Mx k r → ℂ) (hf : ContinuousOn f (B.GV k r)) :
     B.CkOn ((0 : ℕ) : ℕ∞) (B.GV k r) (fun g => f g • (1 : ℂ →L[ℂ] ℂ)) := by

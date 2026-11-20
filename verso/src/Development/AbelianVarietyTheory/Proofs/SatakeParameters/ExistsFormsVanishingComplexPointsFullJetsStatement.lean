@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtProj.Jets.exists_jet_forms) | (exact GlobalTheory.EtProj.Jets.exists_jet_forms) | (intros; apply GlobalTheory.EtProj.Jets.exists_jet_forms <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_forms_vanishing_complexPoints_fullJets : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (N : ℕ)
     (ι : X ⟶ PSpace ℂ N), IsClosedImmersion ι → ι ≫ PSpace.str ℂ N = p → ∀ S : Finset (CxPts p (RingHom.id ℂ)),

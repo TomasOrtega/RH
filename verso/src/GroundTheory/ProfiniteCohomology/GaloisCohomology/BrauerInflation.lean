@@ -17,17 +17,17 @@ section Surjective
 variable {k Q P : Type u} [CommRing k] [Group Q] [Group P]
 
 /- English proof (translation)
-Set `S` to `f.ker`. Set `e : Q ⧸ S ≃* P` to `QuotientGroup.quotientKerEquivOfSurjective f hf`. Establish `hmem : ∀ b : B, φ.hom b ∈ Representation.invariants (A.ρ.comp S.subtype)`. Introduce `b s`. Establish `hc` using `Rep.hom_comm_apply φ (s : Q) b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : f (s : Q) = 1` using `s.2`. Express the relevant statement in the definitionally equal form `φ.hom (B.ρ (f s) b) = A.ρ s (φ.hom b) at hc`. Rewrite `hc` using `[hs, map_one, Module.End.one_apply]`. Conclude with `hc.symm`. Set `ψ : B →ₗ[k] Representation.invariants (A.ρ.comp S.subtype)` to `LinearMap.codRestrict _ φ.hom.toLinearMap hmem`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : Function.Bijective ψ`. Use `⟨fun b b' hb => hφ (congrArg Subtype.val hb), fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hrange a.1 fun s hs => a.2 ⟨s, hs⟩`. Conclude with `⟨b, Subtype.ext hb⟩`. Set `e' : B.V ≃ₗ[k] (A.quotientToInvariants S).V` to `LinearEquiv.ofBijective ψ hψ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ p, e'.toLinearMap ∘ₗ B.ρ p = (A.quotientToInvariants S).ρ (e.symm p) ∘ₗ e'.toLinearMap`. Introduce `p`. Take `⟨q, rfl⟩` from `hf p`. Establish `hq : e.symm (f q) = (q : Q ⧸ S)` using `(MulEquiv.symm_apply_eq e).2 rfl`. Use `LinearMap.ext fun b => Subtype.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hq]`. Conclude with `Rep.hom_comm_apply φ q b`. Set `I` to `groupCohomology.mapIso e.symm e' he 2`. Establish `hfac : groupCohomology.map f φ 2 = I.hom ≫ GroundTheory.GroupCoh.inflation A S 2`. Rewrite using `[groupCohomology.mapIso_hom, ← groupCohomology.map_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `groupCohomology.map_congr (MonoidHom.ext fun q => rfl) (LinearMap.ext fun b => rfl) 2`. Establish `hI : Function.Injective I.hom.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Rewrite using `[hfac, ModuleCat.hom_comp, LinearMap.coe_comp]`. Conclude with `(GroundTheory.GroupCoh.inflation_two_injective (A := A) (S := S) h1).comp hI`.
+A detailed English derivation is pending.
 -/
 theorem map_two_injective_of_surjective (f : Q →* P) (hf : Function.Surjective f)
     {B : Rep.{u} k P} {A : Rep.{u} k Q} (φ : Rep.res f B ⟶ A) (hφ : Function.Injective φ.hom)
@@ -101,7 +101,7 @@ theorem coe_galTowerKerEquiv_apply (τ : Gal(F/E)) (x : F) :
   rfl
 
 /- English proof (translation)
-Establish `: FiniteDimensional E F` using `Module.Finite.of_restrictScalars_finite K E F`. Conclude with `(isZero_groupCohomology_one_galUnits E F).of_iso (groupCohomology.mapIso (galTowerKerEquiv K E F) (LinearEquiv.refl _ _) (fun _ => LinearMap.ext fun _ => rfl) 1).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_ker_galUnits [FiniteDimensional K F] :
     IsZero (groupCohomology (Rep.res (AlgEquiv.restrictNormalHom (F := K) (K₁ := F) E).ker.subtype
@@ -112,16 +112,16 @@ theorem isZero_groupCohomology_one_ker_galUnits [FiniteDimensional K F] :
       (fun _ => LinearMap.ext fun _ => rfl) 1).symm
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `Additive.toMul.injective <| Units.ext <| (algebraMap E F).injective <| congrArg (fun v : Additive Fˣ => ((Additive.toMul v : Fˣ) : F)) hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsTowerHom_injective : Function.Injective (unitsTowerHom K E F).hom := fun _ _ hab =>
   Additive.toMul.injective <| Units.ext <| (algebraMap E F).injective <|
     congrArg (fun v : Additive Fˣ => ((Additive.toMul v : Fˣ) : F)) hab
 
 /- English proof (translation)
-Establish `: FiniteDimensional E F` using `Module.Finite.of_restrictScalars_finite K E F`. Establish `: IsGalois E F` using `IsGalois.tower_top_of_isGalois K E F`. Establish `hfix : ((Additive.toMul a : Fˣ) : F) ∈ Set.range (algebraMap E F)` using `(IsGalois.mem_range_algebraMap_iff_fixed _).2 fun τ => congrArg (fun v : Additive Fˣ => ((Additive.toMul v : Fˣ) : F)) (ha _ (galTowerKerEquiv K E F τ).2)`. Take `⟨x, hx⟩` from `hfix`. Establish `hx0 : x ≠ 0` using `fun h0 => (Additive.toMul a : Fˣ).ne_zero (by rw [← hx, h0, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Additive.ofMul (Units.mk0 x hx0), Additive.toMul.injective (Units.ext hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unitsTowerHom_eq [FiniteDimensional K F] [IsGalois K F] (a : Additive Fˣ)
     (ha : ∀ s ∈ (AlgEquiv.restrictNormalHom (F := K) (K₁ := F) E).ker,
@@ -138,7 +138,7 @@ theorem exists_unitsTowerHom_eq [FiniteDimensional K F] [IsGalois K F] (a : Addi
   exact ⟨Additive.ofMul (Units.mk0 x hx0), Additive.toMul.injective (Units.ext hx)⟩
 
 /- English proof (translation)
-The claim follows from `map_two_injective_of_surjective _ (AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := E) F) (unitsTowerHom K E F) (unitsTowerHom_injective K E F) (exists_unitsTowerHom_eq K E F) (isZero_groupCohomology_one_ker_galUnits K E F)`.
+A detailed English derivation is pending.
 -/
 theorem unitsInflationTower_two_injective [FiniteDimensional K F] [IsGalois K F] :
     Function.Injective (unitsInflationTower K E F 2).hom :=
@@ -154,7 +154,7 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] {E F : IntermediateFie
   (h : E ≤ F)
 
 /- English proof (translation)
-Set `: Algebra E F` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K E F` using `IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `unitsInflationTower_two_injective K E F`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitsInflationOfLE_two_injective [Normal K E] [FiniteDimensional K F] [IsGalois K F] :
     Function.Injective (unitsInflationOfLE h 2).hom := by
@@ -163,7 +163,7 @@ theorem unitsInflationOfLE_two_injective [Normal K E] [FiniteDimensional K F] [I
   exact unitsInflationTower_two_injective K E F
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun x => Subtype.ext <| (coe_galRestrictOfLE_apply h _ x).trans <| (AlgEquiv.restrictNormal_commutes σ F (IntermediateField.inclusion h x)).trans (AlgEquiv.restrictNormal_commutes σ E x).symm`.
+A detailed English derivation is pending.
 -/
 theorem galRestrictOfLE_restrictNormalHom [Normal K E] [Normal K F] (σ : Gal(L/K)) :
     galRestrictOfLE h (AlgEquiv.restrictNormalHom F σ) = AlgEquiv.restrictNormalHom E σ :=
@@ -174,9 +174,9 @@ theorem galRestrictOfLE_restrictNormalHom [Normal K E] [Normal K F] (σ : Gal(L/
 variable [IsGalois K L]
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Rewrite using `[← cancel_mono ((cochainsComplexι (galUnits.{u} K L)).f n), HomologicalComplex.comp_f, Category.assoc]`. Use extensionality with `x : 2`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `(unitsRestrictHom F).hom ((unitsOfLE h).hom (x fun i => galRestrictOfLE h (AlgEquiv.restrictNormalHom F (g i)))) = (unitsRestrictHom E).hom (x fun i => AlgEquiv.restrictNormalHom E (g i))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [galRestrictOfLE_restrictNormalHom]`. Conclude with `Additive.toMul.injective (Units.ext rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cochainsMap_galRestrictOfLE_comp_unitsInflationCochains [FiniteDimensional K E]
     [Normal K E] [FiniteDimensional K F] [Normal K F] :
@@ -194,7 +194,7 @@ theorem cochainsMap_galRestrictOfLE_comp_unitsInflationCochains [FiniteDimension
   exact Additive.toMul.injective (Units.ext rfl)
 
 /- English proof (translation)
-Unfold `unitsInflationOfLE unitsInflation groupCohomology.map`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Rewrite using `[cochainsMap_galRestrictOfLE_comp_unitsInflationCochains]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsInflationOfLE_comp_unitsInflation [FiniteDimensional K E] [Normal K E]
     [FiniteDimensional K F] [Normal K F] (n : ℕ) :
@@ -212,18 +212,16 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] [IsGalois K L]
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Introduce `_ hx` and use `(mem_fixedField_iff _ _).2 fun σ hσ => (mem_fixedField_iff _ _).1 hx σ (h hσ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixedField_le_of_le {U V : OpenNormalSubgroup Gal(L/K)} (h : V ≤ U) :
     fixedField (U : Subgroup Gal(L/K)) ≤ fixedField (V : Subgroup Gal(L/K)) :=
   fun _ hx => (mem_fixedField_iff _ _).2 fun σ hσ => (mem_fixedField_iff _ _).1 hx σ (h hσ)
 
 /- English proof (translation)
-Rewrite using `[groupCohomologyQuotientGalUnitsIso, groupCohomologyQuotientGalUnitsIso, groupCohomology.mapIso_hom, groupCohomology.mapIso_hom]`. Unfold `transition unitsInflationOfLE`. Rewrite using `[← groupCohomology.map_comp, ← groupCohomology.map_comp]`. Use `groupCohomology.map_congr ?_ ?_ n` and prove the remaining obligations. Use `ext1 σ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `(quotientEquivGal V).surjective σ`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Express the relevant statement in the definitionally equal form `quotientMapOfLE h ((quotientEquivGal V).symm (quotientEquivGal V (g : Gal(L/K) ⧸ (V : Subgroup Gal(L/K))))) = (quotientEquivGal U).symm (galRestrictOfLE (fixedField_le_of_le h) (quotientEquivGal V (g : Gal(L/K) ⧸ (V : Subgroup Gal(L/K)))))`. Rewrite using `[MulEquiv.symm_apply_apply, quotientMapOfLE_mk, eq_comm, MulEquiv.symm_apply_eq, quotientEquivGal_mk_eq_restrictNormalHom, quotientEquivGal_mk_eq_restrictNormalHom, galRestrictOfLE_restrictNormalHom]`.
-
-Conclude with `LinearMap.ext fun x => Additive.toMul.injective (Units.ext rfl)`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transition_comp_groupCohomologyQuotientGalUnitsIso {U V : OpenNormalSubgroup Gal(L/K)}
     (h : V ≤ U) (n : ℕ) :
@@ -249,11 +247,9 @@ theorem transition_comp_groupCohomologyQuotientGalUnitsIso {U V : OpenNormalSubg
   · exact LinearMap.ext fun x => Additive.toMul.injective (Units.ext rfl)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨y₀, rfl⟩ : ∃ y₀, (groupCohomologyQuotientGalUnitsIso U 2).hom.hom y₀ = y` from `⟨(groupCohomologyQuotientGalUnitsIso U 2).inv.hom y, by`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, Iso.inv_hom_id, ModuleCat.hom_id, LinearMap.id_apply]⟩`. Establish `hinf : (inflation (galUnits.{u} K L) U 2).hom y₀ = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inflation_galUnits_eq, ModuleCat.hom_comp, LinearMap.comp_apply]`. Conclude with `hy`. Take `⟨V, hVU, hV⟩` from `exists_transition_eq_zero (galUnits.{u} K L) 2 U y₀ hinf`. Establish `hsq` using `congrArg (fun φ => φ.hom y₀) (transition_comp_groupCohomologyQuotientGalUnitsIso hVU 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, hV, map_zero] at hsq`.
-
-Conclude with `unitsInflationOfLE_two_injective (fixedField_le_of_le hVU) (hsq.symm.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitsInflation_fixedField_two_injective (U : OpenNormalSubgroup Gal(L/K)) :
     Function.Injective (unitsInflation (fixedField (U : Subgroup Gal(L/K))) 2).hom := by
@@ -274,7 +270,7 @@ theorem unitsInflation_fixedField_two_injective (U : OpenNormalSubgroup Gal(L/K)
     (hsq.symm.trans (map_zero _).symm)
 
 /- English proof (translation)
-Substitute `hEF` using the available equality. Conclude with `hE`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem unitsInflation_two_injective_of_eq {E F : IntermediateField K L} [FiniteDimensional K E]
     [Normal K E] [FiniteDimensional K F] [Normal K F] (hEF : E = F)
@@ -284,7 +280,7 @@ theorem unitsInflation_two_injective_of_eq {E F : IntermediateField K L} [Finite
   exact hE
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K E` using `Algebra.isSeparable_tower_bot_of_isSeparable K E L`. Establish `: IsGalois K E` using `⟨⟩`. Set `E' : FiniteGaloisIntermediateField K L` to `{ toIntermediateField := E }`. Conclude with `unitsInflation_two_injective_of_eq (congrArg FiniteGaloisIntermediateField.toIntermediateField (fixedFiniteGalois_fixingOpenNormalSubgroup E')) (unitsInflation_fixedField_two_injective (fixingOpenNormalSubgroup E'))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem brauerInflation_injective (E : IntermediateField K L) [FiniteDimensional K E]
     [Normal K E] : Function.Injective (brauerInflation E).hom := by

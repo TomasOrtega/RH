@@ -4,9 +4,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `G _ R A B hR hm`. Take `⟨m, hm⟩` from `hm`. Establish `h : ∃ t, A ⊓ R t ≤ B` using `⟨m, by rw [hm]; simp⟩`. Use `⟨Nat.find h, fun t => ⟨fun ht => Nat.find_min h ht, fun hn => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `hn (le_trans (inf_le_inf_left A (hR hc)) (Nat.find_spec h))`.
+A detailed English derivation is pending.
 -/
 theorem exists_initialSegment_not_inf_le :
     ∀ (G : Type) [Group G] (R : ℕ → Subgroup G) (A B : Subgroup G), Antitone R →

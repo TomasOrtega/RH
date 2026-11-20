@@ -14,15 +14,15 @@ section
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V]
 
 /- English proof (translation)
-Take `⟨k, hk, hc⟩` from `Formalism.LFunctionChainParameters.LLcv.card_pLen _ A B hBA rfl h0`. Set `e : HeightOneSpectrum (𝓞 K) ≃ {p : Ideal (𝓞 K) // p.IsMaximal}` to `{ toFun := fun P => ⟨P.asIdeal, P.isMaximal⟩ invFun := fun p => ⟨p.1, p.2.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField p.2 (RingOfIntegers.not_isField K)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hl : ∀ P : HeightOneSpectrum (𝓞 K), (haveI` using `P.isPrime; lidx P.asIdeal A B) = (k (e P) : ℤ) := by`. Introduce `P`. Establish `a` using `hk (e P)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.LFunctionChainParameters.LLcv.pLen at a`. Unfold `lidx`. Rewrite using `[inf_eq_right.mpr hBA, indexBasic_locLen_self]`. Unfold `locLen`. Use `erw [a]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Unfold `Lat.genIdxH`. Simplify using `only [hl, zpow_natCast]`. Use `finprod_comp_equiv (f := fun w : {p : Ideal (𝓞 K) // p.IsMaximal} => ((Ideal.absNorm w.1 : ℕ) : ℝ) ^ k w) e` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idxN, hc, finprod_eq_prod_of_mulSupport_subset (s := k.support), Finsupp.prod, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Introduce `w hw`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hw` to reduce the goal to its premises. Simplify using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genIdxH_eq_idxN {A B : Submodule (𝓞 K) V} (hBA : B ≤ A) (h0 : idxN A B ≠ 0) :
     Lat.genIdxH A B = (idxN A B : ℝ) := by
@@ -58,9 +58,9 @@ theorem genIdxH_eq_idxN {A B : Submodule (𝓞 K) V} (hBA : B ≤ A) (h0 : idxN 
 variable [Module K V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 fun x hx => hx.2) fun u hu => ?_` and prove the remaining obligations. Take `⟨r, hr, hru⟩` from `Formalism.LFunctionChainParameters.LLcv.span_le_locS (K := K) L (x := u) (by rw [hL.span_eq_top]; trivial)`. Establish `h1 : algebraMap (𝓞 K) K r ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hr`. Establish `h2 : r • u ∈ Submodule.span K ((L ⊓ U.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V)` using `Submodule.subset_span ⟨hru, (U.restrictScalars (𝓞 K)).smul_mem r hu⟩`. Rewrite `h2` using `[← algebraMap_smul K r]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.smul_mem_iff _ h1).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem span_inf_eq (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (U : Submodule K V) :
     Submodule.span K ((L ⊓ U.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) = U := by
@@ -73,9 +73,9 @@ theorem span_inf_eq (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (U
   exact (Submodule.smul_mem_iff _ h1).1 h2
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars (𝓞 K)) U.injective_subtype ?_` and prove the remaining obligations. Conclude with `Submodule.FG.of_le hL.fg (Submodule.map_comap_le _ _)`. Rewrite using `[eq_top_iff]`. Introduce `u _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hru⟩` from `Formalism.LFunctionChainParameters.LLcv.span_le_locS (K := K) L (x := u) (by rw [hL.span_eq_top]; trivial)`. Establish `h1 : algebraMap (𝓞 K) K r ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hr`. Establish `h2 : r • u ∈ Submodule.span K (latIn U L : Set U)` using `Submodule.subset_span hru`. Rewrite `h2` using `[← algebraMap_smul K r]`. Conclude with `(Submodule.smul_mem_iff _ h1).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_latIn (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (U : Submodule K V) :
     Submodule.IsLattice K (latIn U L) := by
@@ -93,9 +93,9 @@ theorem isLattice_latIn (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L
 variable [StarRing K]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `key : ∀ x, h x x = 0 → x = 0` using `fun x hx => by`. Assume the negation of the conclusion as `h0`. Use `hp τ x h0` as an intermediate fact. Rewrite `this` using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Conclude with `⟨fun x hx => key x (hx x), fun x hx => key x (hx x)⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem nondeg_of_pd {h : V →ₗ⋆[K] V →ₗ[K] K} (hp : PD h) : h.Nondegenerate := by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -107,13 +107,13 @@ theorem nondeg_of_pd {h : V →ₗ⋆[K] V →ₗ[K] K} (hp : PD h) : h.Nondegen
   exact ⟨fun x hx => key x (hx x), fun x hx => key x (hx x)⟩
 
 /- English proof (translation)
-Establish `e1 : (L ⊓ U.restrictScalars (𝓞 K)).toAddSubgroup = (latIn U L).toAddSubgroup.map U.subtype.toAddMonoidHom`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`. Establish `e2 : (Lat.dualInH h (L ⊓ U.restrictScalars (𝓞 K))).toAddSubgroup = (dual (hRes h U) (latIn U L)).toAddSubgroup.map U.subtype.toAddMonoidHom`. Unfold `Lat.dualInH`. Rewrite using `[span_inf_eq L hL U]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨x, h2⟩, (dualBasic_mem_dual _ _ _).2 fun y hy => ?_, rfl⟩` and prove the remaining obligations. Conclude with `(dualBasic_mem_dual _ _ _).1 h1 y ⟨hy, y.2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(dualBasic_mem_dual _ _ _).2 fun z hz => ?_, y.2⟩` and prove the remaining obligations. Conclude with `(dualBasic_mem_dual _ _ _).1 hy ⟨z, hz.2⟩ hz.1`. Rewrite using `[discN, idxN, idxN, e1, e2, AddSubgroup.relIndex_map_map_of_injective _ _ U.injective_subtype]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxN_dualInH (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L)
     (U : Submodule K V) :
@@ -142,15 +142,13 @@ theorem idxN_dualInH (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) 
   rw [discN, idxN, idxN, e1, e2, AddSubgroup.relIndex_map_map_of_injective _ _ U.injective_subtype]
 
 /- English proof (translation)
-Use `set D := dual h L with hD`. Use `set q : D →ₗ[𝓞 K] Cnt.discMod h L := (L.comap D.subtype).mkQ with hq`. Establish `key : ∀ s : Finset D, Submodule.span (𝓞 K) ((s.image q : Finset _) : Set (Cnt.discMod h L)) = ⊤ ↔ D = L ⊔ Submodule.span (𝓞 K) ((s.image D.subtype : Finset V) : Set V)`. Introduce `s`. Rewrite using `[Finset.coe_image, Finset.coe_image, ← Submodule.map_span, ← Submodule.map_span, hq, Submodule.map_mkQ_eq_top, ← (Submodule.map_injective_of_injective D.injective_subtype).eq_iff, Submodule.map_sup, Submodule.map_comap_subtype, inf_eq_right.2 hle, Submodule.map_top, Submodule.ran …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsp⟩`. Establish `hsurj : Function.Surjective q` using `Submodule.mkQ_surjective _`. Use `⟨(s.image (Function.surjInv hsurj)).image D.subtype, Finset.card_image_le.trans (Finset.card_image_le.trans hs), (key _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.image_image, (Function.rightInverse_surjInv hsurj).comp_eq_id, Finset.image_id, hsp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ht, hsp⟩`. Establish `htD : ∀ x ∈ t, x ∈ D` using `fun x hx => by`. Rewrite using `[hsp]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span hx)`. Establish `ee : (t.subtype (· ∈ D)).image D.subtype = t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_subtype]`. Conclude with `⟨fun ⟨y, hy, e⟩ => e ▸ hy, fun hx => ⟨⟨x, htD x hx⟩, hx, rfl⟩⟩`. Use `⟨(t.subtype (· ∈ D)).image q, Finset.card_image_le.trans ?_, (key _).2 (by rw [ee]; exact hsp)⟩` and prove the remaining obligations. Rewrite using `[Finset.card_subtype]`.
-
-Conclude with `(Finset.card_filter_le _ _).trans ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discGen_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (hle : L ≤ dual h L) (e : ℕ) :
     Cnt.DiscGen h L e ↔ ∃ t : Finset V, t.card ≤ e ∧ dual h L = L ⊔ Submodule.span (𝓞 K) (t : Set V) := by
@@ -183,23 +181,23 @@ theorem discGen_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hK hs hp L hL`. Establish `hle : L ≤ dual h L` using `fun x hx => (dualBasic_mem_dual _ _ _).2 fun y hy => hL.2 y hy x hx`. Establish `hn` using `nondeg_of_pd hp`. Establish `h0` using `(DiscOrder.main K V h hK hs hn L hL).1`. Establish `hd : Lat.dualInH h L = dual h L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Lat.dualInH`. Rewrite using `[hL.1.span_eq_top]`. Simplify using the standard rewrite rules. Establish `h1 : Lat.latDetH h L = Real.sqrt (discN h L : ℝ)`. Rewrite using `[Lat.latDetH, hd, genIdxH_eq_idxN hle h0, discN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : ∀ U : Submodule K V, Lat.latDetH h (L ⊓ U.restrictScalars (𝓞 K)) = Real.sqrt (discN (hRes h U) (latIn U L) : ℝ)`. Introduce `U`. Establish `hsU : (hRes h U).IsSymm` using `⟨fun x y => hs.eq x y⟩`. Establish `hpU : PD (hRes h U)` using `fun τ x hx => hp τ x fun e => hx (Subtype.ext e)`. Establish `hI : IsIntLat (hRes h U) (latIn U L)` using `⟨isLattice_latIn L hL.1 U, fun x hx y hy => hL.2 x hx y hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n0` using `(DiscOrder.main K U _ hK hsU (nondeg_of_pd hpU) _ hI).1`. Rewrite `n0`, the goal using `[← idxN_dualInH h L hL.1 U]`. Rewrite using `[Lat.latDetH, genIdxH_eq_idxN _ n0]`. Introduce `x hx`. Conclude with `⟨(dualBasic_mem_dual _ _ _).2 fun y hy => hL.2 y hy.1 x hx.1, Submodule.subset_span hx⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `⟨by rw [h1, Real.sq_sqrt (Nat.cast_nonneg _)], ?_, fun j de => ?_, discGen_iff h L hle, fun U => by rw [hU, Real.sq_sqrt (Nat.cast_nonneg _)]⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `Real.sqrt_pos.2 (by exact_mod_cast Nat.pos_of_ne_zero h0)`. Establish `hinj : Function.Injective fun U : Submodule K V => L ⊓ U.restrictScalars (𝓞 K)` using `Function.LeftInverse.injective (g := fun M : Submodule (𝓞 K) V => Submodule.span K (M : Set V)) (span_inf_eq L hL.1)`. Establish `hsq : ∀ n : ℕ, Real.sqrt (n : ℝ) = de ↔ n = de ^ 2` using `fun n => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_eq_iff_eq_sq (Nat.cast_nonneg _) (Nat.cast_nonneg _)]`. Conclude with `Iff.rfl` after adjusting the coercions. Rewrite using `[Cnt.cntPrim, ← hinj.encard_image]`. Use `congr 1`. Use extensionality with `M`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, a⟩, b, c⟩`. Use `⟨Submodule.span K (M : Set V), ⟨b, ?_⟩, a.symm⟩` and prove the remaining obligations. Rewrite using `[← hsq, ← hU, ← a, c]`. Introduce and unpack `⟨U, ⟨a, b⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨inf_le_left, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[span_inf_eq L hL.1]`. Simplify using `only`. Rewrite using `[span_inf_eq L hL.1, a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hU, hsq, b]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → ∀ L : Submodule (𝓞 K) V, IsIntLat h L → Lat.latDetH h L ^ 2 = (discN h L : ℝ) ∧ 0 < Lat.latDetH h L ∧ (∀ j de : ℕ, Cnt.cntPrim h L j de = (primSp h L j (de ^ 2)).encard) ∧ (∀ e : ℕ, Cnt.DiscGen h L e ↔ (∃ t : Finset V, t.card ≤ e ∧ dual h L = L ⊔ Submodule.span (𝓞 K) (t : Set V))) ∧ ∀ (U : Submodule K V), Lat.latDetH h (L ⊓ U.restrictScalars (𝓞 K)) ^ 2 = (discN (hRes h U) (latIn U L) : ℝ) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hp L hL

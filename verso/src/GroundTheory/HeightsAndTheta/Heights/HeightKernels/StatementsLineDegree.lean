@@ -37,7 +37,7 @@ def latticeNormSq {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattic
   ∑ σ : K →+* ℂ, (star (embComp σ z) ⬝ᵥ (F.metric σ *ᵥ embComp σ z)).re
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Conclude with `((Complex.lt_def.mp ((F.posDef σ).dotProduct_mulVec_pos hw)).1).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latticeNormSq_term_nonneg {K : Type} [Field K] [NumberField K] {i : ℕ}
     (F : HermLattice K i) (σ : K →+* ℂ) (w : Fin i → ℂ) :
@@ -47,7 +47,7 @@ theorem latticeNormSq_term_nonneg {K : Type} [Field K] [NumberField K] {i : ℕ}
   · exact ((Complex.lt_def.mp ((F.posDef σ).dotProduct_mulVec_pos hw)).1).le
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [embComp, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embComp_smul {K : Type} [Field K] [NumberField K] {i : ℕ} (σ : K →+* ℂ) (c : ℂ)
     (z : ProjIdx K i → ℂ) : embComp σ (c • z) = c • embComp σ z := by
@@ -58,13 +58,11 @@ theorem embComp_smul {K : Type} [Field K] [NumberField K] {i : ℕ} (σ : K →+
 open scoped Classical in
 
 /- English proof (translation)
-Use `set b := canonicalEmbedding.latticeBasis K`. Establish `hb : b m = ∑ σ : K →+* ℂ, σ (integralBasis K m) • (Pi.single σ 1 : (K →+* ℂ) → ℂ)`. Use function extensionality and compare the values at `τ`. Simplify using `[b, canonicalEmbedding.latticeBasis_apply, canonicalEmbedding.apply_at, Pi.single_apply]`. Establish `hr : ∀ m' , (if m = m' then (1 : ℂ) else 0) = ∑ σ : K →+* ℂ, σ (integralBasis K m) * b.repr (Pi.single σ 1) m'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m'`. Use `congrArg (fun v => b.repr v m') hb` as an intermediate fact. Simplify using `only [Module.Basis.repr_self, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul] at this`. Rewrite using `[← this, Finsupp.single_apply]`. Establish `hs : ∀ m', ∑ σ : K →+* ℂ, σ (integralBasis K m) * (b.repr (Pi.single σ 1) m' * z (m', j)) = (if m = m' then (1 : ℂ) else 0) * z (m', j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m'`. Rewrite using `[hr m', Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [embComp, Finset.mul_sum]`.
-
-Both sides reduce to the same expression. Use `_ = ∑ m', ∑ σ : K →+* ℂ, σ (integralBasis K m) * (b.repr (Pi.single σ 1) m' * z (m', j)) := Finset.sum_comm`. Use `_ = ∑ m', (if m = m' then (1 : ℂ) else 0) * z (m', j) := Finset.sum_congr rfl fun m' _ => hs m'`. Use `_ = z (m, j) := by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_emb_embComp {K : Type} [Field K] [NumberField K] {i : ℕ} (z : ProjIdx K i → ℂ)
     (m : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) (j : Fin i) :
@@ -162,7 +160,7 @@ def GeomDegPos.Statement : Prop :=
     0 < geomDeg (projSpaceIdeal K i) (latticeLine F) (i - 1)
 
 /- English proof (translation)
-The claim follows from `latticeLine (HermLattice.standard ℚ 2)`.
+A detailed English derivation is pending.
 -/
 example : HermLine (projBlocks ℚ 2) := latticeLine (HermLattice.standard ℚ 2)
 

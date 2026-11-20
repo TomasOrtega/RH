@@ -32,9 +32,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunJoin
 
 /- English proof (translation)
-Establish `hf : 0 < D.R.f` using `GlobalTheory.ArchInputs.f_pos D`. Establish `hfE : I2.PT.f D.host.E = D.R.f` using `GlobalTheory.ArchInputs.finrank_host D`. Establish `hrd` using `GlobalTheory.ArchInputs.one_le_rd (E := D.host.E)`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1` using `(D.host.g_prime 1).pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `thR I2.th I2.RR`. Rewrite using `[hfE]`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem thR_pos_of_rank {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (hr : 0 < D.R.r) : 0 < thR w := by
   have hf : 0 < D.R.f := GlobalTheory.ArchInputs.f_pos D
@@ -47,9 +47,9 @@ theorem thR_pos_of_rank {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (hr : 0 <
   positivity
 
 /- English proof (translation)
-Establish `h2` using `pow_le_pow_left₀ (mul_nonneg ha.le hb) h 2`. Rewrite `h2` using `[← Real.exp_nat_mul]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity), ← Real.exp_add, ← mul_pow, mul_comm b]`. Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sq_le_of_mul_le_exp {a b i p q : ℝ} (ha : 0 < a) (hb : 0 ≤ b) (h : a * b ≤ Real.exp (-i * (p - q))) :
     b ^ 2 ≤ Real.exp (2 * (i * q)) / a ^ 2 * Real.exp (-(2 * i * p)) := by
@@ -65,17 +65,17 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus _ hP hC hjm G hGen hEta`. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `hP.tie`. Establish `ht : TieC ⟨1, 2, 1, 2, 1, 2, 1, 4, 7⟩ H 1 4 0 11 C2 A2 7` using `⟨t1, t2, t3, t4, t5, rfl, rfl, t6, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`. Take `⟨n1, n2, n3, n4, -, n6, -⟩` from `GlobalTheory.ExtraWeight.numbers D _ _ j _ _ 1 4 0 11 large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp ht hP.page hjm hj.1 (le_trans (by norm_num) hP.df)`. Take `⟨-, -, -, -, -, -, ⟨-, -, -, -, -, -, PLam, lNc, -, -, hw1, w2, hG2, th2, -, hth2, -⟩, -⟩` from `hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w1, hG1, th1, -, hth1, -⟩` from `hw1 hjm`. Take `⟨⟨g0, hg0, -⟩, hnz⟩` from `GlobalTheory.T.exists_cuspForm_nonzero_everyComponent D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 (GlobalTheory.Reg.genFrEx_and_genFromTest _ _ _ _ _ _).1 hP`. Take `⟨-, -, -, hw, hlow⟩` from `hGen`. Take `⟨hi, ⟨-, het⟩, -, -, harch, -⟩` from `hEta`. Establish `hth : 0 < thR wL` using `thR_pos_of_rank wL (lt_of_lt_of_le (by norm_num) hP.r8)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrows` using `(GlobalTheory.pageRows_of_pageAt D _ _ j _ large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp hP.page hP.ck).1`. Establish `hL : 2 ≤ large₂.sc.L`. Take `⟨_, _, hsz, -⟩` from `hP.page`. Conclude with `(GlobalTheory.EtaAn.page_rows D large₂ _ hP.hyp.1 hsz).1`. Establish `hrn : D.R.r ≤ ka.n` using `((GlobalTheory.RunWeights.weights_below D _ _ j _ large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hj.1 hP.hyp).1 ka (by simp)).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ArchInputs.archAt_nonempty D T h j hj large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 7 _ G.N G.w G.iet G.et w1 w2 th1 th2 hP.hyp hjm hP.r8 n1 n2 n3 n4 n6 hi hG1 hG2 (fun k x hx => GlobalTheory.BigRec.exists_rdU_ne_zero (T.U j T.σ₀) (fun i => (G.w i).1) hw k hx) ((hnz _ G.e …` and prove the remaining obligations. Use `⟨thR wL, Real.exp (2 * (p14R wL * (DF wL : ℝ))) * lieFac (T.Q.Dw j) (xiR D) (wtA wL) ^ 2, hth, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hlow T.σ₀ T.good_σ₀ k x hx`. Establish `hs : ∑ m, recNrm (T.U j T.σ₀) (xiR D) (wtA wL) wL.n (G.w m).1 k x ^ 2 = lieFac (T.Q.Dw j) (xiR D) (wtA wL) ^ 2 * ∑ m, ((T.U j T.σ₀).X k).pnorm (GlobalTheory.Shares.laR T j wL k) (rdR h j (G.w m) k) x ^ 2`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun m _ => by rw [recNrm, mul_pow]; rfl`. Establish `hpos : 0 < ∑ m, ((T.U j T.σ₀).X k).pnorm (GlobalTheory.Shares.laR T j wL k) (rdR h j (G.w m) k) x ^ 2`. Take `⟨m, hm⟩` from `GlobalTheory.BigRec.exists_rdU_ne_zero (T.U j T.σ₀) (fun i => (G.w i).1) hw k hx`. Conclude with `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨m, Finset.mem_univ _, pow_pos (GlobalTheory.BigRec.pnorm_pos_of_ne_zero _ _ _ hx hm) 2⟩`. Rewrite `h1` using `[hs]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `GlobalTheory.BigRec.exp_le_of_neg_log_sqrt_le (mul_pos (pow_pos (lieFac_pos _ _ _) 2) hpos) h1`. Rewrite `h2` using `[← mul_assoc, ← mul_assoc]`. Conclude with `h2`. Use `⟨thR wL, _, hth, fun x hx => sq_le_of_mul_le_exp (lieFac_pos _ _ _) ?_ (harch T.σ₀ T.good_σ₀ k x hx)⟩` and prove the remaining obligations. Conclude with `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _)`.
+A detailed English derivation is pending.
 -/
 theorem archAt_of_run : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (EX : ErrX D) (p : ℕ) (S : Scal (recB h.toLawsCore)) (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ), ParOK T EX p j → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → HypC large₂ (recPJ h j hj) H C2 A2 7 0 CT S ka wL wF Tn nP nW h0 nus → j < D.R.m → ∀ G : GlobalFamilyData (recPJ h j hj) ka wL wF, GenOK h j hj large₂ G S (cc D large₂ C2 A2 7 wL) → EtaOK h j hj large₂ wL G.iet G.et → Nonempty (GlobalTheory.Shares.ArchAt h j G.w wF Tn (WeightFamilies.c1 D 7 Tn (cc D large₂ C2 A2 7 wL) j)) := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus _ hP hC hjm G hGen hEta

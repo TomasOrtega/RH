@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Rewrite using `[GG.map_mat]`. Use `show ((tor O (Ψ g)).val).map (algebraMap O R) = _`. Rewrite using `[tor_val, Matrix.diagonal_map (map_zero _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem map_diagonal_rep_matrix_eq {O R D : Type} [CommRing O] [CommRing R] [Algebra O R] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (g : D) :
@@ -14,7 +14,7 @@ private theorem map_diagonal_rep_matrix_eq {O R D : Type} [CommRing O] [CommRing
   rfl
 
 /- English proof (translation)
-Use `ext1 g`. Simplify using `[conjBy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conjBy_inv_one {R D : Type} [CommRing R] [Group D] (r : D →* GG 3 R) :
     conjBy (1 : GL (Fin 3) R)⁻¹ r = r := by
@@ -22,11 +22,11 @@ private theorem conjBy_inv_one {R D : Type} [CommRing R] [Group D] (r : D →* G
   simp [conjBy]
 
 /- English proof (translation)
-Establish `hne : ∀ a b : Fin 3, wt a b ≠ 0 → a ≠ b`. Introduce `a b h hab`. Substitute `hab` using the available equality. Simplify using `[wt] at h`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g _ a b hab`. Rewrite using `[conjBy_inv_one, hr]`. Conclude with `Matrix.diagonal_apply_ne _ (hne a b hab.ne)`. Introduce `s _ _ a`. Rewrite using `[conjBy_inv_one, hr, Matrix.diagonal_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g _ a b hab`. Rewrite using `[conjBy_inv_one, hr]`. Conclude with `Matrix.diagonal_apply_ne _ (hne a b hab.ne')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem diagIn_one {O R D : Type} [CommRing O] [CommRing R] [Algebra O R] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R)
@@ -46,29 +46,27 @@ private theorem diagIn_one {O R D : Type} [CommRing O] [CommRing R] [Algebra O R
     exact Matrix.diagonal_apply_ne _ (hne a b hab.ne')
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hok g₁ R _ _ _ _`. Establish `hmat : ∀ g, (F.rz R g).mat = diagonal fun a => algebraMap O R (psi F.Ψ a g)` using `fun g => map_diagonal_rep_matrix_eq F.η F.Ψ g`. Establish `hinhat : InHat (1 : GL (Fin 3) R)`. Introduce `a b`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hloc : ∀ v, ∀ s, ((F.rz R).comp (F.loc v) s).mat = diagonal fun a => algebraMap O R (psi (F.Ψv v) a s)` using `fun v s => hmat _`. Use `⟨⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g`. Both sides reduce to the same expression. Introduce `g a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (F.rz R g).mat = (r0 F.η F.Ψ g).mat.map (algebraMap O R)` using `GG.map_mat _ _`. Rewrite using `[e, sub_self, Matrix.zero_apply]`. Conclude with `zero_mem _`. Introduce `v`. Use `⟨fun _ => ⟨1, hinhat, (diagIn_one _ _ _ _ (hloc v)).toTriIn⟩, fun _ => ⟨1, hinhat, diagIn_one _ _ _ _ (hloc v)⟩, fun hv s hs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : F.Ψ (F.loc v s) = 1` using `hok.teich v hv s hs`. Establish `h2 : F.η (F.loc v s) = 1` using `hs.1.2`. Use `show GG.map (algebraMap O R) (r0 F.η F.Ψ (F.loc v s)) = 1`. Establish `e : r0 F.η F.Ψ (F.loc v s) = 1`. Apply `SemidirectProduct.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[unitaryThreeReflection_left, h1, map_one]`. Both sides reduce to the same expression. Conclude with `h2`. Rewrite using `[e, map_one]`. Establish `hc : ∀ a, psi F.Ψ a F.c = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Simplify using `[psi, hok.Ψc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmat]`. Simplify using `[hc, Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[zmat, hmat]`. Simplify using `[zmat, hmat]`. Introduce `n`. Establish `hle : Ideal.map (algebraMap O R) (maximalIdeal O ^ n) ≤ maximalIdeal R ^ n`. Rewrite using `[Ideal.map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (map_nonunit (algebraMap O R) x hx)) n`. Establish `key : ∀ g g', Ideal.Quotient.mk (maximalIdeal O ^ n) (F.Ψ g : O) = Ideal.Quotient.mk (maximalIdeal O ^ n) (F.Ψ g' : O) → ∀ a, Ideal.Quotient.mk (maximalIdeal R ^ n) (algebraMap O R (psi F.Ψ a g)) = Ideal.Quotient.mk (maximalIdeal R ^ n) (algebraMap O R (psi F.Ψ a g'))`. Introduce `g g' h a`. Set `q : O →* O ⧸ maximalIdeal O ^ n` to `(Ideal.Quotient.mk (maximalIdeal O ^ n) : O →* O ⧸ maximalIdeal O ^ n)`. Establish `hu : Units.map q (F.Ψ g) = Units.map q (F.Ψ g')` using `Units.ext h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2 : ((Units.map q (F.Ψ g ^ wt1 a) : (O ⧸ maximalIdeal O ^ n)ˣ) : O ⧸ maximalIdeal O ^ n) = ((Units.map q (F.Ψ g' ^ wt1 a) : (O ⧸ maximalIdeal O ^ n)ˣ) : O ⧸ maximalIdeal O ^ n)`. Rewrite using `[map_zpow (Units.map q) (F.Ψ g) (wt1 a), map_zpow (Units.map q) (F.Ψ g') (wt1 a), hu]`. Establish `h3 : Ideal.Quotient.mk (maximalIdeal O ^ n) (psi F.Ψ a g) = Ideal.Quotient.mk (maximalIdeal O ^ n) (psi F.Ψ a g')` using `h2`. Rewrite `h3`, the goal using `[Ideal.Quotient.eq]`. Rewrite using `[← map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hle (Ideal.mem_map_of_mem _ h3)`. Establish `hf` using `hok.Ψ_cont n`. Rewrite `hf`, the goal using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Take `⟨U, hU, hxU, hUx⟩` from `hf x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨U, hU, hxU, fun x' hx' => ?_⟩` and prove the remaining obligations. Simplify using `only [hmat]`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
-
-Conclude with `key x' x (hUx x' hx') a`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.isPt_rz :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

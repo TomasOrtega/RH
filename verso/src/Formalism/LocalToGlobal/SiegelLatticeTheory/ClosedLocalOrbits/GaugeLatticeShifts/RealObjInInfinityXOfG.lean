@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.L2.SG.RealObj
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyInst.inInfinityXAt (X := X) (hI D hg) (hC D hg) u u' sc hsc`.
+A detailed English derivation is pending.
 -/
 theorem realObj_inInfinityX_ofG (hI : Formalism.L2.SG.RealObj.EnergyInt.StepIntG) (hC : Formalism.L2.S.Pv.ConvG.StepConvG)
     {D : D7}

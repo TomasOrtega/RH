@@ -15,7 +15,7 @@ namespace GlobalTheory.LieBase
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Take `⟨u', hu', rfl⟩` from `h'`. Establish `: u = u'` using `funext fun k => Over.OverMorphism.ext ((hu k).trans (hu' k).symm)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCombAtG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
     {t : SAB H X0} {R : Type} [CommRing R] {x0 : Sp R ⟶ X0} {m : ℕ} {v : Fin m → (Sp (DualNumber R) ⟶ t.G.left)}
@@ -27,19 +27,17 @@ theorem isCombAtG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   rw [this]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ X j f₀ A₀ A y x x' g g' h h' τ i`. Take `⟨φ, fz, ψ, hy, hc, hg⟩` from `h`. Take `⟨φ', fz', ψ', hy', hc', hg'⟩` from `h'`. Establish `hψ : ψ = ψ'` using `EigLoc.spMap_inj ((cancel_mono (X.X.fromSpecStalk (under y))).1 (hy.symm.trans hy'))`. Substitute `hψ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hι` using `IsFractionRing.injective (X.X.presheaf.stalk (under y)) X.X.functionField`. Take `rfl : φ = φ'` from `RingHom.ext fun a => hι ((RingHom.congr_fun hc.2.1 a).symm.trans (RingHom.congr_fun hc'.2.1 a))`. Take `⟨fK, hK⟩` from `fz.exists_isMap _ hc.2.1 hc.1`. Take `⟨fK', hK'⟩` from `fz'.exists_isMap _ hc.2.1 hc.1`. Establish `e1 : fK.co f₀ τ = fK'.co f₀ τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[EigFrame.co_eq (T := Matrix.of fun a k => (A₀ * A⁻¹) τ k a) fun k => by`. Rewrite using `[funext (hK τ)]`. Conclude with `hc.2.2 τ k,`. Use the proof step `EigFrame.co_eq (T := Matrix.of fun a k => (A₀ * A⁻¹) τ k a) fun k => by`. Rewrite using `[funext (hK' τ)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc'.2.2 τ k]`. Establish `e2 : fK.co fK' τ = 1`. Rewrite using `[← fK.co_mul f₀ fK' τ, e1, fK'.co_mul, fK'.co_self]`. Establish `e3 : fz.co fz' τ = 1`. Establish `e` using `(hK.co τ hK' hc.1).symm.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `a b`. Establish `e'` using `congrFun (congrFun e a) b`. Rewrite `e'` using `[Matrix.map_apply]`. Apply `hι` to reduce the goal to its premises. Rewrite using `[e', Matrix.one_apply, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `e4` using `fz.co_spec fz' τ i`. Rewrite `e4` using `[e3]`. Establish `e5 : fz'.v τ i = fz.v τ i` using `isCombAtG_eq e4 (by`. Use `isCombAtG_single Z.t _ (fz.tan τ) i using 2` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Matrix.one_apply, Pi.single_apply])`. Rewrite using `[hg τ i, hg' τ i, e5]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameAt_v_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (X : Var F) (j : X.X ⟶ gen Z) (f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)) (A₀ A : Mat Dw.mult X.Fn) (y : CxPts X.str (σ.comp e.toRingHom)) (x x' : Sp ℂ ⟶ Z.X) (g : EigFrame Z σ x) (g' : EigFrame Z σ x'), FrameAt e f₀ A₀ A y g → FrameAt e f₀ A₀ A y g' → ∀ τ i, g.v τ i = g'.v τ i := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ X j f₀ A₀ A y x x' g g' h h' τ i

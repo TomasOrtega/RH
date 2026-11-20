@@ -17,19 +17,19 @@ variable {E 𝕜 : Type*} [NormedField E] [RCLike 𝕜] {m : ℕ}
   [MeasurableSpace (GL (Fin (m + 1)) 𝕜)] [BorelSpace (GL (Fin (m + 1)) 𝕜)]
 
 /- English proof (translation)
-Establish `hφc : Continuous φ` using `(AddMonoidHomClass.isometry_of_norm φ hφ).continuous`. Establish `hφ' : ∀ x, ‖φ.symm x‖ = ‖x‖` using `fun x => by rw [← hφ, RingEquiv.apply_symm_apply]`. Establish `hφc' : Continuous φ.symm` using `(AddMonoidHomClass.isometry_of_norm φ.symm hφ').continuous`. Use `set e : Matrix (Fin (m + 1)) (Fin (m + 1)) E ≃* Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜 := φ.mapMatrix.toMulEquiv with he`. Use `set Φ : GL (Fin (m + 1)) E ≃ₜ* GL (Fin (m + 1)) 𝕜 := unitsCongr e (continuous_id.matrix_map hφc) (continuous_id.matrix_map hφc') with hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦv : ∀ g : GL (Fin (m + 1)) E, ((Φ g : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) = (g : Matrix (Fin (m + 1)) (Fin (m + 1)) E).map φ` using `fun g => rfl`. Use `set ν : Measure (GL (Fin (m + 1)) 𝕜) := Measure.map Φ μ with hν`. Establish `hνH : ν.IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ Φ`. Establish `hω' : IsCompact (Φ '' ω)` using `hω.image Φ.continuous`. Establish `hωB' : ∀ b ∈ Φ '' ω, (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).IsUpperTriangular`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩ i j hij`. Rewrite using `[hΦv, Matrix.map_apply, hωB b hb hij, map_zero]`. Take `⟨C, hC, hCb⟩` from `measure_boxGL_le ν (fun μK _ μA _ μN _ => hANK ν μK μA μN) hω' hωB' B`. Use `⟨C, hC, fun x => le_trans ?_ (hCb x)⟩` and prove the remaining obligations. Use `(measure_mono ?_).trans (Measure.le_map_apply Φ.continuous.measurable.aemeasurable _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce and unpack `g ⟨b, hbω, y, hy, k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `Φ (b * D _ * k) ∈ boxGL (Φ '' ω) B x`. Establish `hkU : ((Φ k : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) ∈ unitaryGroup (Fin (m + 1)) 𝕜`. Use `mem_unitaryGroup_of_euclidNorm fun z => ?_` and prove the remaining obligations. Establish `hz : z = fun i => φ (φ.symm (z i))` using `by funext i; simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hz, hΦv]`. Establish `: (fun i => φ (φ.symm (z i))) ᵥ* (k : Matrix (Fin (m + 1)) (Fin (m + 1)) E).map φ = fun j => φ.toRingHom (((fun i => φ.symm (z i)) ᵥ* (k : Matrix (Fin (m + 1)) (Fin (m + 1)) E)) j)`. Use extensionality with `j`. Simplify using `[vecMul, dotProduct, _root_.map_sum, map_mul]`. Rewrite using `[this, euclidNorm_map φ.toRingHom hφ, hk, ← euclidNorm_map φ.toRingHom hφ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨Φ b, ⟨b, hbω, rfl⟩, y, hy, ⟨_, hkU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `congr 1`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hΦv, hD, coe_diagPosOf]`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem measure_box_ringEquiv_le (φ : E ≃+* 𝕜) (hφ : ∀ x, ‖φ x‖ = ‖x‖)
     [MeasurableSpace (unitaryGroup (Fin (m + 1)) 𝕜)] [BorelSpace (unitaryGroup (Fin (m + 1)) 𝕜)]
@@ -103,19 +103,19 @@ def boxPlace (w : InfinitePlace K) (ω : Set (GL (Fin (m + 1)) w.Completion)) (B
       ⟨Real.exp (x i + y i) ^ w.mult, pow_pos (Real.exp_pos _) _⟩) * k}
 
 /- English proof (translation)
-Use `set D : PosDiag (Fin (m + 1)) → GL (Fin (m + 1)) w.Completion := fun r => diagUnits (m + 1) (fun i => posRealToUnits w ⟨r.1 i ^ w.mult, pow_pos (r.2 i) _⟩) with hDdef`. Establish `hsub : ∀ x, boxPlace w ω B x ⊆ {g | ∃ b ∈ ω, ∃ y : Fin (m + 1) → ℝ, (∀ i, |y i| ≤ B) ∧ ∃ k : GL (Fin (m + 1)) w.Completion, (∀ z : Fin (m + 1) → w.Completion, euclidNorm (z ᵥ* (k : Matrix (Fin (m + 1)) (Fin (m + 1)) w.Completion)) = euclidNorm z) ∧ g = b * D ⟨fun i => Real.exp (x …`. Introduce and unpack `x g ⟨b, hb, y, hy, k, hk, rfl⟩`. Conclude with `⟨b, hb, y, hy, k, hk, rfl⟩`. Distinguish the cases in `hw : w.IsReal`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hφ : ∀ x, ‖InfinitePlace.Completion.ringEquivRealOfIsReal hw x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) x`. Establish `hm : w.mult = 1` using `by simp [InfinitePlace.mult, hw]`. Establish `hD : ∀ r : PosDiag (Fin (m + 1)), ((D r : GL (Fin (m + 1)) w.Completion) : Matrix (Fin (m + 1)) (Fin (m + 1)) w.Completion).map (InfinitePlace.Completion.ringEquivRealOfIsReal hw) = diagonal fun i => ((r.1 i : ℝ) : ℝ)` using `fun r => by`. Rewrite using `[hDdef]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_diagUnits, diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [posRealToUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, posRealElem, dif_pos hw, RingEquiv.apply_symm_apply, hm, pow_one]`. Take `⟨C, hC, hCb⟩` from `measure_box_ringEquiv_le (𝕜 := ℝ) (InfinitePlace.Completion.ringEquivRealOfIsReal hw) hφ (fun ν _ μK _ μA _ μN _ => lintegral_GLReal_ANK ν μK μA μN) μ D hD hω hωB B`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, hC, fun x => (measure_mono (hsub x)).trans ?_⟩` and prove the remaining obligations. Establish `h` using `hCb x`. Rewrite `h` using `[Module.finrank_self]`. Rewrite using `[hm]` and apply the resulting hypothesis. Establish `hc` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ x, ‖InfinitePlace.Completion.ringEquivComplexOfIsComplex hc x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x`. Establish `hm : w.mult = 2` using `by simp [InfinitePlace.mult, hw]`. Establish `hD : ∀ r : PosDiag (Fin (m + 1)), ((D r : GL (Fin (m + 1)) w.Completion) : Matrix (Fin (m + 1)) (Fin (m + 1)) w.Completion).map (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc) = diagonal fun i => ((r.1 i : ℝ) : ℂ)` using `fun r => by`. Rewrite using `[hDdef]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_diagUnits, diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [posRealToUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, posRealElem, dif_neg hw, RingEquiv.apply_symm_apply, hm]`. Rewrite using `[Real.sqrt_sq (r.2 i).le]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hCb⟩` from `measure_box_ringEquiv_le (𝕜 := ℂ) (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc) hφ (fun ν _ μK _ μA _ μN _ => lintegral_GLComplex_ANK ν μK μA μN) μ D hD hω hωB B`. Use `⟨C, hC, fun x => (measure_mono (hsub x)).trans ?_⟩` and prove the remaining obligations. Establish `h` using `hCb x`. Rewrite `h` using `[Complex.finrank_real_complex]`. Rewrite using `[hm]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem measure_boxPlace_le (w : InfinitePlace K)
     [MeasurableSpace (GL (Fin (m + 1)) w.Completion)] [BorelSpace (GL (Fin (m + 1)) w.Completion)]

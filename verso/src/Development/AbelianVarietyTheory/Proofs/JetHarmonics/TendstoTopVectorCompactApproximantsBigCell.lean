@@ -12,19 +12,17 @@ open Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.PBE
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨c₂, hc₂⟩` from `vecV_cut_op`. Use `⟨5 * max Cb 0 + max Cb 0 ^ 2 + 1 + |c₂|, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P0 p f χ ε A N cut hDD hχ hε hf hfA hA hcut w hw hwN e q`. Establish `hXn : ((2 * P0.r + P0.k + 1 : ℕ) : ℝ) = 2 * (P0.r : ℝ) + P0.k + 1` using `by push_cast; ring`. Establish `hr0 : (0 : ℝ) ≤ P0.r` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrX : (P0.r : ℝ) + 1 ≤ 2 * (P0.r : ℝ) + P0.k + 1`. Establish `: (0 : ℝ) ≤ P0.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hCb0 : (0 : ℝ) ≤ max Cb 0` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcut' : ∀ n g, cut n g = 1 - P.JCx2.pdPsi ((n : ℝ) + 1) g`. Introduce `n g`. Rewrite using `[hcut n g]`. Simplify using `[P.JCx2.pdPsi, P.JCx2.pdPhi, P.JCx2.pdChi, P.JCx2.pdSq]`. Establish `hFck : B.CkOn ⊤ (B.GV P0.k P0.r) (D.cutF p.T.base χ f ε)` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hf ε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hχ0⟩` from `hχ.2.1`. Establish `hFv : ∀ g, Gf P0.k P0.r p.T.base.z p.T.base.z' g < ε * δ → D.cutF p.T.base χ f ε g = 0`. Introduce `g hg`. Use `show ((χ (Gf P0.k P0.r p.T.base.z p.T.base.z' g / ε) : ℝ) : ℂ) • f g = 0`. Rewrite using `[hχ0 _ (by rw [div_lt_iff₀ hε]; linarith), Complex.ofReal_zero, zero_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨nf, fib, o, κ, Dop, hfib, hIn, ho, hκ, hΘ⟩` from `hDD w hw e`. Establish `hcongr : ∀ G, D.vecV p.T.base p.ν' p.m₀ (p.Θ.Θ w e G) q = D.vecV p.T.base p.ν' p.m₀ (B.opApply Dop G) q` using `fun G => vecV_congrGPos p.T.base p.ν' p.m₀ q (fun g hg => hΘ G g ⟨hg.1, hg.2, fun l hl => by simp at hl⟩)`. Simplify using `only [hcongr]`. Establish `ho' : (o : ℝ) ≤ max Cb 0 * N * (2 * (P0.r : ℝ) + P0.k + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXn]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (Nat.cast_nonneg _)) (by linarith)`. Use `_ ≤ max Cb 0 * N * (2 * (P0.r : ℝ) + P0.k + 1) := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by exact_mod_cast hwN) hCb0) (by linarith)`. Establish `hκ' : (κ : ℝ) ≤ max Cb 0 * ((P0.r : ℝ) + 1) * o` using `hκ.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (by linarith)) (Nat.cast_nonneg _))`. Establish `hthr` using `thr_arith (P0.r) (2 * (P0.r : ℝ) + P0.k + 1) N (max Cb 0) c₂ o κ A hr0 hrX hN0 hCb0 (Nat.cast_nonneg _) ho' (Nat.cast_nonneg _) hκ' hA`.
-
-Take `⟨bF, hbF⟩` from `cutF_inCC p.T.base hχ hfA hε (A - 2 * ((P0.r : ℝ) + 1) * o) o (by linarith)`. Conclude with `hc₂ P0.k P0.r Wp Wq p.T.base p.ν' p.m₀ q _ cut nf fib o κ Dop (ε * δ) (A - 2 * ((P0.r : ℝ) + 1) * o) bF hfib hIn (mul_pos hε hδ) hFv hFck hbF hcut' (by rw [hXn]; linarith [hthr])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vecV_theta_approx_tendsto (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp]
@@ -84,11 +82,11 @@ theorem vecV_theta_approx_tendsto (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) 
     (by rw [hXn]; linarith [hthr])
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨Cc, hC⟩` from `vecV_theta_approx_tendsto Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P0 p f χ A N w hDD hχ hf hfA hA hw hwN ε hε c`. Establish `h` using `hC Wp Wq P0 p f χ ε A N _ hDD hχ hε hf hfA hA (fun _ _ => rfl) w hw hwN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `tv`. Use `((PiLp.continuous_toLp 2 _).tendsto _).comp ?_` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun x => ?_` and prove the remaining obligations. Apply `Tendsto.const_smul` to reduce the goal to its premises. Use `(P.BetaSesquilinearity.hsVec_cont.tendsto _).comp ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((continuous_const.clm_comp continuous_id).tendsto _).comp (h x.1 (TBB.bigPt P0.r c))`.
+A detailed English derivation is pending.
 -/
 theorem tv_approx_tendsto : ∀ Cb : ℝ, ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (A : ℝ) (N : ℕ) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → C6.IsCut0 χ → B.CkOn ⊤ (B.GV P.k P.r) f → (∀ m : ℕ, B.InCC A m f) → Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → KB.CutWord P p.l0 w → w.length ≤ N → ∀ ε : ℝ, 0 < ε → ∀ c : Fin (P.r + 1) → ℂ, Tendsto (fun n : ℕ => tv p ((fun g : B.Mat P.k P.r => ((Real.smoothTransition ((4 - ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j)) / 3) : ℝ) : ℂ) • D.cutF p.T.base χ f ε g)) w c) atTop (𝓝 (tv p (D.cutF p.T.base χ f ε) w c)) := by
   intro Cb

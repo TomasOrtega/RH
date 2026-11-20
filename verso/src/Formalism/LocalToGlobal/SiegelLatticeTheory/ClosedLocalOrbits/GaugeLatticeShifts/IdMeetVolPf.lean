@@ -12,9 +12,9 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Fo
   Formalism.L2.SG.PoincareInHH.Cut
 
 /- English proof (translation)
-Use extensionality with `y`. Unfold `ROinf ROset Formalism.L2.SG.TermOp.KExpCut.NOcol`. Rewrite using `[hl, hl']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, hy, hn, -⟩`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, n, hx, hy, hn⟩`. Introduce and unpack `⟨x, n, hx, hy, hn⟩`. Use `⟨x, n, hx, hy, hn, ?_⟩` and prove the remaining obligations. Set `H` to `NLamSub ((Y.cs u).lamOf ρ) (lf D (X.Fu u))`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hγ) hn) hγ`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem roinf_eq_nocol {D : D7} {X : HidaSetting D} (Y : Full X) {u : D.what₂.Word} (ρ : (Y.cs u).Cl)
     (t : GTerm X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u)) (hl : t.lam = (Y.cs u).lamOf ρ)
@@ -32,9 +32,9 @@ theorem roinf_eq_nocol {D : D7} {X : HidaSetting D} (Y : Full X) {u : D.what₂.
     exact H.mul_mem (H.mul_mem (H.inv_mem hγ) hn) hγ
 
 /- English proof (translation)
-Introduce `D X Y u hN hF ρ t ht hm`. Take `⟨-, hlin⟩` from `hK D X Y u hN ρ ρ t ht hm`. Establish `hR` using `roinf_eq_nocol Y ρ t hm.1.symm hm.2.1.symm hlin`. Establish `hex : ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) Ω` using `hF t`. Unfold `FundOf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Apply `hV D X Y u ρ` to reduce the goal to its premises. Rewrite using `[← hR]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idMeetVolC_of (hK : IdMeetKeyC) (hV : VolColC) : IdMeetVolC := by
   intro D X Y u hN hF ρ t ht hm

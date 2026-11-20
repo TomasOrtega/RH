@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[PiNS, Submodule.mem_inf, Submodule.restrictScalars_mem, Formalism.MainNotions.DeltaInvariantLattices.aN, Submodule.mem_map]`. Take `⟨⟨y, hy, rfl⟩, hx2⟩` from `hx`. Use `⟨⟨π' ^ (k - j) • y, Submodule.smul_mem _ _ hy, ?_⟩, hx2⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, ← pow_add, Nat.add_sub_cancel' h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem univLinkPf_PiNS_anti (T : LocLat G Qp LL O) (π' : LetA O n) {j k : ℕ} (h : j ≤ k)
     {x : W.DD T} (hx : x ∈ PiNS W T π' k) : x ∈ PiNS W T π' j := by
@@ -29,7 +29,7 @@ theorem univLinkPf_PiNS_anti (T : LocLat G Qp LL O) (π' : LetA O n) {j k : ℕ}
   simp only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, ← pow_add, Nat.add_sub_cancel' h]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[InvS, Submodule.mem_inf, Submodule.mem_comap]`. Conclude with `⟨hx.1, univLinkPf_PiNS_anti W T π' h hx.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem univLinkPf_InvS_anti (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
     {j k : ℕ} (h : j ≤ k) {x : W.DD T} (hx : x ∈ InvS W T π' Eπ h' k c) : x ∈ InvS W T π' Eπ h' j c := by
@@ -37,7 +37,7 @@ theorem univLinkPf_InvS_anti (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : �
   exact ⟨hx.1, univLinkPf_PiNS_anti W T π' h hx.2⟩
 
 /- English proof (translation)
-Establish `h1` using `((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).1`. Apply the tactic sequence `try simp only [herrCocycles, Set.mem_setOf_eq, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply] at h1`. Simplify using `only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply] at h1`. Rewrite using `[← sub_eq_zero, sub_eq_add_neg]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_cocycle {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T) :
     W.γD T W.gamK y - y = W.φD T z - z := by
@@ -48,13 +48,13 @@ theorem univLinkPf_cocycle {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈
   exact h1
 
 /- English proof (translation)
-The claim follows from `((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).2`.
+A detailed English derivation is pending.
 -/
 theorem univLinkPf_cocycleΔ {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T) :
     ∀ δ ∈ W.DelF, W.γD T δ y = y ∧ W.γD T δ z = z := ((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).2
 
 /- English proof (translation)
-Use `(Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mpr ⟨?_, fun δ hδ => ⟨hy δ hδ, hz δ hδ⟩⟩` and prove the remaining obligations. Apply the tactic sequence `try simp only [herrCocycles, Set.mem_setOf_eq, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Simplify using `only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]`. Rewrite using `[← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_mem_Z1DΔ {T : LocLat G Qp LL O} (y z : W.DD T) (hy : ∀ δ ∈ W.DelF, W.γD T δ y = y)
     (hz : ∀ δ ∈ W.DelF, W.γD T δ z = z) (h : W.γD T W.gamK y - y = W.φD T z - z) :
@@ -70,7 +70,7 @@ section Map
 variable {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
 
 /- English proof (translation)
-Introduce `δ hδ`. Rewrite using `[← W.map_γ F δ x, hx δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem univLinkPf_map_DelS {x : W.DD T₁} (hx : ∀ δ ∈ W.DelF, W.γD T₁ δ x = x) :
     ∀ δ ∈ W.DelF, W.γD T₂ δ (W.map F x) = W.map F x := by
@@ -78,9 +78,9 @@ theorem univLinkPf_map_DelS {x : W.DD T₁} (hx : ∀ δ ∈ W.DelF, W.γD T₁ 
   rw [← W.map_γ F δ x, hx δ hδ]
 
 /- English proof (translation)
-Establish `hDel : ∀ {T : LocLat G Qp LL O} {x : W.DD T}, x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x`. Introduce `T x`. Simplify using `[DelS, Submodule.mem_iInf, sub_eq_zero]`. Rewrite `hx`, the goal using `[PiNS, Submodule.mem_inf, Submodule.restrictScalars_mem, Formalism.MainNotions.DeltaInvariantLattices.aN, Submodule.mem_map]`. Take `⟨⟨y, hy, rfl⟩, hx2⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨W.map F y, W.map_N F h1 h2 y hy, ?_⟩, hDel.mpr (univLinkPf_map_DelS W F (hDel.mp hx2))⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `((Formalism.MainNotions.DeltaInvariantLattices.mapA W F).map_smul _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem univLinkPf_map_PiNS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (π' : LetA O n) (k : ℕ)
     {x : W.DD T₁} (hx : x ∈ PiNS W T₁ π' k) : W.map F x ∈ PiNS W T₂ π' k := by
@@ -94,11 +94,11 @@ theorem univLinkPf_map_PiNS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (�
   exact ((Formalism.MainNotions.DeltaInvariantLattices.mapA W F).map_smul _ _).symm
 
 /- English proof (translation)
-Establish `hNl : ∀ y ∈ W.Nl T₁ c, W.map F y ∈ W.Nl T₂ c`. Introduce `y hy`. Unfold `Formalism.BasicNotions.LocWach.Nl at hy ⊢`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy`. Use `Submodule.mem_map.mpr ⟨W.map F z, W.map_N F h1 h2 z hz, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `((Formalism.MainNotions.DeltaInvariantLattices.mapA W F).map_smul _ _).symm`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.φspan at hx ⊢`. Establish `hm : (Formalism.MainNotions.DeltaInvariantLattices.mapA W F) x ∈ Submodule.map (Formalism.MainNotions.DeltaInvariantLattices.mapA W F) (Submodule.span (LetA O n) (W.φD T₁ '' (W.Nl T₁ c : Set (W.DD T₁))))` using `Submodule.mem_map_of_mem hx`. Rewrite `hm` using `[Submodule.map_span]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨W.map F y, hNl y hy, (W.map_φ F y).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem univLinkPf_map_φspan (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (c : ZMod n) {x : W.DD T₁}
     (hx : x ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T₁ (W.Nl T₁ c)) : W.map F x ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T₂ (W.Nl T₂ c) := by
@@ -118,11 +118,11 @@ theorem univLinkPf_map_φspan (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) 
   exact ⟨W.map F y, hNl y hy, (W.map_φ F y).symm⟩
 
 /- English proof (translation)
-Establish `hDel : ∀ {T : LocLat G Qp LL O} {x : W.DD T}, x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x`. Introduce `T x`. Simplify using `[DelS, Submodule.mem_iInf, sub_eq_zero]`. Establish `hsm : ∀ (a : LetA O n) (y : W.DD T₁), W.map F (a • y) = a • W.map F y` using `fun a y => (Formalism.MainNotions.DeltaInvariantLattices.mapA W F).map_smul a y`. Rewrite `hx`, the goal using `[LamPS, Submodule.mem_inf, Submodule.mem_inf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨⟨hA, hB⟩, hC⟩` from `hx`. Use `⟨⟨?_, hDel.mpr (univLinkPf_map_DelS W F (hDel.mp hB))⟩, ?_⟩` and prove the remaining obligations. Rewrite `hA`, the goal using `[Submodule.restrictScalars_mem, Submodule.mem_comap]`. Establish `hφ` using `univLinkPf_map_φspan W F h1 h2 (c - 1) hA`. Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply] at hφ ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hφ` using `[hsm]`. Conclude with `hφ`. Rewrite `hC`, the goal using `[letS, LinearMap.mem_ker]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hC ⊢`. Rewrite using `[← hsm, ← map_sub, hC, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_map_LamPS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (Eπ : LetA O n) (h' : ℕ)
     (c : ZMod n) {x : W.DD T₁} (hx : x ∈ LamPS W T₁ Eπ h' c) : W.map F x ∈ LamPS W T₂ Eπ h' c := by
@@ -145,9 +145,9 @@ theorem univLinkPf_map_LamPS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (
     rw [← hsm, ← map_sub, hC, map_zero]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[InvS, Submodule.mem_inf, Submodule.mem_comap]`. Use `⟨univLinkPf_map_LamPS W F h1 h2 Eπ h' c hx.1, ?_⟩` and prove the remaining obligations. Establish `hP` using `univLinkPf_map_PiNS W F h1 h2 π' k hx.2`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply] at hP ⊢`. Rewrite `hP` using `[map_sub, W.map_γ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hP`.
+A detailed English derivation is pending.
 -/
 theorem univLinkPf_map_InvS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (π' Eπ : LetA O n) (h' k : ℕ)
     (c : ZMod n) {x : W.DD T₁} (hx : x ∈ InvS W T₁ π' Eπ h' k c) : W.map F x ∈ InvS W T₂ π' Eπ h' k c := by
@@ -159,9 +159,7 @@ theorem univLinkPf_map_InvS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (�
   exact hP
 
 /- English proof (translation)
-Establish `hc` using `univLinkPf_cocycle W h`. Establish `hd` using `univLinkPf_cocycleΔ W h`. Apply `univLinkPf_mem_Z1DΔ W` to reduce the goal to its premises. Conclude with `univLinkPf_map_DelS W F (fun δ hδ => (hd δ hδ).1)`. Conclude with `univLinkPf_map_DelS W F (fun δ hδ => (hd δ hδ).2)`.
-
-Rewrite using `[← W.map_γ, ← W.map_φ, ← map_sub, ← map_sub, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_map_Z1DΔ {y z : W.DD T₁} (h : (y, z) ∈ W.wachCocyclesDelta T₁) :
     (W.map F y, W.map F z) ∈ W.wachCocyclesDelta T₂ := by
@@ -179,7 +177,7 @@ section Frame
 variable (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Unfold `toLA`. Rewrite using `[← TensorProduct.map_comp, LinearMap.comp_id, Submodule.subtype_comp_inclusion]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem univLinkPf_toLA_eq (π' : LetA O n) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) :
     toLA W T π' c S = (toLA W T π' c ⊤).comp (TensorProduct.map LinearMap.id (Submodule.inclusion le_top)) := by
@@ -187,7 +185,7 @@ theorem univLinkPf_toLA_eq (π' : LetA O n) (c : ZMod n) (S : Submodule O (LcQ W
   rw [← TensorProduct.map_comp, LinearMap.comp_id, Submodule.subtype_comp_inclusion]
 
 /- English proof (translation)
-Unfold `LamLA`. Use `Submodule.comap_mono ?_` and prove the remaining obligations. Rewrite using `[univLinkPf_toLA_eq W T π' c S]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_LamLA_le (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n) (S : Submodule O (LcQ W T π' c)) :
     LamLA W T π' Eπ h' c S ≤ LamLA W T π' Eπ h' c ⊤ := by
@@ -197,7 +195,7 @@ theorem univLinkPf_LamLA_le (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n) (S : Su
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-Unfold `InvL`. Conclude with `inf_le_inf_right _ (univLinkPf_LamLA_le W T π' Eπ h' c S)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem univLinkPf_InvL_le (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n) (h' : ℕ)
     (c : ZMod n) (S : Submodule O (LcQ W T π' c)) :
@@ -206,9 +204,9 @@ theorem univLinkPf_InvL_le (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (
   exact inf_le_inf_right _ (univLinkPf_LamLA_le W T π' Eπ h' c S)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis O (IIrest W T Pt π' Eπ h' c S)`. Use `choose xb hxb using fun i => Submodule.Quotient.mk_surjective _ (b i)`. Use `⟨xb, fun x => ⟨fun i => b.repr (Submodule.Quotient.mk x) i, ?_⟩⟩` and prove the remaining obligations. Establish `h : (Submodule.Quotient.mk x : IIrest W T Pt π' Eπ h' c S) = Submodule.Quotient.mk (∑ i, b.repr (Submodule.Quotient.mk x) i • xb i)`. Rewrite using `[show (Submodule.Quotient.mk (∑ i, b.repr (Submodule.Quotient.mk x) i • xb i) : IIrest W T Pt π' Eπ h' c S) = Submodule.mkQ _ (∑ i, b.repr (Submodule.Quotient.mk x) i • xb i) from rfl]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul, Submodule.mkQ_apply, hxb]`. Conclude with `(b.sum_repr _).symm`. Rewrite `h` using `[Submodule.Quotient.eq]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem univLinkPf_basis [StrongRankCondition O] (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n) (S : Submodule O (LcQ W T π' c))
@@ -231,7 +229,7 @@ theorem univLinkPf_basis [StrongRankCondition O] (Pt : ZMod n → LL → (K →�
   simpa using h
 
 /- English proof (translation)
-Use `(hMF.2.2.1 M hM le_rfl).1 0 (Submodule.zero_mem _) y.1 y.2 ?_ (Submodule.zero_mem _)` and prove the remaining obligations. Use `show α T 0 = _`. Rewrite using `[map_zero]`. Conclude with `hJ.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univLinkPf_JP {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M : ℕ}
     {c : ZMod n} {α : FrA W π' Eπ h' M c} {β : FrB W π' Eπ h' M c}
@@ -243,9 +241,9 @@ theorem univLinkPf_JP {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' E
   exact hJ.symm
 
 /- English proof (translation)
-Establish `h3` using `(hMF.2.2.1 1 le_rfl hM).1`. Establish `hαx : α T (X - ∑ j, Xj j - ∑ i, o i • Xb i) = Submodule.Quotient.mk (Y - ∑ j, Yj j - ∑ i, o i • Yb i)`. Rewrite using `[show (Submodule.Quotient.mk (Y - ∑ j, Yj j - ∑ i, o i • Yb i) : QLamP W T π' Eπ h' M c) = Submodule.mkQ _ (Y - ∑ j, Yj j - ∑ i, o i • Yb i) from rfl]`. Simplify using `only [map_sub, map_sum, map_smul, Submodule.mkQ_apply, hX, hXj, hXb]`. Establish `hmem` using `h3 ((X - ∑ j, Xj j - ∑ i, o i • Xb i : ↥(LamLA W T π' Eπ h' c ⊤)) : LA W T π' c) (X - ∑ j, Xj j - ∑ i, o i • Xb i).2 ((Y - ∑ j, Yj j - ∑ i, o i • Yb i : ↥(LamPS W T Eπ h' c)) : W.DD T) (Y - ∑ j, Yj j - ∑ i, o i • Yb i).2 hαx (by simpa using hrel)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using hmem`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem univLinkPf_transport {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M : ℕ}
     {c : ZMod n} {α : FrA W π' Eπ h' M c} {β : FrB W π' Eπ h' M c}

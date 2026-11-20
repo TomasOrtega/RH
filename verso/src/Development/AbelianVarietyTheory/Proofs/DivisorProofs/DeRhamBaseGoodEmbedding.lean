@@ -41,7 +41,7 @@ namespace GlobalTheory.BdDim
 open GlobalTheory.CechPic GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.SiegLoc
 
 /- English proof (translation)
-Rewrite using `[← cls_pull hg.isLB_det f (pull_isLB hg.isLB_det f), (cls_eq_iff _ (hg.pullback f).isLB_det).2 (hg.lbIso_det_pullback f)]`. Conclude with `((cls_eq_iff _ _).2 ((hg.pullback f).lbIso_det_of_iso (asIso (omegaBase h)))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_hodge {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} [QuasiSeparated G.hom] (h : IsGrpPullback G' G f φ) {g : ℕ} (hg : IsVB (omega G) g)
@@ -51,7 +51,7 @@ theorem cls_hodge {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Gr
   exact ((cls_eq_iff _ _).2 ((hg.pullback f).lbIso_det_of_iso (asIso (omegaBase h)))).symm
 
 /- English proof (translation)
-The claim follows from `(h.pull f).of_lbIso (isLB_lbPow hM N) ((cls_eq_iff (isLB_lbPow hM N) (pull_isLB (isLB_lbPow hL N) f)).1 (by rw [cls_lbPow hM, cls_pull (isLB_lbPow hL N), cls_lbPow hL, map_nsmul, e]))`.
+A detailed English derivation is pending.
 -/
 theorem isGenerated_of_cls {X Y : Scheme.{0}} {L : LB X} {M : LB Y} (hL : L.IsLB) (hM : M.IsLB) (f : Y ⟶ X)
     (e : cls M hM = CechPic.pull f (cls L hL)) {N : ℕ} (h : IsGenerated (lbPow L N)) : IsGenerated (lbPow M N) :=
@@ -59,15 +59,15 @@ theorem isGenerated_of_cls {X Y : Scheme.{0}} {L : LB X} {M : LB Y} (hL : L.IsLB
     rw [cls_lbPow hM, cls_pull (isLB_lbPow hL N), cls_lbPow hL, map_nsmul, e]))
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨φ, -, hφ⟩` from `hS _ hg1`. Take `⟨I, _, R, _, a, b, ω, n, ⟨hβ, -, hspan⟩, hn⟩` from `GlobalTheory.Member.exists_cover_of_goodAt_all E H l c hl`. Establish `key : ∀ i, ∃ (Z : Scheme.{0}) (v : Z ⟶ Y.X), IsOpenImmersion v ∧ Set.range v = Y.s ⁻¹' {x | a i ∉ x.asIdeal} ∧ ∃ N : ℕ, 0 < N ∧ IsGenerated (lbPow ((hodge Y.t.G (Module.finrank ℚ E / 2 * (D.p + D.q))).pull v) N)` using `fun i => by`. Take `⟨h3, ho, hd, ha⟩` from `hn i`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : algebraMap (𝓞 c.F) c.F (a i) ≠ 0`. Rewrite using `[ha, map_natCast]`. Conclude with `Nat.cast_ne_zero.2 (by omega)`. Take `⟨R', _, e, ω', Y', v, hloc, hω, hded, hv, -, hrange, -, ⟨m⟩⟩` from `GlobalTheory.ModelRestrict.exists_restrict Y (a i) hβ h0`. Take `⟨F, S, s, j, _, G, _, u, BD, d, N, hd'⟩` from `hφ (n i) h3 ho`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, C, π, -, μ, -, -, -, -, -, hμ, -⟩` from `exists_siegel_pull E H D l Xo c (n i) R' e ω' φ F S s j G u BD d N hr h3 ho hd hded hω (ha ▸ hloc) hd'`. Take `⟨-, -, -, -, hG, hsm, -, -, -, -, hN, hgen, -⟩` from `hd'`. Use `hG.separated` as an intermediate fact. Use `Y.t.semi.separated` as an intermediate fact. Establish `hGv` using `isVB_omega G (Module.finrank ℚ E / 2 * (D.p + D.q))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `isVB_omega_of_isGrpPullback hμ hGv`. Establish `hY'` using `isVB_omega_of_isGrpPullback m.cart hY`. Establish `h₁` using `GlobalTheory.T.hodge_bundle_generated_of_model_iso hE E H D l Xo c R' ω' Y' C _ N hded hY' hC (isGenerated_of_cls hGv.isLB_det hC.isLB_det π (cls_hodge hμ hGv _) hgen)`. Use `⟨_, v, hv, hrange, N, hN, isGenerated_of_cls hY'.isLB_det (pull_isLB hY.isLB_det v) (𝟙 _) ?_ h₁⟩` and prove the remaining obligations. Rewrite using `[cls_pull hY.isLB_det, ← cls_hodge m.cart hY hY'.isLB_det, CechPic.pull_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose Z v h₁ h₂ h₃ using key`. Use `GlobalTheory.Toroidal.isProper_toroidalModel_structureMap Y` as an intermediate fact. Conclude with `GlobalTheory.T.ample_of_locally_ample_on_affine_cover Y.X _ I Z Y.s v a _ (QuasiCompact.compactSpace_of_compactSpace Y.s) (quasiSeparatedSpace_of_quasiSeparated Y.s) hY.isLB_det hspan h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGenerated (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hS : GlobalTheory.Published.SiegelToroidalIntegral)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H} {l : Level H}
@@ -104,7 +104,7 @@ theorem exists_isGenerated (hE : GlobalTheory.Published.SemiAbelianHomExtension)
     (quasiSeparatedSpace_of_quasiSeparated Y.s) hY.isLB_det hspan h₁ h₂ h₃
 
 /- English proof (translation)
-Use `⟨pullback.lift φ (A.hom ≫ i) (by rw [h.1.w, Category.assoc]), (isGrpPullback_pullback G b).cancel (h.congr rfl (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_lift {U W Y : Scheme.{0}} {A : Over U} {G : Over Y} [GrpObj A] [GrpObj G] {i : U ⟶ W} {b : W ⟶ Y}
     {φ : A.left ⟶ G.left} (h : IsGrpPullback A G (i ≫ b) φ) :
@@ -113,23 +113,23 @@ theorem exists_lift {U W Y : Scheme.{0}} {A : Over U} {G : Over Y} [GrpObj A] [G
     (h.congr rfl (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)⟩
 
 /- English proof (translation)
-Take `⟨X', s', E, G', _, x', π, hs', hx', hπ, hG', hgt, A, _, φ, φ', h₁, h₂⟩` from `GlobalTheory.T.exists_proper_semiabelian_model k₀ k ι P X G x hG h`. Set `Y` to `pullback s (s' ≫ spMap b₀)`. Set `p : Y ⟶ X` to `pullback.fst _ _`. Set `p' : Y ⟶ X'` to `pullback.snd _ _`. Set `z : Sp k ⟶ Y` to `pullback.lift x x' (by rw [hx, ← Category.assoc, hx'])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hz : z ≫ p = x` using `pullback.lift_fst _ _ _`. Establish `hz' : z ≫ p' = x'` using `pullback.lift_snd _ _ _`. Take `⟨ψ, h₃⟩` from `exists_lift (h₁.congr hz.symm rfl)`. Take `⟨ψ', h₄⟩` from `exists_lift (h₂.congr hz'.symm rfl)`. Establish `hY : IsProper (p' ≫ s')` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, _, _, j, r, hR, hj, hr, hrs, C, _, χ, χ', h₅, h₆⟩` from `GlobalTheory.T.exists_finite_type_model_same_fibre k₀ k ι Y (p' ≫ s') _ _ z inferInstance (IsSemiAbelian.pullback p G hG) (IsSemiAbelian.pullback p' G' hG') (by rw [← Category.assoc, hz', hx']) ⟨A, _, ψ, ψ', h₃, h₄⟩`. Take `⟨W, U, i, q, b, w, hW, hn, hp, hi, hib, hw⟩` from `GlobalTheory.T.exists_normal_proper_compactification k₀ k R j Y (p' ≫ s') r hR hj hY hrs`. Take `⟨α, h₇⟩` from `exists_lift (b := b ≫ p) ((((isGrpPullback_pullback C q).comp h₅).comp (isGrpPullback_pullback G p)).congr (by rw [← hib, Category.assoc]) rfl)`. Take `⟨α', h₈⟩` from `exists_lift (b := b ≫ p') ((((isGrpPullback_pullback C q).comp h₆).comp (isGrpPullback_pullback G' p')).congr (by rw [← hib, Category.assoc]) rfl)`. Establish `: IsLocallyNoetherian W` using `LocallyOfFiniteType.isLocallyNoetherian (b ≫ p' ≫ s')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CompactSpace W` using `QuasiCompact.compactSpace_of_compactSpace (b ≫ p' ≫ s')`. Establish `: AlgebraicGeometry.IsNoetherian W` using `{}`. Establish `: IsDominant i` using `⟨i.isOpenEmbedding.isOpen_range.dense ⟨_, w (closedPoint k), rfl⟩⟩`. Take `⟨ε, ⟨hε, -⟩, -⟩` from `hE.existsUnique_iso_of_extensions hn (IsSemiAbelian.pullback (b ≫ p) G hG) (IsSemiAbelian.pullback (b ≫ p') G' hG') h₇ h₈`. Establish `h₉` using `((isGrpPullback_of_iso ε).comp (isGrpPullback_pullback G' (b ≫ p'))).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hG.separated` as an intermediate fact. Use `hG'.separated` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Use `E.isAbelian.proper` as an intermediate fact. Use `P.smoothDim` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `isVB_omega P.A P.g`. Establish `hB` using `isVB_omega_of_isGrpPullback hπ hP`. Take `⟨hv, hiso⟩` from `GlobalTheory.T.semiabelian_hodge_bundle_iso X' E G' P.g hG' hgt hB`. Establish `hW₁` using `isVB_omega_of_isGrpPullback (isGrpPullback_pullback G (b ≫ p)) hg`. Take `rfl : g = P.g + Module.finrank ℤ E.X` from `hW₁.rank_unique (isVB_omega_of_isGrpPullback h₉ hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₀ : CechPic.pull (b ≫ p) (cls _ hg.isLB_det) = 0`. Rewrite using `[← cls_hodge (isGrpPullback_pullback G (b ≫ p)) hg hW₁.isLB_det, cls_hodge h₉ hv, (cls_eq_iff hv.isLB_det hB.isLB_det).2 hiso, cls_hodge hπ hP, GlobalTheory.PrimitiveOverField.pic_field (cls _ _), map_zero, map_zero]`. Establish `hO` using `ProjSpace.O1_isLB o n`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_point_of_trivial_O1_pullback o k₀ b₀ W (b ≫ p' ≫ s') n (b ≫ p ≫ f) hW hp (by simp only [Category.assoc, hf, p, p', pullback.condition]) ((cls_eq_iff (pull_isLB hO _) (LB.isLB_triv _)).1 (by`. Rewrite using `[cls_pull hO, ← Category.assoc, CechPic.pull_comp, ← cls_pull hO f (pull_isLB hO f), (cls_eq_iff _ (isLB_lbPow hg.isLB_det a)).2 e, cls_lbPow hg.isLB_det, map_nsmul, e₀, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl))`. Establish `hwz : w ≫ i ≫ b = z` using `by rw [hib, ← Category.assoc, hw, hr]`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← hx', ← hz', ← hwz]`. Simplify using `only [Category.assoc] at hy ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`.
+A detailed English derivation is pending.
 -/
 theorem exists_point (hE : GlobalTheory.Published.SemiAbelianHomExtension) {o k₀ k : Type} [CommRing o] [Field k₀] [IsAlgClosed k₀]
     [Field k] [IsAlgClosed k] (ι : k₀ →+* k) (b₀ : o →+* k₀) {X : Scheme.{0}} (s : X ⟶ Sp o) [IsProper s] {G : Over X}
@@ -189,15 +189,13 @@ theorem exists_point (hE : GlobalTheory.Published.SemiAbelianHomExtension) {o k�
   rw [hy]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, Spec.map_preimage f⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap' {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ g : A →+* B, spMap g = f :=
   ⟨(Spec.preimage f).hom, Spec.map_preimage f⟩
 
 /- English proof (translation)
-Use `letI := ι.toAlgebra`. Establish `h : ∀ a, β a ∈ ι.fieldRange` using `fun a => by`. Establish `h₁ : IsIntegral k₀ (β a)` using `((Algebra.IsIntegral.isIntegral (R := ℤ) a).map β.toIntAlgHom).tower_top`. Conclude with `minpoly.mem_range_of_degree_eq_one k₀ _ (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h₁))`. Use `⟨ι.rangeRestrictFieldEquiv.symm.toRingHom.comp (β.codRestrict _ h), RingHom.ext fun a => ?_⟩` and prove the remaining obligations.
-
-Conclude with `congrArg Subtype.val (ι.rangeRestrictFieldEquiv.apply_symm_apply ⟨β a, h a⟩)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor {o k₀ k : Type} [CommRing o] [Algebra.IsIntegral ℤ o] [Field k₀] [IsAlgClosed k₀] [Field k]
     (ι : k₀ →+* k) (β : o →+* k) : ∃ b : o →+* k₀, ι.comp b = β := by
@@ -209,9 +207,9 @@ theorem exists_factor {o k₀ k : Type} [CommRing o] [Algebra.IsIntegral ℤ o] 
   exact congrArg Subtype.val (ι.rangeRestrictFieldEquiv.apply_symm_apply ⟨β a, h a⟩)
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Establish `: Module.IsTorsionFree (𝓞 E) X` using `Module.IsTorsionFree.of_smul_eq_zero fun a x h => by by_contra! h'`. Take `⟨m, hm, b, hb⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero h'.1)`. Use `h'.2 ((smul_eq_zero_iff_right hm).1 ?_)` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (𝓞 E), hb, mul_comm, mul_smul, h, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : X)`. Use `Module.finrank_pos_iff_exists_ne_zero.2 ⟨x, hx⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem finrank_pos_of_nontrivial {E X : Type} [Field E] [NumberField E] [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] [Module (𝓞 E) X] [Nontrivial X] : 0 < Module.finrank (𝓞 E) X := by
@@ -226,15 +224,15 @@ theorem finrank_pos_of_nontrivial {E X : Type} [Field E] [NumberField E] [AddCom
   refine Module.finrank_pos_iff_exists_ne_zero.2 ⟨x, hx⟩
 
 /- English proof (translation)
-Take `⟨T, σ, y, t, m, P, ρ, hσ, rfl, hnt, hρ, hlie⟩` from `GlobalTheory.T.exists_dvr_degeneration_uniformization E H D l Xo c Y x hr hx`. Take `⟨Q, hQ, hab⟩` from `GlobalTheory.T.exists_pel_reduction_lie_multiplicity E H T t P`. Establish `hpos : 0 < Module.finrank (𝓞 E) P.D.toPre.X` using `finrank_pos_of_nontrivial`. Take `⟨K, _, _, ι, P₀, P₁, φ, φ₀, hK, h₁, h₂⟩` from `GlobalTheory.T.exists_polarized_fibres_of_signature E H l T.V σ Q ρ (D.p - Module.finrank (𝓞 E) P.D.toPre.X) (D.q - Module.finrank (𝓞 E) P.D.toPre.X) hρ fun τ => ⟨fun h => have ⟨_, h₃, h₄⟩ := hQ ℂ σ hσ τ _ ((hlie τ).1 h); Nat.eq_sub_of_add_eq h₄ ▸ h₃, fun h => have ⟨_, h₃, h₄⟩ := …`. Set `k` to `AlgebraicClosure (ResidueField T.V)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `r : T.V →+* k` to `(algebraMap (ResidueField T.V) k).comp (residue T.V)`. Establish `hloc : IsLocalHom r` using `RingHom.isLocalHom_comp _ _`. Take `⟨k₀, _, _, ι₀, B, _, hk₀, hB, hfib⟩` from `GlobalTheory.T.exists_alg_closed_descent_fibre hS T Q.pol σ K ι P₀ P₁ φ φ₀ _ k r hσ hK h₁ h₂`. Take `⟨P', hP'⟩` from `GlobalTheory.T.abelian_fibre_descends_alg_closed k₀ k ι₀ B _ Q.pol (spMap r) hB hfib`. Use `c.fin` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: NumberField c.F` using `{}`. Take `⟨β, hβ⟩ : ∃ β : 𝓞 c.F →+* k, spMap β = (spMap r ≫ y) ≫ Y.s` from `GlobalTheory.BdDim.exists_spMap' _`. Take `⟨b, rfl⟩` from `exists_factor ι₀ β`. Use `GlobalTheory.Toroidal.isProper_toroidalModel_structureMap Y` as an intermediate fact. Take `⟨y₀, hy₀⟩` from `exists_point hE ι₀ b Y.s Y.t.semi hg f hf e (spMap r ≫ y) (hβ.symm.trans (GlobalTheory.ArcIntegral.sp_comp _ _).symm) P' (((hab k r hloc).trans hP').comp m.cart)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₁ : f (y (closedPoint T.V : Sp T.V)) = y₀ (closedPoint k₀ : Sp k₀)`. Establish `: y₀ (spMap ι₀ (closedPoint k : Sp k)) = f (y (spMap r (closedPoint k : Sp k)))` using `congrArg (fun u : Sp k ⟶ _ => u (closedPoint k : Sp k)) hy₀`. Rewrite `this` using `[GlobalTheory.ArcIntegral.spMap_closedPoint r, GlobalTheory.ArcIntegral.spMap_closedPoint ι₀]`. Conclude with `this.symm`. Rewrite using `[e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(TrLe.of_ringHom (Scheme.descResidueField (Scheme.stalkClosedPointTo y₀)).hom hk₀).mono ?_` and prove the remaining obligations. Apply the tactic sequence `gcongr <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem trLe_boundary (hE : GlobalTheory.Published.SemiAbelianHomExtension) (hS : GlobalTheory.Published.SiegelToroidalIntegral)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H} {l : Level H}
@@ -278,23 +276,23 @@ open MvPolynomial Filter Topology Formalism.BasicNotions Formalism.MainNotions F
   GlobalTheory.Published GlobalTheory.ArInt GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.CechPic GlobalTheory.VB GlobalTheory.LieVB
 
 /- English proof (translation)
-Introduce `_ hP hH _ D O _ hf _ _ _ _`. Establish `hF` using `GlobalTheory.FlagDim.finrank_host_div_two D`. Establish `hp` using `O.S.p_eq`. Establish `hN` using `O.S.rank_eq`. Take `⟨hj, hjN⟩` from `O.indef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd : dimGr D.what₂.Tau O.N O.j = D.R.f * (O.S.Dw.p - 1) * (O.S.Dw.q - 1) + D.R.f * (O.N - 1)`. Rewrite using `[dimGr, GlobalTheory.ShFam.CmDim.card_tau, hF]`. Take `⟨u, hu⟩ : ∃ u, O.S.Dw.p = u + 1` from `⟨O.S.Dw.p - 1, by omega⟩`. Take `⟨v, hv⟩ : ∃ v, O.S.Dw.q = v + 1` from `⟨O.S.Dw.q - 1, by omega⟩`. Rewrite using `[show O.N - O.j = v + 1 by omega, show O.N - 1 = u + v + 1 by omega, show O.S.Dw.p - 1 = u by omega, show O.S.Dw.q - 1 = v by omega, show O.j * (v + 1) = (u + 1) * (v + 1) by rw [← hu, hp]]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨by omega, fun c M => ?_⟩` and prove the remaining obligations. Establish `hY : IsVB (omega O.s.T.Z.t.G) (D.R.f * O.N)` using `(M.h 2).isVB`. Establish `hr : 1 ≤ O.S.Dw.p + O.S.Dw.q` using `by omega`. Apply the tactic sequence `obtain ⟨a, ha, hgen⟩ := exists_isGenerated hP.p22 hH.sieg O.s.T.Z hr O.κ.good (by rw [hF, hN]) (Nat.pos_of_ne_zero fun h => by rcases Nat.mul_eq_zero.1 h with h | h <;> simp [h] at hf) hY`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨n, s, hs⟩` from `hgen.exists_fin_succ`. Set `f` to `ProjSpace.toProj O.s.T.Z.s s hs`. Establish `hfs : f ≫ PSpace.str _ n = O.s.T.Z.s` using `(ProjSpace.toProj_spec _ s hs).1`. Establish `e` using `ProjSpace.lbIso_pullback_O1_toProj O.s.T.Z.s s hs`. Establish `hO` using `ProjSpace.O1_isLB (𝓞 O.κ.c.F) n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `(hY.pullback M.b).isLB_det`. Use `⟨⟨a, ha, n, M.b ≫ f, by rw [Category.assoc, hfs], (cls_eq_iff (pull_isLB hO _) (isLB_lbPow hb a)).1 ?_⟩, ?_, ?_, fun _ h => h ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hO, CechPic.pull_comp, ← cls_pull hO f (pull_isLB hO f), (cls_eq_iff _ (isLB_lbPow hY.isLB_det a)).2 e, cls_lbPow hY.isLB_det, map_nsmul, cls_lbPow hb, ← cls_pull hY.isLB_det M.b (pull_isLB hY.isLB_det _), (cls_eq_iff _ hb).2 (hY.lbIso_det_pullback M.b)]`. Rewrite using `[genericPoint_closure, show dimGr D.what₂.Tau O.N O.j - 1 + 2 = dimGr D.what₂.Tau O.N O.j + 1 by omega, ← M.ar.dim_eq]`. Conclude with `IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ M.B).isHomeomorph`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.Toroidal.isProper_toroidalModel_structureMap O.s.T.Z` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (𝓞 O.κ.c.F) n` as an intermediate fact. Establish `: IsProper (f ≫ PSpace.str _ n)` using `hfs ▸ inferInstance`. Establish `: IsProper f` using `IsProper.of_comp f (PSpace.str _ n)`. Use `O.κ.c.fin` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NumberField O.κ.c.F` using `{}`. Establish `hcl : IsClosed (closure ({genericPoint M.B} : Set M.B) ∩ M.bd)` using `isClosed_closure.inter ((GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod O.s.T.Z).isClosed_compl.preimage M.b.continuous)`. Establish `hft : LocallyOfFiniteType (spMap (Int.castRingHom (𝓞 O.κ.c.F)))` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Establish `h` using `GlobalTheory.T.dim_closed_le_of_transcendence_bound _ (PSpace.str _ n ≫ spMap (Int.castRingHom (𝓞 O.κ.c.F))) _ _ inferInstance ((M.b ≫ f).isClosedMap _ hcl) (by`. Introduce and unpack `_ ⟨w, ⟨-, hw⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `trLe_boundary hP.p22 hH.sieg O.s.T.Z hr hY f hfs e (M.b w) hw)`. Use `(add_le_add_left h 3).trans ?_` and prove the remaining obligations. Rewrite using `[hF]`. Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[M.gen]`. Establish `h₁` using `congrArg (fun u => u (closedPoint _)) (O.Φ.C c).y0_x`. Establish `h₂ : (O.Φ.C c).π (genericPoint _) ∈ Set.range O.s.T.Z.jQ` using `⟨_, h₁.trans (congrArg (O.Φ.C c).π Scheme.fromSpecStalk_closedPoint)⟩`. Rewrite `h₂` using `[← O.s.T.Z.ab_gen]`. Conclude with `h₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ =>
     1 ≤ dimGr D.what₂.Tau O.N O.j ∧ ∀ c (M : DRBase O c), ∃ I : M.Emb,

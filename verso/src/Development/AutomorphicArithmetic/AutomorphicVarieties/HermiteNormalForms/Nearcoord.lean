@@ -8,25 +8,23 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ _ N A B hA hAB y hy w a`. Take `⟨h, hRy, hcol, hq⟩` from `hy`. Take `⟨hI, hpl⟩` from `nrmle L N h A hRy hcol hA`. Take `⟨hpsd, hdiag, hdet⟩` from `hpl w`. Establish `hdpos : 0 < nrmDet A` using `(scinv L N A hA).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAx : A *ᵥ (B *ᵥ y) = fun i => ((nrmDet A : ℕ) : 𝓞 L) * y i`. Rewrite using `[Matrix.mulVec_mulVec, hAB]`. Use extensionality with `i`. Simplify using `[Matrix.smul_mulVec]`. Establish `hq2 : q (pull A h) (B *ᵥ y) = ((nrmDet A : ℕ) : ℝ) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[q_pull, hAx]`. Unfold `q qR toR at hq ⊢`. Rewrite using `[← mul_one (((nrmDet A : ℕ) : ℝ) ^ 2), ← hq, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Establish `e : (fun i => embO v (((nrmDet A : ℕ) : 𝓞 L) * y i)) = (((nrmDet A : ℕ) : ℝ) : ℂ) • (fun i => embO v (y i))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[e, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set d : ℝ := ((nrmDet A : ℕ) : ℝ) with hd`. Establish `hd0 : 0 < d` using `by rw [hd]; exact_mod_cast hdpos`. Use `set xw : Fin N → ℂ := fun i => embO w ((B *ᵥ y) i) with hxw`. Use `set G := mat (pull A h) w with hG`. Establish `hterm : (star xw ⬝ᵥ G *ᵥ xw).re ≤ d ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← hq2]`. Unfold `q qR toR`. Conclude with `Finset.single_le_sum (f := fun v => (star (fun i => embO v ((B *ᵥ y) i)) ⬝ᵥ mat (pull A h) v *ᵥ fun i => embO v ((B *ᵥ y) i)).re) (fun v _ => (Complex.le_def.mp ((hpl v).1.dotProduct_mulVec_nonneg _)).1) (Finset.mem_univ w)`. Use `set c : Fin N → ℂ := ((d⁻¹ : ℝ) : ℂ) • xw with hc`. Establish `hcq : (star c ⬝ᵥ G *ᵥ c).re ≤ 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression.
 
-Rewrite using `[hc, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Establish `: d⁻¹ * d⁻¹ * (star xw ⬝ᵥ G *ᵥ xw).re ≤ d⁻¹ * d⁻¹ * d ^ 2`. Apply `mul_le_mul_of_nonneg_left hterm` to reduce the goal to its premises. Check the signs of the components of the expression.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcr` using `cramer N G c hpsd hdiag hcq a`. Establish `hca : ‖xw a‖ = d * ‖c a‖`. Rewrite using `[hc, Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hd0, ← mul_assoc, mul_inv_cancel₀ hd0.ne', one_mul]`. Establish `hdI : d ≤ (I0 L N : ℝ)` using `by rw [hd]; exact_mod_cast hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : 0 ≤ ‖c a‖` using `norm_nonneg _`. Establish `hdn : 0 ≤ ‖G.det‖` using `norm_nonneg _`. Establish `hcb : ‖c a‖ ≤ (I0 L N : ℝ) * (N : ℝ) ^ N`. Combine the equalities or inequalities in the displayed calculation. Use `show ‖xw a‖ ≤ (RR L N : ℝ)`.
-
-Rewrite using `[hca]`. Unfold `RR`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.nearcoord :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (A B : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →

@@ -2,7 +2,7 @@
 
 The Lean code in `src/` comes from `extracted/lean/src/`. English proof comments precede the declarations they describe. The site links each note to its statement, Lean proof, and original source line.
 
-Written explanations state the mathematical argument directly. Proofs by reference link a wrapper to the theorem it applies when a direct import contains the named theorem with the same written statement. The comparison also recognizes declarations with the same ordered parameters, hypotheses, and conclusion when one statement writes its binders as universal quantifiers or implications. Source translations describe the proof steps visible in Lean. For automation tactics, the translations identify the method or tactic, since the intermediate derivations require elaboration. A source-gap note flags a declaration for which the text scan cannot identify a proof body.
+Written explanations present the mathematical argument in natural language. Proofs by reference link to the imported theorem and explain how its parameters, hypotheses, and conclusion match. English outlines identify steps that can be recovered from the source, such as induction, rewriting, and extensionality, and serve as drafts for the remaining full proofs. The site shows Lean in the statement and source panels. A source-gap note flags a declaration for which the text scan cannot identify a proof body.
 
 Build the site from this directory with the pinned Lean toolchain and Python 3.10 or later.
 

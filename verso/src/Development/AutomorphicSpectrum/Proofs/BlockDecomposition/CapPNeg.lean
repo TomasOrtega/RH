@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GlRelNegTAndQdet
 namespace GlobalTheory.CompanionTheory.PairMult
 
 /- English proof (translation)
-Establish `h : ∀ s : Fin n, -Y + -χ s = (-1 : ℂ) * (Y + χ s)` using `fun s => by ring`. Simplify using `only [Formalism.QuantumDeterminants.capP, h, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem capelliPoly_neg {n : ℕ} (χ : Fin n → ℂ) (Y : ℂ) :
     Formalism.QuantumDeterminants.capP (fun a => -χ a) (-Y) = (-1 : ℂ) ^ n * Formalism.QuantumDeterminants.capP χ Y := by

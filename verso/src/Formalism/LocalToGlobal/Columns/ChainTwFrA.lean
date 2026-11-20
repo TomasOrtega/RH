@@ -19,9 +19,9 @@ def tfaExt {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) : Sp E N �
   exact extE f
 
 /- English proof (translation)
-Rewrite using `[ciMem_stdAt, ciMem_stdAt]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i => h _, h _⟩`. Introduce and unpack `⟨h1, h2⟩ i`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `Fin.lastCases h2 (fun j => ?_) i` and prove the remaining obligations. Conclude with `h1 j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tfa_std_iff {n : ℕ} (Q : HeightOneSpectrum (𝓞 E)) (x : Sp E (n + 1)) :
     x ∈ stdAt E (n + 1) Q ↔ initL E n x ∈ stdAt E n Q ∧ IntAt Q (x (Fin.last n)) := by
@@ -34,9 +34,9 @@ theorem tfa_std_iff {n : ℕ} (Q : HeightOneSpectrum (𝓞 E)) (x : Sp E (n + 1)
     exact h1 j
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hl` using `Deco.liftFr_spec (d.2.hasLift w)`. Use `show extE (d.1.liftFr w) x ∈ localization₂ w.1.asIdeal (DecoSet.til (ST := ST) pi d).1.N ↔ _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hOk]`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show extE (d.1.liftFr w) x ∈ localization₂ w.1.asIdeal (tilN d.1.N) ↔ _`. Rewrite using `[mem_localization_tilN, initL_extE, extE_last, tfa_std_iff]`. Conclude with `and_congr_left' (hl.1 _)`.
+A detailed English derivation is pending.
 -/
 theorem tfa_spec {SG : Finset (HeightOneSpectrum (𝓞 E))} {ST : Finset (HeightOneSpectrum (𝓞 E))} {N n : ℕ} (hN : N = n + 1) (pi : 𝓞 E)
     (d : DecoSet E n ∅ SG) (hOk : (d.1.til (ST := ST) pi).Ok) (w : SG) (x : Sp E N) :
@@ -51,11 +51,11 @@ theorem tfa_spec {SG : Finset (HeightOneSpectrum (𝓞 E))} {ST : Finset (Height
   exact and_congr_left' (hl.1 _)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `show (extE f).symm (extE g.1 (extE f x)) l = _`. Distinguish the cases in `h : l.1 < n`. Rewrite using `[dif_pos h]`. Take `⟨i, rfl⟩ : ∃ i : Fin n, l = Fin.castSucc i` from `⟨⟨l.1, h⟩, Fin.ext rfl⟩`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (extE f).symm (extE g.1 (extE f x)) (Fin.castSucc i) = initL E n ((extE f).symm (extE g.1 (extE f x))) i` using `rfl`. Rewrite using `[e1, initL_extE_symm, initL_extE, initL_extE]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`. Take `rfl : l = Fin.last n` from `Fin.ext (by have := l.2; simp; omega)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extE_symm_last, extE_last, extE_last]`.
+A detailed English derivation is pending.
 -/
 theorem tfa_conj {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) (g : UF E n) (x : Sp E N) (l : Fin N) :
     (tfaExt hN f)⁻¹ ((extUH hN g).1 (tfaExt hN f x)) l =
@@ -76,7 +76,7 @@ def tfaD {n : ℕ} (z : E) (hz : z ≠ 0) : Sp E (n + 1) ≃ₗ[E] Sp E (n + 1) 
   LinearEquiv.piCongrRight fun i : Fin (n + 1) => if i = Fin.last n then LinearEquiv.smulOfNeZero E E z hz else LinearEquiv.refl E E
 
 /- English proof (translation)
-Unfold `tfaD`. Rewrite using `[LinearEquiv.piCongrRight_apply]`. Use `split_ifs with h`. Simplify using `[LinearEquiv.smulOfNeZero_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tfaD_apply {n : ℕ} (z : E) (hz : z ≠ 0) (x : Sp E (n + 1)) (i : Fin (n + 1)) :
     tfaD z hz x i = if i = Fin.last n then z * x i else x i := by
@@ -87,9 +87,9 @@ theorem tfaD_apply {n : ℕ} (z : E) (hz : z ≠ 0) (x : Sp E (n + 1)) (i : Fin 
   · rfl
 
 /- English proof (translation)
-Establish `key : tfaD z hz (fun j => if j = Fin.last n then z⁻¹ * x j else x j) = x`. Use function extensionality and compare the values at `j`. Rewrite using `[tfaD_apply]`. Distinguish the cases in `h : j = Fin.last n`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hz]`. Simplify using `only [h, if_false]`. Use `conv_lhs => rw [← key]`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tfaD_symm_apply {n : ℕ} (z : E) (hz : z ≠ 0) (x : Sp E (n + 1)) (i : Fin (n + 1)) :
     (tfaD z hz).symm x i = if i = Fin.last n then z⁻¹ * x i else x i := by
@@ -108,13 +108,11 @@ def tfaExtZ {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) (z : E) (
   exact (tfaD z hz).trans (extE f)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hl` using `Deco.liftFr_spec (d.2.hasLift w)`. Use `show extE (d.1.liftFr w) (tfaD (algebraMap (𝓞 E) E pi) hz x) ∈ localization₂ w.1.asIdeal (DecoSet.til (ST := ST) pi d).1.N ↔ _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hOk]`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show extE (d.1.liftFr w) (tfaD (algebraMap (𝓞 E) E pi) hz x) ∈ localization₂ w.1.asIdeal (tilN d.1.N) ↔ _`. Establish `hinit : initL E n (tfaD (algebraMap (𝓞 E) E pi) hz x) = initL E n x`. Use function extensionality and compare the values at `i`. Use `show tfaD _ hz x (Fin.castSucc i) = x (Fin.castSucc i)`. Rewrite using `[tfaD_apply, if_neg (Fin.castSucc_ne_last i)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlast : tfaD (algebraMap (𝓞 E) E pi) hz x (Fin.last n) = algebraMap (𝓞 E) E pi * x (Fin.last n)`. Rewrite using `[tfaD_apply, if_pos rfl]`. Rewrite using `[mem_localization_tilN, initL_extE, extE_last, hinit, hlast, tfa_std_iff]`. Use `and_congr (hl.1 _) ⟨fun h => ?_, fun h => (IntAt.coe w.1 pi).mul h⟩` and prove the remaining obligations. Establish `h2` using `(xtIntAt_piInv hw).mul h`.
-
-Rewrite `h2` using `[← mul_assoc, inv_mul_cancel₀ hz, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tfaZ_spec {SG : Finset (HeightOneSpectrum (𝓞 E))} {ST : Finset (HeightOneSpectrum (𝓞 E))} {N n : ℕ} (hN : N = n + 1) (pi : 𝓞 E)
     (d : DecoSet E n ∅ SG) (hOk : (d.1.til (ST := ST) pi).Ok) (w : SG) (hw : pi ∉ w.1.asIdeal) (hz : (algebraMap (𝓞 E) E pi) ≠ 0)
@@ -139,13 +137,13 @@ theorem tfaZ_spec {SG : Finset (HeightOneSpectrum (𝓞 E))} {ST : Finset (Heigh
   rwa [← mul_assoc, inv_mul_cancel₀ hz, one_mul] at h2
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `show (tfaD z hz).symm ((extE f).symm (extE g.1 (extE f (tfaD z hz x)))) l = _`. Rewrite using `[tfaD_symm_apply]`. Distinguish the cases in `h : l.1 < n`. Rewrite using `[dif_pos h, if_neg (fun h' => by rw [h'] at h; simp at h)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩ : ∃ i : Fin n, l = Fin.castSucc i` from `⟨⟨l.1, h⟩, Fin.ext rfl⟩`. Establish `e1 : (extE f).symm (extE g.1 (extE f (tfaD z hz x))) (Fin.castSucc i) = initL E n ((extE f).symm (extE g.1 (extE f (tfaD z hz x)))) i` using `rfl`. Rewrite using `[e1, initL_extE_symm, initL_extE, initL_extE]`. Establish `hinit : initL E n (tfaD z hz x) = initL E n x`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show tfaD z hz x (Fin.castSucc i) = x (Fin.castSucc i)`. Rewrite using `[tfaD_apply, if_neg (Fin.castSucc_ne_last i)]`. Rewrite using `[hinit]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : l = Fin.last n` from `Fin.ext (by have := l.2; simp; omega)`. Rewrite using `[if_pos rfl, extE_symm_last, extE_last, extE_last, tfaD_apply, if_pos rfl, ← mul_assoc, inv_mul_cancel₀ hz, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem tfaZ_conj {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) (z : E) (hz : z ≠ 0) (g : UF E n) (x : Sp E N) (l : Fin N) :
     (tfaExtZ hN f z hz)⁻¹ ((extUH hN g).1 (tfaExtZ hN f z hz x)) l =
@@ -196,7 +194,7 @@ def topFrA (hQS : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∈ SG') : TopFr (R
 open Classical in
 
 /- English proof (translation)
-Establish `hOk : (d.1.til (ST` using `Pr.vT u) (Pr.piT u)).Ok ∧ Pr.piT u ∉ P.1.asIdeal := ⟨d.2.til (fun P => conj_piT_notMem hPr u P) hpi, hpi ⟨P.1, hQS P.1 P.2⟩⟩`. Unfold `topFrA`. Simplify using `only [dif_pos hOk]`. Conclude with `tfaZ_conj (N_m_succ R) _ _ _ s.1 x l`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topFrA_conj (hQS : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∈ SG') (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal)
     (P : {P // P ∈ QE sel (mu : Chr X.F X.E X.K)}) (d : DecoSet X.E (R.N R.m - 1) ∅ SG') (s : (ptGSD W ΛM).G) (x : Sp X.E (R.N R.m))

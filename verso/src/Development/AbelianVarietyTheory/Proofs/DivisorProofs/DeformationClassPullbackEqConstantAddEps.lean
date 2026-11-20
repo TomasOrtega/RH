@@ -14,13 +14,13 @@ namespace GlobalTheory.CechKS
 open GlobalTheory.Published GlobalTheory.Published.AbelianDeRham
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => exact ⟨0, 0, by rw [map_zero, map_zero, smul_zero, add_zero]⟩`. Consider the case `add x y hx hy`. Take `⟨a, b, e⟩` from `hx`. Take `⟨a', b', e'⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + a', b + b', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, e, e', map_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `tmul r c`. Use `⟨r.fst • c, r.snd • c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, smul_smul]`. Establish `e1 : (TrivSqZeroExt.inl r.fst : DualNumber K) = algebraMap K (DualNumber K) r.fst` using `rfl`. Establish `e2 : (TrivSqZeroExt.inr r.snd : DualNumber K) = DualNumber.eps * algebraMap K (DualNumber K) r.snd`. Rewrite using `[DualNumber.inr_eq_smul_eps, Algebra.smul_def, mul_comm]`. Establish `er : r = algebraMap K (DualNumber K) r.fst + DualNumber.eps * algebraMap K (DualNumber K) r.snd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← e2, TrivSqZeroExt.inl_fst_add_inr_snd_eq]`. Use `conv_lhs => rw [er]`. Conclude with `add_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_add_eps_const {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A]
     (z : TensorProduct K (DualNumber K) (primDR A)) :
@@ -46,11 +46,11 @@ theorem exists_const_add_eps_const {K : Type} [Field K] {A : Over (Sp K)} [GrpOb
     exact add_smul _ _ _
 
 /- English proof (translation)
-Introduce `P K _ A _ A' _ i h g hA hg x`. Establish `a₀` using `PolPull.isAbelianScheme_of_isGrpPullback hA h`. Establish `g₀` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1 hg`. Take `⟨z, hz⟩` from `constMor_surjective P a₀ g₀ ((liftMor (epsDP K) h).pull x)`. Take `⟨a, b, e⟩` from `exists_const_add_eps_const z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[hz]`. Establish `red : (redMor A).pull ((liftMor (epsDP K) h).pull x) = (fibMor h).pull x` using `GrpMor.pull_pull (liftMor (epsDP K) h) (redMor A) (fibMor h) (fun _ => rfl) (by simp) x`. Establish `ra : (fibMor h).pull x = a`. Rewrite using `[← red, e, map_add, LinearMap.map_smulₛₗ, redMor_constMor, redMor_constMor]`. Establish `: (TrivSqZeroExt.fstHom K K K).toRingHom (DualNumber.eps : DualNumber K) = 0` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, zero_smul, add_zero]`. Conclude with `⟨b, by rw [ra]; exact e⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem liftMor_pull_eq_const_add_eps : GlobalTheory.Published.AbelianDeRham → ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A]
     (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left)

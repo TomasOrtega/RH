@@ -9,9 +9,9 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing U
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI : H.Normal := by`. Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Establish `hc : g * n * g⁻¹ * n⁻¹ ∈ H` using `h (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))`. Use `H.mul_mem hc hn` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `H.pow_index_mem (t ^ l ^ (b - a))`. Rewrite `h1` using `[hi, ← pow_mul, ← pow_add, Nat.sub_add_cancel hab]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uf_pow {Γ : Type} [Group Γ] {H : Subgroup Γ} (h : commutator Γ ≤ H) {l a b : ℕ} (hi : H.index = l ^ a)
     (hab : a ≤ b) (t : Γ) : t ^ l ^ b ∈ H := by
@@ -26,7 +26,7 @@ private theorem uf_pow {Γ : Type} [Group Γ] {H : Subgroup Γ} (h : commutator 
   exact h1
 
 /- English proof (translation)
-Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[commutatorElement_def, mul_assoc (a * b), Subgroup.mul_mem_iff_of_index_two hi, Subgroup.mul_mem_iff_of_index_two hi, Subgroup.mul_mem_iff_of_index_two hi, inv_mem_iff, inv_mem_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem uf_comm {Γ : Type} [Group Γ] {H : Subgroup Γ} (hi : H.index = 2) : commutator Γ ≤ H := by
   rw [commutator_def, Subgroup.commutator_le]
@@ -35,7 +35,7 @@ private theorem uf_comm {Γ : Type} [Group Γ] {H : Subgroup Γ} (hi : H.index =
     Subgroup.mul_mem_iff_of_index_two hi, Subgroup.mul_mem_iff_of_index_two hi, inv_mem_iff, inv_mem_iff]
 
 /- English proof (translation)
-Establish `h1 : ((x : k) - 1) ^ l ^ a = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, sub_self]`. Conclude with `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero a (Fact.out : l.Prime).ne_zero) |>.1 h1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uf_frob {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] {x : kˣ} {a : ℕ} (h : x ^ l ^ a = 1) :
     x = 1 := by
@@ -44,9 +44,9 @@ private theorem uf_frob {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l
   exact Units.ext (sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero a (Fact.out : l.Prime).ne_zero) |>.1 h1))
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (-1 : k) = 1` using `by simpa using congrArg Units.val h`. Establish `h2 : ((2 : ℕ) : k) = 0`. Rewrite using `[Nat.cast_ofNat, ← sub_eq_zero.2 h1.symm]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h2` using `[CharP.cast_eq_zero_iff k l]`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq (Fact.out : l.Prime) Nat.prime_two).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uf_neg {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (hl : l ≠ 2) : (-1 : kˣ) ≠ 1 := by
   intro h
@@ -63,21 +63,21 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [F
   [CharP (ResidueField O) l]
 
 /- English proof (translation)
-Simplify using `[omO, GC.cycF, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem uf_om {s : G ℚ Ω} (h : cycMod ℚ Ω l 1 s = -1) : omO Ω l O s = -1 := by
   simp [omO, GC.cycF, h]
 
 /- English proof (translation)
-Simplify using `[omO, GC.cycF, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem omega_eq_one_of_cyclotomic_one {s : G ℚ Ω} (h : cycMod ℚ Ω l 1 s = 1) : omO Ω l O s = 1 := by
   simp [omO, GC.cycF, h]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Establish `hc : IsConjOm (σ : Ω ≃+* Ω)` using `⟨j, hj⟩`. Establish `h1` using `IsConjOm.cyc (E := ℚ) (l := l) hc`. Establish `hr : MulSemiringAction.toRingAut (G ℚ Ω) Ω σ = (σ : Ω ≃+* Ω)` using `RingEquiv.ext fun _ => rfl`. Establish `h2 : cycZ ℚ Ω l σ = -1` using `by show cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω σ) = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hr, h1]`. Use `show Units.map _ (cycZ ℚ Ω l σ) = -1`. Rewrite using `[h2]`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem uf_cc {σ : G ℚ Ω} (h : IsCC σ) : cycMod ℚ Ω l 1 σ = -1 := by
   obtain ⟨j, hj⟩ := h
@@ -94,7 +94,7 @@ private theorem uf_cc {σ : G ℚ Ω} (h : IsCC σ) : cycMod ℚ Ω l 1 σ = -1 
 
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[pow_two, AlgEquiv.mul_apply, hj, hj, AlgEquiv.one_apply]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem uf_sq {σ : G ℚ Ω} (h : IsCC σ) : σ ^ 2 = 1 := by
   obtain ⟨j, hj⟩ := h
@@ -106,65 +106,57 @@ private theorem uf_sq {σ : G ℚ Ω} (h : IsCC σ) : σ ^ 2 = 1 := by
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG H₀ w h0 hW m`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨thO, thA, thI, thU, thR⟩` from `hth Ω l w hW.prime hW.one`. Take `⟨lyO, lyA, lyI, lyK, lyU, lyR⟩` from `hlay Ω l m hG.odd`. Take `⟨pb1, pb2, pb3, pb4, pb5, pb6, pb7, pb8, pb9, pb10⟩` from `ML.placeBasic Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hG.Hb_idx`. Establish `hU : Upl l Hb H₀ w m = H₀ ⊓ Hth Ω l w ⊓ Hb ⊓ Hlay Ω l m` using `rfl`. Establish `hoddpow : ∀ (H : Subgroup (G ℚ Ω)) (b : ℕ), commutator (G ℚ Ω) ≤ H → H.index = l ^ b → ∀ τ : G ℚ Ω, τ ^ 2 = 1 → τ ∈ H`. Introduce `H b hc hi τ hτ`. Establish `h1` using `uf_pow hc hi le_rfl τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : Odd (l ^ b)` from `(hl.odd_of_ne_two hG.odd).pow`. Rewrite `h1` using `[hk, pow_succ, pow_mul, hτ, one_pow, one_mul]`. Conclude with `h1`. Establish `hMl : ∀ B' : ValuationSubring Ω, B'.valuation (l : Ω) < 1 → B'.valuation (M : Ω) < 1`. Introduce `B' hB'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hG.l_dvd`. Use `(pb3 B' l c).2 (Or.inl hB')` as an intermediate fact. Simplify `this` using `[ML.Over, hc]`. Establish `hσom : omO Ω l O σ = -1` using `uf_om l (uf_cc l hG.cc)`. Establish `hσb` using `hG.even`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg : (-1 : (ResidueField O)ˣ) ≠ 1` using `uf_neg l hG.odd`. Choose the witnesses or unpack the hypotheses as in `⟨s', hs'η, hs'om, hs'b⟩ : ∃ s', η s' = 1 ∧ omO Ω l O s' = -1 ∧ barChar O Ψ s' = 1 := by`. Take `⟨t, ⟨ht1, ht2⟩, ht3⟩` from `SetLike.not_le_iff_exists.1 hG.g4`. Distinguish the cases in `hησ : η σ = 1`. Conclude with `⟨σ, hησ, hσom, hσb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t * σ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e1` using `(Int.units_eq_one_or (η t)).resolve_left ht3`. Establish `e2` using `(Int.units_eq_one_or (η σ)).resolve_left hησ`. Rewrite using `[map_mul, e1, e2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, MonoidHom.mem_ker.1 ht1, hσom, one_mul]`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 ht2, hσb, one_mul]`. Rewrite using `[hU]`. Use `⟨?isOpen, ?ab, ?real, ?unr, ?split, ?teich, ?mu, ?deg, ?f2b, ?f2c, ?f3, ?f5⟩` and prove the remaining obligations. Use `case isOpen =>`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_inf]`. Conclude with `((h0.isOpen.inter thO).inter hG.Hb_open).inter lyO`. Use `case ab => exact le_inf (le_inf (le_inf (uf_comm h0.idx) thA) hG.Hb_ab) lyA`. Use `case real =>`. Introduce `τ hτ`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h2` using `uf_sq hτ`. Conclude with `⟨⟨⟨h0.real τ hτ, hoddpow _ 1 thA (by rw [thI, pow_one]) τ h2⟩, hoddpow _ a hG.Hb_ab ha τ h2⟩, hoddpow _ m lyA lyI τ h2⟩`. Use `case unr =>`. Introduce `B' s hs`. Distinguish the cases in `hB' : B'.valuation (M : Ω) < 1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : s ∈ Dec B' ⊓ H₀` using `⟨Ine_le_Dec B' hs.1, hs.2.1.1.1⟩`. Rewrite `h1` using `[h0.loc B' hB']`. Conclude with `h1.2`. Take `⟨c, hc1, -⟩` from `hG.cyc`. Establish `hno : ∀ e : ℕ, ¬ ML.Over B' (M ^ e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => simp [ML.Over]`. Consider the case `succ e ih`. Rewrite using `[pow_succ, pb3]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `(h | h)`. Conclude with `ih h`. Conclude with `hB' h`. Conclude with `MonoidHom.mem_ker.2 (hc1 s fun ζ hζ => pb5 B' (M ^ c) (hno c) hs.1 ζ hζ)`. Use `case split =>`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `B' hB' s hs`. Establish `h1 : s ∈ Dec B' ⊓ H₀` using `⟨hs.1, hs.2.1.1.1⟩`. Rewrite `h1` using `[h0.loc B' hB']`. Conclude with `h1.2`. Use `case teich =>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Introduce `B' hB' s hs hb`. Conclude with `hG.teich B' hB' s ⟨hs.1, hs.2.1.2⟩ hb`. Use `case mu =>`. Introduce `B' hB'`. Establish `hm1 : (-1 : (ZMod (l ^ (m + 1)))ˣ) ∈ Subgroup.map (cycMod ℚ Ω l (m + 1)) (Ine B')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(lyR B' hB').2 (m + 1)]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨s, hsI, hs⟩` from `Subgroup.mem_map.1 hm1`. Establish `hsLay : s ∈ Hlay Ω l m` using `by show (cycMod ℚ Ω l (m + 1) ^ (l - 1)) s = 1`. Rewrite using `[MonoidHom.pow_apply, hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(hl.even_sub_one hG.odd).neg_one_pow`. Establish `hsH0 : s ∈ H₀`. Establish `h1 : s ∈ Dec B' ⊓ η.ker` using `⟨Ine_le_Dec B' hsI, hG.η_l B' hB' hsI⟩`. Rewrite `h1` using `[← h0.loc B' (hMl B' hB')]`. Conclude with `h1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlw : l ≠ w`. Introduce `hlw`. Establish `h1` using `hW.one`. Rewrite `h1` using `[← hlw]`. Unfold `Nat.ModEq at h1`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[Nat.mod_self, Nat.mod_eq_of_lt hl.one_lt]`. Conclude with `zero_ne_one h1`. Establish `hsTh : s ∈ Hth Ω l w` using `thU B' (pb4 B' l w ((Nat.coprime_primes hl hW.prime).2 hlw) hB') hsI`. Use `⟨s, ⟨hsI, ⟨⟨⟨hsH0, hsTh⟩, hG.Hb_l B' hB' hsI⟩, hsLay⟩⟩, fun h1 => ?_⟩` and prove the remaining obligations. Establish `h2 : s ∈ Hlay Ω l m ⊓ (cycMod ℚ Ω l 1).ker` using `⟨hsLay, h1⟩`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[lyK, MonoidHom.mem_ker, hs]`. Use `haveI : Fact (2 < l ^ (m + 1)) := ⟨by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ZMod.neg_one_ne_one (congrArg Units.val h2)`. Use `case deg =>`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B' hB'`. Establish `hfi : (H₀ ⊓ Hth Ω l w ⊓ Hb ⊓ Hlay Ω l m).index ≠ 0`. Use `Subgroup.index_inf_ne_zero (Subgroup.index_inf_ne_zero (Subgroup.index_inf_ne_zero ?_ ?_) ?_) ?_` and prove the remaining obligations. Rewrite using `[h0.idx]`. Evaluate the numerical expressions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[thI]`. Conclude with `hl.ne_zero`. Rewrite using `[ha]`. Conclude with `pow_ne_zero _ hl.ne_zero`. Rewrite using `[lyI]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_ne_zero _ hl.ne_zero`. Establish `hrel : ∀ H : Subgroup (G ℚ Ω), H.index ≠ 0 → ∀ L : Subgroup (G ℚ Ω), H.relIndex L ≠ 0` using `fun H hH L => Subgroup.relIndex_ne_zero_trans (K := ⊤) (by rw [Subgroup.relIndex_top_right]; exact hH) (by rw [Subgroup.relIndex_top_left]; exact one_ne_zero)`. Establish `hlayi : (Hlay Ω l m).index ≠ 0` using `by rw [lyI]; exact pow_ne_zero _ hl.ne_zero`. Combine the equalities or inequalities in the displayed calculation. Use `case f2b =>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `j _`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1` using `(l15 l η Ψ σ B M Hb hG H₀ w h0 hW m 1 j).2.2 (fun s hs => by rw [zpow_one]; exact hc s hs) s' (MonoidHom.mem_ker.2 hs'η)`. Rewrite `h1` using `[zpow_one, hs'om, hs'b, one_zpow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hneg h1`. Use `case f2c =>`. Introduce `j _`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `(l15 l η Ψ σ B M Hb hG H₀ w h0 hW m 1 j).2.2 (fun s hs => by rw [zpow_one]; exact hc s hs) s' (MonoidHom.mem_ker.2 hs'η)`. Rewrite `h1` using `[zpow_one, hs'om, hs'b, one_zpow, mul_one]`. Conclude with `hneg h1`. Use `case f3 =>`. Introduce `B' hB'`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, htD, htη, htb⟩` from `hG.g5`. Take `⟨g, hg⟩` from `pb8 B B' l hl hG.over_l hB'`. Establish `ht'D : g * t * g⁻¹ ∈ Dec B'`. Rewrite using `[hg, (pb10 B g).1]`. Use `htD using 1` and compare the differences between its conclusion and the goal.
-
-Use `group`. Establish `ht'η : η (g * t * g⁻¹) = 1`. Rewrite using `[map_mul, map_mul, map_inv, htη, mul_one, mul_inv_cancel]`. Establish `ht'b : barChar O Ψ (g * t * g⁻¹) = barChar O Ψ t`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (barChar O Ψ g), mul_assoc, mul_inv_cancel, mul_one]`.
-
-Establish `ht'H0 : g * t * g⁻¹ ∈ H₀`. Establish `h1 : g * t * g⁻¹ ∈ Dec B' ⊓ η.ker` using `⟨ht'D, ht'η⟩`. Rewrite `h1` using `[← h0.loc B' (hMl B' hB')]`. Conclude with `h1.2`. Use `⟨(g * t * g⁻¹) ^ l ^ (a + m + 1), ⟨pow_mem ht'D _, ⟨⟨⟨pow_mem ht'H0 _, uf_pow thA (by rw [thI, pow_one]) (by omega) _⟩, uf_pow hG.Hb_ab ha (by omega) _⟩, uf_pow lyA lyI (by omega) _⟩⟩, fun h1 => htb ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← ht'b]`. Apply `uf_frob l (a := a + m + 1)` to reduce the goal to its premises. Rewrite `h1` using `[map_pow, ← pow_mul, mul_comm, pow_mul]`. Conclude with `h1`. Use `case f5 =>`.
-
-Introduce and unpack `⟨j, hj⟩`. Establish `h1` using `(l15 l η Ψ σ B M Hb hG H₀ w h0 hW m 1 (-j)).2.2 (fun s hs => by rw [zpow_one, hj s hs, ← zpow_add, add_neg_cancel, zpow_zero]) s' (MonoidHom.mem_ker.2 hs'η)`. Rewrite `h1` using `[zpow_one, hs'om, hs'b, one_zpow, mul_one]`. Conclude with `hneg h1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ufacts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ (H₀ : Subgroup (G ℚ Ω)) (w : ℕ), FrobeniusSplitPrimeDatum η M H₀ → FrobeniusWitnessPrime l η Ψ M w → ∀ m, UFacts l η Ψ M m (Upl l Hb H₀ w m) := by

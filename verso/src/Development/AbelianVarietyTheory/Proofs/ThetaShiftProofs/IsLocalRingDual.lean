@@ -18,9 +18,9 @@ section Val
 variable {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hx' : ⊤ ≤ (spMap ρ ≫ x) ⁻¹ᵁ U` using `fun p _ => hx (x := spMap ρ p) trivial`. Establish `h3 : (spMap ρ).appLE ⊤ ⊤ le_rfl = (spMap ρ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[valR, valR, dif_pos hx, dif_pos hx', ← Scheme.Hom.appLE_comp_appLE (spMap ρ) x U ⊤ ⊤ hx le_rfl, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q => q.hom ((x.appLE U ⊤ hx).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ρ))`.
+A detailed English derivation is pending.
 -/
 theorem valR_spMap (ρ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valR (spMap ρ ≫ x) U f = ρ (valR x U f) := by
@@ -31,14 +31,14 @@ theorem valR_spMap (ρ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤
   exact congrArg (fun q => q.hom ((x.appLE U ⊤ hx).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ρ))
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos hx]`. Conclude with `(f.isUnit.map _).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_valR (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)ˣ) : IsUnit (valR x U f.val) := by
   rw [valR, dif_pos hx]
   exact (f.isUnit.map _).map _
 
 /- English proof (translation)
-Rewrite using `[← valR_spMap ρ x U hx]`. Conclude with `(toStkA_valR _ U z (fun p _ => hx (x := spMap ρ p) trivial) f).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_spMap (ρ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U) (z : Sp B) (f : Γ(X, U)ˣ) :
     (gm (spMap ρ ≫ x) z U f).val = toStkA z (ρ (valR x U f.val)) := by
@@ -46,9 +46,9 @@ theorem gm_spMap (ρ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x
   exact (toStkA_valR _ U z (fun p _ => hx (x := spMap ρ p) trivial) f).symm
 
 /- English proof (translation)
-Establish `h : (𝟙 (Sp A) : Sp A ⟶ Sp A).appLE ⊤ ⊤ le_top = 𝟙 _`. Simplify using `[Scheme.Hom.appLE]`. Rewrite using `[valR, dif_pos (show ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ ⊤ from le_top)]`. Use `show (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((𝟙 (Sp A) : Sp A ⟶ Sp A).appLE ⊤ ⊤ le_top).hom _) = _`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem valR_id_top (c : Γ(Sp A, ⊤)) : valR (𝟙 (Sp A)) ⊤ c = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom c := by
   have h : (𝟙 (Sp A) : Sp A ⟶ Sp A).appLE ⊤ ⊤ le_top = 𝟙 _ := by
@@ -58,7 +58,7 @@ theorem valR_id_top (c : Γ(Sp A, ⊤)) : valR (𝟙 (Sp A)) ⊤ c = (Scheme.ΓS
   rw [h]; rfl
 
 /- English proof (translation)
-The claim follows from `have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by rw [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst] simpa using IsLocalRing.isUnit_or_isUnit_one_sub_s …`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_dual (R : Type) [CommRing R] [IsLocalRing R] : IsLocalRing (DualNumber R) :=
   have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial
@@ -67,15 +67,15 @@ theorem isLocalRing_dual (R : Type) [CommRing R] [IsLocalRing R] : IsLocalRing (
     simpa using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp {C : Type} [CommRing C] (f : A →+* B) (g : B →+* C) : spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Rewrite using `[spMap_comp]`. Establish `: (TrivSqZeroExt.fstHom A A A).toRingHom.comp (algebraMap A (DualNumber A)) = RingHom.id A`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem fst_inl : spMap (TrivSqZeroExt.fstHom A A A).toRingHom ≫ spMap (algebraMap A (DualNumber A)) = 𝟙 _ := by
   rw [spMap_comp]
@@ -95,9 +95,9 @@ def constU (ρ : A →+* B) (z : Sp B) : Subgroup ((Sp B).presheaf.stalk z)ˣ wh
     rw [hg, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `ht` using `(top_le_iff_cpt _ U).2 h`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ U` using `fun p _ => by`. Establish `: (spMap σ ≫ spMap ρ ≫ x) p ∈ U` using `ht (x := spMap σ p) trivial`. Rewrite `this` using `[← Category.assoc, hσ, Category.id_comp]`. Then use the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨(isUnit_valR x U hx f).unit, gm_spMap _ x U hx _ f⟩`.
+Supply the required witnesses or components.
 -/
 theorem gm_mem_constU [IsLocalRing B] (ρ : A →+* B) (σ : B →+* A) (hσ : spMap σ ≫ spMap ρ = 𝟙 _) {ψ : Sp B ⟶ X}
     {x : Sp A ⟶ X} (e : ψ = spMap ρ ≫ x) (U : X.Opens) (h : ψ (cpt B) ∈ U) (f : Γ(X, U)ˣ) :
@@ -110,7 +110,7 @@ theorem gm_mem_constU [IsLocalRing B] (ρ : A →+* B) (σ : B →+* A) (hσ : s
   exact ⟨(isUnit_valR x U hx f).unit, gm_spMap _ x U hx _ f⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hw`. Rewrite `e` using `[hg, ← map_mul]`. Take `rfl` from `toStkA_injective e`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, _root_.mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem dlog_of_constU [IsLocalRing (DualNumber A)] {w : _}
     (hw : w ∈ constU (algebraMap A (DualNumber A)) (cpt (DualNumber A))) {u v : DualNumber A}
@@ -121,7 +121,7 @@ theorem dlog_of_constU [IsLocalRing (DualNumber A)] {w : _}
   simp [TrivSqZeroExt.algebraMap_eq_inl, _root_.mul_assoc]
 
 /- English proof (translation)
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z _ h _).trans (gm_pull r (φ k) z (M.U (p k) ⊓ L.U (q k)) ⟨Set.mem_iInter.1 h.1 k, Set.mem_iInter.1 h.2 k⟩ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_linCombIso {Y Z : Scheme.{0}} {L M : LB X} {K : Type} [Fintype K] (w : LB.Iso L M) (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) (p : K → M.ι) (q : K → L.ι) (h : r z ∈ LB.wchart M φ p ⊓ LB.wchart L φ q) :
@@ -142,7 +142,7 @@ def HasVal {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y �
   ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good L z J → val t r z J = gm r z ⊤ c
 
 /- English proof (translation)
-Introduce `U _ h`. Rewrite using `[Fin.prod_univ_four]`. Use `show h (Out.DegPre.cT D T χ * 1).left ^ (-1 : ℤ) * h (Out.DegPre.cT D T χ).left ^ (1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (-1 : ℤ) = _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formEq_zero (χ : D.X) :
     FormEq (K' := PEmpty) (Out.DegPre.gtφT D T (Out.DegPre.zeroT D T) χ) Out.DegPre.gtε PEmpty.elim PEmpty.elim := by
@@ -153,7 +153,7 @@ theorem formEq_zero (χ : D.X) :
   simp
 
 /- English proof (translation)
-Use `val_cub D.cub (𝟙 T) hJ x x' 1` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `this.trans ((isCub_cubV D.cub hJ).face₃ _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cubAtT {y : T.left} {J} (hJ : Good D.P.L y J) (x x' : T ⟶ D.P.A) :
     val (Out.DegPre.cubAtT D T x x' (Out.DegPre.zeroT D T)) (𝟙 _) y J = 1 := by
@@ -162,9 +162,9 @@ theorem val_cubAtT {y : T.left} {J} (hJ : Good D.P.L y J) (x x' : T ⟶ D.P.A) :
   exact this.trans ((isCub_cubV D.cub hJ).face₃ _ _)
 
 /- English proof (translation)
-Take `⟨b, s, hs, _, _⟩` from `g`. Take `rfl : b = _` from `hb`. Take `⟨t, -, ht⟩` from `exists_gen D.P.isLB (formEq_zero χ) (s χ) (hs χ)`. Establish `le : (⊤ : T.left.Opens) ≤ LB.wchart D.P.L (K` using `PEmpty) PEmpty.elim PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s PEmpty.elim), fun Z r z J hJ => (ht Z r z J hJ).symm.trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(val_of t r z J PEmpty.elim (fun k => k.elim)).trans (gm_res r z le trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasVal (g : Out.GtPt D T) (hb : g.b = Out.DegPre.zeroT D T) (χ : D.X) : ∃ c, HasVal (g.s χ) c := by
   obtain ⟨b, s, hs, _, _⟩ := g
@@ -176,9 +176,9 @@ theorem exists_hasVal (g : Out.GtPt D T) (hb : g.b = Out.DegPre.zeroT D T) (χ :
   exact (val_of t r z J PEmpty.elim (fun k => k.elim)).trans (gm_res r z le trivial _).symm
 
 /- English proof (translation)
-Establish `c0 : c 0 = 1` using `mul_eq_left.1 ((hc 0 0).symm.trans (by rw [add_zero]))`. Establish `ex : ∀ χ, ∃ t : LB.Gen (LB.LinComb D.P.L (Out.DegPre.gtφT D T (Out.DegPre.zeroT D T) χ) Out.DegPre.gtε), t.IsGen ∧ HasVal t (c χ)` using `fun χ => by`. Take `⟨t, ht, hv⟩` from `exists_gen D.P.isLB (K := PEmpty) (φ := PEmpty.elim) (ε := PEmpty.elim) (fun U _ h => (formEq_zero χ U h).symm) ⟨fun j => res le_top (c χ)⟩ (isGen_of_gm _ fun y i j hi hj => (gm_res _ y _ hi _).trans (Eq.symm ((congrArg₂ (· * ·) (Fintype.prod_empty _) (gm_res _ y _ hj _)).trans ( …`. Conclude with `⟨t, ht, fun Z r z J hJ => (hv Z r z J hJ).trans (gm_res r z le_top (hJ.mem _ r) _)⟩`. Use `choose s hs hv using ex`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, s, hs, corr_of_val D.P.isLB fun y J hJ => ?_, fun χ χ' => corr_of_val D.P.isLB fun y J hJ => ?_⟩, rfl, hv⟩` and prove the remaining obligations. Rewrite using `[hv 0 _ _ y J hJ, c0, map_one, val_one]`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (hv _ _ _ y J hJ) (val_cubAtT hJ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[hv _ _ _ y J hJ, hv _ _ _ y J hJ, hc, map_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt (c : D.X → Γ(T.left, ⊤)ˣ) (hc : ∀ χ χ', c (χ + χ') = c χ * c χ') :
     ∃ g : Out.GtPt D T, g.b = Out.DegPre.zeroT D T ∧ ∀ χ, HasVal (g.s χ) (c χ) := by
@@ -198,11 +198,11 @@ theorem exists_pt (c : D.X → Γ(T.left, ⊤)ˣ) (hc : ∀ χ χ', c (χ + χ')
     rw [hv _ _ _ y J hJ, hv _ _ _ y J hJ, hc, map_mul, _root_.mul_one]
 
 /- English proof (translation)
-Take `⟨b, s, hs, _, _⟩` from `g`. Take `⟨b', s', hs', _, _⟩` from `g'`. Take `rfl : b = b'` from `hb`. Take `rfl : s = s'` from `funext fun χ => by`. Establish `: (s χ).s = (s' χ).s` using `funext fun j => unit_ext fun y hy => by choose I hI using fun ψ : T.left ⟶ D.P.A.left => exists_chart D.P.isLB (ψ y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(gen_trans (hs χ) (𝟙 _) y hy (Good.mem hI _ _)).trans ((congrArg _ ((h χ _ _ y I hI).trans (h' χ _ _ y I hI).symm)).trans (gen_trans (hs' χ) (𝟙 _) y hy (Good.mem hI _ _)).symm)`. Consider the cases of `h₁ : s χ`. Consider the cases of `h₂ : s' χ`. Rewrite `this` using `[h₁, h₂]`. Reduce the equality to equality of the corresponding arguments.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ext_of_hasVal {g g' : Out.GtPt D T} (hb : g.b = g'.b) (c : D.X → Γ(T.left, ⊤)ˣ) (h : ∀ χ, HasVal (g.s χ) (c χ))
     (h' : ∀ χ, HasVal (g'.s χ) (c χ)) : g = g' := by
@@ -225,9 +225,9 @@ Both sides reduce to the same expression.
 theorem zeroT_left : (Out.DegPre.zeroT D T).left = T.hom ≫ eSec D.P.A := rfl
 
 /- English proof (translation)
-Use `fin_cases k`. Use `⟨(D.c χ).left, ?_⟩ show (Out.DegPre.cT D T χ * 1).left = _` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`. Both sides reduce to the same expression. Conclude with `⟨(D.c χ).left, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, zeroT_left⟩`. Conclude with `⟨_, zeroT_left⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gtφT_const (χ : D.X) (k : Fin 4) :
     ∃ x : Spec (CommRingCat.of R) ⟶ D.P.A.left, Out.DegPre.gtφT D T (Out.DegPre.zeroT D T) χ k = T.hom ≫ x := by
@@ -253,9 +253,9 @@ def Dlog (ν : Out.GtPt D (epsR A)) (x : D.X) (a : A) : Prop :=
 variable [IsLocalRing (DualNumber A)]
 
 /- English proof (translation)
-Establish `key : ∀ j, ⊤ ≤ LB.wchart D.P.L (Out.DegPre.gtφT D (epsR A) ν.b x) j → (TrivSqZeroExt.snd (valR (A` using `DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) * a ↔ u.snd = u.fst * a) := by`. Introduce `j hj`. Establish `m` using `hJ.mem (Out.DegPre.gtφT D (epsR A) ν.b x) (𝟙 (Sp (DualNumber A)))`. Establish `t` using `gen_trans (ν.isGen x) (𝟙 (Sp (DualNumber A))) (cpt _) (hj trivial) m`. Use `dlog_of_constU (w := trF (Out.DegPre.gtφT D (epsR A) ν.b x) Out.DegPre.gtε (𝟙 (Sp (DualNumber A))) (cpt _) j _) (Subgroup.prod_mem _ fun k _ => Subgroup.zpow_mem _ ?_ _) ((toStkA_valR (𝟙 (Sp (DualNumber A))) (LB.wchart D.P.L (Out.DegPre.gtφT D (epsR A) ν.b x) j) _ hj _).trans ((c …` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, h₀⟩` from `gtφT_const (D := D) (T := epsR A) x k`. Conclude with `gm_mem_constU _ _ fst_inl (x := x₀) ((Category.id_comp _).trans (by rw [hb]; exact h₀)) (D.P.L.U (j k) ⊓ D.P.L.U (J (𝟙 (Sp (DualNumber A)) ≫ Out.DegPre.gtφT D (epsR A) ν.b x k))) ⟨Set.mem_iInter.1 (hj trivial) k, Set.mem_iInter.1 m k⟩ _`. Use `⟨fun h => ?_, fun h j hj => (key j hj).2 h⟩` and prove the remaining obligations. Establish `m : ⊤ ≤ LB.wchart D.P.L (Out.DegPre.gtφT D (epsR A) ν.b x) _` using `(top_le_iff_cpt (𝟙 (Sp (DualNumber A))) _).2 (hJ.mem (Out.DegPre.gtφT D (epsR A) ν.b x) (𝟙 (Sp (DualNumber A))))`. Conclude with `(key _ m).1 (h _ m)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dlog_iff (ν : Out.GtPt D (epsR A)) (hb : ν.b = Out.DegPre.zeroT D (epsR A)) (x : D.X) {J}
     (hJ : Good D.P.L (Z := Sp (DualNumber A)) (cpt _) J) {u : DualNumber A}
@@ -282,14 +282,14 @@ theorem dlog_iff (ν : Out.GtPt D (epsR A)) (hb : ν.b = Out.DegPre.zeroT D (eps
 
 omit [IsLocalRing (DualNumber A)] in
 /- English proof (translation)
-Use `choose I hI using fun ψ : Z ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`. Conclude with `⟨I, hI⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good' {Z : Scheme.{0}} (z : Z) : ∃ J, Good D.P.L z J := by
   choose I hI using fun ψ : Z ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)
   exact ⟨I, hI⟩
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_good' (D := D) (cpt (DualNumber A))`. Conclude with `dlog_iff ν hb x hJ ((congrArg Units.val (hc _ _ _ J hJ)).trans (toStkA_valR _ _ _ le_top _).symm) a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dlog_iff_hasVal (ν : Out.GtPt D (epsR A)) (hb : ν.b = Out.DegPre.zeroT D (epsR A)) (x : D.X)
     {c : Γ(Sp (DualNumber A), ⊤)ˣ} (hc : HasVal (ν.s x) c) (a : A) :
@@ -299,7 +299,7 @@ theorem dlog_iff_hasVal (ν : Out.GtPt D (epsR A)) (hb : ν.b = Out.DegPre.zeroT
 
 omit [IsLocalRing (DualNumber A)] in
 /- English proof (translation)
-Rewrite using `[val_pull hJ, hc _ _ _ J hJ, Category.id_comp, ← gm_spMap ρ (𝟙 _) ⊤ le_top z c, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasVal_spMap {ν : Out.GtPt D (epsR A)} {x : D.X} {c : Γ(Sp (DualNumber A), ⊤)ˣ} (hc : HasVal (ν.s x) c)
     {B : Type} [CommRing B] (ρ : DualNumber A →+* B) {z : Sp B} {J} (hJ : Good D.P.L z J) :
@@ -308,7 +308,7 @@ theorem hasVal_spMap {ν : Out.GtPt D (epsR A)} {x : D.X} {c : Γ(Sp (DualNumber
 
 omit [IsLocalRing (DualNumber A)] in
 /- English proof (translation)
-Take `⟨g₀, h₀, h₁⟩` from `h`. Take `⟨J, hJ⟩` from `exists_good' (D := D) (cpt A)`. Establish `a` using `(val_corr hJ (h₁.2 x) (𝟙 _)).symm.trans ((val_corr hJ (h₀.2 x) (𝟙 _)).trans (val_one _))`. Establish `b` using `hasVal_spMap hc (TrivSqZeroExt.fstHom A A A).toRingHom hJ`. Conclude with `toStkA_injective (b.symm.trans ((congrArg Units.val a).trans (map_one _).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fst_of_tan [IsLocalRing A] {ν : Out.GtPt D (epsR A)} (h : GtTanR ν) {x : D.X} {c : Γ(Sp (DualNumber A), ⊤)ˣ}
     (hc : HasVal (ν.s x) c) : (valR (𝟙 _) ⊤ c.val).fst = 1 := by
@@ -324,7 +324,7 @@ def oneAdd (a : A) : Γ(Sp (DualNumber A), ⊤)ˣ :=
 
 omit [IsDomain A] [IsLocalRing (DualNumber A)] in
 /- English proof (translation)
-Rewrite using `[oneAdd, oneAdd, oneAdd, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem oneAdd_add (a b : A) : oneAdd (a + b) = oneAdd a * oneAdd b := by
   rw [oneAdd, oneAdd, oneAdd, ← map_mul]
@@ -333,23 +333,23 @@ theorem oneAdd_add (a b : A) : oneAdd (a + b) = oneAdd a * oneAdd b := by
 
 omit [IsDomain A] [IsLocalRing (DualNumber A)] in
 /- English proof (translation)
-The claim follows from `(valR_id_top _).trans ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber A))).inv_hom_id_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem valR_oneAdd (a : A) : valR (𝟙 _) ⊤ (oneAdd a).val = 1 + TrivSqZeroExt.inr a :=
   (valR_id_top _).trans ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber A))).inv_hom_id_apply _)
 
 /- English proof (translation)
-Take `⟨ν, hb, hv⟩` from `exists_pt (D := D) (T := epsR A) (fun x => oneAdd (φ x)) fun x y => by`. Rewrite using `[map_add, oneAdd_add]`. Use `⟨ν, ⟨?_, hb, fun x => (dlog_iff_hasVal ν hb x (hv x) _).2 (by rw [valR_oneAdd]; simp)⟩, ?_⟩` and prove the remaining obligations. Take `⟨g₀, h₀, v₀⟩` from `exists_pt (D := D) (T := Over.mk (𝟙 (Sp A))) (fun _ => 1) fun _ _ => (_root_.mul_one _).symm`. Use `⟨g₀, ⟨h₀, fun x => corr_of_val D.P.isLB fun y J hJ => ?_⟩, ?_, fun x => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[v₀ x _ _ y J hJ, map_one, val_one]`. Rewrite using `[h₀, hb, zeroT_left, zeroT_left, ← Category.assoc]`. Conclude with `congrArg (· ≫ eSec D.P.A) fst_inl.symm`. Use `(v₀ x _ _ y J hJ).trans (Units.ext (Eq.trans ?_ (hasVal_spMap (hv x) (TrivSqZeroExt.fstHom A A A).toRingHom hJ).symm))` and prove the remaining obligations. Rewrite using `[valR_oneAdd, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `ν' ⟨ht, hb', hd⟩`. Use `ext_of_hasVal (hb'.trans hb.symm) _ (fun x => ?_) hv` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_hasVal ν' hb' x`. Establish `h₁` using `fst_of_tan ht hc`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `(dlog_iff_hasVal ν' hb' x hc _).1 (hd x)`. Establish `: c = oneAdd (φ x)`. Apply `Units.ext` to reduce the goal to its premises. Apply `(Scheme.ΓSpecIso (CommRingCat.of (DualNumber A))).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Use `(valR_id_top _).symm.trans (Eq.trans ?_ (valR_id_top _))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valR_oneAdd]`. Rewrite `h₂` using `[h₁]`. Use `ext`. Rewrite using `[h₁]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₂]`. Simplify using the standard rewrite rules. Conclude with `this ▸ hc`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_tan [IsLocalRing A] (φ : D.X →+ A) : ∃! ν : Out.GtPt D (epsR A),
     GtTanR ν ∧ ν.b = Out.DegPre.zeroT D (epsR A) ∧ ∀ x, Dlog ν x (φ x) := by
@@ -382,15 +382,15 @@ theorem existsUnique_tan [IsLocalRing A] (φ : D.X →+ A) : ∃! ν : Out.GtPt 
     exact this ▸ hc
 
 /- English proof (translation)
-Take `⟨u, p, hu, h₀, ha, rfl⟩` from `h`. Establish `hu₀ : Out.GtPt.IsPull (spMap (epsScaleR s)) ν (u 0)` using `hu 0`. Establish `ha₀ : Out.GtPt.IsAdd (p 0) (u 0) (p (Fin.last 1))` using `ha 0`. Establish `ub : (u 0).b = Out.DegPre.zeroT D (epsR A)` using `Over.OverMorphism.ext (by`. Rewrite using `[hu₀.1, hb, zeroT_left, ← Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (· ≫ eSec D.P.A) ((spMap_comp _ _).trans (congrArg spMap ?_))` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `pb : (p (Fin.last 1)).b = Out.DegPre.zeroT D (epsR A)`. Rewrite using `[ha₀.1, h₀.1, ub]`. Conclude with `_root_.mul_one (1 : epsR A ⟶ D.P.A)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pb, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_hasVal ν hb x`. Take `⟨J, hJ⟩` from `exists_good' (D := D) (cpt (DualNumber A))`. Establish `e₁` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (ha₀.2 x) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e₂ : val (Out.DegPre.cubAtT D (epsR A) (Out.DegPre.cT D (epsR A) x) (p 0).b (u 0).b) (𝟙 (Sp (DualNumber A))) (cpt (DualNumber A)) J = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ub]`. Conclude with `val_cubAtT hJ _ _`. Establish `e₃` using `(val_corr hJ (h₀.2 x) (𝟙 _)).trans (val_one _)`. Establish `e₄` using `(congrArg Units.val (val_corr hJ (hu₀.2 x) (𝟙 _))).trans (hasVal_spMap hc (epsScaleR s) hJ)`. Establish `e₅` using `(_root_.mul_one _).symm.trans ((congrArg₂ (· * ·) rfl e₂).symm.trans (e₁.trans ((congrArg₂ (· * ·) e₃ rfl).trans (_root_.one_mul _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(dlog_iff _ pb x hJ ((congrArg Units.val e₅).trans e₄) _).2 ?_` and prove the remaining obligations. Use `(dlog_iff_hasVal ν hb x hc _).1 (hd x)` as an intermediate fact. Simplify using `[epsScaleR, this, mul_left_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dlog_smul (φ : D.X →+ A) (s : A) {ν ν' : Out.GtPt D (epsR A)} (hb : ν.b = Out.DegPre.zeroT D (epsR A))
     (hd : ∀ x, Dlog ν x (φ x)) (h : GtComb ![s] ![ν] ν') :
@@ -428,9 +428,9 @@ variable {A A' : Type} [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A'] {D 
   {f : A →+* A'}
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono p.e.hom]`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, h.1, hb, zeroT_left, zeroT_left, Category.assoc, p.he, ← Category.assoc, ← Category.assoc]`. Use `congrArg (· ≫ eSec D.P.A) ((spMap_comp _ _).trans ((congrArg spMap ?_).trans (spMap_comp _ _).symm))` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Over.w (ν₁.b ≫ p.e.hom)).trans (Over.w (Out.DegPre.zeroT D₁ (epsR A') ≫ p.e.hom)).symm`.
+A detailed English derivation is pending.
 -/
 theorem b_zero_of_letBC (p : Out.IsPullDeg f D D₁) {ν : Out.GtPt D (epsR A)} {ν₁ : Out.GtPt D₁ (epsR A')}
     (hb : ν.b = Out.DegPre.zeroT D (epsR A)) (h : LetBC p ν ν₁) : ν₁.b = Out.DegPre.zeroT D₁ (epsR A') := by
@@ -443,15 +443,15 @@ theorem b_zero_of_letBC (p : Out.IsPullDeg f D D₁) {ν : Out.GtPt D (epsR A)} 
   · exact (Over.w (ν₁.b ≫ p.e.hom)).trans (Over.w (Out.DegPre.zeroT D₁ (epsR A') ≫ p.e.hom)).symm
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hb₁` using `b_zero_of_letBC p hb h`. Take `⟨hψ, H⟩` from `h.2 x`. Use `choose i hi using fun k => exists_chart D.P.isLB (Out.DegPre.gtφT D (epsR A) ν.b (p.xe x) k (cpt (DualNumber A)))`. Establish `m : ⊤ ≤ (𝟙 (Sp (DualNumber A))) ⁻¹ᵁ LB.wchart D.P.L (Out.DegPre.gtφT D (epsR A) ν.b (p.xe x)) i` using `(top_le_iff_cpt (𝟙 (Sp (DualNumber A))) _).2 (Set.mem_iInter.2 hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mk : ∀ k, Out.DegPre.gtφT D₁ (epsR A') ν₁.b x k (cpt (DualNumber A')) ∈ (D.P.L.pull (prj p)).U (fun _ => i k)` using `fun k => mem_pull.2 (by`. Establish `: (spMap (dualMap f) ≫ Out.DegPre.gtφT D (epsR A) ν.b (p.xe x) k) (cpt (DualNumber A')) ∈ D.P.L.U (i k)` using `Set.mem_iInter.1 (m (x := spMap (dualMap f) (cpt (DualNumber A'))) trivial) k`. Rewrite `this` using `[← hψ k]`. Conclude with `this)`. Establish `mz : (𝟙 (Sp (DualNumber A')) : _ ⟶ _) (cpt (DualNumber A')) ∈ LB.wchart (D.P.L.pull (prj p)) (Out.DegPre.gtφT D₁ (epsR A') ν₁.b x) (fun k _ => i k) ⊓ LB.wchart D₁.P.L (Out.DegPre.gtφT D₁ (epsR A') ν₁.b x) j` using `⟨Set.mem_iInter.2 mk, hj trivial⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gm (𝟙 (Sp (DualNumber A'))) (cpt (DualNumber A')) _) (H (fun k _ => i k, j))`. Establish `e₁` using `((gm_res _ _ _ mz _).trans ((gm_res _ _ _ mz.1 _).trans (gm_pull _ _ _ _ (m (x := spMap (dualMap f) (cpt (DualNumber A'))) trivial) _))).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linCombIso p.w _ _ _ _ _ _ mz) (gm_res _ _ _ mz _))))`. Establish `e₂` using `gm_spMap (dualMap f) (𝟙 _) _ m (cpt (DualNumber A')) ((ν.s (p.xe x)).s i)`. Rewrite `e₂` using `[Category.comp_id, ← Category.id_comp (spMap (dualMap f))]`. Establish `e₃` using `toStkA_valR (𝟙 (Sp (DualNumber A'))) (LB.wchart D₁.P.L (Out.DegPre.gtφT D₁ (epsR A') ν₁.b x) j) (cpt (DualNumber A')) hj ((ν₁.s x).s j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(dlog_of_constU ?_ (e₂.symm.trans ((congrArg Units.val e₁).trans ((Units.val_mul _ _).trans (congrArg _ e₃.symm)))) (f a)).1 ?_` and prove the remaining obligations. Use `Subgroup.prod_mem _ fun k _ => Subgroup.zpow_mem _ ?_ _` and prove the remaining obligations. Establish `mk' : Out.DegPre.gtφT D₁ (epsR A') ν₁.b x k (cpt (DualNumber A')) ∈ (D.P.L.pull (prj p)).U (fun _ => i k) ⊓ D₁.P.L.U (j k)` using `⟨mk k, Set.mem_iInter.1 (hj trivial) k⟩`. Take `⟨x₀, h₀⟩` from `gtφT_const (D := D₁) (T := epsR A') x k`. Conclude with `gm_mem_constU _ _ fst_inl (x := x₀) ((Category.id_comp _).trans (by rw [hb₁]; exact h₀)) ((D.P.L.pull (prj p)).U (fun _ => i k) ⊓ D₁.P.L.U (j k)) mk' _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg f (hd i m)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Simplify using `only [dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, zero_add, add_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem dlog_of_letBC [IsLocalRing (DualNumber A)] [IsLocalRing (DualNumber A')] (p : Out.IsPullDeg f D D₁)
     {ν : Out.GtPt D (epsR A)} {ν₁ : Out.GtPt D₁ (epsR A')} (hb : ν.b = Out.DegPre.zeroT D (epsR A)) (h : LetBC p ν ν₁)
@@ -497,9 +497,9 @@ theorem dlog_of_letBC [IsLocalRing (DualNumber A)] [IsLocalRing (DualNumber A')]
 end BaseChange
 
 /- English proof (translation)
-Introduce `_ A _ _ _ D₀`. Use `isLocalRing_dual A` as an intermediate fact. Use `⟨fun φ => existsUnique_tan φ, fun φ s ν ν' _ hb hd h => dlog_smul φ s hb hd h, ?_⟩` and prove the remaining obligations. Introduce `A' _ _ _ D₁ f p φ ν ν₁ hb hd h`. Use `isLocalRing_dual A'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨b_zero_of_letBC p hb h, fun x => dlog_of_letBC p hb h x _ (hd _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : Out.GlobalFnsSt → ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] (D₀ : Out.DegPre A), (∀ φ : D₀.X →+ A, ∃! ν : Out.GtPt D₀ (epsR A), GtTanR ν ∧ ν.b = Out.DegPre.zeroT D₀ (epsR A) ∧ (∀ (x : D₀.X) j, ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφT D₀ (epsR A) ν.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) * φ x)) ∧ (∀ (φ : D₀.X →+ A) (s : A) (ν ν' : Out.GtPt D₀ (epsR A)), GtTanR ν → ν.b = Out.DegPre.zeroT D₀ (epsR A) → (∀ (x : D₀.X) j, ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφT D₀ (epsR A) ν.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) * φ x) → GtComb ![s] ![ν] ν' → ν'.b = Out.DegPre.zeroT D₀ (epsR A) ∧ (∀ (x : D₀.X) j, ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφT D₀ (epsR A) ν'.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A) (𝟙 _) _ ((ν'.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν'.s x).s j).val) * (s • φ) x)) ∧ ∀ (A' : Type) [CommRing A'] [IsDomain A'] [IsLocalRing A'] (D₁ : Out.DegPre A') (f : A →+* A') (p : Out.IsPullDeg f D₀ D₁) (φ : D₀.X →+ A) (ν : Out.GtPt D₀ (epsR A)) (ν₁ : Out.GtPt D₁ (epsR A')), ν.b = Out.DegPre.zeroT D₀ (epsR A) → (∀ (x : D₀.X) j, ⊤ ≤ LB.wchart D₀.P.L (Out.DegPre.gtφT D₀ (epsR A) ν.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) * φ x) → LetBC p ν ν₁ → ν₁.b = Out.DegPre.zeroT D₁ (epsR A') ∧ (∀ (x : D₁.X) j, ⊤ ≤ LB.wchart D₁.P.L (Out.DegPre.gtφT D₁ (epsR A') ν₁.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A') (𝟙 _) _ ((ν₁.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A') (𝟙 _) _ ((ν₁.s x).s j).val) * (fun x => f (φ (p.xe x))) x) := by
   intro _ A _ _ _ D₀

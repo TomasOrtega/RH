@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.KeyPow
 
 /- English proof (translation)
-Introduce and unpack `hT N hN ⟨κ, hH, hF, hU, hK⟩`. Use `⟨N, hN, κ, fun K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M => hH K P hg rig hr th hth v hv th' hth' v' hv' a M hg, fun K K' _ _ _ _ f x x' => hF K K' f x x' x.g_pos, fun R K _ _ _ _ _ _ _ x xK => hU R K x xK x.g_pos, fun x u τ a b h₁ h₂ ha hb h₃ h₄ h₅ h₆ => hK x τ a b x.g_p …` and prove the remaining obligations. Introduce `x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Take `⟨u', τ, M, a, b, c, k₁, k₂, ha, hb, k₃, k₄, hc, k₅, hM, k₆, hn⟩` from `keyIn_normal_form_and_archimedean_constant hT x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Establish `hv` using `value_at_normalForm N 1 (κ ℂ) x.P.g a b x.g_pos (hH ℂ) (fun y h τ' hy => hK y τ' _ _ y.g_pos ⟨fun i => ha _, fun i => hb _⟩ hy) x rfl τ M c hc hM ⟨u', k₁, k₂, k₃, k₄, k₅, k₆⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hv, norm_pow, pow_mul nth, pow_mul nη, ← mul_pow, ← mul_pow, hn, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem keyFormulaPow_of_keyRule :
     ThetaUnifAV → ∀ N : ℕ → ℕ, (∀ g, 1 ≤ N g) → GlobalTheory.KeyPow.KeyRule N 1 GlobalTheory.KeyPow.charHalf → GlobalTheory.KeyFormulaPow := by
@@ -35,14 +35,14 @@ theorem keyFormulaPow_of_keyRule :
   rw [hv, norm_pow, pow_mul nth, pow_mul nη, ← mul_pow, ← mul_pow, hn, ← pow_mul]
 
 /- English proof (translation)
-The claim follows from `keyFormulaPow_of_keyRule hT _ (fun g => by have := hN (2 * g); omega) h`.
+A detailed English derivation is pending.
 -/
 theorem keyFormulaPow_of_keyRule_double (hT : ThetaUnifAV) (N : ℕ → ℕ) (hN : ∀ g, 1 ≤ N g)
     (h : KeyRule (fun g => 2 * N (2 * g)) 1 charHalf) : GlobalTheory.KeyFormulaPow :=
   keyFormulaPow_of_keyRule hT _ (fun g => by have := hN (2 * g); omega) h
 
 /- English proof (translation)
-Introduce `hT hI N hN h` and use `keyFormulaPow_of_keyRule_double hT N hN (keyRule_charHalf_of_charZero hI N h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keyFormulaPow_of_keyRule_charZero :
     ThetaUnifAV → ReciprocityTheory.ChartRestriction.G.Key.Chi.InversionStatement →

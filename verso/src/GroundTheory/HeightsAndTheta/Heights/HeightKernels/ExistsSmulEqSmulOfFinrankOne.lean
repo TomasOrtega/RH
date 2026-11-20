@@ -16,11 +16,11 @@ section Coefficient
 variable {K : Type*} [Field K] [NumberField K] {E : HermitianBundle K}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and] at hcon`. Establish `hli : LinearIndependent (𝓞 K) ![(⟨w, hw⟩ : N), ⟨l, hl⟩]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : s • w + t • l = 0` using `congrArg Subtype.val hst`. Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Rewrite `h` using `[zero_smul, zero_add]`. Conclude with `⟨rfl, (smul_eq_zero.mp h).resolve_right hl0⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `absurd (by rw [neg_smul]; exact eq_neg_of_add_eq_zero_left h) (hcon s (-t) hs)`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, hN]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_smul_of_finrank_one {N : Submodule (𝓞 K) E.carrier}
     (hN : Module.finrank (𝓞 K) N = 1) {l : E.carrier} (hl : l ∈ N) (hl0 : l ≠ 0)
@@ -41,9 +41,9 @@ theorem exists_smul_eq_smul_of_finrank_one {N : Submodule (𝓞 K) E.carrier}
   omega
 
 /- English proof (translation)
-Establish `key : (t' * s - t * s') • l = 0`. Rewrite using `[sub_smul, mul_smul, mul_smul, ← h, ← h', smul_comm t' t, sub_self]`. Establish `key' : t' * s = t * s'` using `sub_eq_zero.mp ((smul_eq_zero.mp key).resolve_right hl0)`. Establish `h1 : (t : K) ≠ 0` using `by exact_mod_cast ht`. Establish `h2 : (t' : K) ≠ 0` using `by exact_mod_cast ht'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun x : 𝓞 K => (x : K)) key'`. Move the coercions through the operations in `at h3`. Rewrite using `[div_eq_div_iff h1 h2]`. Take the linear combination `h3`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lineCoef_ratio_unique {l w : E.carrier} (hl0 : l ≠ 0) {t s t' s' : 𝓞 K} (ht : t ≠ 0) (ht' : t' ≠ 0)
     (h : t • w = s • l) (h' : t' • w = s' • l) : (s : K) / t = s' / t' := by
@@ -65,7 +65,7 @@ def lineCoefFun (w : N) : K :=
     ((exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2).choose : K)
 
 /- English proof (translation)
-The claim follows from `lineCoef_ratio_unique hl0 (exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2).choose_spec.choose_spec.1 ht (exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2).choose_spec.choose_spec.2 h`.
+A detailed English derivation is pending.
 -/
 theorem lineCoefFun_eq (w : N) {t s : 𝓞 K} (ht : t ≠ 0) (h : t • (w : E.carrier) = s • l) :
     lineCoefFun hN hl hl0 w = (s : K) / t :=
@@ -96,23 +96,23 @@ def lineCoef : N →ₗ[𝓞 K] K where
     rw [mul_div_assoc]
 
 /- English proof (translation)
-The claim follows from `lineCoefFun_eq hN hl hl0 w ht h`.
+A detailed English derivation is pending.
 -/
 theorem lineCoef_eq (w : N) {t s : 𝓞 K} (ht : t ≠ 0) (h : t • (w : E.carrier) = s • l) :
     lineCoef hN hl hl0 w = (s : K) / t :=
   lineCoefFun_eq hN hl hl0 w ht h
 
 /- English proof (translation)
-Rewrite using `[lineCoef_eq hN hl hl0 ⟨l, hl⟩ (t := 1) (s := 1) one_ne_zero rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lineCoef_self : lineCoef hN hl hl0 ⟨l, hl⟩ = 1 := by
   rw [lineCoef_eq hN hl hl0 ⟨l, hl⟩ (t := 1) (s := 1) one_ne_zero rfl]
   simp
 
 /- English proof (translation)
-Take `⟨t, s, ht, h⟩` from `exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2`. Rewrite `hw` using `[lineCoef_eq hN hl hl0 w ht h, div_eq_zero_iff]`. Establish `hs : s = 0`. Break down `hw with hw | hw` into its components or cases. Conclude with `hw` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hw (by exact_mod_cast ht)`. Rewrite `h` using `[hs, zero_smul]`. Conclude with `(smul_eq_zero.mp h).resolve_left ht`.
+A detailed English derivation is pending.
 -/
 theorem lineCoef_eq_zero {w : N} (hw : lineCoef hN hl hl0 w = 0) : (w : E.carrier) = 0 := by
   obtain ⟨t, s, ht, h⟩ := exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2
@@ -125,7 +125,7 @@ theorem lineCoef_eq_zero {w : N} (hw : lineCoef hN hl hl0 w = 0) : (w : E.carrie
   exact (smul_eq_zero.mp h).resolve_left ht
 
 /- English proof (translation)
-Take `⟨t, s, ht, h⟩` from `exists_smul_eq_smul_of_finrank_one hN hl hl0 w.2`. Establish `hst : σ (t : K) ≠ 0` using `by rw [map_ne_zero]; exact_mod_cast ht`. Establish `h1` using `congrArg (fibreVec E.metric σ) h`. Rewrite `h1` using `[fibreVec_smul, fibreVec_smul]`. Rewrite using `[lineCoef_eq hN hl hl0 w ht h, map_div₀, div_eq_inv_mul, mul_smul, ← h1, smul_smul, inv_mul_cancel₀ hst, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibreVec_lineCoef (σ : K →+* ℂ) (w : N) :
     fibreVec E.metric σ (w : E.carrier) = σ (lineCoef hN hl hl0 w) • fibreVec E.metric σ l := by
@@ -139,7 +139,7 @@ theorem fibreVec_lineCoef (σ : K →+* ℂ) (w : N) :
 end Coefficient
 
 /- English proof (translation)
-Simplify using `only [fibreVec, tmul_sum, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibreVec_finset_sum {K : Type*} [Field K] [NumberField K] {E : HermitianBundle K} (σ : K →+* ℂ)
     {ι : Type*} (S : Finset ι) (f : ι → E.carrier) :
@@ -147,67 +147,59 @@ theorem fibreVec_finset_sum {K : Type*} [Field K] [NumberField K] {E : Hermitian
   simp only [fibreVec, tmul_sum, map_sum]
 
 /- English proof (translation)
-Introduce `K _ _ E X _ _ L hI hr ho`. Use `set n := Fintype.card X`. Set `e : Fin n ≃ X` to `(Fintype.equivFin X).symm`. Establish `hne : ∀ x, ∃ l ∈ L x, l ≠ 0`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : L x ≠ ⊥`. Introduce `h`. Establish `h1` using `hr x`. Rewrite `h1` using `[h]`. Simplify using `[HermitianBundle.rank] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.ne_bot_iff _).mp hb`. Use `choose l hl hl0 using hne`. Set `α : ∀ x, L x →ₗ[𝓞 K] K` to `fun x => lineCoef (hr x) (hl x) (hl0 x)`. Set `Φ` to `LinearEquiv.ofBijective (DirectSum.coeLinearMap L) hI`. Set `comp : ∀ x, E.carrier →ₗ[𝓞 K] L x` to `fun x => (DirectSum.component (𝓞 K) X (fun x => L x) x).comp Φ.symm.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp_same : ∀ x (w : E.carrier) (hw : w ∈ L x), comp x w = ⟨w, hw⟩` using `fun x w hw => hI.ofBijective_coeLinearMap_of_mem hw`. Establish `hcomp_ne : ∀ x y (w : E.carrier), w ∈ L x → x ≠ y → comp y w = 0` using `fun x y w hw hxy => hI.ofBijective_coeLinearMap_of_mem_ne hxy hw`. Establish `hsum : ∀ v : E.carrier, ∑ x, (comp x v : E.carrier) = v`. Introduce `v`. Use `conv_rhs => rw [← Φ.apply_symm_apply v, ← DirectSum.sum_univ_of (Φ.symm v)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show _ = DirectSum.coeLinearMap L (DirectSum.of (fun i => L i) x (Φ.symm v x))`. Rewrite using `[DirectSum.coeLinearMap_of]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `ψ : E.carrier →ₗ[𝓞 K] (Fin n → K)` to `LinearMap.pi fun i => (α (e i)).comp (comp (e i))`. Establish `hψ_apply : ∀ v i, ψ v i = α (e i) (comp (e i) v)` using `fun _ _ => rfl`. Establish `hψ_line : ∀ i (w : E.carrier) (hw : w ∈ L (e i)), ψ w = Pi.single i (α (e i) ⟨w, hw⟩)`. Introduce `i w hw`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[hcomp_same _ w hw, Pi.single_eq_same]`. Rewrite using `[hcomp_ne _ _ w hw (e.injective.ne (Ne.symm hj)), map_zero, Pi.single_eq_of_ne hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfrac : ∀ i, IsFractional (𝓞 K)⁰ (LinearMap.range (α (e i)))` using `fun i => FractionalIdeal.isFractional_of_fg (by`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _)`. Set `a : Fin n → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨LinearMap.range (α (e i)), hfrac i⟩`. Establish `ha : ∀ i, a i ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i h`. Establish `h1 : (1 : K) ∈ (a i : Submodule (𝓞 K) K)` using `LinearMap.mem_range.mpr ⟨⟨l (e i), hl (e i)⟩, lineCoef_self _ _ _⟩`. Rewrite `h1` using `[h, FractionalIdeal.coe_zero, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Establish `hψl : ∀ i, ψ (l (e i)) = Pi.single i 1` using `fun i => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ_line i _ (hl (e i))]`. Conclude with `congrArg (Pi.single i) (lineCoef_self _ _ _)`. Establish `hlin : LinearIndependent (𝓞 K) (fun i => l (e i))`. Apply `LinearIndependent.of_comp ψ` to reduce the goal to its premises. Establish `h1 : (ψ ∘ fun i => l (e i)) = fun i => Pi.basisFun K (Fin n) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, hψl, Pi.basisFun_apply]`. Rewrite using `[h1, LinearIndependent.iff_fractionRing (𝓞 K) K]`. Conclude with `(Pi.basisFun K (Fin n)).linearIndependent`. Establish `hinj : Function.Injective ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `hc : ∀ i, comp (e i) v = 0`. Introduce `i`. Establish `h` using `congrFun hv i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hψ_apply, Pi.zero_apply]`. Conclude with `Subtype.ext (lineCoef_eq_zero _ _ _ h)`. Rewrite using `[← hsum v]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `e.surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc i, Submodule.coe_zero]`. Establish `hrange : LinearMap.range ψ = idealLattice a`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[idealLattice, Submodule.mem_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `LinearMap.mem_range.mpr ⟨comp (e i) v, rfl⟩`. Introduce `f hf`. Rewrite `hf` using `[idealLattice, Submodule.mem_pi]`. Establish `h1 : ∀ i, ∃ w : L (e i), α (e i) w = f i` using `fun i => LinearMap.mem_range.mp (hf i (Set.mem_univ i))`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose w hw using h1`. Use `⟨∑ i, (w i : E.carrier), ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ i, ψ (w i) = Pi.single i (f i)` using `fun i => by`. Rewrite using `[hψ_line i _ (w i).2, ← hw i]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [h2]`. Conclude with `Finset.univ_sum_single f`. Establish `hfin : Module.finrank (𝓞 K) E.carrier = n`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 K) (M := E.carrier) le_rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : LinearIndependent K (ψ ∘ f)` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).mp (hf.map' ψ (LinearMap.ker_eq_bot.mpr hinj))`. Simplify using `using h1.fintype_card_le_finrank`. Simplify using `using hlin.fintype_card_le_finrank`. Establish `hlines : ∀ i, (L (e i)).map ψ = idealLattice a ⊓ (Submodule.span K {(Pi.single i 1 : Fin n → K)}).restrictScalars (𝓞 K)`. Introduce `i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `f`. Simplify using `only [Submodule.mem_map, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨hrange ▸ LinearMap.mem_range_self ψ w, α (e i) ⟨w, hw⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ_line i w hw]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Introduce and unpack `⟨hf1, c, rfl⟩`. Establish `hmem : (c • Pi.single i 1 : Fin n → K) i ∈ (a i : Submodule (𝓞 K) K)`. Rewrite `hf1` using `[idealLattice, Submodule.mem_pi]`. Conclude with `hf1 i (Set.mem_univ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `LinearMap.mem_range.mp hmem`. Use `⟨w, w.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ_line i w w.2]`. Rewrite using `[show α (e i) ⟨(w : E.carrier), w.2⟩ = α (e i) w from rfl, hw]`. Use function extensionality and compare the values at `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Establish `hinnerF : ∀ σ (v w : E.carrier), inner ℂ (fibreVec E.metric σ v) (fibreVec E.metric σ w) = (E.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] v) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] w)` using `fun _ _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `d : (K →+* ℂ) → Fin n → ℝ` to `fun σ i => (inner ℂ (fibreVec E.metric σ (l (e i))) (fibreVec E.metric σ (l (e i)))).re`. Establish `hF0 : ∀ σ i, fibreVec E.metric σ (l (e i)) ≠ 0` using `fun σ i => (linearIndependent_fibreVec E.metric σ hlin).ne_zero i`. Establish `hd : ∀ σ i, 0 < d σ i` using `fun σ i => by`. Establish `h` using `(re_inner_self_pos (𝕜 := ℂ)).mpr (hF0 σ i)`. Rewrite `h` using `[RCLike.re_to_complex]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hc : ∀ σ i, d (conjugate σ) i = d σ i` using `fun σ i => by`. Simplify using `only [d, hinnerF]`. Establish `h` using `E.metric.form_conj σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] l (e i)) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] l (e i))`. Rewrite `h` using `[conjMap_tmul, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, Complex.conj_re]`. Establish `hdi : ∀ σ i, inner ℂ (fibreVec E.metric σ (l (e i))) (fibreVec E.metric σ (l (e i))) = ((d σ i : ℝ) : ℂ)` using `fun σ i => by`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[d]`. Simplify using `only [Complex.ofReal_im, hinnerF]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `core_inner_self_im _ _`. Establish `hexp : ∀ σ (v : E.carrier), fibreVec E.metric σ v = ∑ i, σ (ψ v i) • fibreVec E.metric σ (l (e i))`. Introduce `σ v`. Use `conv_lhs => rw [← hsum v]`. Rewrite using `[fibreVec_finset_sum, ← e.sum_comp]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `fibreVec_lineCoef (hr (e i)) (hl (e i)) (hl0 (e i)) σ (comp (e i) v)`. Establish `hmet : ∀ (σ : K →+* ℂ) (v w : E.carrier), (E.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] v) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] w) = star (embVec σ (ψ v)) ⬝ᵥ (diagMetric d σ *ᵥ embVec σ (ψ w))`. Introduce `σ v w`. Rewrite using `[← hinnerF, hexp σ v, hexp σ w, sum_inner]`.
-
-Simplify using `only [inner_sum, inner_smul_left, inner_smul_right]`. Rewrite using `[dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hdi]`.
-
-Simplify using `only [diagMetric, mulVec_diagonal, embVec, Pi.star_apply, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[hinnerF, ho σ (e i) (e j) (e.injective.ne (Ne.symm hji)) _ (hl _) _ (hl _), mul_zero, mul_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`. Conclude with `⟨n, e, a, d, ψ, ha, hd, hc, hinj, hrange, hfin, hlines, hmet⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem S6.LineCoordinates.proof : S6.LineCoordinates.Statement := by
   intro K _ _ E X _ _ L hI hr ho

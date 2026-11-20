@@ -17,7 +17,7 @@ def nF (s : Fin 2 → F) (x : GF F) : ℝ :=
   ∏ᶠ w : Pl F, max ‖pLoc F w (((fun i => algebraMap F (Af F) (s i)) ᵥ* x.val) 0)‖ ‖pLoc F w (((fun i => algebraMap F (Af F) (s i)) ᵥ* x.val) 1)‖
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `center_entries h`. Establish `h0 : γ 0 0 ≠ 0` using `fun e => γ.det_ne_zero (by rw [Matrix.det_fin_two, e, h1]; simp)`. Use `⟨ratU F (Units.mk0 _ h0), Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (Af F) (γ i j) = Matrix.scalar (Fin 2) (algebraMap F (Af F) (γ 0 0)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h1, h2, ← h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jF_center {γ : GL (Fin 2) F} (h : γ ∈ Subgroup.center (GL (Fin 2) F)) : ∃ z, jF F γ = zc F z := by
   obtain ⟨h1, h2, h3⟩ := center_entries h
@@ -27,7 +27,7 @@ theorem jF_center {γ : GL (Fin 2) F} (h : γ ∈ Subgroup.center (GL (Fin 2) F)
   fin_cases i <;> fin_cases j <;> simp [h1, h2, ← h3]
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_center_iff.2 fun g => Units.ext (Matrix.scalar_commute (n := Fin 2) (z : Af F) (fun _ => Commute.all _ _) g.val).symm.eq`.
+A detailed English derivation is pending.
 -/
 theorem zc_center (z : (Af F)ˣ) : zc F z ∈ Subgroup.center (GF F) :=
   Subgroup.mem_center_iff.2 fun g => Units.ext (Matrix.scalar_commute (n := Fin 2) (z : Af F) (fun _ => Commute.all _ _) g.val).symm.eq
@@ -60,7 +60,7 @@ structure IsHolV (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F)
   low : ∀ v, TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.aut, h.level, h.cent, h.wt, h.low⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolV_of {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (h : IsHol k c ω φ) : IsHolV (fun _ => k) c ω φ :=
   ⟨h.aut, h.level, h.cent, h.wt, h.low⟩

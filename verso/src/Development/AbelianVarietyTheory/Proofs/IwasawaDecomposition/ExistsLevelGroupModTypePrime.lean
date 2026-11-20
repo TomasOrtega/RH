@@ -21,13 +21,13 @@ def RedTo (g : Sp E n ≃ₗ[E] Sp E n) (hbar : GL (Fin n) (𝓞 E ⧸ P.asIdeal
 variable {P}
 
 /- English proof (translation)
-Introduce `x _` and use `by rw [Units.val_one, Matrix.one_mulVec]; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RedTo.one : RedTo P (1 : Sp E n ≃ₗ[E] Sp E n) 1 := fun x _ => by
   rw [Units.val_one, Matrix.one_mulVec]; rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← h' x hx] exact h _ ((hg' x).2 hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RedTo.mul {g g' : Sp E n ≃ₗ[E] Sp E n} {a b : GL (Fin n) (𝓞 E ⧸ P.asIdeal)} (hg' : g' ∈ GLint E n P)
     (h : RedTo P g a) (h' : RedTo P g' b) : RedTo P (g * g') (a * b) := fun x hx => by
@@ -35,7 +35,7 @@ theorem RedTo.mul {g g' : Sp E n ≃ₗ[E] Sp E n} {a b : GL (Fin n) (𝓞 E ⧸
   exact h _ ((hg' x).2 hx)
 
 /- English proof (translation)
-Introduce `x hx` and use `by have h1 := h _ (((inv_mem hg : g⁻¹ ∈ GLint E n P) x).2 hx) rw [show g (g⁻¹ x) = x from g.apply_symm_apply x] at h1 rw [h1, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RedTo.inv {g : Sp E n ≃ₗ[E] Sp E n} {a : GL (Fin n) (𝓞 E ⧸ P.asIdeal)} (hg : g ∈ GLint E n P)
     (h : RedTo P g a) : RedTo P g⁻¹ a⁻¹ := fun x hx => by
@@ -54,9 +54,9 @@ def redSub (G : Subgroup (Sp E n ≃ₗ[E] Sp E n)) (hG : G ≤ GLint E n P) : S
 end Red
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[add_assoc, extE_apply, resX_eN]`. Simplify using `only [map_zero, sub_self, add_zero]`. Unfold `Loc.atN Loc.eN`. Use `split_ifs with h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Conclude with `absurd h2 (by simp)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unipotentArg_extendByIdOnLastCoords {E : Type} [Field E] {n : ℕ} (c : ℕ) (κ : (Fin n → E) ≃ₗ[E] (Fin n → E)) :
     Loc.n1Arg (extE c κ) = 0 := by
@@ -72,13 +72,11 @@ theorem unipotentArg_extendByIdOnLastCoords {E : Type} [Field E] {n : ℕ} (c : 
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Establish `hq : ((qOf w : ℕ) : X.E) ≠ 0` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero w`. Unfold `lamYat at hh`. Rewrite `hh` using `[if_pos hw]`. Use `⟨extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ κ, ?_⟩` and prove the remaining obligations. Establish `e : (MulAut.conj h⁻¹).toMonoidHom (extE (cOf R j) κ) = h⁻¹ * extE (cOf R j) κ * h` using `by simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (MulAut.conj h⁻¹).toMonoidHom (extE (cOf R j) κ) ∈ Jat (Pr := Pr) sharp j w`. Rewrite using `[e]`. Establish `hs` using `mul_mem (mul_mem (inv_mem hh) (extE_stab w (qOf w) (cOf R j) (fun i => i + 1) κ hκ)) hh`. Establish `hc` using `conj_cong (qOf w) _ _ h hh (extE_cong w (qOf w) (cOf R j) (fun i => i + 1) hd κ hκ hr)`. Unfold `Jat`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hw]`. Use `split_ifs`. Use `⟨hs, mem_flagU (qOf w) _ _ _ _ _ (fun s => ?_) (fun s x hx => ?_) (fun s => ?_) _ hs hc⟩` and prove the remaining obligations. Conclude with `CongLevel.sclLat_le w _ hq _ _ _`. Conclude with `smul_mem_sclLat w _ hq _ _ _ x hx`.
-
-Conclude with `bvec_mem w _ hq _ _ _`. Use `⟨hs, mem_flagU (qOf w) _ _ _ _ _ (fun s => ?_) (fun s x hx => ?_) (fun s => ?_) _ hs hc⟩` and prove the remaining obligations. Conclude with `CongLevel.sclLat_le w _ hq _ _ _`. Conclude with `smul_mem_sclLat w _ hq _ _ _ x hx`. Conclude with `bvec_mem w _ hq _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem extE_mem_Cbe (sharp : Bool) (j : ℕ) (w : HeightOneSpectrum (𝓞 X.E)) (hw : w ∈ Pr.vGs)
     (hd : ∀ a : X.E, IntAt w a → redP w a = 0 → IntAt w (a / (qOf w : X.E))) (h : AutY X R j)
@@ -107,23 +105,21 @@ theorem extE_mem_Cbe (sharp : Bool) (j : ℕ) (w : HeightOneSpectrum (𝓞 X.E))
     · exact bvec_mem w _ hq _ _ _
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst j P h hc hP hdu hh hle hlam hmul htriv`. Establish `hq : ((qOf P.1 : ℕ) : X.E) ≠ 0` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P.1`. Establish `hd : ∀ a : X.E, IntAt P.1 a → redP P.1 a = 0 → IntAt P.1 (a / (qOf P.1 : X.E))` using `fun a ha h0 => by`. Use `GlobalTheory.TypePrimeUnif.intAt_div_of_notMem_sq P.1 _ (Ideal.absNorm_mem _) hdu.2 a ha h0` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hone : ∀ κ ∈ GLint X.E (R.N j) P.1, (∀ x ∈ stdAt X.E (R.N j) P.1, redV P.1 (κ x) = redV P.1 x) → chiInv Ch sel mu cst j P h (extE (cOf R j) κ) = 1`. Introduce `κ hκ hr`. Unfold `lamYat at hh hlam`. Rewrite `hh`, `hlam` using `[if_pos hP]`. Establish `hcong` using `conj_cong (qOf P.1) _ _ h hh (extE_cong P.1 (qOf P.1) (cOf R j) (fun i => i + 1) hd κ hκ hr)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hlam ((qOf P.1 : X.E)⁻¹ • ((h⁻¹ * extE (cOf R j) κ * h : AutY X R j).toLinearMap - LinearMap.id)) fun x hx => by`. Establish `h2` using `hcong x hx`. Rewrite using `[LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearEquiv.coe_coe]`. Conclude with `h2`. Rewrite `h1` using `[smul_inv_smul₀ hq, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `chiInv`. Rewrite using `[h1, unipotentArg_extendByIdOnLastCoords, hc.psi_int P 0 (by simpa using CongLevel.intAt_nat P.1 0), inv_one, one_mul]`. Take `⟨lam, hl⟩` from `exists_char (H := ↥(redSub P.1 _ hle)) (CAt sel mu cst j P h) (chiInv Ch sel mu cst j P h) (fun r a => ∃ g ∈ GLint X.E (R.N j) P.1, (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g x)) ∧ RedTo P.1 g a.1) hmul.1 hmul.2 (fun ⟨a, g, hg, hga⟩ => by`. Take `⟨r, hr, hrg⟩` from `id hg`. Conclude with `⟨r, hr, g, hle hg, hrg, hga⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by`. Introduce and unpack `r a r' a' ⟨g, hg, h1, h2⟩ ⟨g', hg', h1', h2'⟩`. Use `⟨g * g', mul_mem hg hg', fun x => ?_, RedTo.mul hg' h2 h2'⟩` and prove the remaining obligations. Use `show r (r' _) = _`. Rewrite using `[h1', h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use the proof step `(by`. Introduce and unpack `a r hr r' hr' ⟨g, hg, h1, h2⟩ ⟨g', hg', h1', h2'⟩`. Establish `hκ : g⁻¹ * g' ∈ GLint X.E (R.N j) P.1` using `mul_mem (inv_mem hg) hg'`. Establish `hred : ∀ x ∈ stdAt X.E (R.N j) P.1, redV P.1 ((g⁻¹ * g') x) = redV P.1 x` using `fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RedTo.mul hg' (h2.inv hg) h2' x hx, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hs : extE (cOf R j) (g⁻¹ * g') ∈ CAt sel mu cst j P h` using `extE_mem_Cbe _ j P.1 hP hd h hh _ hκ hred`. Establish `ht : (extE (cOf R j) (g⁻¹ * g'))⁻¹ * (r⁻¹ * r') ∈ CAt sel mu cst j P h` using `mul_mem (inv_mem hs) (mul_mem (inv_mem hr) hr')`. Establish `ht1` using `htriv _ ht fun x => by show (extE (cOf R j) (g⁻¹ * g')).symm (r.symm (r' _)) = _`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.symm_apply_eq, extE_inX, h1, h1']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `congrArg _ (g.apply_symm_apply _).symm`. Establish `e : r' = r * (extE (cOf R j) (g⁻¹ * g') * ((extE (cOf R j) (g⁻¹ * g'))⁻¹ * (r⁻¹ * r')))`. Rewrite using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Establish `h3` using `hmul.2 r hr _ (mul_mem hs ht)`. Rewrite `h3` using `[← e, hmul.2 _ hs _ ht, ht1, hone _ hκ hred, mul_one, mul_one]`.
-
-Conclude with `h3.symm)`. Conclude with `⟨⟨redSub P.1 _ hle, lam⟩, fun _ => Iff.rfl, fun a g r hr h1 h2 => hl a r hr ⟨g, hle ⟨r, hr, h1⟩, h1, h2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_levG : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j), cst.Ok → P.1 ∈ Pr.vGs → GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P.1 → h ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) j P.1) → prCat (Pr := Pr) cst.sharp j P.1 h ≤ GLint X.E (R.N j) P.1 → (∀ y : HomE X.E (R.N j + cOf R j) (R.N j + cOf R j), (∀ x ∈ lamYat (Pr := Pr) (R := R) j P.1, y x ∈ lamYat (Pr := Pr) (R := R) j P.1) → lamRow Ch mu cst.sharp j P.1 (LinearMap.id + (qOf P.1 : X.E) • y) = 1) → ChiMul Ch sel mu cst j P h → ChiTriv Ch sel mu cst j P h → ∃ lev : Lev (𝓞 X.E ⧸ P.1.asIdeal) X.K (R.N j), GrpG sel mu cst j P h lev ∧ ChrG Ch sel mu cst j P h lev := by
   intro X Pr R Ch sel S mu cst j P h hc hP hdu hh hle hlam hmul htriv

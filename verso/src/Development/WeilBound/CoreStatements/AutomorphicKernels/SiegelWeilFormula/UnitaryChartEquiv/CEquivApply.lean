@@ -26,21 +26,21 @@ def cmap (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (X : Mx F E d.m d.n) : κ �
 def cinv (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (c : κ → AF F) : Mx F E d.m d.n := d.cmb fun k => c (τ.symm k)
 
 /- English proof (translation)
-Establish `: (fun k => cmap d τ X (τ.symm k)) = d.crd X` using `funext fun k => by simp [cmap]`. Rewrite using `[cinv, this, cmb_crd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_cmap (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (X : Mx F E d.m d.n) : cinv d τ (cmap d τ X) = X := by
   have : (fun k => cmap d τ X (τ.symm k)) = d.crd X := funext fun k => by simp [cmap]
   rw [cinv, this, cmb_crd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[cmap, cinv, crd_cmb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cmap_cinv (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (c : κ → AF F) : cmap d τ (cinv d τ c) = c := by
   funext k
   simp [cmap, cinv, crd_cmb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[cmap, SD.crd, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cmap_add (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (X Y : Mx F E d.m d.n) :
     cmap d τ (X + Y) = cmap d τ X + cmap d τ Y := by
@@ -48,7 +48,7 @@ theorem cmap_add (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (X Y : Mx F E d.m d.
   simp [cmap, SD.crd, map_add]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `hr` using `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (τ k).2.2).comp (hr.continuous.comp (continuous_id.matrix_elem (τ k).1 (τ k).2.1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_cmap (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) : Continuous (cmap d τ) := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
@@ -57,11 +57,9 @@ theorem cont_cmap (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) : Continuous (cmap 
   exact (continuous_apply (τ k).2.2).comp (hr.continuous.comp (continuous_id.matrix_elem (τ k).1 (τ k).2.1))
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `hr` using `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs`. Use `set h := hr.homeomorph with hh`. Establish `e : ∀ c i j, cinv d τ c i j = h.symm (fun l => c (τ.symm (i, j, l)))` using `fun c i j => by`. Apply `h.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Homeomorph.apply_symm_apply]`. Use function extensionality and compare the values at `l`. Conclude with `congrFun (crd_cmb d (fun k => c (τ.symm k))) (i, j, l)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [e]`.
-
-Conclude with `h.symm.continuous.comp (continuous_pi fun l => continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_cinv (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) : Continuous (cinv d τ) := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
@@ -91,9 +89,7 @@ Both sides reduce to the same expression.
 theorem cEquiv_apply (d : SD σ) {κ : Type} (τ : κ ≃ Ix d) (X : Mx F E d.m d.n) : cEquiv d τ X = cmap d τ X := rfl
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `P` using `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)`. Use `haveI : IsTopologicalRing (AE F E) := P.1`. Use `haveI : BorelSpace (Mx F E d.m d.n) := P.2.2.2.2.2.2.2.1 d.m d.n`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstance`.
-
-Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `ContinuousAddEquiv.isAddHaarMeasure_map ν (cEquiv d τ)`. Establish `h` using `integral_map_equiv (μ := ν) (cEquiv d τ).toHomeomorph.toMeasurableEquiv f`. Conclude with `h.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_haar (d : SD σ) {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (ν : Measure (Mx F E d.m d.n))
     (hν : ν.IsAddHaarMeasure) :

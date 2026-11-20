@@ -9,14 +9,14 @@ namespace PositivityTheory.CW
 namespace NoncommutativeSwapSum
 
 /- English proof (translation)
-Apply the tactic sequence `refine Finset.sum_nbij' Prod.swap Prod.swap ?_ ?_ ?_ ?_ ?_ <;> simp [nc, ne_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma nc_swap {n : ℕ} {M : Type*} [AddCommMonoid M] (ε : Fin n → Bool) (f : Fin n × Fin n → M) :
     ∑ p ∈ nc ε, f p.swap = ∑ p ∈ nc ε, f p := by
   refine Finset.sum_nbij' Prod.swap Prod.swap ?_ ?_ ?_ ?_ ?_ <;> simp [nc, ne_comm]
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `using hS w`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sumS {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (κ : ℂ)
@@ -27,11 +27,11 @@ lemma sumS {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n → 
   simpa using hS w
 
 /- English proof (translation)
-Establish `h1` using `sumS ε E κ hS`. Establish `hc : casimirK ε E * (∑ p ∈ nc ε, E p.1 p.2 * E p.2 p.1) - (∑ p ∈ nc ε, E p.1 p.2 * E p.2 p.1) * casimirK ε E = 0`. Rewrite using `[h1, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite `hc` using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∀ p ∈ nc ε, casimirK ε E * (E p.1 p.2 * E p.2 p.1) - E p.1 p.2 * E p.2 p.1 * casimirK ε E = Z ε E p.1 p.2 * E p.2 p.1 + E p.1 p.2 * Z ε E p.2 p.1`. Introduce `p _`. Simplify using `only [Z]`. Use `noncomm_ring`. Rewrite `hc` using `[Finset.sum_congr rfl h2, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∑ p ∈ nc ε, E p.1 p.2 * Z ε E p.2 p.1 = ∑ p ∈ nc ε, E p.2 p.1 * Z ε E p.1 p.2` using `nc_swap ε (fun p => E p.2 p.1 * Z ε E p.1 p.2)`. Rewrite `hc` using `[h3]`. Conclude with `eq_neg_iff_add_eq_zero.mpr (by rw [add_comm]; exact hc)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma key {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (κ : ℂ)
@@ -57,25 +57,25 @@ lemma key {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ε : Fin n → B
 end NoncommutativeSwapSum
 
 /- English proof (translation)
-Introduce `h0 h1 h3 h6 n ε V _ _ E hM`. Take `⟨_, _, _, h0c⟩` from `h0 n ε V E hM`. Take `⟨_, _, hE1, _, hcomm, hL2, hZ2⟩` from `h1 n ε V E hM`. Take `⟨κ, hκ⟩` from `h3 n ε V E hM`. Establish `hS : ∀ w, ∑ p ∈ nc ε, E p.1 p.2 (E p.2 p.1 w) = (κ : ℂ) • w - casimirK ε E w` using `fun w => (h0c κ hκ w).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWU : (∑ p ∈ nc ε, (E p.2 p.1 * Z ε E p.1 p.2 - Z ε E p.1 p.2 * E p.2 p.1)) ∈ U E 2` using `Submodule.sum_mem _ fun p _ => hcomm 1 2 _ (hE1 _ _) _ (hZ2 _ _)`. Take `⟨C1, hC1, hW1⟩` from `h6 n ε V E hM 2 _ hWU`. Establish `hZZ : ∀ p : Fin n × Fin n, casimirK ε E * Z ε E p.1 p.2 - Z ε E p.1 p.2 * casimirK ε E ∈ U E 3` using `fun p => hcomm 2 2 _ hL2 _ (hZ2 _ _)`. Use `choose Cp hCp0 hCp using fun p => h6 n ε V E hM 3 _ (hZZ p)`. Establish `hCs : 0 ≤ ∑ p ∈ nc ε, Cp p ^ 2` using `Finset.sum_nonneg fun p _ => sq_nonneg _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C1 + ∑ p ∈ nc ε, Cp p ^ 2, by positivity, fun μ v hμ hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hT : (∑ p ∈ nc ε, (E p.2 p.1 * Z ε E p.1 p.2 - Z ε E p.1 p.2 * E p.2 p.1)) = (2 : ℂ) • ∑ p ∈ nc ε, E p.2 p.1 * Z ε E p.1 p.2`. Rewrite using `[Finset.sum_sub_distrib, NoncommutativeSwapSum.key ε E (κ : ℂ) hS, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hWv` using `hW1 μ v hμ hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hWv` using `[Real.sq_sqrt (by linarith), hT, LinearMap.smul_apply, norm_smul]`. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite `hWv` using `[h2]`. Establish `hTsum : ∑ p ∈ nc ε, inner ℂ (E p.1 p.2 v) (Z ε E p.1 p.2 v) = -inner ℂ v ((∑ p ∈ nc ε, E p.2 p.1 * Z ε E p.1 p.2) v)`. Rewrite using `[LinearMap.sum_apply, inner_sum, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hne : ε p.1 ≠ ε p.2` using `(Finset.mem_filter.mp hp).2`. Rewrite using `[hM.uni, adjSign, if_neg hne]`. Simplify using the standard rewrite rules. Establish `hv0` using `norm_nonneg v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTv0` using `norm_nonneg ((∑ p ∈ nc ε, E p.2 p.1 * Z ε E p.1 p.2) v)`. Rewrite using `[hTsum, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hv0` to reduce the goal to its premises. Establish `: 0 ≤ C1 * (1 + μ) * ‖v‖`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_nonneg (mul_nonneg hC1 (by linarith)) hv0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = C1 * (1 + μ) * ‖v‖ ^ 2 := by ring`. Use `_ ≤ (C1 + ∑ p ∈ nc ε, Cp p ^ 2) * (1 + μ) * ‖v‖ ^ 2 := by`. Apply `mul_le_mul_of_nonneg_right _ (sq_nonneg _)` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : Real.sqrt (1 + μ) ^ 2 = 1 + μ` using `Real.sq_sqrt (by linarith)`. Establish `hp : ∀ p ∈ nc ε, ‖(casimirK ε E * Z ε E p.1 p.2 - Z ε E p.1 p.2 * casimirK ε E) v‖ ^ 2 ≤ Cp p ^ 2 * (1 + μ) ^ 3 * ‖v‖ ^ 2`. Introduce `p _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h` using `hCp p μ v hμ hv`. Establish `hm` using `mul_self_le_mul_self (norm_nonneg _) h`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ ≤ (C1 + ∑ p ∈ nc ε, Cp p ^ 2) * (1 + μ) ^ 3 * ‖v‖ ^ 2 := by`. Apply `mul_le_mul_of_nonneg_right _ (sq_nonneg _)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg (by linarith) _)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem a9_of_a0_a1_eigenbasis_a6 : A0 → A1 → CasimirIsRealScalar → A6 → A9 := by
   intro h0 h1 h3 h6 n ε V _ _ E hM

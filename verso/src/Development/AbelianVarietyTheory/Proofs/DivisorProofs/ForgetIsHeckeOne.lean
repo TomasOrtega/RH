@@ -23,7 +23,7 @@ namespace GlobalTheory.LKGeo.ForgetHecke
 variable {p : ℕ} [Fact p.Prime] {D : Datum p}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_latticeVector_eq_nsmul_of_adelic_nsmul p D n hn hp (GlobalTheory.T.int_dvd_of_eq_nat_mul_integralAdeleAwayFromP p n hn hp) z h`.
+A detailed English derivation is pending.
 -/
 theorem lattice_dvd (n : ℕ) (hn : 0 < n) (hp : n.Coprime p) (z : D.La)
     (h : ∃ w ∈ LaHat D, inAf D z = n • w) : ∃ u : D.La, z = n • u :=
@@ -35,13 +35,13 @@ def inAfHom (D : Datum p) : D.La →+ AfP p ⊗[ℚ] VQ D where
   map_add' x y := by simp [inAf, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Simplify using `only [map_one, Nat.cast_one, one_smul, Module.End.one_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`. Use `lattice_dvd n hn hp _ ⟨w, hw, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inAfHom D (x - y) = _`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `inAf D x - inAf D y = _`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Use `⟨inAf D u, AddSubgroup.subset_closure ⟨1, u, fun v => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `(v.1.adicCompletionIntegers ℚ).one_mem`. Both sides reduce to the same expression. Establish `h1 : x = y + n • u` using `by rw [← hu]; abel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `inAfHom D (y + n • u) = inAfHom D y + n • inAfHom D u`. Rewrite using `[map_add, map_nsmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_one_iff {G : HTGroup p} (L : Link D G) (n : ℕ) (hn : 0 < n) (hp : n.Coprime p) (x y : D.La) :
     (∃ w ∈ LaHat D, ((1 : ℕ) : ℤ) • L.actG 1 (inAf D x) = inAf D y + n • w) ↔ ∃ u : D.La, x - y = n • u := by

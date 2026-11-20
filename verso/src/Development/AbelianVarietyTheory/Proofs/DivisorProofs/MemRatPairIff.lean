@@ -13,7 +13,7 @@ def ratPair (F : Type) [Field F] [NumberField F] (κ : Type) :
     (AddMonoidHom.compLeft (algebraMap F (AdeleRing (𝓞 F) F)).toAddMonoidHom κ)).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, z⟩, rfl⟩`. Conclude with `⟨y, z, rfl⟩`. Introduce and unpack `⟨y, z, rfl⟩`. Conclude with `⟨(y, z), rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_ratPair_iff {F : Type} [Field F] [NumberField F] {κ : Type}
     (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :

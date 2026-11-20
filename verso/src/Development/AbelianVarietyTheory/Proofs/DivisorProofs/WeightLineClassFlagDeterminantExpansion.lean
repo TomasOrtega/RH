@@ -11,23 +11,23 @@ noncomputable section
 namespace GlobalTheory.FlagZ.AbelSum
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Simplify using the standard rewrite rules. Establish `hA : ∑ i : Fin N, (-lam i) • F i.castSucc = ∑ l : Fin (N + 1), (if h : (l : ℕ) < N then -lam ⟨l, h⟩ else 0) • F l`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.is_lt, dif_pos, Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true, zero_smul, add_zero, Fin.eta]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hB : ∑ i : Fin N, (-lam i) • F i.succ = ∑ l : Fin (N + 1), (if h : 0 < (l : ℕ) then -lam ⟨(l : ℕ) - 1, by omega⟩ else 0) • F l`. Rewrite using `[Fin.sum_univ_succ, dif_neg (by simp), zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by simp)]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => smul_sub _ _ _, Finset.sum_sub_distrib, hA, hB, ← Finset.sum_sub_distrib]`. Simplify using `only [← sub_smul]`. Rewrite using `[dif_pos hN, dif_pos hN]`. Establish `e0 : (-lam ⟨0, hN⟩) • F 0 = ∑ l : Fin (N + 1), (if l = 0 then -lam ⟨0, hN⟩ else 0) • F l`. Simplify using `[ite_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : lam ⟨N - 1, by omega⟩ • F (Fin.last N) = ∑ l : Fin (N + 1), (if l = Fin.last N then lam ⟨N - 1, by omega⟩ else 0) • F l`. Simplify using `[ite_smul]`. Rewrite using `[e0, e1, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [← add_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `hl` using `l.is_lt`. Distinguish the cases in `h0 : (l : ℕ) = 0`. Establish `: l = 0` using `Fin.ext h0`. Substitute `this` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: (0 : Fin (N + 1)) ≠ Fin.last N` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[this, hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hL : (l : ℕ) = N`. Establish `: l = Fin.last N` using `Fin.ext hL`. Substitute `this` using the available equality. Establish `: Fin.last N ≠ 0` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[this, hN]`. Establish `hne0 : l ≠ 0` using `fun h => h0 (by simp [h])`. Establish `hneL : l ≠ Fin.last N` using `fun h => hL (by simp [h])`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < (l : ℕ)` using `Nat.pos_of_ne_zero h0`. Establish `hlt : (l : ℕ) < N` using `by omega`. Simplify using `only [hne0, hneL, if_false, dif_pos hpos, dif_pos hlt, dif_pos (And.intro hpos hlt)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_neg_smul_sub {G : Type*} [AddCommGroup G] (N : ℕ) (lam : Fin N → ℤ) (F : Fin (N + 1) → G) :
     ∑ i : Fin N, (-lam i) • (F i.castSucc - F i.succ) =
@@ -85,9 +85,9 @@ end GlobalTheory.FlagZ.AbelSum
 namespace GlobalTheory.FlagZ.AbelSum
 
 /- English proof (translation)
-Introduce `ι _ N lam`. Use `⟨fun τ => if h : 0 < N then -lam τ ⟨0, h⟩ else 0, fun τ => if h : 0 < N then lam τ ⟨N - 1, by omega⟩ else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[wtLine, icls_comb, Fintype.sum_prod_type, Fintype.sum_prod_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e (i : Fin N) : (grLine (ι` using `ι) (N := N) (τ, i)).icls = (flDet (ι := ι) (N := N) τ i.castSucc).icls - (flDet (ι := ι) (N := N) τ i.succ).icls := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[grLine, HermLB.icls_tens, HermLB.icls_dual, sub_eq_add_neg]`. Simplify using `only [e]`. Conclude with `sum_neg_smul_sub N (lam τ) fun l => (flDet (ι := ι) (N := N) τ l).icls`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem icls_wtLine_eq_abel : ∀ (ι : Type) [Fintype ι] (N : ℕ) (lam : ι → Fin N → ℤ), ∃ e₀ e₁ : ι → ℤ,
     (wtLine lam).icls = ∑ x : ι × Fin (N + 1), abelExp lam x • (flDet x.1 x.2 : GlobalTheory.HermLB (flStr ι N)).icls +

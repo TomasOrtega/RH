@@ -22,9 +22,9 @@ namespace GlobalTheory.ConeSmallMidJB
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [Model.SoLoc, Model.IsLinBar, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`. Conclude with `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`. Conclude with `⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem soLoc_reG {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a} {V' : Spc F E b} {W₁' : Spc F E (a + b)}
     {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) :
@@ -38,7 +38,7 @@ theorem soLoc_reG {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a}
     exact ⟨h1, ι, ⟨hb, ht, hm⟩, h3⟩
 
 /- English proof (translation)
-Unfold `Model.So`. Rewrite using `[soLoc_reG]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem so_reG {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a} {V' : Spc F E b} {W₁' : Spc F E (a + b)} :
     (reG G₁ V V' W₁').M'.So B.ψ B.τ₁ = G₁.M'.So B.ψ B.τ₁ := by
@@ -47,11 +47,11 @@ theorem so_reG {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {V : Spc F E a} {V
   rfl
 
 /- English proof (translation)
-Introduce `t t' m m' hm hm' h`. Establish `cp : ∀ (s : (AE F E)ˣ) (y : ℝ), ((((absE F E s : ℝ) ^ y : ℝ)) : ℂ) = ((absE F E s : ℝ) : ℂ) ^ (y : ℂ)` using `fun s y => Complex.ofReal_cpow (NNReal.coe_nonneg _) _`. Establish `a2` using `ha t' m' hm' h`. Establish `a3` using `ha t m hm h`. Establish `b2` using `hb t' m' hm' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3` using `hb t m hm h`. Establish `a4` using `ha t' m' hm' (m * h)`. Establish `b4` using `hb t' m' hm' (m * h)`. Simplify using `only [cp] at a2 a3 b2 b3 a4 b4`. Simplify using `only [Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[a4, b4, a2, b2, a3, b3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jrel_of_hasLaw {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {χ χ' : Chr F E} {z z' : ℝ}
     {fa fb : UA σ W.J → ℂ} (ha : HasLaw W₁ H' χ z fa) (hb : HasLaw W₁ H' χ' z' fb) :
@@ -71,7 +71,7 @@ theorem jrel_of_hasLaw {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨jrel_of_hasLaw ha hb, add_comm fb fa ▸ jrel_of_hasLaw hb ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem jrel_both_of_hasLaw {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {χ χ' : Chr F E} {z z' : ℝ}
     {fa fb : UA σ W.J → ℂ} (ha : HasLaw W₁ H' χ z fa) (hb : HasLaw W₁ H' χ' z' fb) :
@@ -80,9 +80,9 @@ theorem jrel_both_of_hasLaw {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
   ⟨jrel_of_hasLaw ha hb, add_comm fb fa ▸ jrel_of_hasLaw hb ha⟩
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `GlobalTheory.T.split_existence hKP F E σ B a b (reG G₁ V V' W₁') X om₁ om₁' hT' e W₂ H₂ i₀ i₁ hH`. Take `⟨⟨fa, fb⟩, ⟨hct, hla, hlb⟩, -⟩` from `h2 Ψ (by rw [so_reG (G₁ := G₁) (V := V) (V' := V') (W₁' := W₁')]; exact hΨ)`. Establish `hj` using `jrel_both_of_hasLaw hla hlb`. Establish `cb : ((((b : ℝ) / 2 : ℝ)) : ℂ) = ((b : ℕ) : ℂ) / 2` using `by push_cast; ring`. Establish `ca : ((((a : ℝ) / 2 : ℝ)) : ℂ) = ((a : ℕ) : ℂ) / 2` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hj` using `[cb, ca]`. Conclude with `⟨fa + fb, hct, hj⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem jb_pol (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {X : Chars F E} {om₁ : Rep σ G₁.V G₁.W}
     {om₁' : Rep σ G₁.V' G₁.W} {V : Spc F E a} {V' : Spc F E b} {W₁' : Spc F E (a + b)}
@@ -101,17 +101,15 @@ theorem jb_pol (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a b : ℕ} {G₁ : Ge
   exact ⟨fa + fb, hct, hj⟩
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G₁ X om₁ om₁' hT V V' W₁' hT' e W₂ H₂ i₀ i₁ hH Ψ hΨ`. Take `⟨Ψs, hΨs, hconv⟩` from `GlobalTheory.T.reconfigured_triple_plane_integral hKP F E σ B a b G₁ X om₁ om₁' hT V V' W₁' hT' e W₂ H₂ i₀ i₁ hH Ψ hΨ`. Distinguish the cases in `hex : ∃ (μ : Measure (unip σ G₁.W H₂)) (𝓕 : Set (unip σ G₁.W H₂)), μ.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ G₁.W.J).subgroupOf (unip σ G₁.W H₂)) 𝓕 μ ∧ μ 𝓕 = 1`. Take `⟨μ₀, 𝓕₀, hμ₀, hF₀, h1₀⟩` from `hex choose cs hcs using fun k => jb_pol hKP hT' hH (Ψs k) (hΨs k) set c : UA σ G₁.W.J → ℂ := fun h => ∫ u in 𝓕₀, G₁.M'.I om₁' Ψ (u.1 * h) ∂μ₀ with hc`. Establish `hlim : ∀ h, Tendsto (fun k => cs k h) atTop (𝓝 (c h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Establish `e1 : (fun k => cs k h) = fun k => ∫ u in 𝓕₀, G₁.M'.I om₁' (Ψs k) (u.1 * h) ∂μ₀`. Use function extensionality and compare the values at `fun k => (hcs k).1 μ₀ 𝓕₀ hμ₀ hF₀ h1₀ h`. Rewrite using `[e1]`. Conclude with `hconv μ₀ 𝓕₀ hμ₀ hF₀ h1₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ : ∀ (χ : Chr F E) (z : ℂ) (χ' : Chr F E) (z' : ℂ), (∀ k, GlobalTheory.ConeSmallMid.JRel W₂ H₂ χ z χ' z' (cs k)) → GlobalTheory.ConeSmallMid.JRel W₂ H₂ χ z χ' z' c`. Introduce `χ z χ' z' hk t t' m m' hm hm' h`. Establish `T` using `((((hlim (m' * (m * h))).sub ((hlim (m * h)).const_mul ((χ' t' : ℂ) * ((absE F E t' : ℝ) : ℂ) ^ z'))).sub ((hlim (m' * h)).const_mul ((χ t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ z))).add ((hlim h).const_mul ((χ t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ z * ((χ' t' : ℂ) * ((absE F E t' : ℝ) : ℂ) …`. Establish `e0 : (fun k => cs k (m' * (m * h)) - (χ' t' : ℂ) * ((absE F E t' : ℝ) : ℂ) ^ z' * cs k (m * h) - (χ t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ z * cs k (m' * h) + (χ t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ z * ((χ' t' : ℂ) * ((absE F E t' : ℝ) : ℂ) ^ z') * cs k h) = fun _ => 0`. Use function extensionality and compare the values at `fun k => hk k t t' m m' hm hm' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `T` using `[e0]`. Conclude with `tendsto_nhds_unique T tendsto_const_nhds`. Use `⟨c, ?_, hJ _ _ _ _ fun k => (hcs k).2.1, hJ _ _ _ _ fun k => (hcs k).2.2⟩` and prove the remaining obligations. Introduce `μ 𝓕 hμ hF h1 h`. Establish `e1 : (fun k => cs k h) = fun k => ∫ u in 𝓕, G₁.M'.I om₁' (Ψs k) (u.1 * h) ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => (hcs k).1 μ 𝓕 hμ hF h1 h`. Establish `T` using `hconv μ 𝓕 hμ hF h1 h`. Rewrite `T` using `[← e1]`. Conclude with `tendsto_nhds_unique (hlim h) T`. Use `⟨0, ?_, fun _ _ _ _ _ _ _ => by simp, fun _ _ _ _ _ _ _ => by simp⟩` and prove the remaining obligations.
-
-Introduce `μ 𝓕 hμ hF h1`. Conclude with `absurd ⟨μ, 𝓕, hμ, hF, h1⟩ hex`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jb_datum : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G₁ : Geo σ a b) (X : Chars F E) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G₁ X om₁ om₁' →
     ∀ (V : Spc F E a) (V' : Spc F E b) (W₁' : Spc F E (a + b)), IsTriple B (reG G₁ V V' W₁') X om₁ om₁' →

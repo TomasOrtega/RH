@@ -26,7 +26,7 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, -⟩` from `polFacts k`. Take `⟨y, hy⟩` from `valuation_surjective (uniformizer k : ValueGroupWithZero k)`. Conclude with `le_antisymm (le_uniformizer_iff.2 h1) (hy ▸ h2 y (hy ▸ uniformizer_lt_one))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem valuation_unif : valuation k (unif k : k) = uniformizer k := by
   obtain ⟨⟨h1, h2⟩, -⟩ := polFacts k
@@ -34,14 +34,14 @@ private theorem valuation_unif : valuation k (unif k : k) = uniformizer k := by
   exact le_antisymm (le_uniformizer_iff.2 h1) (hy ▸ h2 y (hy ▸ uniformizer_lt_one))
 
 /- English proof (translation)
-Use `Nat.card_pos (α := IsLocalRing.ResidueField 𝒪[k])` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem resCard_pos : (0 : ℝ) < (resCard k : ℝ) := by
   have := Nat.card_pos (α := IsLocalRing.ResidueField 𝒪[k])
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hq` using `resCard_pos (k := k)`. Rewrite using `[val_absPow, GlobalTheory.GLDoubling.nabs_unif valuation_unif, Complex.norm_cpow_eq_rpow_re_of_pos (inv_pos.2 hq), Complex.ofReal_re, Real.inv_rpow hq.le, Real.rpow_neg hq.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_absPow_unif (r : ℝ) :
     ‖((absPow k (r : ℂ) (unif k) : ℂˣ) : ℂ)‖ = (resCard k : ℝ) ^ (-r) := by
@@ -51,9 +51,9 @@ private theorem norm_absPow_unif (r : ℝ) :
     Real.rpow_neg hq.le]
 
 /- English proof (translation)
-Establish `e : θ * (θ * absPow k 1)⁻¹ = (absPow k 1)⁻¹`. Rewrite using `[mul_inv, mul_inv_cancel_left]`. Rewrite using `[e]`. Use `⟨isUnram_inv (isUnram_absPow k 1), ?_⟩` and prove the remaining obligations. Establish `hq : (resCard k : ℂ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Nat.card_pos (α := IsLocalRing.ResidueField 𝒪[k])` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, val_absPow, Complex.cpow_one, GlobalTheory.GLDoubling.nabs_unif valuation_unif]`. Use `push_cast`. Conclude with `inv_inv _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem linked (θ : kˣ →* ℂˣ) :
     IsUnram (θ * (θ * absPow k 1)⁻¹) ∧
@@ -71,27 +71,25 @@ private theorem linked (θ : kˣ →* ℂˣ) :
   exact inv_inv _
 
 /- English proof (translation)
-Take `⟨h, δ, Δ, s, hL, hc, hb, hd, ⟨φ⟩⟩` from `PositivityTheory.JsR.localExpBound_holds k N V ρ hs hi hu hg`. Set `D : Fin h → Segment k` to `fun i => (Δ i).nu ((s i : ℝ) : ℂ)`. Establish `hL' : ∀ i, IsLSeg (D i) ((δ i).nu ((s i : ℝ) : ℂ)).rep` using `fun i => GlobalTheory.isLSeg_nu (hL i) _`. Establish `hG : GlobalTheory.Published.GeometricLemma` using `GlobalTheory.geometricLemma_of_filtration GlobalTheory.Laid.bzfin_holds GlobalTheory.geometricLemmaFiltration_holds`. Establish `hs2 : HasSupport ρ (∑ i, (D i).ms)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (fun i => (hL' i).hasSupport) hi (IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG GlobalTheory.Laid.bzfin_holds hs2 hS`. Take `⟨hξ0, hm⟩` from `hξ`. Take `⟨i, -, hi'⟩` from `Multiset.mem_sum.1 (he ▸ hm)`. Establish `hmem : ∀ a : ℕ, a < (D i).len → (D i).first.nu (a : ℂ) ∈ S` using `fun a ha => by`. Rewrite using `[← he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Multiset.mem_sum.2 ⟨i, Finset.mem_univ _, Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨a, ha, rfl⟩)⟩`. Establish `hlen : (D i).len = 1`. Assume the negation of the conclusion as `hne`. Establish `h2 : 1 < (D i).len` using `by have := (D i).len_pos; omega`. Establish `h0` using `hmem 0 (D i).len_pos`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hmem 1 h2`. Rewrite `h0` using `[Nat.cast_zero, IrrGL.nu_zero]`. Rewrite `h3` using `[Nat.cast_one]`. Take `⟨θ, hθ, e⟩` from `GlobalTheory.RoadU.PlainChars.exists_eq_ofChar (D i).first (h1 _ h0)`. Rewrite `h0`, `h3` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (IrrGL.ofChar θ hθ).nu 1 = IrrGL.ofChar (θ * absPow k 1) (hθ.mul (isSmoothChar_absPow _))` using `IrrGL.tw_ofChar _ _ _ _`. Rewrite `h3` using `[e2]`. Conclude with `hun θ ⟨hθ, h0⟩ _ ⟨_, h3⟩ (linked θ).1 (linked θ).2`. Rewrite `hi'` using `[GlobalTheory.SphUnr.ms_eq_singleton hlen, Multiset.mem_singleton]`. Establish `hμ : IsSmoothChar (ξ * absPow k ((-(s i) : ℝ) : ℂ))` using `hξ0.mul (isSmoothChar_absPow _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfirst : (Δ i).first = IrrGL.ofChar (ξ * absPow k ((-(s i) : ℝ) : ℂ)) hμ`. Rewrite using `[← IrrGL.tw_ofChar _ _ hξ0 (isSmoothChar_absPow _)]`. Express the relevant statement in the definitionally equal form `_ = (IrrGL.ofChar ξ hξ0).nu _`. Rewrite using `[hi']`. Express the relevant statement in the definitionally equal form `_ = ((Δ i).first.nu ((s i : ℝ) : ℂ)).nu _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[IrrGL.nu_nu]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hcc : HasCentralChar (Δ i).first.rep (ξ * absPow k ((-(s i) : ℝ) : ℂ))`. Rewrite using `[hfirst]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.LocLanglands.ExtTwist.hasCentralChar_ofChar _ hμ`. Establish `hcen` using `hc i _ hcc (unif k)`. Establish `hlen' : (Δ i).len = 1` using `hlen`. Rewrite `hcen` using `[hlen']`. Simplify using `only [Nat.cast_one, sub_self, mul_zero, zero_div, neg_zero, zero_mul] at hcen`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hn0 : 0 < ‖(((ξ * absPow k ((-(s i) : ℝ) : ℂ)) (unif k) : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `h4 : ‖(((ξ * absPow k ((-(s i) : ℝ) : ℂ)) (unif k) : ℂˣ) : ℂ)‖ = 1`. Break down `Real.log_eq_zero.1 hcen with h | h | h` into its components or cases. Conclude with `absurd h hn0.ne'`. Conclude with `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h4` using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, norm_absPow_unif, neg_neg]`. Establish `hq` using `resCard_pos (k := k)`. Use `⟨s i, hb i, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_neg hq.le]`.
-
-Conclude with `eq_inv_of_mul_eq_one_left h4`.
+A detailed English derivation is pending.
 -/
 private theorem exponent_of_unl [CharZero k] {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth ρ) (hi : ρ.IsIrreducible)
@@ -159,21 +157,21 @@ end Loc
 end UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Introduce `K _ _ _ n hn π`. Take `⟨π₀, t, hu, he⟩` from `CG.exists_isUnitary_twist_absPow (CG.mk π) hn`. Take `⟨π₀, rfl⟩ : ∃ p : CuspSub K n, CG.mk p = π₀` from `⟨π₀.out, Quotient.out_eq π₀⟩`. Set `χ : Formalism.L2.Host.HChar K` to `GlobalTheory.HeckeGal.Model.absPow K (-t)`. Establish `hiso : CG.mk (π.twist χ) = CG.mk π₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : CG.mk (π.twist χ) = (CG.mk π).twist χ` using `rfl`. Rewrite using `[e1, he, ← CG.twist_mul, mul_comm, CG.absPow_neg_mul, CG.twist_one]`. Establish `hU : (π.twist χ).IsUnitary` using `(CG.isUnitary_mk _).1 (hiso ▸ hu)`. Take `⟨a, ha⟩` from `charAbs K χ`. Use `⟨-a, fun v hT hL => ⟨hT, fun s hs ξ hξ => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `hq1 : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm v` after adjusting the coercions. Establish `hres` using `GlobalTheory.LFun.SatBoundGL.resCard_completion v`. Take `⟨s', hs', -, hch, hfst⟩` from `suppTw K n hn π v χ s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ, hsup⟩` from `hs'`. Establish `htor` using `((suppFacts K n hn π v).2.2.1 s hs).1.1 hT`. Establish `h1 : ∀ y ∈ s', y.1 = 1` using `fun y hy => by`. Take `⟨y₀, hy₀, e⟩` from `Multiset.mem_map.1 (hfst ▸ Multiset.mem_map_of_mem Sigma.fst hy)`. Rewrite using `[← e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `htor y₀ hy₀`. Establish `hun : Unl (resCard (v.adicCompletion K)) s'`. Rewrite using `[hres]`. Introduce `ζ hζ ζ' hζ'`. Take `⟨ξ₁, h₁, rfl⟩` from `(hch ζ).1 hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ξ₂, h₂, rfl⟩` from `(hch ζ').1 hζ'`. Establish `e : ξ₁ * χ.loc v * (ξ₂ * χ.loc v)⁻¹ = ξ₁ * ξ₂⁻¹`. Rewrite using `[mul_inv, mul_mul_mul_comm, mul_inv_cancel, mul_one]`. Rewrite using `[e]`. Conclude with `hL s hs ξ₁ h₁ ξ₂ h₂`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e, he1, he2⟩` from `exponent_of_unl σ.ρ σ.smooth σ.irred (GlobalTheory.ResW.isUnitarisable_of_isLocComp_cusp K n _ hn hU v σ hσ) (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp K n _ v σ hσ) s' hsup h1 hun ((hch _).2 ⟨ξ, hξ, rfl⟩)`. Take `⟨-, hav⟩` from `ha v`. Rewrite `he2` using `[hres, MonoidHom.mul_apply, Units.val_mul, norm_mul, hav]`. Establish `hq0 : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by linarith`. Establish `hval : ‖((ξ (unif (v.adicCompletion K)) : ℂˣ) : ℂ)‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ (-a - e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, Real.rpow_add hq0, ← he2, Real.rpow_neg hq0.le a]`. Clear the denominators using the available nonvanishing facts. Take `⟨hl, hr⟩` from `abs_lt.1 he1`. Rewrite using `[hval]`. Conclude with `⟨Real.rpow_lt_rpow_of_exponent_lt hq1 (by linarith), Real.rpow_lt_rpow_of_exponent_lt hq1 (by linarith)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winOf :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinOf := by

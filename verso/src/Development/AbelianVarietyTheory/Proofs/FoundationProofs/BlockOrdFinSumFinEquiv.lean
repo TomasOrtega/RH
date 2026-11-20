@@ -8,9 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.HolDS
 
 /- English proof (translation)
-Use `⟨fun i => by simp, fun j => by simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) hab`. Establish `: a < b` using `hab`. Conclude with `(Fin.strictMono_castAdd q) this`. Conclude with `hab.elim`.
-
-Conclude with `hab.elim`. Establish `: a < b` using `hab`. Conclude with `(Fin.strictMono_natAdd p) this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blockOrd_finSumFinEquiv (p q : ℕ) :
     GlobalTheory.RealPar.BlockOrd (p := p) (q := q) finSumFinEquiv (fun i => (finSumFinEquiv.symm i).isLeft) := by

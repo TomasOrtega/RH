@@ -15,9 +15,9 @@ open scoped TensorProduct Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨S₀, hS₀⟩` from `herm_split σ hCM ψ hψ n d bs ν sdH νi hνi νv hνv`. Take `⟨S₁, hS₁⟩` from `whI_split σ hCM M n d J hJ T bs ψ hψ θ l fr g P lam L₁ L₂ Φ Φf Φv μ haar co std pure prod sdW μi hμi μv hμv z`. Use `(tendsto_UH σ hCM bs n ν _ hI).congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (S₀ ∪ S₁)] with S hS`. Establish `h0 : S₀ ⊆ S` using `fun v hv => hS (Finset.mem_union_left _ hv)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : S₁ ⊆ S` using `fun v hv => hS (Finset.mem_union_right _ hv)`. Rewrite using `[setIntegral_congr_fun (measurableSet_UH σ hCM bs n S) (fun b hb => hS₁ S h1 b hb)]`. Conclude with `hS₀ S h0 _ _ (fun v _ => (hIv v).aestronglyMeasurable)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_core (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M n d : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (T : Matrix (Fin n) (Fin n) E) (bs : Module.Basis (Fin d) F E) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
@@ -56,7 +56,7 @@ theorem factor_core (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M n d : ℕ) (J
   exact hS₀ S h0 _ _ (fun v _ => (hIv v).aestronglyMeasurable)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M n d J T bs ψ ι _ θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν h μi νi μv νv hμi hνi hμv hνv z hI _ hIv`. Conclude with `factor_core σ h.cm M n d J h.herm T bs ψ h.chr θ l fr g P lam L₁ L₂ Φ Φf Φv μ ν h.haar h.co h.std h.pure h.prod h.sdW h.sdH μi νi μv νv hμi hνi hμv hνv z hI hIv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem factorX : FactorX := by
   intro F E _ _ _ _ _ σ M n d J T bs ψ ι _ θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν h μi νi μv νv hμi hνi hμv hνv z hI _ hIv

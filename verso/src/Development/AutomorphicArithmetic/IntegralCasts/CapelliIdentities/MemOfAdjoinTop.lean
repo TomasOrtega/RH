@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `l _ K _ _ S hS j F hF x`. Establish `hx : x ∈ Algebra.adjoin ℚ S` using `hS ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact hF y hy`. Consider the case `algebraMap q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[eq_ratCast, map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem F q`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `add_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul y z _ _ hy hz`. Rewrite using `[map_mul]`. Conclude with `mul_mem hy hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj1.mem_of_adjoin_top.{u_2} :
     ∀ {l : ℕ}

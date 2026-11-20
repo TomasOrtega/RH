@@ -17,7 +17,7 @@ def LateralTheory.EtaleFoundations.cc_twpair : Prop :=
     ∀ (E : Spc) {n m w : ℤ} (h : n + m = w), μ.cup E h = ν.cup E h
 
 /- English proof (translation)
-Substitute `hk hw` using the available equality. Take `⟨h1, h2⟩` from `htw q j i`. Use `h2 (j + i) rfl ν (twPair q j i) hν h1 E (n := m) (m := n) rfl` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LateralTheory.EtaleFoundations.cc_cup_eq_of_twPair (htw : LateralTheory.EtaleFoundations.cc_twpair) (q : ℕ) [NeZero q] (E : Spc) {n m i j : ℤ}
     (a : Ht q E n i) (b : Ht q E m j) (k : ℤ) (hk : j + i = k)
@@ -30,9 +30,9 @@ theorem LateralTheory.EtaleFoundations.cc_cup_eq_of_twPair (htw : LateralTheory.
   rfl
 
 /- English proof (translation)
-Introduce `q _ E n m i j a b`. Take `⟨ν, hν⟩` from `hex (ZMod q) (twPair q i j)`. Establish `hνtw : IsTwPair ν`. Introduce `U ζ`. Use `hν U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, (htw q i j).1 U ζ]`. Simplify using the standard rewrite rules. Establish `e1 : cup q a b = (n * m).negOnePow • ν.cup E (add_comm m n) b a` using `hflip (ZMod q) (twPair q i j) ν hν E rfl (add_comm m n) a b`. Rewrite using `[e1, LateralTheory.EtaleFoundations.cc_cup_eq_of_twPair htw q E a b (i + j) (add_comm j i) ν hνtw (n + m) (add_comm m n)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LateralTheory.EtaleFoundations.etale_twisted_cup_graded_comm_of_flip_and_unique_pairing (hflip : LateralTheory.EtaleFoundations.cc_cup_flip) (hex : LateralTheory.EtaleFoundations.cc_flip_ex)
     (htw : LateralTheory.EtaleFoundations.cc_twpair) : LateralTheory.EtaleFoundations.EtaleTwistedCupProductGradedCommutative := by

@@ -27,9 +27,9 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
 
 /- English proof (translation)
-Establish `h1 : (Formalism.L2.Theta.mt T h⁻¹).map p.π * (Formalism.L2.Theta.mt T h).map p.π = 1`. Rewrite using `[← Matrix.map_mul]`. Simplify using `[Formalism.L2.Theta.mt]`. Establish `h2 : (Formalism.L2.Theta.mt S g⁻¹).map p.π * (Formalism.L2.Theta.mt S g).map p.π = 1`. Rewrite using `[← Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.L2.Theta.mt]`. Unfold `Place.down moved`. Rewrite using `[GlobalTheory.VacMove.actO_eq, Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((Formalism.L2.Theta.mt T h⁻¹).map p.π), h1, Matrix.one_mul, ← Matrix.mul_assoc ((Formalism.L2.Theta.mt S g⁻¹).map p.π), h2, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem down_moved (p : Place D k) (GS : Frame k S.rank Y') (GT : Frame k T.rank Y) (g : GA D S) (h : GA D T) (x : WO S T) :
     p.down (moved p GS g) (moved p GT h) (actO S T g h x) = p.down GS GT x := by
@@ -46,7 +46,7 @@ theorem down_moved (p : Place D k) (GS : Frame k S.rank Y') (GT : Frame k T.rank
     ← Matrix.mul_assoc ((Formalism.L2.Theta.mt S g⁻¹).map p.π), h2, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← coords_down p _ _ hπ LS LT ea eb (map_eq_of_movedTo _ GS hπ _ _ mS) (map_eq_of_movedTo _ GT hπ _ _ mT), down_moved]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_moved (p : Place D k) (GS : Frame k S.rank Y') (GT : Frame k T.rank Y) {π' : Datum.EAf D →+* k}
     (hπ : ∀ a, π' (toEAf D a) = p.π a) {ι ι' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι']
@@ -58,7 +58,7 @@ theorem coords_moved (p : Place D k) (GS : Frame k S.rank Y') (GT : Frame k T.ra
   rw [← coords_down p _ _ hπ LS LT ea eb (map_eq_of_movedTo _ GS hπ _ _ mS) (map_eq_of_movedTo _ GT hπ _ _ mT), down_moved]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => by have := GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ H rwa [GlobalTheory.SplitHecke.actO_inv_actO] at this, GlobalTheory.SplitHecke.isHalf_actO g h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHalf_actO_iff {e : AE D} (g : GA D S) (h : GA D T) (x : WO S T) : IsHalf e (actO S T g h x) ↔ IsHalf e x :=
   ⟨fun H => by
@@ -66,9 +66,9 @@ theorem isHalf_actO_iff {e : AE D} (g : GA D S) (h : GA D T) (x : WO S T) : IsHa
     rwa [GlobalTheory.SplitHecke.actO_inv_actO] at this, GlobalTheory.SplitHecke.isHalf_actO g h⟩
 
 /- English proof (translation)
-Establish `hee : q.e * q.e = q.e` using `q.split.1`. Establish `h1 : q.pr q.e = 1`. Establish `a` using `(ofSplit q).ι_π 1`. Establish `b` using `(ofSplit q).π_ι ((ofSplit q).π 1)`. Rewrite `b` using `[a, mul_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `b`. Use `(hint _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, sub_mul, one_mul, ← map_mul, hee, sub_self, zero_mul]`. Conclude with `zero_mem _`. Rewrite using `[map_mul, hπ, h1, one_mul]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem part_int (q : GlobalTheory.FinPl.SplitPt D k) {π' : Datum.EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = q.pr a)
     (hint : ∀ z : Datum.EAf D, z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔
@@ -86,7 +86,7 @@ theorem part_int (q : GlobalTheory.FinPl.SplitPt D k) {π' : Datum.EAf D →+* k
   · rwa [map_mul, hπ, h1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `sum_mem fun i _ => h i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_part_mem {R R' ι : Type} [CommRing R] [CommRing R'] [Fintype ι] (φ : R →+* R') (A : Subring R') (a : ι → R) (z : R')
     (h : ∀ i, φ (a i) * z ∈ A) : φ (∑ i, a i) * z ∈ A := by
@@ -94,7 +94,7 @@ theorem sum_part_mem {R R' ι : Type} [CommRing R] [CommRing R'] [Fintype ι] (�
   exact sum_mem fun i _ => h i
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[← Finset.sum_coe_sort P, ← Equiv.sum_comp pl]`. Conclude with `Finset.sum_congr rfl fun i _ => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ _ _ (hes _ (pl i).2) (ha i)).1 rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_eq {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {n : ℕ} (a : Fin n → AE D)
     (pl : Fin n ≃ P) (ha : ∀ i, Formalism.L2.NTheta.IsIdemAt (a i) (pl i).1) : e = ∑ i, a i := by
@@ -111,7 +111,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {v : VCom f.c}
 
 /- English proof (translation)
-Use `G.hs` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_first (G : GLoc v) : D.R.k + (G.s + 1) = D.R.r := by
   have := G.hs
@@ -125,11 +125,11 @@ def Red (G : GLoc v) (w : Pl D.host.E) (x : G.S.P.J) (g : GL (Fin D.R.r) (kP w))
       valuation G.k ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (ofSplit G.q).pr (z : D.host.E)) < 1
 
 /- English proof (translation)
-Establish `key : ∀ a b (z : 𝓞 D.host.E), Ideal.Quotient.mk w.asIdeal z = g.val (firstOrd (rank_first G) a) (firstOrd (rank_first G) b) → valuation G.k ((π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (M a b) - (ofSplit G.q).pr (z : D.host.E)) < 1` using `fun a b z hz => by`. Establish `h1 : (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (Formalism.L2.DIV.oToS D.host.F D.host.E z) = (ofSplit G.q).pr (z : D.host.E)` using `hπ (incA D (z : D.host.E))`. Rewrite using `[← h1, ← RingHom.map_sub, ← hred.ker, RingHom.map_sub, Formalism.L2.DIV.resS_oToS, sub_eq_zero]`. Conclude with `(hz.trans (congrFun (congrFun hM a) b)).symm`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (g.val (firstOrd (rank_first G) a) (firstOrd (rank_first G) b))`. Use `Valuation.map_sub_lt _ (h a b _ _ (firstOrd_val _ a) (firstOrd_val _ b) z hz) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `h a b a' b' ha hb z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : a' = firstOrd (rank_first G) a` from `Fin.ext (ha.trans (firstOrd_val _ a).symm)`. Take `rfl : b' = firstOrd (rank_first G) b` from `Fin.ext (hb.trans (firstOrd_val _ b).symm)`. Use `Valuation.map_add_lt _ (h a b) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem red_iff {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) (x : G.S.P.J)
@@ -155,9 +155,9 @@ theorem red_iff {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (h�
     rwa [Matrix.sub_apply, Matrix.map_apply, sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Establish `hL : (pk W).toLevCh.Is W.P.A3.A.μ0` using `hPk.bot.hyp.2.2.2.1.lev`. Establish `hb : (pk W).xi W.P.A3.A.μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi W.P.A3.A.μ0))`. Establish `e : (pk W).toLevCh.mu W.P.A3.A.μ0 = (pk W).mu0` using `funext fun i => by`. Express the relevant statement in the definitionally equal form `(pk W).mu0 i * (pk W).xi W.P.A3.A.μ0 = _`. Rewrite using `[hb, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta j).1 = _`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chS_base (hPk : PkHyp W) (j : ℕ) : (GlobalTheory.BaseChain.com W).chS j = (Lift.chrStep (pk W).mu0 (pk W).eta j).1 := by
   have hL : (pk W).toLevCh.Is W.P.A3.A.μ0 := hPk.bot.hyp.2.2.2.1.lev
@@ -170,7 +170,7 @@ theorem chS_base (hPk : PkHyp W) (j : ℕ) : (GlobalTheory.BaseChain.com W).chS 
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[redM_eq_map _ hN]`. Conclude with `locF_eq (GlobalTheory.FunObj.TieLev.iterPhi_read _ _ _ _ _ hred _ _ _ _ _ _ (firstOrd (rank_first G)) ea eb (isIx_of_isOrd _ ha oa) (isIx_of_isOrd _ hb ob) hr G.S.P G.S.μ G.S.tame χ hχ (Red G w) (red_iff G hπ hred) (Matrix.of fun i j => (⟨N i j, hN i j⟩ : Formalism.L2.Herm.intAf …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_iter {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) {j a b : ℕ}
@@ -187,7 +187,7 @@ theorem locF_iter {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (
     (Matrix.of fun i j => (⟨N i j, hN i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainOnto.chi_compat_of_isComp D _ G.q w.1 hq π' hπ hred (GlobalTheory.BaseChain.com W) (GlobalTheory.BaseChain.com_is W hPk) w.2 c h1 h2 _ (G.S.tame _) (by rw [chS_base hPk]; exact hμ)`.
+A detailed English derivation is pending.
 -/
 theorem chi_compat (hPk : PkHyp W) (G : GLoc v) (w : (pk W).Pg) (hq : Formalism.L2.NTheta.IsIdemAt G.q.e w.1) {π' : Datum.EAf D →+* G.k}
     (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
@@ -200,13 +200,13 @@ theorem chi_compat (hPk : PkHyp W) (G : GLoc v) (w : (pk W).Pg) (hq : Formalism.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `rfl : (G i).s = j` from `GlobalTheory.TopLocData.s_eq (G i) h`. Establish `hq` using `(hGR.idem i).1`. Take `⟨π', hπ, hred, hint, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D _ (G i).q (pl i).1 hq`. Take `⟨ea, ha, mS⟩` from `hGR.frame i ((G i).s + 1) 0 rfl`. Take `⟨eb, hb, mT⟩` from `hGR.frameTop i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hco` using `coords_moved (ofSplit (G i).q) ((G i).FY ((G i).s + 1) 0 rfl) (G i).FT hπ (typeFrame (G i).S.ϖ (stdOrd _ _ ((G i).s + 1) 0 rfl)) (LatFrame.refl _ _) ea eb mS (by rw [show (LatFrame.refl (G i).k _).bas.val = 1 from rfl, Matrix.mul_one]; exact mT) x`. Establish `hP : ((G i).S.T (Fin D.R.t)).PhiTop ((ofSplit (G i).q).down (GlobalTheory.TopLocData.frS (G i) h) (G i).FT x) = (G i).S.P.iterPhi (Fin D.R.t) (G i).S.μ (G i).S.tame ((G i).s + 1) ((N.map π').submatrix eb ea)`. Rewrite using `[hN]`. Conclude with `congrArg ((G i).S.P.iterPhi (Fin D.R.t) (G i).S.μ (G i).S.tame ((G i).s + 1)) hco`. Rewrite using `[hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hz a b => part_int (G i).q hπ hint ?_, fun hI => ?_⟩` and prove the remaining obligations. Simplify using `using TypeDatum.intM_of_Phi_ne_zero _ _ hz ((ixSucc _ _ ((G i).s + 1)).symm (eb.symm a)) (ea.symm b)`. Establish `r1 : (Yc D ((G i).s + 1)).rank = D.R.r + ((G i).s + 1) * D.R.t`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left (by omega)]; rfl`. Establish `r2 : D.sp.X'.rank = D.R.r + ((G i).s + 1 + 1) * D.R.t`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.sp.X'_rank, (G i).hs]`. Both sides reduce to the same expression. Establish `hs` using `(G i).hs`. Conclude with `locF_iter (G i) hπ hred r1 r2 _ ha hb (fun c => (pk W).chi c (pl i).1) (fun c hc => chi_compat hPk (G i) (pl i) hq hπ hred (by omega) (by omega) (hGR.mu i (c + 1) (by omega) (by omega))) hI`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem place (hPk : PkHyp W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n ≃ (pk W).Pg} (hGR : GRead f G pl) (i : Fin n) {j : ℕ}
     (h : j + 2 * 0 + 2 = D.R.m) (x : WO (Yc D (j + 1)) D.sp.X') {N : Matrix (Fin D.sp.X'.rank) (Fin (Yc D (j + 1)).rank) (Datum.EAf D)}
@@ -241,11 +241,11 @@ theorem place (hPk : PkHyp W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n ≃ (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨G', rfl⟩ : ∃ G' : (pk W).Pg → GLoc v, G = fun i => G' (pl i)` from `⟨fun w => G (pl.symm w), funext fun i => congrArg G (pl.symm_apply_apply i).symm⟩`. Establish `hpl` using `fun i => place hPk hGR i h x rfl`. Distinguish the cases in `hx : IsHalf (∑ i, (G' (pl i)).q.e) x`. Use `swap`. Rewrite using `[if_neg hx, if_neg fun H => hx ((isHalf_actO_iff _ _ _).1 H.1)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy` using `(isHalf_actO_iff (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x).2 hx`. Rewrite using `[if_pos hx]`. Distinguish the cases in `hI : IsIntM (frMapO (Yc D (j + 1)) D.sp.X' ((pk W).βY (j + 1)) (pk W).βX (actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x))`. Rewrite using `[if_pos ⟨hy, hI⟩, GlobalTheory.FunObj.Comparison₂.omegaQ_eq_prod, Finset.prod_empty, mul_one, omegaG_eq_prod (r_le_Y (j + 1)) _ _ _ _ _ (fun w => Red (G' w) w.1) (fun w y => (G' w).S.P.lam y) (fun g => (hGR.lev g).1.trans (pl.forall_congr_right (q := fun w => ∃ y, Red (G' w) w.1 …`. Conclude with `Finset.prod_congr rfl fun i _ => (hpl i).2 hI`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg fun H => hI H.2]`. Use `(Finset.prod_eq_zero_iff.2 (by_contra fun hne => hI fun a b => ?_)).symm` and prove the remaining obligations. Establish `h1 : (∑ i, (G' (pl i)).q.e) • actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x = actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x` using `Matrix.ext fun r s => hy r s`. Rewrite using `[← h1, frMapO_smul]`. Conclude with `sum_part_mem _ _ _ _ fun i => (hpl i).1 (fun h0 => hne ⟨i, Finset.mem_univ _, h0⟩) a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datum_eq (hPk : PkHyp W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n ≃ (pk W).Pg} (hGR : GRead f G pl) {j : ℕ}
     (h : j + 2 * 0 + 2 = D.R.m) (x : WO (Yc D (j + 1)) D.sp.X') :
@@ -281,7 +281,7 @@ theorem datum_eq (hPk : PkHyp W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n �
     exact sum_part_mem _ _ _ _ fun i => (hpl i).1 (fun h0 => hne ⟨i, Finset.mem_univ _, h0⟩) a b
 
 /- English proof (translation)
-Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (pk W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).1 (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).2 (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) := by`. Introduce and unpack `n rfl`. Conclude with `W.Q.charW.base.chain.ωX W.P.A3.A.μ0`. Conclude with `⟨_, _, key _ (GlobalTheory.Fam.idx_top h)⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weil_top (W : RealPack ex) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDatumO (pk W).ψ (Yc D (j + 1)) D.sp.X' χS χT
     (omT (pk W) W.P.A3.A.μ0 j h) := by
@@ -298,11 +298,11 @@ end Fam
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT n G pl hGP hGR j h hψ _ _ hΛ hΛX M hM hLT hMv`. Use `⟨1, one_ne_zero, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨hvac, e, he, hθ⟩` from `hd.2`. Take `⟨χS, χT, hWe⟩` from `weil_top W j h`. Establish `hb : f.g.b (j + 1) ∈ GfC _` using `hVT.b (j + 1) ▸ hv.b (j + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb' : f.g.bT ∈ GfC _` using `hVT.bT.1 ▸ hv.bT`. Establish `hcth` using `GlobalTheory.VecTheta.isThetaFunO_stepVec hd.2`. Establish `he' : IsIdemSum e ((pk W).Pg)` using `by simpa only [datY, Finset.union_empty] using he`. Establish `hee : e = ∑ i, (G i).q.e` using `idem_eq he' _ pl fun i => (hGR.idem i).1`. Establish `hmove` using `GlobalTheory.VacMove.isThetaAt_moveLat D f.c.ψ _ _ _ _ _ hWe ((pk W).ΛY (j + 1)) M (pk W).ΛX f.g.LT hΛ hM hΛX hLT _ hb _ hb' (hMv _) (hVT.movesT _) e _ _ _ (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPart_idemSum he) hvac.2.theta hcth hθ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hee` using the available equality. Use `⟨_, ?_, hWe.om_pres _ _ hcth, (one_smul _ _).symm⟩` and prove the remaining obligations. Establish `hfun : prodDat (GlobalTheory.TopLocData.lp hψ hGP h hM hLT) = _` using `funext fun x => (datum_eq hPk hGR h x).symm`. Rewrite using `[hfun]`. Conclude with `hmove`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moved_top_datum : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg) (hGP : GPin G), GRead f G pl → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (hψ : IsStdChar D f.c.ψ (-1)) d₀, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d₀ → IsSelfDualC (Yc D (j + 1)) ((pk W).ΛY (j + 1)) → IsSelfDualC D.sp.X' (pk W).ΛX → ∀ (M : GlobalTheory.FinPl.Lat (Yc D (j + 1))) (hM : IsSelfDualC (Yc D (j + 1)) M) (hLT : IsSelfDualC D.sp.X' f.g.LT), (∀ P, GlobalTheory.FinPl.Moves (Yc D (j + 1)) (f.g.b (j + 1)) ((pk W).ΛY (j + 1)) M P) → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ d, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d → ∃ F, IsThetaAt f.c.ψ (symplO (Yc D (j + 1)) D.sp.X') (heisO f.c.ψ (Yc D (j + 1)) D.sp.X') (∑ i, (GlobalTheory.TopLocData.lp hψ hGP h hM hLT i).q.e) (latO (Yc D (j + 1)) D.sp.X' (M : Set _) (f.g.LT : Set _) fun _ => True) 1 (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) (prodDat (GlobalTheory.TopLocData.lp hψ hGP h hM hLT)) F ∧ IsThetaFunO f.c.ψ (Yc D (j + 1)) D.sp.X' F ∧ omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (comb f.c.ψ _ _ d (vacT (pk W) j h)) = κ • F := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT n G pl hGP hGR j h hψ _ _ hΛ hΛX M hM hLT hMv

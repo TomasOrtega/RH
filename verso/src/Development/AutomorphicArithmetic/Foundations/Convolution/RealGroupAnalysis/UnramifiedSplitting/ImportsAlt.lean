@@ -8,11 +8,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M v ϖ hϖ hg hu hv Wt α β hB hN φ hφ hi`. Use `M.prob` as an intermediate fact. Establish `mp : ∀ p : IdeleGroup F, MeasurePreserving (MeasurableEquiv.prodCongr (MeasurableEquiv.mulRight p) (MeasurableEquiv.refl (G1 F))) M.ν M.ν` using `fun p => (measurePreserving_mul_right (ideleMeasure F) p).prod (MeasurePreserving.id M.κ)`. Establish `hk : ∀ᵐ x ∂M.ν, x.2 ∈ KK F` using `Measure.quasiMeasurePreserving_snd.ae (show ∀ᵐ k ∂M.κ, k ∈ KK F from M.supp)`. Unfold `Meas.I0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e1` using `(mp (idl v ϖ)⁻¹).integral_comp' (iw fun g => Wt (gl g) * hat (W.Om g φ).1 ![0, 1, 1, 0])`. Establish `i1` using `((mp (idl v ϖ)⁻¹).integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hi`. Rewrite using `[← (mp (idl v ϖ)).integral_comp', ← integral_const_mul]`. Use `(integral_congr_ae (hk.mono fun x hx => corePt F E D W v ϖ hϖ hg hu hv Wt α β hB hN φ hφ x.1 x.2 hx)).trans ?_` and prove the remaining obligations. Use `(integral_add (hi.const_mul _) (i1.const_mul _)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_const_mul, integral_const_mul]`. Use `erw [e1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.core :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (v : P F) (ϖ : (Kv v)ˣ), IsU ϖ → Gd D.δ v → W.η.UnrAt v → W.η.val v = -1 →

@@ -17,9 +17,7 @@ def holGe (n p : ℕ) : Submodule ℂ (Alt n) :=
   Submodule.span ℂ (bas n '' {S | p ≤ holCount S})
 
 /- English proof (translation)
-Rewrite using `[holGe, Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h S hS`. Conclude with `h (Finsupp.mem_support_iff.2 hS)`. Introduce `h S hS`.
-
-Conclude with `h S (Finsupp.mem_support_iff.1 hS)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_holGe_iff {n p : ℕ} (β : Alt n) :
     β ∈ holGe n p ↔ ∀ S, (bas n).repr β S ≠ 0 → p ≤ holCount S := by
@@ -31,19 +29,19 @@ theorem mem_holGe_iff {n p : ℕ} (β : Alt n) :
     exact h S (Finsupp.mem_support_iff.1 hS)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ hS => le_trans h hS)`.
+A detailed English derivation is pending.
 -/
 theorem holGe_anti {n p q : ℕ} (h : p ≤ q) : holGe n q ≤ holGe n p :=
   Submodule.span_mono (Set.image_mono fun _ hS => le_trans h hS)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨S, show holCount S ≤ holCount S from le_refl _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bas_mem_holGe {n : ℕ} (S : Finset (Fin (n + n))) : bas n S ∈ holGe n (holCount S) :=
   Submodule.subset_span ⟨S, show holCount S ≤ holCount S from le_refl _, rfl⟩
 
 /- English proof (translation)
-Take `⟨ε, e⟩` from `bas_mul (n := n) (S := {a}) (T := s) (Finset.disjoint_singleton_left.2 h)`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[e, smul_smul, Int.units_mul_self, one_smul, Finset.insert_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bas_insert_eq {n : ℕ} {a : Fin (n + n)} {s : Finset (Fin (n + n))} (h : a ∉ s) :
     ∃ ε : ℤˣ, bas n (insert a s) = ε • (bas n {a} * bas n s) := by
@@ -52,7 +50,7 @@ theorem bas_insert_eq {n : ℕ} {a : Fin (n + n)} {s : Finset (Fin (n + n))} (h 
   rw [e, smul_smul, Int.units_mul_self, one_smul, Finset.insert_eq]
 
 /- English proof (translation)
-Unfold `holCount`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with ha`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holCount_insert {n : ℕ} {a : Fin (n + n)} {s : Finset (Fin (n + n))} (h : a ∉ s) :
     holCount (insert a s) = holCount s + if a.val < n then 1 else 0 := by
@@ -63,7 +61,7 @@ theorem holCount_insert {n : ℕ} {a : Fin (n + n)} {s : Finset (Fin (n + n))} (
   · simp
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective a`. Rewrite using `[bas_singleton]`. Conclude with `ExteriorAlgebra.ι_sq_zero _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_single_mul_self {n : ℕ} (a : Fin (n + n)) : bas n {a} * bas n {a} = 0 := by
   obtain ⟨i, rfl⟩ := finSumFinEquiv.surjective a
@@ -71,9 +69,9 @@ theorem bas_single_mul_self {n : ℕ} (a : Fin (n + n)) : bas n {a} * bas n {a} 
   exact ExteriorAlgebra.ι_sq_zero _
 
 /- English proof (translation)
-Distinguish the cases in `h : a ∈ T`. Take `⟨ε, e⟩` from `bas_insert_eq (Finset.notMem_erase a T)`. Rewrite `e` using `[Finset.insert_erase h]`. Rewrite using `[e, mul_smul_comm, ← mul_assoc, bas_single_mul_self, zero_mul, smul_zero]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, e⟩` from `bas_mul (n := n) (S := {a}) (T := T) (Finset.disjoint_singleton_left.2 h)`. Rewrite using `[e, ← Finset.insert_eq, ← holCount_insert h, Units.smul_def]`. Conclude with `zsmul_mem (bas_mem_holGe _) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_single_mul_bas {n : ℕ} (a : Fin (n + n)) (T : Finset (Fin (n + n))) :
     bas n {a} * bas n T ∈ holGe n (holCount T + if a.val < n then 1 else 0) := by
@@ -87,11 +85,9 @@ theorem bas_single_mul_bas {n : ℕ} (a : Fin (n + n)) (T : Finset (Fin (n + n))
     exact zsmul_mem (bas_mem_holGe _) _
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨T, hT, rfl⟩` from `hx`. Conclude with `holGe_anti (Nat.add_le_add_right hT _) (bas_single_mul_bas a T)`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[mul_smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_single_mul_mem {n : ℕ} (a : Fin (n + n)) {q : ℕ} {y : Alt n} (hy : y ∈ holGe n q) :
     bas n {a} * y ∈ holGe n (q + if a.val < n then 1 else 0) := by
@@ -108,17 +104,17 @@ theorem bas_single_mul_mem {n : ℕ} (a : Fin (n + n)) {q : ℕ} {y : Alt n} (hy
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : holCount (∅ : Finset (Fin (m + m))) = 0` using `by simp [holCount]`. Rewrite using `[bas_empty, map_one, h0, ← bas_empty]`. Conclude with `holGe_anti (Nat.zero_le _) (bas_mem_holGe _)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Take `⟨ε, e⟩` from `bas_insert_eq ha`. Rewrite using `[e, holCount_insert ha, Units.smul_def, map_zsmul, map_mul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bas_singleton]`. Break down `i with i | i` into its components or cases. Establish `hi : (finSumFinEquiv (Sum.inl i : Fin m ⊕ Fin m)).val < m` using `by simp`. Rewrite using `[if_pos hi, show ExteriorAlgebra.ι ℂ (Pi.single (Sum.inl i) 1) = dz (n := m) i from rfl, (pull_dz L i).1, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hb : (finSumFinEquiv (Sum.inl b : Fin n ⊕ Fin n)).val < n` using `by simp`. Use `bas_single_mul_mem (finSumFinEquiv (Sum.inl b)) ih` as an intermediate fact. Rewrite `this` using `[if_pos hb, bas_singleton]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hi : ¬ (finSumFinEquiv (Sum.inr i : Fin m ⊕ Fin m)).val < m` using `by simp`. Rewrite using `[if_neg hi, show ExteriorAlgebra.ι ℂ (Pi.single (Sum.inr i) 1) = dzb (n := m) i from rfl, (pull_dz L i).2, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : ¬ (finSumFinEquiv (Sum.inr b : Fin n ⊕ Fin n)).val < n` using `by simp`. Use `bas_single_mul_mem (finSumFinEquiv (Sum.inr b)) ih` as an intermediate fact. Rewrite `this` using `[if_neg hb, bas_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pull_bas_mem {n m : ℕ} (L : V n →L[ℂ] V m) (S : Finset (Fin (m + m))) :
     pull L (bas m S) ∈ holGe n (holCount S) := by
@@ -154,11 +150,9 @@ theorem pull_bas_mem {n m : ℕ} (L : V n →L[ℂ] V m) (S : Finset (Fin (m + m
       rwa [if_neg hb, bas_singleton] at this
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨S, hS, rfl⟩` from `hx`. Conclude with `holGe_anti hS (pull_bas_mem L S)`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_mem_holGe {n m : ℕ} (L : V n →L[ℂ] V m) {p : ℕ} {β : Alt m} (h : β ∈ holGe m p) :
     pull L β ∈ holGe n p := by

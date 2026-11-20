@@ -17,7 +17,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use `haveI := w.isMaximal`. Use `letI : Field (𝓞 K ⧸ w.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Unfold `plc`. Conclude with `(CharP.char_is_prime_or_zero (𝓞 K ⧸ w.asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal))).resolve_right (CharP.char_ne_zero_of_finite (𝓞 K ⧸ w.asIdeal) _)`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem plc_prime (w : HeightOneSpectrum (𝓞 K)) : (plc w).Prime := by
   haveI := w.isMaximal
@@ -28,7 +28,7 @@ theorem plc_prime (w : HeightOneSpectrum (𝓞 K)) : (plc w).Prime := by
     (CharP.char_ne_zero_of_finite (𝓞 K ⧸ w.asIdeal) _)
 
 /- English proof (translation)
-Unfold `plc`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plc_mem (w : HeightOneSpectrum (𝓞 K)) : ((plc w : ℕ) : 𝓞 K) ∈ w.asIdeal := by
   unfold plc
@@ -36,7 +36,7 @@ theorem plc_mem (w : HeightOneSpectrum (𝓞 K)) : ((plc w : ℕ) : 𝓞 K) ∈ 
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Establish `hspan : (Ideal.span {x} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Unfold `vw`. Rewrite using `[← FractionalIdeal.count_coe K w hspan, FractionalIdeal.coeIdeal_span_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vw_coe_eq_count_factors_span_of_ne_zero (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) :
     vw w (x : K) = ((Associates.mk w.asIdeal).count
@@ -47,16 +47,16 @@ private theorem vw_coe_eq_count_factors_span_of_ne_zero (w : HeightOneSpectrum (
   rw [← FractionalIdeal.count_coe K w hspan, FractionalIdeal.coeIdeal_span_singleton]
 
 /- English proof (translation)
-Rewrite using `[vw_coe_eq_count_factors_span_of_ne_zero w x hx, IsDedekindDomain.HeightOneSpectrum.intValuation_if_neg w hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intValuation_eq_exp' (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) :
     w.intValuation x = WithZero.exp (-(vw w (x : K))) := by
   rw [vw_coe_eq_count_factors_span_of_ne_zero w x hx, IsDedekindDomain.HeightOneSpectrum.intValuation_if_neg w hx]
 
 /- English proof (translation)
-Establish `hm` using `plc_mem w`. Establish `hne : ((plc w : ℕ) : 𝓞 K) ≠ 0` using `by exact_mod_cast (plc_prime w).ne_zero`. Establish `h1` using `(w.intValuation_lt_one_iff_mem _).mpr hm`. Rewrite `h1` using `[intValuation_eq_exp' w _ hne, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Unfold `ramw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_ramw (w : HeightOneSpectrum (𝓞 K)) : 1 ≤ ramw w := by
   have hm := plc_mem w
@@ -68,7 +68,7 @@ theorem one_le_ramw (w : HeightOneSpectrum (𝓞 K)) : 1 ≤ ramw w := by
   omega
 
 /- English proof (translation)
-Unfold `plc`. Set `e` to `Ideal.quotientEquiv w.asIdeal (conjPl w).asIdeal (cO K) rfl`. Use `haveI := ringChar.charP (𝓞 K ⧸ w.asIdeal)`. Use `haveI : CharP (𝓞 K ⧸ (conjPl w).asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal)) := charP_of_injective_ringHom (f := (e : 𝓞 K ⧸ w.asIdeal →+* 𝓞 K ⧸ (conjPl w).asIdeal)) e.injective _`. Conclude with `ringChar.eq _ _`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem plc_conjPl (w : HeightOneSpectrum (𝓞 K)) : plc (conjPl w) = plc w := by
   unfold plc
@@ -80,40 +80,36 @@ theorem plc_conjPl (w : HeightOneSpectrum (𝓞 K)) : plc (conjPl w) = plc w := 
   exact ringChar.eq _ _
 
 /- English proof (translation)
-Unfold `ramw`. Rewrite using `[plc_conjPl, ← (valuation_basic_properties K w).2.1 ((plc w : ℕ) : K), star_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramw_conjPl (w : HeightOneSpectrum (𝓞 K)) : ramw (conjPl w) = ramw w := by
   unfold ramw
   rw [plc_conjPl, ← (valuation_basic_properties K w).2.1 ((plc w : ℕ) : K), star_natCast]
 
 /- English proof (translation)
-Establish `hd0 : (0 : ℝ) < (finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hn0 : ((n : ℕ) : 𝓞 K) ≠ 0` using `by exact_mod_cast hn`. Establish `hI0 : (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩ : ∃ e : HeightOneSpectrum (𝓞 K) → ℕ, ∀ w, e w = (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {((n : ℕ) : 𝓞 K)})).factors` from `⟨_, fun _ => rfl⟩`. Establish `hv : ∀ w, vw w (n : K) = (e w : ℤ)`. Introduce `w`. Establish `h` using `vw_coe_eq_count_factors_span_of_ne_zero w _ hn0`. Rewrite using `[he w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (((n : ℕ) : 𝓞 K) : K) = (n : K)` using `by first`. Consider the case `(push_cast; rfl)`. Consider the case `push_cast`. Consider the case `simp`. Rewrite `h` using `[hc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hdiv : ∀ w : HeightOneSpectrum (𝓞 K), w.asIdeal ^ e w ∣ Ideal.span {((n : ℕ) : 𝓞 K)}`. Introduce `w`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem, ← IsDedekindDomain.HeightOneSpectrum.intValuation_le_pow_iff_mem, IsDedekindDomain.HeightOneSpectrum.intValuation_if_neg w hn0, he w]`. Establish `hdvd : ∏ w ∈ T, w.asIdeal ^ e w ∣ Ideal.span {((n : ℕ) : 𝓞 K)}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `a _ b _ hab show IsCoprime (a.asIdeal ^ e a) (b.asIdeal ^ e b)`. Apply `IsCoprime.pow` to reduce the goal to its premises. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne a.isMaximal b.isMaximal (fun h => hab (HeightOneSpectrum.ext h))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w _`. Conclude with `hdiv w`. Establish `hP0 : Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) ≠ 0`. Rewrite using `[ne_eq, Ideal.absNorm_eq_zero_iff, ← Ideal.zero_eq_bot]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hdvd` using `[h, zero_dvd_iff]`. Conclude with `hI0 hdvd`. Establish `hle : Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) ≤ Ideal.absNorm (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K))`. Apply `Nat.le_of_dvd` to reduce the goal to its premises. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, Ideal.absNorm_eq_zero_iff, ← Ideal.zero_eq_bot]`. Conclude with `hI0`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd hdvd)`. Establish `hnormI : Ideal.absNorm (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) = n ^ finrank ℚ K`. Rewrite using `[Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 K)) n, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Int.natAbs_pow]`. Establish `hNw : ∀ w : HeightOneSpectrum (𝓞 K), (Ideal.absNorm w.asIdeal : ℝ) ≠ 0`. Introduce `w`. Establish `: Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[ne_eq, Ideal.absNorm_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `w.ne_bot`. Conclude with `this` after adjusting the coercions. Establish `hlog : Real.log (Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) : ℝ) = ∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ)`. Rewrite using `[map_prod, Nat.cast_prod, Real.log_prod]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, Nat.cast_pow, Real.log_pow]`. Introduce `w _`. Rewrite using `[map_pow, Nat.cast_pow]`. Conclude with `pow_ne_zero _ (hNw w)`. Establish `hlogle : ∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ) ≤ (finrank ℚ K : ℝ) * Real.log (n : ℝ)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlog, ← Real.log_pow, ← Nat.cast_pow, ← hnormI]`. Apply `Real.log_le_log` to reduce the goal to its premises. Conclude with `Nat.pos_of_ne_zero hP0` after adjusting the coercions. Conclude with `hle` after adjusting the coercions. Establish `hsum : ∑ w ∈ T, lw w * (vw w (n : K) : ℝ) = (∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ)) / (finrank ℚ K : ℝ)`.
-
-Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hv w]`. Unfold `lw`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, div_le_iff₀ hd0, mul_comm (Real.log (n : ℝ))]`. Conclude with `hlogle`.
+A detailed English derivation is pending.
 -/
 theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ) (hn : n ≠ 0) :
     ∑ w ∈ T, lw w * (vw w (n : K) : ℝ) ≤ Real.log (n : ℝ) := by
@@ -206,11 +202,11 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Unfold `RamBasic`. Introduce `K _ _ _ w`. Use `⟨plc_prime w, one_le_ramw w, plc_conjPl w, ramw_conjPl w, ?_⟩` and prove the remaining obligations. Establish `h1 : (1:ℝ) ≤ (ramw w : ℝ)` using `by exact_mod_cast one_le_ramw w`. Establish `hp : (0:ℝ) < (plc w : ℝ)` using `by exact_mod_cast (plc_prime w).pos`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ellw`. Rewrite using `[div_pow, Real.sq_sqrt (by linarith)]`. Establish `h2 : (ramw w : ℝ) ≠ 0` using `by linarith`. Establish `h3 : (plc w : ℝ) ≠ 0` using `hp.ne'`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ramified_basic_bound : RamBasic := by
   unfold RamBasic
@@ -227,13 +223,13 @@ theorem ramified_basic_bound : RamBasic := by
     | field_simp
 
 /- English proof (translation)
-Unfold `PlaceSum`. Introduce `K _ _ _ S X hX`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (fun w hw => Finset.mem_image_of_mem plc hw)]`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hp0 : p ≠ 0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w, -, hw⟩` from `Finset.mem_image.mp hp`. Rewrite using `[← hw]`. Conclude with `(plc_prime w).ne_zero`. Establish `e : ∑ w ∈ S with plc w = p, lw w * ((ramw w : ℝ) * X (plc w)) = (∑ w ∈ S with plc w = p, lw w * (vw w (p : K) : ℝ)) * X p`. Rewrite using `[Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `h4 : plc w = p` using `(Finset.mem_filter.mp hw).2`. Unfold `ramw`. Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (sum_lw_vw_natCast_le _ p hp0) (hX p)`.
+A detailed English derivation is pending.
 -/
 theorem place_sum : PlaceSum := by
   unfold PlaceSum

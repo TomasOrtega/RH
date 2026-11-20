@@ -15,7 +15,7 @@ section Models
 variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
 
 /- English proof (translation)
-Introduce `γ hγ g`. Take `⟨γ', hγ', he⟩` from `hd γ hγ g`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he, hm.1, hm.2.2.1 γ hγ, one_mul]`. Conclude with `congrArg (mu g * ·) (hP g γ' hγ')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adel_leftInv_of_inv {X : Comp → Data E r} (V : HSp D) (dict : GA D V → Σ k, Frame (X k).Ψ r)
     (mu : GA D V → ℂ) (P : FDSec X)
@@ -30,7 +30,7 @@ theorem adel_leftInv_of_inv {X : Comp → Data E r} (V : HSp D) (dict : GA D V �
   exact congrArg (mu g * ·) (hP g γ' hγ')
 
 /- English proof (translation)
-The claim follows from `adel_leftInv_of_inv V dict mu P hd hm fun g γ' hγ' => by rw [hΓ _ γ' hγ' _ (hdom g), hχ _ γ' hγ', one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem adel_leftInv_of_chi {X : Comp → Data E r} (V : HSp D) (dict : GA D V → Σ k, Frame (X k).Ψ r)
     (mu : GA D V → ℂ) (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X)
@@ -61,9 +61,9 @@ def SecGen (U : Unf Xo c σ r) : Prop :=
 variable (U : Unf Xo c σ r)
 
 /- English proof (translation)
-Establish `h2 : (n + m) / 2 = n / 2 + m / 2`. Take `⟨x, rfl⟩` from `hn`. Take `⟨y, rfl⟩` from `hm`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `τ j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [laU, Pi.add_apply, h2]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem laU_add_even (a b : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (hn : Even n) (hm : Even m) (k : U.Comp) :
     laU U (a + b) (n + m) k = laU U a n k + laU U b m k := by
@@ -76,13 +76,13 @@ theorem laU_add_even (a b : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (hn : Even
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun τ _ _ hij => Nat.add_le_add (ha.1 τ hij) (hb.1 τ hij), ha.2.add hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dom.add' {a b : (E →+* ℂ) × ℕ → ℕ} {n m : ℕ} (ha : Dom a n) (hb : Dom b m) : Dom (a + b) (n + m) :=
   ⟨fun τ _ _ hij => Nat.add_le_add (ha.1 τ hij) (hb.1 τ hij), ha.2.add hb.2⟩
 
 /- English proof (translation)
-The claim follows from `(hU.2.2.2.2.1 a n hdn f hf k).2.2`.
+A detailed English derivation is pending.
 -/
 theorem rdU_lact (hU : IsUnf U) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n) {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) (k : U.Comp) :
@@ -90,9 +90,9 @@ theorem rdU_lact (hU : IsUnf U) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hd
   (hU.2.2.2.2.1 a n hdn f hf k).2.2
 
 /- English proof (translation)
-Establish `e1` using `rdU_lact U hU hdn hf k γ hγ x hx`. Rewrite `e1` using `[hR a n hdn f hf k γ hγ x hx]`. Establish `e2 : ((U.X k).χ (laU U a n k) γ - 1) * rdU U f k x = 0`. Rewrite using `[sub_mul, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 e2).resolve_right h0)`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_one_of_read (hU : IsUnf U) (hR : RdInvG U) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n)
     {f : Rul Xo c} (hf : f ∈ sec Xo c a n) {k : U.Comp} {γ : GL (Fin r) E} (hγ : γ ∈ (U.X k).Γ)
@@ -105,9 +105,9 @@ theorem chi_eq_one_of_read (hU : IsUnf U) (hR : RdInvG U) {a : (E →+* ℂ) × 
   exact sub_eq_zero.1 ((mul_eq_zero.1 e2).resolve_right h0)
 
 /- English proof (translation)
-Introduce `a n hdn k γ hγ`. Take `⟨b, m, hbm, ⟨f1, hf1, x1, hx1, h1⟩, ⟨f2, hf2, x2, hx2, h2⟩⟩` from `hS a n hdn k`. Establish `e1` using `chi_eq_one_of_read U hU hR hbm hf1 hγ hx1 h1`. Establish `e2` using `chi_eq_one_of_read U hU hR (Dom.add' hdn hbm) hf2 hγ hx2 h2`. Rewrite `e2` using `[laU_add_even U a b n m hdn.2 hbm.2 k, (U.X k).χ_add _ _ γ hγ, e1, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e2`.
+A detailed English derivation is pending.
 -/
 theorem chiTriv_of (hU : IsUnf U) (hR : RdInvG U) (hS : SecGen U) :
     ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1 := by
@@ -119,7 +119,7 @@ theorem chiTriv_of (hU : IsUnf U) (hR : RdInvG U) (hS : SecGen U) :
   exact e2
 
 /- English proof (translation)
-Introduce `a n hdn f hf k γ hγ x hx`. Rewrite using `[rdU_lact U hU hdn hf k γ hγ x hx, hχ a n hdn k γ hγ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdInvG_of_chi (hU : IsUnf U)
     (hχ : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1) : RdInvG U := by
@@ -130,7 +130,7 @@ variable {D : D7} (V : HSp D) (dict : GA D V → Σ k, Frame (U.X k).Ψ r) (mu :
   (Kf : Subgroup (GA D V)) (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hr : V.rank = r)
 
 /- English proof (translation)
-The claim follows from `adel_leftInv_of_chi V dict mu (laU U a n) (rdU U f) hd.1 hd.2.2.2.1 hm (rdU_lact U hU hdn hf) hχ`.
+A detailed English derivation is pending.
 -/
 theorem rdU_leftInv (hU : IsUnf U) (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n)
@@ -139,7 +139,7 @@ theorem rdU_leftInv (hU : IsUnf U) (hd : DictIsUnif V dict Kf th hr) (hm : MuUni
   adel_leftInv_of_chi V dict mu (laU U a n) (rdU U f) hd.1 hd.2.2.2.1 hm (rdU_lact U hU hdn hf) hχ
 
 /- English proof (translation)
-The claim follows from `adel_leftInv_of_inv V dict mu (rdU U f) hd.1 hm fun g γ' hγ' => hR a n hdn f hf _ γ' hγ' _ (hd.2.2.2.1 g)`.
+A detailed English derivation is pending.
 -/
 theorem rdU_leftInv_of_rdInvG (hR : RdInvG U) (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n) {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
@@ -153,7 +153,7 @@ namespace Core
 variable {D : D7} (T : Core D)
 
 /- English proof (translation)
-Introduce `j hj σ hσ` and use `chiTriv_of (T.U j σ) (hunf j hj σ hσ) (hR j hj σ hσ) (hS j hj σ hσ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chiTriv_of_clauses (hunf : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → IsUnf (T.U j σ))
     (hR : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → RdInvG (T.U j σ))
@@ -163,7 +163,7 @@ theorem chiTriv_of_clauses (hunf : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ �
   fun j hj σ hσ => chiTriv_of (T.U j σ) (hunf j hj σ hσ) (hR j hj σ hσ) (hS j hj σ hσ)
 
 /- English proof (translation)
-Take `⟨th, hr, -, hd⟩` from `hdU`. Introduce `γ hγ g`. Unfold `phiAd`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[rdU_leftInv_of_rdInvG (T.U j σ) (T.V j σ) (T.dict j σ) (T.mu j σ) (T.Kf j σ) th hr hR hd hm hdn hf γ hγ g]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiAd_leftInv_of_rdInvG {j : ℕ} {σ : T.Q.c.F →+* ℂ} (hR : RdInvG (T.U j σ))
     (hdU : ∃ th hr, (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧ DictIsUnif (T.V j σ) (T.dict j σ) (T.Kf j σ) th hr)
@@ -179,7 +179,7 @@ theorem phiAd_leftInv_of_rdInvG {j : ℕ} {σ : T.Q.c.F →+* ℂ} (hR : RdInvG 
 end Core
 
 /- English proof (translation)
-The claim follows from `T.phiAd_leftInv_of_rdInvG (rdInvG_of_chi (T.U j σ) (h.unf j hj σ hσ) (h.chiTriv j hj σ hσ)) (h.dictU j hj σ hσ) (h.muUnit j hj σ hσ) hdn hf`.
+A detailed English derivation is pending.
 -/
 theorem LawsM.phiAd_leftInv {D : D7} {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+* ℂ}
     (hσ : GoodEmb T.Q.c σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n) {f : T.R j}
@@ -190,7 +190,7 @@ theorem LawsM.phiAd_leftInv {D : D7} {T : Core D} (h : LawsM T) {j : ℕ} (hj : 
     (h.muUnit j hj σ hσ) hdn hf
 
 /- English proof (translation)
-The claim follows from `h.phiAd_leftInv hj hσ hdn (cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) a n hf)`.
+A detailed English derivation is pending.
 -/
 theorem LawsM.phiAd_leftInv_cusp {D : D7} {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j)
     {σ : T.Q.c.F →+* ℂ} (hσ : GoodEmb T.Q.c σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hdn : Dom a n)

@@ -23,16 +23,16 @@ variable {V : Submodule ℝ 𝔸} {G : Type*} [Group G] [TopologicalSpace G] (C 
 def expG (X : V) : G := (C.H1 X).choose
 
 /- English proof (translation)
-The claim follows from `(C.H1 X).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mat_expG (X : V) : C.mat (C.expG X) = exp (X : 𝔸) := (C.H1 X).choose_spec
 
 def img (s : Set V) : Set G := {g | ∃ X ∈ s, C.mat g = exp ((X : V) : 𝔸)}
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, hg⟩`. Use `⟨X, hX, C.emb.injective ?_⟩` and prove the remaining obligations. Rewrite using `[C.mat_expG, hg]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨X, hX, rfl⟩`. Conclude with `⟨X, hX, C.mat_expG X⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem img_eq (s : Set V) : C.img s = C.expG '' s := by
   ext g
@@ -44,9 +44,9 @@ theorem img_eq (s : Set V) : C.img s = C.expG '' s := by
     exact ⟨X, hX, C.mat_expG X⟩
 
 /- English proof (translation)
-Rewrite using `[C.emb.continuous_iff]`. Establish `h : C.mat ∘ C.expG = fun X : V => exp (X : 𝔸)` using `funext C.mat_expG`. Rewrite using `[h]`. Establish `hc : Continuous (fun Z : 𝔸 => exp Z)` using `by first`. Consider the case `exact NormedSpace.exp_continuous (𝕂 := ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (NormedSpace.exp_continuous (𝕂 := ℝ) (𝔸 := 𝔸))`. Consider the case `exact continuous_iff_continuousAt.2 fun Z => (NormedSpace.exp_analytic (𝕂 := ℝ) Z).continuousAt`. Consider the case `exact NormedSpace.exp_continuous`. Conclude with `hc.comp continuous_subtype_val`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expG_cont : Continuous C.expG := by
   rw [C.emb.continuous_iff]
@@ -61,7 +61,7 @@ theorem expG_cont : Continuous C.expG := by
   exact hc.comp continuous_subtype_val
 
 /- English proof (translation)
-Take `⟨ε, hε, h⟩` from `Metric.eventually_nhds_iff.1 ((logA_exp (𝔸 := 𝔸)).and C.H2)`. Conclude with `⟨ε, hε, fun Z hZ => h (by simpa [dist_zero_right] using hZ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rho : ∃ ρ > 0, ∀ Z : 𝔸, ‖Z‖ < ρ →
     logA 𝔸 (exp Z) = Z ∧ ((∃ g, C.mat g = exp Z) → Z ∈ V) := by
@@ -72,9 +72,9 @@ variable {ρ : ℝ} (hR : ∀ Z : 𝔸, ‖Z‖ < ρ → logA 𝔸 (exp Z) = Z �
 
 include hR in
 /- English proof (translation)
-Introduce `X hX Y hY hXY`. Establish `h1 : exp (X : 𝔸) = exp (Y : 𝔸)`. Rewrite using `[← C.mat_expG, ← C.mat_expG, hXY]`. Establish `hXn : ‖(X : 𝔸)‖ < ρ` using `by simpa using hX`. Establish `hYn : ‖(Y : 𝔸)‖ < ρ` using `by simpa using hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← (hR _ hXn).1, ← (hR _ hYn).1, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem injOn : InjOn C.expG (ball (0 : V) ρ) := by
   intro X hX Y hY hXY
@@ -90,7 +90,7 @@ variable [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
 
 include hR in
 /- English proof (translation)
-Use `haveI : T2Space G := C.emb.t2Space`. Use `haveI : CompleteSpace V := FiniteDimensional.complete ℝ V`. Conclude with `hs.image_of_continuousOn_injOn C.expG_cont.continuousOn ((C.injOn hR).mono hsub)`.
+A detailed English derivation is pending.
 -/
 theorem meas_image {s : Set V} (hs : MeasurableSet s) (hsub : s ⊆ ball 0 ρ) :
     MeasurableSet (C.expG '' s) := by
@@ -105,13 +105,13 @@ variable (μ : Measure G)
 
 include hR in
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[Measure.map_apply measurable_subtype_coe hs]`. Establish `hf : Function.Injective (fun x : ball (0 : V) ρ => C.expG x.1)` using `fun a b h => Subtype.ext (C.injOn hR a.2 b.2 h)`. Establish `hfm : ∀ t : Set (ball (0 : V) ρ), MeasurableSet t → MeasurableSet ((fun x : ball (0 : V) ρ => C.expG x.1) '' t)`. Introduce `t ht`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (fun x : ball (0 : V) ρ => C.expG x.1) '' t = C.expG '' (Subtype.val '' t)`. Rewrite using `[Set.image_image]`. Rewrite using `[h1]`. Conclude with `C.meas_image hR (MeasurableSet.subtype_image measurableSet_ball ht) (by rintro _ ⟨x, -, rfl⟩; exact x.2)`. Rewrite using `[Measure.comap_apply _ hf hfm μ (measurable_subtype_coe hs)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.1, ⟨hx, x.2⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨X, ⟨hXs, hXb⟩, rfl⟩`. Conclude with `⟨⟨X, hXb⟩, hXs, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nu_apply {s : Set V} (hs : MeasurableSet s) :
     C.nu ρ μ s = μ (C.expG '' (s ∩ ball 0 ρ)) := by
@@ -140,7 +140,7 @@ variable [IsTopologicalGroup G] [μ.IsHaarMeasure]
 
 include hR in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[C.nu_apply hR μ MeasurableSet.univ, Set.univ_inter]`. Establish `hK : IsCompact (C.expG '' closedBall (0 : V) ρ)` using `(isCompact_closedBall 0 ρ).image C.expG_cont`. Conclude with `lt_of_le_of_lt (measure_mono (Set.image_mono ball_subset_closedBall)) hK.measure_lt_top`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nu_finite : IsFiniteMeasure (C.nu ρ μ) := by
   constructor
@@ -150,17 +150,15 @@ theorem nu_finite : IsFiniteMeasure (C.nu ρ μ) := by
 
 include hR in
 /- English proof (translation)
-Establish `ht : 0 < min r ρ` using `lt_min hr hρ`. Establish `hcont : ContinuousAt (logA 𝔸) 1` using `(hasStrict_logA (𝔸 := 𝔸)).hasFDerivAt.continuousAt`. Establish `hlim : Tendsto (logA 𝔸) (𝓝 1) (𝓝 0)`. Establish `h` using `hcont.tendsto`. Rewrite `h` using `[logA_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hev : ∀ᶠ h in 𝓝 (1 : 𝔸), exp (logA 𝔸 h) = h ∧ ‖logA 𝔸 h‖ < min r ρ`. Use `(exp_logA (𝔸 := 𝔸)).and ?_` and prove the remaining obligations. Use `filter_upwards [(Metric.tendsto_nhds.1 hlim) _ ht] with h hh`. Simplify `hh` using `[dist_zero_right]`. Take `⟨W, hWsub, hWo, hW1⟩` from `_root_.mem_nhds_iff.1 hev`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUo : IsOpen (C.mat ⁻¹' W)` using `hWo.preimage C.emb.continuous`. Establish `hU1 : (1 : G) ∈ C.mat ⁻¹' W` using `by show C.mat 1 ∈ W`. Rewrite using `[map_one]`. Conclude with `hW1`. Establish `hsub : C.mat ⁻¹' W ⊆ C.expG '' (closedBall 0 r ∩ ball 0 ρ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨he, hn⟩` from `hWsub hg`. Establish `hZρ : ‖logA 𝔸 (C.mat g)‖ < ρ` using `lt_of_lt_of_le hn (min_le_right _ _)`. Establish `hZV : logA 𝔸 (C.mat g) ∈ V` using `(hR _ hZρ).2 ⟨g, he.symm⟩`. Use `⟨⟨logA 𝔸 (C.mat g), hZV⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `le_of_lt (lt_of_lt_of_le hn (min_le_left _ _))`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `hZρ`. Apply `C.emb.injective` to reduce the goal to its premises.
-
-Rewrite using `[C.mat_expG]`. Conclude with `he`. Rewrite using `[C.nu_apply hR μ measurableSet_closedBall]`. Conclude with `lt_of_lt_of_le (hUo.measure_pos μ ⟨1, hU1⟩) (measure_mono hsub)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_pos (hρ : 0 < ρ) (r : ℝ) (hr : 0 < r) : 0 < C.nu ρ μ (closedBall (0 : V) r) := by
   have ht : 0 < min r ρ := lt_min hr hρ
@@ -196,31 +194,29 @@ theorem nu_pos (hρ : 0 < ρ) (r : ℝ) (hr : 0 < r) : 0 < C.nu ρ μ (closedBal
 
 include hR in
 /- English proof (translation)
-Take `⟨κ, hκ, hd⟩` from `distortion (𝔸 := 𝔸) (half_pos hε0)`. Use `⟨min κ ρ / 3, by positivity, ?_⟩` and prove the remaining obligations. Introduce `X hX r hr0 hrδ`. Establish `hm1 : min κ ρ ≤ κ` using `min_le_left _ _`. Establish `hm2 : min κ ρ ≤ ρ` using `min_le_right _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXn : ‖(X : 𝔸)‖ < min κ ρ / 3` using `hX`. Establish `hX0 : 0 ≤ ‖(X : 𝔸)‖` using `norm_nonneg _`. Establish `hmul : ∀ a b : G, C.mat (a * b) = C.mat a * C.mat b` using `fun a b => map_mul _ _ _`. Prove the components needed by the constructor for the conclusion. Rewrite using `[C.nu_apply hR μ measurableSet_closedBall, C.nu_apply hR μ measurableSet_closedBall, ← measure_smul μ (C.expG (-X))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply `measure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨Y, ⟨hY1, hY2⟩, rfl⟩, rfl⟩`. Establish `hW : ‖(Y : 𝔸) - X‖ ≤ (1 - ε) * r`. Rewrite `hY1` using `[mem_closedBall_iff_norm]`. Conclude with `hY1`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hW0 : 0 ≤ ‖(Y : 𝔸) - X‖` using `norm_nonneg _`. Establish `hWk : ‖(Y : 𝔸) - X‖ < κ` using `by nlinarith`. Take `⟨⟨he, hn⟩, -⟩` from `hd X ((Y : 𝔸) - X) (by linarith) hWk`. Establish `hXY : (X : 𝔸) + ((Y : 𝔸) - X) = Y` using `by abel`. Rewrite `he` using `[hXY]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `norm_sub_norm_le (F1 ((X : 𝔸), (Y : 𝔸) - X)) ((Y : 𝔸) - X)`. Establish `hp : (1 + ε / 2) * ‖(Y : 𝔸) - X‖ ≤ (1 + ε / 2) * ((1 - ε) * r)` using `mul_le_mul_of_nonneg_left hW (by linarith)`. Establish `hq : (1 + ε / 2) * ((1 - ε) * r) ≤ r`. Use polynomial arithmetic with `[mul_pos hε0 hr0, mul_pos (mul_pos hε0 hε0) hr0]`. Establish `hZn : ‖F1 ((X : 𝔸), (Y : 𝔸) - X)‖ ≤ r` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZρ : ‖F1 ((X : 𝔸), (Y : 𝔸) - X)‖ < ρ` using `by linarith`. Establish `hex : exp (F1 ((X : 𝔸), (Y : 𝔸) - X)) = C.mat (C.expG (-X) * C.expG Y)`. Rewrite using `[hmul, C.mat_expG, C.mat_expG, he, Submodule.coe_neg]`. Establish `hZV` using `(hR _ hZρ).2 ⟨_, hex.symm⟩`. Use `⟨⟨_, hZV⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `hZn`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `hZρ`. Apply `C.emb.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[C.mat_expG]`. Conclude with `hex`. Rewrite using `[C.nu_apply hR μ measurableSet_closedBall, C.nu_apply hR μ measurableSet_closedBall, ← measure_smul μ (C.expG X)]`. Apply `measure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨Z, ⟨hZ1, hZ2⟩, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hZ : ‖(Z : 𝔸)‖ ≤ r`. Rewrite `hZ1` using `[mem_closedBall_zero_iff]`. Conclude with `hZ1`. Establish `hZ0 : 0 ≤ ‖(Z : 𝔸)‖` using `norm_nonneg _`. Take `⟨-, ⟨he, hn⟩⟩` from `hd X Z (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `norm_sub_norm_le (F2 ((X : 𝔸), (Z : 𝔸)) - X) (Z : 𝔸)`. Establish `hp : ε / 2 * ‖(Z : 𝔸)‖ ≤ ε / 2 * r` using `mul_le_mul_of_nonneg_left hZ (by linarith)`. Establish `hq : ε * r ≤ r` using `by nlinarith [mul_pos hε0 hr0]`. Establish `hYX : ‖F2 ((X : 𝔸), (Z : 𝔸)) - X‖ ≤ (1 + ε) * r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `norm_le_insert' (F2 ((X : 𝔸), (Z : 𝔸))) (X : 𝔸)`. Establish `hYρ : ‖F2 ((X : 𝔸), (Z : 𝔸))‖ < ρ` using `by linarith`. Establish `hex : exp (F2 ((X : 𝔸), (Z : 𝔸))) = C.mat (C.expG X * C.expG Z)`. Rewrite using `[hmul, C.mat_expG, C.mat_expG, he]`. Establish `hYV` using `(hR _ hYρ).2 ⟨_, hex.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hYV⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_iff_norm]`. Conclude with `hYX`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `hYρ`.
-
-Apply `C.emb.injective` to reduce the goal to its premises. Rewrite using `[C.mat_expG]`. Conclude with `hex`.
+A detailed English derivation is pending.
 -/
 theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ δ > 0, QInv (C.nu ρ μ) ε δ := by
   obtain ⟨κ, hκ, hd⟩ := distortion (𝔸 := 𝔸) (half_pos hε0)
@@ -294,15 +290,13 @@ theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ 
       exact hex
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hR⟩` from `C.exists_rho`. Use `haveI := C.nu_finite hR μ`. Take `⟨c, hc0, hctop, hup, hdown⟩` from `Formalism.BasicNotions.Examples₂.CD.exists_density (nu := C.nu ρ μ) (lam := lam) (fun ε h0 h1 => C.nu_qinv hR μ hρ ε h0 h1) (fun r hr => C.nu_pos hR μ hρ r hr)`. Use `⟨c, hc0, hctop, fun S hS hsmall hlam => ?_⟩` and prove the remaining obligations. Establish `key : ∀ δ > 0, ∀ᶠ r in 𝓝[>] (0 : ℝ), S r ⊆ ball 0 δ ∧ S r ⊆ ball 0 ρ ∧ lam (S r) ≠ 0 ∧ lam (S r) ≠ ⊤` using `fun δ hδ => (((hsmall δ hδ).and (hsmall ρ hρ)).and hlam).mono fun r h => ⟨h.1.1, h.1.2, h.2.1, h.2.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∀ r, S r ⊆ ball 0 ρ → μ (C.img (S r)) = C.nu ρ μ (S r)`. Introduce `r hr`. Rewrite using `[C.img_eq, C.nu_apply hR μ (hS r), Set.inter_eq_left.2 hr]`. Use `tendsto_order.2 ⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨C', haC', hC'c⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hδs⟩` from `hdown C' hC'c`. Use `filter_upwards [key δ hδ] with r hr`. Take `⟨h1, h2, h3, h4⟩` from `hr`. Rewrite using `[heq r h2]`. Conclude with `lt_of_lt_of_le haC' ((ENNReal.le_div_iff_mul_le (Or.inl h3) (Or.inl h4)).2 (hδs _ h1))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hcC', hC'b⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 hb`. Take `⟨δ, hδ, hδs⟩` from `hup C' hcC'`. Use `filter_upwards [key δ hδ] with r hr`. Take `⟨h1, h2, h3, h4⟩` from `hr`. Rewrite using `[heq r h2]`.
-
-Conclude with `lt_of_le_of_lt (ENNReal.div_le_of_le_mul (hδs _ h1)) hC'b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_density (lam : Measure V) [lam.IsAddHaarMeasure] :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ ∀ S : ℝ → Set V, (∀ r, MeasurableSet (S r)) →
@@ -337,11 +331,9 @@ theorem exists_density (lam : Measure V) [lam.IsAddHaarMeasure] :
 end Chart
 
 /- English proof (translation)
-Use `letI := mV`. Use `letI := mG`. Use `haveI := _hfd`. Use `haveI := _hbV`. Use `haveI := _hbG`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI := _hG`. Use `haveI := _hμ`. Use `haveI := _hlam`. Take `⟨c, h0, h1, h⟩` from `C.exists_density μ lam`. Use `⟨c, h0, h1, fun S hS hsm hl => h S hS (fun δ hδ => (hsm δ hδ).mono fun r hr X hX => ?_) hl⟩` and prove the remaining obligations.
-
-Simplify using `using hr X hX`.
+A detailed English derivation is pending.
 -/
 theorem Chart.exists_density' {V : Submodule ℝ 𝔸} {G : Type*} [Group G] [TopologicalSpace G]
     (C : Chart V G) (_hfd : FiniteDimensional ℝ V) (mV : MeasurableSpace V) (_hbV : BorelSpace V)

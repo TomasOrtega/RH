@@ -18,35 +18,33 @@ def Hom {T T' : E} (φ : S.V ≃ₗ[E] S.V) (A : LFlag S r T) (B : LFlag S r T')
   ∀ a : Fin (r + 1), φ (frame A a) - frame B a ∈ Xflag B a.val
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_castSucc {T : E} (A : LFlag S r T) (i : Fin r) : frame A i.castSucc = A.fl.e i := by
   simp [frame, FlagG.fvec, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec, Fin.snoc_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_last {T : E} (A : LFlag S r T) : frame A (Fin.last r) = A.fl.z := by
   simp [frame, FlagG.fvec, Fin.snoc_last]
 
 /- English proof (translation)
-Conclude with `Submodule.span_mono (Set.image_mono (fun k hk => lt_of_lt_of_le hk h))`.
+A detailed English derivation is pending.
 -/
 theorem xflag_mono {T : E} (A : LFlag S r T) {i j : ℕ} (h : i ≤ j) : Xflag A i ≤ Xflag A j := by
   exact Submodule.span_mono (Set.image_mono (fun k hk => lt_of_lt_of_le hk h))
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨i, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_xflag {T : E} (A : LFlag S r T) (i : Fin r) {j : ℕ} (h : i.1 < j) : A.fl.e i ∈ Xflag A j :=
   Submodule.subset_span ⟨i, h, rfl⟩
 
 /- English proof (translation)
-Establish `hle : Xflag A j ≤ (Xflag B j).comap (φ : S.V →ₗ[E] S.V)`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `y ⟨i, hi, rfl⟩`. Establish `h1` using `h i.castSucc`. Rewrite `h1` using `[frame_castSucc, frame_castSucc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : φ (A.fl.e i) = (φ (A.fl.e i) - B.fl.e i) + B.fl.e i` using `by abel`. Use `show φ (A.fl.e i) ∈ Xflag B j`. Rewrite using `[h2]`. Use `Submodule.add_mem _ ?_ (e_mem_xflag B i hi)` and prove the remaining obligations. Conclude with `xflag_mono B (le_of_lt hi) h1`.
-
-Conclude with `hle hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Hom.map_mem {T T' : E} {φ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} {B : LFlag S r T'} (h : Hom φ A B)
     (j : ℕ) {x : S.V} (hx : x ∈ Xflag A j) : φ x ∈ Xflag B j := by
@@ -63,9 +61,9 @@ theorem Hom.map_mem {T T' : E} {φ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} {B : L
   exact hle hx
 
 /- English proof (translation)
-Introduce `a`. Establish `e1 : (φ * ψ) (frame A a) - frame C a = φ (ψ (frame A a) - frame B a) + (φ (frame B a) - frame C a)`. Rewrite using `[LinearEquiv.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (hφ.map_mem _ (hψ a)) (hφ a)`.
+A detailed English derivation is pending.
 -/
 theorem Hom.comp {T T' T'' : E} {φ ψ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} {B : LFlag S r T'} {C : LFlag S r T''}
     (hφ : Hom φ B C) (hψ : Hom ψ A B) : Hom (φ * ψ) A C := by
@@ -76,15 +74,15 @@ theorem Hom.comp {T T' T'' : E} {φ ψ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} {B
   exact Submodule.add_mem _ (hφ.map_mem _ (hψ a)) (hφ a)
 
 /- English proof (translation)
-Establish `hW : ∀ j : ℕ, ∀ x ∈ Xflag A j, φ⁻¹ x ∈ Xflag A j`. Introduce `j x hx`. Use `set W := Xflag A j`. Establish `: FiniteDimensional E W` using `FiniteDimensional.span_of_finite E ((Set.toFinite _).image _)`. Establish `hle : W.map (φ : S.V →ₗ[E] S.V) ≤ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨w, hw, rfl⟩`. Conclude with `h.map_mem j hw`. Establish `heq : W.map (φ : S.V →ₗ[E] S.V) = W` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq φ W)`. Rewrite `hx` using `[← heq]`. Take `⟨w, hw, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ⁻¹ (φ w) = w`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression. Simplify `hw` using `[this]`. Introduce `a`.
+Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : φ⁻¹ (frame A a) - frame A a = -(φ⁻¹ (φ (frame A a) - frame A a))`. Establish `: φ⁻¹ (φ (frame A a)) = frame A a`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression. Rewrite using `[map_sub, this]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `Submodule.neg_mem _ (hW _ _ (h a))`.
+A detailed English derivation is pending.
 -/
 theorem Hom.inv {T : E} {φ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} (h : Hom φ A A) : Hom φ⁻¹ A A := by
   have hW : ∀ j : ℕ, ∀ x ∈ Xflag A j, φ⁻¹ x ∈ Xflag A j := by
@@ -110,9 +108,9 @@ theorem Hom.inv {T : E} {φ : S.V ≃ₗ[E] S.V} {A : LFlag S r T} (h : Hom φ A
   exact Submodule.neg_mem _ (hW _ _ (h a))
 
 /- English proof (translation)
-Use `show Submodule.span E (A.fl.e '' {i | i.1 < r}) = Submodule.span E (Set.range A.fl.e)`. Use `congr 1`. Rewrite using `[← Set.image_univ]`. Use `congr 1`. Use extensionality with `i`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem xflag_r {T : E} (A : LFlag S r T) : Xflag A r = Xsp A := by
   show Submodule.span E (A.fl.e '' {i | i.1 < r}) = Submodule.span E (Set.range A.fl.e)
@@ -122,11 +120,9 @@ theorem xflag_r {T : E} (A : LFlag S r T) : Xflag A r = Xsp A := by
   ext i; simp
 
 /- English proof (translation)
-Establish `hle : Xsp A ≤ LinearMap.ker (S.hT.flip A.fl.z)`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `y ⟨i, rfl⟩`. Use `show S.hT.flip A.fl.z (A.fl.e i) = 0`. Rewrite using `[LinearMap.flip_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `A.fl.z_orth i`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.flip_apply]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem z_mem_orth {T : E} (A : LFlag S r T) : A.fl.z ∈ orth S (Xsp A) := by
   have hle : Xsp A ≤ LinearMap.ker (S.hT.flip A.fl.z) := by
@@ -141,9 +137,9 @@ theorem z_mem_orth {T : E} (A : LFlag S r T) : A.fl.z ∈ orth S (Xsp A) := by
   exact this
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `h`. Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last, Fin.val_last, xflag_r]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 _ (z_mem_orth A)`. Consider the case `cast i`. Rewrite using `[frame_castSucc, Fin.val_castSucc]`. Conclude with `h2 i.1 _ (e_mem_xflag A i (Nat.lt_succ_self _))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.of_nlam {T : E} {Λ : Submodule (𝓞 E) S.V} {n : S.V ≃ₗ[E] S.V} {A : LFlag S r T}
     (h : n ∈ NLam Λ A) : Hom n A A := by
@@ -158,7 +154,7 @@ theorem Hom.of_nlam {T : E} {Λ : Submodule (𝓞 E) S.V} {n : S.V ≃ₗ[E] S.V
     exact h2 i.1 _ (e_mem_xflag A i (Nat.lt_succ_self _))
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp [mapLF, hγ, frame_last, mapFlag]`. Consider the case `cast i => simp [mapLF, hγ, frame_castSucc, mapFlag]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem frame_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (A : LFlag S r T) (a : Fin (r + 1)) :
     frame (mapLF γ A) a = γ (frame A a) := by
@@ -167,7 +163,7 @@ theorem frame_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.Her
   | cast i => simp [mapLF, hγ, frame_castSucc, mapFlag]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[frame_mapLF hγ, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.of_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (A : LFlag S r T) :
     Hom γ A (mapLF γ A) := by
@@ -176,9 +172,9 @@ theorem Hom.of_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.He
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨ψ y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gmap_mul (φ ψ : S.V ≃ₗ[E] S.V) (Λ : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.gmap (φ * ψ) Λ = Formalism.HermitianLatticesTheory.gmap φ (Formalism.HermitianLatticesTheory.gmap ψ Λ) := by
@@ -191,7 +187,7 @@ theorem gmap_mul (φ ψ : S.V ≃ₗ[E] S.V) (Λ : Submodule (𝓞 E) S.V) :
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[← gmap_mul, inv_mul_cancel]`. Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gmap_inv {φ : S.V ≃ₗ[E] S.V} {Λ : Submodule (𝓞 E) S.V} (h : Formalism.HermitianLatticesTheory.gmap φ Λ = Λ) :
     Formalism.HermitianLatticesTheory.gmap φ⁻¹ Λ = Λ := by
@@ -207,15 +203,13 @@ namespace GlobalTheory.Unfold
 open GlobalTheory.Unfold.TgTr in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' t₀ s Λ₀ a a' n n' hTG ha ha' hn hn' hsl hsg`. Take `⟨g, hgL, hgt, hΛ⟩` from `hTG`. Take `⟨⟨haI, haH⟩, haΛ⟩` from `ha`. Take `⟨⟨ha'I, ha'H⟩, -⟩` from `ha'`. Establish `hnH : Hom n _ _` using `Hom.of_nlam hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn'H : Hom n' _ _` using `Hom.of_nlam hn'`. Establish `hnI : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hn.1.1`. Establish `hnΛ : Formalism.HermitianLatticesTheory.gmap n t₀.lam = t₀.lam` using `hn.1.2`. Establish `ht₀I : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Establish `hsI : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `s.rep.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨g * a⁻¹ * n⁻¹, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hgL.1 (Subgroup.inv_mem _ haI)) (Subgroup.inv_mem _ hnI)`. Conclude with `Hom.comp (Hom.comp (φ := g) hgL.2 (Hom.inv haH)) (Hom.inv hnH)`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hgL.1 (Subgroup.inv_mem _ haI)) (Subgroup.inv_mem _ hnI)`. Establish `hK : Hom (g * t₀.lin * a'⁻¹ * n') (lf D (X.Fu u')) F'` using `Hom.comp (Hom.comp (Hom.comp (φ := g) hgt.2 (Hom.of_mapLF ht₀I _)) (Hom.inv ha'H)) hn'H`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : g * a⁻¹ * n⁻¹ * s.lin = g * t₀.lin * a'⁻¹ * n'`. Rewrite using `[hsg]`. Use `group`. Introduce `c`. Establish `hf : frame s.frame c = s.lin (frame (lf D (X.Fu u')) c)` using `frame_mapLF hsI _ c`.
-
-Rewrite using `[hf, ← LinearEquiv.mul_apply, heq]`. Conclude with `hK c`. Rewrite using `[hsl, gmap_mul, gmap_mul, gmap_inv hnΛ, gmap_inv haΛ, hΛ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tg_translate : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (t₀ s : TauC Y u u') (Λ₀ : LV D) (a a' n n' : GV D), TG F F' t₀ Λ₀ → a ∈ Aut0 (lf D (X.Fu u)) t₀.lam → a' ∈ Aut0 (lf D (X.Fu u')) t₀.lam' → n ∈ NLam t₀.lam (lf D (X.Fu u)) → n' ∈ NLam t₀.lam' (lf D (X.Fu u')) → s.lam = t₀.lam → s.lin = n * (a * t₀.lin * a'⁻¹) * n' → TG F F' s Λ₀ := by
   intro D X Y u u' F F' t₀ s Λ₀ a a' n n' hTG ha ha' hn hn' hsl hsg

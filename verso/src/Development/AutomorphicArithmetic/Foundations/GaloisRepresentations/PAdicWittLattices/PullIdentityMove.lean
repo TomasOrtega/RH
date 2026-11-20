@@ -5,7 +5,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pullIdentity_move {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {W Z Z' : Scheme.{0}}
     {p : Z ⟶ B} {p' : Z' ⟶ B} {r r' : W ⟶ B} (e : r = r') (c : W ⟶ Z) {J : Type} [Fintype J]
@@ -17,7 +17,7 @@ private theorem pullIdentity_move {B : Scheme.{0}} {R : Type} [Field R] (T : Th.
   exact H
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem pull_congr {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {X Y : Scheme.{0}}
     {p : X ⟶ B} {q : Y ⟶ B} {f f' : Y ⟶ X} (e : f = f') (h : f ≫ p = q) (h' : f' ≫ p = q) (x : T.H p) :
@@ -26,7 +26,7 @@ private theorem pull_congr {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R
   rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[bcMap_fst, Category.assoc, bcMap_fst, ← Category.assoc (bcMap g f' h'), bcMap_fst, Category.assoc]`. Rewrite using `[bcMap_snd, Category.assoc, bcMap_snd, bcMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bcMap_comp' {B B' X Y V : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} {r : V ⟶ B'}
     (f : Y ⟶ X) (f' : V ⟶ Y) (h : f ≫ p = q) (h' : f' ≫ q = r) (h'' : (f' ≫ f) ≫ p = r) :
@@ -37,11 +37,11 @@ private theorem bcMap_comp' {B B' X Y V : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ 
   · rw [bcMap_snd, Category.assoc, bcMap_snd, bcMap_snd]
 
 /- English proof (translation)
-Introduce `hS hG B B' R _ T g Z Y Z' p q p' s _ _ t hs ht A hA`. Take `⟨W, c, G, _, _, a, J, _, σ, hh, hgal, hspl, hsum⟩` from `hA`. Establish `hσ : ∀ j, σ j ≫ q = c ≫ p` using `fun j => by`. Rewrite using `[← hs, ← Category.assoc, hspl.1 j]`. Establish `ha : ∀ x, a x ≫ (c ≫ p) = c ≫ p` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hgal.2.2.2.2.2.1 x]`. Use `⟨pullback (c ≫ p) g, bcMap g c rfl, G, inferInstance, inferInstance, fun x => bcMap g (a x) (ha x), J, inferInstance, fun j => bcMap g (σ j) (hσ j), ?_, hG g p (c ≫ p) c rfl G a ha hgal, (hS g p q (c ≫ p) s hs c rfl J σ hσ).2.2 hspl, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[Category.assoc, bcMap_snd, bcMap_snd, bcMap_snd]`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : T.pull (bcMap g c rfl) (bcMap_snd g c rfl) (A x) = ∑ j, T.pull (bcMap g (σ j ≫ t) (hh j)) (bcMap_snd g _ (hh j)) x` using `hsum x`. Establish `e2 : T.pull (bcMap g c rfl) (bcMap_snd g c rfl) (A x) = ∑ j, T.pull (bcMap g (σ j) (hσ j) ≫ bcMap g t ht) (by rw [Category.assoc, bcMap_snd, bcMap_snd]) x`. Rewrite using `[e]`. Conclude with `Finset.sum_congr rfl fun j _ => pull_congr T (bcMap_comp' g t (σ j) ht (hσ j) _) _ _ x`. Conclude with `pullIdentity_move T (bcMap_snd g c rfl).symm _ _ _ _ _ _ _ _ e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pOpBc :
     BcSplits → BcGal → OpBc.{u} := by

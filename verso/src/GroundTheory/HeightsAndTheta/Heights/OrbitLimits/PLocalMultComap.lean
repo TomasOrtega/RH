@@ -9,27 +9,25 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open GroundTheory.Heights₂.Heights (localMult)
 
 /- English proof (translation)
-Introduce `R S _ _ σ I W hσ hW`. Use `set P := W.comap σ with hPdef`. Establish `hPW : P = W.comap σ` using `rfl`. Unfold `localMult`. Rewrite using `[dif_pos hW, dif_pos (Ideal.comap_isPrime σ W)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : P.primeCompl.map σ = W.primeCompl`. Use extensionality with `y`. Simplify using `only [Submonoid.mem_map, Ideal.mem_primeCompl_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Introduce `hy`. Take `⟨x, rfl⟩` from `hσ y`. Conclude with `⟨x, hy, rfl⟩`. Establish `: IsLocalization (P.primeCompl.map σ) (Localization.AtPrime W)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hM]`. Use `infer_instance`. Set `φ : Localization.AtPrime P →+* Localization.AtPrime W` to `Localization.localRingHom P W σ hPW`. Establish `hφ : Function.Surjective φ` using `IsLocalization.map_surjective_of_surjective _ _ _ hσ`. Set `_ : Algebra (Localization.AtPrime P) (Localization.AtPrime W)` to `φ.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set J : Ideal (Localization.AtPrime P) := (I.comap σ).map (algebraMap R (Localization.AtPrime P))`. Use `set I' : Ideal (Localization.AtPrime W) := I.map (algebraMap S (Localization.AtPrime W))`. Establish `hcomp : φ.comp (algebraMap R (Localization.AtPrime P)) = (algebraMap S (Localization.AtPrime W)).comp σ` using `RingHom.ext fun x => Localization.localRingHom_to_map P W σ hPW x`. Establish `hJ : J.map φ = I'`. Simplify using `only [J, I', Ideal.map_map, hcomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.map_map, Ideal.map_comap_of_surjective σ hσ]`. Establish `hker : RingHom.ker φ ≤ J`. Introduce `x hx`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl x`. Establish `h0 : φ (IsLocalization.mk' _ r s) = 0` using `hx`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, Localization.localRingHom, IsLocalization.map_mk'] at h0`. Take `⟨⟨t, ht⟩, htr⟩` from `(IsLocalization.mk'_eq_zero_iff _ _).mp h0`. Take `⟨t', rfl⟩` from `hσ t`. Establish `hmem : t' * r ∈ I.comap σ`. Simplify using `only [Ideal.mem_comap, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[htr]`. Conclude with `I.zero_mem`. Establish `ht' : t' ∈ P.primeCompl` using `ht`. Rewrite using `[IsLocalization.mk'_mem_iff]`. Establish `h1 : algebraMap R (Localization.AtPrime P) (t' * r) ∈ J` using `Ideal.mem_map_of_mem _ hmem`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul]`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime P) t')` using `IsLocalization.map_units _ (⟨t', ht'⟩ : P.primeCompl)`. Conclude with `(Submodule.smul_mem_iff_of_isUnit J hu).mp h1`. Set `ψ : Localization.AtPrime P →ₐ[Localization.AtPrime P] Localization.AtPrime W ⧸ I'` to `(Ideal.Quotient.mkₐ _ I').comp (Algebra.ofId (Localization.AtPrime P) (Localization.AtPrime W))`. Establish `hψ : Function.Surjective ψ` using `(Ideal.Quotient.mkₐ_surjective (Localization.AtPrime P) I').comp hφ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkerψ : RingHom.ker ψ = J`. Establish `: RingHom.ker ψ = I'.comap φ`. Use extensionality with `x`. Simplify using `only [ψ, RingHom.mem_ker, Ideal.mem_comap, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Algebra.ofId_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`.
-
-Rewrite using `[this, ← hJ, Ideal.comap_map_of_surjective' φ hφ, sup_eq_left.mpr hker]`. Establish `e` using `(Submodule.quotEquivOfEq J (RingHom.ker ψ) hkerψ.symm).trans (Ideal.quotientKerAlgEquivOfSurjective hψ).toLinearEquiv`. Rewrite using `[e.length_eq, Module.length_eq_of_surjective hφ]`.
+A detailed English derivation is pending.
 -/
 theorem LocalMultComap.proof : LocalMultComap.Statement := by
   intro R S _ _ σ I W hσ hW

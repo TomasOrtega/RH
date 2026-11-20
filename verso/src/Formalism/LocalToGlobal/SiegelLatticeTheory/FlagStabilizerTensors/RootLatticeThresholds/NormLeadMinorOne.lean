@@ -12,9 +12,9 @@ namespace Formalism.L2.SG.Pf.Carrier.WtDet
 variable {N : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : b = π a`. Substitute `h` using the available equality. Simplify using `[Formalism.L2.SG.PtCell.mono, Matrix.diagonal_mul, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Function.Involutive.coe_toPerm]`. Conclude with `fun e => absurd rfl e`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h' : ¬ π a = b` using `fun e => h e.symm`. Simplify using `[Formalism.L2.SG.PtCell.mono, Matrix.diagonal_mul, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Function.Involutive.coe_toPerm, h, h']`. Conclude with `fun e => absurd e h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_eq (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c : Fin N → ℂ) :
     Formalism.L2.SG.PtCell.mono π c =
@@ -31,7 +31,7 @@ theorem mono_eq (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c : Fin N �
     exact fun e => absurd e h'
 
 /- English proof (translation)
-Rewrite using `[mono_eq π hπ c, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_permutation, norm_mul, norm_prod]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Function.Involutive.toPerm π hπ)) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_det_mono (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c : Fin N → ℂ) :
     ‖(Formalism.L2.SG.PtCell.mono π c).det‖ = ∏ a, ‖c a‖ := by
@@ -39,9 +39,9 @@ theorem norm_det_mono (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c : F
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Function.Involutive.toPerm π hπ)) with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `hsub : (Formalism.L2.SG.PtCell.mono π c).submatrix (Fin.castLE hl) (Fin.castLE hl) = Formalism.L2.SG.PtCell.mono (fun a : Fin l => (⟨(π (Fin.castLE hl a)).val, hπl _ a.2⟩ : Fin l)) (fun a => c (Fin.castLE hl a))`. Use extensionality with `a b`. Simplify using `only [Formalism.L2.SG.PtCell.mono, Matrix.submatrix_apply, Fin.ext_iff, Fin.coe_castLE]`. Rewrite using `[hsub, norm_det_mono _ (fun a => Fin.ext (by show (π (Fin.castLE hl _)).val = a.val`. Rewrite using `[show Fin.castLE hl (⟨(π (Fin.castLE hl a)).val, hπl _ a.2⟩ : Fin l) = π (Fin.castLE hl a) from Fin.ext rfl, hπ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl))]`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_sub_mono (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c : Fin N → ℂ) {l : ℕ} (hl : l ≤ N)
     (hπl : ∀ a : Fin N, a.val < l → (π a).val < l) :
@@ -59,9 +59,9 @@ theorem norm_det_sub_mono (π : Fin N → Fin N) (hπ : ∀ a, π (π a) = a) (c
     rfl))]
 
 /- English proof (translation)
-Apply `Matrix.det_eq_zero_of_row_eq_zero (⟨a0.val, ha0⟩ : Fin l)` to reduce the goal to its premises. Introduce `b`. Simplify using `only [Formalism.L2.SG.PtCell.mono, Matrix.submatrix_apply]`. Rewrite using `[if_neg]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg Fin.val h`. Rewrite `h1` using `[show Fin.castLE hl (⟨a0.val, ha0⟩ : Fin l) = a0 from Fin.ext rfl]`. Simplify using `only [Fin.coe_castLE] at h1`. Establish `hb` using `b.2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem det_sub_mono_zero (π : Fin N → Fin N) (c : Fin N → ℂ) {l : ℕ} (hl : l ≤ N) (a0 : Fin N) (ha0 : a0.val < l)
     (hπ0 : l ≤ (π a0).val) :
@@ -84,7 +84,7 @@ variable {K : Type*} [Field K]
 open Formalism.L2.SG.PtCell
 
 /- English proof (translation)
-The claim follows from `| [], L2, i => by simp [pperm] | (t, s) :: L1, L2, i => by simp only [List.cons_append, pperm, List.map_cons, List.sum_cons] by_cases h1 : i < s · rw [if_pos h1, if_pos (by omega), if_pos h1] · rw [if_neg h1, pperm_append L1 L2 (i - s)] by_cases h2 : i - s < (L1.map Prod.snd).sum …`.
+A detailed English derivation is pending.
 -/
 theorem pperm_append : ∀ (L1 L2 : List (K × ℕ)) (i : ℕ),
     pperm (L1 ++ L2) i = if i < (L1.map Prod.snd).sum then pperm L1 i else (L1.map Prod.snd).sum + pperm L2 (i - (L1.map Prod.snd).sum)
@@ -100,7 +100,7 @@ theorem pperm_append : ∀ (L1 L2 : List (K × ℕ)) (i : ℕ),
         ring
 
 /- English proof (translation)
-The claim follows from `| [], L2, i => by simp [pval] | (t, s) :: L1, L2, i => by simp only [List.cons_append, pval, List.map_cons, List.sum_cons] by_cases h1 : i < s · rw [if_pos h1, if_pos (by omega), if_pos h1] · rw [if_neg h1, pval_append L1 L2 (i - s)] by_cases h2 : i - s < (L1.map Prod.snd).sum · …`.
+A detailed English derivation is pending.
 -/
 theorem pval_append : ∀ (L1 L2 : List (K × ℕ)) (i : ℕ),
     pval (L1 ++ L2) i = if i < (L1.map Prod.snd).sum then pval L1 i else pval L2 (i - (L1.map Prod.snd).sum)
@@ -115,7 +115,7 @@ theorem pval_append : ∀ (L1 L2 : List (K × ℕ)) (i : ℕ),
       · rw [if_neg h2, if_neg (by omega), show i - s - (L1.map Prod.snd).sum = i - (s + (L1.map Prod.snd).sum) by omega]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp | (t, s) :: L => by simp only [List.map_cons, List.sum_cons, List.prod_cons] rw [Finset.prod_range_add, ← prod_pval L] congr 1 · rw [Finset.prod_congr rfl (fun i hi => by rw [show pval ((t, s) :: L) i = t by simp [pval, Finset.mem_range.mp hi]]), Finset.prod_const …`.
+A detailed English derivation is pending.
 -/
 theorem prod_pval : ∀ (L : List (ℂ × ℕ)),
     ∏ i ∈ Finset.range (L.map Prod.snd).sum, ‖pval L i‖ = (L.map fun b => ‖b.1‖ ^ b.2).prod
@@ -130,7 +130,7 @@ theorem prod_pval : ∀ (L : List (ℂ × ℕ)),
       simp [pval]
 
 /- English proof (translation)
-Establish `hinv : ∀ a, pinv γ (pinv γ a) = a` using `fun a => Fin.ext (pperm_pperm γ.1 (fun b hb => (γ.2.1 b hb).2) a.val (by rw [γ.2.2]; exact a.isLt))`. Rewrite using `[ptMat_eq_mono, norm_det_mono _ hinv, Fin.prod_univ_eq_prod_range (fun i => ‖pval γ.1 i‖) N]`. Establish `h` using `prod_pval γ.1`. Rewrite `h` using `[γ.2.2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_ptMat {N : ℕ} (γ : Formalism.MainNotions.S.Point ℂ N) :
     ‖(Formalism.MainNotions.S.ptMat γ).det‖ = (γ.1.map fun b => ‖b.1‖ ^ b.2).prod := by
@@ -142,13 +142,13 @@ theorem norm_det_ptMat {N : ℕ} (γ : Formalism.MainNotions.S.Point ℂ N) :
   exact h
 
 /- English proof (translation)
-Establish `hS : (L1.map Prod.snd).sum = r`. Use `γ.2.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`. Establish `hpos1 : ∀ b ∈ L1, 1 ≤ b.2` using `fun b hb => (γ.2.1 b (by rw [h]; exact List.mem_append_left _ hb)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinv : ∀ a, pinv γ (pinv γ a) = a` using `fun a => Fin.ext (pperm_pperm γ.1 (fun b hb => (γ.2.1 b hb).2) a.val (by rw [γ.2.2]; exact a.isLt))`. Establish `hcl : ∀ a : Fin (r + 1), a.val < r → (pinv γ a).val < r`. Introduce `a ha`. Use `show pperm γ.1 a.val < r`. Rewrite using `[h, pperm_append, if_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `pperm_lt L1 hpos1 a.val (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `Formalism.MainNotions.S.leadMinor`. Rewrite using `[ptMat_eq_mono, norm_det_sub_mono (pinv γ) hinv _ (Nat.le_succ r) hcl]`. Simplify using `only [Fin.coe_castLE]`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => ‖pval γ.1 i‖) r]`. Establish `hv : ∀ i ∈ Finset.range r, ‖pval γ.1 i‖ = ‖pval L1 i‖`. Introduce `i hi`. Rewrite using `[h, pval_append, if_pos (by rw [hS]; exact Finset.mem_range.1 hi)]`. Rewrite using `[Finset.prod_congr rfl hv, ← hS, prod_pval]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_leadMinor_one {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r + 1)) (L1 : List (ℂ × ℕ)) (c : ℂ)
     (h : γ.1 = L1 ++ [(c, 1)]) :
@@ -176,11 +176,11 @@ theorem norm_leadMinor_one {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r 
   rw [Finset.prod_congr rfl hv, ← hS, prod_pval]
 
 /- English proof (translation)
-Establish `hS : (L1.map Prod.snd).sum + s = r + 1`. Use `γ.2.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`. Unfold `Formalism.MainNotions.S.leadMinor`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Rewrite using `[ptMat_eq_mono]`. Apply `det_sub_mono_zero _ _ (Nat.le_succ r) (⟨(L1.map Prod.snd).sum, by omega⟩ : Fin (r + 1)) (by show (L1.map Prod.snd).sum < r; omega)` to reduce the goal to its premises. Use `show r ≤ pperm γ.1 (L1.map Prod.snd).sum`. Rewrite using `[h, pperm_append, if_neg (lt_irrefl _), Nat.sub_self]`. Simplify using `only [pperm, if_pos (show 0 < s by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem leadMinor_big {r : ℕ} (γ : Formalism.MainNotions.S.Point ℂ (r + 1)) (L1 : List (ℂ × ℕ)) (c : ℂ) (s : ℕ) (hs : 2 ≤ s)
     (h : γ.1 = L1 ++ [(c, s)]) : Formalism.MainNotions.S.leadMinor (Formalism.MainNotions.S.ptMat γ) r (Nat.le_succ r) = 0 := by
@@ -211,7 +211,7 @@ def FH (r : ℕ) : ℕ → List (ℂ × ℕ) → ℝ
   | b, (c, s) :: R => ‖c‖ ^ (2 * s * (2 * (r + 1 - (b + s - 1)) + s - 1)) * FH r (b + s) R
 
 /- English proof (translation)
-The claim follows from `| [], L2, b => by simp [FA] | (c, s) :: L1, L2, b => by simp only [List.cons_append, FA, FA_append k r GG L1 L2 (b + s), List.map_cons, List.sum_cons, add_assoc, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem FA_append (k r : ℕ) (GG : ℝ) : ∀ (L1 L2 : List (ℂ × ℕ)) (b : ℕ),
     FA k r GG b (L1 ++ L2) = FA k r GG b L1 * FA k r GG (b + (L1.map Prod.snd).sum) L2
@@ -220,7 +220,7 @@ theorem FA_append (k r : ℕ) (GG : ℝ) : ∀ (L1 L2 : List (ℂ × ℕ)) (b : 
     simp only [List.cons_append, FA, FA_append k r GG L1 L2 (b + s), List.map_cons, List.sum_cons, add_assoc, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| [], L2, b => by simp [FH] | (c, s) :: L1, L2, b => by simp only [List.cons_append, FH, FH_append r L1 L2 (b + s), List.map_cons, List.sum_cons, add_assoc, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem FH_append (r : ℕ) : ∀ (L1 L2 : List (ℂ × ℕ)) (b : ℕ),
     FH r b (L1 ++ L2) = FH r b L1 * FH r (b + (L1.map Prod.snd).sum) L2
@@ -229,7 +229,7 @@ theorem FH_append (r : ℕ) : ∀ (L1 L2 : List (ℂ × ℕ)) (b : ℕ),
     simp only [List.cons_append, FH, FH_append r L1 L2 (b + s), List.map_cons, List.sum_cons, add_assoc, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _ => by simp [FA, FH] | (c, s) :: L, b, hb, hs, hL => by simp only [List.map_cons, List.sum_cons] at hs have hs1 : 1 ≤ s := hL (c, s) (by simp) have ih := FA_pre k r hk GG L (b + s) (by omega) (by omega) (fun x hx => hL x (by simp [hx])) simp only [FA, FH, List.map …`.
+A detailed English derivation is pending.
 -/
 theorem FA_pre (k r : ℕ) (hk : 1 ≤ k) (GG : ℝ) : ∀ (L : List (ℂ × ℕ)) (b : ℕ), 1 ≤ b →
     b + (L.map Prod.snd).sum ≤ r + 1 → (∀ x ∈ L, 1 ≤ x.2) →
@@ -259,27 +259,27 @@ theorem FA_pre (k r : ℕ) (hk : 1 ≤ k) (GG : ℝ) : ∀ (L : List (ℂ × ℕ
     ring
 
 /- English proof (translation)
-Establish `hsum : (L1.map Prod.snd).sum + s = r + 1`. Use `q.2.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`. Establish `hpos1 : ∀ x ∈ L1, 1 ≤ x.2` using `fun x hx => (q.2.1 x (by rw [h]; exact List.mem_append_left _ hx)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs : 1 ≤ s` using `(q.2.1 (c, s) (by rw [h]; simp)).2`. Establish `hFA : FA k r GG 1 q.1 = FH r 1 L1 * (L1.map fun x => ‖x.1‖ ^ x.2).prod ^ (2 * (k - 1)) * FA k r GG (1 + (L1.map Prod.snd).sum) [(c, s)]`. Rewrite using `[h, FA_append, FA_pre k r hk GG L1 1 le_rfl (by omega) hpos1]`. Establish `hFH : FH r 1 q.1 = FH r 1 L1 * FH r (1 + (L1.map Prod.snd).sum) [(c, s)]` using `by rw [h, FH_append]`. Establish `hD : ‖(Formalism.MainNotions.S.ptMat q).det‖ = (L1.map fun x => ‖x.1‖ ^ x.2).prod * ‖c‖ ^ s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_det_ptMat, h, List.map_append, List.prod_append]`. Simplify using the standard rewrite rules. Establish `hfull : Formalism.MainNotions.S.leadMinor (Formalism.MainNotions.S.ptMat q) (r + 1) le_rfl = (Formalism.MainNotions.S.ptMat q).det`. Establish `hid : (Fin.castLE (le_refl (r + 1))) = id` using `funext fun a => Fin.ext rfl`. Simplify using `only [Formalism.MainNotions.S.leadMinor, hid, Matrix.submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr0 : r + 1 - (1 + (L1.map Prod.snd).sum + s - 1) = 0` using `by omega`. Establish `hlast : 1 + (L1.map Prod.snd).sum + s - 1 = r + 1` using `by omega`. Simplify using `only [Formalism.MainNotions.S.ThB.Gpt, hfull, Complex.normSq_eq_norm_sq, hD]`. Rewrite using `[hFA, hFH]`. Break down `Nat.lt_or_ge s 2 with hs2 | hs2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs1 : s = 1` using `by omega`. Substitute `hs1` using the available equality. Establish `hFA1 : FA k r GG (1 + (L1.map Prod.snd).sum) [(c, 1)] = (‖c‖ ^ 2 - T * T') ^ (k - 1)`. Simplify using `only [FA]`. Rewrite using `[if_pos (by refine ⟨hlast, ?_⟩; trivial), hGG rfl, mul_one]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hFH1 : FH r (1 + (L1.map Prod.snd).sum) [(c, 1)] = 1`. Simplify using `only [FH]`. Rewrite using `[hr0]`. Simplify using the standard rewrite rules. Rewrite using `[hFA1, hFH1, norm_leadMinor_one q L1 c h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ((L1.map fun x => ‖x.1‖ ^ x.2).prod * ‖c‖ ^ 1) ^ 2 - T * T' * (L1.map fun x => ‖x.1‖ ^ x.2).prod ^ 2 = (L1.map fun x => ‖x.1‖ ^ x.2).prod ^ 2 * (‖c‖ ^ 2 - T * T')` using `by ring`. Rewrite using `[hb, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[leadMinor_big q L1 c s hs2 h]`. Establish `hx : ‖c‖ ^ (2 * (s : ℤ) * (Formalism.FourierDecayAlt.C.Mlev k r (r + 1) + s - 3)) = ‖c‖ ^ (2 * s * (2 * 0 + s - 1)) * (‖c‖ ^ s) ^ (2 * (k - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, ← pow_add, ← zpow_natCast]`. Use `congr 1`. Establish `h2 : 1 ≤ 2 * 0 + s` using `by omega`. Simplify using `only [Formalism.FourierDecayAlt.C.Mlev]`. Use `zify [h2, hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hFA2 : FA k r GG (1 + (L1.map Prod.snd).sum) [(c, s)] = ‖c‖ ^ (2 * s * (2 * 0 + s - 1)) * (‖c‖ ^ s) ^ (2 * (k - 1))`. Simplify using `only [FA]`. Rewrite using `[if_neg (by omega), hlast, hx, mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFH2 : FH r (1 + (L1.map Prod.snd).sum) [(c, s)] = ‖c‖ ^ (2 * s * (2 * 0 + s - 1))`. Simplify using `only [FH]`. Rewrite using `[hr0, mul_one]`. Rewrite using `[hFA2, hFH2]`. Simplify using `only [norm_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem core_wt (k r : ℕ) (hk : 1 ≤ k) (T T' : ℝ) (q : Formalism.MainNotions.S.Point ℂ (r + 1)) (L1 : List (ℂ × ℕ)) (c : ℂ) (s : ℕ)
     (h : q.1 = L1 ++ [(c, s)]) (GG : ℝ) (hGG : s = 1 → GG = ‖c‖ ^ 2 - T * T') :

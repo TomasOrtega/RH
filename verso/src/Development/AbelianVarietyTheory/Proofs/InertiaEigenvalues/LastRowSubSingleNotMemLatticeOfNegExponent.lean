@@ -12,29 +12,27 @@ open scoped ENNReal nonZeroDivisors Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ m T ϖ hϖ J hJ g hg l w hlw hmem`. Take `⟨u, hu, k, hk, rfl⟩` from `hg`. Establish `hwT : w ∉ T` using `fun h => by rw [l.2 w h] at hlw; simp at hlw`. Use `set a := l.1 w (Fin.last m) with ha`. Use `set K := GlobalTheory.CellDec.compV E (m+1) w k with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : K ∈ GlobalTheory.LFun.KGL w (m+1)` using `GlobalTheory.CellDec.mem_US.1 hk w hwT`. Take `⟨-, hK2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hK`. Establish `hU` using `(GlobalTheory.SmGL.mem_unipB _).1 (GlobalTheory.CellDec.compV_mem_unipB w hu)`. Establish `hent : ∀ i, (pFin E ((GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * (u * k)).val (Fin.last m) i)) w = ((ϖ w ^ a : (w.adicCompletion E)ˣ) : w.adicCompletion E) * K.val (Fin.last m) i`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (pFin E ((GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * (u * k)).val (Fin.last m) i)) w = (GlobalTheory.CellDec.compV E (m+1) w (GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * (u * k))).val (Fin.last m) i` using `rfl`. Rewrite using `[h1, map_mul, map_mul, GlobalTheory.CellDec.compV_tl, Units.val_mul, Units.val_mul, GlobalTheory.IwaCell.val_tD, Matrix.diagonal_mul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[hU.2, one_mul]`. Introduce `j _ hj`. Rewrite using `[hU.1 _ _ (lt_of_le_of_ne (Fin.le_last j) hj), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hb : ∀ i, Valued.v (((ϖ w ^ a : (w.adicCompletion E)ˣ) : w.adicCompletion E) * K.val (Fin.last m) i - (if i = Fin.last m then 1 else 0)) ≤ 1`. Introduce `i`. Establish `h2` using `(GroundTheory.Global.mem_idealFiniteAdeles J).1 (hmem i) w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hJ w hwT, neg_zero, WithZero.exp_zero]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← hent i]`. Distinguish the cases in `hi : i = Fin.last m`. Substitute `hi` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[hi]`. Establish `hϖv : Valued.v ((ϖ w : w.adicCompletion E)) = WithZero.exp (-1 : ℤ)` using `hϖ w`. Establish `hrow : ∀ i, Valued.v (K.val (Fin.last m) i) < 1`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hle : Valued.v (((ϖ w ^ a : (w.adicCompletion E)ˣ) : w.adicCompletion E) * K.val (Fin.last m) i) ≤ 1`. Distinguish the cases in `hi : i = Fin.last m`. Use `hb i` as an intermediate fact. Rewrite `this` using `[if_pos hi]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[sub_add_cancel]`. Use `_ ≤ max _ _ := Valuation.map_add _ _ _`. Use `_ ≤ 1 := max_le this (by simp)`. Simplify `hb i` using `[hi]`. Establish `e : K.val (Fin.last m) i = ((ϖ w ^ (-a) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * (((ϖ w ^ a : (w.adicCompletion E)ˣ) : w.adicCompletion E) * K.val (Fin.last m) i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← Units.val_mul, ← _root_.zpow_add, neg_add_cancel, zpow_zero, Units.val_one, one_mul]`. Rewrite using `[e, Valuation.map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, hϖv, ← WithZero.exp_zsmul]`. Establish `hlt : WithZero.exp ((-a) • (-1 : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `hone : ∑ j, K.val (Fin.last m) j * (K⁻¹).val j (Fin.last m) = 1`. Use `congrArg (fun M : Matrix (Fin (m+1)) (Fin (m+1)) (w.adicCompletion E) => M (Fin.last m) (Fin.last m)) (Units.mul_inv K)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hlt : Valued.v (∑ j, K.val (Fin.last m) j * (K⁻¹).val j (Fin.last m)) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Establish `hj : Valued.v ((K⁻¹).val j (Fin.last m)) ≤ 1` using `hK2 j (Fin.last m)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite `hlt` using `[hone, map_one]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CellDec.lastRow_sub_notMem_latt : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

@@ -11,25 +11,23 @@ noncomputable section
 namespace GlobalTheory.CycImage
 
 /- English proof (translation)
-Introduce `p _ K O _ _ _ _ G _ _ hO φ i ε hε g`. Use `set c : ℤ_[p] := ((cyclotomicCharacter (PadicAlgCl p) p (MulSemiringAction.toRingAut (GK p K) (PadicAlgCl p) (i g)) : ℤ_[p]ˣ) : ℤ_[p]) with hcdef`. Establish `key : ∀ n : ℕ, ((ε g : Oˣ) : O) - φ c ∈ Ideal.span {(p : O) ^ n}`. Introduce `n`. Take `⟨ζ, hζ⟩ : ∃ ζ : PadicAlgCl p, IsPrimitiveRoot ζ (p ^ n)` from `HasEnoughRootsOfUnity.exists_primitiveRoot _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hmem⟩` from `hε (i g) n ζ hζ.pow_eq_one`. Establish `hcar : ((carry i ε (i g) : Oˣ) : O) = ((ε g : Oˣ) : O)`. Simplify using `only [carry, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply]`. Use `congr 2`. Conclude with `i.symm_apply_apply g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hcar]`. Establish `hsp` using `cyclotomicCharacter.spec (L := PadicAlgCl p) p (n := n) (MulSemiringAction.toRingAut (GK p K) (PadicAlgCl p) (i g)) ζ hζ.pow_eq_one`. Establish `h1 : (MulSemiringAction.toRingAut (GK p K) (PadicAlgCl p) (i g)) ζ = (i g) ζ` using `rfl`. Rewrite `hsp` using `[h1, ha]`. Use `set v : ℕ := (PadicInt.toZModPow n c).val with hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : a ≡ v [MOD p ^ n]`. Establish `hne : ζ ≠ 0` using `hζ.ne_zero (NeZero.ne _)`. Establish `hz : ζ ^ ((a : ℤ) - (v : ℤ)) = 1`. Rewrite using `[zpow_sub₀ hne, zpow_natCast, zpow_natCast, hsp, div_self (pow_ne_zero _ hne)]`. Establish `hd` using `(hζ.zpow_eq_one_iff_dvd _).1 hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(Nat.modEq_iff_dvd.2 (by`. Establish `: ((p ^ n : ℕ) : ℤ) ∣ -((a : ℤ) - (v : ℤ))` using `(dvd_neg).2 (by exact_mod_cast hd)`. Simplify using `using this))`. Establish `hc : c - (v : ℤ_[p]) ∈ Ideal.span {(p : ℤ_[p]) ^ n}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, hv, ZMod.natCast_zmod_val, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hφ : φ c - (v : O) ∈ Ideal.span {(p : O) ^ n}`. Use `Ideal.mem_map_of_mem φ hc` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton]`. Simplify using `using this`. Establish `hav : (a : O) - (v : O) ∈ Ideal.span {(p : O) ^ n}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Establish `hd : ((p ^ n : ℕ) : ℤ) ∣ (v : ℤ) - (a : ℤ)` using `(Nat.modEq_iff_dvd.1 hmod)`. Take `⟨k, hk⟩` from `hd`. Use `⟨-(k : O), ?_⟩` and prove the remaining obligations. Establish `hk' : ((v : ℤ) : O) - ((a : ℤ) : O) = (((p ^ n : ℕ) : ℤ) : O) * (k : O)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_sub, hk, Int.cast_mul]`. Move the coercions through the operations in `at hk'`. Take the linear combination `-hk'`. Establish `hsum : ((ε g : Oˣ) : O) - φ c = ((((ε g : Oˣ) : O) - a) + ((a : O) - v)) - (φ c - v)` using `by ring`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.sub_mem _ (Ideal.add_mem _ hmem hav) hφ`. Establish `hbot : ((ε g : Oˣ) : O) - φ c ∈ ⨅ n : ℕ, (IsLocalRing.maximalIdeal O) ^ n`. Use `Ideal.mem_iInf.2 fun n => ?_` and prove the remaining obligations. Establish `h` using `key n`. Establish `hle : Ideal.span {(p : O) ^ n} ≤ (IsLocalRing.maximalIdeal O) ^ n`.
-
-Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `Ideal.pow_right_mono ((Ideal.span_singleton_le_iff_mem _).2 hO.p_mem) n`. Conclude with `hle h`. Rewrite `hbot` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal O).ne_top, Ideal.mem_bot]`. Conclude with `sub_eq_zero.1 hbot`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_eq_image : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G], PadicCoeff p O → ∀ (φ : ℤ_[p] →+* O) (i : G ≃ₜ* GK p K) {ε : G →* Oˣ}, IsCyc p K (carry i ε) → ∀ g : G, ((ε g : Oˣ) : O) = φ ((cyclotomicCharacter (PadicAlgCl p) p (MulSemiringAction.toRingAut (GK p K) (PadicAlgCl p) (i g)) : ℤ_[p]ˣ) : ℤ_[p]) := by
   intro p _ K O _ _ _ _ G _ _ hO φ i ε hε g

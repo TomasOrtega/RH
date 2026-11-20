@@ -26,7 +26,7 @@ theorem blockEmb_eq (x : Fin q × Fin p × Fin p) :
     blockEmb hc x = (idx hc (x.2.1, x.1), idx hc (x.2.2, x.1)) := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨b, i, j⟩ ⟨b', i', j'⟩ h`. Simplify using `only [blockEmb_eq, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Take `⟨⟨e1, e2⟩, ⟨e3, -⟩⟩` from `h`. Substitute `e1 e2 e3` using the available equality. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem blockEmb_injective : Function.Injective (blockEmb hc) := by
   rintro ⟨b, i, j⟩ ⟨b', i', j'⟩ h
@@ -39,14 +39,14 @@ def permOf (τ : Fin q → Equiv.Perm (Fin p)) : Equiv.Perm (Fin (p * q)) :=
   (idx hc).permCongr (Equiv.prodCongrLeft fun b => (τ b)⁻¹)
 
 /- English proof (translation)
-Simplify using `[permOf, Equiv.permCongr_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem permOf_apply' (τ : Fin q → Equiv.Perm (Fin p)) (j : Fin p) (b : Fin q) :
     permOf hc τ (idx hc (j, b)) = idx hc ((τ b)⁻¹ j, b) := by
   simp [permOf, Equiv.permCongr_apply]
 
 /- English proof (translation)
-Rewrite using `[permOf_apply']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem permOf_apply (τ : Fin q → Equiv.Perm (Fin p)) (i : Fin p) (b : Fin q) :
     permOf hc τ (idx hc (τ b i, b)) = idx hc (i, b) := by
@@ -54,16 +54,16 @@ theorem permOf_apply (τ : Fin q → Equiv.Perm (Fin p)) (i : Fin p) (b : Fin q)
   simp
 
 /- English proof (translation)
-Simplify using `[permOf, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_prodCongrLeft, sgnProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sign_permOf (τ : Fin q → Equiv.Perm (Fin p)) :
     ((Equiv.Perm.sign (permOf hc τ) : ℤˣ) : ℤ) = sgnProd τ := by
   simp [permOf, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_prodCongrLeft, sgnProd]
 
 /- English proof (translation)
-Introduce `τ τ' e`. Use function extensionality and compare the values at `b`. Establish `h : ∀ j, (τ b)⁻¹ j = (τ' b)⁻¹ j`. Introduce `j`. Use `congrArg (fun w : Equiv.Perm (Fin (p * q)) => w (idx hc (j, b))) e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [permOf_apply'] at this`. Conclude with `congrArg Prod.fst ((idx hc).injective this)`. Conclude with `inv_inj.mp (Equiv.ext h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem permOf_injective : Function.Injective (permOf hc) := by
   intro τ τ' e
@@ -76,7 +76,7 @@ theorem permOf_injective : Function.Injective (permOf hc) := by
   exact inv_inj.mp (Equiv.ext h)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single x (fun c _ hc => by simp [Finsupp.single_apply, hc]) (by simp)]`. Simplify using `[Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem graph_apply' {n : ℕ} (g : Fin n → Fin n) (x y : Fin n) :
     (∑ a, Finsupp.single (a, g a) 1 : Fin n × Fin n →₀ ℕ) (x, y) = if g x = y then 1 else 0 := by
@@ -84,7 +84,7 @@ theorem graph_apply' {n : ℕ} (g : Fin n → Fin n) (x y : Fin n) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[blockGraph, Finsupp.mapDomain_finset_sum]`. Repeatedly rewrite using `[Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_single, blockEmb_eq]`. Rewrite using `[← (idx hc).sum_comp, ← (Equiv.prodCongrLeft fun b => τ b).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[permOf_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem graph_permOf (τ : Fin q → Equiv.Perm (Fin p)) :
     (∑ a, Finsupp.single (a, permOf hc τ a) 1 : Fin (p * q) × Fin (p * q) →₀ ℕ) =
@@ -96,17 +96,15 @@ theorem graph_permOf (τ : Fin q → Equiv.Perm (Fin p)) :
   simp [permOf_apply]
 
 /- English proof (translation)
-Establish `hr : ∀ x : Fin p × Fin q, ((idx hc).symm (w (idx hc x))).2 = x.2`. Introduce `x`. Establish `h0 : (∑ a, Finsupp.single (a, w a) 1 : Fin (p * q) × Fin (p * q) →₀ ℕ) (idx hc x, w (idx hc x)) ≠ 0`. Rewrite using `[graph_apply' (fun a => w a)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[← h]`. Assume the negation of the conclusion as `hne`. Apply `h0` to reduce the goal to its premises. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨b, i, j⟩, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[blockEmb_eq, Prod.mk.injEq]`. Apply `hne` to reduce the goal to its premises. Establish `hx : x = (i, b)` using `((idx hc).injective hy.1).symm`. Rewrite using `[← hy.2, Equiv.symm_apply_apply, hx]`. Set `f : Fin q → Fin p → Fin p` to `fun b i => ((idx hc).symm (w (idx hc (i, b)))).1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hf : ∀ b, Function.Injective (f b)`. Introduce `b i i' e`. Establish `: (idx hc).symm (w (idx hc (i, b))) = (idx hc).symm (w (idx hc (i', b)))` using `Prod.ext e ((hr (i, b)).trans (hr (i', b)).symm)`. Simplify using `using this`. Set `σ : Fin q → Equiv.Perm (Fin p)` to `fun b => Equiv.ofBijective (f b) (Finite.injective_iff_bijective.mp (hf b))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Use `⟨fun b => (σ b)⁻¹, ?_⟩` and prove the remaining obligations. Use `ext1 a`. Take `⟨⟨i, b⟩, rfl⟩` from `(idx hc).surjective a`. Rewrite using `[permOf_apply', inv_inv, ← (idx hc).apply_symm_apply (w (idx hc (i, b)))]`. Use `congr 1`.
-
-Conclude with `Prod.ext rfl (hr (i, b)).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mem_range_of_graph (w : Equiv.Perm (Fin (p * q))) (u : Fin q × Fin p × Fin p →₀ ℕ)
     (h : u.mapDomain (blockEmb hc) = ∑ a, Finsupp.single (a, w a) 1) : ∃ τ, permOf hc τ = w := by
@@ -143,11 +141,11 @@ end TopRename
 open TopRename in
 
 /- English proof (translation)
-Introduce `p q h1 G`. Rewrite using `[GlobalTheory.GoodMetric.topCoeff]`. Use `symm`. Use `Fintype.sum_of_injective (permOf h1) (permOf_injective h1) _ _ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_rename_eq_zero, mul_zero]`. Introduce `u hu`. Take `⟨τ, rfl⟩` from `mem_range_of_graph h1 w u hu`. Conclude with `absurd ⟨τ, rfl⟩ hw`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[graph_permOf, coeff_rename_mapDomain _ (blockEmb_injective h1), ← sign_permOf h1]`.
+A detailed English derivation is pending.
 -/
 theorem topCoeff_rename_blockEmb : ∀ {p q : ℕ} (h1 : Fintype.card (Unit × Fin p × Fin q) = p * q)
     (G : MvPolynomial (Fin q × Fin p × Fin p) ℂ), GlobalTheory.GoodMetric.topCoeff (rename (blockEmb h1) G) =

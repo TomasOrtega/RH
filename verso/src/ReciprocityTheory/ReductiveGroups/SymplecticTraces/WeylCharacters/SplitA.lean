@@ -17,14 +17,14 @@ def sp_sub (ε : Fin n → Bool) (c : Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
   M.submatrix (blk ε c) (blk ε c)
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `((univ.filter fun i : Fin n => ε i = c).orderEmbOfFin rfl).injective h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sp_blk_inj (ε : Fin n → Bool) (c : Bool) : Function.Injective (blk ε c) := by
   intro a b h
   exact ((univ.filter fun i : Fin n => ε i = c).orderEmbOfFin rfl).injective h
 
 /- English proof (translation)
-Establish `ha : a ∈ ((univ.filter fun i : Fin n => ε i = ε a : Finset (Fin n)) : Set (Fin n))`. Simplify using the standard rewrite rules. Rewrite `ha` using `[← Finset.range_orderEmbOfFin (univ.filter fun i : Fin n => ε i = ε a) rfl]`. Take `⟨r, hr⟩` from `ha`. Conclude with `⟨r, hr⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sp_blk_surj (ε : Fin n → Bool) (a : Fin n) : ∃ r, blk ε (ε a) r = a := by
   have ha : a ∈ ((univ.filter fun i : Fin n => ε i = ε a : Finset (Fin n)) : Set (Fin n)) := by
@@ -34,16 +34,16 @@ theorem sp_blk_surj (ε : Fin n → Bool) (a : Fin n) : ∃ r, blk ε (ε a) r =
   exact ⟨r, hr⟩
 
 /- English proof (translation)
-Establish `h` using `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = c) rfl r`. Conclude with `(Finset.mem_filter.mp h).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eps_blk (ε : Fin n → Bool) (c : Bool) (r : Fin (cnt ε c)) : ε (blk ε c r) = c := by
   have h := Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = c) rfl r
   exact (Finset.mem_filter.mp h).2
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun hM a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at e`. Establish `key : M a b * ((if ε b = true then (1 : ℂ) else -1) - (if ε a = true then 1 else -1)) = 0`. Rewrite using `[mul_sub, e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hne : ((if ε b = true then (1 : ℂ) else -1) - (if ε a = true then 1 else -1)) ≠ 0` using `by revert h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> norm_num`. Conclude with `(mul_eq_zero.mp key).resolve_right hne`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem apply_eq_zero_of_commute_Jm_of_eps_ne {ε : Fin n → Bool} {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : M * Jm ε = Jm ε * M) (a b : Fin n) (h : ε a ≠ ε b) : M a b = 0 := by
@@ -57,9 +57,9 @@ private theorem apply_eq_zero_of_commute_Jm_of_eps_ne {ε : Fin n → Bool} {M :
   exact (mul_eq_zero.mp key).resolve_right hne
 
 /- English proof (translation)
-Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨t, -, rfl⟩` from `Finset.mem_image.mp hb`. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_univ _, eps_blk ε c t⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb`. Establish `hb' : ε b = c` using `(Finset.mem_filter.mp hb).2`. Substitute `hb'` using the available equality. Take `⟨t, ht⟩` from `sp_blk_surj ε b`. Conclude with `Finset.mem_image.mpr ⟨t, Finset.mem_univ _, ht⟩`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem image_blk_univ_eq_filter_eps (ε : Fin n → Bool) (c : Bool) :
     (univ.image (blk ε c)) = univ.filter fun i : Fin n => ε i = c := by
@@ -75,9 +75,9 @@ private theorem image_blk_univ_eq_filter_eps (ε : Fin n → Bool) (c : Bool) :
     exact Finset.mem_image.mpr ⟨t, Finset.mem_univ _, ht⟩
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [sp_sub, Matrix.submatrix_apply, Matrix.mul_apply]`. Establish `hs` using `Finset.sum_image (s := (univ : Finset (Fin (cnt ε c)))) (g := blk ε c) (f := fun b => M (blk ε c r) b * N b (blk ε c s)) (fun x _ y _ h => sp_blk_inj ε c h)`. Rewrite `hs` using `[image_blk_univ_eq_filter_eps]`. Rewrite using `[← hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `b _ hb`. Establish `hb' : ε b ≠ c` using `fun e => hb (Finset.mem_filter.mpr ⟨Finset.mem_univ _, e⟩)`. Rewrite using `[hM _ _ (by rw [eps_blk ε c r]; exact fun e => hb' e.symm), zero_mul]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sp_sub_mul_of_eq_zero_off_eps_blocks {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : ∀ a b, ε a ≠ ε b → M a b = 0) (N : Matrix (Fin n) (Fin n) ℂ) :
@@ -95,7 +95,7 @@ private theorem sp_sub_mul_of_eq_zero_off_eps_blocks {ε : Fin n → Bool} (c : 
   rw [hM _ _ (by rw [eps_blk ε c r]; exact fun e => hb' e.symm), zero_mul]
 
 /- English proof (translation)
-Conclude with `sp_sub_mul_of_eq_zero_off_eps_blocks c (fun a b h => apply_eq_zero_of_commute_Jm_of_eps_ne hM a b h) N`.
+A detailed English derivation is pending.
 -/
 theorem sp_sub_mul {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : M * Jm ε = Jm ε * M) (N : Matrix (Fin n) (Fin n) ℂ) :
@@ -103,14 +103,14 @@ theorem sp_sub_mul {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) 
   exact sp_sub_mul_of_eq_zero_off_eps_blocks c (fun a b h => apply_eq_zero_of_commute_Jm_of_eps_ne hM a b h) N
 
 /- English proof (translation)
-Unfold `sp_sub`. Conclude with `Matrix.submatrix_one _ (sp_blk_inj ε c)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sp_sub_one (ε : Fin n → Bool) (c : Bool) : sp_sub ε c 1 = 1 := by
   unfold sp_sub
   exact Matrix.submatrix_one _ (sp_blk_inj ε c)
 
 /- English proof (translation)
-Unfold `sp_sub`. Conclude with `Matrix.submatrix_diagonal _ _ (sp_blk_inj ε c)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sp_sub_diag (ε : Fin n → Bool) (c : Bool) (t : Fin n → ℂ) :
     sp_sub ε c (diagonal t) = diagonal (t ∘ blk ε c) := by
@@ -118,7 +118,7 @@ theorem sp_sub_diag (ε : Fin n → Bool) (c : Bool) (t : Fin n → ℂ) :
   exact Matrix.submatrix_diagonal _ _ (sp_blk_inj ε c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[sp_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sp_sub_smul (ε : Fin n → Bool) (c : Bool) (x : ℂ) (M : Matrix (Fin n) (Fin n) ℂ) :
     sp_sub ε c (x • M) = x • sp_sub ε c M := by
@@ -126,7 +126,7 @@ theorem sp_sub_smul (ε : Fin n → Bool) (c : Bool) (x : ℂ) (M : Matrix (Fin 
   simp [sp_sub]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, sp_sub_one]`. Consider the case `succ k ih => rw [pow_succ', pow_succ', sp_sub_mul c hM, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sp_sub_pow {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : M * Jm ε = Jm ε * M) (k : ℕ) : sp_sub ε c (M ^ k) = sp_sub ε c M ^ k := by
@@ -135,17 +135,17 @@ theorem sp_sub_pow {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) 
   | succ k ih => rw [pow_succ', pow_succ', sp_sub_mul c hM, ih]
 
 /- English proof (translation)
-Simplify using `[Jm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sp_Jm_true (k : ℕ) : Jm (fun _ : Fin k => true) = 1 := by
   simp [Jm]
 
 /- English proof (translation)
-Simplify using `only [Kset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hu, hc⟩` from `hg`. Establish `hzs : ∀ a b, ε a ≠ ε b → (star g) a b = 0`. Introduce `a b h`. Rewrite using `[Matrix.star_apply, apply_eq_zero_of_commute_Jm_of_eps_ne hc b a (Ne.symm h), star_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, by rw [sp_Jm_true, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `hst : star (sp_sub ε c g) = sp_sub ε c (star g)`. Use extensionality with `i j`. Simplify using `[sp_sub, Matrix.star_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hst, ← sp_sub_mul_of_eq_zero_off_eps_blocks c hzs, Matrix.mem_unitaryGroup_iff'.mp hu, sp_sub_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_sub_Kset {ε : Fin n → Bool} (c : Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     sp_sub ε c g ∈ Kset (fun _ : Fin (cnt ε c) => true) := by
@@ -162,11 +162,9 @@ theorem sp_sub_Kset {ε : Fin n → Bool} (c : Bool) {g : Matrix (Fin n) (Fin n)
   rw [hst, ← sp_sub_mul_of_eq_zero_off_eps_blocks c hzs, Matrix.mem_unitaryGroup_iff'.mp hu, sp_sub_one]
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedRing (Matrix (Fin (cnt ε c)) (Fin (cnt ε c)) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin (cnt ε c)) (Fin (cnt ε c)) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hs` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) M`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs'` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (sp_sub ε c M)`. Establish `hmap : HasSum (fun k => sp_sub ε c (((k.factorial : ℂ)⁻¹) • M ^ k)) (sp_sub ε c (NormedSpace.exp M))`. Use `Pi.hasSum.mpr fun i => Pi.hasSum.mpr fun j => ?_` and prove the remaining obligations. Conclude with `Pi.hasSum.mp (Pi.hasSum.mp hs (blk ε c i)) (blk ε c j)`. Simplify using `only [sp_sub_smul, sp_sub_pow c hM] at hmap`.
-
-Conclude with `hmap.unique hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sp_sub_exp {ε : Fin n → Bool} (c : Bool) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : M * Jm ε = Jm ε * M) :
@@ -192,16 +190,16 @@ def sp_proj (ε : Fin n → Bool) (c : Bool) : KG ε →* KG (fun _ : Fin (cnt �
     exact sp_sub_mul c k.2.2 _)
 
 /- English proof (translation)
-Conclude with `toMK_torepK _ _`.
+A detailed English derivation is pending.
 -/
 theorem sp_toMK_proj (ε : Fin n → Bool) (c : Bool) (k : KG ε) :
     toMK (sp_proj ε c k) = sp_sub ε c (toMK k) := by
   exact toMK_torepK _ _
 
 /- English proof (translation)
-Establish `hA : Continuous fun k : KG ε => sp_sub ε c (((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_submatrix _ _`. Use `show Continuous fun k : KG ε => torepK _ (sp_sub_Kset c k.2)`. Unfold `torepK`. Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hA, hA.matrix_conjTranspose⟩`.
+A detailed English derivation is pending.
 -/
 theorem sp_proj_cont (ε : Fin n → Bool) (c : Bool) : Continuous (sp_proj ε c) := by
   have hA : Continuous fun k : KG ε =>
@@ -214,11 +212,11 @@ theorem sp_proj_cont (ε : Fin n → Bool) (c : Bool) : Continuous (sp_proj ε c
   exact ⟨hA, hA.matrix_conjTranspose⟩
 
 /- English proof (translation)
-Unfold `inK at hX ⊢`. Take `⟨hG, hc⟩` from `hX`. Use `⟨?_, by rw [sp_Jm_true, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Unfold `inG at hG ⊢`. Rewrite using `[sp_Jm_true, Matrix.mul_one, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hG (blk ε c i)) (blk ε c j)`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.add_apply, Matrix.zero_apply, Matrix.conjTranspose_apply, eps_blk] at e`. Simplify using `only [sp_sub, Matrix.add_apply, Matrix.zero_apply, Matrix.conjTranspose_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `have hd : (if c = true then (1 : ℂ) else -1) ≠ 0 := by cases c <;> norm_num`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : (if c = true then (1 : ℂ) else -1) * (star (X (blk ε c j) (blk ε c i)) + X (blk ε c i) (blk ε c j)) = 0`. Take the linear combination `e`. Conclude with `(mul_eq_zero.mp e2).resolve_left hd`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sp_sub_inK {ε : Fin n → Bool} (c : Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     inK (fun _ : Fin (cnt ε c) => true) (sp_sub ε c X) := by
@@ -240,7 +238,7 @@ theorem sp_sub_inK {ε : Fin n → Bool} (c : Bool) {X : Matrix (Fin n) (Fin n) 
   exact (mul_eq_zero.mp e2).resolve_left hd
 
 /- English proof (translation)
-Rewrite using `[sp_toMK_proj, hγ, sp_sub_exp c (by rw [Matrix.smul_mul, hX.2, Matrix.mul_smul]), sp_sub_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_proj_curve {ε : Fin n → Bool} (c : Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X)
     {γ : ℝ → KG ε} (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) (t : ℝ) :
@@ -249,7 +247,7 @@ theorem sp_proj_curve {ε : Fin n → Bool} (c : Bool) {X : Matrix (Fin n) (Fin 
     sp_sub_smul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[sp_sub, Matrix.single_apply, (sp_blk_inj ε c).eq_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sp_sub_single_same (ε : Fin n → Bool) (c : Bool) (r s : Fin (cnt ε c)) (x : ℂ) :
     sp_sub ε c (single (blk ε c r) (blk ε c s) x) = single r s x := by
@@ -257,7 +255,7 @@ theorem sp_sub_single_same (ε : Fin n → Bool) (c : Bool) (r s : Fin (cnt ε c
   simp [sp_sub, Matrix.single_apply, (sp_blk_inj ε c).eq_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hne : blk ε c r ≠ blk ε c' i` using `fun e => h (by rw [← eps_blk ε c r, e, eps_blk ε c' i])`. Simplify using `[sp_sub, Matrix.single_apply, hne]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sp_sub_single_other (ε : Fin n → Bool) {c c' : Bool} (h : c ≠ c') (r s : Fin (cnt ε c)) (x : ℂ) :
     sp_sub ε c' (single (blk ε c r) (blk ε c s) x) = 0 := by

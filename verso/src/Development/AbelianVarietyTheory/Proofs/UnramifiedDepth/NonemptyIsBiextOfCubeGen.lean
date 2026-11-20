@@ -32,7 +32,7 @@ private def BxTriv {X : Scheme.{0}} (L : LB X) (Y : Scheme.{0})
     ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), ∏ k, h (φ k) ^ ε k = F U h
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `a`. Take `⟨K', _, φ', ε', t', ht', e'⟩` from `b`. Conclude with `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L _ _ _ _ t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => (Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (e U h) (e' U h))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem BxTriv.mul {X Y : Scheme.{0}} {L : LB X} {F F' : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U}
     (a : BxTriv L Y F) (b : BxTriv L Y F') : BxTriv L Y (fun U _ h => F U h * F' U h) := by
@@ -42,7 +42,7 @@ private theorem BxTriv.mul {X Y : Scheme.{0}} {L : LB X} {F F' : ∀ (U : Type) 
     fun U _ h => (Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (e U h) (e' U h))⟩
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, e⟩` from `a`. Use `⟨K, inferInstance, _, _, LB.invGen L _ _ t, DVR.invGen_isGen _ _ _ _ ht, fun U _ h => ?_⟩` and prove the remaining obligations. Use `show _ = (F U h)⁻¹`. Rewrite using `[← e U h]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem BxTriv.inv {X Y : Scheme.{0}} {L : LB X} {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U}
     (a : BxTriv L Y F) : BxTriv L Y (fun U _ h => (F U h)⁻¹) := by
@@ -53,7 +53,7 @@ private theorem BxTriv.inv {X Y : Scheme.{0}} {L : LB X} {F : ∀ (U : Type) [Co
   simp only [zpow_neg, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PUnit, inferInstance, _, _, LB.pullGen L _ _ t r, DVR.pullGen_isGen _ _ _ _ ht r, fun U _ h => by rw [Fintype.prod_unique, zpow_one, hg]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem BxTriv.pull {X Y W : Scheme.{0}} {L : LB X} {f : W ⟶ X} (t : (L.pull f).Gen) (ht : t.IsGen)
     (r : Y ⟶ W) {g : Y ⟶ X} (hg : r ≫ f = g) : BxTriv L Y (fun U _ h => h g) :=
@@ -61,7 +61,7 @@ private theorem BxTriv.pull {X Y W : Scheme.{0}} {L : LB X} {f : W ⟶ X} (t : (
     rw [Fintype.prod_unique, zpow_one, hg]⟩
 
 /- English proof (translation)
-Take `⟨K', _, φ', ε', t, ht, e⟩` from `a`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := φ) (ε' := ε) (fun U _ h => (e U h).trans (hF U h)) t ht`. Conclude with `⟨t', ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem BxTriv.gen {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     {F : ∀ (U : Type) [CommGroup U], ((Y ⟶ X) → U) → U} (a : BxTriv L Y F) {K : Type} [Fintype K]
@@ -73,9 +73,7 @@ private theorem BxTriv.gen {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB)
   exact ⟨t', ht'⟩
 
 /- English proof (translation)
-Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := φ) (ε' := ε) (fun U _ h => by`. Use `(DVR.prod_sum₂ (K := K) (K' := K ⊕ PUnit) (U := U) _ (c := ∏ k, h (φ k) ^ ε k) rfl (DVR.prod_neg _ _ (DVR.prod_sum₂ (K := K) (K' := PUnit) (U := U) _ ((Finset.prod_congr rfl fun k _ => by rw [Category.assoc]; rfl).trans (h₀ U fun q => h (p ≫ q))) (c' := h (p ≫ o ≫ f)) (by rw [Fin …` and prove the remaining obligations. Use the proof step `simp)`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.mulGen L _ _ _ _ (LB.pullGen L _ _ t (p ≫ e)) (LB.pullGen L _ _ a (p ≫ o)))))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _) (DVR.pullGen_isGen _ _ _ _ ha _))))`.
-
-Use `⟨t', ht', fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ e y J hJ, val_mul hJ, val_inv, val_mul hJ, val_pull hJ, val_pull hJ, ← Category.assoc, ← Category.assoc, he, Category.id_comp, Category.id_comp, mul_inv, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bx_norm {X Y W S₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _)
@@ -99,7 +97,7 @@ private theorem bx_norm {X Y W S₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[MonObj.mul_comp]`. Simplify using the standard rewrite rules. Rewrite using `[MonObj.mul_comp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bx_lift_mul {T : Over S} (a b c d : T ⟶ A) :
     (lift a b : T ⟶ A ⊗ A) * lift c d = lift (a * c) (b * d) := by
@@ -108,7 +106,7 @@ private theorem bx_lift_mul {T : Over S} (a b c d : T ⟶ A) :
   · rw [MonObj.mul_comp]; simp
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[MonObj.one_comp]`. Simplify using the standard rewrite rules. Rewrite using `[MonObj.one_comp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bx_lift_one {T : Over S} : (1 : T ⟶ A ⊗ A) = lift 1 1 := by
   ext
@@ -116,9 +114,9 @@ private theorem bx_lift_one {T : Over S} : (1 : T ⟶ A ⊗ A) = lift 1 1 := by
   · rw [MonObj.one_comp]; simp
 
 /- English proof (translation)
-Establish `r₀ : lift a (lift b c) ≫ x3 A 0 = a` using `by simp [x3]`. Establish `r₁ : lift a (lift b c) ≫ x3 A 1 = b` using `by simp [x3]`. Establish `r₂ : lift a (lift b c) ≫ x3 A 2 = c` using `by simp [x3]`. Establish `s : lift a (lift b c) ≫ padd A (x3 A 0) (x3 A 1) = a * b` using `(MonObj.comp_mul _ _ _).trans (by rw [r₀, r₁])`. Use `(Fintype.prod_equiv Equiv.ulift _ (fun i : Fin 3 => h ((lift a (lift b c)).left ≫ law1φ A (x3 A 0) (x3 A 1) (x3 A 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift a (lift b c) ≫ lift (padd A (x3 A 0) (x3 A 1)) (x3 A 2)).left ^ (1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 A 0) (x3 A 2)).left ^ (-1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 A 1) (x3 A 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]`. Simplify using `only [zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bx_prod₁ {T : Over S} (a b c : T ⟶ A) {U : Type} [CommGroup U] (h : (T.left ⟶ (G2 A).left) → U) :
     ∏ k, h ((lift a (lift b c)).left ≫ law1φ A (x3 A 0) (x3 A 1) (x3 A 2) k) ^ lawε k =
@@ -137,9 +135,9 @@ private theorem bx_prod₁ {T : Over S} (a b c : T ⟶ A) {U : Type} [CommGroup 
   simp only [zpow_neg, zpow_one]
 
 /- English proof (translation)
-Establish `r₀ : lift a (lift b c) ≫ x3 A 0 = a` using `by simp [x3]`. Establish `r₁ : lift a (lift b c) ≫ x3 A 1 = b` using `by simp [x3]`. Establish `r₂ : lift a (lift b c) ≫ x3 A 2 = c` using `by simp [x3]`. Establish `s : lift a (lift b c) ≫ padd A (x3 A 1) (x3 A 2) = b * c` using `(MonObj.comp_mul _ _ _).trans (by rw [r₁, r₂])`. Use `(Fintype.prod_equiv Equiv.ulift _ (fun i : Fin 3 => h ((lift a (lift b c)).left ≫ law2φ A (x3 A 0) (x3 A 1) (x3 A 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift a (lift b c) ≫ lift (x3 A 0) (padd A (x3 A 1) (x3 A 2))).left ^ (1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 A 0) (x3 A 1)).left ^ (-1 : ℤ) * h (lift a (lift b c) ≫ lift (x3 A 0) (x3 A 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, s, r₀, r₁, r₂]`. Simplify using `only [zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bx_prod₂ {T : Over S} (a b c : T ⟶ A) {U : Type} [CommGroup U] (h : (T.left ⟶ (G2 A).left) → U) :
     ∏ k, h ((lift a (lift b c)).left ≫ law2φ A (x3 A 0) (x3 A 1) (x3 A 2) k) ^ lawε k =
@@ -158,13 +156,13 @@ private theorem bx_prod₂ {T : Over S} (a b c : T ⟶ A) {U : Type} [CommGroup 
   simp only [zpow_neg, zpow_one]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [x3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bx_id₃ : lift (x3 A 0) (lift (x3 A 1) (x3 A 2)) = 𝟙 (G3 A) := by
   ext <;> simp [x3]
 
 /- English proof (translation)
-Use `bx_prod₁ (x3 A 0) (x3 A 1) (x3 A 2) h` as an intermediate fact. Rewrite `this` using `[bx_id₃]`. Simplify `this` using `only [Over.id_left, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem bx_self₁ {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ (G2 A).left) → U) :
     ∏ k, h (law1φ A (x3 A 0) (x3 A 1) (x3 A 2) k) ^ lawε k =
@@ -175,7 +173,7 @@ private theorem bx_self₁ {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ (G2 A)
   simpa only [Over.id_left, Category.id_comp] using this
 
 /- English proof (translation)
-Use `bx_prod₂ (x3 A 0) (x3 A 1) (x3 A 2) h` as an intermediate fact. Rewrite `this` using `[bx_id₃]`. Simplify `this` using `only [Over.id_left, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem bx_self₂ {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ (G2 A).left) → U) :
     ∏ k, h (law2φ A (x3 A 0) (x3 A 1) (x3 A 2) k) ^ lawε k =
@@ -186,15 +184,15 @@ private theorem bx_self₂ {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ (G2 A)
   simpa only [Over.id_left, Category.id_comp] using this
 
 /- English proof (translation)
-Establish `Ta : ∀ y : G3 A ⟶ A, BxTriv P (G3 A).left (fun U _ h => h (lift 1 y).left)` using `fun y => BxTriv.pull a ha y.left (by rw [← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id])`. Establish `Tb : ∀ y : G3 A ⟶ A, BxTriv P (G3 A).left (fun U _ h => h (lift y 1).left)` using `fun y => BxTriv.pull b hb y.left (by rw [← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id])`. Establish `Tθ : ∀ x x' y : G3 A ⟶ A ⊗ A, BxTriv P (G3 A).left (fun U _ h => h (x * x' * y).left * (h (x * x').left)⁻¹ * (h (x * y).left)⁻¹ * (h (x' * y).left)⁻¹ * h x.left * h x'.left * h y.left * (h (1 : G3 A ⟶ A ⊗ A).left)⁻¹)` using `fun x x' y => ⟨thK, inferInstance, _, _, LB.pullGen P (thφ (A ⊗ A) (x3 (A ⊗ A))) thε θ (lift x (lift x' y)).left, DVR.pullGen_isGen _ _ _ _ hθ _, fun U _ h => prod_cub x x' y h⟩`. Take `⟨t₁, h₁⟩` from `((Tθ (lift (x3 A 0) 1) (lift (x3 A 1) 1) (lift 1 (x3 A 2))).mul (((Tb (x3 A 0 * x3 A 1)).mul (Ta 1)).mul (((Tb (x3 A 0)).mul (Tb (x3 A 1))).mul (Ta (x3 A 2))).inv)).gen hP (φ := law1φ A (x3 A 0) (x3 A 1) (x3 A 2)) (ε := lawε) (fun U _ h => by`. Rewrite using `[bx_self₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bx_lift_mul, _root_.mul_one, _root_.one_mul, bx_lift_one (T := G3 A)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Take `⟨t₂, h₂⟩` from `((Tθ (lift (x3 A 0) 1) (lift 1 (x3 A 1)) (lift 1 (x3 A 2))).mul (((Ta (x3 A 1 * x3 A 2)).mul (Ta 1)).mul (((Tb (x3 A 0)).mul (Ta (x3 A 1))).mul (Ta (x3 A 2))).inv)).gen hP (φ := law2φ A (x3 A 0) (x3 A 1) (x3 A 2)) (ε := lawε) (fun U _ h => by`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bx_self₂]`. Simplify using `only [bx_lift_mul, _root_.mul_one, _root_.one_mul, bx_lift_one (T := G3 A)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `o : (1 : 𝟙_ (Over S) ⟶ A).left ≫ (lift (1 : A ⟶ A) (𝟙 A)).left = (lift (1 : 𝟙_ (Over S) ⟶ A) 1).left`. Rewrite using `[← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id]`. Take `⟨l₁, g₁, v₁⟩` from `bx_norm hP t₁ h₁ (G3 A).hom (lift (1 : 𝟙_ (Over S) ⟶ A) (lift 1 1)).left (Over.w _) a ha (1 : 𝟙_ (Over S) ⟶ A).left (fun U _ h => by`. Use `(bx_prod₁ (A := A) (T := 𝟙_ (Over S)) 1 1 1 h).trans (Eq.trans ?_ (congrArg (fun q => (h q)⁻¹) o.symm))` and prove the remaining obligations. Rewrite using `[_root_.mul_one, mul_inv_cancel, _root_.one_mul])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l₂, g₂, v₂⟩` from `bx_norm hP t₂ h₂ (G3 A).hom (lift (1 : 𝟙_ (Over S) ⟶ A) (lift 1 1)).left (Over.w _) a ha (1 : 𝟙_ (Over S) ⟶ A).left (fun U _ h => by`. Use `(bx_prod₂ (A := A) (T := 𝟙_ (Over S)) 1 1 1 h).trans (Eq.trans ?_ (congrArg (fun q => (h q)⁻¹) o.symm))` and prove the remaining obligations. Rewrite using `[_root_.mul_one, mul_inv_cancel, _root_.one_mul])`. Conclude with `⟨l₁, l₂, g₁, g₂, fun y J hJ => (v₁ y J hJ).trans (v₂ y J hJ).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bx_laws {P : LB (A ⊗ A).left} (hP : P.IsLB) (θ : LB.Gen (Theta (A ⊗ A) P)) (hθ : θ.IsGen)
     (a : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen) (ha : a.IsGen)
@@ -241,7 +239,7 @@ private theorem bx_laws {P : LB (A ⊗ A).left} (hP : P.IsLB) (θ : LB.Gen (Thet
   exact ⟨l₁, l₂, g₁, g₂, fun y J hJ => (v₁ y J hJ).trans (v₂ y J hJ).symm⟩
 
 /- English proof (translation)
-The claim follows from `corr_of_val hL fun y J hJ => gen_unique' hL hF T.hom e.left (Over.w e) hp hu hu' h _ _ y J hJ`.
+A detailed English derivation is pending.
 -/
 private theorem bx_corr {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {T : Over S} (e : 𝟙_ (Over S) ⟶ T)
     (hp : Function.Surjective T.hom.appTop.hom) {K K' : Type} [Fintype K] [Fintype K']
@@ -252,7 +250,7 @@ private theorem bx_corr {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {T : Over S} (
   corr_of_val hL fun y J hJ => gen_unique' hL hF T.hom e.left (Over.w e) hp hu hu' h _ _ y J hJ
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, comp_lift, ha, hb, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bx_val {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → ((G3 A).left ⟶ X)} {ε : K → ℤ}
     (l : LB.Gen (LB.LinComb L φ ε)) {T : Over S} (e : 𝟙_ (Over S) ⟶ T) {a b c : T ⟶ A} (ha : e ≫ a = 1)
@@ -268,23 +266,21 @@ Both sides reduce to the same expression.
 private theorem bx_padd {T : Over S} (a b : T ⟶ A) : padd A a b = a * b := rfl
 
 /- English proof (translation)
-Take `⟨l₁, l₂, g₁, g₂, v⟩` from `bx_laws hP θ hθ a ha b hb`. Establish `A₂` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `A₃` using `AbelianSchemeGerms.isAbelianScheme_tensor A _ hA A₂`. Establish `s₃ : Function.Surjective (G3 A).hom.appTop.hom` using `(hG _ _ A₃).2`. Establish `s₄ : Function.Surjective (G4 A).hom.appTop.hom` using `(hG _ _ (AbelianSchemeGerms.isAbelianScheme_tensor A _ hA A₃)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e₃ : 𝟙_ (Over S) ⟶ G3 A` to `lift 1 (lift 1 1)`. Set `e₄ : 𝟙_ (Over S) ⟶ G4 A` to `lift 1 (lift 1 (lift 1 1))`. Apply the tactic sequence `have c₃ : ∀ i, e₃ ≫ x3 A i = 1 := fun i => by fin_cases i <;> simp [e₃, x3]`. Apply the tactic sequence `have c₄ : ∀ i, e₄ ≫ x4 A i = 1 := fun i => by fin_cases i <;> simp [e₄, x4]`. Establish `d₄ : ∀ i j, e₄ ≫ padd A (x4 A i) (x4 A j) = 1` using `fun i j => (MonObj.comp_mul _ _ _).trans (by rw [c₄, c₄, _root_.mul_one])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `p₁` using `fun {T : Over S} (f : T ⟶ G3 A) => DVR.pullGen_isGen _ _ _ _ g₁ f.left`. Establish `p₂` using `fun {T : Over S} (f : T ⟶ G3 A) => DVR.pullGen_isGen _ _ _ _ g₂ f.left`. Use `⟨⟨hP, l₁, l₂, g₁, g₂, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `bx_corr hP e₄ s₄ (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₁ _) (p₁ _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₁ _) (p₁ _)) (fun U _ h => ?_) (fun y J hJ => ?_)` and prove the remaining obligations. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (bx_prod₁ _ _ _ h) (bx_prod₁ _ _ _ h))).trans (Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (bx_prod₁ _ _ _ h) (bx_prod₁ _ _ _ h))).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [bx_padd, _root_.mul_assoc (x4 A 0)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (bx_val l₁ e₄ (d₄ _ _) (c₄ _) (c₄ _) hJ) (bx_val l₁ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (bx_val l₁ e₄ (c₄ _) (d₄ _ _) (c₄ _) hJ) (bx_val l₁ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))).symm`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Use `bx_corr hP e₃ s₃ g₁ (p₁ _) (fun U _ h => ?_) (fun y J hJ => (bx_val l₁ e₃ (c₃ _) (c₃ _) (c₃ _) hJ).symm)` and prove the remaining obligations. Use `(bx_prod₁ _ _ _ h).trans (Eq.trans ?_ (bx_self₁ h).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_comm (x3 A 1), mul_right_comm]`. Use `bx_corr hP e₄ s₄ (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₂ _) (p₂ _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₂ _) (p₂ _)) (fun U _ h => ?_) (fun y J hJ => ?_)` and prove the remaining obligations. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (bx_prod₂ _ _ _ h) (bx_prod₂ _ _ _ h))).trans (Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (bx_prod₂ _ _ _ h) (bx_prod₂ _ _ _ h))).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [bx_padd, _root_.mul_assoc (x4 A 1)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (bx_val l₂ e₄ (c₄ _) (d₄ _ _) (c₄ _) hJ) (bx_val l₂ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (bx_val l₂ e₄ (c₄ _) (c₄ _) (d₄ _ _) hJ) (bx_val l₂ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))).symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `bx_corr hP e₃ s₃ g₂ (p₂ _) (fun U _ h => ?_) (fun y J hJ => (bx_val l₂ e₃ (c₃ _) (c₃ _) (c₃ _) hJ).symm)` and prove the remaining obligations. Use `(bx_prod₂ _ _ _ h).trans (Eq.trans ?_ (bx_self₂ h).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_comm (x3 A 2), mul_right_comm]`. Use `bx_corr hP e₄ s₄ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₁ _) (p₂ _)) (p₂ _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (p₂ _) (p₁ _)) (p₁ _)) (fun U _ h => ?_) (fun y J hJ => ?_)` and prove the remaining obligations. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (bx_prod₂ _ _ _ h) (bx_prod₁ _ _ _ h))) (bx_prod₁ _ _ _ h))).trans (Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) ((Fintype.prod_sum_type _).trans (congrArg₂ …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [bx_padd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (bx_val l₁ e₄ (c₄ _) (c₄ _) (d₄ _ _) hJ) (bx_val l₂ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))) (bx_val l₂ e₄ (c₄ _) (c₄ _) (c₄ _) hJ))).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((v …` and prove the remaining obligations.
-
-Rewrite using `[v y J hJ]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bx_exist (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left} (hP : P.IsLB)
     (θ : LB.Gen (Theta (A ⊗ A) P)) (hθ : θ.IsGen)
@@ -367,7 +363,7 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP ⟨θ, hθ⟩ ⟨a, ha⟩ ⟨b, hb⟩`. Conclude with `BiextOfCube.bx_exist GlobalTheory.firstFiveLaws.1.globalFns hA hP θ hθ a ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_isBiext_of_cube_gen : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ P : LB (A ⊗ A).left, P.IsLB → (∃ θ : LB.Gen (Theta (A ⊗ A) P), θ.IsGen) → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → Nonempty (IsBiext A P) := by
   intro S A _ _ hA P hP ⟨θ, hθ⟩ ⟨a, ha⟩ ⟨b, hb⟩

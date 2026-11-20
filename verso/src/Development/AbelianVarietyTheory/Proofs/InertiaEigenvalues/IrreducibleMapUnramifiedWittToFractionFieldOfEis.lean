@@ -16,15 +16,15 @@ open Polynomial
 attribute [local instance] algK isFractionRing
 
 /- English proof (translation)
-Introduce `l _ a _ E hmon hdeg hdiv ⟨w, hw⟩`. Establish `hP : (Ideal.span {(l : Wq l a)}).IsPrime`. Rewrite using `[← WittVector.ker_constantCoeff]`. Conclude with `RingHom.ker_isPrime _`. Establish `hl0 : (l : Wq l a) ≠ 0` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (iotaO l a) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast this)`. Establish `hW : Irreducible E`. Use `Polynomial.IsEisensteinAt.irreducible ⟨?_, ?_, ?_⟩ hP hmon.isPrimitive hdeg` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hmon.leadingCoeff]`. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Introduce `n hn`. Conclude with `Ideal.mem_span_singleton.2 (hdiv n hn)`. Rewrite using `[hw, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, hc⟩`. Establish `h1 : (l : Wq l a) * ((w : Wq l a) - l * c) = 0` using `by linear_combination hc`. Establish `h2 : (w : Wq l a) = l * c`. Use `(mul_eq_zero.1 h1).resolve_left hl0` as an intermediate fact. Take the linear combination `this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg WittVector.constantCoeff h2`. Rewrite `h3` using `[map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]`. Conclude with `(w.isUnit.map WittVector.constantCoeff).ne_zero h3`. Establish `h` using `(hmon.irreducible_iff_irreducible_map_fraction_map (K := ↥(Kunr l a))).1 hW`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_map_iota_of_eisenstein : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (E : Polynomial (Wq l a)), E.Monic → 0 < E.natDegree →
     (∀ i < E.natDegree, (l : Wq l a) ∣ E.coeff i) → (∃ w : (Wq l a)ˣ, E.coeff 0 = (l : Wq l a) * w) →

@@ -6,13 +6,13 @@ open CategoryTheory Limits GlobalTheory.EtC CochainComplex
 namespace LateralTheory.CohomologicalPurity.Thom.ExcSp
 
 /- English proof (translation)
-Set `E` to `HomologicalComplex.eval (Shv R) (ComplexShape.up ℤ) n`. Set `e1 : (cokernel f).X n ≅ cokernel (f.f n)` to `PreservesCokernel.iso E f`. Set `e2 : (cokernel f').X n ≅ cokernel (f'.f n)` to `PreservesCokernel.iso E f'`. Establish `h1 : (cokernel.π f).f n ≫ e1.hom = cokernel.π (f.f n)` using `PreservesCokernel.π_iso_hom E f`. Establish `h2 : (cokernel.π f').f n ≫ e2.hom = cokernel.π (f'.f n)` using `PreservesCokernel.π_iso_hom E f'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hep : Epi ((cokernel.π f).f n)`. Establish `e : (cokernel.π f).f n = cokernel.π (f.f n) ≫ e1.inv`. Rewrite using `[← h1, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[e]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (cokernel.map f f' a b comm).f n ≫ e2.hom = e1.hom ≫ cokernel.map _ _ _ _ (sqw comm n)`. Rewrite using `[← cancel_epi ((cokernel.π f).f n), reassoc_of% h1, ← HomologicalComplex.comp_f_assoc]`. Simplify using `[cokernel.map, h2]`. Establish `key' : (cokernel.map f f' a b comm).f n = e1.hom ≫ cokernel.map _ _ _ _ (sqw comm n) ≫ e2.inv`. Rewrite using `[← Category.assoc, ← key, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key']`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cokMap_f {R : Type} [CommRing R] {K L K' L' : Cx R} (f : K ⟶ L) (f' : K' ⟶ L')
     (a : K ⟶ K') (b : L ⟶ L') (comm : f ≫ b = a ≫ f') (n : ℤ)
@@ -34,7 +34,7 @@ theorem isIso_cokMap_f {R : Type} [CommRing R] {K L K' L' : Cx R} (f : K ⟶ L) 
   rw [key']; infer_instance
 
 /- English proof (translation)
-Establish `: Mono f` using `HomologicalComplex.mono_of_mono_f _ hf`. Conclude with `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f)) inferInstance inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shortExact_cok {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) (hf : ∀ n, Mono (f.f n)) :
     (ShortComplex.mk f (cokernel.π f) (cokernel.condition f)).ShortExact := by
@@ -42,11 +42,11 @@ theorem shortExact_cok {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) (hf : 
   exact ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f)) inferInstance inferInstance
 
 /- English proof (translation)
-Introduce `R _ K L K' L' f f' a b comm hf hf' hc`. Set `S1` to `ShortComplex.mk f (cokernel.π f) (cokernel.condition f)`. Set `S2` to `ShortComplex.mk f' (cokernel.π f') (cokernel.condition f')`. Set `φ : S1 ⟶ S2` to `⟨a, b, cokernel.map f f' a b comm, comm.symm, by simp [S1, S2]⟩`. Establish `q1` using `mappingCone.quasiIso_descShortComplex (shortExact_cok f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `q2` using `mappingCone.quasiIso_descShortComplex (shortExact_cok f' hf')`. Establish `hcomp : ∀ n, IsIso (φ.τ₃.f n)` using `fun n => isIso_cokMap_f f f' a b comm n (hc n)`. Establish `: IsIso φ.τ₃` using `HomologicalComplex.Hom.isIso_of_components _`. Establish `hm` using `mappingCone.map_descShortComplex S1 S2 φ`. Establish `: QuasiIso (mappingCone.descShortComplex S1 ≫ φ.τ₃)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiIso (mappingCone.map f f' a b comm ≫ mappingCone.descShortComplex S2)`. Express the relevant statement in the definitionally equal form `QuasiIso (mappingCone.map S1.f S2.f φ.τ₁ φ.τ₂ φ.comm₁₂.symm ≫ mappingCone.descShortComplex S2)`. Rewrite using `[hm]`. Use `infer_instance`. Conclude with `(quasiIso_iff_comp_right _ (mappingCone.descShortComplex S2)).1 this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafConeCok_of : LeafConeCok := by
   intro R _ K L K' L' f f' a b comm hf hf' hc

@@ -7,7 +7,7 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Establish `ha : HasSubst (fun i => (C (x i) : MvPowerSeries Empty A))` using `hasSubst_of_constantCoeff_nilpotent fun i => by simpa using hx i`. Use `show (constantCoeff : MvPowerSeries Empty A →+* A) (substAlgHom (R := k) ha (X i)) = x i`. Rewrite using `[substAlgHom_apply, subst_X ha, constantCoeff_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evA_X (k : Type) [CommRing k] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra k A]
     (x : σ → A) (hx : ∀ i, IsNilpotent (x i)) (i : σ) : evA k x hx (X i) = x i := by

@@ -23,7 +23,7 @@ def _root_.PositivityTheory.SiegelWeilFormula.RD_k.gens {d : _root_.PositivityTh
 def _root_.PositivityTheory.SiegelWeilFormula.RD_k.vacOn {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (s : Finset (InfinitePlace F)) : Submodule ℂ (Mx F E d.m d.n → ℂ) :=
   Submodule.span ℂ (R.gens s)
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨P, g, hP, hg, rfl⟩`. Use `Submodule.subset_span ⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`. Simplify using `only [hP _ (Finset.notMem_empty _)]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vacOn_empty_le_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : R.vacOn ∅ ≤ R.vac := by
   refine Submodule.span_le.2 ?_
@@ -32,28 +32,26 @@ theorem vacOn_empty_le_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
   funext X
   simp only [hP _ (Finset.notMem_empty _)]
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨P, g, hg, rfl⟩`. Conclude with `Submodule.subset_span ⟨P, g, fun w hw => absurd (Finset.mem_univ w) hw, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fock_le_vacOn_univ_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : R.fock ≤ R.vacOn Finset.univ := by
   refine Submodule.span_le.2 ?_
   rintro f ⟨P, g, hg, rfl⟩
   exact Submodule.subset_span ⟨P, g, fun w hw => absurd (Finset.mem_univ w) hw, hg, rfl⟩
 /- English proof (translation)
-Establish `hgen : ∀ f ∈ R.gens (insert w s), ∃ Φf : d.Fn, d.KFin Φf ∧ d.T Φf = f ∧ ∀ x, HolValueAt (fun z => d.eis (d.sec0 Φf) (s0 d.m d.n) z x) (s0 d.m d.n) (c * d.I Φf x)`. Introduce and unpack `f ⟨P, g, hP, hg, rfl⟩`. Use `set Ψ : Mx F E d.m d.n → ℂ := fun X => (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g fun k => (d.crd X k).2 with hΨdef`. Establish `hΨ : Ψ ∈ R.away w` using `Submodule.subset_span ⟨P, g, hg, rfl⟩`. Take `⟨φ, hφ⟩` from `hLE F E σ d R w Ψ hΨ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTP : ∀ Q : PX d.m d.n, d.T (φ Q) = fun X => (∏ w', fP (Function.update P w Q w') (R.loc w' X)) * g fun k => (d.crd X k).2`. Introduce `Q`. Rewrite using `[(hφ Q).2]`. Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, hΨdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), Function.update_self, mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun w' hw' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hw')]`. Establish `hfock : ∀ Q, d.T (φ Q) ∈ R.fock` using `fun Q => by`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTP Q]`. Conclude with `Submodule.subset_span ⟨_, g, hg, rfl⟩`. Establish `hKF : ∀ Q, d.KFin (φ Q)` using `fun Q => hPK F E σ d R (φ Q) (hφ Q).1 (hfock Q)`. Establish `hvac : ∀ x, HolValueAt (fun z => d.eis (d.sec0 (φ 1)) (s0 d.m d.n) z x) (s0 d.m d.n) (c * d.I (φ 1) x)`. Use `ih (φ 1) (hφ 1).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hTP 1]`. Use `Submodule.subset_span ⟨Function.update P w 1, g, fun w' hw' => ?_, hg, rfl⟩` and prove the remaining obligations. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Conclude with `Function.update_self _ _ _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne e]`. Conclude with `hP w' (by simp [e, hw'])`. Use `⟨φ (P w), hKF (P w), ?_, _root_.PositivityTheory.SiegelWeilFormula.Atop.genAt_k hG c hT hAux hFM hLo hLI hGS hGI hGD hPK hSK hEW d R w hΨ hφ hvac (P w)⟩` and prove the remaining obligations. Rewrite using `[hTP (P w), Function.update_eq_self]`. Introduce `Φ hΦ hTΦ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, a, f, hf⟩` from `Submodule.mem_span_set'.1 hTΦ`. Use `choose Φf hK hTf hI using fun i => hgen (f i).1 (f i).2`. Establish `hΦeq : Φ = ∑ i, a i • Φf i`. Establish `hmem : Φ - ∑ i, a i • Φf i ∈ d.sch` using `d.sch.sub_mem hΦ (d.sch.sum_mem fun i _ => d.sch.smul_mem _ (hK i).1)`. Use `sub_eq_zero.mp ((hT.1 F E σ d).2.2 _ hmem ?_)` and prove the remaining obligations.
-
-Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k, map_sub, map_sum]`. Simplify using `only [map_smul, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k, hTf, hf, sub_self]`. Rewrite using `[hΦeq]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Atop.ident_lincomb_k hT hSK hEW d c a Φf hK hI x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacOn_step_k (hG : AbsSt.GenCore) (c : ℂ) (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hAux : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hFM : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (hLE : _root_.PositivityTheory.SiegelWeilFormula.LiftEx_k)
     (hLo : _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k) (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) (hGS : _root_.PositivityTheory.SiegelWeilFormula.GSplit_k) (hGI : _root_.PositivityTheory.SiegelWeilFormula.GIinv_k) (hGD : _root_.PositivityTheory.SiegelWeilFormula.GIdil_k) (hPK : _root_.PositivityTheory.SiegelWeilFormula.PolyKFin_k) (hSK : _root_.PositivityTheory.SiegelWeilFormula.SecK_k)
@@ -110,9 +108,9 @@ def VacAllOfC_k : Prop :=
   AbsSt.GenCore → _root_.PositivityTheory.SiegelWeilFormula.TAll_k → _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties → _root_.PositivityTheory.SiegelWeilFormula.FockMem_k → _root_.PositivityTheory.SiegelWeilFormula.LiftEx_k → _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k → _root_.PositivityTheory.SiegelWeilFormula.LocInst_k → _root_.PositivityTheory.SiegelWeilFormula.GSplit_k → _root_.PositivityTheory.SiegelWeilFormula.GIinv_k → _root_.PositivityTheory.SiegelWeilFormula.GIdil_k → _root_.PositivityTheory.SiegelWeilFormula.KFinPoly_k → _root_.PositivityTheory.SiegelWeilFormula.PolyKFin_k →
     _root_.PositivityTheory.SiegelWeilFormula.SecK_k → _root_.PositivityTheory.SiegelWeilFormula.EisWk_k → _root_.PositivityTheory.SiegelWeilFormula.VacAll_k
 /- English proof (translation)
-Introduce `hG hT hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hEW F E _ _ _ _ _ σ d R c hV Φ hΦ x`. Establish `claim : ∀ s : Finset (InfinitePlace F), ∀ Φ ∈ d.sch, d.T Φ ∈ R.vacOn s → ∀ x, HolValueAt (fun z => d.eis (d.sec0 Φ) (s0 d.m d.n) z x) (s0 d.m d.n) (c * d.I Φ x)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun Φ hΦ hT x => hV Φ hΦ (_root_.PositivityTheory.SiegelWeilFormula.Atop.vacOn_empty_le_k R hT) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert w s hw ih => exact _root_.PositivityTheory.SiegelWeilFormula.Atop.vacOn_step_k hG c hT hAux hFM hLE hLo hLI hGS hGI hGD hPK hSK hEW d R w s hw ih`. Conclude with `claim Finset.univ Φ hΦ.1 (_root_.PositivityTheory.SiegelWeilFormula.Atop.fock_le_vacOn_univ_k R (hKP F E σ d R Φ hΦ)) x`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Atop.vacAllOfC_k : _root_.PositivityTheory.SiegelWeilFormula.VacAllOfC_k := by
   intro hG hT hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hEW F E _ _ _ _ _ σ d R c hV Φ hΦ x

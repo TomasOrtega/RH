@@ -20,7 +20,7 @@ instance [E.IsElliptic] : (frobeniusTwist E p).IsElliptic := by
   unfold frobeniusTwist; infer_instance
 
 /- English proof (translation)
-Use `show (E.map (frobenius F p)).j = _`. Rewrite using `[map_j, frobenius_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_frobeniusTwist [E.IsElliptic] : (frobeniusTwist E p).j = E.j ^ p := by
   show (E.map (frobenius F p)).j = _
@@ -29,7 +29,7 @@ theorem j_frobeniusTwist [E.IsElliptic] : (frobeniusTwist E p).j = E.j ^ p := by
 variable {L : Type*} [Field L] [Algebra F L] [CharP L p]
 
 /- English proof (translation)
-Use `show (E.map (frobenius F p)).map (algebraMap F L) = (E.map (algebraMap F L)).map (frobenius L p)`. Rewrite using `[WeierstrassCurve.map_map, WeierstrassCurve.map_map]`. Use `congr 1`. Use extensionality with `c`. Simplify using `[frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseChange_frobeniusTwist :
     (frobeniusTwist E p).baseChange L = (E.baseChange L).map (frobenius L p) := by
@@ -40,7 +40,7 @@ theorem baseChange_frobeniusTwist :
   simp [frobenius_def]
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `((E.baseChange L).toAffine.map_nonsingular (frobenius L p).injective x y).mpr h` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nonsingular_pow {x y : L} (h : (E.baseChange L).toAffine.Nonsingular x y) :
     ((frobeniusTwist E p).baseChange L).toAffine.Nonsingular (x ^ p) (y ^ p) := by
@@ -49,7 +49,7 @@ theorem nonsingular_pow {x y : L} (h : (E.baseChange L).toAffine.Nonsingular x y
   simpa only [frobenius_def] using this
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `(E.baseChange L).toAffine.map_nonsingular (frobenius L p).injective x y` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nonsingular_pow_iff {x y : L} :
     ((frobeniusTwist E p).baseChange L).toAffine.Nonsingular (x ^ p) (y ^ p) ↔
@@ -59,7 +59,7 @@ theorem nonsingular_pow_iff {x y : L} :
   simpa only [frobenius_def] using this
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `(E.baseChange L).toAffine.map_negY (frobenius L p) x y` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem negY_pow (x y : L) :
     ((frobeniusTwist E p).baseChange L).toAffine.negY (x ^ p) (y ^ p) =
@@ -69,7 +69,7 @@ theorem negY_pow (x y : L) :
   simpa only [frobenius_def] using this
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `(E.baseChange L).toAffine.map_addX (frobenius L p) x₁ x₂ ℓ` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addX_pow (x₁ x₂ ℓ : L) :
     ((frobeniusTwist E p).baseChange L).toAffine.addX (x₁ ^ p) (x₂ ^ p) (ℓ ^ p) =
@@ -79,7 +79,7 @@ theorem addX_pow (x₁ x₂ ℓ : L) :
   simpa only [frobenius_def] using this
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `(E.baseChange L).toAffine.map_addY (frobenius L p) x₁ y₁ x₂ ℓ` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem addY_pow (x₁ x₂ y₁ ℓ : L) :
     ((frobeniusTwist E p).baseChange L).toAffine.addY (x₁ ^ p) (x₂ ^ p) (y₁ ^ p) (ℓ ^ p) =
@@ -89,7 +89,7 @@ theorem addY_pow (x₁ x₂ y₁ ℓ : L) :
   simpa only [frobenius_def] using this
 
 /- English proof (translation)
-Rewrite using `[baseChange_frobeniusTwist]`. Use `(E.baseChange L).toAffine.map_slope (frobenius L p) x₁ x₂ y₁ y₂` as an intermediate fact. Simplify `this` using `only [frobenius_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem slope_pow [DecidableEq L] (x₁ x₂ y₁ y₂ : L) :
     ((frobeniusTwist E p).baseChange L).toAffine.slope (x₁ ^ p) (x₂ ^ p) (y₁ ^ p) (y₂ ^ p) =
@@ -124,13 +124,13 @@ theorem frobeniusPoint_some {x y : L} (h : (E.baseChange L).toAffine.Nonsingular
     frobeniusPoint E p L (.some x y h) = .some (x ^ p) (y ^ p) (nonsingular_pow E p h) := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun z : L => z ^ p`. Introduce `a b hab`. Conclude with `frobenius_inj L p (by simpa only [frobenius_def] using hab)`. Break down `P with (_ | ⟨x₁, y₁, h₁⟩)` into its components or cases. Use `show frobeniusPoint E p L (0 + Q) = 0 + frobeniusPoint E p L Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[zero_add, zero_add]`. Break down `Q with (_ | ⟨x₂, y₂, h₂⟩)` into its components or cases. Use `show frobeniusPoint E p L (Point.some x₁ y₁ h₁ + 0) = frobeniusPoint E p L (Point.some x₁ y₁ h₁) + 0`. Rewrite using `[add_zero, add_zero]`. Rewrite using `[frobeniusPoint_some, frobeniusPoint_some]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hxy : x₁ = x₂ ∧ y₁ = (E.baseChange L).toAffine.negY x₂ y₂`. Rewrite using `[Point.add_of_Y_eq hxy.1 hxy.2, Point.add_of_Y_eq (congrArg (· ^ p) hxy.1) (by rw [negY_pow, hxy.2])]`. Both sides reduce to the same expression. Establish `hxy' : ¬(x₁ ^ p = x₂ ^ p ∧ y₁ ^ p = ((frobeniusTwist E p).baseChange L).toAffine.negY (x₂ ^ p) (y₂ ^ p))`. Introduce and unpack `⟨hx, hy⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hy` using `[negY_pow]`. Conclude with `hxy ⟨hinj hx, hinj hy⟩`. Rewrite using `[Point.add_some hxy, Point.add_some hxy', frobeniusPoint_some, Point.some.injEq, slope_pow, addX_pow, addY_pow]`. Conclude with `⟨rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusPoint_add [DecidableEq L] (P Q : (E.baseChange L).toAffine.Point) :
     frobeniusPoint E p L (P + Q) = frobeniusPoint E p L P + frobeniusPoint E p L Q := by
@@ -158,7 +158,7 @@ theorem frobeniusPoint_add [DecidableEq L] (P Q : (E.baseChange L).toAffine.Poin
     exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Break down `P with (_ | ⟨x, y, h⟩)` into its components or cases. Conclude with `Iff.rfl`. Rewrite using `[frobeniusPoint_some, isGenPt_some, isGenPt_some]`. Conclude with `⟨fun ht hx => ht (hx.pow p), fun ht => ht.pow hp.out.pos⟩`.
+Separate the alternatives or extract the components of the hypothesis. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isGenPt_frobeniusPoint_iff (P : (E.baseChange L).toAffine.Point) :
     IsGenPt (frobeniusTwist E p) (frobeniusPoint E p L P) ↔ IsGenPt E P := by
@@ -176,7 +176,7 @@ variable {F : Type u} [Field F] (E : WeierstrassCurve F) [E.IsElliptic] (p : ℕ
 
 omit [E.IsElliptic] in
 /- English proof (translation)
-Break down `P with (_ | ⟨x, y, h⟩)` into its components or cases. Both sides reduce to the same expression. Simplify using `only [frobeniusPoint_some, Point.map_some, map_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem map_frobeniusPoint {L L' : Type*} [Field L] [Algebra F L] [CharP L p] [Field L']
     [Algebra F L'] [CharP L' p] [DecidableEq L] [DecidableEq L'] (σ : L →ₐ[F] L')
@@ -191,7 +191,7 @@ noncomputable def frobeniusGenPt :
   frobeniusPoint E p _ (genericPoint E)
 
 /- English proof (translation)
-Rewrite using `[frobeniusGenPt, map_frobeniusPoint, map_genEval_genericPoint]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_genEval_frobeniusGenPt {L : Type*} [Field L] [Algebra F L] [CharP L p] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -200,13 +200,13 @@ theorem map_genEval_frobeniusGenPt {L : Type*} [Field L] [Algebra F L] [CharP L 
   rw [frobeniusGenPt, map_frobeniusPoint, map_genEval_genericPoint]
 
 /- English proof (translation)
-The claim follows from `(isGenPt_frobeniusPoint_iff E p _).mpr (transcendental_genX E)`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_frobeniusGenPt : IsGenPt (frobeniusTwist E p) (frobeniusGenPt E p) :=
   (isGenPt_frobeniusPoint_iff E p _).mpr (transcendental_genX E)
 
 /- English proof (translation)
-Rewrite using `[respectsAdd_iff]`. Introduce `L _ _ _ P₁ P₂ h₁ h₂ h₃`. Establish `: CharP L p` using `charP_of_injective_algebraMap (algebraMap F L).injective p`. Rewrite using `[map_genEval_frobeniusGenPt, map_genEval_frobeniusGenPt, map_genEval_frobeniusGenPt, frobeniusPoint_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem respectsAdd_frobeniusGenPt : RespectsAdd E (frobeniusTwist E p) (frobeniusGenPt E p) := by
   rw [respectsAdd_iff]
@@ -220,7 +220,7 @@ noncomputable def frobeniusIsogeny : Isogeny E (frobeniusTwist E p) :=
     ⟨isGenPt_frobeniusGenPt E p, respectsAdd_frobeniusGenPt E p⟩⟩
 
 /- English proof (translation)
-The claim follows from `map_genEval_frobeniusGenPt E p P hP`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusIsogeny_app {L : Type*} [Field L] [Algebra F L] [CharP L p] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -228,21 +228,21 @@ theorem frobeniusIsogeny_app {L : Type*} [Field L] [Algebra F L] [CharP L p] [De
   map_genEval_frobeniusGenPt E p P hP
 
 /- English proof (translation)
-The claim follows from `(frobeniusIsogeny E p).comap_genX`.
+A detailed English derivation is pending.
 -/
 theorem comap_frobeniusIsogeny_genX :
     (frobeniusIsogeny E p).comap (genX (frobeniusTwist E p)) = genX E ^ p :=
   (frobeniusIsogeny E p).comap_genX
 
 /- English proof (translation)
-The claim follows from `(frobeniusIsogeny E p).comap_genY`.
+A detailed English derivation is pending.
 -/
 theorem comap_frobeniusIsogeny_genY :
     (frobeniusIsogeny E p).comap (genY (frobeniusTwist E p)) = genY E ^ p :=
   (frobeniusIsogeny E p).comap_genY
 
 /- English proof (translation)
-Rewrite using `[← map_top_eq_fieldRange, ← adjoin_genX_genY (frobeniusTwist E p), adjoin_map, powField]`. Use `congr 1`. Rewrite using `[Set.image_insert_eq, Set.image_singleton, comap_frobeniusIsogeny_genX, comap_frobeniusIsogeny_genY]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldRange_comap_frobeniusIsogeny :
     (frobeniusIsogeny E p).comap.fieldRange = powField E p := by
@@ -252,7 +252,7 @@ theorem fieldRange_comap_frobeniusIsogeny :
     comap_frobeniusIsogeny_genY]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M : IntermediateField F E.toAffine.FunctionField => Module.finrank M E.toAffine.FunctionField) (fieldRange_comap_frobeniusIsogeny E p)`. Rewrite using `[Isogeny.degree]`. Conclude with `h.trans (finrank_powField E p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_frobeniusIsogeny [PerfectRing F p] : (frobeniusIsogeny E p).degree = p := by
   have h := congrArg (fun M : IntermediateField F E.toAffine.FunctionField =>

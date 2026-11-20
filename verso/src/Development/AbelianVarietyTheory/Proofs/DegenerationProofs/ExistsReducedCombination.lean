@@ -9,11 +9,11 @@ namespace LatticeIneq
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Establish `h1 : q (a + b) = q a + q b + QuadraticMap.polar q a b`. Simplify using `[QuadraticMap.polar]`. Establish `h2 : q (a + (-(j : ℤ)) • b) = q a + q ((-(j : ℤ)) • b) + QuadraticMap.polar q a ((-(j : ℤ)) • b)`. Simplify using `only [QuadraticMap.polar]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h2` using `[QuadraticMap.polar_smul_right, QuadraticMap.map_smul]`. Establish `h3` using `hq (a + (-(j : ℤ)) • b)`. Rewrite `h3` using `[h2]`. Simplify using `only [zsmul_eq_mul] at h3`. Move the coercions through the operations in `at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h1]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem weighted_add_le (q : QuadraticMap ℤ X ℝ) (hq : ∀ x, 0 ≤ q x) (j : ℕ) (a b : X) :
     (j : ℝ) * q (a + b) ≤ (j + 1) * q a + j * (j + 1) * q b := by
@@ -31,11 +31,11 @@ theorem weighted_add_le (q : QuadraticMap ℤ X ℝ) (hq : ∀ x, 0 ≤ q x) (j 
   nlinarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, Finset.card_insert_of_notMem hi]`. Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `hpos : (0 : ℝ) < s.card` using `by exact_mod_cast hs.card_pos`. Establish `h` using `weighted_add_le q hq s.card (∑ x ∈ s, v x) (v i)`. Rewrite using `[add_comm (v i)]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `le_of_mul_le_mul_left ?_ hpos` and prove the remaining obligations. Establish `h2` using `mul_le_mul_of_nonneg_left ih (by positivity : (0 : ℝ) ≤ (s.card : ℝ) + 1)`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem map_sum_le (q : QuadraticMap ℤ X ℝ) (hq : ∀ x, 0 ≤ q x) {I : Type} (s : Finset I)
     (v : I → X) : q (∑ x ∈ s, v x) ≤ s.card * ∑ x ∈ s, q (v x) := by
@@ -55,15 +55,15 @@ theorem map_sum_le (q : QuadraticMap ℤ X ℝ) (hq : ∀ x, 0 ≤ q x) {I : Typ
       nlinarith
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨i, rfl⟩ | ⟨μ, rfl⟩` into its components or cases. Take `⟨μ, hμ⟩` from `hw i`. Use `⟨Pi.single i 1, μ, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[hμ]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨0, -μ, by simp⟩`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨k, μ, h⟩` from `ha`. Take `⟨k', μ', h'⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k + k', μ + μ', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, ← h, ← h', smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `neg a _ ha`. Take `⟨k, μ, h⟩` from `ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨-k, -μ, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, ← h, smul_neg]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_int_combination {I : Type} [Fintype I] (N : ℕ) (yy w : I → X)
     (hw : ∀ x, ∃ μ, w x = yy x + N • μ) (z : X)
@@ -94,9 +94,9 @@ theorem exists_int_combination {I : Type} [Fintype I] (N : ℕ) (yy w : I → X)
     abel
 
 /- English proof (translation)
-Take `⟨k, μ, h⟩` from `exists_int_combination N yy w hw z hz`. Establish `hN' : (0 : ℤ) < N` using `by exact_mod_cast hN`. Use `⟨fun x => k x % N, μ - ∑ x, (k x / N) • w x, fun x => ⟨Int.emod_nonneg _ hN'.ne', (Int.emod_lt_of_pos _ hN').le⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← add_sub_assoc, h, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← natCast_zsmul, smul_smul, ← sub_smul]`. Simplify using `only [Int.emod_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_reduced_combination {I : Type} [Fintype I] (N : ℕ) (hN : 1 ≤ N) (yy w : I → X)
     (hw : ∀ x, ∃ μ, w x = yy x + N • μ) (z : X)
@@ -116,15 +116,15 @@ end LatticeIneq
 open LatticeIneq in
 
 /- English proof (translation)
-Introduce `X _ q hq I _ N N' j hN hNN' _ yy w vth αs c vf' hw hwq hα hc`. Take `⟨m, rfl⟩` from `hNN'`. Establish `hw' : ∀ x, ∃ μ, w x = yy x + N • μ` using `fun x => by`. Take `⟨μ, hμ⟩` from `hw x`. Conclude with `⟨m • μ, by rw [hμ, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, μ, hk, h⟩` from `exists_reduced_combination N hN yy w hw' _ hc`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Establish `hc' : c + N • μ = αs + ∑ x, k x • w x` using `by rw [← h]; abel`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `h1` using `weighted_add_le q hq j αs (∑ x, k x • w x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `map_sum_le q hq Finset.univ (fun x => k x • w x)`. Establish `h3 : ∑ x, q (k x • w x) ≤ (N : ℝ) ^ 2 * ((N * m : ℕ) : ℝ) ^ 2 * ∑ x, vth x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Rewrite using `[QuadraticMap.map_smul, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `a0 : (0 : ℝ) ≤ k x` using `by exact_mod_cast (hk x).1`. Establish `a1 : (k x : ℝ) ≤ N` using `by exact_mod_cast (hk x).2`. Establish `a2 : ((k x * k x : ℤ) : ℝ) ≤ (N : ℝ) ^ 2` using `by push_cast; nlinarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[Finset.card_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `h2.trans (mul_le_mul_of_nonneg_left h3 (by positivity))`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 (by positivity : (0 : ℝ) ≤ (j : ℝ) * (j + 1))`. Establish `h6` using `mul_le_mul_of_nonneg_left hα (by positivity : (0 : ℝ) ≤ (j : ℝ) + 1)`. Rewrite using `[hc', ← mul_div_assoc, div_le_iff₀ hNpos]`. Move the coercions through the operations in `at h5 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

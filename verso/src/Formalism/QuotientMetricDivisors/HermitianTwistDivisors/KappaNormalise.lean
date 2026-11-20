@@ -12,19 +12,19 @@ noncomputable section
 namespace Formalism.DivisionValues
 
 /- English proof (translation)
-Introduce `muC mu0 HH0 lam0 logκ de c1 c2 c3 Cd f r g k b p1 p2 C0 hc1 hc2 hCd hf hr hk hb hde hg hl0 hlb hmu hHH hA hB hcmp hc3`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hkb : 1 ≤ k * b` using `by nlinarith [mul_nonneg (sub_nonneg.2 hk) (sub_nonneg.2 hb)]`. Establish `hkb0 : 0 ≤ k * b` using `by linarith`. Establish `h8 : 1 ≤ (k * b) ^ 8` using `one_le_pow₀ hkb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : 0 < g` using `by linarith`. Establish `hfr : 0 ≤ Cd * f * r` using `mul_nonneg (mul_nonneg hCd hf) hr`. Establish `hde0 : 0 ≤ de`. Rewrite using `[hde]`. Conclude with `div_nonneg hfr hg0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hde3 : de ≤ 1 / 3`. Rewrite using `[hde, div_le_iff₀ hg0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ : mu0 + HH0 + c2 * lam0 ≤ (p1 + p2 + c2) * b`. Use `mul_le_mul_of_nonneg_left hlb hc2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN : c1 * Cd * f * r * (p1 + p2 + c2) * b ≤ (k * b) ^ 8`. Establish `h1` using `mul_le_mul_of_nonneg_right hA hb0`. Establish `h2 : (k * b) ^ 7 * b ≤ (k * b) ^ 7 * (k * b)` using `mul_le_mul_of_nonneg_left (by nlinarith [mul_nonneg (sub_nonneg.2 hk) hb0]) (pow_nonneg hkb0 7)`. Establish `h3 : (k * b) ^ 7 * (k * b) = (k * b) ^ 8` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd1 : c1 * de * (mu0 + HH0 + c2 * lam0) ≤ 1`. Establish `hc1de : 0 ≤ c1 * de` using `mul_nonneg hc1 hde0`. Establish `h1 : c1 * de * (mu0 + HH0 + c2 * lam0) ≤ c1 * de * ((p1 + p2 + c2) * b)` using `mul_le_mul_of_nonneg_left hQ hc1de`. Establish `h2 : c1 * de * ((p1 + p2 + c2) * b) = c1 * Cd * f * r * (p1 + p2 + c2) * b / g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hde]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : c1 * Cd * f * r * (p1 + p2 + c2) * b / g ≤ 1`. Rewrite using `[div_le_one hg0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc3l : c3 * lam0 ≤ C0 * lam0` using `mul_le_mul_of_nonneg_right hc3 hl0`. Use `⟨hde0, hde3, by linarith [hcmp hde3], hd1, by linarith⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem passage_arithmetic : PassageArith := by
   intro muC mu0 HH0 lam0 logκ de c1 c2 c3 Cd f r g k b p1 p2 C0 hc1 hc2 hCd hf hr hk hb hde hg
@@ -65,23 +65,21 @@ theorem passage_arithmetic : PassageArith := by
   refine ⟨hde0, hde3, by linarith [hcmp hde3], hd1, by linarith⟩
 
 /- English proof (translation)
-Introduce `J Pl _ _ mu0 logκ Fo Fabs Eb logOm La W b N m f C0 xe B0 Nc pF pN x eps pq w h1 hJ hPl hpq hW hw hLa hFo hC0 hEb`. Establish `hLa0 : 0 ≤ La` using `le_trans (abs_nonneg _) hLa`. Establish `hm0 : 0 ≤ m`. Rewrite using `[← hJ]`. Conclude with `Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0 : 0 ≤ f` using `le_trans (Nat.cast_nonneg _) hPl`. Establish `hmN : 0 ≤ m * N`. Break down `isEmpty_or_nonempty J with hJe | ⟨⟨j0⟩⟩` into its components or cases. Establish `: m = 0`. Rewrite using `[← hJ]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[this]`. Conclude with `mul_nonneg hm0 (le_trans (abs_nonneg _) (hpq j0))`. Establish `hterm : ∀ j ρ, pq j * w j ρ * logOm ≤ |pq j| * W * La`. Introduce `j ρ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : pq j * w j ρ * logOm ≤ |pq j * w j ρ * logOm|` using `le_abs_self _`. Rewrite `e1` using `[abs_mul, abs_mul, abs_of_nonneg (hw j ρ).1]`. Establish `e2 : |pq j| * w j ρ ≤ |pq j| * W` using `mul_le_mul_of_nonneg_left (hw j ρ).2 (abs_nonneg _)`. Establish `e3 : |pq j| * w j ρ * |logOm| ≤ |pq j| * W * La` using `mul_le_mul e2 hLa (abs_nonneg _) (mul_nonneg (abs_nonneg _) hW)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsum : ∑ j, ∑ ρ, pq j * w j ρ * logOm ≤ m * f * N * W * La`. Combine the equalities or inequalities in the displayed calculation. Use `hterm j ρ` as an intermediate fact. Use `mul_le_mul_of_nonneg_right (hpq j) (mul_nonneg hW hLa0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = m * (Fintype.card Pl : ℝ) * (N * (W * La)) := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hJ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ m * f * N * W * La := by`. Use `mul_le_mul_of_nonneg_left hPl (mul_nonneg (mul_nonneg hmN hW) hLa0)` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[this]`. Establish `g1 : mu0 ≤ logκ + m * f * N * W * La + 2 * Fabs + C0 * m * xe * (B0 + Nc)` using `by linarith`. Use `⟨g1, fun hWb hb hF hNc hB0 hxe hxe0 => ?_⟩` and prove the remaining obligations. Establish `k1 : m * f * N * W * La ≤ m * f * N * (2 * b) * La`. Use `mul_le_mul_of_nonneg_left hWb (mul_nonneg (mul_nonneg hmN hf0) hLa0)` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `k2 : B0 ≤ f * m * b * xe`. Rewrite using `[hB0]`. Conclude with `mul_le_mul_of_nonneg_left hxe (mul_nonneg (mul_nonneg hf0 hm0) hb)`. Establish `k3 : C0 * m * xe * (B0 + Nc) ≤ C0 * m * xe * (f * m * b * xe + pN * b)` using `mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg (mul_nonneg hC0 hm0) hxe0)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem passage_size : PassageSize := by
   intro J Pl _ _ mu0 logκ Fo Fabs Eb logOm La W b N m f C0 xe B0 Nc pF pN x eps pq w h1 hJ hPl
@@ -131,7 +129,7 @@ theorem passage_size : PassageSize := by
   linarith
 
 /- English proof (translation)
-Introduce `lam0 f r g Cg L b hf h1 h2`. Establish `hfr : 0 ≤ f * r ^ 2` using `mul_nonneg hf (sq_nonneg r)`. Establish `h3 : f * r ^ 2 * Real.log g ≤ f * r ^ 2 * (Cg * L)` using `mul_le_mul_of_nonneg_left h2 hfr`. Conclude with `⟨by linarith, by linarith, fun hb => by linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem passage_lambda : PassageLam := by
   intro lam0 f r g Cg L b hf h1 h2
@@ -140,9 +138,9 @@ theorem passage_lambda : PassageLam := by
   exact ⟨by linarith, by linarith, fun hb => by linarith⟩
 
 /- English proof (translation)
-Introduce `J Pl _ _ muC mu0 HH0 lam0 logκ de Cd r g k p2 Fo Fabs Eb logOm La W b N m f C0 xe B0 Nc pF pN x eps pq w h1 hJ hPl hpq hW hw hLa hFo hC0 hEb hWb hF hNc hB0 hxe hxe0 hHH hCd hr hk hb hde hg hl0 hlb hA hB hcmp`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hf0 : 0 ≤ f` using `le_trans (Nat.cast_nonneg _) hPl`. Establish `hsz` using `passage_size J Pl mu0 logκ Fo Fabs Eb logOm La W b N m f C0 xe B0 Nc pF pN x eps pq w h1 hJ hPl hpq hW hw hLa hFo hC0 hEb`. Establish `hmu` using `hsz.2 hWb hb0 hF hNc hB0 hxe hxe0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, hmuC, hd1, hLp⟩` from `passage_arithmetic muC mu0 HH0 lam0 logκ de 3 28 28 Cd f r g k b (2 * m * f * N * La + 2 * pF + C0 * m * xe * (f * m * xe + pN)) p2 28 (by norm_num) (by norm_num) hCd hf0 hr hk hb hde hg hl0 hlb hmu hHH hA hB hcmp le_rfl`. Conclude with `⟨hmuC, hLp, by linarith⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem passage_chain : PassageChain := by
   intro J Pl _ _ muC mu0 HH0 lam0 logκ de Cd r g k p2 Fo Fabs Eb logOm La W b N m f C0 xe B0 Nc pF
@@ -159,7 +157,7 @@ theorem passage_chain : PassageChain := by
   exact ⟨hmuC, hLp, by linarith⟩
 
 /- English proof (translation)
-Introduce `muC mu0 HH0 lam0 de c1 c2 c3 τ0 τs`. Establish `e : (mu0 + τ0) + (HH0 - τ0) + c2 * lam0 = mu0 + HH0 + c2 * lam0` using `by ring`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem passage_scale_free : PassageScaleFree := by
   intro muC mu0 HH0 lam0 de c1 c2 c3 τ0 τs
@@ -169,9 +167,9 @@ theorem passage_scale_free : PassageScaleFree := by
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Introduce `mu0 HH0 lam0 logκ c2 cq f r g k b p1 p2 hc2 hk hb hg hlam hmu hHH`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hcl : c2 * lam0 ≤ c2 * b` using `mul_le_mul_of_nonneg_left hlam hc2`. Use `⟨by linarith, fun hP => by nlinarith [mul_nonneg (sub_nonneg.2 hP) (sub_nonneg.2 hb)], fun h => ?_⟩` and prove the remaining obligations. Establish `hkb0 : 0 ≤ k * b` using `by nlinarith [mul_nonneg (sub_nonneg.2 hk) hb0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : cq * f * r * (p1 + p2 + c2) * b ≤ (k * b) ^ 7 * b` using `mul_le_mul_of_nonneg_right h hb0`. Establish `h2 : (k * b) ^ 7 * b ≤ (k * b) ^ 7 * (k * b)` using `mul_le_mul_of_nonneg_left (by nlinarith [mul_nonneg (sub_nonneg.2 hk) hb0]) (pow_nonneg hkb0 7)`. Establish `h3 : (k * b) ^ 7 * (k * b) = (k * b) ^ 8` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem passage_quotient : PassageQ := by
   intro mu0 HH0 lam0 logκ c2 cq f r g k b p1 p2 hc2 hk hb hg hlam hmu hHH
@@ -188,11 +186,11 @@ theorem passage_quotient : PassageQ := by
     _ ≤ g := by linarith
 
 /- English proof (translation)
-Introduce `J Pl _ _ TT _ muC mu0 Fo hu hP mlam logT hK aT phν nν fa x eps L b a rd La B0 Nc xe m f k N S tt η w'' b' dC lam0 C0 Eb e6 eP logOm eK pq w eE δ logκ HH0 de c1 c2 c3 Cd r g p2 pF pN hc1 hc2 hc3 hCd hr hde hg hl0 hcmp hHH hpq hF hNc hA hB h1 hhu hK' hfa hP' hph hnν hx heps hL hb h …`. Establish `hL1 : 1 ≤ L`. Rewrite using `[hL]`. Conclude with `Real.one_le_rpow hx heps.le`. Establish `hb1 : 1 ≤ b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `Real.one_le_exp (by linarith)`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hxe0 : 0 ≤ xe` using `le_trans (Real.rpow_nonneg (by linarith) eps) hxe`. Establish `hf0 : 0 ≤ f` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmu : mu0 ≤ logκ + (2 * m * f * N * La + 2 * pF + C0 * m * xe * (f * m * xe + pN)) * b` using `(passage_size J Pl mu0 logκ Fo Fo Eb logOm La (2 * b) b N m f C0 xe B0 Nc pF pN x eps pq w h1 hJ hPl hpq (by linarith) hw hlogOm le_rfl hC0 hEb).2 le_rfl hb0 hF hNc hB0 hxe hxe0`. Take `⟨_, _, hmuC, _, hLp⟩` from `passage_arithmetic muC mu0 HH0 lam0 logκ de c1 c2 c3 Cd f r g k b (2 * m * f * N * La + 2 * pF + C0 * m * xe * (f * m * xe + pN)) p2 C0 hc1 hc2 hCd hf0 hr hk hb1 hde hg hl0 hlb hmu hHH hA hB hcmp hc3`. Establish `key` using `divisor_inequality J Pl TT (muC - logκ) (mu0 - logκ) Fo (hP + ∑ j, hK j - mlam) hP mlam logT hK aT phν nν fa x eps L b a rd La B0 Nc xe m f k N S tt η w'' b' dC lam0 C0 (c1 * de * (mu0 + HH0 + c2 * lam0) + c3 * lam0) Eb e6 eP logOm eK pq w eE δ (by linarith) (by linarith) rfl hK' …`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem divisor_inequality_passage : DivIneqPassage := by
   intro J Pl _ _ TT _ muC mu0 Fo hu hP mlam logT hK aT phν nν fa x eps L b a rd La B0 Nc xe m f k N S
@@ -228,7 +226,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hA, smul_smul]`. Establish `h : ((s : ℝ) : ℂ) * ((s⁻¹ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ hs.ne', Complex.ofReal_one]`. Rewrite using `[h, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_inv_real_smul {d : ℕ} (s : ℝ) (hs : 0 < s) (A : Matrix (Fin d) (Fin d) ℂ) (hA : IsUnit A.det) :
     (((s⁻¹ : ℝ) : ℂ) • A)⁻¹ = ((s : ℝ) : ℂ) • A⁻¹ := by
@@ -239,7 +237,7 @@ theorem inv_inv_real_smul {d : ℕ} (s : ℝ) (hs : 0 < s) (A : Matrix (Fin d) (
   rw [h, one_smul]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hA, smul_smul]`. Establish `h : ((s⁻¹ : ℝ) : ℂ) * ((s : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ hs.ne', Complex.ofReal_one]`. Rewrite using `[h, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_real_smul_inv {d : ℕ} (s : ℝ) (hs : 0 < s) (A : Matrix (Fin d) (Fin d) ℂ) (hA : IsUnit A.det) :
     (((s : ℝ) : ℂ) • A)⁻¹ = ((s⁻¹ : ℝ) : ℂ) • A⁻¹ := by
@@ -250,7 +248,7 @@ theorem inv_real_smul_inv {d : ℕ} (s : ℝ) (hs : 0 < s) (A : Matrix (Fin d) (
   rw [h, one_smul]
 
 /- English proof (translation)
-The claim follows from `inv_inv_real_smul _ (Real.sqrt_pos.mpr (ht v)) (X v) (hX v)`.
+A detailed English derivation is pending.
 -/
 theorem scaleFrame_inv {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v)
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det) (v : InfinitePlace K) :
@@ -258,7 +256,7 @@ theorem scaleFrame_inv {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < 
   inv_inv_real_smul _ (Real.sqrt_pos.mpr (ht v)) (X v) (hX v)
 
 /- English proof (translation)
-Establish `hc : (((Real.sqrt (t v))⁻¹ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (inv_ne_zero (Real.sqrt_pos.mpr (ht v)).ne')`. Use `show IsUnit ((((Real.sqrt (t v))⁻¹ : ℝ) : ℂ) • X v).det`. Rewrite using `[Matrix.det_smul]`. Conclude with `((isUnit_iff_ne_zero.mpr hc).pow _).mul (hX v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleFrame_det_isUnit {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v)
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det) (v : InfinitePlace K) :
@@ -270,7 +268,7 @@ theorem scaleFrame_det_isUnit {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ 
   exact ((isUnit_iff_ne_zero.mpr hc).pow _).mul (hX v)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use `show ((((((Real.sqrt (t v))⁻¹ : ℝ) : ℂ) • X v)).transpose)⁻¹ = ((Real.sqrt (t v) : ℝ) : ℂ) • ((X v).transpose)⁻¹`. Rewrite using `[Matrix.transpose_smul]`. Conclude with `inv_inv_real_smul _ (Real.sqrt_pos.mpr (ht v)) _ (by rw [Matrix.det_transpose]; exact hX v)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualFrame_scaleFrame {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v)
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det) :
@@ -283,15 +281,15 @@ theorem dualFrame_scaleFrame {d : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v
   exact inv_inv_real_smul _ (Real.sqrt_pos.mpr (ht v)) _ (by rw [Matrix.det_transpose]; exact hX v)
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hs.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_mul_sqrt_complex (s : ℝ) (hs : 0 < s) : ((Real.sqrt s : ℝ) : ℂ) * ((Real.sqrt s : ℝ) : ℂ) = (s : ℂ) := by
   rw [← Complex.ofReal_mul, Real.mul_self_sqrt hs.le]
 
 /- English proof (translation)
-Unfold `meanLog`. Establish `h : ∑ v, Real.log (Real.sqrt (t v)) = (∑ v, Real.log (t v)) / 2`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun v _ => Real.log_sqrt (ht v).le`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mean_log_sqrt (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) :
     2 * ((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Real.sqrt (t v))) = meanLog t := by
@@ -303,9 +301,9 @@ theorem mean_log_sqrt (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) :
   ring
 
 /- English proof (translation)
-Unfold `meanLog`. Establish `h : ∑ v, Real.log (Real.sqrt (t v))⁻¹ = -((∑ v, Real.log (t v)) / 2)`. Rewrite using `[Finset.sum_div, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [Real.log_inv, Real.log_sqrt (ht v).le]`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mean_log_sqrt_inv (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) :
     2 * ((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Real.sqrt (t v))⁻¹) = -meanLog t := by
@@ -317,9 +315,9 @@ theorem mean_log_sqrt_inv (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) :
   ring
 
 /- English proof (translation)
-Establish `hs` using `scaleFrame_inv t ht X hX v`. Establish `hmv : ∀ (u : Fin d → ℂ) (i : Fin d), ((((Real.sqrt (t v) : ℝ) : ℂ) • (X v)⁻¹) *ᵥ u) i = ((Real.sqrt (t v) : ℝ) : ℂ) * (((X v)⁻¹) *ᵥ u) i`. Introduce `u i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Use extensionality with `a c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [gram, Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, hs, hmv, star_mul', map_mul, Complex.star_def, Complex.conj_ofReal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sqrt_mul_sqrt_complex (t v) (ht v)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_scaleFrame [StarRing K] {d m : ℕ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v)
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det) (v : InfinitePlace K)
@@ -339,7 +337,7 @@ theorem gram_scaleFrame [StarRing K] {d m : ℕ} (t : InfinitePlace K → ℝ) (
   ring
 
 /- English proof (translation)
-Unfold `meanLog`. Rewrite using `[← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun v _ => Real.log_mul (ht v).ne' (hκ v).ne'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem meanLog_mul (t κ : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) (hκ : ∀ v, 0 < κ v) :
     meanLog (fun v => t v * κ v) = meanLog t + meanLog κ := by
@@ -349,7 +347,7 @@ theorem meanLog_mul (t κ : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) (hκ 
   exact Finset.sum_congr rfl fun v _ => Real.log_mul (ht v).ne' (hκ v).ne'
 
 /- English proof (translation)
-Unfold `Formalism.HN.opNormAt`. Rewrite using `[hY', inv_real_smul_inv s hs (Y v) hY, Matrix.smul_mul, Matrix.smul_mul, map_smul, map_smul, norm_smul, Complex.norm_of_nonneg (inv_nonneg.mpr hs.le)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opNormAt_scale_alt [StarRing K] {n D : ℕ} (s : ℝ) (hs : 0 < s)
     (XN : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
@@ -363,11 +361,11 @@ theorem opNormAt_scale_alt [StarRing K] {n D : ℕ} (s : ℝ) (hs : 0 < s)
     norm_smul, Complex.norm_of_nonneg (inv_nonneg.mpr hs.le)]
 
 /- English proof (translation)
-Unfold `Formalism.HN.opNormAt`. Rewrite using `[norm_pos_iff]`. Introduce `h0`. Apply `hφ` to reduce the goal to its premises. Establish `hA : (Y v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin D)).dualBasis φ).map v.embedding * XN v = 0` using `(Matrix.toEuclideanLin).map_eq_zero_iff.mp (LinearMap.toContinuousLinearMap.map_eq_zero_iff.mp h0)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hM : (LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin D)).dualBasis φ).map v.embedding = 0`. Establish `e1 : (LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin D)).dualBasis φ).map v.embedding = Y v * ((Y v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin D)).dualBasis φ).map v.embedding * XN v) * (XN v)⁻¹`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hY, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXN, Matrix.mul_one]`. Rewrite using `[e1, hA, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hT : LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin D)).dualBasis φ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h1` using `congrArg (fun A => A i j) hM`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h1`. Conclude with `(map_eq_zero_iff _ v.embedding.injective).mp h1`. Conclude with `(LinearMap.toMatrix _ _).map_eq_zero_iff.mp hT`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opNormAt_pos_alt [StarRing K] {n D : ℕ}
     (XN : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
@@ -400,9 +398,7 @@ theorem opNormAt_pos_alt [StarRing K] {n D : ℕ}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Use `⟨hR.fg, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `haveI : Nonempty (Fin D) := ⟨⟨0, hD⟩⟩`. Establish `h` using `hR.span_eq_top`. Rewrite `h` using `[Submodule.bot_coe, Submodule.span_zero_singleton]`.
-
-Conclude with `bot_ne_top h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_fg_ne_bot {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {D : ℕ}
     (hD : 0 < D) (R : Submodule (𝓞 K) (Fin D → K)) (hR : Submodule.IsLattice K R) :
@@ -415,27 +411,27 @@ theorem lattice_fg_ne_bot {K : Type} [Field K] [NumberField K] [StarRing K] [IsT
   exact bot_ne_top h
 
 /- English proof (translation)
-Introduce `K _ _ _ _ D hD XE hXE t ht`. Establish `hsq : ∀ v, 0 < Real.sqrt (t v)` using `fun v => Real.sqrt_pos.mpr (ht v)`. Establish `hXd : ∀ v, IsUnit (Formalism.HN.dualFrame XE v).det`. Introduce `v`. Simplify using `only [Formalism.HN.dualFrame]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.isUnit_nonsing_inv_det_iff, Matrix.det_transpose]`. Conclude with `hXE v`. Establish `hdual : ∀ R : Submodule (𝓞 K) (Fin D → K), Submodule.IsLattice K R → Formalism.HN.muDef (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame (scaleFrame t XE)) (Formalism.HN.dualLat R) = Formalism.HN.muDef (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame XE) (Formal …`. Introduce `R hR`. Establish `hfg : R.FG` using `Submodule.IsLattice.fg (self := hR)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span K (R : Set (Fin D → K)) = ⊤` using `Submodule.IsLattice.span_eq_top (self := hR)`. Take `⟨hdfg, hdspan, -⟩` from `Formalism.HN.dual_polygon_identity K (Fin D → K) (Fin D) (Pi.basisFun K (Fin D)) XE hXE R hfg hspan`. Establish `hne : Formalism.HN.dualLat R ≠ ⊥`. Introduce `h`. Establish `h2 : Submodule.span K (((⊥ : Submodule (𝓞 K) (Module.Dual K (Fin D → K)))) : Set (Module.Dual K (Fin D → K))) = ⊥` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdspan` using `[h, h2]`. Establish `h1 : finrank K (Module.Dual K (Fin D → K)) = D`. Simplify using `[Subspace.dual_finrank_eq]`. Establish `h3` using `congrArg (fun U : Submodule K (Module.Dual K (Fin D → K)) => finrank K U) hdspan`. Simplify using `only [finrank_bot, finrank_top, h1] at h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨-, -, h, -⟩` from `Formalism.HN.twist K (Module.Dual K (Fin D → K)) (Fin D) (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame XE) (fun v => Real.sqrt (t v)) hXd hsq (Formalism.HN.dualLat R) hdfg`. Establish `h1` using `(h hne).1`. Rewrite using `[dualFrame_scaleFrame t ht XE hXE, h1, mean_log_sqrt t ht]`. Use `⟨fun v => ⟨scaleFrame_det_isUnit t ht XE hXE v, ?_⟩, ?_, fun κ hκ => meanLog_mul t κ ht hκ, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[scaleFrame_inv t ht XE hXE v, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.star_def, Complex.conj_ofReal, sqrt_mul_sqrt_complex _ (ht v)]`. Introduce `d XS φ v`. Simplify using `only [detRatio, gram_scaleFrame t ht XE hXE v, Matrix.det_smul, Fintype.card_fin]`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul, mul_div_assoc]`. Introduce `R hR`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hfg, hne⟩` from `lattice_fg_ne_bot hD R hR`. Take `⟨-, -, h, -⟩` from `Formalism.HN.twist K (Fin D → K) (Fin D) (Pi.basisFun K (Fin D)) XE (fun v => (Real.sqrt (t v))⁻¹) hXE (fun v => inv_pos.mpr (hsq v)) R hfg`. Take `⟨h1, h2, -⟩` from `h hne`. Establish `hDr : (D : ℝ) ≠ 0` using `by exact_mod_cast hD.ne'`. Use `⟨?_, hdual R hR, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `dual_lattice_measure K D hD XE hXE R hR`. Establish `e2` using `dual_lattice_measure K D hD (scaleFrame t XE) (scaleFrame_det_isUnit t ht XE hXE) R hR`. Rewrite `e2` using `[hdual R hR, e1]`. Clear denominators, using `at e2` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: scaleFrame t XE = fun v => (((Real.sqrt (t v))⁻¹ : ℝ) : ℂ) • XE v` using `rfl`. Rewrite using `[this, h1, mean_log_sqrt_inv t ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `: scaleFrame t XE = fun v => (((Real.sqrt (t v))⁻¹ : ℝ) : ℂ) • XE v` using `rfl`. Rewrite using `[this, h2, mean_log_sqrt_inv t ht]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `n XN hXN φ hφ`. Establish `hop : ∀ v, Real.log (Formalism.HN.opNormAt (Pi.basisFun K (Fin n)) XN (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame (scaleFrame t XE)) v φ ^ 2) = Real.log (Formalism.HN.opNormAt (Pi.basisFun K (Fin n)) XN (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame XE) v …`. Introduce `v`. Establish `hp` using `opNormAt_pos_alt XN (Formalism.HN.dualFrame XE) v (hXN v) (hXd v) φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[opNormAt_scale_alt (Real.sqrt (t v)) (hsq v) XN (Formalism.HN.dualFrame XE) _ v (hXd v) (by rw [dualFrame_scaleFrame t ht XE hXE]) φ, mul_pow, inv_pow, Real.sq_sqrt (ht v).le, Real.log_mul (inv_pos.mpr (ht v)).ne' (pow_pos hp 2).ne', Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Formalism.HN.htMap, hop, Finset.sum_sub_distrib, meanLog]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kappa_invariance : KappaInvariance := by
   intro K _ _ _ _ D hD XE hXE t ht
@@ -510,7 +506,7 @@ theorem kappa_invariance : KappaInvariance := by
     ring
 
 /- English proof (translation)
-Unfold `meanLog`. Simplify using `only [Real.log_inv, Finset.sum_neg_distrib, mul_neg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem meanLog_inv {K : Type} [Field K] [NumberField K] (κ : InfinitePlace K → ℝ) :
     meanLog (fun v => (κ v)⁻¹) = -meanLog κ := by
@@ -518,13 +514,13 @@ theorem meanLog_inv {K : Type} [Field K] [NumberField K] (κ : InfinitePlace K �
   simp only [Real.log_inv, Finset.sum_neg_distrib, mul_neg]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ D hD XE hXE κ hκ`. Take `⟨h1, h2, -, h4, h5⟩` from `kappa_invariance K D hD XE hXE (fun v => (κ v)⁻¹) (fun v => inv_pos.mpr (hκ v))`. Rewrite `h4`, `h5` using `[meanLog_inv]`. Use `⟨fun v => (h1 v).1, ?_, ?_, by simp [meanLog], ?_⟩` and prove the remaining obligations. Introduce `XS φ v ρ P h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2 D XS φ v, h, mul_pow, mul_pow, one_pow, inv_pow]`. Establish `: κ v ^ D ≠ 0` using `pow_ne_zero _ (hκ v).ne'`. Clear the denominators using the available nonvanishing facts. Introduce `XS φ v P h`. Rewrite using `[h2 D XS φ v, h, one_pow, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: κ v ^ D ≠ 0` using `pow_ne_zero _ (hκ v).ne'`. Clear the denominators using the available nonvanishing facts. Introduce `R hR`. Take `⟨-, e2, -, e4⟩` from `h4 R hR`. Use `⟨by rw [e2]; ring, by rw [e4]; ring, by rw [e2, e4]; ring, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n XN hXN φ hφ`. Establish `e5` using `h5 n XN hXN φ hφ`. Conclude with `⟨by rw [e5]; ring, by rw [e2, e5]; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kappa_normalise : KappaNormalise := by
   intro K _ _ _ _ D hD XE hXE κ hκ

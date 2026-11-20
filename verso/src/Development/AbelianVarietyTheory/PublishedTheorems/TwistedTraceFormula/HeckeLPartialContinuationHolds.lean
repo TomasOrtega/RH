@@ -29,14 +29,14 @@ def removed (T : Finset (HeightOneSpectrum (𝓞 K))) (χ : HChar K) (s : ℂ) :
   ∏ w ∈ T, eulerPoly (heckeFam χ w) (npow w (-s))
 
 /- English proof (translation)
-The claim follows from `Differentiable.fun_finsetProd fun _ _ => differentiable_eulerPoly _ _`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_removed (T : Finset (HeightOneSpectrum (𝓞 K))) (χ : HChar K) :
     Differentiable ℂ (removed T χ) :=
   Differentiable.fun_finsetProd fun _ _ => differentiable_eulerPoly _ _
 
 /- English proof (translation)
-The claim follows from `eulerPoly_ne_zero fun _ hb => ((bounded_heckeFam ∅ hu).norm_le le_rfl (Set.notMem_empty w) hb).trans_lt (Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem eulerPoly_heckeFam_ne_zero {χ : HChar K} (hu : χ.IsUnitary) (w : HeightOneSpectrum (𝓞 K)) {s : ℂ}
     (hs : 0 < s.re) : eulerPoly (heckeFam χ w) (npow w (-s)) ≠ 0 :=
@@ -44,18 +44,18 @@ theorem eulerPoly_heckeFam_ne_zero {χ : HChar K} (hu : χ.IsUnitary) (w : Heigh
     (Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by linarith))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun w _ => eulerPoly_heckeFam_ne_zero hu w hs`.
+A detailed English derivation is pending.
 -/
 theorem removed_ne_zero (T : Finset (HeightOneSpectrum (𝓞 K))) {χ : HChar K} (hu : χ.IsUnitary) {s : ℂ}
     (hs : 0 < s.re) : removed T χ s ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun w _ => eulerPoly_heckeFam_ne_zero hu w hs
 
 /- English proof (translation)
-Establish `h1` using `(converges_heckeFam (T : Set _) hu hs).hasProd`. Establish `h2 : HasProd (fun w => locL (heckeFam χ) w s) _` using `HasProd.mul_compl (s := (T : Set _)) (Finset.hasProd T fun w => locL (heckeFam χ) w s) h1`. Establish `h3 : a = (∏ w ∈ T, locL (heckeFam χ) w s) * heckeL (T : Set _) χ s`. Use `ha.unique ?_` and prove the remaining obligations. Conclude with `(funext (fun w => locL_heckeFam χ w s) : (fun w => locL (heckeFam χ) w s) = eulerFactor χ s) ▸ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : (∏ w ∈ T, locL (heckeFam χ) w s) = (removed T χ s)⁻¹`. Rewrite using `[removed, ← Finset.prod_inv_distrib]`. Both sides reduce to the same expression. Establish `h5` using `removed_ne_zero T hu (s := s) (by linarith)`. Rewrite using `[h3, h4]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem heckeL_eq_mul_removed (T : Finset (HeightOneSpectrum (𝓞 K))) {χ : HChar K} (hu : χ.IsUnitary) {s a : ℂ}
     (hs : 1 < s.re) (ha : HasProd (eulerFactor χ s) a) : heckeL (T : Set _) χ s = a * removed T χ s := by
@@ -72,18 +72,18 @@ theorem heckeL_eq_mul_removed (T : Finset (HeightOneSpectrum (𝓞 K))) {χ : HC
   field_simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Complex.re_add_im s, hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_add_of_re {s : ℂ} (hs : s.re = 1) : s = 1 + (s.im : ℂ) * Complex.I := by
   conv_lhs => rw [← Complex.re_add_im s, hs]
   simp
 
 /- English proof (translation)
-Break down `hs.lt_or_eq with hs | hs` into its components or cases. Rewrite using `[(hΛ.2 s hs).unique (hasProd_exp hu hs)]`. Conclude with `Complex.exp_ne_zero _`. Use `set t := s.im`. Establish `hχ' : ¬ ∃ u : ℝ, IsNormPow (χ * normChar K t) u` using `fun ⟨u, h⟩ => hχ ⟨u + -t, by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[isNormPow_iff]`. Rewrite using `[normChar_add, ← h, mul_assoc, ← normChar_add, add_neg_cancel, normChar_zero, mul_one]⟩`. Take `⟨Λ', h1, h2⟩` from `exists_entire_ne_zero GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds (hu.mul (isUnitary_normChar t)) hχ'`. Establish `h3 : IsHeckeL (χ * normChar K t) fun z => Λ (z + (t : ℂ) * Complex.I)` using `⟨hΛ.1.comp (by fun_prop), fun z hz => by`. Rewrite using `[eulerFactor_mul_normChar]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΛ.2 _ (by simpa using hz)⟩`. Establish `h4` using `(isContAtOne_of_isHeckeL h3).apply_one_eq (isContAtOne_of_isHeckeL h1)`. Rewrite using `[eq_one_add_of_re hs.symm]`. Conclude with `fun h => h2 (h4.symm.trans h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem IsHeckeL.ne_zero_of_one_le {χ : HChar K} (hu : χ.IsUnitary) (hχ : ¬ ∃ t : ℝ, IsNormPow χ t) {Λ : ℂ → ℂ}
     (hΛ : IsHeckeL χ Λ) {s : ℂ} (hs : 1 ≤ s.re) : Λ s ≠ 0 := by
@@ -105,13 +105,13 @@ theorem IsHeckeL.ne_zero_of_one_le {χ : HChar K} (hu : χ.IsUnitary) (hχ : ¬ 
     exact fun h => h2 (h4.symm.trans h)
 
 /- English proof (translation)
-Introduce `K _ _ T hT`. Take `⟨T, rfl⟩ : ∃ T' : Finset _, (T' : Set _) = T` from `⟨hT.toFinset, hT.coe_toFinset⟩`. Use `⟨fun χ hu hχ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `entire_of_not_normPow hu hχ`. Conclude with `⟨fun s => Λ s * removed T χ s, hΛ.1.mul (differentiable_removed T χ), fun s hs => (heckeL_eq_mul_removed T hu hs (hΛ.2 s hs)).symm, fun s hs => mul_ne_zero (IsHeckeL.ne_zero_of_one_le hu hχ hΛ hs) (removed_ne_zero T hu (by linarith))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Z, hZd, hZ1, hZ⟩` from `GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero K`. Establish `hu : (1 : HChar K).IsUnitary` using `fun _ => by simp`. Establish `hc : ∀ P : HeightOneSpectrum (𝓞 K), cf (1 : HChar K) P = 1` using `fun P => if_pos fun _ _ => rfl`. Use `⟨fun s => Z s * removed T 1 s, hZd.mul (differentiable_removed T 1), fun s hs => ?_, fun s hs => mul_ne_zero ?_ (removed_ne_zero T hu (by linarith))⟩` and prove the remaining obligations. Establish `h` using `hasProd_exp hu hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hc] at h`. Use `beta_reduce`. Rewrite using `[← heckeL_one, heckeL_eq_mul_removed T hu hs h, hZ s hs, mul_assoc]`. Break down `hs.lt_or_eq with hs | hs` into its components or cases. Rewrite using `[hZ s hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (sub_ne_zero.2 fun h => by rw [h] at hs; simp at hs) (Complex.exp_ne_zero _)`. Rewrite using `[eq_one_add_of_re hs.symm]`. Distinguish the cases in `ht : s.im = 0`. Simplify `hZ1` using `[ht]`. Conclude with `GlobalTheory.zetaEulerProduct_ne_zero_one_add_mul_I _ _ two_le_N sumN nonemptyN Z hZd hZ _ ht`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.HeckeLPartialContinuation_holds : GlobalTheory.Published.HeckeLPartialContinuation := by
   intro K _ _ T hT

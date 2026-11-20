@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 
 /- English proof (translation)
-Use `GlobalTheory.T.exists_perm_normalized_minors O Y (fun k hk I' I => GlobalTheory.T.normalized_minor_extends O Y k hk I' I) fun k hk => ?_` and prove the remaining obligations. Consider the cases of `k with`. Consider the case `zero => exact ⟨Fin.elim0, normAt_zero O Y _⟩`. Consider the case `succ k`. Take `⟨J, hJ⟩` from `hs ⟨k, hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_normAt O A N hA hN hNA Y _ hk J hJ`.
+A detailed English derivation is pending.
 -/
 theorem exists_cell {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {n r : ℕ}
     (A : Matrix (Fin n) (Fin r) F) (N : Matrix (Fin r) (Fin n) F) (hA : ∀ a b, A a b ∈ O)
@@ -30,55 +30,43 @@ theorem exists_cell {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {n r : 
     exact exists_normAt O A N hA hN hNA Y _ hk J hJ
 
 /- English proof (translation)
-Introduce `Ω _ S _ r n R O _ T M N J hRO hT hM hN hNM hJ0 hJr`. Use `haveI : Finite (GenIx r) := by unfold GenIx; infer_instance`. Use `set i := algebraMap Ω (GenField Ω r) with hi`. Use `set A := ratioRing R (flagB M T) J with hAdef`. Set `Y : ∀ s, Matrix (Fin (r s)) (Fin (r s)) (GenField Ω r)` to `fun s => (T s).map i * genU Ω r s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Am : ∀ s, Matrix (Fin (n s)) (Fin (r s)) (GenField Ω r)` to `fun s => (M s).map i`. Set `Nm : ∀ s, Matrix (Fin (r s)) (Fin (n s)) (GenField Ω r)` to `fun s => (N s).map i`. Establish `hB : ∀ s, flagB M T s = Am s * Y s` using `fun s => by show (M s * T s).map i * genU Ω r s = (M s).map i * ((T s).map i * genU Ω r s)`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc]`. Establish `hNA : ∀ s, Nm s * Am s = 1` using `fun s => by show (N s).map i * (M s).map i = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hYN : ∀ s, Nm s * flagB M T s = Y s` using `fun s => by`. Rewrite using `[hB, ← Matrix.mul_assoc, hNA, Matrix.one_mul]`. Establish `hAmO : ∀ s a b, Am s a b ∈ O` using `fun s a b => hRO _ (hM _ _ _)`. Establish `hNmO : ∀ s a b, Nm s a b ∈ O` using `fun s a b => hRO _ (hN _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ s, ∃ w : Equiv.Perm (Fin (r s)), ∀ (k : ℕ) (hk : k ≤ r s), NormAt O (Y s) k hk (w ∘ Fin.castLE hk)` using `fun s => exists_cell O (Am s) (Nm s) (hAmO s) (hNmO s) (hNA s) (Y s) fun i' => by`. Use `⟨J ⟨s, i'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hB]`. Conclude with `⟨hJ0 ⟨s, i'⟩, hJr ⟨s, i'⟩⟩`. Use `choose w hw using hw`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlu` using `fun s => GlobalTheory.T.lu_decomposition_of_minors ((Y s).submatrix (w s) id) fun k hk => (hw s k hk).1`. Use `choose C V hC hV0 hV1 hCV using hlu`. Set `v : GenIx r → GenField Ω r` to `fun q => V q.1 q.2.1.1 q.2.1.2`. Use `set B := Subring.closure (((R.map i : Subring _) : Set (GenField Ω r)) ∪ Set.range v) with hBdef`. Establish `hRB : ∀ a ∈ R, i a ∈ B` using `fun a ha => Subring.subset_closure (Or.inl ⟨a, ha, rfl⟩)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hRA : ∀ a ∈ R, i a ∈ A` using `fun a ha => Subring.subset_closure (Or.inl ⟨a, ha, rfl⟩)`. Establish `hVB : ∀ s l k, V s l k ∈ B` using `fun s l k => by`. Break down `lt_trichotomy l k with h | h | h` into its components or cases. Rewrite using `[hV0 s l k h]`. Conclude with `B.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[h, hV1]`. Conclude with `B.one_mem`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨s, ⟨(l, k), h⟩⟩, rfl⟩)`. Set `y0 : (q : Σ s, Fin (r s)) → GenField Ω r` to `fun q => kMinor (Y q.1) ((q.2 : ℕ) + 1) q.2.2 (w q.1 ∘ Fin.castLE q.2.2)`. Establish `hy0 : ∀ q, y0 q ≠ 0` using `fun q => (hw q.1 _ q.2.2).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrat : ∀ (s : S) (k : ℕ) (hk : k ≤ r s) (I : Fin k → Fin (r s)), kMinor (Y s) k hk (w s ∘ I) / kMinor (Y s) k hk (w s ∘ Fin.castLE hk) = kMinor (V s) k hk I` using `fun s k hk I => ratio_eq_kMinor ((Y s).submatrix (w s) id) (C s) (V s) (hC s) (hV0 s) (hV1 s) (hCV s) k hk I (hw s k hk).1`. Establish `hyB : ∀ (q : Σ s, Fin (r s)) I, kMinor (Y q.1) ((q.2 : ℕ) + 1) q.2.2 I / y0 q ∈ B` using `fun q I => by`. Establish `e : I = w q.1 ∘ ((w q.1).symm ∘ I)`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `show kMinor (Y q.1) _ q.2.2 _ / kMinor (Y q.1) _ q.2.2 _ ∈ B`. Rewrite using `[hrat]`. Conclude with `kMinor_mem B _ (hVB q.1) _ _ _`. Establish `hPB : ∀ (q : Σ s, Fin (r s)) J', stepMinor (flagB M T q.1) q.2 J' / y0 q ∈ B` using `fun q J' => by`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB, stepMinor_eq_kMinor]`. Conclude with `kMinor_mul_div_mem B (Am q.1) (Y q.1) _ q.2.2 _ (fun a b => hRB _ (hM _ _ _)) (hyB q) J'`. Establish `hPA : ∀ (q : Σ s, Fin (r s)) J', stepMinor (flagB M T q.1) q.2 J' / stepMinor (flagB M T q.1) q.2 (J q) ∈ A` using `fun q J' => Subring.subset_closure (Or.inr ⟨q, J', rfl⟩)`. Establish `hyA : ∀ (q : Σ s, Fin (r s)) I, kMinor (Y q.1) ((q.2 : ℕ) + 1) q.2.2 I / stepMinor (flagB M T q.1) q.2 (J q) ∈ A` using `fun q I => by`. Rewrite using `[← hYN q.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `kMinor_mul_div_mem A (Nm q.1) (flagB M T q.1) _ q.2.2 _ (fun a b => hRA _ (hN _ _ _)) (hPA q) I`. Establish `hAO : A ≤ O`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `a (⟨b, hb, rfl⟩ | ⟨q, J', rfl⟩)`. Conclude with `hRO b hb`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hJr q J'`. Set `tq : (Σ s, Fin (r s)) → GenField Ω r` to `fun q => y0 q / stepMinor (flagB M T q.1) q.2 (J q)`. Establish `htq0 : ∀ q, tq q ≠ 0` using `fun q => div_ne_zero (hy0 q) (hJ0 q)`. Establish `htqA : ∀ q, tq q ∈ A` using `fun q => hyA q _`. Establish `htqB : ∀ q, (tq q)⁻¹ ∈ B` using `fun q => by show (y0 q / _)⁻¹ ∈ B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[inv_div]`. Conclude with `hPB q _`. Establish `htqO : ∀ q, (tq q)⁻¹ ∈ O` using `fun q => by show (y0 q / _)⁻¹ ∈ O`. Rewrite using `[inv_div, hB, stepMinor_eq_kMinor]`. Conclude with `kMinor_mul_div_mem O (Am q.1) (Y q.1) _ q.2.2 _ (hAmO q.1) (hw q.1 _ q.2.2).2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : A ≤ Subring.closure ((B : Set (GenField Ω r)) ∪ Set.range tq)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `a (⟨b, hb, rfl⟩ | ⟨q, J', rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl (hRB b hb))`. Establish `e : stepMinor (flagB M T q.1) q.2 J' / stepMinor (flagB M T q.1) q.2 (J q) = (stepMinor (flagB M T q.1) q.2 J' / y0 q) * tq q` using `by show _ = _ * (y0 q / _)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hy0 q` as an intermediate fact. Use `hJ0 q` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl (hPB q J'))) (Subring.subset_closure (Or.inr ⟨q, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hBA : B ≤ Subring.closure ((A : Set (GenField Ω r)) ∪ Set.range fun q => (tq q)⁻¹)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `a (⟨b, hb, rfl⟩ | ⟨q, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl (hRA b hb))`. Take `⟨s, ⟨⟨l, k⟩, hlk⟩⟩` from `q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hlk' : k < l` using `hlk`. Establish `e1 : V s l k = kMinor (Y s) ((k : ℕ) + 1) k.2 (w s ∘ lastRow k l) / y0 ⟨s, k⟩`. Rewrite using `[← kMinor_lower_lastRow (V s) (hV0 s) (hV1 s) k l hlk', ← hrat]`. Establish `e2 : V s l k = (kMinor (Y s) ((k : ℕ) + 1) k.2 (w s ∘ lastRow k l) / stepMinor (flagB M T s) k (J ⟨s, k⟩)) * (tq ⟨s, k⟩)⁻¹`. Rewrite using `[e1]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = _ * (y0 ⟨s, k⟩ / _)⁻¹`. Use `hy0 ⟨s, k⟩` as an intermediate fact. Use `hJ0 ⟨s, k⟩` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `show V s l k ∈ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e2]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl (hyA ⟨s, k⟩ _))) (Subring.subset_closure (Or.inr ⟨_, rfl⟩))`. Establish `hv : AlgebraicIndependent Ω v`. Use `GlobalTheory.T.algebraic_independent_of_adjoin _ v (genU_indep Ω r) fun q => ?_` and prove the remaining obligations. Rewrite using `[← genU_gen]`.
-
-Establish `hmem : ∀ s l k, V s l k ∈ IntermediateField.adjoin Ω (Set.range v)` using `fun s l k => by`. Break down `lt_trichotomy l k with h | h | h` into its components or cases. Rewrite using `[hV0 s l k h]`. Conclude with `zero_mem _`. Rewrite using `[h, hV1]`.
-
-Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, ⟨(l, k), h⟩⟩, rfl⟩`. Use `entries_mem _ ((T q.1).submatrix (w q.1) id) ?_ (genU Ω r q.1) (C q.1) (V q.1) (genU_zero Ω r q.1) (genU_one Ω r q.1) (hC q.1) (hV0 q.1) (hV1 q.1) ?_ (hmem q.1) _ _ q.2.2` and prove the remaining obligations. Rewrite using `[Matrix.det_permute]`. Apply the tactic sequence `exact mul_ne_zero (by rcases Int.units_eq_one_or (Equiv.Perm.sign (w q.1)) with h | h <;> simp [h]) (hT _)`.
-
-Rewrite using `[← hCV q.1]`. Use `congr 1`. Establish `hL` using `GlobalTheory.T.localization_closure_equal A B tq htq0 htqA htqB hAB hBA`. Establish `htA : (∏ q, tq q) ∈ A` using `A.prod_mem fun q _ => htqA q`. Establish `hinv : (∏ q, tq q)⁻¹ = ∏ q, (tq q)⁻¹` using `(Finset.prod_inv_distrib _).symm`.
-
-Use `⟨∏ q, tq q, htA, Finset.prod_ne_zero_iff.2 fun q _ => htq0 q, hAO htA, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `O.prod_mem fun q _ => htqO q`. Establish `hR : ∀ a ∈ R, i a ∈ locSub A (∏ q, tq q)` using `fun a ha => le_locSub _ _ (hRA a ha)`. Use `⟨hR, ?_⟩` and prove the remaining obligations.
-
-Establish `gen : ∀ (L : Subring (GenField Ω r)), L = locSub B (∏ q, tq q)⁻¹ → ∀ h : ∀ a ∈ R, i a ∈ L, ((i.comp R.subtype).codRestrict L (fun a => h a a.2)).Smooth`. Introduce and unpack `_ rfl h`. Use `GlobalTheory.T.localization_closure_smooth R v hv _ ?_ (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun q _ => htq0 q)) h` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `B.prod_mem fun q _ => htqB q`.
-
-Conclude with `gen _ hL hR`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_cell_smooth : ∀ (Ω : Type) [Field Ω] (S : Type) [Fintype S] (r n : S → ℕ) (R : Subring Ω) (O : Subring (GenField Ω r)) [IsLocalRing O] (T : ∀ s, Matrix (Fin (r s)) (Fin (r s)) Ω) (M : ∀ s, Matrix (Fin (n s)) (Fin (r s)) Ω) (N : ∀ s, Matrix (Fin (r s)) (Fin (n s)) Ω) (J : (q : Σ s, Fin (r s)) → Fin ((q.2 : ℕ) + 1) → Fin (n q.1)), (∀ a ∈ R, algebraMap Ω (GenField Ω r) a ∈ O) → (∀ s, (T s).det ≠ 0) → (∀ s j l, M s j l ∈ R) → (∀ s l j, N s l j ∈ R) → (∀ s, N s * M s = 1) → (∀ q, stepMinor (flagB M T q.1) q.2 (J q) ≠ 0) → (∀ (q : Σ s, Fin (r s)) (J' : Fin ((q.2 : ℕ) + 1) → Fin (n q.1)), stepMinor (flagB M T q.1) q.2 J' / stepMinor (flagB M T q.1) q.2 (J q) ∈ O) → ∃ t ∈ ratioRing R (flagB M T) J, t ≠ 0 ∧ t ∈ O ∧ t⁻¹ ∈ O ∧ ∃ h : ∀ a ∈ R, algebraMap Ω (GenField Ω r) a ∈ locSub (ratioRing R (flagB M T) J) t, (((algebraMap Ω (GenField Ω r)).comp R.subtype).codRestrict (locSub (ratioRing R (flagB M T) J) t) (fun a => h a a.2)).Smooth := by
   intro Ω _ S _ r n R O _ T M N J hRO hT hM hN hNM hJ0 hJr

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ n r B q`. Establish `hk : RingHom.ker (B.toKap q) = q.asIdeal`. Rewrite using `[UniversalOrdinaryDeterminantRing.toKap, RingHom.ker_comp_of_injective _ (algebraMap q.asIdeal.ResidueField (B.kap q)).injective, Ideal.ker_algebraMap_residueField]`. Rewrite using `[← hk, Det.discStIff]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Pa.Det.stableIff :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (q : PrimeSpectrum B.B), B.IsStable q ↔ DiscSt B.u.D q.asIdeal := by

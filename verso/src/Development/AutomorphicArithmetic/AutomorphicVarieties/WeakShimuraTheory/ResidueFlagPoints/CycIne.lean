@@ -5,21 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicChar
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.CuspRep GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ A hA n hn`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosure ℚ Ω := IsAlgClosure.ofAlgebraic ℚ F Ω`. Take `⟨u, hu⟩` from `GlobalTheory.CycDec.exists_unit_infinite_order l`. Take `⟨σ, hσI, hσu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : F →ₐ[ℚ] Ω` to `IsScalarTower.toAlgHom ℚ F Ω`. Set `f : ℕ → (F →ₐ[ℚ] Ω)` to `fun k => ((σ ^ k : Ω ≃ₐ[ℚ] Ω) : Ω →ₐ[ℚ] Ω).comp ι`. Use `haveI : Finite (F →ₐ[ℚ] Ω) := inferInstance`. Take `⟨a, b, hab, he⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `key : ∀ a b : ℕ, a < b → f a = f b → ∃ N : ℕ, 0 < N ∧ ∀ x : F, (σ ^ N) (algebraMap F Ω x) = algebraMap F Ω x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a b hlt hfe`. Use `⟨b - a, Nat.sub_pos_of_lt hlt, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : (σ ^ a) (algebraMap F Ω x) = (σ ^ b) (algebraMap F Ω x)` using `congrArg (fun φ : F →ₐ[ℚ] Ω => φ x) hfe`. Establish `h2 : σ ^ b = σ ^ a * σ ^ (b - a)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[h2, AlgEquiv.mul_apply]`. Conclude with `((σ ^ a).injective h1).symm`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hfix⟩ : ∃ N : ℕ, 0 < N ∧ ∀ x : F, (σ ^ N) (algebraMap F Ω x) = algebraMap F Ω x := by`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `key a b h he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key b a h he.symm`. Set `g : G F Ω` to `AlgEquiv.ofRingEquiv (f := (σ ^ N).toRingEquiv) hfix`. Establish `hg : (g.restrictScalars ℚ : G ℚ Ω) = σ ^ N` using `AlgEquiv.ext fun y => rfl`. Establish `hφinj : Function.Injective (algebraMap ℤ_[l] (Qbar l)).toMonoidHom` using `by show Function.Injective (algebraMap ℤ_[l] (Qbar l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Qbar l), RingHom.coe_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(algebraMap ℚ_[l] (Qbar l)).injective.comp (fun a b h => Subtype.ext h)`. Establish `hinj : Function.Injective (Units.map (algebraMap ℤ_[l] (Qbar l)).toMonoidHom)` using `Units.map_injective hφinj`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Use `show (g.restrictScalars ℚ : G ℚ Ω) ∈ Ine (F := ℚ) A`. Rewrite using `[hg]`.
-
-Conclude with `Subgroup.pow_mem _ hσI N`. Establish `hc : cycBar F Ω l g = Units.map (algebraMap ℤ_[l] (Qbar l)).toMonoidHom (cycZ ℚ Ω l (g.restrictScalars ℚ))` using `rfl`. Rewrite using `[hc, hg, map_pow, hσu]`. Introduce `h`. Apply `hu ((N : ℤ) * n) (mul_ne_zero (by exact_mod_cast hN.ne') hn)` to reduce the goal to its premises.
-
-Rewrite using `[zpow_mul, zpow_natCast]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zpow, map_one]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pt.cycIne :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ n : ℤ, n ≠ 0 → ∃ g ∈ Ine (F := F) A, cycBar F Ω l g ^ n ≠ 1 := by

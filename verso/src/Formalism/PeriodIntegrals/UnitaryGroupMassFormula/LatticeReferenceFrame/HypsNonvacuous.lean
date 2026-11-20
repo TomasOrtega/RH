@@ -11,22 +11,22 @@ namespace PI.ScRefExists.UnitaryGroupMassFormula
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_left (y : VA I) : hA I 0 y = 0 := by
   simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Unfold `ZMod'`. Conclude with `⟨c, h, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem zmod_one_of_mem {c : I.E ⊗[I.F] Af I.F} (h : c ∈ IntAf I.F I.E) : ZMod' I 1 c := by
   unfold ZMod'
   exact ⟨c, h, by simp⟩
 
 /- English proof (translation)
-Unfold `mL`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Simplify using `using hx`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Conclude with `Submodule.subset_span ⟨x, hx, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mL_one : mL I 1 = I.Lf := by
   unfold mL
@@ -38,7 +38,7 @@ theorem mL_one : mL I 1 = I.Lf := by
     exact Submodule.subset_span ⟨x, hx, by simp⟩
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `hx`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem ite_mem_int {p : Prop} [Decidable p] (x : I.E ⊗[I.F] Af I.F) (hx : x ∈ IntAf I.F I.E) :
     (if p then x else 0) ∈ IntAf I.F I.E := by
@@ -99,7 +99,7 @@ def frameOne (r k : ℕ) (e f : Fin r → Fin I.n → I.E)
     exact hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨frameOne I r k e f he⟩`.
+Supply the required witnesses or components.
 -/
 theorem refData_one (r k : ℕ) (e f : Fin r → Fin I.n → I.E)
     (he : ∀ a, InAt I 1 1 (incl I (e a)) ∧ InAt I 1 1 (incl I (f a))) :
@@ -118,9 +118,9 @@ def TargetTwo : Prop :=
     Nonempty (RefData I g r k e f)
 
 /- English proof (translation)
-Unfold `TargetTwo at h`. Unfold `Target`. Introduce `J g r k e f hg hs hn he hf hef hin`. Break down `Nat.lt_or_ge g 2 with hlt | hge` into its components or cases. Take `rfl : g = 1` from `by omega`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `refData_one J r k e f hin`. Conclude with `h J g r k e f hge hs hn he hf hef hin`.
+A detailed English derivation is pending.
 -/
 theorem target_of_two (h : TargetTwo) : Target := by
   unfold TargetTwo at h

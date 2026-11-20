@@ -20,7 +20,7 @@ variable {S : Scheme.{0}} {P : PPAS S} {y : Sp ℂ ⟶ S} (d : P.RiemannData y)
   {W W' : P.A.left.Opens} {U : S.Opens}
 
 /- English proof (translation)
-Rewrite `h` using `[← d.ex_zero]`. Conclude with `(d.u.hol (d.φ ⁻¹ᵁ W) 0).1.mem_nhds h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_le (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) :
     ∀ᶠ z in 𝓝 (0 : Fin P.g → ℂ), ⊤ ≤ ((d.u.ex z).left ≫ d.φ) ⁻¹ᵁ W := by
@@ -28,7 +28,7 @@ theorem eventually_le (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) :
   exact (d.u.hol (d.φ ⁻¹ᵁ W) 0).1.mem_nhds h
 
 /- English proof (translation)
-Establish `: d.fn W' (resG _ k f) =ᶠ[𝓝 0] d.fn W f` using `(eventually_le d h).mono fun z hz => valR_res _ k hz f`. Use function extensionality and compare the values at `a`. Simplify using `only [PPAS.RiemannData.cov, this.fderiv_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cov_res (k : W' ≤ W) (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W') (f : Γ(P.A.left, W)) :
     d.cov W' (resG _ k f) = d.cov W f := by
@@ -38,7 +38,7 @@ theorem cov_res (k : W' ≤ W) (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W') (f 
   simp only [PPAS.RiemannData.cov, this.fderiv_eq]
 
 /- English proof (translation)
-Establish `: d.fn W (f + g) =ᶠ[𝓝 0] d.fn W f + d.fn W g` using `(eventually_le d h).mono fun z hz => by`. Simplify using `only [PPAS.RiemannData.fn, Pi.add_apply, valR_eq _ _ hz, map_add]`. Use function extensionality and compare the values at `a`. Simplify using `only [PPAS.RiemannData.cov, this.fderiv_eq, fderiv_add (d.differentiableAt_fn f h) (d.differentiableAt_fn g h), Pi.add_apply, ContinuousLinearMap.add_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cov_add (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (f g : Γ(P.A.left, W)) :
     d.cov W (f + g) = d.cov W f + d.cov W g := by
@@ -51,7 +51,7 @@ theorem cov_add (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (f g : Γ(P.A.left,
     ContinuousLinearMap.add_apply]
 
 /- English proof (translation)
-Establish `: d.fn W (f * g) =ᶠ[𝓝 0] d.fn W f * d.fn W g` using `(eventually_le d h).mono fun z hz => by`. Simplify using `only [PPAS.RiemannData.fn, Pi.mul_apply, valR_eq _ _ hz, map_mul]`. Use function extensionality and compare the values at `a`. Simplify using `only [PPAS.RiemannData.cov, this.fderiv_eq, fderiv_mul (d.differentiableAt_fn f h) (d.differentiableAt_fn g h), Pi.add_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, Pi.smul_apply, ← d.ex_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cov_mul (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (f g : Γ(P.A.left, W)) :
     d.cov W (f * g) = valR (y ≫ unitSec P.A) W f • d.cov W g +
@@ -66,7 +66,7 @@ theorem cov_mul (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (f g : Γ(P.A.left,
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ π) ⁻¹ᵁ U` using `h.trans (x.preimage_mono k)`. Rewrite using `[valR, valR, dif_pos h, dif_pos h']`. Conclude with `congrArg _ (Conormal.appLE_appLE rfl k h h' a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_appLE {X Y : Scheme.{0}} {x : Sp ℂ ⟶ X} {π : X ⟶ Y} {W : X.Opens} {U : Y.Opens}
     (h : ⊤ ≤ x ⁻¹ᵁ W) (k : W ≤ π ⁻¹ᵁ U) (a : Γ(Y, U)) :
@@ -76,9 +76,9 @@ theorem valR_appLE {X Y : Scheme.{0}} {x : Sp ℂ ⟶ X} {π : X ⟶ Y} {W : X.O
   exact congrArg _ (Conormal.appLE_appLE rfl k h h' a)
 
 /- English proof (translation)
-Establish `: d.fn W (P.A.hom.appLE U W k a) =ᶠ[𝓝 0] fun _ => valR y U a` using `(eventually_le d h).mono fun z hz => by`. Use `(valR_appLE hz k a).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, d.isPull.1.w, ← Category.assoc, Over.w (d.u.ex z)]`. Conclude with `congrArg (valR · U a) (Category.id_comp y)`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[PPAS.RiemannData.cov, this.fderiv_eq]`.
+A detailed English derivation is pending.
 -/
 theorem cov_base (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (k : W ≤ P.A.hom ⁻¹ᵁ U) (a : Γ(S, U)) :
     d.cov W (P.A.hom.appLE U W k a) = 0 := by
@@ -91,13 +91,13 @@ theorem cov_base (h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W) (k : W ≤ P.A.hom
   simp [PPAS.RiemannData.cov, this.fderiv_eq]
 
 /- English proof (translation)
-Establish `he` using `LieVB.sec_hom (MonObj.one (X := P.A))`. Establish `h : ⊤ ≤ (y ≫ unitSec P.A) ⁻¹ᵁ W` using `hy.trans (y.preimage_mono c.le)`. Use `letI := c.algebra`. Use `letI : Module Γ(S, U) (Fin P.g → ℂ) := Module.compHom _ (valMap y U hy).hom`. Establish `sm (r : Γ(S, U)) (v : Fin P.g → ℂ) : r • v = valR y U r • v`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[valR_eq _ _ hy]`. Both sides reduce to the same expression. Establish `au (f : Γ(P.A.left, W)) : valR y U (c.aug he f) = valR (y ≫ unitSec P.A) W f` using `valR_appLE hy c.le f`. Set `D : Γ(P.A.left, W) →ₗ[Γ(S, U)] (Fin P.g → ℂ)` to `{ toFun := d.cov W map_add' := cov_add d h map_smul' := fun r f => by`. Use `(cov_mul d h (P.A.hom.appLE U W c.le_base r) f).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cov_base d h, smul_zero, add_zero, RingHom.id_apply, sm, valR_appLE h, Category.assoc, he, Category.comp_id] }`. Set `l` to `AugCot.lift (c.aug he) D (fun f g => by`. Rewrite using `[sm, sm, au, au]`. Conclude with `cov_mul d h f g) ∘ₗ (c.augCotEquiv he).symm.toLinearMap`. Use `⟨l.toAddMonoidHom, fun r s => (l.map_smul r s).trans (sm _ _), fun f => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg l (c.augCotEquiv_d he f).symm).trans ?_` and prove the remaining obligations. Simplify using `only [l, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Conclude with `AugCot.lift_d _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor (c : Conormal.IsChart P.A.hom (unitSec P.A) U W) (hy : ⊤ ≤ y ⁻¹ᵁ U) :
     ∃ L : Γ(omega P.A, U) →+ (Fin P.g → ℂ), (∀ (r : Γ(S, U)) s, L (r • s) = valR y U r • L s) ∧
@@ -125,13 +125,13 @@ theorem exists_factor (c : Conormal.IsChart P.A.hom (unitSec P.A) U W) (hy : ⊤
   exact AugCot.lift_d _ _ _ _
 
 /- English proof (translation)
-Establish `he` using `LieVB.sec_hom (MonObj.one (X := P.A))`. Take `⟨U₀, W₀, hx₀, hle₀, c₀⟩` from `Conormal.exists_isChart he (mem_ptsIn.1 hc)`. Use `choose t ht using fun a => c₀.d_surjective he (resM (omega P.A) hle₀ (c.e a))`. Use `⟨Matrix.of fun a b => d.cov W₀ (t b) a, fun U W hU f hy => ?_⟩` and prove the remaining obligations. Establish `hx` using `mem_ptsIn.1 hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W₂, hW₂, hx₂, k₂⟩` from `QCoh.exists_affine_mem_le (U := W ⊓ W₀) _ ⟨hU hx, c₀.le hx₀⟩`. Take `⟨U₁, hx₁, h₁, h₂, c₁⟩` from `Conormal.exists_isChart_inf he c₀.affine_base hW₂ ((k₂.trans inf_le_right).trans c₀.le_base) hx₂ hx`. Establish `hy₁ : y ∈ ptsIn p σ U₁` using `mem_ptsIn.2 hx₁`. Take `⟨L, hL, hd⟩` from `exists_factor d c₁ hy₁`. Establish `ho : ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ (W₂ ⊓ P.A.hom ⁻¹ᵁ U₁)` using `le_trans (show ⊤ ≤ y.1 ⁻¹ᵁ U₁ from hy₁) (y.1.preimage_mono c₁.le)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kW : W₂ ⊓ P.A.hom ⁻¹ᵁ U₁ ≤ W` using `inf_le_left.trans (k₂.trans inf_le_left)`. Establish `kW₀ : W₂ ⊓ P.A.hom ⁻¹ᵁ U₁ ≤ W₀` using `inf_le_left.trans (k₂.trans inf_le_right)`. Establish `e (b : Fin P.g) : L (c.isFrame.basis (h₂.trans hle₀) b) = d.cov W₀ (t b)`. Rewrite using `[← cov_res d kW₀ ho, ← hd, LieVB.dUnit_resG, IsFrame.basis_apply, ← LieVB.resM_dUnit P.A c₀.le h₂, ← resM_resM (h₁ := hle₀) (h₂ := h₂), ← ht]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cov_res d kW ho, ← hd, LieVB.dUnit_resG, ← LieVB.resM_dUnit P.A hU h₁, ← (c.isFrame.basis (h₂.trans hle₀)).sum_repr (resM _ h₁ _), map_sum]`. Use function extensionality and compare the values at `a`. Simplify using `only [hL, e, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, of_apply, c.crd_eq _ h₁ (h₂.trans hle₀) hy₁]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cov_eq_mulVec (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     (P : PPAS X) (y : CxPts p σ) (d : P.RiemannData y.1) (c : Chart (LieVB.omega P.A) P.g)

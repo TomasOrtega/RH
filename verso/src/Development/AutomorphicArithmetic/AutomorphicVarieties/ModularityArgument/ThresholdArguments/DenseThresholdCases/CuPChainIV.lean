@@ -14,29 +14,29 @@ open UpperTheory.V.Ws.Chn
 end UpperTheory.V.Cu.RankFourChainReduction
 open UpperTheory.V.Cu UpperTheory.V.Ws.Chn UpperTheory.V.Cu.RankFourChainReduction in
 /- English proof (translation)
-Introduce `hC hH hS Ω _ _ _ l _ c D T₀ h3 hok h4 htame ι 𝔞 c₀ hc₀`. Establish `hG : D.Good` using `h3.1`. Establish `hF : T₀.Fit` using `hH D T₀ h3 hok h4`. Establish `ha` using `red_zero 𝔞 c`. Establish `ok0 : (T₀.fr ∅).Ok (𝔞.red c)` using `(std hC D T₀ hF ∅ c le_rfl).2 _ _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, s, hw, hsp, hs, hsM, hseed⟩` from `hS Ω l c D T₀ h3 hok h4 ι 𝔞`. Take `⟨p0, hp0, hov0⟩` from `UpperTheory.exists_residualRep_restriction_of_latticeShape D hG T₀ hF _ _ ha ok0 c₀ hc₀`. Take `⟨-, hp0P, -⟩` from `goodQ D hG T₀ hF _ _ ha _ c₀ p0 hc₀ (fun w hw => rt_ne (Φ := T₀.fr ∅) ok0 w hw) hov0 hp0 ∅`. Take `⟨W1, p2, hW1, hW1s, hp2, hp2Q, hp2A, hp2E⟩` from `gysinPs hC D T₀ hF _ _ ha {w} (by simpa using ⟨hw, hsp⟩) s hs hsM`. Take `⟨W2, p3, p4, hW2, hW2s, hp3, hp4, hp3Q, hp4Q, h30, h42, h34, h3E⟩` from `gysinAl hC D T₀ hF _ _ ha W1 hW1s p0 p2 (res_mono T₀ (Finset.empty_subset _) hp0) hp2 hp0P (qP hp2Q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T₁, hL1, ht1, hd1⟩` from `diesEx D hG T₀ htame hok W2 hW2s`. Use `⟨T₁, hL1, ht1, fun T hL _ => ?_⟩` and prove the remaining obligations. Establish `hT : T₀.Le T` using `(leFit D hG T₀ T₁ hL1).2.2.2.2.2.2 T hL`. Take `⟨lo, -, -, -, lf, -, -⟩` from `leFit D hG T₀ T hT`. Establish `hd : ∀ w ∈ W2, Dies l w T.F` using `fun w hw => dies_mono hL.le (hd1 w hw)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c₁, h, Q, hQ, hovs, hQA, hQB, hQT⟩` from `hseed T hT (lo hok) (hd w (hW2 (hW1 (Finset.mem_singleton_self w))))`. Use `⟨c₁, h, Q, hQ, fun u hu hur => ?_⟩` and prove the remaining obligations. Establish `okT : (T.fr ∅).Ok (𝔞.red c)` using `(std hC D T (lf hF) ∅ c le_rfl).2 _ _ ha`. Establish `hq` using `_root_.UpperTheory.V.Ws.Chn.seed_res_alt T 𝔞 hQ`. Use `replace hs := res_mono T₀ (hW1.trans hW2) hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace hp0 := res_mono T₀ (Finset.empty_subset W2) hp0`. Use `replace hp2 := res_mono T₀ hW2 hp2`. Establish `R` using `fun x hx => restrT D hG T₀ T hT hF _ _ ha W2 hW2s hd x hx (Or.inl h4.five)`. Take `⟨q0, hq0, o0⟩` from `R p0 hp0`. Take `⟨q2, hq2, o2⟩` from `R p2 hp2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q3, hq3, o3⟩` from `R p3 hp3`. Take `⟨q4, hq4, o4⟩` from `R p4 hp4`. Establish `O` using `overFacts D hG T₀ T hT hF _ _ ha W2 ∅`. Take `⟨-, -, -, a1, -, -, -, a2⟩` from `O p0 p3 q0 q3 hp0 hp3 hq0 hq3 o0 o3`. Take `rfl : u = q0` from `a2 c₀ _ hc₀.res.pair hov0 u hur hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, b0, b1, -, b2, -, b4, -⟩` from `O p3 p4 q3 q4 hp3 hp4 hq3 hq4 o3 o4`. Take `⟨-, c0, c1, c2, -, -, -, -⟩` from `O p4 p2 q4 q2 hp4 hp2 hq4 hq2 o4 o2`. Take `⟨-, d0, d1, -, d2, d3, -, -⟩` from `O p2 s q2 _ hp2 hs hq2 hq o2 hovs`. Take `⟨-, e0, -, -, -, -, -, -⟩` from `O s s _ _ hs hs hq hq hovs hovs`. Establish `hlat : LatShape D T.pr (resQ T₀.F T₀.g0) (𝔞.red c) c₀` using `hT.pr ▸ hc₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hrt : ∀ w ∈ roots, 𝔞.red c ((frQ D T.pr (resQ T₀.F T₀.g0)).rt w (resQ T₀.F T₀.g0)) ≠ 1`. Rewrite using `[hT.pr]`. Conclude with `fun w hw => rt_ne (Φ := T₀.fr ∅) ok0 w hw`. Take `⟨-, uP, ug⟩` from `goodQ D hG T (lf hF) _ _ ha _ c₀ u hlat hrt hu hur ∅`. Establish `P3` using `b1 (qP hp3Q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P4` using `c1 (qP hp4Q)`. Establish `P2` using `d1 (qP hp2Q)`. Establish `M3` using `b0 _ (qM hp3Q.1)`. Establish `M4` using `c0 _ (qM hp4Q.1)`. Establish `M2` using `d0 _ (qM hp2Q.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Ms` using `e0 _ hsM`. Establish `s03` using `a1 hp0P (qP hp3Q) (samePs_symm h30)`. Establish `s34` using `b2 (qM hp3Q.1) (qM hp4Q.1) h34`. Establish `s42` using `c2 (qP hp4Q) (qP hp2Q) h42`. Establish `s2s` using `d2 (qM hp2Q.1) hsM hp2A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A3` using `(b4 (qM hp3Q.1)).1 h3E`. Establish `E2` using `d3 (qP hp2Q).1 hp2E`. Establish `g0 : Good4 (T.fr ∅) (𝔞.red c) u` using `Or.inl (ug.elim (fun x => Or.inl ⟨x.1, Or.inl x.2⟩) fun x => Or.inr (Or.inr (Or.inl x)))`. Establish `g3 : Good4 (T.fr ∅) (𝔞.red c) q3` using `Or.inl (ug.elim (fun x => Or.inl ⟨(samePs_ent hur hq3 uP.1 P3.1 s03).1 x.1, Or.inr A3⟩) fun x => Or.inr (Or.inr (Or.inl ⟨samePs_inV hq3 P3 s03 x.1, A3⟩)))`. Establish `g4 : Good4 (T.fr ∅) (𝔞.red c) q4` using `Or.inl (Or.inl ⟨(samePs_ent hq4 hq2 P4.1 P2.1 s42).2 E2, Or.inr ((sameAl_ent hq3 hq4 M3 M4 s34).1 A3)⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `g2 : Good4 (T.fr ∅) (𝔞.red c) q2` using `Or.inr (Or.inl ⟨inA_of hq2 (d0 _ hp2Q.1) s2s hQA, E2⟩)`. Establish `gs : Good4 (T.fr ∅) (𝔞.red c) (Q.map (𝔞.red c₁))` using `Or.inr (Or.inr ⟨hQA, hQB, hQT⟩)`. Conclude with `⟨g0, (((Relation.ReflTransGen.single ⟨g3, lineP _ _ okT _ _ hur hq3 uP P3 s03⟩).tail ⟨g4, lineM _ _ okT _ _ hq3 hq4 M3 M4 s34⟩).tail ⟨g2, lineP _ _ okT _ _ hq4 hq2 P4 P2 s42⟩).tail ⟨gs, lineM _ _ okT _ _ hq2 hq M2 Ms s2s⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cu.chainIV_alt : _root_.UpperTheory.V.Cu.RankFourChainReductionDense := by
   intro hC hH hS Ω _ _ _ l _ c D T₀ h3 hok h4 htame ι 𝔞 c₀ hc₀

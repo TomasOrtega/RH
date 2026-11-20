@@ -5,17 +5,13 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B D R _ _ _ _ _ _ _ ι hinj hsurj Q _ q _ hle hdom hic`. Use `letI : Algebra D B := ι.toRingHom.toAlgebra`. Use `haveI : IsScalarTower A D B := .of_algebraMap_eq fun a ↦ (ι.commutes a).symm`. Set `M : Submonoid D` to `(IsUnit.submonoid B).comap ι.toRingHom`. Use `haveI : IsLocalization M B := { map_units := fun y ↦ y.2 surj := fun b ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, s, hs, h⟩` from `hsurj b`. Conclude with `⟨(a, ⟨s, hs⟩), by rw [mul_comm]; exact h⟩`. Use `exists_of_eq := fun {x y} h ↦ ⟨1, by rw [hinj h]⟩ }`. Set `φ` to `Algebra.TensorProduct.map ι (AlgHom.id A R)`. Use `letI : Algebra (D ⊗[A] R) (B ⊗[A] R) := φ.toRingHom.toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `haveI : IsScalarTower D (D ⊗[A] R) (B ⊗[A] R) := .of_algebraMap_eq fun x ↦ by`. Simplify using `[RingHom.algebraMap_toAlgebra, Algebra.TensorProduct.algebraMap_apply, φ]`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (D ⊗[A] R) M) (B ⊗[A] R) := IsLocalization.tensorProduct_tensorProduct A R M B (by`. Use extensionality with `x`. Simplify using `[RingHom.algebraMap_toAlgebra, φ])`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `set QD := Q.comap (algebraMap (D ⊗[A] R) (B ⊗[A] R)) with hQD`. Use `haveI : QD.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI hL : IsLocalization QD.primeCompl (Localization.AtPrime Q) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Algebra.algebraMapSubmonoid (D ⊗[A] R) M) (Localization.AtPrime Q) Q`. Establish `hle' : q.primeCompl ≤ QD.primeCompl` using `fun x hx hx' ↦ hx (hle hx')`. Use `letI : Algebra (Localization.AtPrime q) (Localization.AtPrime Q) := IsLocalization.localizationAlgebraOfSubmonoidLe _ _ q.primeCompl QD.primeCompl hle'`.
-
-Use `haveI : IsScalarTower (D ⊗[A] R) (Localization.AtPrime q) (Localization.AtPrime Q) := IsLocalization.localization_isScalarTower_of_submonoid_le _ _ q.primeCompl QD.primeCompl hle'`. Use `haveI : IsLocalization (QD.primeCompl.map (algebraMap (D ⊗[A] R) (Localization.AtPrime q))) (Localization.AtPrime Q) := IsLocalization.isLocalization_of_submonoid_le _ _ q.primeCompl QD.primeCompl hle'`. Establish `hN : QD.primeCompl.map (algebraMap (D ⊗[A] R) (Localization.AtPrime q)) ≤ nonZeroDivisors (Localization.AtPrime q)`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]`.
-
-Introduce `h0`. Establish `hu : IsUnit (algebraMap (D ⊗[A] R) (Localization.AtPrime Q) c)` using `IsLocalization.map_units (Localization.AtPrime Q) (⟨c, hc⟩ : QD.primeCompl)`. Rewrite `hu` using `[IsScalarTower.algebraMap_apply (D ⊗[A] R) (Localization.AtPrime q) (Localization.AtPrime Q), h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Conclude with `⟨IsLocalization.isDomain_of_le_nonZeroDivisors _ hN, isIntegrallyClosed_of_isLocalization _ _ hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normal_atPrime_tensor_of_chart_localization : ∀ (A B D R : Type) [CommRing A] [CommRing B] [CommRing D] [CommRing R] [Algebra A B] [Algebra A D] [Algebra A R] (ι : D →ₐ[A] B), Function.Injective ι → (∀ b, ∃ a s : D, IsUnit (ι s) ∧ ι s * b = ι a) → ∀ (Q : Ideal (B ⊗[A] R)) [Q.IsPrime] (q : Ideal (D ⊗[A] R)) [q.IsPrime], Q.comap (Algebra.TensorProduct.map ι (AlgHom.id A R)) ≤ q → IsDomain (Localization.AtPrime q) → IsIntegrallyClosed (Localization.AtPrime q) → IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) := by
   intro A B D R _ _ _ _ _ _ _ ι hinj hsurj Q _ q _ hle hdom hic

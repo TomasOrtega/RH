@@ -10,14 +10,14 @@ variable {R : Type*} [CommRing R]
 def Cop (t a b : R) : Prop := ∃ (κ : ℕ) (x y : R), t ^ κ = x * a + y * b
 
 /- English proof (translation)
-Take `⟨κ, x, y, h⟩` from `h`. Conclude with `⟨κ, y, x, by rw [h]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cop.symm {t a b : R} (h : Cop t a b) : Cop t b a := by
   obtain ⟨κ, x, y, h⟩ := h
   exact ⟨κ, y, x, by rw [h]; ring⟩
 
 /- English proof (translation)
-Take `⟨κ₁, x₁, y₁, h₁⟩` from `hb`. Take `⟨κ₂, x₂, y₂, h₂⟩` from `hc`. Use `⟨κ₁ + κ₂, x₁ * x₂ * a + x₁ * y₂ * c + y₁ * b * x₂, y₁ * y₂, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Cop.mul_right {t a b c : R} (hb : Cop t a b) (hc : Cop t a c) : Cop t a (b * c) := by
   obtain ⟨κ₁, x₁, y₁, h₁⟩ := hb
@@ -27,21 +27,21 @@ theorem Cop.mul_right {t a b c : R} (hb : Cop t a b) (hc : Cop t a c) : Cop t a 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, 1, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cop.one_right (t a : R) : Cop t a 1 := ⟨0, 0, 1, by ring⟩
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction b (Cop t a) (fun _ _ h₁ h₂ => h₁.mul_right h₂) (Cop.one_right t a) h`.
+A detailed English derivation is pending.
 -/
 theorem Cop.prod_right {t a : R} {ι : Type*} (s : Finset ι) (b : ι → R) (h : ∀ i ∈ s, Cop t a (b i)) :
     Cop t a (∏ i ∈ s, b i) :=
   Finset.prod_induction b (Cop t a) (fun _ _ h₁ h₂ => h₁.mul_right h₂) (Cop.one_right t a) h
 
 /- English proof (translation)
-Take `⟨κ, x, y, h⟩` from `h`. Establish `hmem : t ^ κ ∈ Ideal.span {a} ⊔ Ideal.span {b}` using `h ▸ Submodule.add_mem_sup (Ideal.mul_mem_left _ x (Ideal.mem_span_singleton_self a)) (Ideal.mul_mem_left _ y (Ideal.mem_span_singleton_self b))`. Establish `hpow : (t ^ κ) ^ (m + k) ∈ (Ideal.span {a} ⊔ Ideal.span {b}) ^ (m + k)` using `Ideal.pow_mem_pow hmem _`. Establish `hle` using `Ideal.sup_pow_add_le_pow_sup_pow (I := Ideal.span {a}) (J := Ideal.span {b}) (n := m) (m := k)`. Establish `hmem2` using `hle hpow`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem2` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 hmem2`. Take `⟨x', rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Take `⟨y', rfl⟩` from `Ideal.mem_span_singleton'.1 hv`. Conclude with `⟨κ * (m + k), x', y', by rw [pow_mul, ← huv]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cop.pow {t a b : R} (h : Cop t a b) (m k : ℕ) : Cop t (a ^ m) (b ^ k) := by
   obtain ⟨κ, x, y, h⟩ := h
@@ -58,7 +58,7 @@ theorem Cop.pow {t a b : R} (h : Cop t a b) (m k : ℕ) : Cop t (a ^ m) (b ^ k) 
   exact ⟨κ * (m + k), x', y', by rw [pow_mul, ← huv]⟩
 
 /- English proof (translation)
-Take `⟨κ, x, y, h⟩` from `hc`. Take `⟨k₁, β, hβ⟩` from `hP`. Take `⟨k₂, α, hα⟩` from `ha`. Use `⟨κ + k₁ + k₂, x * t ^ k₁ * α + y * t ^ k₂ * β, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem crt_step {t P a U : R} (hc : Cop t P a) (hP : ∃ k : ℕ, ∃ β : R, t ^ k * U = P * β)
     (ha : ∃ k : ℕ, ∃ α : R, t ^ k * U = a * α) : ∃ k : ℕ, ∃ γ : R, t ^ k * U = (P * a) * γ := by
@@ -73,9 +73,9 @@ theorem crt_step {t P a U : R} (hc : Cop t P a) (hP : ∃ k : ℕ, ∃ β : R, t
     _ = (P * a) * (x * t ^ k₁ * α + y * t ^ k₂ * β) := by ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, U, by simp⟩`. Consider the case `insert i s hi ih`. Establish `ih'` using `ih (fun x hx y hy hxy => hc x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy) hxy) (fun x hx => hd x (Finset.mem_insert_of_mem hx))`. Establish `hcop : Cop t (∏ j ∈ s, a j) (a i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Cop.symm (Cop.prod_right s a fun j hj => hc i (Finset.mem_insert_self i s) j (Finset.mem_insert_of_mem hj) ?_)` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hi hj`. Take `⟨k, γ, hγ⟩` from `crt_step hcop ih' (hd i (Finset.mem_insert_self i s))`. Conclude with `⟨k, γ, by rw [Finset.prod_insert hi, mul_comm (a i)]; exact hγ⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crt_prod {t U : R} {ι : Type*} [DecidableEq ι] (s : Finset ι) (a : ι → R)
     (hc : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → Cop t (a i) (a j))
@@ -126,9 +126,9 @@ theorem exps (x : ℤ) (H : ℕ) (h1 : -(H : ℤ) ≤ x) (h2 : x ≤ H) :
   omega
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simpa using ha`. Consider the case `succ s ih`. Rewrite using `[pow_succ', AlgHom.mul_apply]`. Introduce `δ hδ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← W.φA_γA δ, ih δ hδ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φpow_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) (s : ℕ) : (W.φA ^ s) a ∈ W.AΔ := by
   induction s with
@@ -139,17 +139,17 @@ theorem φpow_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) (s : ℕ) : (W.φA ^ s) 
     rw [← W.φA_γA δ, ih δ hδ]
 
 /- English proof (translation)
-The claim follows from `φpow_mem_AΔ W (W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)) s`.
+A detailed English derivation is pending.
 -/
 theorem ps_mem (hπ : W.π₀ ∈ W.AΔ) (s : ℕ) : ps W s ∈ W.AΔ :=
   φpow_mem_AΔ W (W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)) s
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Rewrite `h` using `[hw]`. Establish `h2 : letπ ^ (PD.p - 1) * x = 0`. Establish `h'` using `congrArg (fun z => (↑w⁻¹ : LetA O n) * z) h`. Simplify using `only [mul_zero] at h'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h'` using `[← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun h2 i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, letπ, Pi.zero_apply] at hi`. Use `PowerSeries.ext fun j => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `congrArg (PowerSeries.coeff (j + (PD.p - 1))) hi`. Rewrite `hc` using `[PowerSeries.coeff_X_pow_mul]`. Simplify using `using hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem π₀_nzd (hw : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * letπ ^ (PD.p - 1)) {x : LetA O n}
     (h : W.π₀ * x = 0) : x = 0 := by
@@ -168,7 +168,7 @@ theorem π₀_nzd (hw : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * letπ ^
   simpa using hc
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letE_idem (a : ZMod n) : (letE a : LetA O n) * letE a = letE a := by
   funext i
@@ -192,7 +192,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Take `⟨κ, x, hx, y, hy, h⟩` from `KF.psCoprime_of W hR s t hst`. Use `⟨κ, ⟨x, hx⟩, ⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify `h` using `[lA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cop_ps [IsDomain O] [NeZero n] (hR : ToolsR.RingP W) (hπ : W.π₀ ∈ W.AΔ) (s t : ℕ) (hst : s ≠ t) :
     Cop ((PD.p : ℕ) : ↥W.AΔ) (⟨ps W s, ps_mem W hπ s⟩ : ↥W.AΔ) ⟨ps W t, ps_mem W hπ t⟩ := by
@@ -201,11 +201,11 @@ theorem cop_ps [IsDomain O] [NeZero n] (hR : ToolsR.RingP W) (hπ : W.π₀ ∈ 
   simpa [lA] using h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (hT.2.2.1 s)`. Establish `hc' : c * W.π₀ = ps W s - ((PD.p : ℕ) : LetA O n)` using `hc`. Establish `hcΔ : c ∈ W.AΔ`. Introduce `δ hδ`. Establish `hm : ps W s - ((PD.p : ℕ) : LetA O n) ∈ W.AΔ` using `W.AΔ.sub_mem (ps_mem W hπ s) (Subalgebra.natCast_mem _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : W.γA δ (c * W.π₀) = c * W.π₀` using `by rw [hc']; exact hm δ hδ`. Rewrite `h1` using `[map_mul, hπ δ hδ]`. Establish `h2 : W.π₀ * (W.γA δ c - c) = 0` using `by rw [mul_sub, mul_comm _ (W.γA δ c), h1, mul_comm]; ring`. Conclude with `sub_eq_zero.1 (π₀_nzd W hw h2)`. Use `⟨1, ⟨-c, W.AΔ.neg_mem hcΔ⟩, 1, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_one, Subalgebra.coe_add, Subalgebra.coe_mul, Subalgebra.coe_neg, Subalgebra.coe_one, one_mul]`. Use `push_cast`. Rewrite using `[neg_mul, hc']`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cop_π₀_ps (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)
     (hw : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * letπ ^ (PD.p - 1)) (hπ : W.π₀ ∈ W.AΔ) (s : ℕ) :
@@ -227,19 +227,15 @@ theorem cop_π₀_ps (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)
   ring
 
 /- English proof (translation)
-Take `⟨κ, f₁, f₂, hsum, ⟨u1, hu1, h1⟩, ⟨u2, hu2, h2⟩⟩` from `h`. Take `⟨hd, hN, h2H, hH⟩` from `exps (E s) (A.Hs a e s) hE.1 hE.2`. Use `set H := A.Hs a e s with hHdef`. Use `set P' := ∏ t ∈ (Finset.range e).erase s, ps W t ^ A.Hs a e t with hP'`. Use `set m := (E s).toNat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set d := (-(E s)).toNat`. Use `set N := ((H : ℤ) + E s).toNat`. Establish `hΛ : abelian₂ W A a e = ps W s ^ H * P'` using `(Finset.mul_prod_erase (Finset.range e) (fun t => ps W t ^ A.Hs a e t) (Finset.mem_range.2 hs)).symm`. Establish `hΛ' : abelian₂ W A a e = ps W s ^ (H - d) * (ps W s ^ d * P')`. Rewrite using `[hΛ, ← mul_assoc, ← pow_add, ← hH]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hι1 : algebraMap (LetA O n) W.EE 1 = 1` using `map_one _`. Rewrite `h2` using `[hι1, one_mul]`. Establish `hL : lE W κ = algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) ^ κ)`. Simplify using `[lE, map_pow, map_natCast]`. Establish `key : algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) ^ κ * (letE a * u0)) = algebraMap (LetA O n) W.EE (ps W s ^ (H - d) * (letE a * ps W s ^ m * u1) + abelian₂ W A a e * (letE a * (W.π₀ * abelian₂ W A a e) * u2))`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, hsum, mul_add]`. Use `_ = algebraMap (LetA O n) W.EE (ps W s ^ (H - d)) * (algebraMap (LetA O n) W.EE (ps W s ^ d * P') * f₁) + algebraMap (LetA O n) W.EE (abelian₂ W A a e) * f₂ := by`. Rewrite using `[hΛ', map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = algebraMap (LetA O n) W.EE (ps W s ^ (H - d) * (letE a * ps W s ^ m * u1) + abelian₂ W A a e * (letE a * (W.π₀ * abelian₂ W A a e) * u2)) := by`. Rewrite using `[h1, h2]`. Simplify using `only [map_add, map_mul]`. Establish `key'` using `W.EE_inj key`. Establish `e1 : ps W s ^ N = ps W s ^ (H - d) * ps W s ^ m` using `by rw [← pow_add, hN]`.
-
-Establish `e2 : ps W s ^ H * ps W s ^ H = ps W s ^ N * ps W s ^ (H + H - N)`. Rewrite using `[← pow_add, ← pow_add, ← h2H]`. Use `⟨κ, letE a * u1 + P' ^ 2 * letE a * W.π₀ * u2 * ps W s ^ (H + H - N), ?_, ?_⟩` and prove the remaining obligations. Establish `hP'Δ : P' ∈ W.AΔ` using `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (ps_mem W hπ t) _`. Conclude with `W.AΔ.add_mem (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) hu1) (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hP'Δ 2) (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a)) hπ) hu2) (W.AΔ.pow_mem (ps_mem W hπ s) _))`.
-
-Rewrite using `[key', hΛ]`. Take the linear combination `(-(letE a * u1)) * e1 + (P' ^ 2 * letE a * W.π₀ * u2) * e2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem local_inputs_from_literature {A : ArcP n} {a : ZMod n} {e : ℕ} {E : ℕ → ℤ} {s : ℕ} (hs : s < e)
     (hE : -(A.Hs a e s : ℤ) ≤ E s ∧ E s ≤ A.Hs a e s) {f : W.EE} {u0 : LetA O n} (hπ : W.π₀ ∈ W.AΔ)
@@ -294,13 +290,13 @@ theorem local_inputs_from_literature {A : ArcP n} {a : ZMod n} {e : ℕ} {E : �
     linear_combination (-(letE a * u1)) * e1 + (P' ^ 2 * letE a * W.π₀ * u2) * e2
 
 /- English proof (translation)
-Take `⟨κ, f₁, f₂, hsum, ⟨u1, hu1, h1⟩, ⟨u2, hu2, h2⟩⟩` from `h`. Establish `hι1 : algebraMap (LetA O n) W.EE 1 = 1` using `map_one _`. Rewrite `h2` using `[hι1, one_mul]`. Establish `hL : lE W κ = algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) ^ κ)`. Simplify using `[lE, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) ^ κ * (letE a * u0)) = algebraMap (LetA O n) W.EE (letE a * W.π₀ * u1 + abelian₂ W A a e * (letE a * (W.π₀ * abelian₂ W A a e) * u2))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, hsum, mul_add]`. Use `_ = algebraMap (LetA O n) W.EE (letE a * W.π₀ * u1 + abelian₂ W A a e * (letE a * (W.π₀ * abelian₂ W A a e) * u2)) := by`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul]`. Establish `key'` using `W.EE_inj key`. Establish `hLΔ : abelian₂ W A a e ∈ W.AΔ` using `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (ps_mem W hπ t) _`. Use `⟨κ, letE a * u1 + abelian₂ W A a e * letE a * abelian₂ W A a e * u2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `W.AΔ.add_mem (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) hu1) (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.mul_mem hLΔ (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a)) hLΔ) hu2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem loc_π₀ {A : ArcP n} {a : ZMod n} {e : ℕ} {f : W.EE} {u0 : LetA O n} (hπ : W.π₀ ∈ W.AΔ)
     (hf : algebraMap (LetA O n) W.EE (abelian₂ W A a e) * f = algebraMap (LetA O n) W.EE (letE a * 1 * u0))
@@ -345,33 +341,31 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Introduce `_hA _hp A a e E₀ E hE₀ hE f hf hsLoc h0`. Take `⟨u0, hu0, hf'⟩` from `hf`. Establish `hp0` using `Formalism.MainNotions.WachCoordinates.Br.p_ne_zero_O W`. Establish `hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0` using `fun c h => (mul_eq_zero.1 h).resolve_left hp0`. Establish `h6 : ∃ w : (LetA O n)ˣ, W.φA W.π₀ = (w : LetA O n) * W.π₀ * (W.π₀ + ((PD.p : ℕ) : LetA O n)) ^ (PD.p - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, hφ⟩` from `hT.1`. Conclude with `⟨hu.unit, by rw [hu.unit_spec]; exact hφ⟩`. Use `set N : ℕ → ℕ := fun s => ((A.Hs a e s : ℤ) + E s).toNat with hNdef`. Set `U : ↥W.AΔ` to `⟨letE a * u0, W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) hu0⟩`. Set `fac : Option ℕ → ↥W.AΔ` to `fun o => match o with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `none => (⟨W.π₀, hπ⟩ : ↥W.AΔ) ^ E₀`. Consider the case `some s => (⟨ps W s, ps_mem W hπ s⟩ : ↥W.AΔ) ^ N s`. Establish `hnone : none ∉ (Finset.range e).image some` using `by simp`. Establish `hc : ∀ i ∈ insert none ((Finset.range e).image some), ∀ j ∈ insert none ((Finset.range e).image some), i ≠ j → Cop ((PD.p : ℕ) : ↥W.AΔ) (fac i) (fac j)`. Introduce `i _ j _ hij`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `match i, j with`. Consider the case `none, none => exact absurd rfl hij`. Consider the case `none, some t => exact Cop.pow (cop_π₀_ps W hT hw hπ t) E₀ (N t)`. Consider the case `some s, none => exact (Cop.pow (cop_π₀_ps W hT hw hπ s) E₀ (N s)).symm`. Consider the case `some s, some t`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst : s ≠ t` using `fun h => hij (h ▸ rfl)`. Conclude with `Cop.pow (cop_ps W hR hπ s t hst) (N s) (N t)`. Establish `hd : ∀ i ∈ insert none ((Finset.range e).image some), ∃ k : ℕ, ∃ α : ↥W.AΔ, ((PD.p : ℕ) : ↥W.AΔ) ^ k * U = fac i * α`. Introduce `i hi`. Use `match i with`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `none`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 hE₀ with h00 | h01` into its components or cases. Conclude with `⟨0, U, by simp [fac, h00]⟩`. Take `⟨k, α, hα, heq⟩` from `loc_π₀ W hπ hf' (h0 h01)`. Conclude with `⟨k, ⟨α, hα⟩, Subtype.ext (by simpa [fac, U, h01] using heq)⟩`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `some s`. Establish `hs : s < e` using `by simpa using hi`. Take `⟨k, α, hα, heq⟩` from `local_inputs_from_literature W hs (hE s hs) hπ hf' (hsLoc s hs)`. Conclude with `⟨k, ⟨α, hα⟩, Subtype.ext (by simpa [fac, U, hNdef] using heq)⟩`. Take `⟨K, γ, hK⟩` from `crt_prod _ fac hc hd`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hK` using `[Finset.prod_insert hnone, Finset.prod_image (fun x _ y _ h => Option.some_injective _ h)]`. Use `set g : LetA O n := W.π₀ ^ E₀ * ∏ s ∈ Finset.range e, ps W s ^ N s with hgdef`. Establish `hKA : ((PD.p : ℕ) : LetA O n) ^ K * (letE a * u0) = g * (γ : LetA O n)`. Use `congrArg Subtype.val hK` as an intermediate fact. Simplify `this` using `[fac, U, hgdef]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : SatW.UPi PD.p g` using `((SatW.UPi_π₀ W hw).pow E₀).mul (SatW.UPi.prod _ _ fun s _ => (SatW.UPi_qpow W hw h6 s).pow (N s))`. Take `⟨γ', hγ'⟩` from `SatW.dvd_of_UPi hO hg K (γ : LetA O n) (letE a * u0) hKA`. Establish `hU : letE a * u0 = g * γ'` using `SatW.p_pow_cancel hO K (by rw [hKA, hγ']; ring)`. Establish `hγ'Δ : γ' ∈ W.AΔ` using `SatW.mem_AΔ_of_p_pow W hO K (hγ' ▸ γ.2)`. Use `⟨f, 0, (add_zero f).symm, ⟨γ', hγ'Δ, ?_⟩, ⟨0, W.AΔ.zero_mem, by simp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set D' : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (A.Hs a e s - (-(E s)).toNat) with hD'`. Establish `hPU` using `KF.psUnitE_of W hR hT`. Establish `hD'u : IsUnit (algebraMap (LetA O n) W.EE D')`. Rewrite using `[hD', map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ h₁ h₂ => h₁.mul h₂) isUnit_one fun s _ => by rw [map_pow]; exact (hPU s).pow _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΛ : abelian₂ W A a e = D' * ∏ s ∈ Finset.range e, ps W s ^ (-(E s)).toNat`. Unfold `abelian₂`. Rewrite using `[hD', ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hs'` using `Finset.mem_range.1 hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← pow_add, ← (exps (E s) (A.Hs a e s) (hE s hs').1 (hE s hs').2).2.2.2]`. Establish `hgN : ∏ s ∈ Finset.range e, ps W s ^ N s = D' * ∏ s ∈ Finset.range e, ps W s ^ (E s).toNat`. Rewrite using `[hD', ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hs'` using `Finset.mem_range.1 hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← pow_add, hNdef]`. Simplify using `only`. Rewrite using `[← (exps (E s) (A.Hs a e s) (hE s hs').1 (hE s hs').2).2.1]`. Establish `hle : letE a * (g * γ') = g * γ'` using `by rw [← hU, ← mul_assoc, letE_idem]`. Apply `hD'u.mul_left_cancel` to reduce the goal to its premises.
-
-Rewrite using `[← mul_assoc, ← map_mul, ← hΛ, hf', mul_one, hU, ← map_mul, ← hle, hgdef, hgN]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratCore_of [IsDomain O] [NeZero n] (W : LocWach PD LL O v n) (hR : ToolsR.RingP W)
     (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)

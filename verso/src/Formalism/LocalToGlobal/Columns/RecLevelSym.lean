@@ -17,7 +17,7 @@ open Formalism.BasicNotions (Ranks)
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Establish `h1` using `N_eq_blocks R j`. Establish `h2` using `Ranks.r_eq (R := R)`. Rewrite using `[h1]`. Generalize the expression as in `j * R.t = z at *`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_le_N_of_le {j : ℕ} (hj : R.m ≤ j + 1) : R.r ≤ R.N j := by
   have h1 := N_eq_blocks R j
@@ -27,14 +27,14 @@ theorem r_le_N_of_le {j : ℕ} (hj : R.m ≤ j + 1) : R.r ≤ R.N j := by
   omega
 
 /- English proof (translation)
-Rewrite using `[N_eq_blocks]`. Conclude with `le_add_right (Nat.le_add_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colK_le_N (R : Ranks) (j : ℕ) : R.k ≤ R.N j := by
   rw [N_eq_blocks]
   exact le_add_right (Nat.le_add_right _ _)
 
 /- English proof (translation)
-Establish `h1` using `N_eq_blocks R j`. Establish `h2` using `Ranks.r_eq (R := R)`. Rewrite using `[h1]`. Generalize the expression as in `j * R.t = z at *`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Y_eq_X_add {j : ℕ} (hj : j + 1 ≤ R.m) : R.r + j * R.t = R.N j + (R.m - 1 - j) := by
   have h1 := N_eq_blocks R j
@@ -44,7 +44,7 @@ theorem Y_eq_X_add {j : ℕ} (hj : j + 1 ≤ R.m) : R.r + j * R.t = R.N j + (R.m
   omega
 
 /- English proof (translation)
-Rewrite using `[← Y_eq_X_add hj]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_le_Y {j : ℕ} (hj : j + 1 ≤ R.m) : R.r ≤ R.N j + (R.m - 1 - j) := by
   rw [← Y_eq_X_add hj]
@@ -83,7 +83,7 @@ open Formalism.BasicNotions (Ranks)
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (hc : Formalism.BasicNotions.CMData X.F X.E) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Unfold `colLevSym`. Rewrite using `[if_neg (by have := R.two_le_m; omega), dif_neg (by omega), dif_pos hj]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colLevSym_pred {j : ℕ} (hj : j + 1 = R.m) :
     colLevSym Ch j = parFam (r_le_N_of_le hj.ge) R.t j (rPsymF Ch) (fun w => extChi fun s => Ch.chi s w) := by
@@ -93,7 +93,7 @@ theorem colLevSym_pred {j : ℕ} (hj : j + 1 = R.m) :
   rfl
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Unfold `colLevSym`. Rewrite using `[if_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem colLevSym_top_H {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) :
     (colLevSym Ch j w).H = HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega)) := by
@@ -102,9 +102,9 @@ theorem colLevSym_top_H {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) :
   rw [if_neg (by omega), dif_neg (by omega), dif_neg (by omega)]
 
 /- English proof (translation)
-Establish `key : ∀ l : Lev (𝓞 X.E ⧸ w.1.asIdeal) X.K (R.N j), l = colLevSym Ch j w → ∀ (M' : ↥l.H) (hM' : M'.1 ∈ HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega))), l.lam M' = lamXmsym (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.r R.t R.m R.rS (r …`. Introduce `l hl M' hM'`. Establish `hl' : l = ⟨HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega)), lamXmsym (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega))⟩`. Rewrite using `[hl]; unfold colLevSym; rw [if_neg (by have := R.two_le_m; omega), dif_neg (by omega), dif_neg (by omega)]`. Substitute `hl'` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Both sides reduce to the same expression. Conclude with `key _ rfl M hM`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colLevSym_top_lam {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) (M : ↥(colLevSym Ch j w).H)
     (hM : M.1 ∈ HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega))) :
@@ -122,7 +122,7 @@ theorem colLevSym_top_lam {j : ℕ} (hj : R.m ≤ j) (w : Pr.vGs) (M : ↥(colLe
   exact key _ rfl M hM
 
 /- English proof (translation)
-Establish `h` using `Y_eq_X_add (R := R) (j := j) (by omega)`. Rewrite `h` using `[show R.m - 1 - j = 0 by omega, add_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_pred_eq {j : ℕ} (hj : j + 1 = R.m) : R.N j = R.r + j * R.t := by
   have h := Y_eq_X_add (R := R) (j := j) (by omega)
@@ -130,7 +130,7 @@ theorem N_pred_eq {j : ℕ} (hj : j + 1 = R.m) : R.N j = R.r + j * R.t := by
   exact h.symm
 
 /- English proof (translation)
-Unfold `colUSym`. Rewrite using `[colLevSym_pred Ch hj]`. Conclude with `levU_parFam_eq_lev_inf hc (r_le_N_of_le hj.ge) (t_pos R) (N_pred_eq hj) _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colUSym_eq_lev (u : Pr.Word) {j : ℕ} (hj : j + 1 = R.m) :
     colUSym hc Ch u j = Formalism.L2.DIV.lev hc 1 1
@@ -141,14 +141,14 @@ theorem colUSym_eq_lev (u : Pr.Word) {j : ℕ} (hj : j + 1 = R.m) :
   exact levU_parFam_eq_lev_inf hc (r_le_N_of_le hj.ge) (t_pos R) (N_pred_eq hj) _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[colLevSym]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colLevSym_zero : colLevSym Ch 0 = colLev Ch 0 := by
   funext w
   simp [colLevSym]
 
 /- English proof (translation)
-Unfold `colLevSym`. Rewrite using `[if_neg h0, dif_pos h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem colLevSym_mid_H {j : ℕ} (h0 : j ≠ 0) (h1 : j + 1 < R.m) (w : Pr.vGs) :
     (colLevSym Ch j w).H = (HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j + (R.m - 1 - j)) R.k R.r R.t j R.rS (r_le_Y (by omega))).comap
@@ -157,9 +157,9 @@ theorem colLevSym_mid_H {j : ℕ} (h0 : j ≠ 0) (h1 : j + 1 < R.m) (w : Pr.vGs)
   rw [if_neg h0, dif_pos h1]
 
 /- English proof (translation)
-Establish `key : ∀ l : Lev (𝓞 X.E ⧸ w.1.asIdeal) X.K (R.N j), l = colLevSym Ch j w → ∀ (M' : ↥l.H) (hM' : insGL (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) (R.m - 1 - j) R.k (R.N j + (R.m - 1 - j)) (colK_le_N R j) rfl M'.1 ∈ HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j + (R.m - 1 - j)) R.k R.r R.t j R.rS (r_le_Y ( …`. Introduce `l hl M' hM'`. Establish `hl' : l = ⟨(HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j + (R.m - 1 - j)) R.k R.r R.t j R.rS (r_le_Y (by omega))).comap (insGL (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) (R.m - 1 - j) R.k (R.N j + (R.m - 1 - j)) (colK_le_N R j) rfl), (lamJsym (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j + (R.m - 1 - …`. Rewrite using `[hl]`. Unfold `colLevSym`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg h0, dif_pos h1]`. Substitute `hl'` using the available equality. Both sides reduce to the same expression. Conclude with `key _ rfl M hM`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colLevSym_mid_lam {j : ℕ} (h0 : j ≠ 0) (h1 : j + 1 < R.m) (w : Pr.vGs) (M : ↥(colLevSym Ch j w).H)
     (hM : insGL (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) (R.m - 1 - j) R.k (R.N j + (R.m - 1 - j)) (colK_le_N R j) rfl M.1 ∈
@@ -187,9 +187,9 @@ section SymDivTies
 variable {κ : Type} [CommRing κ] {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `M`. Use `show ((_ ∧ _) ∧ _) ↔ ((_ ∧ _) ∧ _)`. Establish `e1 : (M : Matrix (Fin r) (Fin r) κ).BlockTriangular (fun i => fine r [] i.val) ↔ (M : Matrix (Fin r) (Fin r) κ).BlockTriangular (fun i => i.val)`. Establish `: (fun i : Fin r => fine r [] i.val) = (fun i => i.val)` using `funext fun i => fine_self_lt i.2`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨e1.mp h1, fun i => h2 i i.2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨e1.mpr h1, fun i _ => h2 i⟩, h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HPsym_eq_unipSym (r k rS : ℕ) : HPsym κ r k rS = Formalism.L2.DIV.unipSym κ r rS k := by
   ext M
@@ -205,18 +205,18 @@ theorem HPsym_eq_unipSym (r k rS : ℕ) : HPsym κ r k rS = Formalism.L2.DIV.uni
     exact ⟨⟨e1.mpr h1, fun i _ => h2 i⟩, h3⟩
 
 /- English proof (translation)
-Rewrite using `[HPsymF, HPsym_eq_unipSym]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HPsymF_eq_comap_unipSym (r k rS : ℕ) :
     HPsymF κ r k rS = (Formalism.L2.DIV.unipSym κ r rS k).comap (toSymOrd κ r k rS) := by
   rw [HPsymF, HPsym_eq_unipSym]
 
 /- English proof (translation)
-Unfold `supSum offSum Formalism.L2.DIV.edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj` using `j.2`. Break down `Decidable.em (Formalism.L2.DIV.symEdge rS k i j) with hE | hE` into its components or cases. Rewrite using `[if_pos hE]`. Unfold `Formalism.L2.DIV.symEdge at hE`. Simplify using `only [SPsym, Finset.mem_filter, Finset.mem_range]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`. Rewrite using `[if_neg hE]`. Unfold `Formalism.L2.DIV.symEdge at hE`. Simplify using `only [SPsym, Finset.mem_filter, Finset.mem_range]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sym_sum_split {r k rS : ℕ} (M : GL (Fin r) κ) :
     supSum r (SPsym r k rS) (M : Matrix (Fin r) (Fin r) κ) + offSum k rS (M : Matrix (Fin r) (Fin r) κ) =
@@ -238,7 +238,7 @@ theorem sym_sum_split {r k rS : ℕ} (M : GL (Fin r) κ) :
     split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Use `show ψ (supSum r (SPsym r k rS) (M.1 : Matrix (Fin r) (Fin r) κ)) * ψ (offSum k rS (M.1 : Matrix (Fin r) (Fin r) κ)) = ψ (Formalism.L2.DIV.edgeSum (Formalism.L2.DIV.symEdge rS k) M.1)`. Rewrite using `[← AddChar.map_add_eq_mul, sym_sum_split]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiSym_eq_symHom (ψ : AddChar κ K) (r k rS : ℕ) (M : ↥(HPsym κ r k rS)) (hM : M.1 ∈ Formalism.L2.DIV.unipSym κ r rS k) :
     ((chiSym ψ r k rS M : Kˣ) : K) = ((Formalism.L2.DIV.addCharHom ψ (Formalism.L2.DIV.symHom κ r rS k) ⟨M.1, hM⟩ : Kˣ) : K) := by
@@ -249,9 +249,9 @@ theorem chiSym_eq_symHom (ψ : AddChar κ K) (r k rS : ℕ) (M : ↥(HPsym κ r 
 def SPsymF (n k : ℕ) : Finset ℕ := (Finset.range (n - 1)).filter fun i => i + 1 ≠ k
 
 /- English proof (translation)
-Establish `h : k + rS ≤ n` using `by omega`. Unfold `Formalism.L2.DIV.symEdge`. Rewrite using `[symPerm_val h, symPerm_val h]`. Simplify using `only [SPsymF, Finset.mem_filter, Finset.mem_range]`. Establish `hi` using `i.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hj` using `j.2`. Unfold `symIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symEdge_symPerm_iff {n k rS : ℕ} (hn : n = k + 2 * rS + 1) (i j : Fin n) :
     Formalism.L2.DIV.symEdge rS k (symPerm n k rS i) (symPerm n k rS j) ↔
@@ -266,13 +266,11 @@ theorem symEdge_symPerm_iff {n k rS : ℕ} (hn : n = k + 2 * rS + 1) (i j : Fin 
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hM : toSymOrd κ n k rS M.1 ∈ Formalism.L2.DIV.unipSym κ n rS k`. Use `M.2` as an intermediate fact. Rewrite `this` using `[mem_HPsymF, HPsym_eq_unipSym]`. Conclude with `this`. Rewrite using `[chiSymF_apply, chiSym_eq_symHom ψ n k rS _ hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ψ (Formalism.L2.DIV.edgeSum (Formalism.L2.DIV.symEdge rS k) (toSymOrd κ n k rS M.1)) = _`. Use `congr 1`. Unfold `Formalism.L2.DIV.edgeSum supSum`. Rewrite using `[← Equiv.sum_comp (symPerm n k rS)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Equiv.sum_comp (symPerm n k rS)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[toSymOrd_val']`. Distinguish the cases in `hE : Formalism.L2.DIV.symEdge rS k (symPerm n k rS i) (symPerm n k rS j)`. Rewrite using `[if_pos hE, if_pos ((symEdge_symPerm_iff hn i j).mp hE)]`.
-
-Rewrite using `[if_neg hE, if_neg (fun h => hE ((symEdge_symPerm_iff hn i j).mpr h))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiSymF_val {n k rS : ℕ} (hn : n = k + 2 * rS + 1) (ψ : AddChar κ K) (M : ↥(HPsymF κ n k rS)) :
     ((chiSymF ψ n k rS M : Kˣ) : K) = ψ (supSum n (SPsymF n k) (M.1 : Matrix (Fin n) (Fin n) κ)) := by
@@ -300,7 +298,7 @@ section SymRanks
 open Formalism.BasicNotions (Ranks)
 
 /- English proof (translation)
-Establish `h1` using `Ranks.r_eq (R := R)`. Establish `h2` using `Ranks.rS_two (R := R)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_eq_sym (R : Ranks) : R.r = R.k + 2 * R.rS + 1 := by
   have h1 := Ranks.r_eq (R := R)
@@ -310,7 +308,7 @@ theorem r_eq_sym (R : Ranks) : R.r = R.k + 2 * R.rS + 1 := by
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-The claim follows from `chiSymF_val (r_eq_sym R) (Ch.psi0 w) M`.
+A detailed English derivation is pending.
 -/
 theorem rPsymF_lam_val (w : {w // w ∈ Pr.vGs}) (M : ↥(rPsymF Ch w).H) :
     (((rPsymF Ch w).lam M : X.Kˣ) : X.K) =

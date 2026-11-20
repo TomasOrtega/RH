@@ -19,9 +19,9 @@ namespace GlobalTheory.ZJ.OmTest
 open TopologicalSpace
 
 /- English proof (translation)
-Establish `e : ReciprocityTheory.ChartRestriction.G.Semi.mulN G n = (𝟙 G) ^ n`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Rewrite using `[e, MonObj.comp_pow, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_mulN {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x : T ⟶ G) (n : ℕ) :
     x ≫ ReciprocityTheory.ChartRestriction.G.Semi.mulN G n = x ^ n := by
@@ -32,7 +32,7 @@ theorem comp_mulN {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x : T ⟶ G) (n : 
   rw [e, MonObj.comp_pow, Category.comp_id]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_pow (pushHom h G') (𝟙 G') n)`. Rewrite `e` using `[← comp_mulN, ← comp_mulN, Category.id_comp]`. Use `Eq.trans e ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulN_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -44,23 +44,21 @@ theorem mulN_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Gr
   rw [Category.id_comp]
 
 /- English proof (translation)
-Introduce `x`. Set `N` to `ReciprocityTheory.ChartRestriction.G.Semi.mulN G n`. Set `s` to `G.left.fromSpecResidueField x ≫ G.hom`. Establish `: IsIntegral (pullback G.hom s)` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ (IsPullback.of_hasPullback G.hom s)`. Set `X₀ : Over S` to `Over.mk s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (pullback.snd G.hom s ≫ s)`. Set `x₀ : X₀ ⟶ G` to `Over.homMk (G.left.fromSpecResidueField x) rfl`. Set `y : T ⟶ G` to `Over.homMk (pullback.fst G.hom s) pullback.condition`. Set `q : T ⟶ X₀` to `Over.homMk (pullback.snd G.hom s) rfl`. Establish `sec : ∀ g : X₀ ⟶ G, ∃ σ : X₀ ⟶ T, σ ≫ y = g ∧ σ ≫ q = 𝟙 _` using `fun g => ⟨Over.homMk (pullback.lift g.left (𝟙 _) ((Over.w g).trans (Category.id_comp _).symm)) (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.snd G.hom s ≫ s = s`. Rewrite using `[pullback.lift_snd_assoc]`. Conclude with `Category.id_comp _),`. Use the proof step `Over.OverMorphism.ext (pullback.lift_fst _ _ _), Over.OverMorphism.ext (pullback.lift_snd _ _ _)⟩`. Establish `ne : ∀ (z : T ⟶ G) (σ : X₀ ⟶ T), σ ≫ z = 1 → (z.left ⁻¹' Set.range N.left).Nonempty` using `fun z σ h => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e : (1 : X₀ ⟶ G) ≫ N = σ ≫ z` using `by rw [h, comp_mulN, one_pow]`. Conclude with `⟨σ.left (IsLocalRing.closedPoint _), (1 : X₀ ⟶ G).left (IsLocalRing.closedPoint _), congrArg (fun g => g.left (IsLocalRing.closedPoint _)) e⟩`. Set `z : T ⟶ G` to `(q ≫ x₀) * y`. Take `⟨σ₁, h₁, -⟩` from `sec 1`. Take `⟨σ₂, h₂, h₂'⟩` from `sec x₀⁻¹`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IrreducibleSpace T.left` using `inferInstanceAs (IrreducibleSpace (pullback G.hom s :))`. Take `⟨t, ⟨a₀, ha⟩, b₀, hb⟩` from `nonempty_preirreducible_inter (ho.preimage y.left.continuous) (ho.preimage z.left.continuous) (ne y σ₁ h₁) (ne z σ₂ (by rw [MonObj.comp_mul, h₂, ← Category.assoc, h₂', Category.id_comp, mul_inv_cancel]))`. Take `⟨p₁, -, e₁⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback N.left y.left) a₀ t ha`. Take `⟨p₂, -, e₂⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback N.left z.left) b₀ t hb`. Establish `hW` using `IsPullback.of_hasPullback (pullback.snd N.left y.left) (pullback.snd N.left z.left)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨w, -, -⟩` from `Scheme.exists_preimage_of_isPullback hW p₁ p₂ (e₁.trans e₂.symm)`. Set `r₀` to `pullback.fst (pullback.snd N.left y.left) (pullback.snd N.left z.left) ≫ pullback.snd N.left y.left`. Set `W : Over S` to `Over.mk (r₀ ≫ T.hom)`. Set `r : W ⟶ T` to `Over.homMk r₀ rfl`. Establish `lift : ∀ (u : T ⟶ G) (a : W.left ⟶ G.left), a ≫ N.left = r₀ ≫ u.left → ∃ a' : W ⟶ G, a' ^ n = r ≫ u` using `fun u a h => ⟨Over.homMk a (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `a ≫ G.hom = r₀ ≫ T.hom`. Rewrite using `[← Over.w N, ← Category.assoc, h, Category.assoc, Over.w u]),`. Use the proof step `(comp_mulN _ n).symm.trans (Over.OverMorphism.ext h)⟩`. Take `⟨a, ea⟩` from `lift y (pullback.fst _ _ ≫ pullback.fst _ _) (by`. Simplify using `only [r₀]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition (f := N.left) (g := y.left)])`. Take `⟨b, eb⟩` from `lift z (pullback.snd _ _ ≫ pullback.fst _ _) (by`. Simplify using `only [r₀]`. Rewrite using `[hW.w, Category.assoc, Category.assoc, pullback.condition (f := N.left) (g := z.left)])`. Establish `e : (b * a⁻¹) ≫ N = r ≫ q ≫ x₀`.
-
-Rewrite using `[comp_mulN, mul_pow, inv_pow, ea, eb, MonObj.comp_mul, mul_inv_cancel_right]`. Use `⟨(b * a⁻¹).left w, (congrArg (fun g => g.left w) e).trans ?_⟩` and prove the remaining obligations. Conclude with `Scheme.fromSpecResidueField_apply x _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem surjective_mulN {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] [GeometricallyIntegral G.hom]
     (n : ℕ) (ho : IsOpen (Set.range (ReciprocityTheory.ChartRestriction.G.Semi.mulN G n).left)) :
@@ -117,14 +115,14 @@ theorem surjective_mulN {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G
   exact Scheme.fromSpecResidueField_apply x _
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r g z U h, gs_stalkMap r z _ h, gs_pull (𝟙 Y) g (r z) U h, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (r z) ∈ U) (a : Γ(X, U)) :
     gs (r ≫ g) z U a = (r.stalkMap z).hom (gs g (r z) U a) := by
   rw [← gs_pull r g z U h, gs_stalkMap r z _ h, gs_pull (𝟙 Y) g (r z) U h, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h]`. Use `((Z.mem_basicOpen ((r.app U).hom a) z h).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_gs_iff {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
@@ -134,9 +132,9 @@ theorem isUnit_gs_iff {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h 
   rfl
 
 /- English proof (translation)
-Rewrite using `[isUnit_gs_iff r z _ hk]`. Use `⟨fun h => ?_, fun h => Opens.mem_iSup.2 ⟨k, h⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Establish `hj' : r z ∈ L.U j` using `X.basicOpen_le _ hj`. Establish `hm : r z ∈ L.U k ⊓ L.U j` using `⟨hk, hj'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gs r z _) (θ.compat k j)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`. Rewrite using `[← isUnit_gs_iff r z _ hk, e]`. Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff {X Z : Scheme.{0}} {L : LB X} (θ : LB.Sec L) (r : Z ⟶ X) (z : Z) {k : L.ι}
     (hk : r z ∈ L.U k) : r z ∈ Out.nonzeroLocus θ ↔ IsUnit (gs r z _ (θ.f k)) := by
@@ -151,15 +149,15 @@ theorem mem_nonzeroLocus_iff {X Z : Scheme.{0}} {L : LB X} (θ : LB.Sec L) (r : 
   exact (Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)
 
 /- English proof (translation)
-Set `I : Ideal Γ(X, W)` to `(Ideal.span {b}).colon {a}`. Establish `: π ∈ I.radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hI, hP⟩`. Assume the negation of the conclusion as `hπ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Set `y : PrimeSpectrum Γ(X, W)` to `⟨P, hP⟩`. Establish `hy : hW.fromSpec y ∈ X.basicOpen π`. Establish `: y ∈ hW.fromSpec ⁻¹ᵁ X.basicOpen π`. Rewrite using `[hW.fromSpec_preimage_basicOpen]`. Conclude with `hπ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hy' : hW.fromSpec y ∈ W` using `X.basicOpen_le _ hy`. Establish `hd` using `h _ hy`. Rewrite `hd` using `[gs_eq (𝟙 X) (hW.fromSpec y) W hy', gs_eq (𝟙 X) (hW.fromSpec y) W hy']`. Establish `hl` using `hW.isLocalization_stalk' y hy'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra Γ(X, W) (X.presheaf.stalk (hW.fromSpec y)) := (X.presheaf.germ W _ hy').hom.toAlgebra`. Establish `hl' : IsLocalization.AtPrime (X.presheaf.stalk (hW.fromSpec y)) P` using `hl`. Establish `hm : algebraMap Γ(X, W) (X.presheaf.stalk (hW.fromSpec y)) a ∈ (Ideal.span {b}).map (algebraMap Γ(X, W) (X.presheaf.stalk (hW.fromSpec y)))`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc, hca⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff P.primeCompl _ _ _).1 hm`. Conclude with `hc (hI (Submodule.mem_colon_singleton.2 hca))`. Take `⟨n, hn⟩` from `this`. Conclude with `⟨n, Ideal.mem_span_singleton.1 (Submodule.mem_colon_singleton.1 hn)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvd_pow_mul {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W) (π a b : Γ(X, W))
     (h : ∀ z ∈ X.basicOpen π, gs (𝟙 X) z W b ∣ gs (𝟙 X) z W a) : ∃ n : ℕ, b ∣ π ^ n * a := by
@@ -190,17 +188,17 @@ theorem exists_dvd_pow_mul {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W) 
   exact ⟨n, Ideal.mem_span_singleton.1 (Submodule.mem_colon_singleton.1 hn)⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `DvrModel.isOpenImmersion_generic hK` as an intermediate fact. Use `DvrModel.isIntegral hK` as an intermediate fact. Take `⟨W, hW, hxW, hWU⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hWU : W ≤ U` using `hWU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Nonempty W` using `⟨⟨x, hxW⟩⟩`. Establish `hp` using `DvrModel.prime_res hϖ hs hW hxW hfx`. Establish `hξ` using `(DvrModel.notMem_basicOpen_iff_specializes hϖ hs x).1 ((DvrModel.notMem_basicOpen_iff f hϖ x).2 hfx)`. Take `⟨n, hn⟩` from `exists_dvd_pow_mul hW ((H.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (f.appTop.hom ((Scheme.ΓSpecIso (.of V)).inv.hom ϖ))) ((H.presheaf.map (homOfLE hWU).op).hom a) ((H.presheaf.map (homOfLE hWU).op).hom b) fun z hz => by`. Rewrite `hz` using `[Scheme.basicOpen_res]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, rfl⟩` from `(DvrModel.opensRange_generic hϖ hK).ge hz.2`. Rewrite using `[gs_res (𝟙 H) (j y) hWU hz.1, gs_res (𝟙 H) (j y) hWU hz.1]`. Use `dvd_descend j y ?_` and prove the remaining obligations. Rewrite using `[← gs_stalkMap j y U (hWU hz.1), ← gs_stalkMap j y U (hWU hz.1)]`. Conclude with `h y (hWU hz.1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hn`. Establish `nd : ¬ (H.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (f.appTop.hom ((Scheme.ΓSpecIso (.of V)).inv.hom ϖ)) ∣ (H.presheaf.map (homOfLE hWU).op).hom b`. Introduce and unpack `⟨d, hd⟩`. Establish `m : i (genericPoint Hs) ∈ H.basicOpen ((H.presheaf.map (homOfLE hWU).op).hom b)`. Rewrite using `[Scheme.basicOpen_res]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hξ.mem_open W.isOpen hxW, hb⟩`. Rewrite `m` using `[hd, Scheme.basicOpen_mul, Scheme.basicOpen_res]`. Conclude with `(DvrModel.notMem_basicOpen_iff_specializes hϖ hs _).2 specializes_rfl m.1.2`. Take `⟨d, rfl⟩` from `hp.pow_dvd_of_dvd_mul_left n nd ⟨_, hc.symm⟩`. Rewrite `hc` using `[mul_left_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `mul_left_cancel₀ (pow_ne_zero n hp.ne_zero) hc`. Rewrite using `[← gs_res (𝟙 H) x hWU hxW b, ← gs_res (𝟙 H) x hWU hxW a, e, gs_mul (𝟙 H) x W hxW]`. Conclude with `dvd_mul_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {K : Type} [Field K] [Algebra V K] [IsFractionRing V K] {H : Scheme.{0}} {f : H ⟶ Spec (.of V)} [Flat f]
@@ -246,9 +244,9 @@ theorem dvd_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuation
 variable {C : Core} (T : C.Theta) {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y) (E : T.Ext τ)
 
 /- English proof (translation)
-Use `τ.j_loc` as an intermediate fact. Establish `h : spMap τ.j (cPt p) = IsLocalRing.closedPoint τ.V` using `IsLocalRing.comap_closedPoint τ.j`. Establish `e : y (cPt p) = τ.y₀ (IsLocalRing.closedPoint τ.V)`. Rewrite using `[← h]`. Conclude with `(congrArg (fun g => g (cPt p)) τ.fac).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `GlobalTheory.ZH.isClosed_singleton_cPt y`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_closedPoint : IsClosed ({τ.y₀ (IsLocalRing.closedPoint τ.V)} : Set C.Z) := by
   have := τ.j_loc
@@ -260,11 +258,11 @@ theorem isClosed_closedPoint : IsClosed ({τ.y₀ (IsLocalRing.closedPoint τ.V)
   exact GlobalTheory.ZH.isClosed_singleton_cPt y
 
 /- English proof (translation)
-Set `N : pullback τ.H.hom (Out.jK τ.V) ⟶ pullback τ.H.hom (Out.jK τ.V)` to `(ReciprocityTheory.ChartRestriction.G.Semi.mulN ((Over.pullback (Out.jK τ.V)).obj τ.H) T.m).left`. Establish `e₁ : N ≫ τ.φ = τ.φ ≫ (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.A T.m).left` using `mulN_comm τ.φ_cart T.m`. Establish `e₂ : N ≫ pullback.fst τ.H.hom (Out.jK τ.V) = pullback.fst τ.H.hom (Out.jK τ.V) ≫ (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left` using `mulN_comm (isGrpPullback_pullback τ.H (Out.jK τ.V)) T.m`. Take `⟨l, hl⟩` from `exists_chart T.L.isLB ((ReciprocityTheory.ChartRestriction.G.Semi.mulN C.A T.m).left (τ.φ z))`. Establish `hi' : C.a (τ.φ z) ∈ T.O₁.U i` using `(congrArg (fun g => g z ∈ T.O₁.U i) τ.φ_f).mpr hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : pullback.fst τ.H.hom (Out.jK τ.V) (N z) ∈ E.L.L.U k` using `(congrArg (fun g => g z ∈ E.L.L.U k) e₂).mpr hk`. Establish `hl' : τ.φ (N z) ∈ T.L.L.U l` using `(congrArg (fun g => g z ∈ T.L.L.U l) e₁).mpr hl`. Establish `u₁ : IsUnit (gs (𝟙 _) (τ.φ z) _ (T.w.s (fun _ => i, fun _ => l)).val)`. Use `(gs_unit (𝟙 _) (τ.φ z) _ ?_ _).symm ▸ Units.isUnit _` and prove the remaining obligations. Conclude with `And.intro (mem_pull.2 hi') (mem_pull.2 hl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove both required implications or components.
 
-Establish `u₂ : IsUnit (gs (𝟙 _) (N z) _ (E.w.s (fun _ => k, fun _ => l)).val)`. Use `(gs_unit (𝟙 _) (N z) _ ?_ _).symm ▸ Units.isUnit _` and prove the remaining obligations. Conclude with `And.intro (mem_pull.2 hk') (mem_pull.2 hl')`. Rewrite using `[← τ.φ_f, ← e₂, gs_comp τ.φ C.a z _ hi', gs_comp N _ z _ hk', T.w_sec _ i l hi' hl, E.θ_eq _ k l hk' hl', map_mul, map_mul, ← gs_comp τ.φ _ z _ hl, ← gs_comp N _ z _ hl', e₁]`. Conclude with `(associated_unit_mul_left _ _ (u₁.map _)).trans (associated_unit_mul_left _ _ (u₂.map _)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove both required implications or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_generic (z : (pullback τ.H.hom (Out.jK τ.V) :)) (i : T.O₁.ι) (k : E.L.L.ι)
     (hi : τ.f (pullback.fst τ.H.hom (Out.jK τ.V) z) ∈ T.O₁.U i)
@@ -292,23 +290,21 @@ theorem associated_generic (z : (pullback τ.H.hom (Out.jK τ.V) :)) (i : T.O₁
   exact (associated_unit_mul_left _ _ (u₁.map _)).trans (associated_unit_mul_left _ _ (u₂.map _)).symm
 
 /- English proof (translation)
-Establish `hG` using `τ.isSemiAbelian`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ τ.H` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible τ.V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK` using `IsPullback.of_hasPullback τ.H.hom (Out.jK τ.V)`. Establish `hs` using `IsPullback.of_hasPullback τ.H.hom (Spec.map (CommRingCat.ofHom (IsLocalRing.residue τ.V)))`. Use `DvrModel.isIntegral_of_geometricallyIntegral hK` as an intermediate fact. Use `DvrModel.isIntegral_of_geometricallyIntegral hs` as an intermediate fact. Establish `sp` using `fun x' (hx' : τ.H.hom x' = IsLocalRing.closedPoint τ.V) => (DvrModel.notMem_basicOpen_iff_specializes hϖ hs x').1 ((DvrModel.notMem_basicOpen_iff τ.H.hom hϖ x').2 hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ξ := pullback.fst τ.H.hom (Spec.map (CommRingCat.ofHom (IsLocalRing.residue τ.V))) (genericPoint _) with hξ`. Use `set N := (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left with hN'`. Take `⟨i, hi⟩` from `exists_chart T.isLB (τ.f x)`. Take `⟨k, hk⟩` from `exists_chart E.L.isLB (N x)`. Set `U : τ.H.left.Opens` to `τ.f ⁻¹ᵁ T.O₁.U i ⊓ N ⁻¹ᵁ E.L.L.U k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxU : x ∈ U` using `⟨hi, hk⟩`. Establish `hξU : ξ ∈ U` using `(sp x hx).mem_open U.isOpen hxU`. Set `a : Γ(τ.H.left, U)` to `(τ.f.appLE _ U inf_le_left).hom (T.s.f i)`. Set `b : Γ(τ.H.left, U)` to `(N.appLE _ U inf_le_right).hom (E.θ.f k)`. Establish `ha : ξ ∈ τ.H.left.basicOpen a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀, e₀⟩` from `T.s_ne _ (isClosed_closedPoint τ)`. Take `⟨x₁, e₁, e₁'⟩` from `Scheme.exists_preimage_of_isPullback h x₀ _ e₀`. Establish `m : ξ ∈ τ.f ⁻¹ᵁ Out.nonzeroLocus T.s` using `(sp x₁ e₁').mem_open (τ.f ⁻¹ᵁ Out.nonzeroLocus T.s).isOpen (show τ.f x₁ ∈ _ by rw [e₁]; exact hx₀)`. Use `(isUnit_gs_iff (𝟙 _) ξ U hξU a).1 ?_` and prove the remaining obligations. Rewrite using `[gs_appLE τ.f _ U inf_le_left (𝟙 _) ξ hξU, Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_nonzeroLocus_iff T.s τ.f ξ hξU.1).1 m`. Establish `hb : ξ ∈ τ.H.left.basicOpen b`. Take `⟨x₀, hx₀, e₀⟩` from `E.θ_ne`. Take `⟨x₁, rfl⟩` from `hN x₀`. Establish `e₁ : τ.H.hom x₁ = IsLocalRing.closedPoint τ.V` using `(congrArg (fun g => g x₁) (Over.w (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m))).symm.trans e₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `m : ξ ∈ N ⁻¹ᵁ Out.nonzeroLocus E.θ` using `(sp x₁ e₁).mem_open (N ⁻¹ᵁ Out.nonzeroLocus E.θ).isOpen hx₀`. Use `(isUnit_gs_iff (𝟙 _) ξ U hξU b).1 ?_` and prove the remaining obligations. Rewrite using `[gs_appLE N _ U inf_le_right (𝟙 _) ξ hξU, Category.id_comp]`. Conclude with `(mem_nonzeroLocus_iff E.θ N ξ hξU.2).1 m`. Establish `as : ∀ z, pullback.fst τ.H.hom (Out.jK τ.V) z ∈ U → Associated (gs (pullback.fst τ.H.hom (Out.jK τ.V)) z U a) (gs (pullback.fst τ.H.hom (Out.jK τ.V)) z U b)` using `fun z hz => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[gs_appLE τ.f _ U inf_le_left _ z hz, gs_appLE N _ U inf_le_right _ z hz]`. Conclude with `associated_generic T τ E z i k hz.1 hz.2`. Establish `d₁` using `dvd_of_generic hK hs a b hxU hx hb fun z hz => (as z hz).symm.dvd`. Establish `d₂` using `dvd_of_generic hK hs b a hxU hx ha fun z hz => (as z hz).dvd`. Rewrite `d₁`, `d₂` using `[gs_appLE τ.f _ U inf_le_left (𝟙 _) x hxU, gs_appLE N _ U inf_le_right (𝟙 _) x hxU, Category.id_comp, Category.id_comp]`.
-
-Rewrite using `[mem_nonzeroLocus_iff T.s τ.f x hi, mem_nonzeroLocus_iff E.θ N x hk]`. Conclude with `⟨isUnit_of_dvd_unit d₁, isUnit_of_dvd_unit d₂⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_iff_special (h : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀)
     (hN : Function.Surjective (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left) (x : τ.H.left)
@@ -364,9 +360,9 @@ theorem mem_iff_special (h : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀)
   exact ⟨isUnit_of_dvd_unit d₁, isUnit_of_dvd_unit d₂⟩
 
 /- English proof (translation)
-Establish `hG` using `τ.isSemiAbelian`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ τ.H` as an intermediate fact. Establish `hu : IsUnit (T.m : Γ(Sp τ.V, ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.m_unit.map τ.y₀.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `: Etale (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left` using `GlobalTheory.GrpTangent.etale_mulN τ.H hu`. Conclude with `surjective_mulN τ.H T.m (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left.isOpenMap.isOpen_range`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_mulN_test : Function.Surjective (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left := by
   have hG := τ.isSemiAbelian
@@ -386,13 +382,13 @@ namespace GlobalTheory.ZJ
 open OmTest
 
 /- English proof (translation)
-Introduce `p _ y τ E x hx`. Use `letI := L.grp`. Establish `h` using `L.test p y τ`. Establish `hN` using `surjective_mulN_test T τ`. Establish `e` using `mulN_comm h T.m`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w` using `Over.w (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m)`. Establish `w'` using `Over.w (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m)`. Establish `sq : IsPullback τ.f (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left (ReciprocityTheory.ChartRestriction.G.Semi.mulN C.GG T.m).left τ.f` using `IsPullback.of_bot (by rw [w, w']; exact h.1) e.symm h.1`. Establish `sp : ∀ x', (ReciprocityTheory.ChartRestriction.G.Semi.mulN τ.H T.m).left x' = x → τ.H.hom x' = IsLocalRing.closedPoint τ.V` using `fun x' h' => (congrArg (fun g => g x') w).symm.trans ((congrArg τ.H.hom h').trans hx)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg, eg⟩`. Take `⟨x', e₁, e₂⟩` from `Scheme.exists_preimage_of_isPullback sq g x eg`. Rewrite using `[← e₂]`. Conclude with `(mem_iff_special T τ E h.1 hN x' (sp x' e₂)).1 (e₁ ▸ hg)`. Introduce `hθ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', e₂⟩` from `hN x`. Use `⟨τ.f x', (mem_iff_special T τ E h.1 hN x' (sp x' e₂)).2 (e₂ ▸ hθ), ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun g => g x') e).symm.trans (congrArg τ.f e₂)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Core.Theta.bTest {C : Core} (L : C.Law) (T : C.Theta) : T.BTest L := by
   intro p _ y τ E x hx
@@ -417,7 +413,7 @@ theorem Core.Theta.bTest {C : Core} (L : C.Law) (T : C.Theta) : T.BTest L := by
     exact (congrArg (fun g => g x') e).symm.trans (congrArg τ.f e₂)
 
 /- English proof (translation)
-Introduce `_ _ L T` and use `Core.Theta.bTest L T`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bTest_of_surjective_mulN : (∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, (n : K) ≠ 0 → Surjective (ReciprocityTheory.ChartRestriction.G.Semi.mulN B n).left) → ∀ (C : Core) (L : C.Law) (T : C.Theta), T.BTest L :=
   fun _ _ L T => Core.Theta.bTest L T

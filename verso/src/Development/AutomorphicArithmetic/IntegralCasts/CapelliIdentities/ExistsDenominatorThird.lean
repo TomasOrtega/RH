@@ -5,9 +5,9 @@ import Formalism.LocalRingCardinality.DataArith
 import Formalism.LocalRingCardinality.DataForms
 
 /- English proof (translation)
-Introduce `D u x`. Establish `hx : x ∈ Submodule.span D.what₂.LL ((((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V))`. Rewrite using `[((D.fm u).lat_good 0).2.2]`. Conclude with `Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.what₂.LL)) D.what₂.LL _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, nonZeroDivisors.ne_zero t.2, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsDenominatorThird.exists_den :
     ∀ {D : Formalism.BasicNotions.D7} (u : D.what₂.Word) (x : ((D.fm u).lat (0 : ℕ)).V),

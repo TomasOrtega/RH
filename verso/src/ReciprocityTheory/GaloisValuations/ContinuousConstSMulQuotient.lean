@@ -171,7 +171,7 @@ def Sel (L : LocCond rho phi) : Submodule R (H1 rho) :=
   ⨅ i, (L i).comap (resH1 rho (phi i) (hphi i))
 
 /- English proof (translation)
-Simplify using `only [Sel, Submodule.mem_iInf, Submodule.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Sel (L : LocCond rho phi) (x : H1 rho) :
     x ∈ Sel rho phi hphi L ↔ ∀ i, resH1 rho (phi i) (hphi i) x ∈ L i := by
@@ -194,7 +194,7 @@ def H1ur : Submodule R (H1 rhoD) :=
 variable (Mplus : Submodule R M) (hMplus : ∀ g, Mplus ≤ Mplus.comap (rhoD g))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_quot_mk`. Consider the case `exact continuous_coinduced_rng`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_mkQ : Continuous (Mplus.mkQ) := by
   first

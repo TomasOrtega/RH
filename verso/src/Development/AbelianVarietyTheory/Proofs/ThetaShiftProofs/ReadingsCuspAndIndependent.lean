@@ -13,7 +13,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj`. Use `⟨fun u F k => ?_, fun u => GlobalTheory.Dict.readings_independent D T h.toLawsM j hj _ _⟩` and prove the remaining obligations. Establish `hFC : F.1 ∈ T.C j u` using `cutR_le T.C j u F.2`. Establish `hhol : rdU (T.U j T.σ₀) F.1 ∈ holSub (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA u) u.n)` using `((mem_cusp _ _ _ _ _ F.1).1 hFC).2 T.σ₀ T.good_σ₀`. Conclude with `Formalism.L2.Pj.abelian₂.holSub_SS siegelSpaceAlgebra_holds (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA u) u.n) hhol k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem readings_cusp_and_independent :
     ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ), InR D j → TieReadSt h j := by

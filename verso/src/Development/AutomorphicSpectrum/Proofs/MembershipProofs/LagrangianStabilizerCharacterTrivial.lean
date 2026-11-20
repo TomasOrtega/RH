@@ -15,9 +15,9 @@ variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E �
   {α β : Type} [Fintype α] [Fintype β]
 
 /- English proof (translation)
-Unfold `hTens`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = ∑ i, ∑ k, JA i k * (x * JB * (y.map c)ᵀ) i k := by
@@ -31,9 +31,9 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
   ring
 
 /- English proof (translation)
-Rewrite using `[hTens_eq]`. Establish `hm : z * Cyᵀ * JB * ((z' * Cyᵀ).map c)ᵀ = 0`. Establish `hmap : (z' * Cyᵀ).map c = z'.map c * (Cyᵀ).map c`. Simplify using the standard rewrite rules. Rewrite using `[hmap, Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose, show z * Cyᵀ * JB * (Cy.map c * (z'.map c)ᵀ) = z * (Cyᵀ * JB * Cy.map c) * (z'.map c)ᵀ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc], h]`. Simplify using the standard rewrite rules. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_eq_zero (JA : Matrix α α E) {JB : Matrix β β E} {ν : Type} [Fintype ν] {Cy : Matrix β ν E}
     (h : Cyᵀ * JB * Cy.map c = 0) (z z' : Matrix α ν E) : hTens c JA JB (z * Cyᵀ) (z' * Cyᵀ) = 0 := by

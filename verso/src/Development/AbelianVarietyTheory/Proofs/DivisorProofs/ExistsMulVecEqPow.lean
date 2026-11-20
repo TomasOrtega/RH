@@ -26,61 +26,61 @@ Both sides reduce to the same expression.
 theorem finrank_colL (A : Mx F⟦X⟧ a b) : Module.finrank (LaurentSeries F) (colL A) = lrank A := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `(RingHom.map_mulVec (algebraMap F⟦X⟧ (LaurentSeries F)) A y j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem linL_vecL (A : Mx F⟦X⟧ a b) (y : Fin b → F⟦X⟧) : linL A (vecL y) = vecL (A.mulVec y) := by
   funext j
   exact (RingHom.map_mulVec (algebraMap F⟦X⟧ (LaurentSeries F)) A y j).symm
 
 /- English proof (translation)
-Rewrite using `[linL, Matrix.map_mul, Matrix.mulVecLin_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linL_mul (A : Mx F⟦X⟧ a b) (B : Mx F⟦X⟧ b c) : linL (A * B) = (linL A).comp (linL B) := by
   rw [linL, Matrix.map_mul, Matrix.mulVecLin_mul]
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [vecL, Pi.smul_apply, smul_eq_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecL_smul (s : F⟦X⟧) (y : Fin a → F⟦X⟧) : vecL (s • y) = algebraMap F⟦X⟧ (LaurentSeries F) s • vecL y := by
   funext j
   simp only [vecL, Pi.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [vecL, Pi.sub_apply, map_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecL_sub (y z : Fin a → F⟦X⟧) : vecL (y - z) = vecL y - vecL z := by
   funext j
   simp only [vecL, Pi.sub_apply, map_sub]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `funext fun j => IsFractionRing.injective F⟦X⟧ (LaurentSeries F) (congrFun h j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vecL_injective : Function.Injective (vecL : (Fin a → F⟦X⟧) → _) := fun _ _ h =>
   funext fun j => IsFractionRing.injective F⟦X⟧ (LaurentSeries F) (congrFun h j)
 
 /- English proof (translation)
-Rewrite using `[colL, linL_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colL_mul_le (A : Mx F⟦X⟧ a b) (B : Mx F⟦X⟧ b c) : colL (A * B) ≤ colL A := by
   rw [colL, linL_mul]
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.eq_top_of_finrank_eq (by rw [finrank_colL, h, Module.finrank_fin_fun])`.
+A detailed English derivation is pending.
 -/
 theorem colL_eq_top {A : Mx F⟦X⟧ a b} (h : lrank A = a) : colL A = ⊤ :=
   Submodule.eq_top_of_finrank_eq (by rw [finrank_colL, h, Module.finrank_fin_fun])
 
 /- English proof (translation)
-Rewrite using `[colL, linL_mul]`. Conclude with `LinearMap.range_comp_of_range_eq_top _ (colL_eq_top h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colL_mul_eq (A : Mx F⟦X⟧ a b) {B : Mx F⟦X⟧ b c} (h : lrank B = b) : colL (A * B) = colL A := by
   rw [colL, linL_mul]
   exact LinearMap.range_comp_of_range_eq_top _ (colL_eq_top h)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers (X : F⟦X⟧)) z`. Take `⟨m, hm⟩` from `s.2`. Use `choose w hw using hs`. Use `⟨m, w, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[vecL, hw j, ← hm, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_clear (z : Fin a → LaurentSeries F) :
     ∃ (m : ℕ) (w : Fin a → F⟦X⟧), vecL w = algebraMap F⟦X⟧ (LaurentSeries F) (X ^ m) • z := by
@@ -91,13 +91,13 @@ theorem exists_clear (z : Fin a → LaurentSeries F) :
   rw [vecL, hw j, ← hm, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hy`. Take `⟨m, w, hw⟩` from `exists_clear z`. Establish `e1 : A'.mulVec w = (X : F⟦X⟧) ^ m • y`. Apply `vecL_injective` to reduce the goal to its premises. Rewrite using `[← linL_vecL, hw, map_smul, hz, vecL_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (A'.map θ).mulVec (fun j => θ (w j)) = θ X ^ m • fun j => θ (y j)`. Use function extensionality and compare the values at `j`. Use `RingHom.map_mulVec θ A' w j` as an intermediate fact. Rewrite `this` using `[e1]`. Rewrite using `[show (fun j => θ (w j)) = θ ∘ w from rfl, ← this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e3 : θ X ^ m • (M.mulVec fun j => θ (y j)) = A.mulVec (M'.mulVec fun j => θ (w j))`. Rewrite using `[Matrix.mulVec_mulVec, ← h, ← Matrix.mulVec_mulVec, e2, Matrix.mulVec_smul]`. Establish `h0 : algebraMap F⟦X⟧ (LaurentSeries F) (θ X ^ m) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective F⟦X⟧ (LaurentSeries F))).2 (pow_ne_zero _ hθ)`. Rewrite using `[← Submodule.smul_mem_iff _ h0, ← vecL_smul, e3, ← linL_vecL]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.mem_range_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem semilin_mem (θ : F⟦X⟧ →+* F⟦X⟧) (hθ : θ X ≠ 0) {M : Mx F⟦X⟧ a a} {M' : Mx F⟦X⟧ b b} {A A' : Mx F⟦X⟧ a b}
     (h : M * A'.map θ = A * M') {y : Fin a → F⟦X⟧} (hy : vecL y ∈ colL A') :
@@ -121,9 +121,9 @@ theorem semilin_mem (θ : F⟦X⟧ →+* F⟦X⟧) (hθ : θ X ≠ 0) {M : Mx F�
   exact LinearMap.mem_range_self _ _
 
 /- English proof (translation)
-Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[LinearMap.mem_ker, ← LinearMap.comp_apply, ← linL_mul, h]`. Simplify using `[linL]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `LinearMap.finrank_range_add_finrank_ker (linL C)` as an intermediate fact. Rewrite `this` using `[← colL, finrank_colL, hC, Module.finrank_fin_fun]`. Rewrite using `[finrank_colL, hE]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ker_eq_colL {C : Mx F⟦X⟧ 1 (a + 1)} {E : Mx F⟦X⟧ (a + 1) a} (h : C * E = 0) (hE : lrank E = a)
     (hC : lrank C = 1) : LinearMap.ker (linL C) = colL E := by
@@ -138,9 +138,9 @@ theorem ker_eq_colL {C : Mx F⟦X⟧ 1 (a + 1)} {E : Mx F⟦X⟧ (a + 1) a} (h :
     omega
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : (fun _ => 1 : Fin 1 → LaurentSeries F) ∈ colL C := by`. Rewrite using `[colL_eq_top hC]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨m, w, hw⟩` from `exists_clear z`. Use `⟨w, m, vecL_injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← linL_vecL, hw, map_smul, hz]`. Use function extensionality and compare the values at `j`. Simplify using `[vecL]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_mulVec_eq_pow {C : Mx F⟦X⟧ 1 a} (hC : lrank C = 1) :
     ∃ (y : Fin a → F⟦X⟧) (m : ℕ), C.mulVec y = fun _ => X ^ m := by
@@ -154,13 +154,13 @@ theorem exists_mulVec_eq_pow {C : Mx F⟦X⟧ 1 a} (hC : lrank C = 1) :
   simp [vecL]
 
 /- English proof (translation)
-Establish `e : ∀ {k : ℕ} (A : Mx F⟦X⟧ k (a + 1)), (fun j => θ (A.mulVec y' j)) = (A.map θ).mulVec fun j => θ (y' j)` using `fun A => funext fun j => RingHom.map_mulVec θ A y' j`. Set `z : Fin (a + 1) → F⟦X⟧` to `(X : F⟦X⟧) ^ m • (M₂.mulVec fun j => θ (y' j)) - (θ X ^ m' * M₁ 0 0) • y`. Establish `hz : C.mulVec z = 0`. Simplify using `only [z, Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hC]`. Rewrite using `[← Matrix.mulVec_mulVec, ← e, hy, hy']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`. Simplify using `[Matrix.mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : vecL z ∈ colL E`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← ker_eq_colL h hE hC1, LinearMap.mem_ker, linL_vecL, hz]`. Use function extensionality and compare the values at `j`. Simplify using `[vecL]`. Take `⟨v, hv⟩` from `hk`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[linL_mul, LinearMap.comp_apply, hv, linL_vecL]`. Simplify using `only [z, Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hB]`. Rewrite using `[← Matrix.mulVec_mulVec, ← e, vecL_sub, vecL_smul, vecL_smul, map_pow, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem line_rel (θ : F⟦X⟧ →+* F⟦X⟧) {M : Mx F⟦X⟧ a a} {M₂ : Mx F⟦X⟧ (a + 1) (a + 1)} {M₁ : Mx F⟦X⟧ 1 1}
     {B B' : Mx F⟦X⟧ a (a + 1)} {C C' : Mx F⟦X⟧ 1 (a + 1)} {E : Mx F⟦X⟧ (a + 1) a}
@@ -191,13 +191,13 @@ theorem line_rel (θ : F⟦X⟧ →+* F⟦X⟧) {M : Mx F⟦X⟧ a a} {M₂ : Mx
   rw [← Matrix.mulVec_mulVec, ← e, vecL_sub, vecL_smul, vecL_smul, map_pow, map_mul, map_pow]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `h0 : algebraMap F⟦X⟧ (LaurentSeries F) (X ^ m) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective F⟦X⟧ (LaurentSeries F))).2 (pow_ne_zero _ X_ne_zero)`. Set `s : LaurentSeries F` to `linL C z 0 / algebraMap F⟦X⟧ (LaurentSeries F) (X ^ m)`. Establish `hk : z - s • vecL y ∈ colL E`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← ker_eq_colL h hE hC1, LinearMap.mem_ker, map_sub, map_smul, linL_vecL, hy]`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, vecL, div_mul_cancel₀ _ h0, sub_self]`. Both sides reduce to the same expression. Take `⟨v, hv⟩` from `hk`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `: linL B z = linL (B * E) v + s • vecL (B.mulVec y)`. Rewrite using `[linL_mul, LinearMap.comp_apply, hv, map_sub, map_smul, linL_vecL, sub_add_cancel]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self _ _) (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`. Use `sup_le (colL_mul_le _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem, ← linL_vecL]`. Conclude with `LinearMap.mem_range_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem colL_eq_sup {B : Mx F⟦X⟧ a (a + 1)} {C : Mx F⟦X⟧ 1 (a + 1)} {E : Mx F⟦X⟧ (a + 1) a} (h : C * E = 0)
     (hE : lrank E = a) (hC1 : lrank C = 1) {y : Fin (a + 1) → F⟦X⟧} {m : ℕ} (hy : C.mulVec y = fun _ => X ^ m) :
@@ -225,21 +225,19 @@ theorem colL_eq_sup {B : Mx F⟦X⟧ a (a + 1)} {C : Mx F⟦X⟧ 1 (a + 1)} {E :
 end Columns
 
 /- English proof (translation)
-Establish `h1 : HasSubst (X ^ l : F⟦X⟧)` using `HasSubst.X_pow hl.ne'`. Establish `h2 : HasSubst (gamSer 0 un)` using `HasSubst.of_constantCoeff_zero' (by simp [gamSer])`. Take `⟨φ, hφ⟩ : ∃ φ : F⟦X⟧ →+* F⟦X⟧, ⇑φ = frob0 l` from `⟨(substAlgHom h1 : F⟦X⟧ →ₐ[F] F⟦X⟧), coe_substAlgHom h1⟩`. Take `⟨γ, hγ⟩ : ∃ γ : F⟦X⟧ →+* F⟦X⟧, ⇑γ = gam0 0 un` from `⟨(substAlgHom h2 : F⟦X⟧ →ₐ[F] F⟦X⟧), coe_substAlgHom h2⟩`. Establish `hφX : φ X = X ^ l` using `by rw [hφ, frob0, subst_X h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγX : γ X = gamSer 0 un` using `by rw [hγ, gam0, subst_X h2]`. Establish `hγ0 : γ X ≠ 0`. Rewrite using `[hγX, gamSer]`. Use `mul_ne_zero X_ne_zero fun h => ?_` and prove the remaining obligations. Simplify using `using congrArg constantCoeff h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose w m hw using fun i s => exists_mulVec_eq_pow ((hy i).2.2 s).2.2.2.2.2.2.1`. Establish `hsup : ∀ i s, colL ((y i).A (rs s).succ) = colL ((y i).A (rs s).castSucc) ⊔ Submodule.span (LaurentSeries F) {vecL (((y i).B s).mulVec (w i s))}`. Introduce `i s`. Take `⟨-, -, e1, e2, e3, e4, e5, e6⟩` from `(hy i).2.2 s`. Rewrite using `[← e1, ← colL_eq_sup e2 e4 e5 (hw i s), e3, colL_mul_eq _ e6]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i k => colL ((y i).A k), fun i s => ((y i).B s).mulVec (w i s), fun i s => m i s, fun i => ⟨?_, colL_eq_top (((hy i).1 _).2.trans hR), ?_⟩, fun k i j => ?_, fun i k v hv => ?_, fun i k v hv => ?_, fun i s => ⟨fun hm => ?_, hsup i s⟩, fun i s => ?_, fun i s => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.finrank_eq_zero.1 ((finrank_colL _).trans (((hy i).1 _).2.trans h0))`. Use `Fin.monotone_iff_le_succ.2 fun k => ?_` and prove the remaining obligations. Conclude with `(congrArg colL ((hy i).2.1 k)).trans_le (colL_mul_le _ _)`. Rewrite using `[finrank_colL, finrank_colL, ((hy i).1 k).2, ((hy j).1 k).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hφ]`. Conclude with `semilin_mem φ (by rw [hφX]; exact pow_ne_zero _ X_ne_zero) (hφ ▸ ((hy i).1 k).1.1) hv`. Rewrite using `[← hγ]`. Conclude with `semilin_mem γ hγ0 (hγ ▸ ((hy i).1 k).1.2) hv`. Establish `e` using `hsup i s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[sup_eq_left.2 ((Submodule.span_singleton_le_iff_mem _ _).2 hm)]`. Establish `e'` using `finrank_colL ((y i).A (rs s).succ)`. Rewrite `e'` using `[e, finrank_colL, ((hy i).1 _).2, ((hy i).1 _).2, hs]`. Use linear arithmetic over natural numbers and integers. Take `⟨b1, c1, e1, e2, -, e4, e5, -⟩` from `(hy i).2.2 s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `line_rel φ (hφ ▸ b1.1) (hφ ▸ c1.1) e2 e4 e5 (hw i s) (hw (σ i) s)` as an intermediate fact. Rewrite `this` using `[e1, hφX, hφ, map_pow, ← pow_mul]`. Rewrite using `[← Nat.cast_mul, zpow_natCast, zpow_natCast]`. Conclude with `this`. Take `⟨b1, c1, e1, e2, -, e4, e5, -⟩` from `(hy i).2.2 s`.
-
-Use `line_rel γ (hγ ▸ b1.2) (hγ ▸ c1.2) e2 e4 e5 (hw i s) (hw i s)` as an intermediate fact. Rewrite `this` using `[e1, hγX, hγ, Matrix.add_apply, Matrix.one_apply_eq, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[zpow_natCast, zpow_natCast]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filtration_of_chain {F : Type} [Field F] {ι : Type} (σ : Equiv.Perm ι) {l n t R : ℕ} (hl : 0 < l) (un : F⟦X⟧)
     (P D : ι → Mx F⟦X⟧ n n) (Pψ Dψ : Fin t → ι → Mx F⟦X⟧ 1 1) (rs : Fin t → Fin R) (dim : Fin (R + 1) → ℕ)

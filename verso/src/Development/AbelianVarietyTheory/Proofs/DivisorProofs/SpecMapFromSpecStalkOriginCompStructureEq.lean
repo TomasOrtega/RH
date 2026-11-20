@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FormalOrigin
 
 /- English proof (translation)
-Establish `e : G.left.fromSpecStalk (origin G) ≫ G.hom = spMap (constO G)`. Establish `e' : CommRingCat.ofHom (constO G) = (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ G.hom.appTop ≫ G.left.presheaf.germ ⊤ (origin G) trivial`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ G.hom.appLE ⊤ ⊤ (fun _ _ => trivial) ≫ G.left.presheaf.germ ⊤ (origin G) trivial = _`. Establish `h : G.hom.appLE ⊤ ⊤ (fun _ _ => trivial) = G.hom.appTop` using `Scheme.Hom.appLE_eq_app _`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [spMap]`. Rewrite using `[e', Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ_assoc, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Rewrite using `[e]`. Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

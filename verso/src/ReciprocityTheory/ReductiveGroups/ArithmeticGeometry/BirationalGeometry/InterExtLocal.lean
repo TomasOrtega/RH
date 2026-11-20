@@ -5,13 +5,13 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ₀ φ φ' g g' hφ hg`. Establish `hS : ∀ (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) y w, sheetDensity P Ψ φ g y w = sheetDensity P Ψ φ' g' y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `set γ := hγ.choose with hγdef`. Establish `hev` using `hγ.choose_spec.2`. Establish `hmem : ∀ᶠ y' in 𝓝 y, γ y' ∈ mcPts P` using `hev.mono fun y' h => h.2.1`. Establish `hy : γ y ∈ mcPts P` using `hmem.self_of_nhds`. Rewrite using `[hg _ hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : ∀ k, cxHessian (fun y' => φ k (γ y')) y = cxHessian (fun y' => φ' k (γ y')) y`. Introduce `k`. Establish `hloc : (fun y' => φ k (γ y')) =ᶠ[𝓝 y] (fun y' => φ' k (γ y'))` using `hmem.mono fun y' h => hφ k _ h`. Establish `h2` using `hloc.fderiv (𝕜 := ℝ)`. Unfold `cxHessian`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2.fderiv_eq]`. Unfold `maDensity`. Simplify using `only [hH]`. Both sides reduce to the same expression. Conclude with `⟨by simp only [ptsIntegralAt, hS], by simp only [ptsIntegral, ptsIntegralAt, hS]⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ptsLocal : PtsLocalStatement := by
   intro K _ ι _ P e Ψ₀ φ φ' g g' hφ hg

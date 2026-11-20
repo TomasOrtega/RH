@@ -35,7 +35,7 @@ def pushRHom (P : Type) [CommRing P] [Algebra R' P] [Algebra R P] [IsScalarTower
     exact (congrArg (iotaB ≫ ·) h).trans (MonObj.comp_mul _ _ _)
 
 /- English proof (translation)
-Establish `e : IsTan w ↔ spMap ((fstD R').restrictScalars R) ≫ pushR G w = 1`. Rewrite using `[← pushR_spMap, IsTan]`. Conclude with `⟨fun h => by rw [h, pushR_one], fun h => pushR_inj G (by rw [h, pushR_one])⟩`. Rewrite using `[e]`. Conclude with `⟨mem_redKer_of_section _ ((Algebra.ofId R' (DualNumber R')).restrictScalars R) (fun a => rfl), fun h => comp_eq_one_of_mem_redKer h _ fun a ha => ha⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isTan_iff_mem (w : sp (R₀ := R') (DualNumber R') ⟶ (Over.pullback (fB R R')).obj G) :
     IsTan w ↔ pushR G w ∈ redKer G (RingHom.ker ((fstD R').restrictScalars R)) := by
@@ -53,13 +53,13 @@ def bcVec (R' : Type) [CommRing R'] [Algebra R R'] (v : Fin n → (epsR R ⟶ G)
   pullR (R' := R') G (spMap (dualMapA R R') ≫ v i)
 
 /- English proof (translation)
-The claim follows from `pushR_pullR G _`.
+A detailed English derivation is pending.
 -/
 theorem pushR_bcVec (v : Fin n → (epsR R ⟶ G)) (i : Fin n) :
     pushR G (bcVec R' v i) = spMap (dualMapA R R') ≫ v i := pushR_pullR G _
 
 /- English proof (translation)
-Rewrite using `[← pushR_left, pushR_bcVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bcVec_left_fst (v : Fin n → (epsR R ⟶ G)) (i : Fin n) :
     (bcVec R' v i).left ≫ pullback.fst G.hom (fB R R') =
@@ -68,9 +68,9 @@ theorem bcVec_left_fst (v : Fin n → (epsR R ⟶ G)) (i : Fin n) :
   rfl
 
 /- English proof (translation)
-Use `(map_list_prod (pushRHom G (DualNumber R')) _).trans ?_` and prove the remaining obligations. Rewrite using `[List.map_ofFn, List.prod_ofFn, lieExp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pushR G (spMap _ ≫ _) = _`. Rewrite using `[pushR_spMap, pushR_bcVec, ← Category.assoc, spMap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `DualNumber.algHom_ext ?_` and prove the remaining obligations. Rewrite using `[epsTo_eps, AlgHom.comp_apply]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.map _ (dualMapA R R' (inr 1)) = _`. Rewrite using `[dualMapA_inr, TrivSqZeroExt.map_inr]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -90,11 +90,11 @@ theorem pushR_prodPts [IsCommMonObj G] (v : Fin n → (epsR R ⟶ G)) (c : Fin n
   simp
 
 /- English proof (translation)
-Use `⟨fun i => (isTan_iff _).1 ((isTan_iff_mem G _).2 ?_), fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[pushR_bcVec]`. Use `mem_redKer_of_section ((fstD R').restrictScalars R) ((Algebra.ofId R' (DualNumber R')).restrictScalars R) (fun a => rfl) ?_` and prove the remaining obligations. Establish `: ((fstD R').restrictScalars R).comp (dualMapA R R') = (Algebra.ofId R R').comp (fstD R)`. Use `DualNumber.algHom_ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(dualMapA R R' (inr 1)).fst = algebraMap R R' 0`. Rewrite using `[dualMapA_inr]`. Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, spMap_comp, this, ← spMap_comp, Category.assoc, (isTan_iff _).2 (hv i), comp_one']`. Take `⟨c, hc⟩` from `surj _ ((isTan_iff_mem G _).1 ((isTan_iff _).2 hw))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, (isLieComb_iff _ _ _).2 (pushR_inj G (by rw [hc, pushR_prodPts])), fun c' hc' => ?_⟩` and prove the remaining obligations. Use `inj _ _ ?_` and prove the remaining obligations. Rewrite using `[← hc, (isLieComb_iff _ _ _).1 hc', pushR_prodPts]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieBasis_bcVec_of [IsCommMonObj G] {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangent (v i))
     (inj : ∀ c c' : Fin n → R',
@@ -120,9 +120,9 @@ theorem isLieBasis_bcVec_of [IsCommMonObj G] {v : Fin n → (epsR R ⟶ G)} (hv 
     rw [← hc, (isLieComb_iff _ _ _).1 hc', pushR_prodPts]
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `expBij (DualNumber R') hv (RingHom.ker ((fstD R').restrictScalars R)) (ker_fst_sq (R := R) (S := R') R')`. Use `isLieBasis_bcVec_of hv.1 (fun c c' h => funext fun i => ?_) fun y hy => ?_` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd (congrFun (h₁ _ _ (fun i => inr_mem_kerD (c i)) (fun i => inr_mem_kerD (c' i)) _ _ h) i)`. Take `⟨c, hc, hcJ, e⟩` from `h₂ y hy`. Establish `hc' : ∀ i, c i = inr (c i).snd` using `fun i =>`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (c i).fst = 0` using `hcJ i`. Use the proof step `TrivSqZeroExt.ext h0 rfl`. Conclude with `⟨fun i => (c i).snd, e.trans (lieExp_congr v hc' _ _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLieBasis_bcVec [IsCommMonObj G] [Smooth G.hom] {v : Fin n → (epsR R ⟶ G)}
     (hv : IsLieBasis v) : IsLieBasis (bcVec R' v) := by
@@ -144,9 +144,9 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (spMap)
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Take `⟨e, he, heφ⟩` from `grpPullback_iso h (isGrpPullback_pullback G (fB R R'))`. Use `⟨fun i => LieBaseChange.bcVec R' v i ≫ e.inv, isLieBasis_iso e ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify `LieBaseChange.isLieBasis_bcVec (R' := R') hv` using `only [Category.assoc, e.inv_hom_id, Category.comp_id]`. Rewrite using `[← heφ, ← Category.assoc, ← Over.comp_left, Category.assoc, e.inv_hom_id, Category.comp_id]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LieBaseChange.bcVec_left_fst v i`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_baseChange (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R')
     (G : Over (Sp R)) (G' : Over (Sp R')) [GrpObj G] [GrpObj G'] [IsCommMonObj G] [IsCommMonObj G']

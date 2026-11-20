@@ -10,7 +10,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
 open ProjLine in
 
 /- English proof (translation)
-Use `⟨isArithVar_y', birational_y, ?_, genDeg_y⟩` and prove the remaining obligations. Introduce `W hW hPW`. Rewrite using `[← IsArithVar.eq_of_le isArithVar_y' hW hPW, genDeg_y]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem hyps_projLine :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y ∧
@@ -24,7 +24,7 @@ theorem hyps_projLine :
 open ProjLine in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hyps_projLine`. Use `(h _ _ _ y 1 _ h1 h2 h3).2` as an intermediate fact. Rewrite `this` using `[h4]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem projLine_limit (h : NefRR) :
     Tendsto (fun τ : ℕ => (Module.finrank ℚ (Submodule.span ℚ
@@ -35,7 +35,7 @@ theorem projLine_limit (h : NefRR) :
   simpa using this
 
 /- English proof (translation)
-Use `ge_of_tendsto' (h K ι Ω y D a h1 h2 h3).2 (b := 0) (fun τ => by positivity)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genDeg_nonneg (h : NefRR) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     [CharZero Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (a : K → ℤ) (h1 : IsArithVar (mCoordIdeal y) (D + 1))
@@ -48,7 +48,7 @@ section DimZero
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-The claim follows from `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.finite_range _) (by rintro _ ⟨p, rfl⟩ exact (CoordCurveDegree.isAlgebraic_ratio hP c hc p).isIntegral)`.
+A detailed English derivation is pending.
 -/
 theorem chart_finite {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : Module.Finite ℚ (chartRingQ y c) :=
@@ -57,13 +57,13 @@ theorem chart_finite {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 
     exact (CoordCurveDegree.isAlgebraic_ratio hP c hc p).isIntegral)
 
 /- English proof (translation)
-Establish `hfin` using `chart_finite hP c hc`. Rewrite using `[eq_top_iff]`. Introduce `s _`. Take `⟨d, g, h, hg, hh, hh0, he⟩` from `hb s`. Take `⟨t₁, ht₁, e₁⟩` from `SectionsDimZero.valueSpan_le y c hc d (Submodule.subset_span ⟨g, hg, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₂, ht₂, e₂⟩` from `SectionsDimZero.valueSpan_le y c hc d (Submodule.subset_span ⟨h, hh, rfl⟩)`. Rewrite `e₁`, `e₂` using `[LinearMap.mulRight_apply]`. Establish `hw : (∏ k, y ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Establish `ht0 : t₂ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hh0 (by rw [← e₂, zero_mul])`. Establish `hs : s = t₁ * t₂⁻¹`. Rewrite `he` using `[← e₁, ← e₂, ← mul_assoc]`. Use `mul_right_cancel₀ hw he` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hs]`. Use `mul_mem ht₁ ?_` and prove the remaining obligations. Establish `halg : IsAlgebraic ℚ (⟨t₂, ht₂⟩ : chartRingQ y c)` using `IsAlgebraic.of_finite ℚ _`. Conclude with `Subalgebra.inv_mem_of_algebraic (A := chartRingQ y c) (x := ⟨t₂, ht₂⟩) (halg.algHom (chartRingQ y c).val)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_eq_top {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (hb : Birational y)
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : chartRingQ y c = ⊤ := by
@@ -89,11 +89,11 @@ theorem chart_eq_top {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 
     (halg.algHom (chartRingQ y c).val)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `s _`. Establish `halg : ∀ x : Ω, IsAlgebraic ℤ x` using `fun x => (IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (IsAlgebraic.of_finite ℚ x)`. Establish `hex : ∀ c : ∀ k, ι k, ∃ n : ℤ, n ≠ 0 ∧ IsIntegral ℤ (n • (s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k))))` using `fun c => (halg _).exists_integral_multiple`. Use `choose n hn0 hn using hex`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (∏ c, n c) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun c _ => hn0 c`. Establish `hmem : (∏ c, n c) • s ∈ chartLatNm y a τ`. Introduce `c _`. Establish `e : ((∏ c, n c) • s) * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) = (∏ c' ∈ Finset.univ.erase c, n c') • (n c • (s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k))))`. Rewrite using `[smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ c), smul_mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `((hn c).zsmul _).tower_top`. Establish `h1 : (∏ c, n c) • s ∈ Submodule.span ℚ (chartLatNm y a τ : Set Ω)` using `Submodule.subset_span hmem`. Establish `h2` using `Submodule.smul_mem _ (((∏ c, n c : ℤ) : ℚ)⁻¹) h1`. Rewrite `h2` using `[← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hN), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_eq_top {y : (Σ k, ι k) → Ω} [Module.Finite ℚ Ω] (a : K → ℤ) (τ : ℕ) :
     Submodule.span ℚ (chartLatNm y a τ : Set Ω) = ⊤ := by
@@ -119,13 +119,11 @@ theorem span_eq_top {y : (Σ k, ι k) → Ω} [Module.Finite ℚ Ω] (a : K → 
   rwa [← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hN), one_smul] at h2
 
 /- English proof (translation)
-Use `choose c hcX using hP.2.1.2.2`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hcX k (CoordCurveDegree.X_mem_of_eq_zero h0)`. Establish `hfin` using `chart_finite hP c hc`. Rewrite `hfin` using `[chart_eq_top hP hb c hc]`. Establish `hΩ : Module.Finite ℚ Ω` using `Module.Finite.equiv (Subalgebra.topEquiv (R := ℚ) (A := Ω)).toLinearEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => inferInstance, ?_⟩` and prove the remaining obligations. Establish `hQ : chartLatQ y a 0 = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `s _ c' hc'`. Rewrite using `[chart_eq_top hP hb c' hc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hd` using `SectionsDimZero.proof K ι Ω y a 0 hP`. Rewrite `hd` using `[hQ]`. Establish `hs : ∀ τ : ℕ, Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) = Module.finrank ℚ (⊤ : Submodule ℚ Ω)` using `fun τ => by rw [span_eq_top]`. Simplify using `only [hs, Nat.factorial_zero, Nat.cast_one, one_mul, pow_zero, div_one, ← hd, Int.cast_natCast]`.
-
-Conclude with `tendsto_const_nhds`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nefRR_dimZero (y : (Σ k, ι k) → Ω) (a : K → ℤ) (hP : IsArithVar (mCoordIdeal y) (0 + 1))
     (hb : Birational y) :

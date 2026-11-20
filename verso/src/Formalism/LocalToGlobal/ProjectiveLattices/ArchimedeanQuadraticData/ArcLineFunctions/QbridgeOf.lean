@@ -54,7 +54,7 @@ def DegAt (q : QDataAt h j ka CR Tt cc)
     (Module.finrank ℚ q.K₁ : ℝ) ≤ Bdeg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨q.K₁, q.fK, q.nfK, q.alg, q.cfL, be, s, a, Carch, Bdeg, hK, hF.1, hF.2.1, hF.2.2.1, hF.2.2.2.1, hF.2.2.2.2, hconj, hA, hD, hroom⟩`.
+Supply the required witnesses or components.
 -/
 theorem qbridge_of (large₂ : SizeData₂ D) (Ch Ah Cc Ac : ℝ) (q : QDataAt h j ka CR Tt cc)
     (be : HeightOneSpectrum (𝓞 T.Q.c.F) → ℝ)

@@ -16,7 +16,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `hol U f`. Conclude with `⟨h1.preimage A.continuous, h2.comp A.differentiable.differentiableOn fun _ hv => hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chart_isHolFam_comp_clm {Y : Scheme.{0}} {g N : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e)
     (A : (Fin N → ℂ) →L[ℂ] (Fin g → ℂ)) : IsHolFam fun v => e (A v) := by
@@ -25,7 +25,7 @@ theorem chart_isHolFam_comp_clm {Y : Scheme.{0}} {g N : ℕ} (e : (Fin g → ℂ
   exact ⟨h1.preimage A.continuous, h2.comp A.differentiable.differentiableOn fun _ hv => hv⟩
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Simplify using `only [Set.mem_univ, true_and]`. Conclude with `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem chart_holTo_of_isHolFam {Y : Scheme.{0}} {N : ℕ} {e : (Fin N → ℂ) → (Sp ℂ ⟶ Y)} (h : IsHolFam e) :
     IsHolTo Set.univ e := by
@@ -44,7 +44,7 @@ Both sides reduce to the same expression.
 theorem AnPt.chart_jx_left (m : ℕ) : (Φ.jx m).left = jetPt (fun z => (Φ.e z).left) Φ.hol m := rfl
 
 /- English proof (translation)
-Establish `h` using `Φ.e_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnPt.chart_e_zero : Φ.e 0 = 1 := by
   have h := Φ.e_add 0 0
@@ -52,7 +52,7 @@ theorem AnPt.chart_e_zero : Φ.e 0 = 1 := by
   exact left_eq_mul.mp h
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, Φ.chart_jx_left, Φ.chart_jx_left]`. Conclude with `jetPt_trunc _ _ m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnPt.chart_trunc (m : ℕ) :
     homAt y.x (jetTrunc : Jet ℂ (Fin 1 × Fin g) (m + 1) →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) ≫ Φ.jx (m + 1) =
@@ -62,9 +62,9 @@ theorem AnPt.chart_trunc (m : ℕ) :
   exact jetPt_trunc _ _ m
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, Φ.chart_jx_left, one_left'']`. Establish `h1` using `jetPt_aug (fun z => (Φ.e z).left) Φ.hol m`. Use `h1.trans ?_` and prove the remaining obligations. Use `show (Φ.e 0).left = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Φ.chart_e_zero, one_left'']`. Use `show y.x ≫ _ = (spMap (algebraMap ℂ ℂ) ≫ y.x) ≫ _`. Rewrite using `[Algebra.algebraMap_self, spMap]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AnPt.chart_zero (m : ℕ) :
     homAt y.x (jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) ≫ Φ.jx m = 1 := by
@@ -79,15 +79,13 @@ theorem AnPt.chart_zero (m : ℕ) :
   simp
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, Over.comp_left, Φ.chart_jx_left]`. Establish `hlin : ∀ z, (Φ.e z).left ≫ (Xo.univ.t.act.act a).left = (Φ.e (fun k => ty k (a : E) * z k)).left`. Introduce `z`. Rewrite using `[← Over.comp_left, ← Φ.lin a z]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hol'` using `isHolFam_comp (fun z => (Φ.e z).left) Φ.hol (Xo.univ.t.act.act a).left`. Rewrite using `[jetPt_comp (fun z => (Φ.e z).left) Φ.hol _ _ hol' (fun z => rfl)]`. Use `haveI : IsLocalHom ((jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m) := isLocalHom_jetMap (m := m) (fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) …`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `jetPt_precomp (fun z => (Φ.e z).left) _ Φ.hol hol' ?_ m _ ?_` and prove the remaining obligations. Use `show (Φ.e 0).left ≫ _ = (Φ.e 0).left`. Rewrite using `[hlin]`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Introduce `U hU f`. Express the relevant statement in the definitionally equal form `jetSubstP m _ (jetOf m _) = _`. Rewrite using `[jetSubstP_anAct, ← jetOf_scale m _ (contDiffAt_val _ Φ.hol hU f)]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `z`. Use `show valAt' (Φ.e _).left U f = valAt' ((Φ.e z).left ≫ _) U f`. Rewrite using `[hlin]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnPt.chart_act (m : ℕ) (a : 𝓞 E) :
     Φ.jx m ≫ Xo.univ.t.act.act a =
@@ -120,13 +118,11 @@ theorem AnPt.chart_act (m : ℕ) (a : 𝓞 E) :
     rw [hlin]
 
 /- English proof (translation)
-Set `v : Fin g → (tEps y.x ⟶ Xo.univ.t.G)` to `fun j => homAt y.x (jetTan ((0 : Fin 1), j) : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) ≫ Φ.jx (0 + 1)`. Set `u : Fin g → (tEps y.x ⟶ Xo.univ.t.G)` to `fun j => epsHom y.x (if j = j0 then 1 else 0) ≫ v j`. Use `⟨u, fun j => by simp [u, v, epsHom], ?_⟩` and prove the remaining obligations. Establish `hone : ∀ j, j ≠ j0 → u j = 1`. Introduce `j hj`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext1`. Simplify using `only [u, v, if_neg hj, Over.comp_left, epsHom, Over.homMk_left, Formalism.L2.Pj.homAt, AnPt.chart_jx_left]`. Rewrite using `[← Category.assoc, spMap_epsMul_zero_jetTan, Category.assoc, jetPt_aug, one_left'']`. Use `show spMap _ ≫ (Φ.e 0).left = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y.x) ≫ _`. Rewrite using `[Φ.chart_e_zero, one_left'', Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hprod : (List.ofFn u).prod = u j0`. Rewrite using `[List.prod_ofFn, Finset.prod_eq_single j0 (fun j _ hj => hone j hj) (by simp)]`. Rewrite using `[hprod]`. Simplify using `only [u, v, if_pos rfl, ite_true, Over.comp_left, epsHom, Over.homMk_left, Formalism.L2.Pj.homAt, AnPt.chart_jx_left, epsMul_one]`.
-
-Rewrite using `[show spMap (RingHom.id (DualNumber ℂ)) = 𝟙 _ from by simp [spMap]]`. Conclude with `(Category.id_comp _).trans (jetPt_tan (fun z => (Φ.e z).left) Φ.hol ((0 : Fin 1), j0) vt hd)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnPt.chart_tan (j0 : Fin g) (vt : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)
     (hd : IsDerivAt0 (fun z => (Φ.e z).left) (Pi.single j0 1) vt) :
@@ -155,7 +151,7 @@ theorem AnPt.chart_tan (j0 : Fin g) (vt : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.le
   exact (Category.id_comp _).trans (jetPt_tan (fun z => (Φ.e z).left) Φ.hol ((0 : Fin 1), j0) vt hd)
 
 /- English proof (translation)
-The claim follows from `chart_holTo_of_isHolFam (isHolFam_pullback_lift _ _ _ Xo.univ.t.G.hom Xo.univ.t.G.hom (2 * g) (fun v => (Φ.e (anPr 0 v)).left) (fun v => (Φ.e (anPr 1 v)).left) y.x (fun v => Over.w (Φ.e (anPr 0 v))) (fun v => Over.w (Φ.e (anPr 1 v))) (chart_isHolFam_comp_clm _ Φ.hol (anPr 0)) (ch …`.
+A detailed English derivation is pending.
 -/
 theorem AnPt.chart_pair : IsHolTo (Set.univ : Set (Fin (2 * g) → ℂ)) fun v =>
       pullback.lift (Φ.e (anPr 0 v)).left (Φ.e (anPr 1 v)).left
@@ -166,7 +162,7 @@ theorem AnPt.chart_pair : IsHolTo (Set.univ : Set (Fin (2 * g) → ℂ)) fun v =
     (chart_isHolFam_comp_clm _ Φ.hol (anPr 0)) (chart_isHolFam_comp_clm _ Φ.hol (anPr 1)))
 
 /- English proof (translation)
-The claim follows from `jets_law y.x Φ.e Φ.hol Φ.jx (fun _ => rfl) Φ.e_add Φ.chart_pair m`.
+A detailed English derivation is pending.
 -/
 theorem AnPt.chart_law (m : ℕ) :
     homAt y.x (jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (addF ℂ g p.2)) ≫ Φ.jx m =
@@ -174,7 +170,7 @@ theorem AnPt.chart_law (m : ℕ) :
   jets_law y.x Φ.e Φ.hol Φ.jx (fun _ => rfl) Φ.e_add Φ.chart_pair m
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ y _ _ el Φ` and use `{ zero := fun m => Φ.chart_zero m trunc := fun m => Φ.chart_trunc m law := fun m => Φ.chart_law m act := fun m a => Φ.chart_act m a tan := fun ℓ => Φ.chart_tan (el.symm ℓ) (y.u ℓ.1 ℓ.2) (Φ.der ℓ) basis := fun v => basis_single el v }`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem anPt_isChart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] [StarRing (𝓞 E)] (y : FrPt Xo c ℂ) (g : ℕ)

@@ -13,11 +13,9 @@ open GlobalTheory.Unf
 namespace GlobalTheory.QuotFubini
 
 /- English proof (translation)
-Take `⟨γ, h1, h2⟩` from `hS ((r : G) * h)`. Use `⟨⟨⟨γ, hΓ γ.2⟩, γ.2⟩, ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((γ : G) * r) * h ∈ S`. Rewrite using `[mul_assoc]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (⟨((δ : R) : G), δ.2⟩ : Γ) = γ`. Use `h2 _ ?_` and prove the remaining obligations. Establish `: (((δ : R) : G) * r) * h ∈ S` using `hδ`. Rewrite `this` using `[mul_assoc]`. Conclude with `this`.
-
-Use `ext`. Conclude with `congrArg (fun x : Γ => (x : G)) h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem existsUnique_mul_mem {G : Type} [Group G] {Γ R : Subgroup G} (hΓ : Γ ≤ R) {S : Set G}
     (hS : ∀ g : G, ∃! γ : Γ, (γ : G) * g ∈ S) (h : G) (r : R) :
@@ -41,17 +39,15 @@ namespace GlobalTheory
 open GlobalTheory.QuotFubini in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ R Γ hΓR hR hΓc hΓd μR hμR 𝓡 𝓑 h𝓡 h𝓑 f hf hfΓ hf𝓑 hf𝓡`. Take `⟨-, S, hSm, hS⟩` from `GlobalTheory.discreteSubgroup_countable_and_exists_strict_fundamentalDomain Γ`. Establish `: Countable (Γ.subgroupOf R)` using `(Subgroup.subgroupOfEquivOfLe hΓR).toEquiv.countable_iff.2 inferInstance`. Establish `hSfd : IsFundamentalDomain Γ S μ` using `IsFundamentalDomain.mk' hSm.nullMeasurableSet hS`. Establish `hfΓ' : ∀ (γ : Γ) (x : G), f (γ • x) = f x` using `fun γ x => hfΓ γ γ.2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmh : ∀ h : G, Measurable (fun r : R => (r : G) * h)` using `fun h => (continuous_subtype_val.mul continuous_const).measurable`. Establish `hSh : ∀ h : G, MeasurableSet {r : R | (r : G) * h ∈ S}` using `fun h => hmh h hSm`. Establish `hShfd : ∀ h : G, IsFundamentalDomain (Γ.subgroupOf R) {r : R | (r : G) * h ∈ S} μR` using `fun h => IsFundamentalDomain.mk' (hSh h).nullMeasurableSet (existsUnique_mul_mem hΓR hS h)`. Establish `hfR : ∀ h : G, ∀ (γ : Γ.subgroupOf R) (r : R), f (((γ • r : R) : G) * h) = f ((r : G) * h)`. Introduce `h γ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `f ((((γ : R) : G) * r) * h) = _`. Rewrite using `[mul_assoc]`. Conclude with `hfΓ _ γ.2 _`. Establish `hind : ∀ h : G, (fun r : R => S.indicator f ((r : G) * h)) = {r : R | (r : G) * h ∈ S}.indicator (fun r : R => f ((r : G) * h))`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Distinguish the cases in `hr : (r : G) * h ∈ S`. Rewrite using `[Set.indicator_of_mem hr, Set.indicator_of_mem (show r ∈ {r : R | (r : G) * h ∈ S} from hr)]`. Rewrite using `[Set.indicator_of_notMem hr, Set.indicator_of_notMem (show r ∉ {r : R | (r : G) * h ∈ S} from hr)]`. Use `⟨S.indicator f, ?_, fun h => ?_, fun h => ?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integrable_indicator_iff hSm).2 ((hSfd.integrableOn_iff h𝓑 hfΓ').2 hf𝓑)`. Rewrite using `[hind h]`. Conclude with `(integrable_indicator_iff (hSh h)).2 (((hShfd h).integrableOn_iff h𝓡 (hfR h)).2 (hf𝓡 h))`. Rewrite using `[hind h, integral_indicator (hSh h)]`. Conclude with `(h𝓡.setIntegral_eq (hShfd h) (hfR h))`.
-
-Rewrite using `[integral_indicator hSm]`. Conclude with `h𝓑.setIntegral_eq hSfd hfΓ'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_fubini_mean : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (R Γ : Subgroup G), Γ ≤ R → IsClosed (R : Set G) → Countable Γ → DiscreteTopology Γ → ∀ (μR : Measure R), μR.IsHaarMeasure → ∀ (𝓡 : Set R) (𝓑 : Set G), IsFundamentalDomain (Γ.subgroupOf R) 𝓡 μR → IsFundamentalDomain Γ 𝓑 μ → ∀ f : G → ℂ, Measurable f → (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) → IntegrableOn f 𝓑 μ → (∀ h, IntegrableOn (fun r : R => f (r * h)) 𝓡 μR) → IsQuotIntL1 μR μ (fun h => ∫ r in 𝓡, f ((r : G) * h) ∂μR) (∫ g in 𝓑, f g ∂μ) := by
   intro G _ _ _ _ _ _ _ _ μ _ R Γ hΓR hR hΓc hΓd μR hμR 𝓡 𝓑 h𝓡 h𝓑 f hf hfΓ hf𝓑 hf𝓡

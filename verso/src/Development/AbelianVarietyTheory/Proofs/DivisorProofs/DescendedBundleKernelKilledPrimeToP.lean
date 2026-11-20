@@ -11,13 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.ES.KerPowDescent
 
 /- English proof (translation)
-Establish `hP` using `o.isLB`. Establish `hPm : (Hecke.lbPow o.P m).IsLB` using `LB.isLB_linComb hP _ _`. Establish `hc : GlobalTheory.CechPic.cls _ hPm = m • GlobalTheory.CechPic.cls o.P hP`. Use `(GlobalTheory.CechPic.cls_linComb hP (K := Fin m) (fun _ => 𝟙 _) (fun _ => 1) hPm).trans ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hc' : GlobalTheory.CechPic.cls _ hPm = GlobalTheory.CechPic.pull (sq2 ψ) (GlobalTheory.CechPic.cls P' hP')` using `(GlobalTheory.CechPic.cls_eq_iff hPm (pull_isLB hP' _)).2 hiso`. Establish `h1` using `congrArg (GlobalTheory.CechPic.pull (lift (fst o.A T' ≫ ψ) (snd o.A T' ≫ π')).left) h0`. Rewrite `h1` using `[GlobalTheory.AbDual.pull_evc, map_zero, lift_snd_assoc, lift_fst, Category.assoc, ← hy]`. Establish `e2 : GlobalTheory.AbDual.evc hP' (snd o.A T' ≫ y ≫ ψ) (fst o.A T' ≫ ψ) = GlobalTheory.CechPic.pull (lift (snd o.A T' ≫ y) (fst o.A T')).left (GlobalTheory.CechPic.pull (sq2 ψ) (GlobalTheory.CechPic.cls P' hP'))`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, GlobalTheory.AbDual.evc, sq2, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e2, ← hc', hc, map_nsmul]`. Establish `h3 : GlobalTheory.AbDual.evc hP (snd o.A T' ≫ y ^ m) (fst o.A T') = 0`. Rewrite using `[comp_pow, Hecke.evc_pow_left o.ab hP o.rig₁ o.rig₂]`. Conclude with `h1`. Establish `h4` using `hker T' (y ^ m) ((GlobalTheory.AbDual.triv_ev_iff hP _ _).2 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[← pow_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_lift {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) {A' : Over S} [GrpObj A'] [IsCommMonObj A'] (ψ : o.A ⟶ A')
@@ -49,33 +49,31 @@ theorem pow_eq_one_of_lift {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [Co
   rwa [← pow_mul] at h4
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o c hc hpu H A' _ _ ψ hA' hψ hG hH P' hP' r₁ r₂ hiso`. Use `haveI := hψ`. Take `⟨e₀, he₀, hker⟩` from `o.kerP`. Take `⟨e, rfl⟩` from `hc`. Use `⟨e₀, he₀, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x hx`. Establish `h0 : GlobalTheory.AbDual.evc hP' (snd A' T ≫ x) (fst A' T) = 0` using `(GlobalTheory.AbDual.triv_ev_iff hP' _ _).1 hx`. Use `hG.etale` as an intermediate fact. Use `hG.fin` as an intermediate fact. Use `hG.onto` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : x ^ (p ^ e * e₀) = 1`. Set `T' : Over S` to `Over.mk (pullback.fst x.left ψ.left ≫ T.hom)`. Set `π' : T' ⟶ T` to `Over.homMk (pullback.fst x.left ψ.left) rfl`. Set `y : T' ⟶ o.A` to `Over.homMk (pullback.snd x.left ψ.left) (by show pullback.snd x.left ψ.left ≫ o.A.hom = pullback.fst x.left ψ.left ≫ T.hom`. Rewrite using `[← Over.w ψ, ← Category.assoc, ← pullback.condition, Category.assoc, Over.w x])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : y ≫ ψ = π' ≫ x` using `Over.OverMorphism.ext (by show pullback.snd x.left ψ.left ≫ ψ.left = pullback.fst x.left ψ.left ≫ x.left`. Conclude with `pullback.condition.symm)`. Establish `h4` using `pow_eq_one_of_lift o ψ (p ^ e) hP' hiso hker π' y x hy h0`. Establish `h5 : π' ≫ x ^ (p ^ e * e₀) = π' ≫ 1`. Rewrite using `[comp_pow, ← hy, ← GlobalTheory.SS.FrobTorsion.pow_comp' ψ y, h4, MonObj.one_comp, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h6` using `congrArg (fun f => f.left) h5`. Simplify using `only [Over.comp_left] at h6`. Conclude with `(cancel_epi (pullback.fst x.left ψ.left)).1 h6`. Establish `hu : IsUnit (((p ^ e : ℕ) : Γ(S, ⊤)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hpu.pow e).map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom` as an intermediate fact. Simplify using `using this`. Use `GlobalTheory.TorsionRigid.eq_one_of_pow_eq_one_of_geometric S A' hA' (p ^ e) (pow_pos (Fact.out : p.Prime).pos e) hu T (x ^ e₀) (by rw [← pow_mul, mul_comm]; exact hxc) ?_` and prove the remaining obligations. Introduce `κ _ _ q`. Set `Tq : Over S` to `Over.mk (q ≫ T.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `πq : Tq ⟶ T` to `Over.homMk q rfl`. Take `⟨pt, hpt⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective ψ.left (q ≫ x.left)`. Set `y : Tq ⟶ o.A` to `Over.homMk pt (by show pt ≫ o.A.hom = q ≫ T.hom`. Rewrite using `[← Over.w ψ, ← Category.assoc, ← hpt, Category.assoc, Over.w x])`. Establish `hy : y ≫ ψ = πq ≫ x` using `Over.OverMorphism.ext (by show pt ≫ ψ.left = q ≫ x.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpt.symm)`. Establish `h4` using `pow_eq_one_of_lift o ψ (p ^ e) hP' hiso hker πq y x hy h0`. Establish `hg : (y ^ e₀) ^ (p ^ e) = 1` using `by rw [← pow_mul, mul_comm]; exact h4`. Establish `hgψ : (y ^ e₀) ≫ ψ = (πq ≫ x) ^ e₀` using `by rw [GlobalTheory.SS.FrobTorsion.pow_comp', hy]`. Establish `hz : GlobalTheory.AbDual.evc hP' (snd A' Tq ≫ (y ^ e₀) ≫ ψ) (fst A' Tq) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg (GlobalTheory.CechPic.pull (lift (fst A' Tq) (snd A' Tq ≫ πq)).left) h0`. Rewrite `h1` using `[GlobalTheory.AbDual.pull_evc, map_zero, lift_snd_assoc, lift_fst]`. Simplify using `only [Category.assoc] at h1`. Rewrite using `[hgψ, comp_pow, Hecke.evc_pow_left hA' hP' r₁ r₂, h1, smul_zero]`. Establish `hG0` using `GlobalTheory.globalFns_holds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA2 : IsAbelianScheme (G2 A')` using `AbelianSchemeGerms.isAbelianScheme_tensor A' A' hA' hA'`. Establish `hAo2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `s₁ : GlobalTheory.CechPic.pull (lift (1 : A' ⟶ A') (𝟙 A')).left (GlobalTheory.CechPic.cls P' hP') = 0` using `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hP' _)).2 r₁`. Establish `s₂ : GlobalTheory.CechPic.pull (lift (𝟙 A') (1 : A' ⟶ A')).left (GlobalTheory.CechPic.cls P' hP') = 0` using `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hP' _)).2 r₂`. Establish `hK : GlobalTheory.MemKL (G2 A') P' (lift ((y ^ e₀) ≫ ψ) 1 : Tq ⟶ G2 A')` using `GlobalTheory.DualCon.TwistDescent.memKL_of_lam_eq_zero hP' _ (GlobalTheory.KernelPointPairing.lam_eq_zero hP' hA' s₁ s₂ ((y ^ e₀) ≫ ψ) hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `w₀ : Out.WeilIs (G2 A') P' 1 (lift ((y ^ e₀) ≫ ψ) 1 : Tq ⟶ G2 A') 1 1` using `GlobalTheory.DescendedPrincipal.weilIs_one_right hG0 hA2 hP' fun pp => by`. Take `⟨V, hV, c, hc⟩` from `hK pp`. Conclude with `⟨V, hV, GlobalTheory.DescendedPrincipal.exists_theta_of_translDiff hP' _ V c hc⟩`. Establish `hPc : (Hecke.lbPow o.P (p ^ e)).IsLB` using `LB.isLB_linComb o.isLB _ _`. Set `ψ2 : G2 o.A ⟶ G2 A'` to `lift (fst o.A o.A ≫ ψ) (snd o.A o.A ≫ ψ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsMonHom ψ2 := inferInstance`. Establish `hw : LBIso (Geo.Tor.lbPow (Hecke.lbPow o.P (p ^ e)) 1) (P'.pull ψ2.left)` using `LBIso.trans (GlobalTheory.isLB_lbPow hPc 1) hPc (pull_isLB hP' _) (GlobalTheory.lbIso_lbPow_one hPc) hiso`. Establish `hHψ : ∀ h ∈ H, h ≫ ψ = 1` using `fun h hh => comp_eq_one_of_transl ψ h (hG.inv ⟨h, hh⟩)`. Take `⟨h, hh, hgh⟩` from `hH κ (q ≫ T.hom) (y ^ e₀) hg fun h hh => by`. Establish `e1 : (lift (y ^ e₀) 1 : Tq ⟶ G2 o.A) ≫ ψ2 = lift ((y ^ e₀) ≫ ψ) 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp]`. Establish `e2 : (lift 1 (toUnit Tq ≫ h) : Tq ⟶ G2 o.A) ≫ ψ2 = 1`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp, Category.assoc, hHψ h hh, MonObj.comp_one]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Use `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG0 hAo2 hPc hP' ψ2 hw (n := 1) (x := lift (y ^ e₀) 1) (y := lift 1 (toUnit Tq ≫ h)) (c := 1) (by rw [e1, e2]; exact w₀)` as an intermediate fact.
-
-Simplify using `using this`. Use `show πq ≫ x ^ e₀ = 1`. Rewrite using `[comp_pow, ← hgψ, hgh, Category.assoc, hHψ h hh, MonObj.comp_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_primePower_descent : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (c : ℕ), (∃ e : ℕ, c = p ^ e) → IsUnit ((p : ℕ) : R) → ∀ (H : Subgroup (𝟙_ (Over S) ⟶ o.A)) (A' : Over S) [GrpObj A'] [IsCommMonObj A'] (ψ : o.A ⟶ A'), IsAbelianScheme A' → IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover H (fun h => (transl h.1).left) ψ.left → (∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ S) (g : Over.mk x ⟶ o.A), g ^ c = 1 → (∀ h ∈ H, Out.WeilIs (G2 o.A) (Hecke.lbPow o.P c) 1 (lift g 1 : Over.mk x ⟶ G2 o.A) (lift 1 (toUnit (Over.mk x) ≫ h)) 1) → ∃ h ∈ H, g = toUnit (Over.mk x) ≫ h) → ∀ P' : LB (G2 A').left, P'.IsLB → (∃ t : (P'.pull (lift (1 : A' ⟶ A') (𝟙 A')).left).Gen, t.IsGen) → (∃ t : (P'.pull (lift (𝟙 A') (1 : A' ⟶ A')).left).Gen, t.IsGen) → LBIso (Hecke.lbPow o.P c) (P'.pull (sq2 ψ)) → ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over S) (x : T ⟶ A'), (∃ t : (P'.pull (lift (snd A' T ≫ x) (fst A' T)).left).Gen, t.IsGen) → x ^ e = 1 := by
   intro p _ D R _ b N S s o c hc hpu H A' _ _ ψ hA' hψ hG hH P' hP' r₁ r₂ hiso

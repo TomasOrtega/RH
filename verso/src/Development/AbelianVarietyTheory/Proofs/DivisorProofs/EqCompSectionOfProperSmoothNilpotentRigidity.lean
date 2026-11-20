@@ -14,11 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Rigidity
 
 /- English proof (translation)
-Establish `h` using `_root_.range_comap_of_surjective R₀ π hs`. Establish `h2 : PrimeSpectrum.zeroLocus (RingHom.ker π : Set R) = Set.univ`. Rewrite using `[PrimeSpectrum.zeroLocus_eq_univ_iff]`. Introduce `x hx`. Take `⟨n, hn⟩` from `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: x ^ n ∈ RingHom.ker π ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `this` using `[hn]`. Conclude with `(Submodule.mem_bot R).1 this`. Rewrite `h` using `[h2, Set.range_eq_univ]`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hs : Function.Surjective π) (hn : IsNilpotent (RingHom.ker π)) :
@@ -36,15 +34,15 @@ theorem spMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R �
   exact h
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hs hn P X P₀ l hpb hsm hpr hgc ε hε f s₀ hf`. Use `hsm` as an intermediate fact. Use `hpr` as an intermediate fact. Establish `: GeometricallyIntegral P.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ P.hom hsm hgc`. Establish `hsurj : ∀ V : (Sp R).Opens, Function.Surjective (P.hom.app V).hom` using `fun V => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalFunctions.isIso_app FlatFibreInjective.injective_baseChange exists_noetherian_model_of_smooth P.hom V` as an intermediate fact. Conclude with `(ConcreteCategory.bijective_of_isIso (P.hom.app V)).2`. Establish `hloc : ∀ t : Sp R, ∃ V : (Sp R).Opens, t ∈ V ∧ (P.hom ⁻¹ᵁ V).ι ≫ f.left = (P.hom ⁻¹ᵁ V).ι ≫ P.hom ≫ ε ≫ f.left`. Introduce `t`. Take `⟨t₀, ht₀⟩` from `spMap_surjective π hs hn t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `local_rigidity _ _ _ P.hom ε f.left hε inferInstance hsurj t (s₀ t₀) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := P.hom) (g := spMap π) x t₀ (hx.trans ht₀.symm)`. Establish `e₁ : l (hpb.isoPullback.inv z) = x`. Rewrite using `[← Scheme.Hom.comp_apply, IsPullback.isoPullback_inv_fst, hz₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : P₀.hom (hpb.isoPullback.inv z) = t₀`. Rewrite using `[← Scheme.Hom.comp_apply, IsPullback.isoPullback_inv_snd, hz₂]`. Rewrite using `[← e₁, ← Scheme.Hom.comp_apply, hf, Scheme.Hom.comp_apply, e₂]`. Use `choose V hV hfg using hloc`. Establish `hc : TopologicalSpace.IsOpenCover (fun t => P.hom ⁻¹ᵁ V t)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Conclude with `fun x _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨P.hom x, hV (P.hom x)⟩`. Conclude with `(P.left.openCoverOfIsOpenCover _ hc).hom_ext _ _ fun t => hfg t`.
+A detailed English derivation is pending.
 -/
 theorem eq_comp_section : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (P X : Over (Sp R)) (P₀ : Over (Sp R₀)) (l : P₀.left ⟶ P.left), IsPullback l P₀.hom P.hom (spMap π) →

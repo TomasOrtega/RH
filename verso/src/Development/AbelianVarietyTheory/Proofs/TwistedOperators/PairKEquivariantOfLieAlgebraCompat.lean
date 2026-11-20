@@ -7,13 +7,13 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory.RealPar
 
 /- English proof (translation)
-Set `e` to `WithLp.prodContinuousLinearEquiv 2 ℂ H₁ H₂`. Set `ι : E →ₗ[ℂ] WithLp 2 (H₁ × H₂)` to `e.symm.toLinearEquiv.toLinearMap ∘ₗ j₁.prod j₂`. Set `U : ℝ → WithLp 2 (H₁ × H₂) →L[ℂ] WithLp 2 (H₁ × H₂)` to `fun s => (e.symm : H₁ × H₂ →L[ℂ] WithLp 2 (H₁ × H₂)) ∘L ((U₁ s).prodMap (U₂ s)) ∘L (e : WithLp 2 (H₁ × H₂) →L[ℂ] H₁ × H₂)`. Establish `hU : ∀ s x, U s x = e.symm (U₁ s (e x).1, U₂ s (e x).2)` using `fun s x => rfl`. Establish `hι : ∀ v, ι v = e.symm (j₁ v, j₂ v)` using `fun v => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `flow_mem_map ι a ⊤ (fun _ _ => trivial) U (by`. Use `ContinuousLinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hU, h₁, h₂]`. Conclude with `e.symm_apply_apply x)`. Use the proof step `(fun s r => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, hU, hU, hU, a₁, a₂, e.apply_symm_apply]`. Use the proof step `rfl)`. Use the proof step `(fun v => by`. Establish `h` using `((e.symm : H₁ × H₂ →L[ℂ] WithLp 2 (H₁ × H₂)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((d₁ v).prodMk (d₂ v))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `h) t (ι w) ⟨w, trivial, rfl⟩`. Take `⟨w', -, hw'⟩` from `key`. Rewrite `hw'` using `[hU, hι, hι, e.apply_symm_apply]`. Establish `h` using `e.symm.injective hw'`. Conclude with `⟨w', (congrArg Prod.fst h).symm, (congrArg Prod.snd h).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem flow_pair_mem_range {E H₁ H₂ : Type*} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
@@ -49,13 +49,13 @@ theorem flow_pair_mem_range {E H₁ H₂ : Type*} [AddCommGroup E] [Module ℂ E
   exact ⟨w', (congrArg Prod.fst h).symm, (congrArg Prod.snd h).symm⟩
 
 /- English proof (translation)
-Introduce `p q T hgen π₁ π₂ E _ _ _ a j₁ j₂ hder k hk`. Establish `hflow : ∀ Y ∈ upq p q, IsKC Y → ∀ (t : ℝ) (w : E), ∃ w' : E, π₁.π (T.expt (t • Y)) (j₁ w) = j₁ w' ∧ π₂.π (T.expt (t • Y)) (j₂ w) = j₂ w'`. Introduce `Y hY hK t w`. Conclude with `flow_pair_mem_range j₁ j₂ (a Y) (fun t => π₁.π (T.expt (t • Y))) (fun t => π₂.π (T.expt (t • Y))) (by simp [T.expt_zero]) (by simp [T.expt_zero]) (fun s t => by simp only [T.expt_add Y hY, map_mul]) (fun s t => by simp only [T.expt_add Y hY, map_mul]) (fun v => (hder Y hY hK v).1 …`. Use `Subgroup.closure_induction'' (p := fun k _ => ∀ w : E, ∃ w' : E, π₁.π k (j₁ w) = j₁ w' ∧ π₂.π k (j₂ w) = j₂ w') ?_ ?_ ?_ ?_ (hgen k hk)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨Y, ⟨hY, hK⟩, rfl⟩ w`. Simplify using `using hflow Y hY hK 1 w`. Introduce and unpack `_ ⟨Y, ⟨hY, hK⟩, rfl⟩ w`. Establish `h : (T.expt Y)⁻¹ = T.expt ((-1 : ℝ) • Y)`. Use `T.expt_add Y hY (-1) 1` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_add_cancel, zero_smul, one_smul, T.expt_zero]`. Conclude with `(eq_inv_of_mul_eq_one_left this.symm).symm`. Rewrite using `[h]`. Conclude with `hflow Y hY hK (-1) w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, by simp, by simp⟩`. Introduce `x y _ _ hx hy w`. Take `⟨w', h1, h2⟩` from `hy w`. Take `⟨w'', h3, h4⟩` from `hx w'`. Conclude with `⟨w'', by rw [map_mul, ContinuousLinearMap.mul_apply, h1, h3], by rw [map_mul, ContinuousLinearMap.mul_apply, h2, h4]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pair_kEquivariant_of_lie : ∀ (p q : ℕ) (T : GrpData p q), (∀ k ∈ T.Kset, k ∈ Subgroup.closure (T.expt '' {Y | Y ∈ upq p q ∧ IsKC Y})) → ∀ (π₁ π₂ : URep T) (E : Type) [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] (a : Mat p q → E →ₗ[ℂ] E) (j₁ : E →ₗ[ℂ] π₁.H) (j₂ : E →ₗ[ℂ] π₂.H), (∀ Y ∈ upq p q, IsKC Y → ∀ w, HasDerivAt (fun t : ℝ => π₁.π (T.expt (t • Y)) (j₁ w)) (j₁ (a Y w)) 0 ∧ HasDerivAt (fun t : ℝ => π₂.π (T.expt (t • Y)) (j₂ w)) (j₂ (a Y w)) 0) → (∀ k ∈ T.Kset, ∀ w : E, ∃ w' : E, π₁.π k (j₁ w) = j₁ w' ∧ π₂.π k (j₂ w) = j₂ w') := by
   intro p q T hgen π₁ π₂ E _ _ _ a j₁ j₂ hder k hk

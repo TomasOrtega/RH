@@ -7,19 +7,17 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Take `⟨a, b, hx⟩` from `h.span x`. Establish `hθ : w θ = 1`. Rewrite `hδ` using `[← h.sq, map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 hδ`. Use `set y : E := algebraMap F E a - algebraMap F E b * θ with hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : w (x + y) = w (algebraMap F E a)`. Establish `: x + y = 2 * algebraMap F E a` using `by rw [hx, hy]; ring`. Rewrite using `[this, map_mul, h2, one_mul]`. Establish `hb : w (x - y) = w (algebraMap F E b)`. Establish `: x - y = 2 * algebraMap F E b * θ` using `by rw [hx, hy]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, map_mul, h2, hθ, one_mul, mul_one]`. Establish `hn : x * y = algebraMap F E (a ^ 2 - δ * b ^ 2)`. Rewrite using `[hx, hy, map_sub, map_mul, map_pow, map_pow, ← h.sq]`. Expand and normalize the polynomial expressions, which then agree. Break down `lt_trichotomy (w x) (w y) with hlt | heq | hgt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : w y = w (algebraMap F E a)` using `by rw [← ha, w.map_add_eq_of_lt_right hlt]`. Establish `hy0 : w y ≠ 0` using `(lt_of_le_of_lt zero_le hlt).ne'`. Use `⟨(a ^ 2 - δ * b ^ 2) / a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_div₀, ← hn, ← h1, map_mul, mul_div_assoc, div_self hy0, mul_one]`. Establish `h1 : w (algebraMap F E a) ≤ w x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ha]`. Conclude with `(w.map_add x y).trans (max_le le_rfl heq.ge)`. Establish `h3 : w (algebraMap F E b) ≤ w x`. Rewrite using `[← hb]`. Conclude with `(w.map_sub x y).trans (max_le le_rfl heq.ge)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h4 : w x ≤ max (w (algebraMap F E a)) (w (algebraMap F E b))`. Use `w.map_add (algebraMap F E a) (algebraMap F E b * θ)` as an intermediate fact. Rewrite `this` using `[← hx, map_mul, hθ, mul_one]`. Then use the resulting hypothesis. Break down `le_max_iff.1 h4 with h5 | h5` into its components or cases. Conclude with `⟨a, le_antisymm h5 h1⟩`.
-
-Conclude with `⟨b, le_antisymm h5 h3⟩`. Conclude with `⟨a, by rw [← ha, w.map_add_eq_of_lt_left hgt]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsQuad.exists_base_value {F E : Type} [Field F] [Field E] [Algebra F E] {δ : F} {θ : E}
     {σ : E ≃ₐ[F] E} (h : IsQuad δ θ σ) (w : Valuation E ℤᵐ⁰) (h2 : w 2 = 1)
@@ -55,13 +53,13 @@ theorem IsQuad.exists_base_value {F E : Type} [Field F] [Field E] [Algebra F E] 
   · exact ⟨a, by rw [← ha, w.map_add_eq_of_lt_left hgt]⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ δ θ σ hq w h2 hδ`. Take `⟨e, he, hw⟩` from `(places_over F E).2.2 w`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Establish `h2' : w.valuation E 2 = 1`. Use `hw 2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_ofNat, h2, one_pow]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `hq.exists_base_value (w.valuation E) h2' (by rw [hw, hδ, one_pow]) π`. Rewrite `hu` using `[hπ, hw]`. Establish `hu0 : (w.under (𝓞 F)).valuation F u ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu` using `[h0, zero_pow he.ne']`. Conclude with `WithZero.exp_ne_zero hu`. Rewrite `hu` using `[← WithZero.exp_log hu0, ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`. Establish `h1 : (e : ℤ) ∣ 1` using `⟨-WithZero.log ((w.under (𝓞 F)).valuation F u), by linear_combination -hu⟩`. Establish `h3 : e = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e ∣ 1` using `by exact_mod_cast h1`. Conclude with `Nat.dvd_one.1 this`. Introduce `x`. Rewrite using `[hw, h3, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_unramified_of_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsQuad δ θ σ → ∀ w : HeightOneSpectrum (𝓞 E), (w.under (𝓞 F)).valuation F 2 = 1 → (w.under (𝓞 F)).valuation F δ = 1 → ∀ x : F, w.valuation E (algebraMap F E x) = (w.under (𝓞 F)).valuation F x := by
   intro F E _ _ _ _ _ δ θ σ hq w h2 hδ

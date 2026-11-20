@@ -20,9 +20,9 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨x, rfl, by simp⟩`. Consider the case `succ n ih`. Take `⟨y, hy, hI⟩` from `ih`. Take `⟨z, hz, hJ⟩` from `h y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z, by rw [hz, hy, pow_succ', AlgEquiv.mul_apply], ?_⟩` and prove the remaining obligations. Rewrite `hI`, `hJ`, the goal using `[← Ideal.Quotient.eq]`. Rewrite using `[hJ, map_pow, hI, ← map_pow, ← pow_mul, pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_lift {R K Ω : Type} [CommRing R] [Field K] [Field Ω] [Algebra K Ω] [Algebra R Ω]
     (I : Ideal R) (φ : Ω ≃ₐ[K] Ω) (q : ℕ)
@@ -38,7 +38,7 @@ theorem iter_lift {R K Ω : Type} [CommRing R] [Field K] [Field Ω] [Algebra K �
     rw [hJ, map_pow, hI, ← map_pow, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_pow_fixed {k : Type} [Monoid k] (c : k) (a : ℕ) (h : c ^ a = c) (n : ℕ) : c ^ (a ^ n) = c := by
   induction n with
@@ -46,38 +46,32 @@ theorem pow_pow_fixed {k : Type} [Monoid k] (c : k) (a : ℕ) (h : c ^ a = c) (n
   | succ n ih => rw [pow_succ, pow_mul, ih, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsFractionRing.lift hg, RingHom.ext fun a => IsFractionRing.lift_algebraMap hg a⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_frac {A K L : Type} [CommRing A] [Field K] [Algebra A K] [IsFractionRing A K] [Field L]
     (g : A →+* L) (hg : Function.Injective g) : ∃ j : K →+* L, j.comp (algebraMap A K) = g :=
   ⟨IsFractionRing.lift hg, RingHom.ext fun a => IsFractionRing.lift_algebraMap hg a⟩
 
 /- English proof (translation)
-Take `⟨j', hj0⟩` from `exists_lift_frac (K := K') (algebraMap R Ω) hRΩ`. Establish `hj' : ∀ x : R, j' (algebraMap R K' x) = algebraMap R Ω x` using `fun x => RingHom.congr_fun hj0 x`. Take `⟨i, hi⟩` from `exists_lift_frac (K := L) ((algebraMap R K').comp (algebraMap W R)) ((IsFractionRing.injective R K').comp hWR)`. Use `replace hi := hi.symm`. Establish `hjW : (j'.comp i).comp (algebraMap W L) = algebraMap W Ω`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_assoc, ← hi]`. Conclude with `RingHom.ext fun w => (hj' _).trans (IsScalarTower.algebraMap_apply W R Ω w).symm`. Establish `hjK : (j'.comp i).comp (algebraMap K L) = algebraMap K Ω`. Use `IsLocalization.ringHom_ext (nonZeroDivisors V) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← hcW, ← RingHom.comp_assoc, hjW, hVΩ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ, hθK⟩` from `GlobalTheory.T.grpScheme_points_model_over_field K W L P.A G hmod Ω (j'.comp i) hjK hjW`. Take `⟨e, act, hact, he, hpair, hrel, hdef⟩` from `GlobalTheory.T.galois_action_torsion_pairing_tame_fixedPoints K P Ω l (p ^ r₀) hl htors σ φ K' j' hζ (fun L h₁ h₂ h₃ x hx => ⟨(hL L h₁ h₂ h₃ x hx).1, fun h => by`. Take `⟨a, b, hb0, hab⟩` from `(hL L h₁ h₂ h₃ x hx).2 h`. Use `⟨algebraMap R _ a / algebraMap R _ b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hj', hj', div_eq_iff hb0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hab.symm⟩)`. Establish `hcard` using `(GlobalTheory.T.torsion_points_polarised_abelianVariety_galois K P Ω l hl).1`. Use `haveI := P.isAb.comm`. Establish `hψ : (φ ^ f).toRingEquiv.toRingHom.comp (j'.comp i) = j'.comp i`. Use `IsLocalization.ringHom_ext (nonZeroDivisors W) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.comp_assoc, hjW]`. Conclude with `RingHom.ext fun w => hfix w`. Take `⟨t, a, m, C, Q, H, U, hm, hH, hcnt, hQ, hU, hHU, hT⟩` from `GlobalTheory.T.frobenius_counts_integral_torsion_specialFibre W R Ω hRΩ hk p (r₀ * f) l hp hpR (Nat.mul_pos hr₀ hf) hl hlR (fun c => by`. Take `⟨m, hm, h⟩` from `hres c`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_mul, ← pow_mul _ f m, mul_comm f m, pow_mul _ m f]`. Conclude with `pow_pow_fixed c _ h f)`. Use the proof step `(φ ^ f).toRingEquiv.toRingHom (fun w => hfix w)`. Use the proof step `(fun x => by rw [pow_mul]; exact iter_lift _ φ _ hφ f x)`. Use `G hG P.g hdim N hN (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) θ (act (φ ^ f))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun x => hθ _ hψ _ _ (hact _ x))`. Rewrite `hU`, `hHU` using `[← map_pow, ← pow_mul]`. Establish `hqq : (p ^ (r₀ * f)) ^ m = (p ^ r₀) ^ (f * m)` using `by rw [pow_mul, ← pow_mul _ f m]`. Rewrite `hU`, `hQ` using `[hqq]`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : P.g ≤ t + a`. Use `GlobalTheory.T.weight_le_add_of_torsion_pairing (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) Ω l ((p ^ r₀) ^ (f * m)) P.g t a c C hl h3 (Nat.cast_ne_zero.2 hl.ne_zero) ?_ hc hcard e he (act σ) (act (φ ^ (f * m))) (hpair _) (hrel _) (fun x hx => Over.OverMorphism.ext ((hact σ x).trans …` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `Nat.one_lt_pow (Nat.mul_pos hr₀ (Nat.mul_pos hf hm)).ne' hp.one_lt`. Introduce `n x hx hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Take `⟨y, hy⟩` from `hdef n x hx hS`. Take `⟨y', hy'⟩` from `hθK K' i j' rfl x y hy _ hi`. Take `⟨s, hs₁, hs₂⟩` from `hext y'`. Use `(hH _).2 ⟨s, hs₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy', ← hs₂, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hj0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hproper : IsProper ((Over.pullback (spMap (algebraMap W L))).obj G).hom`. Take `⟨ε, -⟩` from `hmod`. Use `haveI := P.isAb.proper`. Rewrite using `[← Over.w ε.hom]`. Establish `: IsProper ((Over.pullback (spMap (algebraMap K L))).obj P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`.
-
-Establish `: IsIso ε.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map ε.hom))`. Use `infer_instance`. Use `clear hcard`. Use `GlobalTheory.T.isSemiAbelian_of_proper_generic_torusExtension_special W L G hG hproper _ _ ?_ ?_ (hT hg)` and prove the remaining obligations. Use extensionality with `w`.
-
-Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`. Introduce `z`. Take `⟨m, hm, h⟩` from `hres z`. Establish `h1 : 1 < (p ^ r₀) ^ m`. Rewrite using `[← pow_mul]`.
-
-Conclude with `Nat.one_lt_pow (Nat.mul_pos hr₀ hm).ne' hp.one_lt`. Use `⟨Polynomial.X ^ ((p ^ r₀) ^ m) - Polynomial.X, ?_, by simp [h]⟩` and prove the remaining obligations. Use `Polynomial.Monic.sub_of_left (Polynomial.monic_X_pow _) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.degree_X_pow, Polynomial.degree_X]`. Conclude with `h1` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_rational_torsion (V K : Type) [CommRing V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K]
     (l : ℕ) (hl : l.Prime) (h3 : 3 ≤ l)
@@ -182,17 +176,17 @@ theorem isSemiAbelian_of_rational_torsion (V K : Type) [CommRing V] [Field K] [C
       exact_mod_cast h1
 
 /- English proof (translation)
-Take `⟨R, _, σ, φ, hSH, hloc, hres, hW, hσ, hφ, hζ, hL⟩` from `GlobalTheory.T.exists_maxUnramified_frobenius_tame_alt V K hfin l hl hlu Ω _ rfl`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField V)`. Take `⟨p, hpV⟩` from `CharP.exists (IsLocalRing.ResidueField V)`. Take `⟨r₀, hp, hq⟩` from `FiniteField.card (IsLocalRing.ResidueField V) p`. Rewrite `hq` using `[← Nat.card_eq_fintype_card]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hres`, `hφ`, `hζ`, `hL` using `[hq]`. Establish `hpR : CharP (IsLocalRing.ResidueField R) p` using `charP_of_injective_ringHom (IsLocalRing.ResidueField.map (algebraMap V R)).injective p`. Establish `hVΩ : Function.Injective (algebraMap V Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq V K Ω]`. Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective V K)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRΩ : Function.Injective (algebraMap R Ω)` using `Subtype.val_injective`. Establish `hVR : Function.Injective (algebraMap V R)` using `fun a b h => hVΩ (congrArg Subtype.val h)`. Take `⟨K', _, _, hSH⟩ : ∃ (K' : Type) (_ : Field K') (_ : Algebra R K'), SH R K'` from `⟨_, _, _, hSH⟩`. Use `haveI : IsFractionRing R K' := hSH.2.2.2`. Take `⟨jK, hjK'⟩` from `exists_lift_frac (K := K) ((algebraMap R K').comp (algebraMap V R)) ((IsFractionRing.injective R K').comp hVR)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra K K' := jK.toAlgebra`. Establish `hcomp : (algebraMap R K').comp (algebraMap V R) = (algebraMap K K').comp (algebraMap V K)` using `hjK'.symm`. Take `⟨s, c, hc, hgeo⟩` from `GlobalTheory.T.exists_neronNeutralComponent_finite_level V K R K' hSH hcomp P`. Take `⟨W, hWd, hs, hWc, hWf, hWl, f, hf, hfix⟩` from `hW s`. Take `⟨G, _, L, _, _, _, _, hG, hcW, hmod, hdim, ⟨N, hN⟩, hext⟩` from `hgeo W hWd hs hWl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlR : IsUnit (l : R)` using `by simpa using hlu.map (algebraMap V R)`. Use `haveI : IsLocalHom (algebraMap W R) := hWl`. Establish `hsemi : IsSemiAbelian G` using `isSemiAbelian_of_rational_torsion V K l hl h3 P Ω htors W L R K' Subtype.val_injective hRΩ hcW (IsScalarTower.algebraMap_eq V K Ω) hSH.2.2.1 hlR p r₀ f hp hpR r₀.2 hf hres σ φ (fun w => hfix w.1 w.2) hφ hζ (fun L h₁ h₂ h₃ x hx => ⟨(hL L h₁ h₂ h₃ x hx).1, fun h => by`. Take `⟨a, ha, b, hb, hb0, hab⟩` from `(hL L h₁ h₂ h₃ x hx).2 h`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, hb0, hab⟩⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `G hG hmod hdim N hN c hc hext`. Establish `hVW : IsLocalHom (algebraMap V W)` using `⟨fun v hv => by`. Establish `: IsUnit (algebraMap V R v)` using `hv.map W.val`. Conclude with `(isUnit_map_iff (algebraMap V R) v).1 this⟩`. Conclude with `⟨W, L, inferInstance, inferInstance, hWd, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hcW, hWf, hVW, hWc, G, inferInstance, hmod, hsemi⟩`.
+A detailed English derivation is pending.
 -/
 theorem potentialSemistable_rational_lTorsion_any_closure (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K]
@@ -240,7 +234,7 @@ theorem potentialSemistable_rational_lTorsion_any_closure (V K : Type) [CommRing
     inferInstance, inferInstance, hcW, hWf, hVW, hWc, G, inferInstance, hmod, hsemi⟩
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ hfin l hl h3 hlu P htors`. Conclude with `potentialSemistable_rational_lTorsion_any_closure V K hfin l hl h3 hlu P (AlgebraicClosure K) htors`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem potModel_of_rational_torsion : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], Finite (IsLocalRing.ResidueField V) → ∀ (l : ℕ), l.Prime → 3 ≤ l → IsUnit (l : V) → ∀ (P : Out.PolAV (Sp K)), (∀ (τ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (x : Over.mk (spMap (algebraMap K (AlgebraicClosure K))) ⟶ P.A), x ^ l = 1 → spMap τ.toRingEquiv.toRingHom ≫ x.left = x.left) → PotModel V K P.A (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V K _ _ _ _ _ _ _ _ hfin l hl h3 hlu P htors

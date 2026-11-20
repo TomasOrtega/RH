@@ -9,25 +9,23 @@ noncomputable section
 namespace GlobalTheory.TorsGeomPow
 
 /- English proof (translation)
-Introduce `S A _ hA n hn T x hx d hpt`. Take `⟨-, -, hZe⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A (hG := hA) hn`. Use `set P : Over S := pullback (mulN A n) (η : 𝟙_ (Over S) ⟶ A) with hP`. Establish `hPe : Etale P.hom` using `hZe`. Establish `hxd : (x ^ d) ≫ mulN A n = toUnit T ≫ (η : 𝟙_ (Over S) ⟶ A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.GrpTangent.comp_mulN, ← pow_mul, mul_comm, pow_mul, hx, one_pow, CategoryTheory.Hom.one_def]`. Establish `h1 : (1 : T ⟶ A) ≫ mulN A n = toUnit T ≫ (η : 𝟙_ (Over S) ⟶ A)`. Rewrite using `[GlobalTheory.GrpTangent.comp_mulN, one_pow, CategoryTheory.Hom.one_def]`. Set `y₁ : T ⟶ P` to `pullback.lift (x ^ d) (toUnit T) hxd`. Set `u₁ : T ⟶ P` to `pullback.lift 1 (toUnit T) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : y₁ ≫ pullback.fst (mulN A n) (η : 𝟙_ (Over S) ⟶ A) = x ^ d` using `pullback.lift_fst _ _ _`. Establish `hu : u₁ ≫ pullback.fst (mulN A n) (η : 𝟙_ (Over S) ⟶ A) = 1` using `pullback.lift_fst _ _ _`. Establish `key : ∀ {W : Over S} (f : W ⟶ T), (f ≫ x) ^ d = 1 → f ≫ y₁ = f ≫ u₁`. Introduce `W f hf`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hy, hu, MonObj.comp_pow, hf, MonObj.comp_one]`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, pullback.lift_snd]`. Establish `hyu : y₁ = u₁` using `by haveI := hPe`. Establish `hw : y₁.left ≫ P.hom = u₁.left ≫ P.hom` using `by rw [Over.w, Over.w]`. Set `l : T.left ⟶ pullback P.hom P.hom` to `pullback.lift _ _ hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl1 : l ≫ pullback.fst _ _ = y₁.left` using `pullback.lift_fst _ _ _`. Establish `hl2 : l ≫ pullback.snd _ _ = u₁.left` using `pullback.lift_snd _ _ _`. Establish `hs : Function.Surjective (pullback.snd (pullback.diagonal P.hom) l)`. Introduce `s`. Set `k` to `AlgebraicClosure (T.left.residueField s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ξ : Sp k ⟶ T.left` to `Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField s) k)) ≫ T.left.fromSpecResidueField s`. Establish `hξ : ξ ≫ y₁.left = ξ ≫ u₁.left` using `congrArg CommaMorphism.left (key (Over.homMk ξ rfl : Over.mk (ξ ≫ T.hom) ⟶ T) (hpt k ξ))`. Establish `hq : (ξ ≫ y₁.left) ≫ pullback.diagonal P.hom = ξ ≫ l`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.diagonal_fst, Category.comp_id, hl1]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.diagonal_snd, Category.comp_id, hl2, hξ]`. Use `⟨pullback.lift _ _ hq (IsLocalRing.closedPoint k), ?_⟩` and prove the remaining obligations. Establish `e : (pullback.lift _ _ hq ≫ pullback.snd (pullback.diagonal P.hom) l) (IsLocalRing.closedPoint k) = ξ (IsLocalRing.closedPoint k)` using `by rw [Limits.pullback.lift_snd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Eq.trans ?_ e).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply s _)`. Establish `: Epi (pullback.snd (pullback.diagonal P.hom) l).base` using `(TopCat.epi_iff_surjective _).2 hs`. Establish `: IsIso (pullback.snd (pullback.diagonal P.hom) l)` using `IsOpenImmersion.isIso _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : l = inv (pullback.snd (pullback.diagonal P.hom) l) ≫ pullback.fst _ _ ≫ pullback.diagonal P.hom`. Rewrite using `[pullback.condition, IsIso.inv_hom_id_assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hl1, ← hl2, hl]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hy, hyu, hu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_geometric_points : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ (n : ℕ), IsUnit (n : Γ(S, ⊤)) → ∀ (T : Over S) (x : T ⟶ A), x ^ n = 1 → ∀ d : ℕ,

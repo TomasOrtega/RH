@@ -7,7 +7,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.StabilizerPairs
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `c2_section_decomp_of_pieces stabilizer_split stabilizer_pairs unipotent_radical_image upper_splitting standard_flag_property unipotent_map_frame zhat_equivalence c2_tau_mem`.
+A detailed English derivation is pending.
 -/
 theorem c2_section_decomp : Formalism.FourierDecayAlt.C2.SectionDecomp :=
   c2_section_decomp_of_pieces stabilizer_split stabilizer_pairs unipotent_radical_image upper_splitting standard_flag_property

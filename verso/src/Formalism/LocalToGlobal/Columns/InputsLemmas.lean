@@ -13,7 +13,7 @@ namespace Formalism.L2.Col
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.HermitianLatticesTheory MvPolynomial
 
 /- English proof (translation)
-The claim follows from `card_dvd_minkowskiNumber`.
+A detailed English derivation is pending.
 -/
 theorem minkowskiBound_holds : MinkowskiBound := card_dvd_minkowskiNumber
 

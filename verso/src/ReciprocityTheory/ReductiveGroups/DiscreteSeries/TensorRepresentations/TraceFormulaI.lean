@@ -9,17 +9,17 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `hyC : (y : H) ∈ closGen E V` using `Submodule.le_topologicalClosure _ ⟨y, hyG, rfl⟩`. Establish `hcoeC : ∀ f : Fin n → D, f ∈ tensSub (genSub E V) → ∀ c : Fin n, ((f c : D) : H) ∈ closGen E V` using `fun f hf c => Submodule.le_topologicalClosure _ ⟨f c, (tset_mem.1 hf) c, rfl⟩`. Use `set f2 : Fin n → D := fun c => tfSgn ε c • g0 c with hf2`. Establish `hf2m : f2 ∈ tensSub (genSub E V)`. Rewrite using `[tset_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Conclude with `Submodule.smul_mem _ _ ((tset_mem.1 hg0m) c)`. Establish `hT2b` using `tensor_functor_separation dual hσ hD hgap hV hc hVK hd hyC (hcoeC _ hf2m) (hcoeC _ hg0m) (tf_ph_memLp dual hσ hD hsm hgap hV hc hVK hW hyG hf2m) (tf_ph_memLp dual hσ hD hsm hgap hV hc hVK hW hyG hg0m)`. Rewrite `hT2b` using `[h0, map_zero, inner_zero_right]`. Establish `hform : tfFormBH ε (fun i => ((f2 i : D) : H)) (fun i => ((g0 i : D) : H)) = ((∑ c, ‖((g0 c : D) : H)‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `tfFormBH`. Use `push_cast`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hf2]`. Simplify using `only [Submodule.coe_smul, inner_smul_left, ← mul_assoc, inner_self_eq_norm_sq_to_K]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show (starRingEnd ℂ) (tfSgn ε c) = tfSgn ε c from tf_star_sgn ε c, tfSgn_mul_self, one_mul]`. Both sides reduce to the same expression. Establish `hd0 : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd.1.ne'`. Establish `hN0 : inner ℂ (y : H) (y : H) ≠ 0` using `inner_self_ne_zero.2 hy0`. Rewrite `hT2b` using `[hform]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : (∑ c, ‖((g0 c : D) : H)‖ ^ 2 : ℝ) = 0`. Establish `h1 : ((∑ c, ‖((g0 c : D) : H)‖ ^ 2 : ℝ) : ℂ) = 0`. Establish `h2` using `hT2b.symm`. Rewrite `h2` using `[mul_div_assoc]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (div_ne_zero hN0 hd0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Use function extensionality and compare the values at `c`. Establish `h1` using `(sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖((g0 i : D) : H)‖)).1 hs0 c (mem_univ _)`. Establish `h2 : ((g0 c : D) : H) = 0` using `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h1)`. Conclude with `Subtype.ext h2`.
+A detailed English derivation is pending.
 -/
 theorem tf_ph_inj (dual : Bool) {lam : Fin n → ℝ} [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -66,15 +66,15 @@ theorem tf_ph_inj (dual : Bool) {lam : Fin n → ℝ} [CompleteSpace H] {ε : Fi
   exact Subtype.ext h2
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `tfClRep_fdeg hgap hσ hD hV hc hVK (tf_sqInt_of_hW hσ hD hgap hV hc hVK hW)`. Take `⟨HP, w, -, hHPeq, -, hrep, hc0eq⟩` from `tf_trace_data dual hσ hD hsm hgap hV hc hVK hW hP hPP hPB hEP hc0 hyV hy0 hd`. Establish `hdpos : 0 < d` using `hd.1`. Use `⟨(∑ c, ‖w c‖ ^ 2) / d, div_nonneg (sum_nonneg fun _ _ => sq_nonneg _) hdpos.le, hc0eq, fun h0 b => ?_⟩` and prove the remaining obligations. Establish `hT0 : ∑ c, ‖w c‖ ^ 2 = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hc0eq` using `[h0]`. Establish `h1 : (∑ c, ‖w c‖ ^ 2) / d = 0` using `by exact_mod_cast hc0eq.symm`. Conclude with `(div_eq_zero_iff.1 h1).resolve_right hdpos.ne'`. Establish `hw0 : ∀ c, w c = 0`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖w i‖)).1 hT0 c (mem_univ _)`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h1)`. Establish `hHP0 : ∀ v ∈ HP, v = 0`. Introduce `v hv`. Use `vectorL2_ext fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hrep v hv c`. Simplify using `only [hw0, inner_zero_left] at h1`. Conclude with `Lp.ext (h1.trans (Lp.coeFn_zero ℂ 2 (Formalism.REAL.muG ε)).symm)`. Establish `hyG : y ∈ genSub E V` using `rorth_le_genSub hyV`. Establish `hsing : (Pi.single b y : Fin n → D) ∈ tensSub (genSub E V)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using tf_single_smul_mem b (1 : ℂ) hyG`. Establish `hmemHP : tfPh dual ε σ (y : H) (fun i => ((P (Pi.single b y) i : D) : H)) ∈ HP`. Rewrite using `[hHPeq]`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, hsing, rfl⟩)`. Conclude with `tf_ph_inj dual hσ hD hsm hgap hV hc hVK hW hd hyG hy0 (hP.1 _ hsing) (hHP0 _ hmemHP)`.
+A detailed English derivation is pending.
 -/
 theorem tf_trace_core (dual : Bool) {lam : Fin n → ℝ} [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

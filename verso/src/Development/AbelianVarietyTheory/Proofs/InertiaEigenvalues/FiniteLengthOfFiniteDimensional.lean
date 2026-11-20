@@ -27,7 +27,7 @@ open GlobalTheory.AdmLoc
 variable {k A : Type} [Field k] [Ring A] [Algebra k A]
 
 /- English proof (translation)
-Rewrite using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `⟨isNoetherian_of_tower k inferInstance, isArtinian_of_tower k inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finiteLength_of_finiteDimensional (k : Type) [Field k] [Algebra k A] (M : Type) [AddCommGroup M]
     [Module k M] [Module A M] [IsScalarTower k A M] [FiniteDimensional k M] : IsFiniteLength A M := by
@@ -35,11 +35,11 @@ theorem finiteLength_of_finiteDimensional (k : Type) [Field k] [Algebra k A] (M 
   exact ⟨isNoetherian_of_tower k inferInstance, isArtinian_of_tower k inferInstance⟩
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `M _ _ _ _ _ hd`. Establish `hfl` using `finiteLength_of_finiteDimensional (A := A) k M`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `subsingleton_or_nontrivial M with h0 | h0` into its components or cases. Conclude with `⟨M, _, _, _, inferInstance, inferInstance, (isSemisimpleModule_iff A M).2 (have := (Submodule.subsingleton_iff A).2 h0; Subsingleton.instComplementedLattice), SameFactors.refl hfl⟩`. Use `haveI : IsNoetherian A M := isNoetherian_of_tower k inferInstance`. Take `⟨N, hN, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Submodule A M)).resolve_left bot_ne_top`. Establish `hlt : Module.finrank k N < d`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd]`. Conclude with `Submodule.finrank_lt (s := N.restrictScalars k) fun h => hN.1 (by simpa using h)`. Take `⟨S, _, _, _, _, _, hS, hf⟩` from `ih _ hlt N rfl`. Use `haveI : IsSimpleModule A (M ⧸ N) := isSimpleModule_iff_isCoatom.2 hN`. Apply the tactic sequence `exact ⟨S × (M ⧸ N), _, _, _, inferInstance, inferInstance, isSemisimpleModule_of_isSemisimpleModule_submodule' (p := fun b : Bool => cond b (LinearMap.range (LinearMap.inl A S (M ⧸ N))) (LinearMap.range (LinearMap.inr A S (M ⧸ N)))) (by rintro (_ | _) <;> exact IsSemisimpleModule …`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_semisimple_sameFactors : ∀ (d : ℕ) (M : Type) [AddCommGroup M] [Module k M] [Module A M]
     [IsScalarTower k A M] [FiniteDimensional k M], Module.finrank k M = d →
@@ -70,7 +70,7 @@ theorem exists_semisimple_sameFactors : ∀ (d : ℕ) (M : Type) [AddCommGroup M
         (hf.prod (SameFactors.refl (finiteLength_of_finiteDimensional k _)))⟩
 
 /- English proof (translation)
-Take `⟨s, t, h1, h2, h3, h4, f, hf⟩` from `h`. Rewrite using `[cpOn_series _ s h1 h2, cpOn_series _ t h3 h4]`. Conclude with `Fintype.prod_equiv f _ _ fun j => cpOn_congr _ (hf j).some`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpOn_eq_of_sameFactors (a : A) {M M' : Type} [AddCommGroup M] [Module k M] [Module A M]
     [IsScalarTower k A M] [FiniteDimensional k M] [AddCommGroup M'] [Module k M'] [Module A M']
@@ -86,7 +86,7 @@ def repOf (k Γ S : Type) [Field k] [Group Γ] [AddCommGroup S] [Module k S] [Mo
   (Algebra.lsmul k k S : MonoidAlgebra k Γ →ₐ[k] Module.End k S).toMonoidHom.comp (MonoidAlgebra.of k Γ)
 
 /- English proof (translation)
-Introduce `W hW` and use `by let W₁ : Submodule (MonoidAlgebra k Γ) S := { W.toAddSubmonoid with smul_mem' := fun a v hv => by induction a using MonoidAlgebra.induction_on with | of g => exact hW g v hv | add a b ha hb => rw [add_smul]; exact W.add_mem ha hb | smul c a ha => rw [smul_assoc]; exact W.smul_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSS_repOf {S : Type} [AddCommGroup S] [Module k S] [Module (MonoidAlgebra k Γ) S]
     [IsScalarTower k (MonoidAlgebra k Γ) S] [IsSemisimpleModule (MonoidAlgebra k Γ) S] :
@@ -103,15 +103,15 @@ theorem isSS_repOf {S : Type} [AddCommGroup S] [Module k S] [Module (MonoidAlgeb
   exact (Submodule.isCompl_restrictScalars_iff k (s := W₁)).2 h
 
 /- English proof (translation)
-Establish `: FiniteDimensional k ρ.asModule` using `inferInstanceAs (FiniteDimensional k V)`. Establish `: FiniteDimensional k σ.asModule` using `inferInstanceAs (FiniteDimensional k W)`. Establish `e1 : ∀ g, LinearMap.charpoly (ρ g) = cpOn k (MonoidAlgebra.of k Γ g) ρ.asModule` using `fun g => by`. Unfold `cpOn`. Rewrite using `[← LinearEquiv.charpoly_conj ρ.asModuleEquiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply]`. Both sides reduce to the same expression. Establish `e2 : ∀ g, LinearMap.charpoly (σ g) = cpOn k (MonoidAlgebra.of k Γ g) σ.asModule` using `fun g => by`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `cpOn`. Rewrite using `[← LinearEquiv.charpoly_conj σ.asModuleEquiv]`. Use `congr 1`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Take `⟨S, _, _, _, _, _, hS, hf⟩` from `exists_semisimple_sameFactors (k := k) (A := MonoidAlgebra k Γ) _ ρ.asModule rfl`. Take `⟨S', _, _, _, _, _, hS', hf'⟩` from `exists_semisimple_sameFactors (k := k) (A := MonoidAlgebra k Γ) _ σ.asModule rfl`. Take `⟨e, he⟩` from `GlobalTheory.brauerNesbitt_abstract_of_matrix hBN (repOf k Γ S) (repOf k Γ S') isSS_repOf isSS_repOf fun g => ((cpOn_eq_of_sameFactors _ hf).symm.trans ((e1 g).symm.trans ((h g).trans (e2 g)))).trans (cpOn_eq_of_sameFactors _ hf')`. Set `e' : S ≃ₗ[MonoidAlgebra k Γ] S'` to `{ e.toAddEquiv with map_smul' := fun a v => by show e (a • v) = a • e v`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g => exact he g v`. Consider the case `add a b ha hb => rw [add_smul, add_smul, map_add, ha, hb]`. Consider the case `smul c a ha => rw [smul_assoc, smul_assoc, map_smul, ha] }`. Conclude with `(hf.trans (SameFactors.of_equiv hf.finiteLength_right e')).trans hf'.symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sameSS_of_charpoly_eq (hBN : GlobalTheory.ConstituentsCompare.BrauerNesbitt) {V W : Type} [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] [AddCommGroup W] [Module k W] [FiniteDimensional k W]

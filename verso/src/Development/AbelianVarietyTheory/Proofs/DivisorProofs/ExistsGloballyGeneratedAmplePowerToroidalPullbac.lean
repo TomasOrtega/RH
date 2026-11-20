@@ -13,13 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PullPowGen
 
 /- English proof (translation)
-Introduce `o _ _ Z S z π OZ W M a N _ hO hA hW hM ha hN H ⟨k₀, hk₀⟩`. Take `⟨b, hb, hgen⟩` from `hA.exists_isGenerated_pow`. Establish `hP : (OZ.pull π).IsLB` using `LB.isLB_pull hO π`. Establish `hcls : N • CechPic.cls W hW = a • CechPic.cls (OZ.pull π) hP`. Use `(CechPic.cls_eq_iff (isLB_lbPow hW N) (isLB_lbPow hP a)).2 H` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[CechPic.cls_lbPow hW, CechPic.cls_lbPow hP]`. Then use the resulting hypothesis. Use `⟨N * b, Nat.mul_pos hN hb, ?_, k₀, ?_⟩` and prove the remaining obligations. Establish `hg` using `(hgen.pull π).pow a`. Establish `hOb` using `isLB_lbPow hO b`. Establish `hPb` using `LB.isLB_pull hOb π`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg.of_lbIso (isLB_lbPow hW _) ((CechPic.cls_eq_iff (isLB_lbPow hW _) hg.isLB).1 ?_)` and prove the remaining obligations. Establish `e : CechPic.cls ((lbPow OZ b).pull π) hPb = b • CechPic.cls (OZ.pull π) hP`. Rewrite using `[CechPic.cls_pull hOb, CechPic.cls_pull hO, CechPic.cls_lbPow hO, map_nsmul]`. Rewrite using `[CechPic.cls_lbPow hW, CechPic.cls_lbPow hPb, e, mul_nsmul, hcls, ← mul_nsmul, ← mul_nsmul, mul_comm]`. Establish `hamp` using `hk₀ (a * (b * k₀)) (Nat.le_mul_of_pos_left _ ha |>.trans' (Nat.le_mul_of_pos_left _ hb))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT` using `CechPic.isLB_tens (isLB_lbPow hW (N * b * k₀)) hM`. Use `hamp.of_lbIso hT ((CechPic.cls_eq_iff hT hamp.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[CechPic.cls_tens (isLB_lbPow hW _) hM, CechPic.cls_tens (isLB_lbPow hP _) hM, CechPic.cls_lbPow hW, CechPic.cls_lbPow hP, Nat.mul_assoc, mul_nsmul, hcls, ← mul_nsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isGenerated_and_isAmpleLB : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (Z S : Scheme.{0}) (z : Z ⟶ Sp o) (π : S ⟶ Z) (OZ : LB Z) (W M : LB S) (a N : ℕ), IsProjOver z → OZ.IsLB → GlobalTheory.IsAmpleLB OZ → W.IsLB → M.IsLB → 1 ≤ a → 1 ≤ N → LBIso (lbPow W N) (lbPow (OZ.pull π) a) → (∃ k₀ : ℕ, ∀ k, k₀ ≤ k → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow (OZ.pull π) k) M)) → ∃ N' : ℕ, 1 ≤ N' ∧ GlobalTheory.IsGenerated (lbPow W N') ∧ ∃ k : ℕ, GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow W (N' * k)) M) := by
   intro o _ _ Z S z π OZ W M a N _ hO hA hW hM ha hN H ⟨k₀, hk₀⟩

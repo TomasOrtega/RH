@@ -14,7 +14,7 @@ namespace GlobalTheory.GenSpread
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun y _ => Opens.mem_iSup.2 (hc y) g_self i := unit_ext fun y hy => by refine (gm_res (𝟙 Y) y _ hy _).trans ?_ rw [map_one] exact mul_eq_left.1 (h y i i i hy hy hy) cocycle i j k := unit_ext fun y hy => ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res (𝟙 Y) y _ hy _ …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_of_gm {Y : Scheme.{0}} (L : LB Y) (hc : ∀ y : Y, ∃ i, y ∈ L.U i)
     (h : ∀ (y : Y) i j k, y ∈ L.U i → y ∈ L.U j → y ∈ L.U k →
@@ -38,15 +38,13 @@ variable {I : Type} [SmallCategory I] [IsCofiltered I]
 include hc in
 
 /- English proof (translation)
-Establish `l₁ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U a ⊓ M.U b` using `fun a b c => inf_le_left`. Establish `l₂ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U b ⊓ M.U c` using `fun a b c _ hy => ⟨hy.1.2, hy.2⟩`. Establish `l₃ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U a ⊓ M.U c` using `fun a b c _ hy => ⟨hy.1.1, hy.2⟩`. Establish `val : ∀ {Z : Scheme.{0}} (r : Z ⟶ D.obj i) (z : Z) a b c, r z ∈ M.U a ⊓ M.U b ⊓ M.U c → gm r z _ (res (l₁ a b c) (M.g a b) * res (l₂ a b c) (M.g b c)) = gm r z _ (M.g a b) * gm r z _ (M.g b c)` using `fun r z a b c hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hz _) (gm_res r z _ hz _))`. Take `⟨j, f, hj⟩` from `exists_common_refinement (i := i) (fun (p : M.ι × M.ι × M.ι) k g => pullU (D.map g) _ (res (l₁ p.1 p.2.1 p.2.2) (M.g _ _) * res (l₂ p.1 p.2.1 p.2.2) (M.g _ _)) = pullU (D.map g) _ (res (l₃ p.1 p.2.1 p.2.2) (M.g _ _))) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `p k g k' g' h`. Rewrite using `[D.map_comp]`. Conclude with `congrArg (pullU (D.map g') _) h)`. Use the proof step `(by`. Introduce and unpack `⟨a, b, c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_pullU_eq D π w hc (hM a b c) _ _ fun y hy => (val (π i) y a b c hy).trans ((h y a b c hy.1.1 hy.1.2 hy.2).trans (gm_res _ y _ hy _).symm))`. Take `⟨j', f', hj'⟩` from `exists_map_preimage_le_map_preimage D _ hc (U := ⊤) (V := ⨆ a, M.U a) isCompact_univ (fun y _ => Opens.mem_iSup.2 (hcov y))`. Take `⟨k, g, g', hg⟩` from `IsCofiltered.cospan f f'`. Use `⟨k, g ≫ f, isLB_of_gm _ (fun y => ?_) fun y a b c ha hb hc' => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 (hj' (show D.map g' y ∈ D.map f' ⁻¹ᵁ ⊤ from trivial))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun _ => a, mem_pull.2 ?_⟩` and prove the remaining obligations. Rewrite using `[hg, D.map_comp]`. Conclude with `ha`. Rewrite using `[gm_pull_g M _ (𝟙 _) y a b ha hb, gm_pull_g M _ (𝟙 _) y b c hb hc', gm_pull_g M _ (𝟙 _) y a c ha hc', Category.id_comp]`. Establish `hy : D.map (g ≫ f) y ∈ M.U (a PUnit.unit) ⊓ M.U (b PUnit.unit) ⊓ M.U (c PUnit.unit)` using `⟨⟨mem_pull.1 ha, mem_pull.1 hb⟩, mem_pull.1 hc'⟩`.
-
-Rewrite `hy`, the goal using `[D.map_comp]`. Establish `e` using `congrArg (gm (D.map g) y _) (hj (a PUnit.unit, b PUnit.unit, c PUnit.unit))`. Conclude with `(val _ y _ _ _ hy).symm.trans ((gm_pull (D.map g) (D.map f) y _ hy _).symm.trans (e.trans ((gm_pull (D.map g) (D.map f) y _ hy _).trans (gm_res _ y _ hy _))))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isLB_of_isLimit {i : I} [CompactSpace (D.obj i)] (M : LB (D.obj i)) [Finite M.ι]
     (hM : ∀ a b c, IsCompact ((M.U a ⊓ M.U b ⊓ M.U c : (D.obj i).Opens) : Set (D.obj i)))
@@ -93,23 +91,21 @@ theorem exists_isLB_of_isLimit {i : I} [CompactSpace (D.obj i)] (M : LB (D.obj i
 include hc in
 
 /- English proof (translation)
-Establish `loc : ∀ x : X, ∃ (V : (D.obj i).Opens) (c : L₀.ι), IsAffineOpen V ∧ π i x ∈ V ∧ π i ⁻¹ᵁ V ≤ L₀.U c`. Introduce `x`. Take `⟨c, hc⟩` from `exists_chart hL x`. Take `⟨W, hW, hW'⟩` from `hπ.isOpen_iff.1 (L₀.U c).isOpen`. Establish `hx : π i x ∈ W` using `hW'.ge hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hx, hle⟩` from `(D.obj i).isBasis_affineOpens.exists_subset_of_mem_open hx hW`. Conclude with `⟨V, c, hV, hx, fun y hy => hW'.le (hle hy)⟩`. Use `choose V c hV hx hle using loc`. Take `⟨σ, hσ⟩` from `CompactSpace.elim_nhds_subcover (fun x => ((π i ⁻¹ᵁ V x : X.Opens) : Set X)) (fun x => (π i ⁻¹ᵁ V x).isOpen.mem_nhds (hx x))`. Establish `cov : ∀ x : X, ∃ a : σ, π i x ∈ V a` using `fun x => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hx⟩` from `Set.mem_iUnion₂.1 (hσ.ge (Set.mem_univ x))`. Conclude with `⟨⟨a, ha⟩, hx⟩`. Establish `le : ∀ {j k : I} (f : j ⟶ i) (g : k ⟶ j) (U : (D.obj i).Opens), D.map (g ≫ f) ⁻¹ᵁ U ≤ D.map g ⁻¹ᵁ (D.map f ⁻¹ᵁ U)` using `fun f g U => by`. Rewrite using `[D.map_comp, Scheme.Hom.comp_preimage]`. Establish `l : ∀ a b, π i ⁻¹ᵁ (V a ⊓ V b) ≤ L₀.U (c a) ⊓ L₀.U (c b)` using `fun a b _ hy => ⟨hle a hy.1, hle b hy.2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, f, hj⟩` from `exists_common_refinement (i := i) (fun (p : σ × σ) j f => ∃ t : Γ(D.obj j, D.map f ⁻¹ᵁ (V p.1 ⊓ V p.2))ˣ, ∀ y : X, y ∈ π i ⁻¹ᵁ (V p.1 ⊓ V p.2) → gm (π j) y (D.map f ⁻¹ᵁ (V p.1 ⊓ V p.2)) t = gm (𝟙 X) y _ (res (l p.1 p.2) (L₀.g _ _))) (by`. Introduce and unpack `p j f k g ⟨t, ht⟩`. Use `⟨res (le f g _) (pullU (D.map g) _ t), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `cone_preimage_le D π w (g ≫ f) _ hy`. Use `(gm_res_pullU (π k) (D.map g) y (le f g (V p.1 ⊓ V p.2)) hy' t).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[w g]`. Conclude with `ht y hy)`. Use the proof step `(fun p => exists_unit_π_eq D π w hc (hsep _ _ (hV _) (hV _)) _)`. Use `choose t ht using hj`. Set `M : LB (D.obj j)` to `⟨σ, fun a => D.map f ⁻¹ᵁ V a, fun a b => t (a, b)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `mem : ∀ (y : X) (a : σ), π j y ∈ M.U a ↔ π i y ∈ V a` using `fun y a => by`. Rewrite using `[← w f]`. Both sides reduce to the same expression. Establish `val : ∀ (y : X) (a b : σ), π j y ∈ M.U a → π j y ∈ M.U b → gm (π j) y _ (M.g a b) = gm (𝟙 X) y _ (L₀.g (c a) (c b))` using `fun y a b ha hb =>`. Establish `hy : y ∈ π i ⁻¹ᵁ (V a ⊓ V b)` using `⟨(mem y a).1 ha, (mem y b).1 hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(ht (a, b) y hy).trans (gm_res _ y _ hy _)`. Establish `: CompactSpace (D.obj j)` using `QuasiCompact.compactSpace_of_compactSpace (D.map f)`. Establish `: Finite M.ι` using `inferInstanceAs (Finite σ)`. Take `⟨k, g, hk⟩` from `exists_isLB_of_isLimit D π w hc M (fun a b e => ((hsep _ _ (hsep _ _ (hV a) (hV b)) (hV e)).preimage (D.map f)).isCompact) (fun y => (cov y).imp fun a ha => (mem y a).2 ha) (fun y a b e ha hb he => by`. Rewrite using `[val y a b ha hb, val y b e hb he, val y a e ha he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gm_cocycle hL (𝟙 X) y (hle a ((mem y a).1 ha)) (hle b ((mem y b).1 hb)) (hle e ((mem y e).1 he)))`. Establish `mem' : ∀ (y : X) J, y ∈ ((M.pull (D.map g)).pull (π k)).U J → π j y ∈ M.U (J PUnit.unit PUnit.unit)` using `fun y J hy => by`. Rewrite using `[← w g]`. Establish `hy' : π k y ∈ (M.pull (D.map g)).U (J PUnit.unit)` using `mem_pull.1 hy`. Conclude with `(mem_pull (F := D.map g)).1 hy'`.
-
-Use `⟨k, _, hk, (lbIso_of_chartPull (B' := (M.pull (D.map g)).pull (π k)) ⟨fun J => c (J PUnit.unit PUnit.unit).1, fun J y hy => hle _ ((mem y _).1 (mem' y J hy)), fun y J J' hJ hJ' => ?_⟩ hL).symm⟩` and prove the remaining obligations. Rewrite using `[gm_pull_g _ _ (𝟙 _) y J J' hJ hJ', Category.id_comp, gm_pull_g M _ (π k) y _ _ (mem_pull.1 hJ) (mem_pull.1 hJ'), w g]`. Conclude with `val y _ _ (mem' y J hJ) (mem' y J' hJ')`.
+A detailed English derivation is pending.
 -/
 theorem exists_lb_of_isLimit {i : I} [CompactSpace (D.obj i)] [CompactSpace X]
     (hsep : ∀ U V : (D.obj i).Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V))
@@ -176,15 +172,15 @@ theorem exists_lb_of_isLimit {i : I} [CompactSpace (D.obj i)] [CompactSpace X]
 end Limit
 
 /- English proof (translation)
-Take `⟨p₁, h₁⟩` from `exists_isPullback_stalk h`. Take `⟨hc⟩` from `StalkLimit.nonempty_isLimit h₁`. Take `⟨V₀⟩ : Nonempty (StalkLimit.AffNhd (genericPoint (Sp R)))` from `IsCofiltered.nonempty`. Establish `: IsAffine V₀.1.toScheme` using `V₀.2.2`. Establish `: CompactSpace ((StalkLimit.diagram _ f).obj V₀)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f V₀.1.ι)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact f₀` using `MorphismProperty.of_isPullback (P := @QuasiCompact) h inferInstance`. Establish `: CompactSpace X₀` using `QuasiCompact.compactSpace_of_compactSpace f₀`. Establish `: IsPreimmersion φ` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) h₁.flip inferInstance`. Establish `hs : (pullback f V₀.1.ι).IsSeparated` using `⟨by rw [← terminal.comp_from (pullback.snd f V₀.1.ι)]; infer_instance⟩`. Establish `: ((StalkLimit.diagram _ f).obj V₀).IsSeparated` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Topology.IsInducing ((StalkLimit.cone h₁).π.app V₀)`. Use `Topology.IsInducing.of_comp (g := pullback.fst f V₀.1.ι) (Scheme.Hom.continuous _) (Scheme.Hom.continuous _) ?_` and prove the remaining obligations. Use `φ.isEmbedding.isInducing` as an intermediate fact. Rewrite `this` using `[← StalkLimit.cone_π_fst h₁ V₀]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨V, L, hL', H⟩` from `exists_lb_of_isLimit (StalkLimit.diagram _ f) (fun V => (StalkLimit.cone h₁).π.app V) (fun i => (StalkLimit.cone h₁).w i) hc (i := V₀) (fun U W hU hW => hU.inf hW) hi L₀ hL`. Take `⟨a, ha, Ha⟩` from `exists_forall_mem V.2.1`. Use `⟨a, ha, fun R' _ g hg X' π f' e => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_lift_open f V.1 e (Ha R' g hg)`. Use `⟨L.pull l, pull_isLB hL' _, fun φ' hφ' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (StalkLimit.cone h₁).π.app V = φ' ≫ l`. Rewrite using `[← cancel_mono (pullback.fst f V.1.ι), Category.assoc, hl, hφ', StalkLimit.cone_π_fst]`. Conclude with `LBIso.trans hL (pull_isLB hL' _) (pull_isLB (pull_isLB hL' _) _) H (lbIso_pull_pull hL' φ' this)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lb {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     {X X₀ : Scheme.{0}} (f : X ⟶ Sp R) [QuasiCompact f] [IsSeparated f] {φ : X₀ ⟶ X} {f₀ : X₀ ⟶ Sp K}
@@ -221,7 +217,7 @@ theorem exists_lb {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
   exact LBIso.trans hL (pull_isLB hL' _) (pull_isLB (pull_isLB hL' _) _) H (lbIso_pull_pull hL' φ' this)
 
 /- English proof (translation)
-The claim follows from `exists_lb f h hL`.
+A detailed English derivation is pending.
 -/
 theorem lineBundle_spreads_out (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] (X X₀ : Scheme.{0}) (f : X ⟶ Sp R) (f₀ : X₀ ⟶ Sp K) (φ : X₀ ⟶ X)

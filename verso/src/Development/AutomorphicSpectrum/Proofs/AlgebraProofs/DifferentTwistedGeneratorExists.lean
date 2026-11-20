@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl.RelDiff
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `h` using `congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_sq_field (H : Host E) : ((H.rt : E)) ^ 2 = -(H.d : E) := by
   have h := congrArg (algebraMap (𝓞 E) E) H.rt_sq
@@ -20,7 +20,7 @@ theorem rt_sq_field (H : Host E) : ((H.rt : E)) ^ 2 = -(H.d : E) := by
   exact h
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `rt_sq_field H`. Rewrite `h1` using `[h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `H.d_prime.ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_ne_zero (H : Host E) : (H.rt : E) ≠ 0 := by
   intro h
@@ -29,9 +29,9 @@ theorem rt_ne_zero (H : Host E) : (H.rt : E) ≠ 0 := by
   exact H.d_prime.ne_zero h1
 
 /- English proof (translation)
-Establish `hre` using `congrArg Complex.re hz`. Establish `him` using `congrArg Complex.im hz`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, neg_zero] at hre him`. Establish `h0 : z.re = 0`. Break down `mul_eq_zero.mp (show z.re * z.im = 0 by nlinarith) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Rewrite `hre` using `[h]`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conj_eq_neg_of_sq {z : ℂ} {d : ℝ} (hd : 0 < d) (hz : z ^ 2 = -(d : ℂ)) :
     starRingEnd ℂ z = -z := by
@@ -47,7 +47,7 @@ theorem conj_eq_neg_of_sq {z : ℂ} {d : ℝ} (hd : 0 < d) (hz : z ^ 2 = -(d : �
   apply Complex.ext <;> simp [h0]
 
 /- English proof (translation)
-Set `φ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply `conj_eq_neg_of_sq (d := (H.d : ℝ)) (by exact_mod_cast H.d_prime.pos)` to reduce the goal to its premises. Rewrite using `[← map_pow, rt_sq_field, map_neg, map_natCast]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -60,9 +60,9 @@ theorem conj_rt (H : Host E) : IsCMField.complexConj E (H.rt : E) = -(H.rt : E) 
   simp
 
 /- English proof (translation)
-Take `⟨δ₀, -, hδ₀, hconj, hlog⟩` from `GlobalTheory.T.exists_real_different_generator E H.unram ℓ`. Establish `hrt : (H.rt : E) ≠ 0` using `rt_ne_zero H`. Establish `hδ₀E : (δ₀ : E) ≠ 0` using `by exact_mod_cast hδ₀`. Use `⟨(δ₀ : E) / (H.rt : E), div_ne_zero hδ₀E hrt, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_div₀, norm_div, Real.log_div (norm_ne_zero_iff.mpr ((map_ne_zero j).mpr hδ₀E)) (norm_ne_zero_iff.mpr ((map_ne_zero j).mpr hrt)), hlog]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, hconj, conj_rt H, div_neg, map_neg, norm_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_local_generator (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ℓ : Nat.Primes) :
     ∃ δ : E, δ ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ],

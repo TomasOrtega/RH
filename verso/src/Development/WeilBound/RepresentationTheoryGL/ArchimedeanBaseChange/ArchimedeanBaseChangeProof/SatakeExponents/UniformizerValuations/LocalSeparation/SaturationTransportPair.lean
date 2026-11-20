@@ -25,7 +25,7 @@ variable {a b : ℕ}
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `k1 k2 g`. Take `⟨h11, h12⟩` from `Subgroup.mem_prod.1 k1.2`. Take `⟨h21, h22⟩` from `Subgroup.mem_prod.1 k2.2`. Simplify using `only [Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[(Tj_mem_hecke hp i).1 ⟨_, h11⟩ ⟨_, h21⟩ g.1, (Tj_mem_hecke hq j).1 ⟨_, h12⟩ ⟨_, h22⟩ g.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem biInv_prod {P : Pl E} {p q : P.adicCompletion E} (hp : IsUnifV E P p) (hq : IsUnifV E P q) (i j : ℕ) :
     IsBiInv (K2 a b P) (fun g : GLw a P × GLw b P => Tj ℂ a (Ov E P) p i g.1 * Tj ℂ b (Ov E P) q j g.2) := by
@@ -38,13 +38,13 @@ theorem biInv_prod {P : Pl E} {p q : P.adicCompletion E} (hp : IsUnifV E P p) (h
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨hf, ha, hb, hT0⟩` from `hx`. Use `⟨(mem_fixed_comp_symm f hK).2 hf, by simpa using ha, by simpa using hb, fun ϖ' hϖ' i hi j hj => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hp, hTT⟩` from `hT ϖ' hϖ'`. Set `z : GLw a P × GLw b P` to `(dGL a ϖ a, dGL b ϖ b)`. Establish `h1` using `apply_heckeVec_shift (biInv_prod hp hp a b) hf z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : (fun g : GLw a P × GLw b P => Tj ℂ a (Ov E P) (ϖ : P.adicCompletion E) a (z * g).1 * Tj ℂ b (Ov E P) (ϖ : P.adicCompletion E) b (z * g).2) = fun g => Tj ℂ a (Ov E P) (ϖ : P.adicCompletion E) 0 g.1 * Tj ℂ b (Ov E P) (ϖ : P.adicCompletion E) 0 g.2`. Use function extensionality and compare the values at `fun g => by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, z]`. Rewrite using `[Tj_shift_self, Tj_shift_self]`. Rewrite `h1` using `[e1, hT0 _ hp 0 a.zero_le 0 b.zero_le, hT0 _ hp a le_rfl b le_rfl, satEig_zero, satEig_zero, one_mul, one_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `apply_heckeVec_shift (biInv_prod hp hp (a - i) (b - j)) hf z`. Rewrite `h2` using `[hT0 _ hp _ (a.sub_le i) _ (b.sub_le j), ← satEig_inv_mul ha hi, ← satEig_inv_mul hb hj, show satEig (qV E P) a (Ba.map (·⁻¹)) i * satEig (qV E P) a Ba a * (satEig (qV E P) b (Bb.map (·⁻¹)) j * satEig (qV E P) b Bb b) = (satEig (qV E P) a (Ba.map (·⁻¹)) i * satEig (qV E P) b (Bb. …`. Rewrite using `[heckeVec_comp_symm f hK (biInv_prod hϖ' hϖ' i j) hf, hq]`. Establish `e2 : ((fun g : GLw a P' × GLw b P' => Tj ℂ a (Ov E P') ϖ' i g.1 * Tj ℂ b (Ov E P') ϖ' j g.2) ∘ f) = fun g : GLw a P × GLw b P => Tj ℂ a (Ov E P) (ϖ : P.adicCompletion E) (a - i) (z * g).1 * Tj ℂ b (Ov E P) (ϖ : P.adicCompletion E) (b - j) (z * g).2`. Use function extensionality and compare the values at `fun g => hTT i hi j hj g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e2]`. Establish `h3` using `congrArg (ρ z⁻¹) h2`. Simplify using `only [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at h3`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem saturation_transport_pair {P P' : Pl E} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GLw a P × GLw b P) V} {x : V} {Ba Bb : Multiset ℂˣ}
@@ -95,7 +95,7 @@ def fx : GLw n x ≃* GLw n (cw x) :=
   (MulAut.conj (PhiU n (x.adicCompletion E))).symm.trans (GlobalTheory.LFun.ConjPlace.invT (cloc x).symm n)
 
 /- English proof (translation)
-Establish `h` using `(conjLoc_spec (IsCMField.complexConj E).toRingEquiv x).2.2 ((cloc x).symm y)`. Establish `e : conjLoc (IsCMField.complexConj E).toRingEquiv x ((cloc x).symm y) = y` using `(cloc x).apply_symm_apply y`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cloc_symm_v (y : x.adicCompletion E) : Valued.v ((cloc x).symm y) = Valued.v y := by
   have h := (conjLoc_spec (IsCMField.complexConj E).toRingEquiv x).2.2 ((cloc x).symm y)
@@ -104,7 +104,7 @@ theorem cloc_symm_v (y : x.adicCompletion E) : Valued.v ((cloc x).symm y) = Valu
   exact h.symm
 
 /- English proof (translation)
-Establish `hO` using `map_mem_Ov_iff (cloc x).symm (cloc_symm_v x)`. Establish `hΦ : PhiU n (x.adicCompletion E) ∈ KGL x n` using `phiU_mem _ n`. Express the relevant statement in the definitionally equal form `_ ↔ GlobalTheory.LFun.ConjPlace.invT (cloc x).symm n ((MulAut.conj (PhiU n (x.adicCompletion E))).symm g) ∈ _`. Rewrite using `[← mem_iff_invT (cloc x).symm hO, MulAut.conj_symm_apply, Subgroup.mul_mem_cancel_right _ hΦ, Subgroup.mul_mem_cancel_left _ (inv_mem hΦ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_fx_iff (g : GLw n x) : g ∈ KGL x n ↔ fx x n g ∈ KGL (cw x) n := by
   have hO := map_mem_Ov_iff (cloc x).symm (cloc_symm_v x)
@@ -114,9 +114,9 @@ theorem mem_fx_iff (g : GLw n x) : g ∈ KGL x n ↔ fx x n g ∈ KGL (cw x) n :
     Subgroup.mul_mem_cancel_left _ (inv_mem hΦ)]
 
 /- English proof (translation)
-Establish `hO` using `map_mem_Ov_iff (cloc x).symm (cloc_symm_v x)`. Establish `hΦ : PhiU n (x.adicCompletion E) ∈ KGL x n` using `phiU_mem _ n`. Express the relevant statement in the definitionally equal form `Tj ℂ n (Ov E (cw x)) ((cloc x).symm ((Units.mk0 p hp0 : (x.adicCompletion E)ˣ) : x.adicCompletion E)) j (GlobalTheory.LFun.ConjPlace.invT (cloc x).symm n ((MulAut.conj (PhiU n (x.adicCompletion E))).symm g)) = _`. Rewrite using `[Tj_invT (cloc x).symm hO _ hj, MulAut.conj_symm_apply]`. Establish `e : dGL n (Units.mk0 p hp0) n * ((PhiU n (x.adicCompletion E))⁻¹ * g * PhiU n (x.adicCompletion E)) = (PhiU n (x.adicCompletion E))⁻¹ * (dGL n (Units.mk0 p hp0) n * g) * PhiU n (x.adicCompletion E)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc (PhiU n (x.adicCompletion E))⁻¹, ← dGL_comm]`. Use `group`. Rewrite using `[e]`. Conclude with `(Tj_mem_hecke (n := n) hp (n - j)).1 ⟨_, inv_mem hΦ⟩ ⟨_, hΦ⟩ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tj_fx {p : x.adicCompletion E} (hp : IsUnifV E x p) (hp0 : p ≠ 0) {j : ℕ} (hj : j ≤ n) (g : GLw n x) :
     Tj ℂ n (Ov E (cw x)) ((cloc x).symm p) j (fx x n g) =
@@ -134,7 +134,7 @@ theorem Tj_fx {p : x.adicCompletion E} (hp : IsUnifV E x p) (hp0 : p ≠ 0) {j :
   exact (Tj_mem_hecke (n := n) hp (n - j)).1 ⟨_, inv_mem hΦ⟩ ⟨_, hΦ⟩ _
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ThetaPull.thetaA_finGL (E := E) (a := n) (locGL E n (cw x) g)`. Rewrite `h` using `[theta_locGL, thetaGL_conj]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embT_cw (g : GLw n (cw x)) :
     embT n (cw x) g = embW n x (PhiU n (x.adicCompletion E) *
@@ -147,7 +147,7 @@ end Conj
 
 open GlobalTheory.ThetaSatake in
 /- English proof (translation)
-Use `ext1 g`. Express the relevant statement in the definitionally equal form `rightReg ℂ (H E a b) ℂ (embT a (cw x) g.1, embT b (cw x) g.2) = rightReg ℂ (H E a b) ℂ (embW a x _, embW b x _)`. Rewrite using `[embT_cw, embT_cw]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairRtT_cw {a b : ℕ} (x : Pl E) :
     pairRtT a b (cw x) = (pairRt a b x).comp ((fx x a).prodCongr (fx x b)).symm.toMonoidHom := by
@@ -161,11 +161,11 @@ end JetMatrixAlgebra
 open JetMatrixAlgebra GlobalTheory.ThetaSatake in
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w u G Ba Bb _ hwu hs`. Take `⟨x, rfl⟩ : ∃ x, cw x = w` from `⟨cw w, GlobalTheory.ThetaPull.conjSrc_conjSrc w⟩`. Take `rfl : u = x` from `(GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl hwu).trans (GlobalTheory.ThetaPull.conjSrc_conjSrc x)`. Rewrite using `[pairRtT_cw]`. Use `saturation_transport_pair _ (fun g => ?_) (absNorm_cw u) (fun ϖ' hϖ' => ?_) hs` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show g ∈ (KGL u a).prod (KGL u b) ↔ ((fx u a).prodCongr (fx u b)) g ∈ (KGL (cw u) a).prod (KGL (cw u) b)`. Rewrite using `[Subgroup.mem_prod, Subgroup.mem_prod]`. Conclude with `and_congr (mem_fx_iff u a g.1) (mem_fx_iff u b g.2)`. Take `⟨p, rfl⟩` from `(cloc u).symm.surjective ϖ'`. Establish `hp : IsUnifV E u p` using `(cloc_symm_v u p).symm.trans hϖ'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp0 : p ≠ 0` using `fun e => by simp [IsUnifV, e] at hp`. Use `⟨Units.mk0 p hp0, hp, fun i hi j hj g => ?_⟩` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (Tj_fx u a hp hp0 hi g.1) (Tj_fx u b hp hp0 hj g.2)`.
+A detailed English derivation is pending.
 -/
 theorem thetaSat2_holds : ThetaSat2 := by
   intro E _ _ _ a b w u G Ba Bb _ hwu hs

@@ -18,13 +18,13 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 /- English proof (translation)
-Introduce `H L _ _ _ unr n hn V _ _ π hπ w hw W φ h0 hc hJ ψ hψ he`. Take `⟨s1, s2, -⟩` from `secSpec L n w hw`. Take `⟨τ, hτ⟩` from `_root_.UpperTheory.V.Z.Sym.Al.exists_local_component_at_split_of_unitary_aut H L unr n hn π hπ w hw`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : V →ₗ[ℂ] ℂ, f ∘ φ ≠ 0 := by`. Take `⟨g, hg⟩` from `Function.ne_iff.1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `Module.Projective.exists_dual_ne_zero ℂ hg`. Conclude with `⟨f, Function.ne_iff.2 ⟨g, hf⟩⟩`. Take `⟨p, hp, hp0⟩` from `(isoCopy _ _ _ τ.ρ _ τ.irred (isoTypic L n π hπ w hw τ hτ)).1 ⟨f ∘ φ, hc f⟩ fun h => hf (congrArg Subtype.val h)`. Use `⟨hψ, τ, hτ, _root_.UpperTheory.V.Z.Sym.W.local_sub_d_statement H _ n W ψ hψ _ τ.ρ τ.smooth τ.irred _ hp0 (fun u hu => ?_) fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (funext fun g => congrArg f (hJ _ (s1 u) (by rwa [s2]) g))`. Rewrite using `[← dcMap W _ τ.ρ p hp, ← map_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `a` using `dcMap W ((repOn hπ).comp (secW n w)) ((RU L n).comp (secW n w)) π.subtype (fun _ _ => rfl) (Sig.dg d) ⟨f ∘ φ, hc f⟩`. Establish `b` using `dcMap W ((rightReg ℂ (UA L n) V).comp (secW n w)) ((RU L n).comp (secW n w)) (f.compLeft (UA L n)) (fun _ _ => rfl) (Sig.dg d) φ`. Rewrite `b` using `[show UpperTheory.V.Hi.dc _ _ _ _ φ = _ • φ from he d hd, map_smul]`. Conclude with `a.trans b.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compD :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], Unr L → ∀ n : ℕ, 1 ≤ n → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π → ∀ w, IsSplitAt w → ∀ W : Sig.Lev (Kw w),
@@ -51,11 +51,11 @@ private theorem compD :
     rw [show UpperTheory.V.Hi.dc _ _ _ _ φ = _ • φ from he d hd, map_smul] at b
     exact a.trans b.symm
 /- English proof (translation)
-Establish `hk : x ∈ Kall L n`. Use `((factor L n w).2.2.2.2.1 x hx).2 ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL]`. Conclude with `((Sig.finFacts _ (iw w)).2.2.2.2.2 n).2.2.2 hJ`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hK w hw ⟨hx, hk⟩, fun w' hw' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Conclude with `hJ`. Establish `hne : w.under (𝓞 (Lp L)) ≠ w'.under (𝓞 (Lp L))` using `fun h => e (hS.inj hw' hw h.symm)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(factor L n w').2.2.1 w hne hx` as an intermediate fact. Simplify using `only [away, Subgroup.mem_iInf] at this`. Rewrite using `[Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_lev {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {U : Subgroup (UA L n)} {S : Finset (Plc L)}
     (hS : Places (S : Set (Plc L))) (hK : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U) {w : Plc L} (hw : w ∈ S) {x : UA L n}
@@ -74,13 +74,11 @@ private theorem mem_lev {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
     rw [Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]
     exact one_mem _
 /- English proof (translation)
-Establish `hk : x ∈ Kall L n`. Use `((factor L n w).2.2.2.2.1 x hx).2 ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL]`. Conclude with `((Sig.finFacts _ (deep c w)).2.2.2.2.2 n).2.2.2 hJ`. Establish `key : ∀ w' ∈ (S₀ : Set (Plc L)) ∪ S, w' ≠ w → cLoc w' x = 1` using `fun w' hw' e => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w.under (𝓞 (Lp L)) ≠ w'.under (𝓞 (Lp L))` using `fun h => e (hS.inj hw' (Or.inl hw) h.symm)`. Use `(factor L n w').2.2.1 w hne hx` as an intermediate fact. Simplify using `only [away, Subgroup.mem_iInf] at this`. Conclude with `MonoidHom.mem_ker.1 (this w' rfl)`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨hk, fun w' hw' => ?_⟩, fun w' hw' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Conclude with `hJ`. Rewrite using `[Subgroup.mem_comap, key w' (Or.inl hw') e]`.
-
-Conclude with `one_mem _`. Rewrite using `[Subgroup.mem_comap, key w' (Or.inr hw') fun e => Finset.disjoint_left.1 hd hw (e ▸ hw')]`. Conclude with `one_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_level_of_local_depth {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {S₀ S : Finset (Plc L)} {c : ℕ}
     (hS : Places ((S₀ : Set (Plc L)) ∪ S)) (hd : Disjoint S₀ S) {w : Plc L} (hw : w ∈ S₀) {x : UA L n}
@@ -103,11 +101,11 @@ private theorem mem_level_of_local_depth {L : Type} [Field L] [NumberField L] [I
   · rw [Subgroup.mem_comap, key w' (Or.inr hw') fun e => Finset.disjoint_left.1 hd hw (e ▸ hw')]
     exact one_mem _
 /- English proof (translation)
-Introduce `H L _ _ _ unr n hn V _ _ _ R hR S₀ c U eU hU`. Take `⟨A, hA, hA', h⟩` from `UpperTheory.V.Z.Sym.U.finFamU L n V R hR U hU`. Use `⟨A, hA, hA', fun S hP hd hS hK ψ φ h0 hφ hψ hψ0 => ?_⟩` and prove the remaining obligations. Take `⟨π, φ₁, hπ, h1, hφ₁, hc, he⟩` from `proj L n V R hR _ ((cof L n).2.2.1 U hU S iw) φ h0 hφ`. Establish `hcs : ∀ w ∈ S, CompSub π w (ψ w)` using `fun w hw => _root_.UpperTheory.V.Z.Sym.Al.comp_sub_of_eigen_vector_fixed_by_j H L unr n hn V π hπ w (hS.split w hw) φ₁ h1 hc (fun x hx hJ => hφ₁.level x (mem_lev hS hK hw hx hJ)) (ψ w) (fun i => (unrSmooth _).1 _ ((hψ w hw).1 i)) fun d hd => he _ _ _ _ ((hψ w hw).2.2 d hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : ∀ w ∈ S₀, CompSub π w (ψ w)` using `fun w hw => compD H L unr n hn V π hπ w (hP.split w (Or.inl hw)) (deep c w) φ₁ h1 hc (fun x hx hJ => hφ₁.level x (eU ▸ mem_level_of_local_depth hP hd hw hx hJ)) (ψ w) (hψ0 w hw).1 fun d hd => he _ _ _ _ ((hψ0 w hw).2 d hd)`. Take `⟨φ₂, h2, hc2, hφ₂⟩` from `raise L n V R π hπ U hU.1 S hS (fun w hw => ⟨hK w hw, _root_.UpperTheory.V.Z.Sym.Al.unramified_of_split_distinct_characters H L n π w (ψ w) (hS.split w hw) (hcs w hw) (hψ w hw).1 (hψ w hw).2.1⟩) iw φ₁ h1 hc hφ₁`. Take `⟨σ, hσ, ht⟩` from `h π hπ φ₂ h2 hφ₂ hc2`. Use `⟨σ, hσ, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, τ, b, c⟩` from `hc0 w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, τ, ht w τ b, c⟩`. Take `⟨a, τ, b, c⟩` from `hcs w hw`. Conclude with `⟨a, τ, ht w τ b, c⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem outW :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], Unr L → ∀ n : ℕ, 1 ≤ n → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V), ContCoef R → ∀ (S₀ : Finset (Plc L)) (c : ℕ) (U : Subgroup (UA L n)), U = lev (Kall L n) S₀ (deep c) → IsLevel U →
@@ -136,9 +134,9 @@ private theorem outW :
   · obtain ⟨a, τ, b, c⟩ := hcs w hw
     exact ⟨a, τ, ht w τ b, c⟩
 /- English proof (translation)
-Establish `h1 : IsSmoothChar (ψ 0 / ψ 1)`. Rewrite using `[div_eq_mul_inv]`. Conclude with `(h 0).mul (h 1).inv`. Introduce `i`. Use `fin_cases i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h1`. Use `h1.mul h1.inv` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel]`. Then use the resulting hypothesis. Conclude with `h1.inv`.
+A detailed English derivation is pending.
 -/
 private theorem smo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ψ : Fin 2 → kˣ →* ℂˣ}
     (h : ∀ i, IsSmoothChar (ψ i)) : ∀ i, IsSmoothChar ((![ψ 0 / ψ 1, 1, (ψ 0 / ψ 1)⁻¹] : Fin 3 → kˣ →* ℂˣ) i) := by
@@ -152,9 +150,9 @@ private theorem smo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
     rwa [mul_inv_cancel] at this
   · exact h1.inv
 /- English proof (translation)
-Take `⟨φ, h1, h2, h3⟩` from `h`. Use `⟨φ, h1, h2, fun x hx hK => h3 x ?_⟩` and prove the remaining obligations. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `⟨((factor L n w).2.2.2.2.1 x hx).2 hK, fun w' hw' => ?_⟩` and prove the remaining obligations. Use `(factor L n w').2.2.1 w (hw w' hw').symm hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [away, Subgroup.mem_iInf] at this`. Rewrite using `[Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unram_of {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (σ : Submodule ℂ (UA L n → ℂ)) (S : Finset (Plc L))
     (V : ∀ w : Plc L, Sig.Lev (Kw w)) (h : ∃ φ ∈ σ, φ ≠ 0 ∧ ∀ u ∈ lev (Kall L n) S V, RU L n u φ = φ) (w : Plc L)
@@ -168,9 +166,7 @@ private theorem unram_of {L : Type} [Field L] [NumberField L] [IsCMField L] {n :
   rw [Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]
   exact one_mem _
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `choose f hf using fun x : A => hn x.1 x.2`. Use `haveI := hA.fintype`. Take `⟨x, hx, h1⟩` from `h (Finset.univ.image f)`.
-
-Conclude with `hf ⟨x, hx⟩ (h1 _ (Finset.mem_image_of_mem f (Finset.mem_univ _)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pigeon {X I : Type} (A : Set X) (hA : A.Finite) (P : X → I → Prop)
     (h : ∀ S : Finset I, ∃ x ∈ A, ∀ i ∈ S, P x i) : ∃ x ∈ A, ∀ i, P x i := by
@@ -182,25 +178,23 @@ private theorem pigeon {X I : Type} (A : Set X) (hA : A.Finite) (P : X → I →
   obtain ⟨x, hx, h1⟩ := h (Finset.univ.image f)
   exact hf ⟨x, hx⟩ (h1 _ (Finset.mem_image_of_mem f (Finset.mem_univ _)))
 /- English proof (translation)
-Introduce `H hS L _ _ _ unr S₀ P hdis hpl htwo π hπ j hj hwt hunr ψ hψ hP`. Establish `mono : ∀ {T : Set (Plc L)}, T ⊆ (S₀ : Set (Plc L)) ∪ P → Places T` using `fun h => ⟨fun w hw => hpl.split w (h hw), hpl.inj.mono h⟩`. Take `⟨c₀, hc₀⟩` from `hS L unr S₀ (mono Set.subset_union_left) htwo j hj`. Establish `hd : ∀ p : S₀ × Fin 2, ∃ c₁ : ℕ, ∀ c ≥ c₁, ∀ u ∈ UpperTheory.V.Hi.Uc (Kw p.1.1) (c + 1), ψ p.1.1 p.2 u = 1` using `fun p => smoothDepth _ _ ((hψ p.1.1 (Or.inl p.1.2)).1 p.2)`. Use `choose c₁ hc₁ using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hc'⟩ : ∃ c, c₀ ≤ c ∧ ∀ p, c₁ p ≤ c` from `⟨max c₀ (Finset.univ.sup c₁), le_max_left _ _, fun p => (Finset.le_sup (Finset.mem_univ p)).trans (le_max_right _ _)⟩`. Take `⟨U₂, hU₂, hm⟩` from `hc₀ c hc`. Take `⟨⟨f3, c3⟩, -⟩` from `contE (InfinitePlace L) j`. Take `⟨-, f2, c2⟩` from `contE (InfinitePlace L) (2 * j + 1)`. Establish `hU₃ : IsLevel (lev (Kall L 3) S₀ (deep c))` using `(cof L 3).2.2.1 _ (cof L 3).2.1 _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A₃, hA₃, hA₃', h₃⟩` from `outW H L unr 3 (by norm_num) _ _ c3 S₀ c _ rfl hU₃`. Take `⟨A₂, hA₂, hA₂', h₂⟩` from `_root_.UpperTheory.V.Z.Sym.Al.outRep_alt H L unr 2 (by norm_num) _ _ (c2 0) _ hU₂`. Set `Gd : Plc L → Prop` to `fun w => locU 2 w ⊓ Kall L 2 ≤ U₂ ∧ locU 3 w ⊓ Kall L 3 ≤ lev (Kall L 3) S₀ (deep c)`. Establish `hG : ∀ᶠ w in Filter.cofinite, Gd w` using `((cof L 2).2.2.2 _ hU₂).and ((cof L 3).2.2.2 _ hU₃)`. Set `Q : Submodule ℂ (UA L 3 → ℂ) ⊕ Submodule ℂ (UA L 2 → ℂ) → Plc L → Prop` to `fun x w => x.elim (fun σ => CompSub σ w ![ψ w 0 / ψ w 1, 1, (ψ w 0 / ψ w 1)⁻¹]) fun σ => ∃ ψ', CompSub σ w ψ' ∧ ψ' 0 / ψ' 1 = (ψ w 0 / ψ w 1) ^ 2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hQ⟩` from `pigeon (I := {w // w ∈ P ∧ Gd w}) (Sum.inl '' {σ ∈ A₃ | ∀ w ∈ S₀, CompSub σ w ![ψ w 0 / ψ w 1, 1, (ψ w 0 / ψ w 1)⁻¹]} ∪ Sum.inr '' A₂) (((hA₃.subset (Set.sep_subset _ _)).image _).union (hA₂.image _)) (fun x w => Q x w.1) fun S => by`. Set `S₁ : Finset (Plc L)` to `S.image Subtype.val`. Establish `h1 : ∀ w ∈ S₁, w ∈ P ∧ Gd w` using `fun w hw => by`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hw`. Conclude with `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ w ∈ S₁, w ∉ S₀` using `fun w hw h => Set.disjoint_left.1 hdis h (h1 w hw).1`. Establish `hsub : ((S₀ : Set (Plc L)) ∪ S₁) ⊆ (S₀ : Set (Plc L)) ∪ P` using `Set.union_subset_union_right _ fun w hw => (h1 w hw).1`. Establish `hp1 : Places (S₁ : Set (Plc L))` using `mono fun w hw => Or.inr (h1 w hw).1`. Set `W : ∀ w : Plc L, Sig.Lev (Kw w)` to `fun w => if w ∈ S₀ then deep c w else iw w`. Establish `W0 : ∀ w ∈ S₀, W w = deep c w` using `fun w hw => if_pos hw`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `W1 : ∀ w ∈ S₁, W w = iw w` using `fun w hw => if_neg (hn w hw)`. Take `⟨e, φ, h0, hAF, hE⟩` from `_root_.UpperTheory.V.Z.Sym.Al.inVec_alt H L π hπ j hwt (S₀ ∪ S₁) (by rw [Finset.coe_union]; exact mono hsub) (fun w hw => hunr w fun w' hw' => hw w' (Finset.mem_union_left _ hw')) W ψ fun w hw => by`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Conclude with `⟨hψ w (Or.inl hw), fun i => by rw [W0 w hw]; exact hc₁ (⟨w, hw⟩, i) c (hc' _)⟩`. Conclude with `⟨hψ w (Or.inr (h1 w hw).1), fun i => by rw [W1 w hw]; exact (hP w (h1 w hw).1).1 i⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : lev (lev (Kall L 2) S₀ (deep c)) S₁ iw ≤ lev (Kall L 2) (S₀ ∪ S₁) W`. Introduce `u hu`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf] at hu ⊢`. Use `⟨hu.1.1, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[W0 w hw]`. Conclude with `hu.1.2 w hw`. Rewrite using `[W1 w hw]`. Conclude with `hu.2 w hw`. Break down `hm S₁ (Finset.disjoint_right.2 hn) (mono hsub) (fun w hw => (h1 w hw).2.1) (fun w => ψ w 0 / ψ w 1) e φ h0 ⟨hAF.left, hAF.inf, fun u hu => hAF.level u (hle hu)⟩ (fun w hw => eigTS L _ φ w _ _ (W0 w hw ▸ hE w (Finset.mem_union_left _ hw))) (fun w hw => eigTS L _ φ w _ _ (W1 w hw ▸ …` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, hs0, hs⟩` from `h₃ S₁ (mono hsub) (Finset.disjoint_right.2 hn) hp1 (fun w hw => (h1 w hw).2.2) (fun w => ![ψ w 0 / ψ w 1, 1, (ψ w 0 / ψ w 1)⁻¹]) φ' a0 a1 (fun w hw => ⟨(regUnl _ _ (hP w (h1 w hw).1).2).1.1, (regUnl _ _ (hP w (h1 w hw).1).2).1.2, a2 w hw⟩) fun w hw => ⟨smo (hψ w (Or.inl hw)).1, a …`. Conclude with `⟨.inl σ, Or.inl ⟨σ, ⟨hσ, hs0⟩, rfl⟩, fun i hi => hs i.1 (Finset.mem_image_of_mem _ hi)⟩`. Take `⟨φ'', ψ', b0, b1, b2⟩` from `UpperTheory.V.Z.Sym.Al.refine L _ _ U₂ hU₂ S₁ hp1 (fun w hw => (h1 w hw).2.1) _ φ' a0 a1 a2`. Take `⟨σ, hσ, hs⟩` from `h₂ S₁ hp1 (fun w hw => (h1 w hw).2.1) ψ' φ'' b0 b1 fun w hw => ⟨(b2 w hw).1, (regUnl _ _ (hP w (h1 w hw).1).2).2 _ (b2 w hw).2.1, (b2 w hw).2.2⟩`. Conclude with `⟨.inr σ, Or.inr ⟨σ, hσ, rfl⟩, fun i hi => ⟨ψ' i.1, hs i.1 (Finset.mem_image_of_mem _ hi), (b2 i.1 (Finset.mem_image_of_mem _ hi)).2.1⟩⟩`.
-
-Break down `hx with ⟨σ, hσ, rfl⟩ | ⟨σ, hσ, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨σ, (hA₃' σ hσ.1).1, unram_of _ _ _ (hA₃' σ hσ.1).2, hσ.2, hG.mono fun w hw hw' => hQ ⟨w, hw', hw⟩⟩`. Conclude with `Or.inr ⟨σ, hA₂' σ hσ, hG.mono fun w hw hw' => hQ ⟨w, hw', hw⟩⟩`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.adjoint_lift_w_of_literal_automorphy_spec_out : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → UpperTheory.V.Z.Sym.W.SpecOutS → UpperTheory.V.Z.Sym.W.AdLiftW := by
   classical

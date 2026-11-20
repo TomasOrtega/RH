@@ -7,13 +7,13 @@ set_option autoImplicit false
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Introduce `R' _ X X' φ s' W k hk`. Set `U : {p : Pair φ // p.1.1 ≤ W} → X'.Opens` to `fun i ↦ i.1.1.1.1`. Set `sf : ∀ i : {p : Pair φ // p.1.1 ≤ W}, ToType (X'.sheaf.1.obj (op (U i)))` to `fun i ↦ k i.1 i.2`. Establish `key : ∀ (i : {p : Pair φ // p.1.1 ≤ W}) (r : Pair φ) (hr : r ≤ i.1) {x : X'} (hx : x ∈ r.1.1.1), X'.presheaf.germ (U i) x (Pair.le_fst hr hx) (sf i) = X'.presheaf.germ r.1.1.1 x hx (k r ((Pair.le_fst hr).trans i.2))`. Introduce `i r hr x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hk i.1 r i.2 ((Pair.le_fst hr).trans i.2) hr]`. Conclude with `(X'.presheaf.germ_res_apply (homOfLE (show r.1.1.1 ≤ U i from Pair.le_fst hr)) x hx _).symm`. Establish `hcomp : TopCat.Presheaf.IsCompatible X'.sheaf.1 U sf`. Introduce `i j`. Use `TopCat.Presheaf.section_ext X'.sheaf _ _ _ fun x hx ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hri, hrj, hxr⟩` from `Pair.exists_le_le φ i.1 j.1 hx`. Express the relevant statement in the definitionally equal form `X'.presheaf.germ _ x hx (X'.presheaf.map _ (sf i)) = X'.presheaf.germ _ x hx (X'.presheaf.map _ (sf j))`. Conclude with `((X'.presheaf.germ_res_apply (TopologicalSpace.Opens.infLELeft (U i) (U j)) x hx (sf i)).trans (key i r hri hxr)).trans ((X'.presheaf.germ_res_apply (TopologicalSpace.Opens.infLERight (U i) (U j)) x hx (sf j)).trans (key j r hrj hxr)).symm`. Establish `hcov : W.1 ≤ iSup U` using `fun x hx ↦ by`. Take `⟨p, hp, hxp⟩` from `Pair.exists_le φ W hx`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨p, hp⟩, hxp⟩`. Take `⟨G, hG, -⟩` from `X'.sheaf.existsUnique_gluing' U W.1 (fun i ↦ homOfLE i.2) hcov sf hcomp`. Conclude with `⟨G, fun p hp ↦ hG ⟨p, hp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem pair_glue : ∀ {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X) (s' : X' ⟶ Sp R')
     (W : X'.affineOpens) (k : ∀ p : Pair φ, p.1.1 ≤ W → (OAff s').obj (op p.1.1)),

@@ -18,7 +18,7 @@ section Gen
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Unfold `nuJ`. Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `a ha`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 ha`. Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nuJ_nonneg (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Ws : List (List (Matrix (Fin n) (Fin n) ℂ)))
     (v : H) : 0 ≤ nuJ σ Ws v := by
@@ -29,14 +29,14 @@ theorem nuJ_nonneg (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Ws : L
   exact norm_nonneg _
 
 /- English proof (translation)
-Simplify using `[nuJ, dSW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nuJ_cons_nil (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Ws : List (List (Matrix (Fin n) (Fin n) ℂ)))
     (v : H) : nuJ σ ([] :: Ws) v = ‖v‖ + nuJ σ Ws v := by
   simp [nuJ, dSW]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp [nuJ] | w :: Ws, h => by have h1 := h w List.mem_cons_self have h2 := nuJ_le_add_of σ a b c Ws (fun w' hw' => h w' (List.mem_cons_of_mem _ hw')) simp only [nuJ, List.map_cons, List.sum_cons] at h2 ⊢ linarith`.
+A detailed English derivation is pending.
 -/
 theorem nuJ_le_add_of (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (a b c : H) :
     ∀ Ws : List (List (Matrix (Fin n) (Fin n) ℂ)),
@@ -49,7 +49,7 @@ theorem nuJ_le_add_of (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (a b
     linarith
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem NE_nonneg' {D : Submodule ℂ H} (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (x : D) : 0 ≤ NE E j x :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
@@ -60,15 +60,13 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε l
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Unfold `dS`. Use `set f : ℝ → Hlam ε Ψ v₀ := fun t => sigLam ε Ψ v₀ (NormedSpace.exp ((t : ℂ) • X)) y with hfdef`. Establish `hf : (fun t : ℝ => rreg ε (NormedSpace.exp ((t : ℂ) • X)) (y : L2 ε)) = fun t => ((f t : Hlam ε Ψ v₀) : L2 ε)`. Use function extensionality and compare the values at `t`. Rewrite using `[hfdef, sigLam_coe hgap hP hv₀ (exp_smul_mem_UJset hX t)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Set `Ir : Hlam ε Ψ v₀ →L[ℝ] L2 ε` to `((Hlam ε Ψ v₀).subtypeL).restrictScalars ℝ`. Set `Pr : L2 ε →L[ℝ] Hlam ε Ψ v₀` to `((Hlam ε Ψ v₀).orthogonalProjectionOnto).restrictScalars ℝ`. Distinguish the cases in `hd : DifferentiableAt ℝ f 0`. Conclude with `((Ir.hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hd.hasDerivAt).deriv).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd' : ¬ DifferentiableAt ℝ (fun t => ((f t : Hlam ε Ψ v₀) : L2 ε)) 0`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h2` using `Pr.differentiableAt.comp (0 : ℝ) h`. Establish `e : (Pr ∘ fun t => ((f t : Hlam ε Ψ v₀) : L2 ε)) = f`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Conclude with `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (f t)`. Rewrite `h2` using `[e]`. Conclude with `h2`. Establish `h0 : deriv f 0 = 0` using `deriv_zero_of_not_differentiableAt hd`.
-
-Establish `h1 : deriv (fun t => ((f t : Hlam ε Ψ v₀) : L2 ε)) 0 = 0` using `deriv_zero_of_not_differentiableAt hd'`. Conclude with `(congrArg Subtype.val h0).trans h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dS_sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (y : Hlam ε Ψ v₀) :
@@ -97,7 +95,7 @@ theorem dS_sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
     exact (congrArg Subtype.val h0).trans h1.symm
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | X :: w, hw, y => by simp only [dSW] rw [dS_sigLam_coe hgap hP hv₀ (hw X List.mem_cons_self), dSW_sigLam_coe hgap hP hv₀ w (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) y]`.
+A detailed English derivation is pending.
 -/
 theorem dSW_sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ (w : List (Matrix (Fin n) (Fin n) ℂ)), (∀ X ∈ w, inG ε X) → ∀ y : Hlam ε Ψ v₀,
@@ -109,7 +107,7 @@ theorem dSW_sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
       dSW_sigLam_coe hgap hP hv₀ w (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) y]
 
 /- English proof (translation)
-Unfold `nuJ`. Use `congr 1`. Use `List.map_congr_left fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← dSW_sigLam_coe hgap hP hv₀ w (hWs w hw) y, Submodule.coe_norm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuJ_sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     {Ws : List (List (Matrix (Fin n) (Fin n) ℂ))} (hWs : ∀ w ∈ Ws, ∀ X ∈ w, inG ε X) (y : Hlam ε Ψ v₀) :

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `z d hd h`. Establish `hd' : (0 : ℝ) < d` using `Nat.cast_pos.mpr hd`. Establish `hre : z.re * z.re - z.im * z.im = -(d : ℝ)`. Simplify `congrArg Complex.re h` using `[pow_two]`. Establish `him : z.re * z.im + z.im * z.re = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `congrArg Complex.im h` using `[pow_two]`. Establish `h0 : z.re = 0`. Establish `hmul : z.re * z.im = 0` using `by linarith`. Break down `mul_eq_zero.mp hmul with h1 | h1` into its components or cases. Conclude with `h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[h1]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[h0]`. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk60.conj_eq_neg_of_sq :
     ∀ {z : ℂ} {d : ℕ},

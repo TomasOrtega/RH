@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem Pm_apply (φ : K → ℂ) (y : K) (Φ : A → ℂ) (x : A) : Pm ev ι φ y Φ x = φ (ev x) * Φ (put ev ι x y) := rfl
 
 /- English proof (translation)
-Simplify using `[put]`.
+Simplify using the standard rewrite rules.
 -/
 theorem put_self (x : A) : put ev ι x (ev x) = x := by
   simp [put]
@@ -29,20 +29,20 @@ theorem put_self (x : A) : put ev ι x (ev x) = x := by
 variable {ev ι}
 
 /- English proof (translation)
-Simplify using `[put, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_put (h : ∀ y, ev (ι y) = y) (x : A) (y : K) : ev (put ev ι x y) = y := by
   simp [put, h]
 
 /- English proof (translation)
-Simplify using `only [put, map_add, map_sub, h, sub_self, zero_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem put_put (h : ∀ y, ev (ι y) = y) (x : A) (y z : K) : put ev ι (put ev ι x y) z = put ev ι x z := by
   simp only [put, map_add, map_sub, h, sub_self, zero_add]
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Pm_apply, ev_put h, put_put h, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Pm_Pm (h : ∀ y, ev (ι y) = y) (φ φ₁ : K → ℂ) (a y : K) (Φ : A → ℂ) :
     Pm ev ι φ a (Pm ev ι φ₁ y Φ) = φ₁ a • Pm ev ι φ y Φ := by
@@ -54,7 +54,7 @@ variable [TopologicalSpace A] [IsTopologicalAddGroup A] [TopologicalSpace K] [Is
 
 omit [IsTopologicalAddGroup K] in
 /- English proof (translation)
-Use `show Continuous fun p : A × K => p.1 - ι (ev p.1) + ι p.2`. Conclude with `(continuous_fst.sub (hι.comp (hev.comp continuous_fst))).add (hι.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_put (hev : Continuous ev) (hι : Continuous ι) : Continuous fun p : A × K => put ev ι p.1 p.2 := by
   show Continuous fun p : A × K => p.1 - ι (ev p.1) + ι p.2
@@ -62,13 +62,13 @@ theorem continuous_put (hev : Continuous ev) (hι : Continuous ι) : Continuous 
 
 omit [IsTopologicalAddGroup K] in
 /- English proof (translation)
-Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ` using `hφ`. Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hput : Continuous fun x : A => put ev ι x y` using `(continuous_id.sub (hι.comp hev)).add continuous_const`. Establish `hfun : (Pm ev ι φ y g : A → ℂ) = fun x => φ (ev x) * g (put ev ι x y)`. Use function extensionality and compare the values at `(Pm_apply ev ι φ y g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show IsLocallyConstant (Pm ev ι φ y g) ∧ HasCompactSupport (Pm ev ι φ y g)`. Rewrite using `[hfun]`. Use `⟨(hφ'.1.comp_continuous hev).mul (hg'.1.comp_continuous hput), ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun p : A × K => p.1 + ι p.2 - ι y` using `(continuous_fst.add (hι.comp continuous_snd)).sub continuous_const`. Establish `hK : IsCompact ((fun p : A × K => p.1 + ι p.2 - ι y) '' (tsupport g ×ˢ tsupport φ))` using `(hg'.2.prod hφ'.2).image hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Function.support (fun x => φ (ev x) * g (put ev ι x y)) ⊆ (fun p : A × K => p.1 + ι p.2 - ι y) '' (tsupport g ×ˢ tsupport φ)`. Introduce `x hx`. Establish `hx' : φ (ev x) * g (put ev ι x y) ≠ 0` using `hx`. Establish `h1 : φ (ev x) ≠ 0` using `left_ne_zero_of_mul hx'`. Establish `h2 : g (put ev ι x y) ≠ 0` using `right_ne_zero_of_mul hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(put ev ι x y, ev x), ⟨subset_tsupport _ h2, subset_tsupport _ h1⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [put]`. Normalize the expressions using the abelian group laws. Conclude with `IsCompact.of_isClosed_subset hK.closure isClosed_closure (closure_mono hsub)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Pm_mem_SB (h : ∀ y, ev (ι y) = y) (hev : Continuous ev) (hι : Continuous ι) {φ : K → ℂ} (hφ : φ ∈ SB K) (y : K)
     {g : A → ℂ} (hg : g ∈ SB A) : Pm ev ι φ y g ∈ SB A := by
@@ -97,43 +97,37 @@ theorem Pm_mem_SB (h : ∀ y, ev (ι y) = y) (hev : Continuous ev) (hι : Contin
   exact IsCompact.of_isClosed_subset hK.closure isClosed_closure (closure_mono hsub)
 
 /- English proof (translation)
-Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hπc : Continuous fun z : A => z - ι (ev z)` using `continuous_id.sub (hι.comp hev)`. Establish `hKa : IsCompact ((fun z : A => z - ι (ev z)) '' tsupport g)` using `hg'.2.image hπc`. Establish `hC : IsCompact (ev '' tsupport g)` using `hg'.2.image hev`. Establish `hput_eq : ∀ x k, put ev ι x k = (x - ι (ev x)) + ι k` using `fun x k => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hout : ∀ a k, ev a = 0 → a ∉ (fun z : A => z - ι (ev z)) '' tsupport g → g (a + ι k) = 0`. Introduce `a k ha hnot`. Assume the negation of the conclusion as `hne`. Apply `hnot` to reduce the goal to its premises. Use `⟨a + ι k, subset_tsupport _ hne, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ha, h]`. Establish `htube : ∀ k0 : K, ∀ᶠ k in 𝓝 k0, ∀ a ∈ (fun z : A => z - ι (ev z)) '' tsupport g, g (a + ι k) = g (a + ι k0)`. Introduce `k0`. Apply `hKa.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `a _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ᶠ p in 𝓝 (k0, a), g (p.2 + ι p.1) = g (a + ι k0)` using `((continuous_snd.add (hι.comp continuous_fst)).tendsto (k0, a)).eventually (hg'.1.eventually_eq (a + ι k0))`. Establish `h2 : ∀ᶠ p in 𝓝 (k0, a), g (p.2 + ι k0) = g (a + ι k0)` using `((continuous_snd.add continuous_const).tendsto (k0, a)).eventually (hg'.1.eventually_eq (a + ι k0))`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Rewrite using `[hp1, hp2]`. Set `F : K → A → ℂ` to `fun k x => g (put ev ι x k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hFloc : IsLocallyConstant F`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `k0`. Use `filter_upwards [htube k0] with k hk`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show g (put ev ι x k) = g (put ev ι x k0)`. Rewrite using `[hput_eq, hput_eq]`. Establish `hev0 : ev (x - ι (ev x)) = 0` using `by simp [h]`. Distinguish the cases in `hx : x - ι (ev x) ∈ (fun z : A => z - ι (ev z)) '' tsupport g`. Conclude with `hk _ hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hout _ _ hev0 hx, hout _ _ hev0 hx]`. Establish `hFzero : ∀ k, k ∉ ev '' tsupport g → F k = 0`. Introduce `k hk`. Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Apply `hk` to reduce the goal to its premises. Conclude with `⟨put ev ι x k, subset_tsupport _ hne, ev_put h x k⟩`. Establish `hfin : (F '' (ev '' tsupport g)).Finite`. Use `letI : TopologicalSpace (A → ℂ) := ⊥`. Use `haveI : DiscreteTopology (A → ℂ) := ⟨rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hC.image hFloc.continuous).finite_of_discrete`. Set `Vs : Finset (A → ℂ)` to `hfin.toFinset.filter (· ≠ 0)`. Set `rep : (A → ℂ) → K` to `fun v => if hv : ∃ k, F k = v then hv.choose else 0`. Set `φv : (A → ℂ) → K → ℂ` to `fun v k => if F k = v then 1 else 0`. Establish `hrep : ∀ v ∈ Vs, F (rep v) = v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `hv'` using `(Finset.mem_filter.1 hv).1`. Rewrite `hv'` using `[Set.Finite.mem_toFinset]`. Take `⟨k, _, hk⟩` from `hv'`. Establish `hex : ∃ k, F k = v` using `⟨k, hk⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show F (if hv : ∃ k, F k = v then hv.choose else 0) = v`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hφv : ∀ v ∈ Vs, φv v ∈ SB K`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hv0 : v ≠ 0` using `(Finset.mem_filter.1 hv).2`. Use `⟨hFloc.comp (fun w : A → ℂ => if w = v then (1 : ℂ) else 0), ?_⟩` and prove the remaining obligations. Establish `hsupp : Function.support (φv v) ⊆ {k | F k = v}`. Introduce `k hk`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk (if_neg hne)`. Establish `hL : {k | F k = v} ⊆ ev '' tsupport g`. Introduce `k hk`. Assume the negation of the conclusion as `hc`. Conclude with `hv0 (hk.symm.trans (hFzero k hc))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsCompact.of_isClosed_subset hC (isClosed_tsupport _) ((closure_minimal hsupp (hFloc.isClosed_fiber v)).trans hL)`. Establish `hsum : g = ∑ v ∈ Vs, Pm ev ι (φv v) (rep v) g`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Establish `hterm : ∀ v ∈ Vs, Pm ev ι (φv v) (rep v) g x = if F (ev x) = v then v x else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[Pm_apply]`. Establish `hx : g (put ev ι x (rep v)) = v x` using `congrFun (hrep v hv) x`. Rewrite using `[hx]`. Use `show (if F (ev x) = v then (1 : ℂ) else 0) * v x = _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq]`. Establish `hgx : g x = F (ev x) x` using `by show g x = g (put ev ι x (ev x))`. Rewrite using `[put_self]`. Distinguish the cases in `hmem : F (ev x) ∈ Vs`.
-
-Rewrite using `[if_pos hmem, ← hgx]`. Rewrite using `[if_neg hmem]`. Establish `h0 : F (ev x) = 0`. Assume the negation of the conclusion as `hne`. Apply `hmem` to reduce the goal to its premises.
-
-Establish `hc : ev x ∈ ev '' tsupport g`. Assume the negation of the conclusion as `hc`. Conclude with `hne (hFzero _ hc)`. Conclude with `Finset.mem_filter.2 ⟨(Set.Finite.mem_toFinset hfin).2 ⟨ev x, hc, rfl⟩, hne⟩`. Rewrite using `[hgx, h0]`.
-
-Both sides reduce to the same expression. Establish `hmem : (∑ v ∈ Vs, Pm ev ι (φv v) (rep v) g) ∈ Submodule.span ℂ {f | ∃ φ ∈ SB K, ∃ y, f = Pm ev ι φ y g}` using `Submodule.sum_mem _ fun v hv => Submodule.subset_span ⟨φv v, hφv v hv, rep v, rfl⟩`. Rewrite `hmem` using `[← hsum]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_Pm (h : ∀ y, ev (ι y) = y) (hev : Continuous ev) (hι : Continuous ι) {g : A → ℂ} (hg : g ∈ SB A) :
     g ∈ Submodule.span ℂ {f | ∃ φ ∈ SB K, ∃ y, f = Pm ev ι φ y g} := by

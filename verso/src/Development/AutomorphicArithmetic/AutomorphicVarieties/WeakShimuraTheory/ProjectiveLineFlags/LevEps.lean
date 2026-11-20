@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hp : (Ideal.span {(l : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).2 (Nat.prime_iff_prime_int.mp hl.out)`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 K) (Ideal.span {(l : ℤ)}) (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 K)).injective_int]`. Conclude with `bot_le)`. Establish `hmem : ((l : ℕ) : 𝓞 K) ∈ Q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))`. Rewrite using `[hQc]`. Conclude with `Ideal.subset_span rfl`. Simplify using `using h`. Use `⟨⟨Q, hQ, ?_⟩, hmem⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hmem` using `[h0, Ideal.mem_bot]`. Conclude with `hl.out.ne_zero (by exact_mod_cast hmem)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_plc_over (K : Type) [Field K] [NumberField K] (l : ℕ) [hl : Fact l.Prime] :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
@@ -28,19 +28,19 @@ private theorem exists_plc_over (K : Type) [Field K] [NumberField K] (l : ℕ) [
   exact hl.out.ne_zero (by exact_mod_cast hmem)
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V`. Establish `key : ∀ g : G L Ω, V.ε (toGS Ω V.S' (W.resP L Ω g)) = cycZ L Ω l g`. Introduce `g`. Establish `h` using `congrArg (fun f => f (W.resP L Ω g)) V.hε`. Simplify using `only [MonoidHom.comp_apply] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g g' h`. Unfold `UpperTheory.V.W.HidaSetting.Lev.frame UpperTheory.V.W.GFrame.conj`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [UpperTheory.V.W.HidaSetting.Lev.pr]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toGS Ω V.S' s.c * toGS Ω V.S' (W.resP L Ω g) * (toGS Ω V.S' s.c)⁻¹ = toGS Ω V.S' (W.resP L Ω g')`. Rewrite using `[h, map_mul, map_mul, map_inv]`. Introduce `g`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `UpperTheory.V.W.HidaSetting.Lev.frame UpperTheory.V.W.GFrame.G'`. Simplify using `only [UpperTheory.V.W.HidaSetting.Lev.pr]`. Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `V.ε (toGS Ω V.S' (W.resP L Ω g)) = 1 ↔ _`. Rewrite using `[key]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Unfold `UpperTheory.V.W.HidaSetting.Lev.frame show Nonempty (UpperTheory.V.W.Vl l L)`. Unfold `UpperTheory.V.W.Vl`. Use `first`. Consider the case `exact ⟨⟨(exists_plc_over L l).choose, (exists_plc_over L l).choose_spec⟩⟩`. Consider the case `exact ⟨⟨(exists_plc_over (W.Lp L) l).choose, (exists_plc_over (W.Lp L) l).choose_spec⟩⟩`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `O _ _ R _ _ g`. Unfold `UpperTheory.V.W.HidaSetting.Lev.frame UpperTheory.V.W.GFrame.eps`. Simplify using `only [UpperTheory.V.W.HidaSetting.Lev.pr, UpperTheory.V.Base.chiO]`. Simplify using `[UpperTheory.V.W.pushCh, MonoidHom.codRestrict_apply]`. Express the relevant statement in the definitionally equal form `(algebraMap O R) ((algebraMap ℤ_[l] O) ↑(V.ε (toGS Ω V.S' (W.resP L Ω g)))) = _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.levEps :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev),

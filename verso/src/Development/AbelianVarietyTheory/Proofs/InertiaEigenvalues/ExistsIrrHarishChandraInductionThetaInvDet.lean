@@ -15,9 +15,9 @@ section Reg
 variable {H : Type} [Group H] [Fintype H]
 
 /- English proof (translation)
-Take `⟨hfin, hsum⟩` from `irr_finite_and_finsum_zOf_eq_one H`. Rewrite `hsum` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `e` using `congrArg (fun z : MonoidAlgebra ℂ H => z.coeff h) hsum`. Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply] at e`. Rewrite using `[e, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hh : h = 1`. Simplify using `[hh]`. Simplify using `[hh, Ne.symm hh]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_irr_coeff (h : H) :
     ∑ σ ∈ (irr_finite_and_finsum_zOf_eq_one H).1.toFinset, (zOf σ).coeff h = if h = 1 then 1 else 0 := by
@@ -31,13 +31,11 @@ theorem sum_irr_coeff (h : H) :
   · simp [hh, Ne.symm hh]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hF` to reduce the goal to its premises. Use `set s := (irr_finite_and_finsum_zOf_eq_one H).1.toFinset with hs`. Establish `h0 : ∑ σ ∈ s, σ 1 / (Fintype.card H : ℂ) * ∑ h, F h * σ h⁻¹ = 0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[hc σ (by simpa [hs] using hσ), mul_zero]`. Rewrite using `[← h0]`. Establish `e : ∑ σ ∈ s, σ 1 / (Fintype.card H : ℂ) * ∑ h, F h * σ h⁻¹ = ∑ h, F h * ∑ σ ∈ s, (zOf σ).coeff h`. Repeatedly rewrite using `[Finset.mul_sum, ZSumOne.zOf_coeff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hs]`. Repeatedly rewrite using `[sum_irr_coeff]`.
-
-Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_irr_sum_ne_zero (F : H → ℂ) (hF : F 1 ≠ 0) :
     ∃ σ : H → ℂ, IsIrr σ ∧ ∑ h, F h * σ h⁻¹ ≠ 0 := by
@@ -64,7 +62,7 @@ end Reg
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Take `⟨V, _, hV⟩` from `hψ`. Introduce `x y`. Rewrite using `[← hV, ← hV]`. Conclude with `FDRep.char_conj V x y`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClass_of_isIrr {n : ℕ} {ψ : Gn g n → ℂ} (hψ : IsIrr ψ) : IsClass ψ := by
   obtain ⟨V, _, hV⟩ := hψ
@@ -73,9 +71,9 @@ theorem isClass_of_isIrr {n : ℕ} {ψ : Gn g n → ℂ} (hψ : IsIrr ψ) : IsCl
   exact FDRep.char_conj V x y
 
 /- English proof (translation)
-Rewrite using `[hc, FrobRecHC.hcT_adjoint g a b n hn χ _ hχ]`. Unfold `ip`. Rewrite using `[Fintype.sum_prod_type]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_inv, Prod.snd_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ip_hc_eq_left (a b n : ℕ) (hn : n = a + b) (χ : Gn g n → ℂ) (hχ : IsClass χ) (α : Gn g a → ℂ)
     (β : Gn g b → ℂ) :
@@ -92,9 +90,9 @@ theorem ip_hc_eq_left (a b n : ℕ) (hn : n = a + b) (χ : Gn g n → ℂ) (hχ 
   ring
 
 /- English proof (translation)
-Rewrite using `[hc, FrobRecHC.hcT_adjoint g a b n hn χ _ hχ]`. Unfold `ip`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_inv, Prod.snd_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ip_hc_eq_right (a b n : ℕ) (hn : n = a + b) (χ : Gn g n → ℂ) (hχ : IsClass χ) (α : Gn g a → ℂ)
     (β : Gn g b → ℂ) :
@@ -111,7 +109,7 @@ theorem ip_hc_eq_right (a b n : ℕ) (hn : n = a + b) (χ : Gn g n → ℂ) (hχ
   ring
 
 /- English proof (translation)
-Simplify using `[map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaInv_det_inv (θ : (ZMod g)ˣ →* ℂˣ) (y : Gn g 1) :
     ((θ⁻¹ (Matrix.GeneralLinearGroup.det y⁻¹) : ℂˣ) : ℂ) = ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) := by
@@ -124,11 +122,11 @@ namespace GlobalTheory.GLq.HCFrobWeight
 open scoped Classical
 
 /- English proof (translation)
-Introduce `g _ n ψ hψ θ`. Establish `hcl` using `isClass_of_isIrr hψ`. Prove the components needed by the constructor for the conclusion. Introduce `hS`. Take `⟨σ, hσ, hne⟩` from `exists_irr_sum_ne_zero (fun h : Gn g n => ∑ y : Gn g 1, res n 1 ψ h y * ((θ⁻¹ (Matrix.GeneralLinearGroup.det y⁻¹) : ℂˣ) : ℂ)) (by simp_rw [thetaInv_det_inv]; simpa [mul_comm] using hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[ip_hc_eq_left n 1 (n + 1) rfl ψ hcl]`. Conclude with `mul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero)) hne`. Introduce `hS`. Take `⟨σ, hσ, hne⟩` from `exists_irr_sum_ne_zero (fun y : Gn g n => ∑ h : Gn g 1, res 1 n ψ h y * ((θ⁻¹ (Matrix.GeneralLinearGroup.det h⁻¹) : ℂˣ) : ℂ)) (by simp_rw [thetaInv_det_inv]; simpa [mul_comm] using hS)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[ip_hc_eq_right 1 n (n + 1) (by omega) ψ hcl]`. Conclude with `mul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero)) hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irr_hc_thetaInv : ∀ (g : ℕ) [Fact g.Prime] (n : ℕ) (ψ : Gn g (n + 1) → ℂ), IsIrr ψ → ∀ θ : (ZMod g)ˣ →* ℂˣ,
     (∑ x : Gn g 1, ((θ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * res n 1 ψ 1 x ≠ 0 →

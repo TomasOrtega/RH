@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NumberFieldToModPSquared
 open scoped TensorProduct Polynomial
 /- English proof (citation)
-Apply `GlobalTheory.exists_prime_sq_ringHom_of_closure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNumberFieldToModPSquared.lean&line=97#L97)
 -/

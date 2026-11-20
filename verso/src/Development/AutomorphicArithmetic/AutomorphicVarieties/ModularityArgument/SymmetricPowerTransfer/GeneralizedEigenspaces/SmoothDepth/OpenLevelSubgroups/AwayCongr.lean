@@ -19,17 +19,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨S, subset_rfl, hinj, fun t h h' => absurd h h', by simp⟩`. Consider the case `insert a T₀ _ ih`. Take `⟨T', h1, h2, h3, h4⟩` from `ih`. Distinguish the cases in `h : ∃ t' ∈ T', f t' = f a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨T', h1, h2, h3, fun t ht => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `h`. Conclude with `h4 t ht`. Use `push_neg at h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨insert a T', h1.trans (Finset.subset_insert _ _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Apply the tactic sequence `rcases Finset.mem_insert.1 (Finset.mem_coe.1 hx) with h₁ | h₁ <;>`. Break down `Finset.mem_insert.1 (Finset.mem_coe.1 hy) with h₂ | h₂` into its components or cases. Rewrite using `[h₁, h₂]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h₁` using the available equality. Conclude with `absurd hxy.symm (h y h₂)`. Substitute `h₂` using the available equality. Conclude with `absurd hxy (h x h₁)`. Conclude with `h2 h₁ h₂ hxy`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce `t ht htS s hs`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `h s (h1 hs)`. Conclude with `h3 t ht htS s hs`. Introduce `t ht`.
-
-Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `⟨_, Finset.mem_insert_self _ _, rfl⟩`. Take `⟨t', a', b⟩` from `h4 t ht`. Conclude with `⟨t', Finset.mem_insert_of_mem a', b⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem thinOut {α β : Type} [DecidableEq α] (f : α → β) (S T : Finset α) (hinj : Set.InjOn f (S : Set α)) :
     ∃ T' : Finset α, S ⊆ T' ∧ Set.InjOn f (T' : Set α) ∧ (∀ t ∈ T', t ∉ S → ∀ s ∈ S, f s ≠ f t) ∧
@@ -69,14 +67,14 @@ section
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Simplify using `only [away, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem away_congr {n : ℕ} {w w' : Plc L} (h : w.under (𝓞 (Lp L)) = w'.under (𝓞 (Lp L))) :
     away n w = away n w' := by
   simp only [away, h]
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl`.
+A detailed English derivation is pending.
 -/
 private theorem cLoc_away {n : ℕ} {w : Plc L} {y : UA L n} (hy : y ∈ away n w) : cLoc w y = 1 :=
   Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl
@@ -85,17 +83,17 @@ private noncomputable def AT (S : Finset (Plc L)) (W : ∀ w : Plc L, Sig.Lev (K
   lev (Kall L 2) S W ⊓ ⨅ w ∈ T, away 2 w
 
 /- English proof (translation)
-Establish `h1 : AT S W (insert w T₀) ≤ away 2 w` using `inf_le_right.trans (iInf₂_le w (Finset.mem_insert_self _ _))`. Establish `h2` using `(spanKeep L 2 V w φ φ' hspan).2.1 R _ h1 hAF`. Use `⟨h2.left, h2.inf, ?_⟩` and prove the remaining obligations. Introduce `u hu g`. Take `⟨x, hx, y, hy, rfl⟩` from `(factor L 2 w).2.1 u`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hlev, hTa⟩` from `Subgroup.mem_inf.1 hu`. Take `⟨hK, hJ⟩` from `Subgroup.mem_inf.1 hlev`. Establish `hxy` using `((factor L 2 w).2.2.2.2.2 x hx y hy).1 hK`. Establish `hJ' : ∀ v ∈ S, cLoc v (x * y) ∈ (W v).J 2` using `fun v hv => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hJ v) hv`. Establish `hyw : cLoc w y = 1` using `cLoc_away hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyA : y ∈ AT S W (insert w T₀)`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨hxy.2, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => ?_ show cLoc v y ∈ (W v).J 2` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hyw]`. Conclude with `one_mem _`. Establish `hxv : cLoc v x = 1` using `cLoc_away ((factor L 2 v).2.2.1 w (hS v hv hvw).symm hx)`. Use `hJ' v hv` as an intermediate fact. Rewrite `this` using `[map_mul, hxv, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_iInf.2 fun t => Subgroup.mem_iInf.2 fun ht => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `hy`. Establish `hxt : x ∈ away 2 t` using `(factor L 2 t).2.2.1 w (hT t ht).symm hx`. Establish `hxyt : x * y ∈ away 2 t` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hTa t) ht`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Subgroup.mul_mem_cancel_left _ hxt).1 hxyt`. Rewrite using `[← mul_assoc, h2.level y hyA, hinv x hx hxy.1 ?_]`. Introduce `hwS`. Use `hJ' w hwS` as an intermediate fact. Rewrite `this` using `[map_mul, hyw, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem step [DecidableEq (Plc L)] {V : Type} [AddCommGroup V] [Module ℂ V] (S T₀ : Finset (Plc L))
     (W : ∀ w : Plc L, Sig.Lev (Kw w)) (w : Plc L)

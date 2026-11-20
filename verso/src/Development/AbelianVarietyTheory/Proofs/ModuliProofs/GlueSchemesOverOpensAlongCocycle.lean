@@ -12,7 +12,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.CocycleGlue
 
 /- English proof (translation)
-Conclude with `GlobalTheory.CoverGlue.exists_hom (ψ := D.ι) (fun i => inferInstance) (fun x => by`. Take `⟨i, y, hy⟩` from `D.ι_jointly_surjective x`. Conclude with `⟨i, y, hy⟩)`. Use `p (B := fun i j => D.V (i, j)) (a := fun i j => D.f i j) (b := fun i j => D.t i j ≫ D.f j i)`. Use the proof step `(fun i j => IsPullback.of_isLimit (D.vPullbackConeIsLimit i j)) h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_desc (D : Scheme.GlueData.{0}) {S : Scheme.{0}} (p : ∀ i, D.U i ⟶ S)
     (h : ∀ i j, D.f i j ≫ p i = (D.t i j ≫ D.f j i) ≫ p j) :
@@ -25,49 +25,45 @@ theorem exists_desc (D : Scheme.GlueData.{0}) {S : Scheme.{0}} (p : ∀ i, D.U i
     (fun i j => IsPullback.of_isLimit (D.vPullbackConeIsLimit i j)) h
 
 /- English proof (translation)
-Establish `hma : ∀ i j, IsOpenImmersion (a i j)` using `fun i j => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (ha i j).flip (hκ j)`. Establish `mono_a : ∀ i j, Mono (a i j)` using `fun i j => by`. Use `hma i j` as an intermediate fact. Use `infer_instance`. Establish `mono_κ : ∀ i, Mono (κ i)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hκ i` as an intermediate fact. Use `infer_instance`. Establish `ext_a : ∀ i j {T : Scheme.{0}} (x y : T ⟶ B i j), x ≫ a i j = y ≫ a i j → x = y` using `fun i j _ x y h => (mono_a i j).right_cancellation x y h`. Establish `ext_κ : ∀ i {T : Scheme.{0}} (x y : T ⟶ V i), x ≫ κ i = y ≫ κ i → x = y` using `fun i _ x y h => (mono_κ i).right_cancellation x y h`. Establish `hbw : ∀ i j, b i j ≫ g j ≫ κ j = a i j ≫ g i ≫ κ i` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(hb i j).w` using `only [Category.assoc]`. Establish `iso_a : ∀ i, IsIso (a i i)` using `fun i => by`. Establish `hw : a i i ≫ g i = b i i ≫ g i` using `ext_κ i _ _ (by`. Rewrite using `[Category.assoc]`. Conclude with `(ha i i).w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨(ha i i).lift (𝟙 _) (g i) (by simp), ?_, (ha i i).lift_fst _ _ _⟩⟩` and prove the remaining obligations. Apply `ext_a i i` to reduce the goal to its premises. Rewrite using `[Category.assoc, (ha i i).lift_fst, Category.comp_id, Category.id_comp]`. Establish `iso_b : ∀ i, IsIso (b i i)` using `fun i => by`. Establish `hw : b i i ≫ g i = a i i ≫ g i` using `ext_κ i _ _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc]`. Conclude with `(hb i i).w)`. Establish `hmb : Mono (b i i)`. Use `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hb i i).flip (hκ i)` as an intermediate fact. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨(hb i i).lift (𝟙 _) (g i) (by simp), ?_, (hb i i).lift_fst _ _ _⟩⟩` and prove the remaining obligations. Apply `hmb.right_cancellation` to reduce the goal to its premises. Rewrite using `[Category.assoc, (hb i i).lift_fst, Category.comp_id, Category.id_comp]`. Establish `diag : ∀ i, a i i = b i i` using `fun i => by`. Use `iso_a i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `iso_b i` as an intermediate fact. Establish `h` using `hc i i i (B i i) (𝟙 _) (b i i ≫ inv (a i i)) (𝟙 _) (by simp) (by simp)`. Establish `h2 : inv (a i i) ≫ b i i = 𝟙 _`. Rewrite using `[← cancel_epi (b i i)]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[IsIso.inv_comp_eq, Category.comp_id]`. Conclude with `h2.symm`. Establish `ht : ∀ i j, ∃ t : B i j ⟶ B j i, t ≫ a j i = b i j ∧ t ≫ b j i = a i j` using `fun i j => by`. Use `iso_a i` as an intermediate fact. Use `⟨(ha j i).lift (b i j) (a i j ≫ g i) (hb i j).w, (ha j i).lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hc i j i (B i j) (𝟙 _) ((ha j i).lift (b i j) (a i j ≫ g i) (hb i j).w) (a i j ≫ inv (a i i)) (by rw [IsPullback.lift_fst, Category.id_comp]) (by simp)`. Rewrite using `[h, ← diag i]`. Simplify using the standard rewrite rules. Use `choose t ht_a ht_b using ht`. Establish `t_id : ∀ i, t i i = 𝟙 _` using `fun i => ext_a i i _ _ (by rw [ht_a, Category.id_comp, diag])`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t_inv : ∀ i j, t i j ≫ t j i = 𝟙 _` using `fun i j => ext_a i j _ _ (by rw [Category.assoc, ht_a, ht_b, Category.id_comp])`. Establish `ht' : ∀ i j k, ∃ τ : pullback (a i j) (a i k) ⟶ pullback (a j k) (a j i), τ ≫ pullback.snd _ _ = pullback.fst _ _ ≫ t i j ∧ τ ≫ pullback.fst _ _ ≫ a j k = pullback.fst _ _ ≫ b i j` using `fun i j k => by`. Establish `w : (pullback.fst (a i j) (a i k) ≫ b i j) ≫ g j ≫ κ j = (pullback.snd (a i j) (a i k) ≫ b i k ≫ g k) ≫ κ k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hbw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc]`. Use `⟨pullback.lift ((ha j k).lift _ _ w) (pullback.fst _ _ ≫ t i j) ?_, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[IsPullback.lift_fst, Category.assoc, ht_a]`. Rewrite using `[pullback.lift_fst_assoc, IsPullback.lift_fst]`. Use `choose t' ht'_snd ht'_fst using ht'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `cocycle : ∀ i j k, t' i j k ≫ t' j k i ≫ t' k i j = 𝟙 _` using `fun i j k => by`. Establish `c1` using `hc i j k _ (pullback.fst (a i j) (a i k)) (t' i j k ≫ pullback.fst _ _) (pullback.snd (a i j) (a i k)) (by rw [Category.assoc, ht'_fst]) pullback.condition`. Establish `c2 : (t' i j k ≫ t' j k i) ≫ pullback.fst _ _ = pullback.snd (a i j) (a i k) ≫ t i k`. Apply `ext_a k i` to reduce the goal to its premises. Simplify using `only [Category.assoc, ht'_fst, ht_a]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `c1` using `only [Category.assoc]`. Establish `c2' : ∀ {Z : Scheme.{0}} (h : B k i ⟶ Z), t' i j k ≫ t' j k i ≫ pullback.fst _ _ ≫ h = pullback.snd (a i j) (a i k) ≫ t i k ≫ h`. Introduce `Z h`. Simplify using `only [← Category.assoc, c2]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `ext_a i j` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, ht'_fst]`. Rewrite using `[c2' (b k i), ht_b]`. Conclude with `pullback.condition.symm`. Simplify using `only [Category.assoc, Category.id_comp, ht'_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[c2' (t k i), t_inv, Category.comp_id]`. Set `D : Scheme.GlueData.{0}` to `{ J := I, U := X, V := fun p => B p.1 p.2, f := a, f_mono := mono_a, f_hasPullback := fun _ _ _ => inferInstance, f_id := iso_a, t := t, t_id := t_id, t' := t', t_fac := ht'_snd, cocycle := cocycle, f_open := hma }`. Take `⟨F, hF⟩` from `exists_desc D (fun i => g i ≫ κ i) (fun i j => by`. Express the relevant statement in the definitionally equal form `a i j ≫ g i ≫ κ i = (t i j ≫ a j i) ≫ g j ≫ κ j`. Rewrite using `[ht_a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hbw i j).symm)`. Establish `hV : ∀ i j, IsPullback (a i j) (b i j) (D.ι i) (D.ι j)` using `fun i j => by`. Establish `h : IsPullback (D.f i j) (D.t i j ≫ D.f j i) (D.ι i) (D.ι j)` using `IsPullback.of_isLimit (D.vPullbackConeIsLimit i j)`. Establish `e : D.t i j ≫ D.f j i = b i j` using `ht_a i j`. Rewrite `h` using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Use `⟨D.glued, F, fun i => D.ι i, fun i => ?_, hV⟩` and prove the remaining obligations. Establish `hw : D.ι i ≫ F = g i ≫ κ i` using `hF i`. Establish `hιi : IsOpenImmersion (D.ι i)` using `D.ι_isOpenImmersion i`. Establish `hr : ∀ {T : Scheme.{0}} (u : T ⟶ D.glued) (v : T ⟶ V i), u ≫ F = v ≫ κ i → Set.range u ⊆ Set.range (D.ι i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `T u v huv x hx`. Take `⟨t0, rfl⟩` from `hx`. Take `⟨j, y, hy⟩` from `D.ι_jointly_surjective (u t0)`. Establish `e1 : (g j ≫ κ j) y = κ i (v t0)`. Establish `h1` using `congrArg (fun φ : T ⟶ S => φ t0) huv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg (fun φ : D.U j ⟶ S => φ y) (hF j)`. Simplify using `only [Scheme.Hom.comp_apply] at h1 h2 ⊢`. Rewrite using `[← h2, hy]`. Conclude with `h1`. Take `⟨z', hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := g j ≫ κ j) (g := κ i) y (v t0) e1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b j i ((ha j i).isoPullback.inv z'), ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun φ : pullback (g j ≫ κ j) (κ i) ⟶ D.glued => φ z') (congrArg (fun φ => (ha j i).isoPullback.inv ≫ φ) (hV j i).w)`. Simplify using `only [Scheme.Hom.comp_apply] at h3`. Rewrite using `[← h3, ← hy, ← hz1, ← IsPullback.isoPullback_inv_fst (ha j i), Scheme.Hom.comp_apply]`. Use `IsPullback.of_isLimit (PullbackCone.IsLimit.mk hw (fun s => IsOpenImmersion.lift (D.ι i) s.fst (hr s.fst s.snd s.condition)) ?_ ?_ ?_)` and prove the remaining obligations.
-
-Introduce `s`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Introduce `s`. Apply `ext_κ i` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hw, ← Category.assoc, IsOpenImmersion.lift_fac, s.condition]`.
-
-Introduce `s m h1 _`. Apply `(cancel_mono (D.ι i)).1` to reduce the goal to its premises. Rewrite using `[h1, IsOpenImmersion.lift_fac]`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue {S : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : ∀ i, V i ⟶ S)
     (hκ : ∀ i, IsOpenImmersion (κ i)) (g : ∀ i, X i ⟶ V i) (B : I → I → Scheme.{0})
@@ -210,11 +206,11 @@ theorem exists_glue {S : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : �
     rw [h1, IsOpenImmersion.lift_fac]
 
 /- English proof (translation)
-Introduce `S I U G B a b h1 h2 h3`. Establish `ha : ∀ i j, IsPullback (a i j) (b i j ≫ (G j).hom) ((G i).hom ≫ (U i).ι) (U j).ι`. Introduce `i j`. Establish `h` using `(h1 i j).paste_vert (isPullback_opens_inf (U i) (U j))`. Rewrite `h` using `[← (h2 i j).w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hb : ∀ i j, IsPullback (b i j) (a i j ≫ (G i).hom) ((G j).hom ≫ (U j).ι) (U i).ι`. Introduce `i j`. Establish `h` using `(h2 i j).paste_vert (isPullback_opens_inf (U i) (U j)).flip`. Rewrite `h` using `[← (h1 i j).w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨A, F, ψ, hψ, hab⟩` from `exists_glue (fun i => (U i).toScheme) (fun i => (G i).left) (fun i => (U i).ι) (fun i => inferInstance) (fun i => (G i).hom) (fun i j => (B i j).left) a b ha hb h3`. Conclude with `⟨Over.mk F, ψ, hψ, hab⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glue_over_opens : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (G : ∀ i, Over (U i).toScheme) (B : ∀ i j, Over (U i ⊓ U j).toScheme) (a : ∀ i j, (B i j).left ⟶ (G i).left) (b : ∀ i j, (B i j).left ⟶ (G j).left), (∀ i j, IsPullback (a i j) (B i j).hom (G i).hom (S.homOfLE inf_le_left)) → (∀ i j, IsPullback (b i j) (B i j).hom (G j).hom (S.homOfLE inf_le_right)) → (∀ i j k (T : Scheme.{0}) (x : T ⟶ (B i j).left) (y : T ⟶ (B j k).left) (z : T ⟶ (B i k).left), x ≫ b i j = y ≫ a j k → x ≫ a i j = z ≫ a i k → y ≫ b j k = z ≫ b i k) → ∃ (A : Over S) (ψ : ∀ i, (G i).left ⟶ A.left), (∀ i, IsPullback (ψ i) (G i).hom A.hom (U i).ι) ∧ ∀ i j, IsPullback (a i j) (b i j) (ψ i) (ψ j) := by
   intro S I U G B a b h1 h2 h3

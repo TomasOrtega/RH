@@ -12,9 +12,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `i j hi hij hj`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ j ih`. Distinguish the cases in `h : i < j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Conclude with `lt_trans (ha j (by omega) hj) (ih h (by omega))`. Establish `e : i = j` using `by omega`. Rewrite using `[e]`. Conclude with `ha j (by omega) hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cb_anti_of_succ {n : ℕ} {a : ℕ → ℝ} (ha : ∀ i, 1 ≤ i → i + 1 ≤ n → a (i + 1) < a i) :
     ∀ i j, 1 ≤ i → i < j → j ≤ n → a j < a i := by
@@ -29,9 +29,9 @@ theorem cb_anti_of_succ {n : ℕ} {a : ℕ → ℝ} (ha : ∀ i, 1 ≤ i → i +
       exact ha j (by omega) hj
 
 /- English proof (translation)
-Introduce `i hi`. Establish `h0` using `h (-(a i : ℂ))`. Establish `hl : ∏ l ∈ Icc 1 n, (-(a i : ℂ) + (a l : ℂ)) = 0` using `Finset.prod_eq_zero hi (by ring)`. Rewrite `h0` using `[hl]`. Take `⟨j, hj, hz⟩` from `Finset.prod_eq_zero_iff.mp h0.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Establish `e : ((b j : ℝ) : ℂ) = (a i : ℂ)` using `by linear_combination hz`. Conclude with `e.symm` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cb_mem_of_prod_eq {n : ℕ} {a b : ℕ → ℝ}
     (h : ∀ Y : ℂ, ∏ i ∈ Icc 1 n, (Y + (a i : ℂ)) = ∏ i ∈ Icc 1 n, (Y + (b i : ℂ))) :
@@ -46,9 +46,9 @@ theorem cb_mem_of_prod_eq {n : ℕ} {a b : ℕ → ℝ}
   exact_mod_cast e.symm
 
 /- English proof (translation)
-Introduce and unpack `x ⟨j, rfl⟩`. Take `⟨l, hl, hab⟩` from `hm (j.val + 1) (Finset.mem_Icc.mpr ⟨by omega, by have := j.isLt; omega⟩)`. Establish `hl1` using `(Finset.mem_Icc.mp hl).1`. Establish `hl2` using `(Finset.mem_Icc.mp hl).2`. Use `⟨⟨l - 1, by omega⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show -b (l - 1 + 1) = -a (j.val + 1)`. Rewrite using `[hab, Nat.sub_add_cancel hl1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cb_range_sub_of_mem {n : ℕ} {a b : ℕ → ℝ} (hm : ∀ i ∈ Icc 1 n, ∃ j ∈ Icc 1 n, a i = b j) :
     Set.range (fun j : Fin n => -a (j.1 + 1)) ⊆ Set.range (fun j : Fin n => -b (j.1 + 1)) := by
@@ -61,9 +61,9 @@ theorem cb_range_sub_of_mem {n : ℕ} {a b : ℕ → ℝ} (hm : ∀ i ∈ Icc 1 
   rw [hab, Nat.sub_add_cancel hl1]
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h' : i.val < j.val` using `hij`. Establish `hjn` using `j.isLt`. Use `cb_anti_of_succ ha (i.val + 1) (j.val + 1) (by omega) (by omega) (by omega)` as an intermediate fact. Use `show -a (i.val + 1) < -a (j.val + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cb_strictMono_of_anti {n : ℕ} {a : ℕ → ℝ} (ha : ∀ i, 1 ≤ i → i + 1 ≤ n → a (i + 1) < a i) :
     StrictMono (fun j : Fin n => -a (j.1 + 1)) := by
@@ -75,9 +75,9 @@ theorem cb_strictMono_of_anti {n : ℕ} {a : ℕ → ℝ} (ha : ∀ i, 1 ≤ i �
   linarith
 
 /- English proof (translation)
-Establish `hr : Set.range (fun j : Fin n => -a (j.1 + 1)) = Set.range (fun j : Fin n => -b (j.1 + 1))` using `Set.Subset.antisymm (cb_range_sub_of_mem (cb_mem_of_prod_eq h)) (cb_range_sub_of_mem (cb_mem_of_prod_eq (fun Y => (h Y).symm)))`. Establish `hf` using `((cb_strictMono_of_anti ha).range_inj (cb_strictMono_of_anti hb)).mp hr`. Introduce `i hi`. Establish `h1` using `(Finset.mem_Icc.mp hi).1`. Establish `h1'` using `(Finset.mem_Icc.mp hi).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : -a (i - 1 + 1) = -b (i - 1 + 1)` using `congrFun hf ⟨i - 1, by omega⟩`. Rewrite `h2` using `[Nat.sub_add_cancel h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cb_eq_of_prod_eq {n : ℕ} {a b : ℕ → ℝ}
     (ha : ∀ i, 1 ≤ i → i + 1 ≤ n → a (i + 1) < a i) (hb : ∀ i, 1 ≤ i → i + 1 ≤ n → b (i + 1) < b i)
@@ -95,7 +95,7 @@ theorem cb_eq_of_prod_eq {n : ℕ} {a b : ℕ → ℝ}
   linarith
 
 /- English proof (translation)
-Unfold `M.rho`. Rewrite using `[dif_pos ⟨by omega, by have := j.isLt; omega⟩]`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cb_rho_eq' (Q : M.Par) (π : M.Ty Q) (j : Fin (Q.k - 1)) :
     M.rho Q π (j.1 + 1) = Q.lo (j.1 + 1) + (((π j : Fin _) : ℕ) : ℝ) := by
@@ -106,15 +106,15 @@ theorem cb_rho_eq' (Q : M.Par) (π : M.Ty Q) (j : Fin (Q.k - 1)) :
     | simp
 
 /- English proof (translation)
-Conclude with `⟨⟨i - 1, by omega⟩, by show i = i - 1 + 1; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem cb_ofIcc {n i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ n) : ∃ j : Fin n, i = j.1 + 1 := by
   exact ⟨⟨i - 1, by omega⟩, by show i = i - 1 + 1; omega⟩
 
 /- English proof (translation)
-Rewrite using `[cb_rho_eq' Q π j]`. Establish `hj` using `j.2`. Establish `hw : ((π j : Fin _) : ℕ) ≤ Q.wid (j.1 + 1)` using `by have := (π j).2; omega`. Establish `hg'` using `hg (j.1 + 1) (Finset.mem_Icc.mpr ⟨by omega, by omega⟩)`. Establish `hf : ((Q.wid (j.1 + 1) : ℕ) : ℝ) ≤ Q.hi (j.1 + 1) - Q.lo (j.1 + 1)` using `Nat.floor_le (sub_nonneg.mpr hg')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : (((π j : Fin _) : ℕ) : ℝ) ≤ (Q.wid (j.1 + 1) : ℝ)` using `by exact_mod_cast hw`. Establish `h0 : (0 : ℝ) ≤ (((π j : Fin _) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cb_rho_bounds (Q : M.Par) (hg : ∀ i ∈ Icc 1 (Q.k - 1), Q.lo i ≤ Q.hi i) (π : M.Ty Q)
     (j : Fin (Q.k - 1)) : Q.lo (j.1 + 1) ≤ M.rho Q π (j.1 + 1) ∧ M.rho Q π (j.1 + 1) ≤ Q.hi (j.1 + 1) := by
@@ -129,9 +129,9 @@ theorem cb_rho_bounds (Q : M.Par) (hg : ∀ i ∈ Icc 1 (Q.k - 1), Q.lo i ≤ Q.
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `i h1 h2`. Take `⟨j, rfl⟩` from `cb_ofIcc (n := Q.k - 1) h1 (by omega)`. Establish `b1` using `(cb_rho_bounds Q hg π ⟨j.1 + 1, by omega⟩).2`. Establish `b0` using `(cb_rho_bounds Q hg π j).1`. Establish `hm` using `min_le_max (a := Q.u (j.1 + 1 + 1)) (b := Q.u' (j.1 + 1 + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Q.hi (j.1 + 1 + 1) = min (Q.u (j.1 + 1 + 1)) (Q.u' (j.1 + 1 + 1)) - 1 / 2` using `rfl`. Establish `e2 : Q.lo (j.1 + 1) = max (Q.u (j.1 + 1 + 1)) (Q.u' (j.1 + 1 + 1)) + 1 / 2` using `rfl`. Simplify using `only at b1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cb_rho_anti (Q : M.Par) (hg : ∀ i ∈ Icc 1 (Q.k - 1), Q.lo i ≤ Q.hi i) (π : M.Ty Q) :
     ∀ i, 1 ≤ i → i + 1 ≤ Q.k - 1 → M.rho Q π (i + 1) < M.rho Q π i := by
@@ -146,7 +146,7 @@ theorem cb_rho_anti (Q : M.Par) (hg : ∀ i ∈ Icc 1 (Q.k - 1), Q.lo i ≤ Q.hi
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Establish `e` using `h j`. Rewrite `e` using `[cb_rho_eq' Q π j, cb_rho_eq' Q π' j]`. Conclude with `add_left_cancel e` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cb_ty_ext (Q : M.Par) {π π' : M.Ty Q}
     (h : ∀ j : Fin (Q.k - 1), M.rho Q π (j.1 + 1) = M.rho Q π' (j.1 + 1)) : π = π' := by
@@ -157,13 +157,11 @@ theorem cb_ty_ext (Q : M.Par) {π π' : M.Ty Q}
   exact_mod_cast add_left_cancel e
 
 /- English proof (translation)
-Use `⟨fun j => ⟨⌊v (j.1 + 1) - Q.lo (j.1 + 1)⌋₊, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `hv j`. Establish `: ⌊v (j.1 + 1) - Q.lo (j.1 + 1)⌋₊ ≤ Q.wid (j.1 + 1)`. Unfold `M.Par.wid`. Conclude with `Nat.floor_le_floor (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `j`. Rewrite using `[cb_rho_eq' Q _ j]`. Take `⟨h1, -, n, hn⟩` from `hv j`. Establish `hn0 : (0 : ℝ) ≤ (n : ℝ)` using `hn ▸ sub_nonneg.mpr h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0' : (0 : ℤ) ≤ n` using `by exact_mod_cast hn0`. Use `lift n to ℕ using hn0'`. Rewrite `hn` using `[Int.cast_natCast]`. Use `show Q.lo (j.1 + 1) + ((⌊v (j.1 + 1) - Q.lo (j.1 + 1)⌋₊ : ℕ) : ℝ) = v (j.1 + 1)`. Rewrite using `[hn, Nat.floor_natCast]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cb_exists_ty (Q : M.Par) (v : ℕ → ℝ)
     (hv : ∀ j : Fin (Q.k - 1), Q.lo (j.1 + 1) ≤ v (j.1 + 1) ∧ v (j.1 + 1) ≤ Q.hi (j.1 + 1) ∧
@@ -187,9 +185,9 @@ theorem cb_exists_ty (Q : M.Par) (v : ℕ → ℝ)
     linarith
 
 /- English proof (translation)
-Unfold `M.Par.lo`. Apply the tactic sequence `rcases max_choice (Q.u (i + 1)) (Q.u' (i + 1)) with h | h <;> rw [h]`. Take `⟨n, hn⟩` from `hu`. Conclude with `⟨n, by linarith⟩`. Take `⟨n, hn⟩` from `hu'`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by linarith⟩`.
+Supply the required witnesses or components.
 -/
 theorem cb_lo_int (Q : M.Par) (c : ℝ) (i : ℕ) (hu : ∃ n : ℤ, Q.u (i + 1) - c = n)
     (hu' : ∃ n : ℤ, Q.u' (i + 1) - c = n) : ∃ n : ℤ, Q.lo i - (c + 1 / 2) = n := by
@@ -201,7 +199,7 @@ theorem cb_lo_int (Q : M.Par) (c : ℝ) (i : ℕ) (hu : ∃ n : ℤ, Q.u (i + 1)
     exact ⟨n, by linarith⟩
 
 /- English proof (translation)
-Rewrite using `[cb_rho_eq' Q τ j]`. Take `⟨n, hn⟩` from `h`. Conclude with `⟨n + ((τ j : Fin _) : ℕ), by push_cast; linarith⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cb_rho_int (Q : M.Par) (c : ℝ) (τ : M.Ty Q) (j : Fin (Q.k - 1))
     (h : ∃ n : ℤ, Q.lo (j.1 + 1) - c = n) : ∃ n : ℤ, M.rho Q τ (j.1 + 1) - c = n := by
@@ -210,7 +208,7 @@ theorem cb_rho_int (Q : M.Par) (c : ℝ) (τ : M.Ty Q) (j : Fin (Q.k - 1))
   exact ⟨n + ((τ j : Fin _) : ℕ), by push_cast; linarith⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hx`. Take `⟨l, hl⟩` from `hy`. Conclude with `⟨m - l, by push_cast; linarith⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cb_int_sub {x y c : ℝ} (hx : ∃ n : ℤ, x - c = n) (hy : ∃ n : ℤ, y - c = n) :
     ∃ n : ℤ, x - y = n := by
@@ -219,13 +217,13 @@ theorem cb_int_sub {x y c : ℝ} (hx : ∃ n : ℤ, x - c = n) (hy : ∃ n : ℤ
   exact ⟨m - l, by push_cast; linarith⟩
 
 /- English proof (translation)
-Establish `h1 : (1 : ℕ) ∈ Icc 1 P.k` using `Finset.mem_Icc.mpr ⟨le_rfl, hP.k_pos⟩`. Take `⟨b, hb⟩` from `hP.int_u' 1 h1`. Use `⟨hP.k_pos, hP.T_pos, hP.T'_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Take `⟨a, ha⟩` from `hP.int_u' i hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a - b, by show P.u' i - P.u' 1 = _; push_cast; linarith⟩`. Introduce `i hi`. Take `⟨a, ha⟩` from `hP.int_u' i hi`. Conclude with `⟨a - b, by show P.u' i - P.u' 1 = _; push_cast; linarith⟩`. Introduce `i hi`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `g` using `hP.gap i hi`. Use `show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤ min (P.u' i) (P.u' i) - 1 / 2`. Establish `e1 : P.lo i = max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2` using `rfl`. Establish `e2 : P.hi i = min (P.u i) (P.u' i) - 1 / 2` using `rfl`. Rewrite using `[max_self, min_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_max_right (P.u (i + 1)) (P.u' (i + 1))` as an intermediate fact. Use `min_le_right (P.u i) (P.u' i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Pp_OK {P : M.Par} (hP : P.OK) : (Pp P).OK := by
   have h1 : (1 : ℕ) ∈ Icc 1 P.k := Finset.mem_Icc.mpr ⟨le_rfl, hP.k_pos⟩
@@ -248,11 +246,9 @@ theorem Pp_OK {P : M.Par} (hP : P.OK) : (Pp P).OK := by
     linarith
 
 /- English proof (translation)
-Use `⟨hP.k_pos, hP.T_pos, hP.T'_pos, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hP.int_u`. Conclude with `hP.int_u`. Introduce `i hi`. Establish `g` using `hP.gap i hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 ≤ min (P.u i) (P.u i) - 1 / 2`. Establish `e1 : P.lo i = max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2` using `rfl`. Establish `e2 : P.hi i = min (P.u i) (P.u' i) - 1 / 2` using `rfl`. Rewrite using `[max_self, min_self]`. Use `le_max_left (P.u (i + 1)) (P.u' (i + 1))` as an intermediate fact.
-
-Use `min_le_left (P.u i) (P.u' i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Pq_OK {P : M.Par} (hP : P.OK) : (Pq P).OK := by
   refine ⟨hP.k_pos, hP.T_pos, hP.T'_pos, ?_, ?_, ?_⟩
@@ -269,9 +265,9 @@ theorem Pq_OK {P : M.Par} (hP : P.OK) : (Pq P).OK := by
     linarith
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤ x at h1`. Express the relevant statement in the definitionally equal form `max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 ≤ x at h2`. Rewrite `h1`, `h2` using `[max_self]`. Use `show max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤ x`. Use `max_le (show P.u (i + 1) ≤ x - 1 / 2 by linarith) (show P.u' (i + 1) ≤ x - 1 / 2 by linarith)` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cb_lo_le_of (P : M.Par) (i : ℕ) (x : ℝ) (h1 : (Pp P).lo i ≤ x) (h2 : (Pq P).lo i ≤ x) :
     P.lo i ≤ x := by
@@ -283,9 +279,9 @@ theorem cb_lo_le_of (P : M.Par) (i : ℕ) (x : ℝ) (h1 : (Pp P).lo i ≤ x) (h2
   linarith
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ≤ min (P.u' i) (P.u' i) - 1 / 2 at h1`. Express the relevant statement in the definitionally equal form `x ≤ min (P.u i) (P.u i) - 1 / 2 at h2`. Rewrite `h1`, `h2` using `[min_self]`. Use `show x ≤ min (P.u i) (P.u' i) - 1 / 2`. Use `le_min (show x + 1 / 2 ≤ P.u i by linarith) (show x + 1 / 2 ≤ P.u' i by linarith)` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cb_le_hi_of (P : M.Par) (i : ℕ) (x : ℝ) (h1 : x ≤ (Pp P).hi i) (h2 : x ≤ (Pq P).hi i) :
     x ≤ P.hi i := by
@@ -297,7 +293,7 @@ theorem cb_le_hi_of (P : M.Par) (i : ℕ) (x : ℝ) (h1 : x ≤ (Pp P).hi i) (h2
   linarith
 
 /- English proof (translation)
-Use `show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤ max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2`. Rewrite using `[max_self]`. Combine the linear relations using `[le_max_right (P.u (i + 1)) (P.u' (i + 1))]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cb_lo_Pp_le (P : M.Par) (i : ℕ) : (Pp P).lo i ≤ P.lo i := by
   show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤ max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2
@@ -305,7 +301,7 @@ theorem cb_lo_Pp_le (P : M.Par) (i : ℕ) : (Pp P).lo i ≤ P.lo i := by
   linarith [le_max_right (P.u (i + 1)) (P.u' (i + 1))]
 
 /- English proof (translation)
-Use `show min (P.u i) (P.u' i) - 1 / 2 ≤ min (P.u' i) (P.u' i) - 1 / 2`. Rewrite using `[min_self]`. Combine the linear relations using `[min_le_right (P.u i) (P.u' i)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cb_hi_le_Pp (P : M.Par) (i : ℕ) : P.hi i ≤ (Pp P).hi i := by
   show min (P.u i) (P.u' i) - 1 / 2 ≤ min (P.u' i) (P.u' i) - 1 / 2
@@ -313,21 +309,19 @@ theorem cb_hi_le_Pp (P : M.Par) (i : ℕ) : P.hi i ≤ (Pp P).hi i := by
   linarith [min_le_right (P.u i) (P.u' i)]
 
 /- English proof (translation)
-Establish `gP : ∀ i ∈ Icc 1 (P.k - 1), P.lo i ≤ P.hi i` using `hP.gap`. Establish `gPp : ∀ i ∈ Icc 1 ((Pp P).k - 1), (Pp P).lo i ≤ (Pp P).hi i` using `(Pp_OK hP).gap`. Establish `gPq : ∀ i ∈ Icc 1 ((Pq P).k - 1), (Pq P).lo i ≤ (Pq P).hi i` using `(Pq_OK hP).gap`. Establish `hu : ∀ j : Fin (P.k - 1), ∃ n : ℤ, P.u (j.1 + 1 + 1) - P.u 1 = n` using `fun j => hP.int_u _ (Finset.mem_Icc.mpr ⟨by omega, by have := j.2; omega⟩)`. Establish `hu' : ∀ j : Fin (P.k - 1), ∃ n : ℤ, P.u' (j.1 + 1 + 1) - P.u 1 = n` using `fun j => hP.int_u' _ (Finset.mem_Icc.mpr ⟨by omega, by have := j.2; omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `zP : ∀ j : Fin (P.k - 1), ∃ n : ℤ, P.lo (j.1 + 1) - (P.u 1 + 1 / 2) = n` using `fun j => cb_lo_int P _ _ (hu j) (hu' j)`. Establish `zPp : ∀ j : Fin (P.k - 1), ∃ n : ℤ, (Pp P).lo (j.1 + 1) - (P.u 1 + 1 / 2) = n` using `fun j => cb_lo_int (Pp P) _ _ (hu' j) (hu' j)`. Establish `hf : ∀ ρ : M.Ty P, ∃ σ : M.Ty (Pp P), ∀ j : Fin (P.k - 1), M.rho (Pp P) σ (j.1 + 1) = M.rho P ρ (j.1 + 1)`. Introduce `ρ`. Use `cb_exists_ty (Pp P) (fun i => M.rho P ρ i) (fun j => ⟨?_, ?_, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cb_lo_Pp_le P _).trans (cb_rho_bounds P gP ρ j).1`. Conclude with `(cb_rho_bounds P gP ρ j).2.trans (cb_hi_le_Pp P _)`. Conclude with `cb_int_sub (cb_rho_int P _ ρ j (zP j)) (zPp j)`. Use `choose f hf using hf`. Use `⟨f, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ ρ' h`. Apply `cb_ty_ext P` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← hf ρ j, ← hf ρ' j, h]`. Introduce `ρ Y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `M.xC`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Take `⟨j, rfl⟩` from `cb_ofIcc (n := P.k - 1) hi.1 hi.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf ρ j]`. Introduce `σ τ hx`. Establish `hst : ∀ i ∈ Icc 1 (P.k - 1), M.rho (Pp P) σ i = M.rho (Pq P) τ i` using `cb_eq_of_prod_eq (n := P.k - 1) (cb_rho_anti (Pp P) gPp σ) (cb_rho_anti (Pq P) gPq τ) (fun Y => hx Y)`. Take `⟨ρ, hρ⟩` from `cb_exists_ty P (fun i => M.rho (Pp P) σ i) (fun j => by`. Establish `e` using `hst (j.1 + 1) (Finset.mem_Icc.mpr ⟨by omega, by have := j.2; omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `bσ` using `cb_rho_bounds (Pp P) gPp σ j`. Establish `bτ` using `cb_rho_bounds (Pq P) gPq τ j`. Rewrite `bτ` using `[← e]`. Use `⟨cb_lo_le_of P _ _ bσ.1 bτ.1, cb_le_hi_of P _ _ bσ.2 bτ.2, ?_⟩` and prove the remaining obligations. Conclude with `cb_int_sub (cb_rho_int (Pp P) _ σ j (zPp j)) (zP j))`.
-
-Use `⟨ρ, cb_ty_ext (Pp P) (fun j => ?_)⟩` and prove the remaining obligations. Rewrite using `[hf ρ j, hρ j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_match {P : M.Par} (hP : P.OK) :
     ∃ f : M.Ty P → M.Ty (Pp P), Function.Injective f ∧ (∀ (ρ : M.Ty P) (Y : ℂ), M.xC (Pp P) (f ρ) Y = M.xC P ρ Y) ∧
@@ -380,20 +374,20 @@ def cb_xPoly (Q : M.Par) (σ : M.Ty Q) : Polynomial ℂ :=
   ∏ i ∈ Icc 1 (Q.k - 1), (Polynomial.X + Polynomial.C ((M.rho Q σ i : ℝ) : ℂ))
 
 /- English proof (translation)
-Unfold `cb_xPoly M.xC`. Simplify using `only [Polynomial.eval_prod, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cb_eval_xPoly (Q : M.Par) (σ : M.Ty Q) (Y : ℂ) : (cb_xPoly Q σ).eval Y = M.xC Q σ Y := by
   unfold cb_xPoly M.xC
   simp only [Polynomial.eval_prod, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]
 
 /- English proof (translation)
-Establish `gPp : ∀ i ∈ Icc 1 ((Pp P).k - 1), (Pp P).lo i ≤ (Pp P).hi i` using `(Pp_OK hP).gap`. Establish `hne : ∀ σ σ' : M.Ty (Pp P), σ ≠ σ' → cb_xPoly (Pp P) σ - cb_xPoly (Pp P) σ' ≠ 0`. Introduce `σ σ' hss h0`. Apply `hss` to reduce the goal to its premises. Establish `hx : ∀ Y, M.xC (Pp P) σ Y = M.xC (Pp P) σ' Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `Y`. Rewrite using `[← cb_eval_xPoly, ← cb_eval_xPoly, sub_eq_zero.mp h0]`. Establish `e` using `cb_eq_of_prod_eq (n := (Pp P).k - 1) (cb_rho_anti _ gPp σ) (cb_rho_anti _ gPp σ') hx`. Conclude with `cb_ty_ext _ (fun j => e _ (Finset.mem_Icc.mpr ⟨by omega, by have := j.2; omega⟩))`. Take `⟨Y₀, hY⟩` from `Infinite.exists_notMem_finset ((Finset.univ : Finset (M.Ty (Pp P) × M.Ty (Pp P))).biUnion (fun p => if p.1 = p.2 then ∅ else (cb_xPoly (Pp P) p.1 - cb_xPoly (Pp P) p.2).roots.toFinset))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y₀, fun σ σ' h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hss`. Apply `hY` to reduce the goal to its premises. Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and]`. Use `⟨(σ, σ'), ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hss, Multiset.mem_toFinset, Polynomial.mem_roots (hne σ σ' hss), Polynomial.IsRoot.def, Polynomial.eval_sub, cb_eval_xPoly, cb_eval_xPoly, sub_eq_zero]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep {P : M.Par} (hP : P.OK) :
     ∃ Y₀ : ℂ, Function.Injective (fun σ : M.Ty (Pp P) => M.xC (Pp P) σ Y₀) := by

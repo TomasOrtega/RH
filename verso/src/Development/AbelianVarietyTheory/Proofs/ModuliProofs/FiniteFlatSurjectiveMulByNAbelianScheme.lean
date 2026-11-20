@@ -24,7 +24,7 @@ namespace GlobalTheory.MulAmple
 open GlobalTheory.MulPull GlobalTheory.MulFinite TopologicalSpace
 
 /- English proof (translation)
-Establish `hm : p z ∈ H.U k ⊓ H.U k'` using `⟨hk, hk'⟩`. Conclude with `(gs_res p z _ hm _).symm.trans ((congrArg (gs p z _) (s.compat k k')).trans ((gs_mul p z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit p z _ hm _) (gs_res p z _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gs_sec_trans {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X) (z : Z) {k k' : H.ι}
     (hk : p z ∈ H.U k) (hk' : p z ∈ H.U k') :
@@ -35,7 +35,7 @@ theorem gs_sec_trans {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X) 
     ((gs_mul p z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit p z _ hm _) (gs_res p z _ hm _))))
 
 /- English proof (translation)
-Use `⟨fun h => Opens.mem_iSup.2 ⟨k, (isUnit_gs p z _ hk _).1 h⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k', hk'⟩` from `Opens.mem_iSup.1 h`. Establish `h' : p z ∈ H.U k'` using `X.basicOpen_le _ hk'`. Rewrite using `[gs_sec_trans s p z hk h']`. Conclude with `(Units.isUnit _).mul ((isUnit_gs p z _ h' _).2 hk')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs_sec {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X) (z : Z) {k : H.ι}
     (hk : p z ∈ H.U k) : IsUnit (gs p z (H.U k) (s.f k)) ↔ p z ∈ Out.nonzeroLocus s := by
@@ -46,7 +46,7 @@ theorem isUnit_gs_sec {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X)
   exact (Units.isUnit _).mul ((isUnit_gs p z _ h' _).2 hk')
 
 /- English proof (translation)
-Establish `e : g ^ a * h ^ b * (g ^ a * h ^ b * t)⁻¹ = t⁻¹`. Rewrite using `[mul_inv, mul_inv_cancel_left]`. Establish `e' : g.val ^ a * h.val ^ b * ((g ^ a * h ^ b * t)⁻¹).val = (t⁻¹).val` using `congrArg Units.val e`. Rewrite using `[← e']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem units_mul_pow_mul_inv_cancel {R : Type} [CommRing R] (g h t : Rˣ) (x y : R) (a b : ℕ) :
     (g.val * x) ^ a * (h.val * y) ^ b * ((g ^ a * h ^ b * t)⁻¹).val = x ^ a * y ^ b * (t⁻¹).val := by
@@ -56,19 +56,17 @@ theorem units_mul_pow_mul_inv_cancel {R : Type} [CommRing R] (g h t : Rˣ) (x y 
   rw [← e']; ring
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `h`. Set `V : (Fin 2 → H.ι) → Z.Opens` to `fun j => LB.wchart H (K := Fin 2) ![p, q] j`. Establish `l₁ : ∀ j, V j ≤ p ⁻¹ᵁ H.U (j 0)` using `fun j z hz => Set.mem_iInter.1 hz 0`. Establish `l₂ : ∀ j, V j ≤ q ⁻¹ᵁ H.U (j 1)` using `fun j z hz => Set.mem_iInter.1 hz 1`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ∀ j, Γ(Z, V j), ∀ j z, z ∈ V j → gs (𝟙 Z) z (V j) (u j) = gs p z (H.U (j 0)) (s.f (j 0)) ^ a * gs q z (H.U (j 1)) (s'.f (j 1)) ^ b * ((gm (𝟙 Z) z (V j) (α.s j))⁻¹).val := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => (p.appLE _ _ (l₁ j)).hom (s.f (j 0)) ^ a * (q.appLE _ _ (l₂ j)).hom (s'.f (j 1)) ^ b * (show Γ(Z, V j) from ((α.s j)⁻¹).val), fun j z hz => ?_⟩` and prove the remaining obligations. Use `(gs_mul (𝟙 Z) z (V j) hz _ _).trans (congrArg₂ (· * ·) ((gs_mul (𝟙 Z) z (V j) hz _ _).trans (congrArg₂ (· * ·) ((gs_pow (𝟙 Z) z (V j) hz _ _).trans ?_) ((gs_pow (𝟙 Z) z (V j) hz _ _).trans ?_))) ?_)` and prove the remaining obligations. Conclude with `congrArg (· ^ a) (gs_appLE p z _ _ _ hz _)`. Conclude with `congrArg (· ^ b) (gs_appLE q z _ _ _ hz _)`. Conclude with `(gs_unit (𝟙 Z) z _ hz _).trans (congrArg Units.val (map_inv _ _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∀ z : Z, ∃ j, z ∈ V j` using `fun z => by`. Take `⟨k, hk⟩` from `exists_chart hH (p z)`. Take `⟨l, hl⟩` from `exists_chart hH (q z)`. Use `⟨![k, l], Set.mem_iInter.2 fun i => ?_⟩` and prove the remaining obligations. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hk`. Conclude with `hl`. Establish `hcov : (⊤ : Z.Opens) ≤ iSup V` using `fun z _ => Opens.mem_iSup.2 (hex z)`. Take `⟨c, hc, -⟩` from `Z.sheaf.existsUnique_gluing' V ⊤ (fun j => homOfLE le_top) hcov u (fun j j' => fn_ext (V := V j ⊓ V j') fun z hz => by`. Use `(gs_res (𝟙 Z) z inf_le_left hz _).trans (Eq.trans ?_ (gs_res (𝟙 Z) z inf_le_right hz _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `gen_trans hα (𝟙 Z) z (j := j) (j' := j') hz.1 hz.2`. Establish `t : trF (L` using `H) (K := Fin 2) ![p, q] ![(a : ℤ), (b : ℤ)] (𝟙 Z) z j j' = gm p z (H.U (j 0) ⊓ H.U (j' 0)) (H.g (j 0) (j' 0)) ^ a * gm q z (H.U (j 1) ⊓ H.U (j' 1)) (H.g (j 1) (j' 1)) ^ b := by`. Rewrite using `[trF, Fin.prod_univ_two, ← zpow_natCast, ← zpow_natCast]`. Both sides reduce to the same expression. Rewrite `e` using `[t]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu j z hz.1, hu j' z hz.2, gs_sec_trans s p z (l₁ j hz.1) (l₁ j' hz.2), gs_sec_trans s' q z (l₂ j hz.1) (l₂ j' hz.2)]`. Conclude with `(congrArg (fun w : (Z.presheaf.stalk z)ˣ => _ * (w⁻¹).val) e).trans (units_mul_pow_mul_inv_cancel _ _ _ _ _ a b))`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Take `⟨j, hj⟩` from `hex z`.
-
-Establish `k₁ : gs (𝟙 Z) z ⊤ c = gs (𝟙 Z) z (V j) (u j)` using `(gs_res (𝟙 Z) z le_top hj c).symm.trans (congrArg (gs (𝟙 Z) z (V j)) (hc j))`. Use `(isUnit_gs (𝟙 Z) z ⊤ trivial c).symm.trans ?_` and prove the remaining obligations. Rewrite using `[k₁, hu j z hj, Units.isUnit_mul_units, IsUnit.mul_iff, isUnit_pow_iff ha, isUnit_pow_iff hb, isUnit_gs_sec s p z (l₁ j hj), isUnit_gs_sec s' q z (l₂ j hj)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_fn₂ {X Z : Scheme.{0}} {H : LB X} (hH : H.IsLB) (p q : Z ⟶ X) (a b : ℕ) (ha : a ≠ 0)
     (hb : b ≠ 0) (h : HasGen H (K := Fin 2) ![p, q] ![(a : ℤ), (b : ℤ)]) (s s' : LB.Sec H) :
@@ -122,9 +120,9 @@ theorem exists_fn₂ {X Z : Scheme.{0}} {H : LB X} (hH : H.IsLB) (p q : Z ⟶ X)
   rfl
 
 /- English proof (translation)
-Establish `le : ∀ j : Fin 1 → H.ι, LB.wchart H (K` using `Fin 1) ![p] j ≤ p ⁻¹ᵁ (H.U (j 0) ⊓ H.U j₀) := fun j z hz => ⟨Set.mem_iInter.1 hz 0, h z⟩`. Use `⟨⟨fun j => res (le j) (pullU p _ (H.g (j 0) j₀))⟩, fun j j' => unit_ext fun z hz => ?_⟩` and prove the remaining obligations. Establish `v : ∀ j : Fin 1 → H.ι, z ∈ LB.wchart H (K` using `Fin 1) ![p] j → gm (𝟙 Z) z _ (res (le j) (pullU p _ (H.g (j 0) j₀))) = gm (𝟙 Z ≫ p) z (H.U (j 0) ⊓ H.U j₀) (H.g (j 0) j₀) := fun j hj => (gm_res (𝟙 Z) z (le j) hj _).trans (gm_pull (𝟙 Z) p z _ (le j hj) _)`. Use `((gm_res (𝟙 Z) z _ hz _).trans (v j hz.1)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_linComb H ![p] ![1] (𝟙 Z) z j j' hz.1 hz.2) ((gm_res (𝟙 Z) z _ hz _).trans (v j' hz.2))).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_one]`. Express the relevant statement in the definitionally equal form `gm (𝟙 Z ≫ p) z (H.U (j 0) ⊓ H.U (j' 0)) (H.g (j 0) (j' 0)) ^ (1 : ℤ) * _ = _`. Rewrite using `[zpow_one]`. Conclude with `gm_cocycle hH (𝟙 Z ≫ p) z (le j hz.1).1 (le j' hz.2).1 (h z)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasGen_of_chart {X Z : Scheme.{0}} {H : LB X} (hH : H.IsLB) (p : Z ⟶ X) (j₀ : H.ι)
     (h : ∀ z, p z ∈ H.U j₀) : HasGen H (K := Fin 1) ![p] ![1] := by
@@ -149,13 +147,13 @@ section
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left}
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero`. Conclude with `(hone.inv.mul hone.inv).of_formEq hL (fun U _ h => by`. Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, zpow_ofNat, sq])`. Consider the case `one`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(hone.mul hone.inv).of_formEq hL (fun U _ h => by`. Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, zpow_ofNat])`. Consider the case `more n ih₀ ih₁`. Establish `hc` using `hcube.pull (lift (x ^ (n + 1)) (lift x x⁻¹)).left`. Use `((hc.mul hc).mul ((ih₁.mul ih₁).mul (ih₀.inv.mul ((hone.mul hone).mul (hone.mul hone))))).of_formEq hL (fun U _ h => ?_)` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (prod_cub (x ^ (n + 1)) x x⁻¹ h) (prod_cub (x ^ (n + 1)) x x⁻¹ h))) rfl)).trans ?_` and prove the remaining obligations. Establish `e₁ : x ^ (n + 1) * x * x⁻¹ = x ^ (n + 1)` using `mul_inv_cancel_right _ _`. Establish `e₂ : x ^ (n + 1) * x = x ^ (n + 2)` using `(pow_succ x (n + 1)).symm`. Establish `e₃ : x ^ (n + 1) * x⁻¹ = x ^ n` using `by rw [pow_succ, mul_inv_cancel_right]`. Rewrite using `[e₁, e₂, e₃, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one]`. Use `push_cast`. Use `module`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem hasGen_pow₂ (hL : L.IsLB) (hcube : HasGen L (thφ A (x3 A)) thε) {T : Over S} (x : T ⟶ A)
     (hone : HasGen L (K := Fin 1) ![(1 : T ⟶ A).left] ![1]) (n : ℕ) :
@@ -187,25 +185,23 @@ theorem hasGen_pow₂ (hL : L.IsLB) (hcube : HasGen L (thφ A (x3 A)) thε) {T :
     module
 
 /- English proof (translation)
-Break down `hn.eq_or_lt with rfl | hn` into its components or cases. Rewrite using `[pow_one, Over.id_left]`. Use `infer_instance`. Generalize the expression as in `hm : ((𝟙 A) ^ n : A ⟶ A) = m`. Establish `hw : m.left ≫ A.hom = A.hom` using `Over.w m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (m.left ≫ A.hom)` using `by rw [hw]; infer_instance`. Establish `: IsProper m.left` using `.of_comp _ A.hom`. It suffices to establish `LocallyQuasiFinite m.left from .of_isProper_of_locallyQuasiFinite _`. Use `.of_fiberToSpecResidueField _ fun y => ?_` and prove the remaining obligations. Establish `hy : ∀ z, m.left (m.left.fiberι y z) = y` using `fun z => (m.left.range_fiberι y).le ⟨z, rfl⟩`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (m.left.fiberι y ≫ A.hom)`. Set `x : T ⟶ A` to `Over.homMk (m.left.fiberι y) rfl`. Establish `hxm : x ^ n = x ≫ m` using `by rw [← hm, MonObj.comp_pow, Category.comp_id]`. Establish `hxi : x⁻¹ = x ≫ GrpObj.inv` using `rfl`. Take `⟨j₀, hj₀⟩` from `exists_chart hL y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₁, hj₁⟩` from `exists_chart hL ((1 : A ⟶ A).left y)`. Establish `h₀ : HasGen L (K` using `Fin 1) ![(x ^ n).left] ![1] := hasGen_of_chart hL _ j₀ fun z => by`. Rewrite using `[hxm]`. Conclude with `(congrArg (· ∈ L.U j₀) (hy z)).mpr hj₀`. Establish `h₁ : HasGen L (K` using `Fin 1) ![(1 : T ⟶ A).left] ![1] := hasGen_of_chart hL _ j₁ fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (1 : T ⟶ A) = x ≫ m ≫ (1 : A ⟶ A)` using `by rw [MonObj.comp_one, MonObj.comp_one]`. Rewrite using `[e]`. Conclude with `(congrArg (fun w => (1 : A ⟶ A).left w ∈ L.U j₁) (hy z)).mpr hj₁`. Establish `hle : n ≤ n ^ 2` using `Nat.le_self_pow two_ne_zero n`. Establish `h₂ : HasGen L (K` using `Fin 2) ![x.left, (x⁻¹).left] ![((n ^ 2 + n : ℕ) : ℤ), ((n ^ 2 - n : ℕ) : ℤ)] := ((hasGen_pow₂ hL hcube x h₁ n).mul (h₀.mul h₀)).of_formEq hL fun U _ h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_zpow, ofMul_one]`. Move the coercions through the operations in `[hle]`. Use `module`. Establish `key` using `fun i : I × I => exists_fn₂ hL x.left (x⁻¹).left _ _ (by positivity) (by have : n < n ^ 2 := by nlinarith omega) h₂ (s i.1) (s i.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c hc using key`. Use `isAffineHom_fromSpecResidueField A.left y` as an intermediate fact. Establish `hx : IsAffineHom x.left` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom.{0}) (IsPullback.of_hasPullback m.left (A.left.fromSpecResidueField y)).flip this`. Establish `: IsIso (GrpObj.inv : A ⟶ A).left` using `inferInstanceAs (IsIso ((Over.forget _).map (GrpObj.inv : A ⟶ A)))`. Establish `hx' : IsAffineHom (x⁻¹).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hxi, Over.comp_left]`. Use `infer_instance`. Establish `hp : IsProper (m.left.fiberToSpecResidueField y)` using `inferInstanceAs (IsProper (pullback.snd m.left (A.left.fromSpecResidueField y)))`. Establish `hsep : T.left.IsSeparated`. Establish `: IsSeparated (m.left.fiberToSpecResidueField y ≫ terminal.from _)` using `inferInstance`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[terminal.comp_from]`. Conclude with `⟨this⟩`. Use `locallyQuasiFinite_of_cover (K := A.left.residueField y) (m.left.fiberToSpecResidueField y) c ?_ fun i => ?_` and prove the remaining obligations. Use `top_unique fun z _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hcov.ge (Set.mem_univ (x.left z)))`.
-
-Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (hcov.ge (Set.mem_univ ((x⁻¹).left z)))`. Conclude with `Opens.mem_iSup.2 ⟨(i, j), (hc (i, j)).ge ⟨hi, hj⟩⟩`. Use `(congrArg IsAffineOpen (hc i)).mpr ?_` and prove the remaining obligations. Conclude with `((hs i.1).preimage x.left).inf ((hs i.2).preimage (x⁻¹).left)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFinite_pow [IsProper A.hom] [IsAffine S] (hL : L.IsLB) (hcube : HasGen L (thφ A (x3 A)) thε)
     {I : Type} (s : I → LB.Sec L) (hcov : ⨆ i, Out.nonzeroLocus (s i) = ⊤)
@@ -274,9 +270,9 @@ theorem isFinite_pow [IsProper A.hom] [IsAffine S] (hL : L.IsLB) (hcube : HasGen
 end
 
 /- English proof (translation)
-Introduce `hl R _ A _ _ hA M hM hamp n hn`. Take `⟨d, -, m, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R A M hM).1 hamp`. Establish `hH` using `isLB_pw hM d`. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcube : HasGen (pw M d) (thφ A (x3 A)) thε` using `GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy hl R A hA ⟨_, hH, m, s, hs⟩ _ hH`. Establish `hf` using `isFinite_pow hH hcube s hs.1 (fun i => (hs.2 i).1) n hn`. Establish `hm : IsMonHom ((𝟙 A) ^ n : A ⟶ A)` using `MulN.isMonHom_mulA A n`. Establish `hgeo : ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Sp K ⟶ Sp R), Flat ((Over.pullback t).map ((𝟙 A) ^ n : A ⟶ A)).left ∧ Surjective ((Over.pullback t).map ((𝟙 A) ^ n : A ⟶ A)).left` using `fun K _ _ t => flat_and_surjective_of_isFinite_abelianEnd forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ (Out.TLinPf.isAb_pullback t A hA) _ inferInstance (MorphismProperty.of_isPullback (P := @IsFinite) (MulN.isPullback_baseChange t _) hf)`. Conclude with `⟨hf, flat_of_isFinite_of_finitePresentation_of_flat_geometric_fibres _ A A _ inferInstance inferInstance inferInstance hf fun K _ _ t => (hgeo K t).1, MulN.surjective_of_geomFibres _ fun K _ _ t => (hgeo K t).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem finite_flat_surjective_pow :
     Out.Laws → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ M : LB A.left, M.IsLB → Out.RelAmple A M → ∀ n : ℕ, 1 ≤ n → IsFinite ((𝟙 A) ^ n : A ⟶ A).left ∧ Flat ((𝟙 A) ^ n : A ⟶ A).left ∧ Surjective ((𝟙 A) ^ n : A ⟶ A).left := by

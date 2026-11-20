@@ -18,7 +18,7 @@ structure Pre (ψ : AddChar (Ad E) ℂ) (m : ℕ) (f : GA E a → ℂ) : Prop wh
   law : ∀ k, m < k → ∀ (y : UnipotentBlockColumnIndex a k k → Ad E) (g : GA E a), f (blkU y * g) = ψ (dot (eLast a k) y) * f g
 
 /- English proof (translation)
-Use `⟨hc, fun γ _ => hl γ, fun k hk y g => ?_⟩` and prove the remaining obligations. Establish `he : IsEmpty (UnipotentBlockColumnIndex a k k)` using `⟨fun t => by have := t.1.2.isLt; have := t.2; omega⟩`. Take `rfl : y = 0` from `Subsingleton.elim _ _`. Rewrite using `[show dot (eLast a k) (0 : UnipotentBlockColumnIndex a k k → Ad E) = 0 by simp [dot], AddChar.map_zero_eq_one, one_mul, blkU, posU_zero, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pre_top {f : GA E a → ℂ} (hc : Continuous f) (hl : ∀ γ g, f (ratGL E a γ * g) = f g) : Pre ψ (a - 1) f := by
   refine ⟨hc, fun γ _ => hl γ, fun k hk y g => ?_⟩
@@ -27,26 +27,26 @@ theorem pre_top {f : GA E a → ℂ} (hc : Continuous f) (hl : ∀ γ g, f (ratG
   rw [show dot (eLast a k) (0 : UnipotentBlockColumnIndex a k k → Ad E) = 0 by simp [dot], AddChar.map_zero_eq_one, one_mul, blkU, posU_zero, one_mul]
 
 /- English proof (translation)
-The claim follows from `per_coef hψ _ hf.cont (fun c g' => hf.left _ (isMir_blkU c) g') g`.
+A detailed English derivation is pending.
 -/
 theorem Pre.per (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (hf : Pre ψ m f) (g : GA E a) :
     Per (ratV E (UnipotentBlockColumnIndex a m m)) fun x => ψ (-dot (eLast a m) x) * f (blkU x * g) :=
   per_coef hψ _ hf.cont (fun c g' => hf.left _ (isMir_blkU c) g') g
 
 /- English proof (translation)
-Use `⟨?_, fun γ hγ g => ?_, fun k hk y g => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.continuous_quotientAverage_periodic_family _ (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (isCoLat_ratV E _) (GA E a) (fun p => ψ (-dot (eLast a (m + 1)) p.2) * f (blkU p.2 * p.1)) ((hψ.cont.comp ((continuous_dot _).neg.comp continuous_snd)).mul (hf.cont. …`. Rewrite using `[colT, GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E a ψ hψ m f hf.cont hf.left γ hγ.succ (eLast a (m + 1)) g]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `s0 : UnipotentBlockColumnIndex a (m + 1) (m + 1)` to `⟨(⟨m, by omega⟩, ⟨m + 1, hma⟩), Nat.lt_succ_self m, le_refl _, le_refl _⟩`. Rewrite using `[Finset.sum_eq_single s0 (fun s _ hs => ?_) fun h => absurd (Finset.mem_univ _) h]`. Rewrite using `[show eLast (E := E) a (m + 1) s0 = 1 by simp [eLast, s0], one_mul, hγ _ _ (Or.inl (le_refl m))]`. Establish `ht` using `t.2.1`. Simplify using `only [eLast, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (t.1.1 : ℕ) = m`. Rewrite using `[if_pos (Fin.ext h.symm), if_pos (by omega)]`. Rewrite using `[if_neg (fun e => h (congrArg Fin.val e).symm), if_neg (by omega)]`. Rewrite using `[eLast, if_neg, zero_mul]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `s.2.2`. Conclude with `hs (Subtype.ext (Prod.ext (Fin.ext (by simp [s0]; omega)) (Fin.ext (by simp [s0]; omega))))`. Break down `Nat.lt_or_ge (m + 1) k with h1 | h1` into its components or cases. Simplify using `only [colT, coefF]`. Rewrite using `[← avg_const_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc (blkU x), blkU_mul_blkU h1 x y, mul_assoc, hf.law k h1, dot_eLast_shift h1 x y]`. Expand and normalize the polynomial expressions, which then agree. Take `rfl : k = m + 1` from `by omega`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT` using `GlobalTheory.T.quotientAverage_translate_invariant _ _ (isCoLat_ratV E _) _ (hf.per hψ g) y`. Simplify using `only [colT, coefF]`. Rewrite using `[← hT, ← avg_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : dot (eLast a (m + 1)) (x + y) = dot (eLast a (m + 1)) x + dot (eLast a (m + 1)) y`. Simplify using `only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Rewrite using `[hd, show (blkU (x + y) : GA E a) = blkU x * blkU y from posU_add _ x y, ← mul_assoc (ψ _), ← AddChar.map_add_eq_mul, mul_assoc (blkU x)]`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem pre_colT (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (hma : m + 1 < a) (hf : Pre ψ (m + 1) f) : Pre ψ m (colT ψ (m + 1) f) := by
   refine ⟨?_, fun γ hγ g => ?_, fun k hk y g => ?_⟩
@@ -90,7 +90,7 @@ theorem pre_colT (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (hma : m + 1 <
       abel
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ f hf => hf`. Consider the case `succ m ih => exact fun h f hf => ih (Or.inl (by omega)) (pre_colT hψ (by omega) hf)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem whit_pre (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f : GA E a → ℂ}, Pre ψ m f → Pre ψ 0 (whit ψ m f) := by
   induction m with
@@ -98,9 +98,9 @@ theorem whit_pre (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f : GA
   | succ m ih => exact fun h f hf => ih (Or.inl (by omega)) (pre_colT hψ (by omega) hf)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ f f' _ _ => rfl`. Consider the case `succ m ih`. Introduce `h f f' hf hf'`. Establish `e : colT ψ (m + 1) (fun g => f g + f' g) = fun g => colT ψ (m + 1) f g + colT ψ (m + 1) f' g` using `funext fun g => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [colT, coefF, mul_add]`. Conclude with `GlobalTheory.T.quotientAverage_add_of_periodic _ _ (isCoLat_ratV E _) _ _ (hf.per hψ g) (hf'.per hψ g)`. Rewrite using `[whit_succ, whit_succ, whit_succ, e]`. Conclude with `ih (Or.inl (by omega)) (pre_colT hψ (by omega) hf) (pre_colT hψ (by omega) hf')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_add' (hψ : StdPsi ψ) (m : ℕ) : (m < a ∨ m = 0) → ∀ {f f' : GA E a → ℂ}, Pre ψ m f → Pre ψ m f' →
     whit ψ m (fun g => f g + f' g) = fun g => whit ψ m f g + whit ψ m f' g := by
@@ -124,7 +124,7 @@ instance : SecondCountableTopology (Multiplicative X) := inferInstanceAs (Second
 instance : T2Space (Multiplicative X) := inferInstanceAs (T2Space X)
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Use `haveI : SecondCountableTopology Γ := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨K, a, b⟩` from `h.2`. Conclude with `⟨‹Countable Γ›, h.1, K, a, b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lat_mult (h : IsCoLat Γ) : Lat Γ.toSubgroup := by
   have := h.1
@@ -134,9 +134,9 @@ theorem lat_mult (h : IsCoLat Γ) : Lat Γ.toSubgroup := by
   exact ⟨‹Countable Γ›, h.1, K, a, b⟩
 
 /- English proof (translation)
-Use `letI : MeasurableSpace X := ‹MeasurableSpace (Multiplicative X)›`. Use `haveI : BorelSpace X := ⟨hB.1⟩`. Take `⟨μ, 𝓕, h1, h2, h3⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice X Γ h`. Establish `h4` using `(GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average X Γ h μ 𝓕 h1 h2 _ hp).2.2.2`. Rewrite `h4` using `[h3, ENNReal.toReal_one, Complex.ofReal_one, one_mul]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4]`. Conclude with `(ha μ 𝓕 { map_mul_left_eq_self := h1.map_add_left_eq_self, lt_top_of_isCompact := h1.lt_top_of_isCompact, open_pos := h1.open_pos } ⟨h2.1, h2.2, h2.3⟩ h3 x).symm`.
+A detailed English derivation is pending.
 -/
 theorem avg_eq_of_isAv (h : IsCoLat Γ) [MeasurableSpace (Multiplicative X)] [hB : BorelSpace (Multiplicative X)] {H : Type} [Mul H]
     {ι : Multiplicative X → H} {f c : H → ℂ} (ha : IsAv Γ.toSubgroup ι f c) (x : H)

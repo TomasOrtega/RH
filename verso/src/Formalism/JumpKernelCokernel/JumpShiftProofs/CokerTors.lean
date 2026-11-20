@@ -6,27 +6,27 @@ open Polynomial Module
 namespace Formalism.KernelCokernelLengths.CokernelTorsionLemmas
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Module.projective_lifting_property S.mkQ LinearMap.id (Submodule.mkQ_surjective S)`. Establish `hg' : ∀ x, S.mkQ (g x) = x` using `fun x => LinearMap.congr_fun hg x`. Set `pr : M →ₗ[R] M` to `LinearMap.id - g ∘ₗ S.mkQ`. Establish `hmem : ∀ m, pr m ∈ S`. Introduce `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify using `only [pr, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Rewrite using `[Submodule.Quotient.mk_sub]`. Use `hg' (S.mkQ m)` as an intermediate fact. Simplify using `only [Submodule.mkQ_apply] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, sub_self]`. Set `F : M →ₗ[R] S × (M ⧸ S)` to `LinearMap.prod (pr.codRestrict S hmem) S.mkQ`. Set `G : S × (M ⧸ S) →ₗ[R] M` to `S.subtype.coprod g`. Establish `h1 : F ∘ₗ G = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨s, c⟩`. Establish `hs : S.mkQ (s : M) = 0` using `by simp`. Establish `hs' : (Submodule.Quotient.mk (s : M) : M ⧸ S) = 0` using `hs`. Establish `hg'' : (Submodule.Quotient.mk (g c) : M ⧸ S) = c` using `hg' c`. Apply `Prod.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[F, G, pr, hg', hs]`. Simplify using `[F, G, pr, hs', hg'']`. Establish `h2 : G ∘ₗ F = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m`. Simplify using `[F, G, pr]`. Set `e : M ≃ₗ[R] S × (M ⧸ S)` to `LinearEquiv.ofLinearMap (f := F) (g := G) h1 h2`. Set `dS` to `d.restrict (p := S) (q := S) (fun x _ => hd x)`. Set `bS` to `Module.Free.chooseBasis R S`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bQ` to `Module.Free.chooseBasis R (M ⧸ S)`. Set `b` to `bS.prod bQ`. Establish `hconj : ∀ x, e.conj d x = (⟨d (G x), hd _⟩, 0)`. Introduce `x`. Rewrite using `[LinearEquiv.conj_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : S.mkQ (d (G x)) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hd _`. Apply `Prod.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[e, F, pr, hq]`. Simplify using `[e, F, pr, hq]`. Establish `hM : LinearMap.toMatrix b b (e.conj d) = Matrix.fromBlocks (LinearMap.toMatrix bS bS dS) (LinearMap.toMatrix b b (e.conj d)).toBlocks₁₂ 0 0` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (LinearMap.toMatrix b b (e.conj d))]`. Use `congr 1`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply, LinearMap.toMatrix_apply, b, Module.Basis.prod_apply, Sum.elim_inl, hconj, Module.Basis.prod_repr_inl]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[G, dS]`. Use extensionality with `i j`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.toBlocks₂₁, LinearMap.toMatrix_apply, b, hconj]`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₂, LinearMap.toMatrix_apply, b, hconj]`. Rewrite using `[← e.charpoly_conj d, ← LinearMap.charpoly_toMatrix (e.conj d) b, hM, Matrix.charpoly_fromBlocks_zero₂₁, LinearMap.charpoly_toMatrix, Matrix.charpoly_zero, Module.finrank_eq_card_chooseBasisIndex]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_of_range_le {R : Type} [CommRing R] [IsDomain R] {M : Type} [AddCommGroup M]
     [Module R M] [Module.Free R M] [Module.Finite R M]
@@ -102,11 +102,11 @@ end Formalism.KernelCokernelLengths.CokernelTorsionLemmas
 namespace Formalism.KernelCokernelLengths.CokernelTorsionLemmas
 
 /- English proof (translation)
-Establish `hP0 : P ≠ 0` using `fun h0 => hP (by simp [h0])`. Establish `hQ0 : Q ≠ 0` using `fun h0 => hQ (by simp [h0])`. Establish `tP : P.natTrailingDegree = 0` using `Polynomial.natTrailingDegree_eq_zero.mpr (Or.inr hP)`. Establish `tQ : Q.natTrailingDegree = 0` using `Polynomial.natTrailingDegree_eq_zero.mpr (Or.inr hQ)`. Establish `hrk : r = k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Polynomial.natTrailingDegree h`. Rewrite `h1` using `[mul_comm (X ^ k) Q, Polynomial.natTrailingDegree_mul_X_pow hP0, Polynomial.natTrailingDegree_mul_X_pow hQ0, tP, tQ]`. Use linear arithmetic over natural numbers and integers. Substitute `hrk` using the available equality. Rewrite `h` using `[mul_comm (X ^ r) Q]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (pow_ne_zero _ Polynomial.X_ne_zero) h`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mul_X_pow {R : Type} [CommRing R] [IsDomain R] (P Q : R[X]) (k r : ℕ)
     (hP : P.coeff 0 ≠ 0) (hQ : Q.coeff 0 ≠ 0) (h : P * X ^ r = X ^ k * Q) : P = Q := by
@@ -126,43 +126,39 @@ theorem eq_of_mul_X_pow {R : Type} [CommRing R] [IsDomain R] (P Q : R[X]) (k r :
 end Formalism.KernelCokernelLengths.CokernelTorsionLemmas
 
 /- English proof (translation)
-Introduce `O _ _ _ M _ _ _ _ d k Q hQ0 hchar hann`. Establish `hQc : Q.coeff 0 ≠ 0` using `by rwa [Polynomial.coeff_zero_eq_eval_zero]`. Establish `hdQ : ∀ m, d (aeval d Q m) = 0`. Introduce `m`. Use `LinearMap.congr_fun hann m` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, aeval_X]`. Establish `hQd : ∀ m, aeval d Q (d m) = 0`. Introduce `m`. Establish `h0 : aeval d (Q * X) = 0` using `by rw [mul_comm]; exact hann`. Use `LinearMap.congr_fun h0 m` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, aeval_X]`. Establish `hsplit : ∀ m, aeval d Q m = Q.coeff 0 • m + d (aeval d Q.divX m)`. Introduce `m`. Use `conv_lhs => rw [← Polynomial.X_mul_divX_add Q]`. Rewrite using `[map_add, map_mul, aeval_X, aeval_C, LinearMap.add_apply, Module.End.mul_apply, Module.algebraMap_end_apply, add_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcommR : ∀ m, d (aeval d Q.divX m) = aeval d Q.divX (d m)`. Introduce `m`. Establish `h0 : aeval d (X * Q.divX) = aeval d (Q.divX * X)` using `by rw [mul_comm]`. Use `LinearMap.congr_fun h0 m` as an intermediate fact. Simplify `this` using `[map_mul, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `S : Submodule O M` to `LinearMap.ker (aeval d Q)`. Establish `hdS : ∀ m, d m ∈ S` using `fun m => hQd m`. Establish `htf : Module.IsTorsionFree O (M ⧸ S)`. Use `Module.IsTorsionFree.of_smul_eq_zero (fun a x hx => ?_)` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `H m`. Rewrite `hx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `: a • aeval d Q m = 0`. Rewrite using `[← map_smul]`. Conclude with `hx`. Conclude with `(smul_eq_zero.mp this).resolve_left ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free O (M ⧸ S)` using `Module.free_of_finite_type_torsion_free'`. Set `dS` to `d.restrict (p := S) (q := S) (fun x _ => hdS x)`. Establish `hc` using `Formalism.KernelCokernelLengths.CokernelTorsionLemmas.charpoly_of_range_le S d hdS`. Establish `hker : LinearMap.ker dS = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s hs`. Establish `hs1 : d (s : M) = 0`. Use `congrArg Subtype.val hs` as an intermediate fact. Simplify `this` using `[dS]`. Establish `hs2 : aeval d Q (s : M) = 0` using `s.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs2` using `[hsplit, hcommR, hs1, map_zero, add_zero]`. Conclude with `Subtype.ext ((smul_eq_zero.mp hs2).resolve_left hQc)`. Establish `hdet : LinearMap.det dS ≠ 0` using `fun h => (LinearMap.det_eq_zero_iff_ker_ne_bot.mp h) hker`. Establish `hPc : dS.charpoly.coeff 0 ≠ 0`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[LinearMap.det_eq_sign_charpoly_coeff, h, mul_zero]`. Establish `hPQ : dS.charpoly = Q` using `Formalism.KernelCokernelLengths.CokernelTorsionLemmas.eq_of_mul_X_pow _ _ k _ hPc hQc (hc.symm.trans hchar)`. Establish `hspan : Ideal.span {LinearMap.det dS} = Ideal.span {Q.eval 0}`. Rewrite using `[LinearMap.det_eq_sign_charpoly_coeff, hPQ, Polynomial.coeff_zero_eq_eval_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.span_singleton_mul_left_unit ((isUnit_neg_one).pow _) _`. Establish `hlen` using `Formalism.KernelCokernelLengths.determinant_length_formula O S dS hdet`. Rewrite `hlen` using `[hspan]`. Rewrite using `[← hlen]`. Establish `hmemT : ∀ s : S, (LinearMap.range d).mkQ (s : M) ∈ Submodule.torsion O (M ⧸ LinearMap.range d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s`. Rewrite using `[Submodule.mem_torsion_iff]`. Use `⟨⟨Q.coeff 0, mem_nonZeroDivisors_of_ne_zero hQc⟩, ?_⟩` and prove the remaining obligations. Use `show Q.coeff 0 • (Submodule.Quotient.mk (s : M) : M ⧸ LinearMap.range d) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hs2 : aeval d Q (s : M) = 0` using `s.2`. Rewrite `hs2` using `[hsplit]`. Rewrite using `[eq_neg_of_add_eq_zero_left hs2]`. Conclude with `Submodule.neg_mem _ (LinearMap.mem_range_self d _)`. Set `φ : S →ₗ[O] Submodule.torsion O (M ⧸ LinearMap.range d)` to `((LinearMap.range d).mkQ ∘ₗ S.subtype).codRestrict _ hmemT`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Establish `hφ : LinearMap.range dS ≤ LinearMap.ker φ`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (LinearMap.range d).mkQ (d (s : M)) = 0`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_range_self d _`. Use `Module.length_le_of_surjective ((LinearMap.range dS).liftQ φ hφ) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `H m`. Rewrite `hx` using `[Submodule.mem_torsion_iff]`. Take `⟨a, ha⟩` from `hx`. Rewrite `ha` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨m', hm'⟩` from `ha`.
-
-Establish `h1 : (a : O) • aeval d Q m = 0`. Rewrite using `[← map_smul]`. Use `show aeval d Q ((a : O) • m) = 0`. Rewrite using `[show (a : O) • m = d m' from hm'.symm]`. Conclude with `hQd m'`.
-
-Establish `hmS : m ∈ S` using `(smul_eq_zero.mp h1).resolve_left (nonZeroDivisors.coe_ne_zero a)`. Use `⟨Submodule.Quotient.mk ⟨m, hmS⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.liftQ_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Formalism.KernelCokernelLengths.cokernel_torsion_holds : Formalism.KernelCokernelLengths.CokerTors := by
   intro O _ _ _ M _ _ _ _ d k Q hQ0 hchar hann

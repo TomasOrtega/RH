@@ -13,7 +13,7 @@ namespace GlobalTheory.InvPairingTensor
 variable {p q : ℕ}
 
 /- English proof (translation)
-Unfold `Jm Formalism.UG.Jpq`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_diag (p q : ℕ) :
     Jm p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
@@ -23,7 +23,7 @@ theorem Jm_diag (p q : ℕ) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Jm_diag, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases a with a | a <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_self (p q : ℕ) : Jm p q * Jm p q = 1 := by
   rw [Jm_diag, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -32,17 +32,17 @@ theorem Jm_mul_self (p q : ℕ) : Jm p q * Jm p q = 1 := by
   rcases a with a | a <;> simp
 
 /- English proof (translation)
-Establish `hsym : ∀ a b : Ix p q, ¬ sameBlock a b → ¬ sameBlock b a`. Introduce `a b h h'`. Apply `h` to reduce the goal to its premises. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`. Use `⟨(1 / 2 : ℂ) • (Z - Jm p q * Zᴴ * Jm p q), (-Complex.I / 2) • (Z + Jm p q * Zᴴ * Jm p q), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ * _ + _ * _ = 0`. Rewrite using `[Jm_diag]`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] <;> ring`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * _ + _ * _ = 0`. Rewrite using `[Jm_diag]`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hZ`. Establish `hZ' : ∀ a b, ¬ sameBlock a b → (Jm p q * Zᴴ * Jm p q) a b = 0`. Introduce `a b hab`. Rewrite using `[Jm_diag, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, hZ b a (hsym a b hab)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Simplify using `[Matrix.sub_apply, hZ a b hab, hZ' a b hab]`. Introduce `a b hab`. Simplify using `[Matrix.add_apply, hZ a b hab, hZ' a b hab]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_real_parts (Z : Mat p q) :
     ∃ X Y : Mat p q, X ∈ upq p q ∧ Y ∈ upq p q ∧ (IsKC Z → IsKC X ∧ IsKC Y) ∧
@@ -81,7 +81,7 @@ theorem exists_real_parts (Z : Mat p q) :
     ring
 
 /- English proof (translation)
-Set `L : U.H →ₗᵢ[ℂ] U.H` to `⟨(U.π g).toLinearMap, U.isom g⟩`. Conclude with `L.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem inner_pi_apply_pi_apply {T : GrpData p q} (U : URep T) (g : T.G) (x y : U.H) :
     inner ℂ (U.π g x) (U.π g y) = inner ℂ x y := by
@@ -89,9 +89,9 @@ private theorem inner_pi_apply_pi_apply {T : GrpData p q} (U : URep T) (g : T.G)
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Establish `hv` using `D.der X hX v`. Establish `hw` using `D.der X hX w`. Establish `h` using `hv.inner ℂ hw`. Establish `hc : (fun t : ℝ => inner ℂ ((D.U.π (T.expt (t • X))) (D.ι v)) ((D.U.π (T.expt (t • X))) (D.ι w))) = fun _ => inner ℂ (D.ι v) (D.ι w)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `inner_pi_apply_pi_apply D.U _ _ _`. Rewrite `h` using `[hc]`. Establish `h0` using `h.unique (hasDerivAt_const (0 : ℝ) (inner ℂ (D.ι v) (D.ι w)))`. Simplify `h0` using `[T.expt_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inner_act_skew {T : GrpData p q} (D : DSRep T) {X : Mat p q} (hX : X ∈ upq p q)
     (v w : D.HK.V) :
@@ -111,11 +111,11 @@ section Frame
 variable {A H : Type} [AddCommGroup A] [Module ℂ A] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Set `F : Submodule ℂ H` to `E.map i`. Set `bF` to `stdOrthonormalBasis ℂ F`. Establish `hb : ∀ j, ∃ a, a ∈ E ∧ i a = (bF j : H)` using `fun j => Submodule.mem_map.mp (bF j).2`. Use `choose a haE hia using hb`. Use `⟨Module.finrank ℂ F, a, haE, fun x hx => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Establish `hxF : i x ∈ F` using `Submodule.mem_map_of_mem hx`. Establish `key` using `congrArg Subtype.val (bF.sum_repr' (⟨i x, hxF⟩ : F))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at key`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, hia]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (i : A →ₗ[ℂ] H) (hi : Function.Injective i) (E : Submodule ℂ A)
     [FiniteDimensional ℂ E] :
@@ -139,23 +139,21 @@ theorem exists_frame (i : A →ₗ[ℂ] H) (hi : Function.Injective i) (E : Subm
 end Frame
 
 /- English proof (translation)
-Take `⟨⟨W, hWfd, hPW, hWK⟩, -⟩` from `(GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 P`. Establish `hwt : ∀ v ∈ W, v ∈ ⨆ μ : Ix r s → ℚ, wtSub (fockAct2 p q r s) μ` using `fun v _ => ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 v).2`. Establish `hlie : IsKLieAct (fockAct2 p q r s)`. Unfold `IsKLieAct`. Introduce `Y Z _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.1 Y Z`. Take `⟨E, hEfd, hE⟩` from `GlobalTheory.T.exists_finiteDimensional_forall_map_mem' r s R₂.HK hA (Pol p q r s) (fockAct2 p q r s) hlie W hWfd hWK hwt`. Use `⟨E, hEfd, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hYfd, hyY, hYK⟩` from `R₂.HK.kfin y`. Use `haveI := hYfd`. Take `⟨n, b, hbY, hfr⟩` from `exists_frame R₂.ι R₂.ι_inj Y`. Set `φ : Pol p q r s →ₗ[ℂ] R₂.HK.V` to `{ toFun := fun Q => ∑ j, l (B Q (b j)) • b j map_add' := fun Q Q' => by`. Simplify using `only [map_add, LinearMap.add_apply, add_smul, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c Q => by`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.smul_sum, mul_smul] }`. Establish `hφ : ∀ Q, φ Q = ∑ j, l (B Q (b j)) • b j` using `fun Q => rfl`. Establish `hφY : ∀ Q, φ Q ∈ Y` using `fun Q => by`. Rewrite using `[hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Y.sum_mem fun j _ => Y.smul_mem _ (hbY j)`. Establish `hrep : ∀ Q, ∀ z ∈ Y, inner ℂ (R₂.ι z) (R₂.ι (φ Q)) = l (B Q z)`. Introduce `Q z hz`. Use `conv_rhs => rw [← hfr z hz]`. Rewrite using `[hφ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, LinearMap.map_smulₛₗ, inner_sum, inner_smul_right, smul_eq_mul, inner_conj_symm]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hsep : ∀ u ∈ Y, ∀ u' ∈ Y, (∀ z ∈ Y, inner ℂ (R₂.ι z) (R₂.ι u) = inner ℂ (R₂.ι z) (R₂.ι u')) → u = u'`. Introduce `u hu u' hu' h`. Establish `h0` using `h (u - u') (Y.sub_mem hu hu')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[← sub_eq_zero, ← inner_sub_right, ← map_sub, inner_self_eq_zero, ← map_zero R₂.ι]`. Conclude with `sub_eq_zero.mp (R₂.ι_inj h0)`. Establish `hequ1 : ∀ Z ∈ upq r s, IsKC Z → ∀ Q, φ (fockAct2 p q r s Z Q) = R₂.HK.act Z (φ Q)`. Introduce `Z hZ hKZ Q`. Use `hsep _ (hφY _) _ (hYK Z hKZ _ (hφY Q)) fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hrep _ z hz, eq_neg_of_add_eq_zero_left (hB Z hZ Q z), map_neg, ← hrep Q _ (hYK Z hKZ z hz)]`. Conclude with `(eq_neg_of_add_eq_zero_left (inner_act_skew R₂ hZ z (φ Q))).symm`. Establish `hequ : ∀ Z, IsKC Z → ∀ Q, φ (fockAct2 p q r s Z Q) = R₂.HK.act Z (φ Q)`. Introduce `Z hKZ Q`. Take `⟨X1, Y1, hX1, hY1, hK, rfl⟩` from `exists_real_parts Z`.
-
-Take `⟨hKX, hKY⟩` from `hK hKZ`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, hequ1 X1 hX1 hKX, hequ1 Y1 hY1 hKY]`. Establish `hφE : φ P ∈ E` using `hE φ hequ P hPW`. Rewrite using `[← hrep P y hyY]`. Conclude with `hy _ hφE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional_kill {r s : ℕ} {T₂ : GrpData r s} (R₂ : DSRep T₂)
     (hA : AdmGK R₂.HK) {N : Type} [AddCommGroup N] [Module ℂ N]
@@ -221,7 +219,7 @@ theorem exists_finiteDimensional_kill {r s : ℕ} {T₂ : GrpData r s} (R₂ : D
   exact hy _ hφE
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem contrR_map_id {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B]
     [Module ℂ B] (l : B →ₗ[ℂ] ℂ) (b : Module.End ℂ B) (z : TensorProduct ℂ A B) :
@@ -232,7 +230,7 @@ private theorem contrR_map_id {A B : Type} [AddCommGroup A] [Module ℂ A] [AddC
   | add z z' hz hz' => rw [map_add, map_add, hz, hz', map_add]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [neg_smul]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', neg_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem contrR_neg' {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B]
     [Module ℂ B] (l : B →ₗ[ℂ] ℂ) (z : TensorProduct ℂ A B) :
@@ -243,27 +241,25 @@ private theorem contrR_neg' {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCom
   | add z z' hz hz' => rw [map_add, map_add, hz, hz', neg_add]
 
 /- English proof (translation)
-Introduce `p q r s T₂ R₂ hA N _ _ B hB`. Set `m : R₂.HK.V → R₂.HK.V →ₗ[ℂ] ℂ` to `fun y => innerₛₗ ℂ (R₂.ι y) ∘ₗ R₂.ι`. Establish `hm : ∀ y x, m y x = inner ℂ (R₂.ι y) (R₂.ι x)` using `fun _ _ => rfl`. Establish `huniq : ∀ t t' : TensorProduct ℂ N R₂.HK.V, (∀ y, contrR (m y) t = contrR (m y) t') → t = t'`. Introduce `t t' h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_contrR m (fun x hx => ?_) _ (fun y => ?_)` and prove the remaining obligations. Establish `h1` using `hx x`. Rewrite `h1` using `[hm, inner_self_eq_zero, ← map_zero R₂.ι]`. Conclude with `R₂.ι_inj h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, h y, sub_self]`. Establish `hex : ∀ P, ∃ t : TensorProduct ℂ N R₂.HK.V, ∀ y, B P y = contrR (m y) t`. Introduce `P`. Take `⟨E, hEfd, hE⟩` from `exists_finiteDimensional_kill R₂ hA B hB P`. Use `haveI := hEfd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, a, haE, hfr⟩` from `exists_frame R₂.ι R₂.ι_inj E`. Use `⟨∑ j, B P (a j) ⊗ₜ[ℂ] a j, fun y => ?_⟩` and prove the remaining obligations. Establish `hperp : B P (y - ∑ j, inner ℂ (R₂.ι (a j)) (R₂.ι y) • a j) = 0`. Apply `hE` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : inner ℂ (R₂.ι y) (R₂.ι x) = ∑ j, inner ℂ (R₂.ι (a j)) (R₂.ι x) * inner ℂ (R₂.ι y) (R₂.ι (a j))` using `by conv_lhs => rw [← hfr x hx]`. Simplify using `only [map_sum, map_smul, inner_sum, inner_smul_right]`. Rewrite using `[map_sub, inner_sub_left, e1]`. Simplify using `only [map_sum, map_smul, sum_inner, inner_smul_left, inner_conj_symm]`. Rewrite using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite `hperp` using `[map_sub, sub_eq_zero]`. Rewrite using `[hperp, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, contrR_tmul, hm, inner_conj_symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose F hF using hex`. Establish `hadd : ∀ P Q, F (P + Q) = F P + F Q` using `fun P Q => huniq _ _ fun y => by`. Rewrite using `[map_add, ← hF, ← hF, ← hF, map_add, LinearMap.add_apply]`. Establish `hsmul : ∀ (c : ℂ) P, F (c • P) = c • F P` using `fun c P => huniq _ _ fun y => by`. Rewrite using `[map_smul, ← hF, ← hF, map_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ N R₂.HK.V` to `{ toFun := F, map_add' := hadd, map_smul' := fun c P => by simpa using hsmul c P }`. Establish `hf : ∀ P, f P = F P` using `fun _ => rfl`. Establish `hupq : ∀ Y ∈ upq r s, ∀ P, F (fockAct2 p q r s Y P) = TensorProduct.map LinearMap.id (R₂.HK.act Y) (F P)`. Introduce `Y hY P`. Use `huniq _ _ fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF, contrR_map_id]`. Establish `hl : m y ∘ₗ R₂.HK.act Y = -m (R₂.HK.act Y y)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.neg_apply, hm, hm]`. Conclude with `eq_neg_of_add_eq_zero_left (inner_act_skew R₂ hY y x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, contrR_neg', ← hF]`. Conclude with `eq_neg_of_add_eq_zero_left (hB Y hY P y)`. Use `⟨f, fun Y => ?_, fun P y => hF P y, fun c a hca => ?_⟩` and prove the remaining obligations. Take `⟨X1, Y1, hX1, hY1, -, hY⟩` from `exists_real_parts Y`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hf, hf, hY, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, hadd, hsmul, hupq X1 hX1, hupq Y1 hY1, map_add, map_smul, TensorProduct.map_add_right, TensorProduct.map_smul_right, LinearMap.add_apply, LinearMap.smul_apply]`. Use `LinearMap.ext fun P => huniq _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hf, hf, ← hF, contrR_map, ← hF, hca]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensor_map : ∀ (p q r s : ℕ) (T₂ : GrpData r s) (R₂ : DSRep T₂), AdmGK R₂.HK → ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (B : Pol p q r s →ₗ[ℂ] R₂.HK.V →ₛₗ[starRingEnd ℂ] N), (∀ Z ∈ upq r s, ∀ P y, B (fockAct2 p q r s Z P) y + B P (R₂.HK.act Z y) = 0) → ∃ f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ N R₂.HK.V, (∀ Y, f ∘ₗ fockAct2 p q r s Y = TensorProduct.map LinearMap.id (R₂.HK.act Y) ∘ₗ f) ∧ (∀ P y, B P y = TensorProduct.rid ℂ N (TensorProduct.map LinearMap.id (innerₛₗ ℂ (R₂.ι y) ∘ₗ R₂.ι) (f P))) ∧ ∀ (c : Module.End ℂ (Pol p q r s)) (a : Module.End ℂ N), (∀ P y, B (c P) y = a (B P y)) → f ∘ₗ c = TensorProduct.map a LinearMap.id ∘ₗ f := by
   intro p q r s T₂ R₂ hA N _ _ B hB

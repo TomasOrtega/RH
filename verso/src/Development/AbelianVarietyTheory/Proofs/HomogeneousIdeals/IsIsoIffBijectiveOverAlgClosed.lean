@@ -12,7 +12,7 @@ attribute [local simp] pullback.lift_fst pullback.lift_snd pullback.lift_fst_ass
   pullback.lift_snd_assoc
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Pullback.range_fst, ← h.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, h.isoPullback.hom.surjective.range_eq, Set.image_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_of_isPullback {P X Y Z : Scheme.{u}} {a : P ⟶ X} {b : P ⟶ Y} {f : X ⟶ Z}
     {g : Y ⟶ Z} (h : IsPullback a b f g) : Set.range a = f ⁻¹' Set.range g := by
@@ -20,11 +20,11 @@ theorem range_of_isPullback {P X Y Z : Scheme.{u}} {a : P ⟶ X} {b : P ⟶ Y} {
     Set.range_comp, h.isoPullback.hom.surjective.range_eq, Set.image_univ]
 
 /- English proof (translation)
-Use `⟨AlgebraicClosure (X.residueField x), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) _)) ≫ X.fromSpecResidueField x, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[← Scheme.range_fromSpecResidueField, Scheme.Hom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`. Introduce and unpack `rfl`. Take `⟨z⟩ : Nonempty (Spec (.of (AlgebraicClosure (X.residueField y))))` from `inferInstance`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.mem_singleton_iff, ← Scheme.range_fromSpecResidueField, Scheme.Hom.comp_apply]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algClosed_point (X : Scheme.{u}) (x : X) :
     ∃ (k : Type u) (_ : Field k) (_ : IsAlgClosed k) (a : Spec (.of k) ⟶ X),
@@ -45,13 +45,13 @@ theorem exists_algClosed_point (X : Scheme.{u}) (x : X) :
 variable {S : Scheme.{u}} {X Y : Over S}
 
 /- English proof (translation)
-The claim follows from `(isIso_iff_of_reflects_iso f (Over.forget S)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isIso_iff_isIso_left (f : X ⟶ Y) : IsIso f ↔ IsIso f.left :=
   (isIso_iff_of_reflects_iso f (Over.forget S)).symm
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.snd Y.hom t) (v₁₃ := t) (h₂₂ := Y.hom) ?_ (by simp) (IsPullback.of_hasPullback Y.hom t).flip` and prove the remaining obligations. Simplify using `using (IsPullback.of_hasPullback X.hom t).flip`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPullback_pullback_map {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y) :
     IsPullback ((Over.pullback t).map f).left (pullback.fst X.hom t) (pullback.fst Y.hom t)
@@ -61,14 +61,14 @@ theorem isPullback_pullback_map {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y) :
   simpa using (IsPullback.of_hasPullback X.hom t).flip
 
 /- English proof (translation)
-Establish `: IsFinite (f.left ≫ Y.hom)` using `by rw [Over.w]; infer_instance`. Conclude with `IsFinite.of_comp f.left Y.hom`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinite_left (f : X ⟶ Y) [IsFinite X.hom] [IsSeparated Y.hom] : IsFinite f.left := by
   have : IsFinite (f.left ≫ Y.hom) := by rw [Over.w]; infer_instance
   exact IsFinite.of_comp f.left Y.hom
 
 /- English proof (translation)
-Establish `: Etale (f.left ≫ Y.hom)` using `by rw [Over.w]; infer_instance`. Conclude with `Etale.of_comp f.left Y.hom`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_left (f : X ⟶ Y) [Etale X.hom] [LocallyOfFiniteType Y.hom]
     [FormallyUnramified Y.hom] : Etale f.left := by
@@ -79,13 +79,13 @@ def isoLocus (f : X ⟶ Y) : Set S :=
   {s | IsIso ((Over.pullback (S.fromSpecResidueField s)).map f)}
 
 /- English proof (translation)
-Establish `H` using `isPullback_pullback_map t f`. Establish `h1 : IsFinite ((Over.pullback t).map f).left` using `MorphismProperty.of_isPullback (P := @IsFinite) H.flip inferInstance`. Establish `h2 : Flat ((Over.pullback t).map f).left` using `MorphismProperty.of_isPullback (P := @Flat) H.flip inferInstance`. Rewrite using `[isIso_iff_isIso_left, Scheme.Hom.isIso_iff_finrank_eq]`. Establish `h3` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ H.flip`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `: y ∈ Set.range (pullback.fst Y.hom t)` using `by rwa [Scheme.Pullback.range_fst]`. Take `⟨z, rfl⟩` from `this`. Rewrite using `[← h3, h, Pi.one_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use function extensionality and compare the values at `z`. Rewrite using `[h3, Pi.one_apply]`. Apply `h` to reduce the goal to its premises. Rewrite using `[← Set.mem_preimage, ← Scheme.Pullback.range_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨z, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_pullback_map_iff_finrank {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
     [IsFinite f.left] [Flat f.left] :
@@ -111,7 +111,7 @@ theorem isIso_pullback_map_iff_finrank {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶
     exact ⟨z, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[isoLocus, Set.mem_setOf_eq, isIso_pullback_map_iff_finrank, Scheme.range_fromSpecResidueField]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_isoLocus_iff (f : X ⟶ Y) [IsFinite f.left] [Flat f.left] (s : S) :
     s ∈ isoLocus f ↔ ∀ y : Y.left, Y.hom y = s → f.left.finrank y = 1 := by
@@ -120,7 +120,7 @@ theorem mem_isoLocus_iff (f : X ⟶ Y) [IsFinite f.left] [Flat f.left] (s : S) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[Set.mem_compl_iff, mem_isoLocus_iff]`. Simplify using `only [not_forall, Set.mem_image, Set.mem_setOf_eq]`. The claim follows by propositional logic.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem compl_isoLocus (f : X ⟶ Y) [IsFinite f.left] [Flat f.left] :
     (isoLocus f)ᶜ = Y.hom '' {y | f.left.finrank y ≠ 1} := by
@@ -130,9 +130,9 @@ theorem compl_isoLocus (f : X ⟶ Y) [IsFinite f.left] [Flat f.left] :
   tauto
 
 /- English proof (translation)
-Use `isFinite_left f` as an intermediate fact. Use `etale_left f` as an intermediate fact. Rewrite using `[isIso_pullback_map_iff_finrank]`. Prove the components needed by the constructor for the conclusion. Introduce `h s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_isoLocus_iff]`. Introduce and unpack `y rfl`. Conclude with `h y hs`. Introduce `h y hy`. Conclude with `(mem_isoLocus_iff f _).mp (h hy) y rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_pullback_map_iff {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
@@ -149,7 +149,7 @@ theorem isIso_pullback_map_iff {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
     exact (mem_isoLocus_iff f _).mp (h hy) y rfl
 
 /- English proof (translation)
-Use `isFinite_left f` as an intermediate fact. Use `etale_left f` as an intermediate fact. Establish `h : IsClopen {y | f.left.finrank y ≠ 1}` using `(f.left.isLocallyConstant_finrank.isClopen_fiber 1).compl`. Rewrite using `[← isClopen_compl_iff, compl_isoLocus]`. Conclude with `⟨Y.hom.isClosedMap _ h.isClosed, Y.hom.isOpenMap _ h.isOpen⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isClopen_isoLocus (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] : IsClopen (isoLocus f) := by
@@ -161,11 +161,11 @@ theorem isClopen_isoLocus (f : X ⟶ Y)
   exact ⟨Y.hom.isClosedMap _ h.isClosed, Y.hom.isOpenMap _ h.isOpen⟩
 
 /- English proof (translation)
-Use `isFinite_left f` as an intermediate fact. Use `etale_left f` as an intermediate fact. Rewrite using `[isIso_iff_isIso_left, Scheme.Hom.isIso_iff_finrank_eq, Set.eq_univ_iff_forall]`. Prove the components needed by the constructor for the conclusion. Introduce `h s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_isoLocus_iff]`. Introduce `y _`. Rewrite using `[h, Pi.one_apply]`. Introduce `h`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(mem_isoLocus_iff f _).mp (h _) y rfl`.
+A detailed English derivation is pending.
 -/
 theorem isIso_iff_isoLocus_eq_univ (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
@@ -183,17 +183,17 @@ theorem isIso_iff_isoLocus_eq_univ (f : X ⟶ Y)
     exact (mem_isoLocus_iff f _).mp (h _) y rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `_ k _ _`. Conclude with `⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩`. Introduce `h`. Establish `hsurj : Function.Surjective f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨k, _, _, a, ha⟩` from `exists_algClosed_point Y y`. Take `⟨b, rfl⟩` from `(h k).2 a`. Take `⟨z⟩ : Nonempty (Spec (.of k))` from `inferInstance`. Use `⟨b z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Set.mem_singleton_iff, ← ha, ← Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Establish `hdiag : IsIso (pullback.diagonal f)`. Apply `isIso_of_isOpenImmersion_of_opensRange_eq_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `z _`. Take `⟨k, _, _, a, ha⟩` from `exists_algClosed_point _ z`. Establish `e : a ≫ pullback.fst f f = a ≫ pullback.snd f f` using `(h k).1 (by simp [pullback.condition])`. Establish `e' : a = (a ≫ pullback.fst f f) ≫ pullback.diagonal f`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: z ∈ Set.range a` using `by simp [ha]`. Take `⟨w, rfl⟩` from `this`. Use `⟨(a ≫ pullback.fst f f) w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← e']`. Establish `hsnd : IsIso (pullback.snd f f)` using `IsIso.of_isIso_fac_left (pullback.diagonal_snd f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.isIso_iff_finrank_eq]`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `hsurj y`. Rewrite using `[← Scheme.Hom.finrank_pullback_snd, Scheme.Hom.finrank_eq_one_of_isIso]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isIso_iff_bijective_algClosed {X Y : Scheme.{u}} (f : X ⟶ Y) [IsFinite f] [Etale f] :
     IsIso f ↔ ∀ (k : Type u) [Field k] [IsAlgClosed k],
@@ -232,13 +232,13 @@ theorem isIso_iff_bijective_algClosed {X Y : Scheme.{u}} (f : X ⟶ Y) [IsFinite
   rfl
 
 /- English proof (translation)
-Use `isFinite_left f` as an intermediate fact. Use `etale_left f` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `_ k _ _ s`. Conclude with `⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Rewrite using `[isIso_iff_isIso_left, isIso_iff_bijective_algClosed]`. Introduce `k _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a b (hab : a ≫ f.left = b ≫ f.left)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : b ≫ X.hom = a ≫ X.hom`. Rewrite using `[← Over.w f, ← Category.assoc, ← hab, Category.assoc]`. Use `(h k (a ≫ X.hom)).1 (a₁ := Over.homMk a rfl) (a₂ := Over.homMk b hb) (Over.OverMorphism.ext hab)` as an intermediate fact. Conclude with `congr(($this).left)`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(h k (y ≫ Y.hom)).2 (Over.homMk y rfl)`. Conclude with `⟨x.left, congr(($hx).left)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIso_iff_bijective_over_algClosed (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
@@ -280,7 +280,7 @@ instance (f g : X ⟶ Y) [IsSeparated Y.hom] : IsClosedImmersion (agreeι f g) :
   unfold agreeι; infer_instance
 
 /- English proof (translation)
-Establish `h` using `pullback.condition (f := pullback.lift f.left g.left ((Over.w f).trans (Over.w g).symm)) (g := pullback.diagonal Y.hom)`. Establish `h1` using `h =≫ pullback.fst _ _`. Establish `h2` using `h =≫ pullback.snd _ _`. Simplify using `only [Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id] at h1 h2`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem agreeι_condition (f g : X ⟶ Y) : agreeι f g ≫ f.left = agreeι f g ≫ g.left := by
   have h := pullback.condition
@@ -293,9 +293,9 @@ theorem agreeι_condition (f g : X ⟶ Y) : agreeι f g ≫ f.left = agreeι f g
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply the tactic sequence `have : pullback.lift a (a ≫ f.left) (by apply pullback.hom_ext <;> simp [h]) ≫ agreeι f g = a := pullback.lift_fst _ _ _`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨_, by rw [← Scheme.Hom.comp_apply, this]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `h`. Rewrite using `[← IsOpenImmersion.lift_fac (agreeι f g) a h, Category.assoc, Category.assoc, agreeι_condition]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_comp_iff_range (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom]
     [FormallyUnramified Y.hom] {Z : Scheme.{u}} (a : Z ⟶ X.left) :
@@ -311,9 +311,9 @@ theorem comp_eq_comp_iff_range (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom]
       agreeι_condition]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Pullback.range_fst, ← comp_eq_comp_iff_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← (isPullback_pullback_map t f).w, ← (isPullback_pullback_map t g).w, h]`. Introduce `h ext1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[(isPullback_pullback_map t f).w, (isPullback_pullback_map t g).w, h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullback_map_eq_iff_preimage {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
     [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
@@ -330,7 +330,7 @@ theorem pullback_map_eq_iff_preimage {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶
     · simp
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[Set.mem_compl_iff, eqLocus, Set.mem_setOf_eq, pullback_map_eq_iff_preimage, Scheme.range_fromSpecResidueField, Set.not_subset]`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_image, Set.mem_compl_iff]`. The claim follows by propositional logic.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem compl_eqLocus (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
     (eqLocus f g)ᶜ = X.hom '' (Set.range (agreeι f g))ᶜ := by
@@ -341,7 +341,7 @@ theorem compl_eqLocus (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom] [FormallyUnram
   tauto
 
 /- English proof (translation)
-Rewrite using `[pullback_map_eq_iff_preimage, ← Set.compl_subset_compl (s := eqLocus f g), compl_eqLocus, Set.image_subset_iff, Set.preimage_compl, Set.compl_subset_compl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_map_eq_iff {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
     [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
@@ -350,7 +350,7 @@ theorem pullback_map_eq_iff {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
     Set.image_subset_iff, Set.preimage_compl, Set.compl_subset_compl]
 
 /- English proof (translation)
-Establish `h : IsClopen (Set.range (agreeι f g))ᶜ` using `IsClopen.compl ⟨(agreeι f g).isClosedEmbedding.isClosed_range, (agreeι f g).isOpenEmbedding.isOpen_range⟩`. Rewrite using `[← isClopen_compl_iff, compl_eqLocus]`. Conclude with `⟨X.hom.isClosedMap _ h.isClosed, X.hom.isOpenMap _ h.isOpen⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isClopen_eqLocus (f g : X ⟶ Y) [UniversallyOpen X.hom] [UniversallyClosed X.hom]
     [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] [IsSeparated Y.hom] :
@@ -362,9 +362,9 @@ theorem isClopen_eqLocus (f g : X ⟶ Y) [UniversallyOpen X.hom] [UniversallyClo
   exact ⟨X.hom.isClosedMap _ h.isClosed, X.hom.isOpenMap _ h.isOpen⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `Set.eq_univ_of_forall fun _ ↦ rfl`. Introduce `h`. Establish `h1` using `compl_eqLocus f g`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, Set.compl_univ, eq_comm, Set.image_eq_empty, Set.compl_empty_iff]`. Use `(comp_eq_comp_iff_range f g (𝟙 _)).mpr (by simp [h1])` as an intermediate fact. Use `ext1`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_iff_eqLocus_eq_univ (f g : X ⟶ Y)
     [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
@@ -380,9 +380,9 @@ theorem eq_iff_eqLocus_eq_univ (f g : X ⟶ Y)
     simpa using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨IsOpenImmersion.lift U.ι t (by simpa using h), IsOpenImmersion.lift_fac _ _ _⟩`. Introduce and unpack `⟨t', rfl⟩ _ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, ← Scheme.Opens.range_ι]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_subset_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (U : S.Opens) :
     Set.range t ⊆ U ↔ ∃ t' : T ⟶ U, t' ≫ U.ι = t := by
@@ -394,11 +394,9 @@ theorem range_subset_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (U : S.Opens) :
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨hc⟩` from `nonempty_isColimit_binaryCofanMk_of_isCompl i j (by`. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Apply the tactic sequence `constructor <;> ext1 <;> simp [h])`. Establish `: coprod.desc i j = ((coprodIsCoprod _ _).coconePointUniqueUpToIso hc).hom`. Apply `coprod.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[coprod.inl_desc]`. Conclude with `((coprodIsCoprod _ _).comp_coconePointUniqueUpToIso_hom hc ⟨.left⟩).symm`. Rewrite using `[coprod.inr_desc]`. Conclude with `((coprodIsCoprod _ _).comp_coconePointUniqueUpToIso_hom hc ⟨.right⟩).symm`. Rewrite using `[this]`.
-
-Conclude with `Iso.isIso_hom _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_coprodDesc {U V X : Scheme.{u}} (i : U ⟶ X) (j : V ⟶ X) [IsOpenImmersion i]
     [IsOpenImmersion j] (h : Set.range j = (Set.range i)ᶜ) : IsIso (coprod.desc i j) := by
@@ -415,27 +413,25 @@ theorem isIso_coprodDesc {U V X : Scheme.{u}} (i : U ⟶ X) (j : V ⟶ X) [IsOpe
   exact Iso.isIso_hom _
 
 /- English proof (translation)
-Establish `hi : IsClosedImmersion i` using `.of_isPreimmersion _ (by`. Rewrite using `[← isOpen_compl_iff, ← h]`. Conclude with `j.isOpenEmbedding.isOpen_range)`. Establish `hj : IsClosedImmersion j` using `.of_isPreimmersion _ (by`. Rewrite using `[h, isClosed_compl_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `i.isOpenEmbedding.isOpen_range)`. Use `wlog hS : ∃ R, S = Spec R generalizing U V X S`. Take `⟨R, g, _, s, rfl⟩` from `S.exists_Spec_apply_eq s`. Establish `H` using `IsPullback.of_hasPullback p g`. Establish `Hi` using `IsPullback.of_hasPullback i (pullback.fst p g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `Hj` using `IsPullback.of_hasPullback j (pullback.fst p g)`. Rewrite using `[← Scheme.Hom.finrank_of_isPullback _ _ _ _ H, ← Scheme.Hom.finrank_of_isPullback _ _ _ _ (Hi.paste_vert H), ← Scheme.Hom.finrank_of_isPullback _ _ _ _ (Hj.paste_vert H)]`. Use `this _ _ ?_ _ _ inferInstance inferInstance ⟨_, rfl⟩` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_snd, Scheme.Pullback.range_snd, h, Set.preimage_compl]`. Take `⟨R, rfl⟩` from `hS`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `wlog hU : ∃ A, U = Spec A generalizing U`. Establish `_ : IsAffine U` using `isAffine_of_isAffineHom (i ≫ p)`. Rewrite using `[← Scheme.Hom.finrank_comp_left_of_isIso U.isoSpec.inv (i ≫ p), ← Category.assoc]`. Use `this _ ?_ inferInstance ⟨_, rfl⟩` and prove the remaining obligations. Rewrite using `[h, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, U.isoSpec.inv.surjective.range_eq, Set.image_univ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, rfl⟩` from `hU`. Use `wlog hV : ∃ B, V = Spec B generalizing V`. Establish `_ : IsAffine V` using `isAffine_of_isAffineHom (j ≫ p)`. Rewrite using `[← Scheme.Hom.finrank_comp_left_of_isIso V.isoSpec.inv (j ≫ p), ← Category.assoc]`. Use `this _ inferInstance ?_ ⟨_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, V.isoSpec.inv.surjective.range_eq, Set.image_univ]`. Take `⟨B, rfl⟩` from `hV`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (i ≫ p)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (j ≫ p)`. Establish `hφ1 : φ.hom.Finite` using `by rw [← IsFinite.SpecMap_iff, hφ]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ2 : φ.hom.Flat` using `by rw [← Flat.SpecMap_iff, hφ]; infer_instance`. Establish `hψ1 : ψ.hom.Finite` using `by rw [← IsFinite.SpecMap_iff, hψ]; infer_instance`. Establish `hψ2 : ψ.hom.Flat` using `by rw [← Flat.SpecMap_iff, hψ]; infer_instance`. Establish `hiso` using `isIso_coprodDesc i j h`. Use `algebraize [φ.hom, ψ.hom]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : coprod.desc i j ≫ p = coprodSpec A B ≫ Spec.map (CommRingCat.ofHom (algebraMap R (A × B)))`. Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_desc_assoc, ← hφ, coprodSpec_inl_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[coprod.inr_desc_assoc, ← hψ, coprodSpec_inr_assoc, ← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `: IsFinite (Spec.map (CommRingCat.ofHom (algebraMap R (A × B))))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.mpr inferInstance`. Establish `hfl : Flat (Spec.map (CommRingCat.ofHom (algebraMap R (A × B))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← (IsIso.inv_comp_eq _).mpr e]`. Use `infer_instance`. Establish `: Module.Flat R (A × B)` using `RingHom.flat_algebraMap_iff.mp (Flat.SpecMap_iff.mp hfl)`. Rewrite using `[← Scheme.Hom.finrank_comp_left_of_isIso (coprod.desc i j) p, e, Scheme.Hom.finrank_comp_left_of_isIso, ← hφ, ← hψ]`. Establish `e1` using `Scheme.Hom.finrank_SpecMap_algebraMap R (A × B) s`.
-
-Establish `e2` using `Scheme.Hom.finrank_SpecMap_algebraMap R A s`. Establish `e3` using `Scheme.Hom.finrank_SpecMap_algebraMap R B s`. Rewrite `e1` using `[Module.rankAtStalk_prod]`. Conclude with `e1.trans (congrArg₂ (· + ·) e2.symm e3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_add {U V X S : Scheme.{u}} (i : U ⟶ X) (j : V ⟶ X) [IsOpenImmersion i]
     [IsOpenImmersion j] (h : Set.range j = (Set.range i)ᶜ) (p : X ⟶ S) [IsFinite p] [Flat p]
@@ -501,18 +497,18 @@ def IsSplitOfRank {X S : Scheme.{u}} (p : X ⟶ S) (n : ℕ) : Prop :=
   ∃ s : Fin n → (S ⟶ X), (∀ i, s i ≫ p = 𝟙 S) ∧ Nonempty (IsColimit (Cofan.mk X s))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i, fun i ↦ by simp, ⟨coproductIsCoproduct _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSplitOfRank_sigmaDesc (S : Scheme.{u}) (n : ℕ) :
     IsSplitOfRank (Sigma.desc fun _ : Fin n ↦ 𝟙 S) n :=
   ⟨fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i, fun i ↦ by simp, ⟨coproductIsCoproduct _⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hc⟩`. Establish `: IsIso (Sigma.desc s)` using `(Cofan.nonempty_isColimit_iff_isIso_sigmaDesc _).mp hc`. Conclude with `⟨asIso (Sigma.desc s), Sigma.hom_ext _ _ fun i ↦ by simp [hs]⟩`. Introduce and unpack `⟨e, he⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i ≫ e.hom, fun i ↦ by simp [he], ?_⟩` and prove the remaining obligations. Rewrite using `[Cofan.nonempty_isColimit_iff_isIso_sigmaDesc]`. Establish `: Sigma.desc (fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i ≫ e.hom) = e.hom` using `Sigma.hom_ext _ _ fun i ↦ by simp`. Express the relevant statement in the definitionally equal form `IsIso (Sigma.desc fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i ≫ e.hom)`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isSplitOfRank_iff_exists_iso {X S : Scheme.{u}} (p : X ⟶ S) (n : ℕ) :
     IsSplitOfRank p n ↔
@@ -531,15 +527,13 @@ theorem isSplitOfRank_iff_exists_iso {X S : Scheme.{u}} (p : X ⟶ S) (n : ℕ) 
     infer_instance
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[isSplitOfRank_iff_exists_iso]`. Introduce and unpack `⟨e, he⟩`. Use `⟨fun i ↦ Sigma.ι (fun _ : Fin n ↦ S) i ≫ e.hom, fun i ↦ by simp [he], fun i ↦ inferInstance, fun x ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.hom.surjective x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, y, hy⟩` from `(sigmaOpenCover fun _ : Fin n ↦ S).exists_eq x`. Take `rfl : Sigma.ι (fun _ : Fin n ↦ S) i y = x` from `hy`. Use `⟨i, ⟨y, Scheme.Hom.comp_apply _ _ _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j ⟨z, hz⟩`. Rewrite `hz` using `[Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(sigmaι_eq_iff _ _ _ _ _).mp (e.hom.isOpenEmbedding.injective hz)` as an intermediate fact. Conclude with `congr(($this).1)`. Introduce and unpack `⟨s, hs, ho, hx⟩`. Use `⟨s, hs, nonempty_isColimit_cofanMk_of s ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Take `⟨i, hi⟩` from `(hx x).exists`. Conclude with `Opens.mem_iSup.mpr ⟨i, hi⟩`. Introduce `i j hij`. Rewrite using `[Function.onFun, disjoint_iff, eq_bot_iff]`.
-
-Introduce and unpack `x ⟨hi, hj⟩`. Conclude with `(hij ((hx x).unique hi hj)).elim`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isSplitOfRank_iff {X S : Scheme.{u}} (p : X ⟶ S) (n : ℕ) :
     IsSplitOfRank p n ↔ ∃ s : Fin n → (S ⟶ X), (∀ i, s i ≫ p = 𝟙 S) ∧
@@ -569,7 +563,7 @@ theorem isSplitOfRank_iff {X S : Scheme.{u}} (p : X ⟶ S) (n : ℕ) :
       exact (hij ((hx x).unique hi hj)).elim
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := q) (v₁₃ := t) (h₂₂ := p) ?_ (by simp) H.flip` and prove the remaining obligations. Rewrite using `[H.lift_snd, hσ]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_section {X S X' S' : Scheme.{u}} {a : X' ⟶ X} {q : X' ⟶ S'} {p : X ⟶ S}
     {t : S' ⟶ S} (H : IsPullback a q p t) (σ : S ⟶ X) (hσ : σ ≫ p = 𝟙 S) :
@@ -579,7 +573,7 @@ theorem isPullback_section {X S X' S' : Scheme.{u}} {a : X' ⟶ X} {q : X' ⟶ S
   exact IsPullback.of_horiz_isIso ⟨by simp⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isSplitOfRank_iff]`. Take `⟨s, hs, ho, hx⟩` from `h`. Use `⟨fun i ↦ H.lift (t ≫ s i) (𝟙 S') (by simp [hs]), fun i ↦ H.lift_snd _ _ _, fun i ↦ MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_section H (s i) (hs i)).flip (ho i), fun x ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [range_of_isPullback (isPullback_section H _ (hs _)), Set.mem_preimage]`. Conclude with `hx (a x)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.of_isPullback {X S X' S' : Scheme.{u}} {a : X' ⟶ X} {q : X' ⟶ S'}
     {p : X ⟶ S} {t : S' ⟶ S} (H : IsPullback a q p t) {n : ℕ} (h : IsSplitOfRank p n) :
@@ -593,14 +587,14 @@ theorem IsSplitOfRank.of_isPullback {X S X' S' : Scheme.{u}} {a : X' ⟶ X} {q :
   exact hx (a x)
 
 /- English proof (translation)
-The claim follows from `h.of_isPullback (IsPullback.of_hasPullback p t)`.
+A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.pullback_snd {X S S' : Scheme.{u}} {p : X ⟶ S} {n : ℕ}
     (h : IsSplitOfRank p n) (t : S' ⟶ S) : IsSplitOfRank (pullback.snd p t) n :=
   h.of_isPullback (IsPullback.of_hasPullback p t)
 
 /- English proof (translation)
-The claim follows from `h.of_isPullback (a := (H'.isoIsPullback _ _ H).hom) (t := 𝟙 _) (IsPullback.of_horiz_isIso ⟨by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.of_isPullback_of_isPullback {X S X' X'' S' : Scheme.{u}} {a : X' ⟶ X}
     {q : X' ⟶ S'} {a' : X'' ⟶ X} {q' : X'' ⟶ S'} {p : X ⟶ S} {t : S' ⟶ S}
@@ -610,9 +604,9 @@ theorem IsSplitOfRank.of_isPullback_of_isPullback {X S X' X'' S' : Scheme.{u}} {
     (IsPullback.of_horiz_isIso ⟨by simp⟩)
 
 /- English proof (translation)
-Rewrite using `[isSplitOfRank_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, -, -, hx⟩`. Conclude with `⟨fun x ↦ (hx x).exists.choose.elim0⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Fin.elim0, fun i ↦ i.elim0, fun i ↦ i.elim0, fun x ↦ h.elim x⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSplitOfRank_zero_iff {X S : Scheme.{u}} (p : X ⟶ S) :
     IsSplitOfRank p 0 ↔ IsEmpty X := by
@@ -624,17 +618,15 @@ theorem isSplitOfRank_zero_iff {X S : Scheme.{u}} (p : X ⟶ S) :
     exact ⟨Fin.elim0, fun i ↦ i.elim0, fun i ↦ i.elim0, fun x ↦ h.elim x⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isSplitOfRank_iff]`. Take `⟨s, hs, ho, hx⟩` from `h`. Use `⟨Fin.cons σ fun i ↦ s i ≫ j, fun i ↦ ?_, fun i ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `induction i using Fin.cases <;> simp [hσ, hs]`. Proceed by induction on `i using Fin.cases`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Proceed by induction.
 
-Use `simpa`. Simplify using `only [Fin.cons_succ]`. Use `infer_instance`. Distinguish the cases in `hxσ : x ∈ Set.range σ`. Use `⟨0, by simpa using hxσ, fun i hi ↦ ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `i using Fin.cases`. Both sides reduce to the same expression. Simplify using `only [Fin.cons_succ] at hi`. Take `⟨y, rfl⟩` from `hi`. Rewrite `hxσ` using `[Scheme.Hom.comp_apply]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `((hj.le ⟨_, rfl⟩) hxσ).elim`. Take `⟨v, rfl⟩` from `hj.ge hxσ`. Take `⟨i, ⟨y, rfl⟩, hi⟩` from `hx v`. Use `⟨i.succ, ?_, fun k hk ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.cons_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Proceed by induction.
 
-Conclude with `⟨y, Scheme.Hom.comp_apply _ _ _⟩`. Proceed by induction on `k using Fin.cases`. Conclude with `(hxσ (by simpa using hk)).elim`. Simplify using `only [Fin.cons_succ] at hk`. Take `⟨z, hz⟩` from `hk`.
-
-Rewrite `hz` using `[Scheme.Hom.comp_apply]`. Rewrite using `[hi _ ⟨z, j.isOpenEmbedding.injective hz⟩]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.succ {X V S : Scheme.{u}} {p : X ⟶ S} (σ : S ⟶ X) (hσ : σ ≫ p = 𝟙 S)
     [IsOpenImmersion σ] (j : V ⟶ X) [IsOpenImmersion j] (hj : Set.range j = (Set.range σ)ᶜ)
@@ -670,7 +662,7 @@ def complOpen {X S : Scheme.{u}} (σ : S ⟶ X) [IsClosedImmersion σ] : X.Opens
   ⟨(Set.range σ)ᶜ, σ.isClosedEmbedding.isClosed_range.isOpen_compl⟩
 
 /- English proof (translation)
-The claim follows from `Scheme.Opens.range_ι _`.
+A detailed English derivation is pending.
 -/
 theorem range_complOpen_ι {X S : Scheme.{u}} (σ : S ⟶ X) [IsClosedImmersion σ] :
     Set.range (complOpen σ).ι = (Set.range σ)ᶜ := Scheme.Opens.range_ι _
@@ -680,21 +672,19 @@ instance {X S : Scheme.{u}} (σ : S ⟶ X) [IsClosedImmersion σ] [IsOpenImmersi
   rw [range_complOpen_ι, isClosed_compl_iff]; exact σ.isOpenEmbedding.isOpen_range)
 
 /- English proof (translation)
-Rewrite `h` using `[isSplitOfRank_iff]`. Take `⟨s, hs, ho, hx⟩` from `h`. Set `V : X.Opens` to `⨆ i : Fin n, (s i.succ).opensRange`. Establish `hV (x : X) : x ∈ Set.range V.ι ↔ ∃ i : Fin n, x ∈ Set.range (s i.succ)`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Opens.mem_iSup`. Establish `hle (i : Fin n) : Set.range (s i.succ) ⊆ Set.range V.ι` using `fun x hx ↦ (hV x).mpr ⟨i, hx⟩`. Establish `hfac (i : Fin n)` using `IsOpenImmersion.lift_fac V.ι (s i.succ) (hle i)`. Use `⟨s 0, ho 0, V, hs 0, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩ h0`. Conclude with `Fin.succ_ne_zero i ((hx x).unique hi h0)`. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Take `⟨i, hi⟩` from `(hx x).exists`. Proceed by induction on `i using Fin.cases`. Conclude with `(h0 hi).elim`. Conclude with `⟨_, hi⟩`. Rewrite using `[isSplitOfRank_iff]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun i ↦ IsOpenImmersion.lift V.ι (s i.succ) (hle i), fun i ↦ ?_, fun i ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hfac, hs]`. Establish `: IsOpenImmersion (IsOpenImmersion.lift V.ι (s i.succ) (hle i) ≫ V.ι)`. Rewrite using `[hfac]`. Conclude with `ho _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `IsOpenImmersion.of_comp _ V.ι`. Establish `key (i : Fin n) : v ∈ Set.range (IsOpenImmersion.lift V.ι (s i.succ) (hle i)) ↔ V.ι v ∈ Set.range (s i.succ)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by rw [← Scheme.Hom.comp_apply, hfac]⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy⟩`. Use `⟨y, V.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hfac, hy]`. Simplify using `only [key]`. Take `⟨i, hi⟩` from `(hV _).mp ⟨v, rfl⟩`.
-
-Conclude with `⟨i, hi, fun j hj ↦ Fin.succ_injective _ ((hx _).unique hj hi)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.exists_of_succ {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ}
     (h : IsSplitOfRank p (n + 1)) :
@@ -739,7 +729,7 @@ theorem IsSplitOfRank.exists_of_succ {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ}
   exact ⟨i, hi, fun j hj ↦ Fin.succ_injective _ ((hx _).unique hj hi)⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `(isSplitOfRank_iff_exists_iso p n).mp h`. Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Establish `: Etale (Sigma.desc fun _ : Fin n ↦ 𝟙 S)` using `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ ↦ inferInstance`. Rewrite using `[← e.inv_hom_id_assoc p, he]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.etale {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h : IsSplitOfRank p n) :
     Etale p := by
@@ -751,11 +741,11 @@ theorem IsSplitOfRank.etale {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h : IsSp
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `n generalizing X with`. Consider the case `zero`. Use `(isSplitOfRank_zero_iff p).mp h` as an intermediate fact. Use `infer_instance`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, _, V, hσ, hV, h'⟩` from `h.exists_of_succ`. Use `ih h'` as an intermediate fact. Use `isIso_coprodDesc σ V.ι hV` as an intermediate fact. Establish `e : coprod.desc σ V.ι ≫ p = coprod.desc (𝟙 S) (V.ι ≫ p)`. Rewrite using `[coprod.desc_comp, hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsIso.inv_hom_id_assoc (coprod.desc σ V.ι) p, e]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem IsSplitOfRank.isFinite {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h : IsSplitOfRank p n) :
     IsFinite p := by
@@ -773,11 +763,11 @@ theorem IsSplitOfRank.isFinite {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h : I
     infer_instance
 
 /- English proof (translation)
-Use `h.isFinite` as an intermediate fact. Use `h.etale` as an intermediate fact. Proceed by induction on `n generalizing X with`. Consider the case `zero`. Use `(isSplitOfRank_zero_iff p).mp h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use `finrank_eq_add (𝟙 X) (𝟙 X) (Subsingleton.elim _ _) p s` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Take `⟨σ, _, V, hσ, hV, h'⟩` from `h.exists_of_succ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[finrank_eq_add σ V.ι hV p s, hσ, Scheme.Hom.finrank_eq_one_of_isIso (𝟙 S), ih h' h'.isFinite h'.etale, Pi.one_apply, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSplitOfRank.finrank_eq {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h : IsSplitOfRank p n)
     (s : S) : p.finrank s = n := by
@@ -795,15 +785,15 @@ theorem IsSplitOfRank.finrank_eq {X S : Scheme.{u}} {p : X ⟶ S} {n : ℕ} (h :
       ih h' h'.isFinite h'.etale, Pi.one_apply, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing X S with`. Consider the case `zero`. Use `⟨S, X, 𝟙 S, 𝟙 X, p, inferInstance, inferInstance, inferInstance, IsPullback.of_horiz_isIso ⟨by simp⟩, (isSplitOfRank_zero_iff p).mpr ⟨fun x ↦ ?_⟩⟩` and prove the remaining obligations. Use `p.one_le_finrank_map x` as an intermediate fact. Rewrite `this` using `[hn]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Establish `hp : Surjective p` using `p.one_le_finrank_iff_surjective.mp fun s ↦ by simp [hn]`. Set `σ` to `pullback.diagonal p`. Establish `hσ : σ ≫ pullback.snd p p = 𝟙 X` using `pullback.diagonal_snd p`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨S', X', t, a, q, h1, h2, h3, H, hq⟩` from `ih ((complOpen σ).ι ≫ pullback.snd p p) fun x ↦ by`. Use `finrank_eq_add σ (complOpen σ).ι (range_complOpen_ι σ) (pullback.snd p p) x` as an intermediate fact. Rewrite `this` using `[hσ, Scheme.Hom.finrank_eq_one_of_isIso (𝟙 X), Scheme.Hom.finrank_pullback_snd, hn, Pi.one_apply]`. Use linear arithmetic over natural numbers and integers. Establish `G` using `IsPullback.of_hasPullback (pullback.snd p p) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `Gσ` using `isPullback_section G σ hσ`. Establish `Gj` using `IsPullback.of_hasPullback (complOpen σ).ι (pullback.fst (pullback.snd p p) t)`. Use `⟨S', _, t ≫ p, _, _, inferInstance, inferInstance, inferInstance, G.paste_horiz (IsPullback.of_hasPullback p p), ?_⟩` and prove the remaining obligations. Use `MorphismProperty.of_isPullback (P := @IsOpenImmersion) Gσ.flip inferInstance` as an intermediate fact. Use `IsSplitOfRank.succ (G.lift (t ≫ σ) (𝟙 _) _) (G.lift_snd _ _ _) (pullback.snd (complOpen σ).ι _) ?_ (hq.of_isPullback_of_isPullback H (Gj.paste_vert G))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Pullback.range_snd, range_of_isPullback Gσ, range_complOpen_ι, Set.preimage_compl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isPullback_isSplitOfRank (n : ℕ) {X S : Scheme.{u}} (p : X ⟶ S) [IsFinite p]
     [Etale p] (hn : ∀ s, p.finrank s = n) :
@@ -838,7 +828,7 @@ theorem exists_isPullback_isSplitOfRank (n : ℕ) {X S : Scheme.{u}} (p : X ⟶ 
     rw [Scheme.Pullback.range_snd, range_of_isPullback Gσ, range_complOpen_ι, Set.preimage_compl]
 
 /- English proof (translation)
-Take `⟨S', X', t, a, q, h1, h2, h3, H, hq⟩` from `exists_isPullback_isSplitOfRank n p hn`. Conclude with `⟨S', t, h1, h2, h3, hq.of_isPullback_of_isPullback H (IsPullback.of_hasPullback p t)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSplitOfRank_pullback {X S : Scheme.{u}} (p : X ⟶ S) [IsFinite p] [Etale p]
     {n : ℕ} (hn : ∀ s, p.finrank s = n) :
@@ -848,13 +838,13 @@ theorem exists_isSplitOfRank_pullback {X S : Scheme.{u}} (p : X ⟶ S) [IsFinite
   exact ⟨S', t, h1, h2, h3, hq.of_isPullback_of_isPullback H (IsPullback.of_hasPullback p t)⟩
 
 /- English proof (translation)
-Use `wlog hX : ∃ A, X = Spec A generalizing X`. Establish `_ : IsAffine X` using `isAffine_of_isAffineHom p`. Establish `_ : Nonempty (Spec Γ(X, ⊤))` using `⟨X.isoSpec.hom (Classical.arbitrary X)⟩`. Take `⟨σ, hσ⟩` from `this (X.isoSpec.inv ≫ p) ⟨_, rfl⟩`. Conclude with `⟨σ ≫ X.isoSpec.inv, by simpa using hσ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, rfl⟩` from `hX`. Take `⟨φ, rfl⟩` from `Spec.map_surjective p`. Establish `h1 : φ.hom.Etale` using `HasRingHomProperty.Spec_iff (P := @Etale).mp inferInstance`. Set `: Algebra k A` to `φ.hom.toAlgebra`. Establish `: Algebra.Etale k A` using `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `x : PrimeSpectrum A` to `Classical.arbitrary (Spec A)`. Set `ψ` to `(Algebra.IsFiniteSplit.algHomEquivPrimeSpectrum k A).symm x`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Conclude with `ψ.commutes a`.
+A detailed English derivation is pending.
 -/
 theorem exists_section_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {X : Scheme.{u}}
     (p : X ⟶ Spec (.of k)) [IsFinite p] [Etale p] [Nonempty X] :
@@ -878,9 +868,9 @@ theorem exists_section_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {X 
   exact ψ.commutes a
 
 /- English proof (translation)
-Take `⟨S', X', t, a, q, h1, h2, h3, H, hq⟩` from `exists_isPullback_isSplitOfRank (p.finrank s) p fun s' ↦ by rw [Subsingleton.elim s' s]`. Establish `: Nonempty S'` using `⟨(t.surjective s).choose⟩`. Take `⟨σ, hσ⟩` from `exists_section_of_isSepClosed t`. Establish `G` using `(IsPullback.of_hasPullback q σ).paste_horiz H`. Rewrite `G` using `[hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hq.pullback_snd σ).of_isPullback_of_isPullback G IsPullback.of_id_fst`.
+A detailed English derivation is pending.
 -/
 theorem isSplitOfRank_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {X : Scheme.{u}}
     (p : X ⟶ Spec (.of k)) [IsFinite p] [Etale p] (s : Spec (.of k)) :
@@ -894,7 +884,7 @@ theorem isSplitOfRank_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {X :
   exact (hq.pullback_snd σ).of_isPullback_of_isPullback G IsPullback.of_id_fst
 
 /- English proof (translation)
-Take `⟨s⟩ : Nonempty (Spec (.of k))` from `inferInstance`. Conclude with `⟨_, (isSplitOfRank_iff_exists_iso p _).mp (isSplitOfRank_of_isSepClosed p s)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iso_sigma_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {X : Scheme.{u}}
     (p : X ⟶ Spec (.of k)) [IsFinite p] [Etale p] :
@@ -904,15 +894,15 @@ theorem exists_iso_sigma_of_isSepClosed {k : Type u} [Field k] [IsSepClosed k] {
   exact ⟨_, (isSplitOfRank_iff_exists_iso p _).mp (isSplitOfRank_of_isSepClosed p s)⟩
 
 /- English proof (translation)
-Take `⟨s, hs, ho, hx⟩` from `(isSplitOfRank_iff _ _).mp (isSplitOfRank_of_isSepClosed (pullback.snd p t) z)`. Rewrite using `[← Scheme.Hom.finrank_pullback_snd]`. Set `F : Fin ((pullback.snd p t).finrank z) → {x : Spec (.of k) ⟶ X // x ≫ p = t}` to `fun i ↦ ⟨s i ≫ pullback.fst p t, by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]⟩`. Establish `hF : Function.Bijective F`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Establish `: s i = s j` using `pullback.hom_ext congr(($hij).1) (by rw [hs, hs])`. Conclude with `(hx (s i z)).unique ⟨z, rfl⟩ ⟨z, by rw [this]⟩`. Introduce and unpack `⟨x, hxp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `y : Spec (.of k) ⟶ pullback p t` to `pullback.lift x (𝟙 _) (by simp [hxp])`. Take `⟨i, hi⟩` from `(hx (y z)).exists`. Establish `hr : Set.range y ⊆ Set.range (s i)`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim w z]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `IsOpenImmersion.lift_fac (s i) y hr`. Establish `h2 : IsOpenImmersion.lift (s i) y hr = 𝟙 _`. Use `h1 =≫ pullback.snd p t` as an intermediate fact. Rewrite `this` using `[Category.assoc, hs, Category.comp_id, pullback.lift_snd]`. Then use the resulting hypothesis. Rewrite `h1` using `[h2, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[F, h1, y]`. Conclude with `⟨.of_surjective F hF.2, by rw [← Nat.card_eq_of_bijective F hF, Nat.card_fin]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_points_eq_finrank {X S : Scheme.{u}} (p : X ⟶ S) [IsFinite p] [Etale p]
     {k : Type u} [Field k] [IsSepClosed k] (t : Spec (.of k) ⟶ S) (z : Spec (.of k)) :
@@ -959,7 +949,7 @@ instance (f g : X ⟶ Y) [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale 
   rw [Scheme.Opens.range_ι]; exact (isClopen_eqLocus f g).isClosed)
 
 /- English proof (translation)
-The claim follows from `(isIso_pullback_map_iff t f).trans (range_subset_iff_factors t (isoLocusOpen f))`.
+A detailed English derivation is pending.
 -/
 theorem isIso_pullback_map_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
@@ -967,7 +957,7 @@ theorem isIso_pullback_map_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶
   (isIso_pullback_map_iff t f).trans (range_subset_iff_factors t (isoLocusOpen f))
 
 /- English proof (translation)
-The claim follows from `(pullback_map_eq_iff t f g).trans (range_subset_iff_factors t (eqLocusOpen f g))`.
+A detailed English derivation is pending.
 -/
 theorem pullback_map_eq_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
@@ -976,7 +966,7 @@ theorem pullback_map_eq_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ 
   (pullback_map_eq_iff t f g).trans (range_subset_iff_factors t (eqLocusOpen f g))
 
 /- English proof (translation)
-The claim follows from `(eq_iff_eqLocus_eq_univ f g).mpr ((isClopen_eqLocus f g).eq_univ ⟨s, hs⟩)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mem_eqLocus [PreconnectedSpace S] (f g : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] {s : S} (hs : s ∈ eqLocus f g) :
@@ -984,7 +974,7 @@ theorem eq_of_mem_eqLocus [PreconnectedSpace S] (f g : X ⟶ Y)
   (eq_iff_eqLocus_eq_univ f g).mpr ((isClopen_eqLocus f g).eq_univ ⟨s, hs⟩)
 
 /- English proof (translation)
-The claim follows from `(isIso_iff_isoLocus_eq_univ f).mpr ((isClopen_isoLocus f).eq_univ ⟨s, hs⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_mem_isoLocus [PreconnectedSpace S] (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] {s : S} (hs : s ∈ isoLocus f) :
@@ -992,9 +982,9 @@ theorem isIso_of_mem_isoLocus [PreconnectedSpace S] (f : X ⟶ Y)
   (isIso_iff_isoLocus_eq_univ f).mpr ((isClopen_isoLocus f).eq_univ ⟨s, hs⟩)
 
 /- English proof (translation)
-Use `⟨fun f ↦ ⟨⟨isFinite_left f, etale_left f⟩, isClopen_isoLocus f, fun t ↦ isIso_pullback_map_iff_factors t f, ?_⟩, fun f g ↦ ⟨isClopen_eqLocus f g, fun t ↦ pullback_map_eq_iff_factors t f g⟩, ?_, fun n hn ↦ exists_isSplitOfRank_pullback X.hom hn⟩` and prove the remaining obligations. Use `isFinite_left f` as an intermediate fact. Use `etale_left f` as an intermediate fact. Rewrite using `[isIso_iff_isIso_left, isIso_iff_bijective_algClosed]`. Introduce and unpack `k _ _ ⟨e⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨s⟩ : Nonempty (Spec (.of k))` from `inferInstance`. Conclude with `⟨_, (isSplitOfRank_of_isSepClosed (X.hom ≫ e.hom) s).of_isPullback (a := 𝟙 _) (t := e.hom) (IsPullback.of_horiz_isIso ⟨by simp⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finiteEtale_open_closed_conditions {S : Scheme.{u}} (X Y : Over S)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :

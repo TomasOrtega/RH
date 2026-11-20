@@ -17,13 +17,13 @@ variable (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (J
 end GlobalTheory.HeisLineF
 open GlobalTheory.HeisLineF in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ _ L hL _ f w s t`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Establish `key : Formalism.IndefR.DatumF.symplOF σ JS JT ξ₀ (L s) (L t) = 0`. Distinguish the cases in `ht : t = 0`. Rewrite using `[ht, map_zero L, symplOF_zero_right]`. Set `g : ℝ →+ AF F` to `AddMonoidHom.mk' (fun u => Formalism.IndefR.DatumF.symplOF σ JS JT ξ₀ (L u) (L t)) (fun a b => by simp only [map_add L, symplOF_add_left])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hg : Continuous g` using `(continuous_symplOF_left σ JS JT ξ₀ (L t)).comp hL`. Establish `h0 : g t = 0` using `symplOF_self σ JS JT hσ hS hT ξ₀ hξ (L t)`. Use `line_zero g hg t h0 (s / t)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ s ht]`. Then use the resulting hypothesis. Establish `k2 : Formalism.IndefR.DatumF.symplOHF σ JS JT ξ₀ (L s) (L t) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `Formalism.IndefR.DatumF.symplOHF`. Rewrite using `[key, mul_zero]`. Unfold `Formalism.IndefR.DatumF.heisOF`. Rewrite using `[map_add L, symplOHF_add_right, symplOHF_add_left, k2, add_zero, AddChar.map_add_eq_mul, add_assoc, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.heisOF_line_add_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

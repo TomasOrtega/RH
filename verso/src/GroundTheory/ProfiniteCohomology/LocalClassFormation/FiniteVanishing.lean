@@ -14,7 +14,7 @@ variable (K Ksep : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
 include hn in
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_of_three_le K Ksep hn U M hM hr`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_galois (U : OpenSubgroup Gal(Ksep/K))
     (M : Rep (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K))) [IsDiscreteRep M] (hM : ∀ m : M, n • m = 0)
@@ -24,9 +24,7 @@ theorem subsingleton_cohomology_galois (U : OpenSubgroup Gal(Ksep/K))
 include hn in
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `fun h0 => hn (by simp [h0])`. Establish `: NeZero n` using `⟨hn0⟩`. Break down `le_or_gt r 2 with hr | hr` into its components or cases. Conclude with `finite_cohomology_of_forall_trivial n 2 (rootsOfUnityFixing K Ksep n) (fun V hV A _ _ htriv hA r hr => finite_cohomology_of_trivial K Ksep hn V (fun σ hσ ζ hζ => apply_eq_of_mem_rootsOfUnityFixing (hV hσ) hζ) A htriv hA r hr) U M hM r hr`. Use `subsingleton_cohomology_galois K Ksep hn U M hM r hr` as an intermediate fact.
-
-Conclude with `Finite.of_subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_galois (U : OpenSubgroup Gal(Ksep/K))
     (M : Rep (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K))) [IsDiscreteRep M] [Finite M]
@@ -44,7 +42,7 @@ theorem finite_cohomology_galois (U : OpenSubgroup Gal(Ksep/K))
 include hn in
 
 /- English proof (translation)
-Introduce `U M _ _ hM r _` and use `finite_cohomology_galois K Ksep hn U M hM r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_galois_le_two : ∀ (U : OpenSubgroup Gal(Ksep/K))
     (M : Rep (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K))) [IsDiscreteRep M] [Finite M],
@@ -54,7 +52,7 @@ theorem finite_cohomology_galois_le_two : ∀ (U : OpenSubgroup Gal(Ksep/K))
 include hn in
 
 /- English proof (translation)
-Introduce `U M _ _ hM` and use `subsingleton_cohomology_galois K Ksep hn U M hM 3 le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_galois : ∀ (U : OpenSubgroup Gal(Ksep/K))
     (M : Rep (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K))) [IsDiscreteRep M] [Finite M],
@@ -64,7 +62,7 @@ theorem subsingleton_cohomology_three_galois : ∀ (U : OpenSubgroup Gal(Ksep/K)
 include hn in
 
 /- English proof (translation)
-The claim follows from `have := subsingleton_cohomology_galois K Ksep hn ⊤ (Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) hM r hr (bijective_cohomologyRes_top M r).1.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_galois_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
     (hM : ∀ m : M, n • m = 0) (r : ℕ) (hr : 3 ≤ r) : Subsingleton (cohomology M r) :=
@@ -75,7 +73,7 @@ theorem subsingleton_cohomology_galois_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K))
 include hn in
 
 /- English proof (translation)
-The claim follows from `have : Finite (Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) := inferInstanceAs (Finite M) have := finite_cohomology_galois K Ksep hn ⊤ (Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) hM r Finite.of_injective _ (bijective_c …`.
+A detailed English derivation is pending.
 -/
 theorem finite_cohomology_galois_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) (r : ℕ) : Finite (cohomology M r) :=
@@ -86,7 +84,7 @@ theorem finite_cohomology_galois_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDi
   Finite.of_injective _ (bijective_cohomologyRes_top M r).1
 
 /- English proof (translation)
-Introduce `A _ _ hA` and use `⟨finite_cohomology_galois K Ksep hA U A (fun _ => card_nsmul_eq_zero'), fun q hq => subsingleton_cohomology_galois K Ksep hA U A (fun _ => card_nsmul_eq_zero') q hq⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hasFiniteCohomology_galois (U : OpenSubgroup Gal(Ksep/K)) :
     HasFiniteCohomology (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K)) (fun m => (m : K) ≠ 0) :=
@@ -94,7 +92,7 @@ theorem hasFiniteCohomology_galois (U : OpenSubgroup Gal(Ksep/K)) :
     fun q hq => subsingleton_cohomology_galois K Ksep hA U A (fun _ => card_nsmul_eq_zero') q hq⟩
 
 /- English proof (translation)
-Introduce `A _ _ hA` and use `⟨finite_cohomology_galois_top K Ksep hA A (fun _ => card_nsmul_eq_zero'), fun q hq => subsingleton_cohomology_galois_top K Ksep hA A (fun _ => card_nsmul_eq_zero') q hq⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hasFiniteCohomology_galois_top :
     HasFiniteCohomology (ULift.{0} ℤ) Gal(Ksep/K) (fun m => (m : K) ≠ 0) :=

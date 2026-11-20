@@ -7,11 +7,9 @@ open GlobalTheory.LocAcyc GlobalTheory.KeyOriginNoeth GlobalTheory.KeyOriginBC
 namespace GlobalTheory.EtaleNormalLoc
 
 /- English proof (translation)
-Set `K` to `FractionRing S`. Use `letI : Algebra (Localization M) K := IsLocalization.localizationAlgebraOfSubmonoidLe (Localization M) K M _ hM`. Use `haveI : IsScalarTower S (Localization M) K := IsLocalization.localization_isScalarTower_of_submonoid_le (Localization M) K M _ hM`. Use `haveI : IsFractionRing (Localization M) K := IsFractionRing.isFractionRing_of_isLocalization M (Localization M) K hM`. Use `haveI : IsDomain (Localization M) := IsLocalization.isDomain_localization hM`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hK : Function.Injective (algebraMap (Localization M) K)` using `IsFractionRing.injective _ _`. Use `isIntegrallyClosedIn_iff.mpr ⟨fun x y hxy ↦ ?_, fun {x} hx ↦ ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective S K` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply S (Localization M) K, hxy, ← IsScalarTower.algebraMap_apply]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (hx.algebraMap (B := K))`.
-
-Conclude with `⟨y, hK (by rw [← hy, IsScalarTower.algebraMap_apply S (Localization M) K])⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_localization (S : Type) [CommRing S] [IsDomain S]
     [IsIntegrallyClosed S] (M : Submonoid S) (hM : M ≤ nonZeroDivisors S) :
@@ -32,23 +30,21 @@ theorem isIntegrallyClosedIn_localization (S : Type) [CommRing S] [IsDomain S]
     exact ⟨y, hK (by rw [← hy, IsScalarTower.algebraMap_apply S (Localization M) K])⟩
 
 /- English proof (translation)
-Introduce `S E _ _ _ _ _ _ M hM`. Establish `hle : Algebra.algebraMapSubmonoid E M ≤ nonZeroDivisors E`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Establish `hreg : IsSMulRegular E m` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (hM hm)`. Use `mem_nonZeroDivisors_iff.mpr ⟨fun x hx ↦ hreg ?_, fun x hx ↦ hreg ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show m • x = m • (0 : E)`. Rewrite using `[smul_zero, Algebra.smul_def]`. Conclude with `hx`. Use `show m • x = m • (0 : E)`. Rewrite using `[smul_zero, Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hx`. Use `⟨IsLocalization.injective _ hle, fun x hx ↦ ?_⟩` and prove the remaining obligations. Set `SM` to `Localization M`. Set `T` to `E ⊗[S] SM`. Use `letI : Algebra SM T := Algebra.TensorProduct.rightAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower S SM T := inferInstance`. Use `haveI : Algebra.IsPushout S E SM T := inferInstance`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid E M) T := (Algebra.isLocalization_iff_isPushout M SM).2 (Algebra.IsPushout.symm inferInstance)`. Set `e : T ≃ₐ[E] Localization (Algebra.algebraMapSubmonoid E M)` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid E M) T _`. Establish `hic` using `isIntegrallyClosedIn_localization S M hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `htS : IsIntegral S (e.symm x)` using `hx.map (e.symm.toAlgHom.restrictScalars S)`. Establish `htE : IsIntegral E (e.symm x)` using `htS.tower_top`. Take `⟨y, hy⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := S) (S := E) (B := SM)).2 ⟨e.symm x, htE⟩`. Establish `hy' : (TensorProduct.toIntegralClosure S E SM y : T) = e.symm x` using `congrArg Subtype.val hy`. Establish `key : ∀ y : E ⊗[S] integralClosure S SM, ∃ b : E, (TensorProduct.toIntegralClosure S E SM y : T) = b ⊗ₜ[S] (1 : SM)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul b c`. Take `⟨r, hr⟩` from `IsIntegrallyClosedIn.isIntegral_iff.1 c.2`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨r • b, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hr]`. Both sides reduce to the same expression. Consider the case `add u v hu hv`. Take `⟨a, ha⟩` from `hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨b, hb⟩` from `hv`. Conclude with `⟨a + b, by rw [map_add, Subalgebra.coe_add, ha, hb, TensorProduct.add_tmul]⟩`. Take `⟨b, hb⟩` from `key y`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `: e.symm x = algebraMap E T b`.
-
-Rewrite using `[← hy', hb]`. Both sides reduce to the same expression. Rewrite using `[← e.apply_symm_apply x, this, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_integrallyClosed_localization : ∀ (S E : Type) [CommRing S] [IsDomain S] [IsIntegrallyClosed S]
     [CommRing E] [Algebra S E] [Algebra.Etale S E] (M : Submonoid S), M ≤ nonZeroDivisors S →

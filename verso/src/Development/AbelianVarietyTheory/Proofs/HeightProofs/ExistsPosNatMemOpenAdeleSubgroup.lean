@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain Filter Topology
 namespace GlobalTheory.AdelicFactorial
 
 /- English proof (translation)
-Establish `hle : ∀ m : ℕ, ‖(m : v.adicCompletion F)‖ ≤ 1` using `fun m => by`. Use `FinitePlace.norm_le_one F v (m : 𝓞 F)` as an intermediate fact. Simplify using `using this`. Use `set M := Ideal.absNorm v.asIdeal with hM`. Establish `hlt : ‖(M : v.adicCompletion F)‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(FinitePlace.norm_lt_one_iff_mem F v (M : 𝓞 F)).2 (Ideal.absNorm_mem _)` as an intermediate fact. Simplify using `using this`. Establish `hM0 : 0 < M` using `lt_trans one_pos (NumberField.HeightOneSpectrum.one_lt_absNorm v)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε hlt`. Use `⟨M ^ k, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Nat.dvd_factorial (pow_pos hM0 k) hn`. Rewrite using `[dist_zero_right, hc, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hle c)) hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_factorial_adicCompletion (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -35,9 +35,9 @@ theorem tendsto_factorial_adicCompletion (F : Type) [Field F] [NumberField F]
   exact lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hle c)) hk
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n : ℕ => fun v : HeightOneSpectrum (𝓞 F) => ((n.factorial : ℕ) : v.adicCompletionIntegers F)) atTop (𝓝 0)`. Use `tendsto_pi_nhds.2 fun v => ?_` and prove the remaining obligations. Rewrite using `[tendsto_subtype_rng]`. Simplify using `using tendsto_factorial_adicCompletion F v`. Establish `h2` using `((RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := cofinite)).continuous.tendsto _).comp h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_factorial_finiteAdele (F : Type) [Field F] [NumberField F] :
     Tendsto (fun n : ℕ => ((n.factorial : ℕ) : FiniteAdeleRing (𝓞 F) F)) atTop (𝓝 0) := by
@@ -53,7 +53,7 @@ theorem tendsto_factorial_finiteAdele (F : Type) [Field F] [NumberField F] :
   exact h2
 
 /- English proof (translation)
-Introduce `F _ _ U hU`. Establish `h : Tendsto (fun n : ℕ => pairA F 0 ((n.factorial : ℕ) : Af F)) atTop (𝓝 (0 : AF F))` using `(tendsto_const_nhds (x := (0 : Ainf F))).prodMk_nhds (tendsto_factorial_finiteAdele F)`. Take `⟨n, hn⟩` from `(h.eventually (hU.mem_nhds U.zero_mem)).exists`. Conclude with `⟨n.factorial, n.factorial_pos, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nat_mem_of_isOpen : ∀ (F : Type) [Field F] [NumberField F] (U : AddSubgroup (AF F)),
     IsOpen (U : Set (AF F)) → ∃ N : ℕ, 0 < N ∧ pairA F 0 (N : Af F) ∈ U := by

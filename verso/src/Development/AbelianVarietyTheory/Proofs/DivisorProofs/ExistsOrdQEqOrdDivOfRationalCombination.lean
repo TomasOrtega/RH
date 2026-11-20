@@ -12,15 +12,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `k K _ _ c φ`. Proceed by induction on `φ using Finsupp.induction with`. Consider the case `zero => intro _; exact ⟨1, 1, one_pos, fun E => by simp⟩`. Consider the case `single_add a b f ha hb ih`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfa : f a = 0` using `Finsupp.notMem_support_iff.mp ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h0` using `[Finsupp.add_apply, Finsupp.single_eq_same, hfa, add_zero]`. Conclude with `hb h0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0 : f 0 = 0`. Rewrite `h0` using `[Finsupp.add_apply, Finsupp.single_eq_of_ne (Ne.symm ha0), zero_add]`. Conclude with `h0`. Take `⟨m, g, hm, hg⟩` from `ih hf0`. Use `⟨m * b.den, g ^ b.den * (Units.mk0 a ha0) ^ (b.num * m), ?_, fun E => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.mul_pos hm b.pos`. Establish `hd : (b.den : ℚ) ≠ 0` using `by exact_mod_cast b.pos.ne'`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[map_add, Place.ordQ_single, hg E, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, E.ord_mul (pow_ne_zero _ g.ne_zero) (zpow_ne_zero _ (Units.mk0 a ha0).ne_zero), E.ord_pow, E.ord_zpow, Units.val_mk0]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Rat.mul_den_eq_num b]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_ordQ_eq_ord_div : ∀ {k K : Type} [Field k] [Field K] (c : k →+* K) (φ : K →₀ ℚ),
     φ 0 = 0 → ∃ (m : ℕ) (g : Kˣ), 0 < m ∧ ∀ E : Place c, E.ordQ φ = (E.ord (g : K) : ℚ) / m := by

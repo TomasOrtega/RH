@@ -22,7 +22,7 @@ attribute [local instance] isDiscreteModule_units
 include hf in
 
 /- English proof (translation)
-The claim follows from `IsSepClosure.sep_closed K (localReciprocity (lubinTateField Ω hπ hf n)).symm (unitUniformizerPow hπ u k : Kˣ ⧸ (normUnits K (lubinTateField Ω hπ hf n)).range) = Abelianization.of (τ.restrictNormal (lubinTateField Ω hπ hf n)) := by have : IsSepClosed Ω := IsSepClosure.sep_closed K …`.
+A detailed English derivation is pending.
 -/
 theorem localReciprocity_symm_lubinTateField {n : ℕ} (hn : 0 < n) (u : 𝒪[K]ˣ) (k : ℤ)
     {τ : Ω ≃ₐ[K] Ω} (hτd : unramifiedDegree K Ω τ = Multiplicative.ofAdd (k : ℤ̂))
@@ -50,11 +50,11 @@ theorem localReciprocity_symm_lubinTateField {n : ℕ} (hn : 0 < n) (u : 𝒪[K]
 include hf in
 
 /- English proof (translation)
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Use `set L := lubinTateField Ω hπ hf n`. Establish `: IsMulCommutative (L ≃ₐ[K] L)` using `⟨⟨lubinTateField_mul_comm hπ hf n⟩⟩`. Take `⟨τ, hτd, hτ⟩` from `exists_lubinTate_action (Ω := Ω) hπ hf hn u k`. Establish `h2` using `of_abelianRestrict_localReciprocityLimit L (unitUniformizerPow hπ u k)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hg, abelianRestrict_mk, localReciprocity_symm_lubinTateField hπ hf hn u k hτd hτ]`. Establish `h3` using `(bijective_abelianizationOf L).1 h2`. Establish `hxL` using `val_mem_lubinTateField hπ hf hx`. Establish `e` using `congrArg IdealPoint.val (hτ x hx)`. Rewrite `e` using `[lubinTateGalPointMap_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Establish `c1` using `AlgEquiv.restrictNormal_commutes g L ⟨x.val, hxL⟩`. Establish `c2` using `AlgEquiv.restrictNormal_commutes τ L ⟨x.val, hxL⟩`. Rewrite `c1` using `[h3]`. Conclude with `c1.symm.trans c2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_val_of_mk_eq_localReciprocityLimit {n : ℕ} (hn : 0 < n) (u : 𝒪[K]ˣ) (k : ℤ)
     {g : Ω ≃ₐ[K] Ω}
@@ -87,7 +87,7 @@ namespace Padic
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[multiplicativeLTPoly, Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_one, Polynomial.coe_X, ← PowerSeries.coe_substAlgHom hs, map_sub, map_pow, map_add, map_one, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_multiplicativeLTPoly {τ : Type*} {a : MvPowerSeries τ 𝒪[ℚ_[p]]}
     (ha : MvPowerSeries.constantCoeff a = 0) :
@@ -98,9 +98,9 @@ theorem subst_multiplicativeLTPoly {τ : Type*} {a : MvPowerSeries τ 𝒪[ℚ_[
     map_add, map_one, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs]
 
 /- English proof (translation)
-Rewrite using `[lubinTateFormalGroup_toPowerSeries]`. Use `symm`. Apply `eq_lubinTateLift` to reduce the goal to its premises. Rewrite using `[linearForm_fin_two, map_one, one_mul, one_mul, add_sub_cancel_left]`. Establish `h1 : ∀ i : Fin 2, (1 : ℕ∞) ≤ MvPowerSeries.order (MvPowerSeries.X i : MvPowerSeries (Fin 2) 𝒪[ℚ_[p]])` using `fun i => MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 (by simp)`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 0 * MvPowerSeries.X 1 : MvPowerSeries (Fin 2) 𝒪[ℚ_[p]]) = 0` using `by simp`. Establish `hs : MvPowerSeries.HasSubst (substEach (multiplicativeLTPoly p : PowerSeries 𝒪[ℚ_[p]]) : Fin 2 → MvPowerSeries (Fin 2) 𝒪[ℚ_[p]])` using `hasSubst_substEach (isLubinTateSeries_multiplicativeLTPoly p).constantCoeff_eq_zero`. Rewrite using `[subst_multiplicativeLTPoly p h0, ← MvPowerSeries.coe_substAlgHom hs, map_add, map_add, map_mul, MvPowerSeries.coe_substAlgHom hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs, substEach_apply, substEach_apply, subst_multiplicativeLTPoly p (by simp), subst_multiplicativeLTP …`. Rewrite using `[show (1 + (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 0 * MvPowerSeries.X 1) : MvPowerSeries (Fin 2) 𝒪[ℚ_[p]]) = (1 + MvPowerSeries.X 0) * (1 + MvPowerSeries.X 1) by ring, mul_pow]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -146,7 +146,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω] [TopologicalSpace Ω]
   [IsValuativeTopology Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Simplify using `only [psTerm, map_add, Subring.coe_add, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem psTerm_add {σ : Type*} (f g : MvPowerSeries σ 𝒪[K]) (x : σ → Ω) :
     psTerm (f + g) x = psTerm f x + psTerm g x := by
@@ -154,7 +154,7 @@ theorem psTerm_add {σ : Type*} (f g : MvPowerSeries σ 𝒪[K]) (x : σ → Ω)
   simp only [psTerm, map_add, Subring.coe_add, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Use `t2Space_of_isValuativeTopology Ω` as an intermediate fact. Establish `h` using `(hasSum_psEval' f x hx).add (hasSum_psEval' g x hx)`. Conclude with `(hasSum_psEval' (f + g) x hx).unique (by rw [psTerm_add]; exact h)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psEval_add {σ : Type*} [Finite σ] (f g : MvPowerSeries σ 𝒪[K]) {x : σ → Ω}
     (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -167,9 +167,9 @@ omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω] [Topo
   [IsValuativeTopology Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 
 /- English proof (translation)
-Establish `hX : (MvPowerSeries.X 0 * MvPowerSeries.X 1 : MvPowerSeries (Fin 2) 𝒪[K]) = MvPowerSeries.monomial (Finsupp.single 0 1 + Finsupp.single 1 1) 1`. Rewrite using `[MvPowerSeries.X, MvPowerSeries.X, MvPowerSeries.monomial_mul_monomial, one_mul]`. Rewrite using `[hX, psEval, tsum_eq_single (Finsupp.single 0 1 + Finsupp.single 1 1)]`. Rewrite using `[psTerm, MvPowerSeries.coeff_monomial_same, Finsupp.prod_add_index (by simp) (by simp [pow_add])]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `d hd`. Simplify using `[psTerm, MvPowerSeries.coeff_monomial, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem psEval_X_mul_X [TopologicalSpace Ω] (x : Fin 2 → Ω) :
     psEval (MvPowerSeries.X 0 * MvPowerSeries.X 1 : MvPowerSeries (Fin 2) 𝒪[K]) x = x 0 * x 1 := by
@@ -194,7 +194,7 @@ variable (p : ℕ) [hp : Fact p.Prime]
   [Algebra ℚ_[p] Ω] [ValuativeExtension ℚ_[p] Ω] [Algebra.IsAlgebraic ℚ_[p] Ω]
 
 /- English proof (translation)
-Establish `hxy : ∀ i, valuation Ω ((![x.val, y.val] : Fin 2 → Ω) i) < 1` using `fun i => by fin_cases i`. Conclude with `x.valuation_lt_one`. Conclude with `y.valuation_lt_one`. Rewrite using `[IdealPoint.val_add, lubinTateFormalGroup_multiplicative, psEval_add _ _ hxy, psEval_add _ _ hxy, psEval_X, psEval_X, psEval_X_mul_X]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_add_multiplicative
     (x y : IdealPoint Ω (lubinTateFormalGroup (irreducible_natCast_integer p)
@@ -209,7 +209,7 @@ theorem val_add_multiplicative
   rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Proceed by induction on `k with`. Consider the case `zero => simp [IdealPoint.val_zero]`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul, val_add_multiplicative, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -225,7 +225,7 @@ theorem val_natCast_smul (k : ℕ)
     ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hak`. Establish `h0 : ((p : 𝒪[ℚ_[p]]) ^ n) • x = 0` using `(mem_lubinTateTorsion _ n x).1 hx`. Establish `: a • x = (k : 𝒪[ℚ_[p]]) • x`. Rewrite using `[← sub_eq_zero, ← sub_smul, hc, mul_comm, mul_smul, h0, smul_zero]`. Rewrite using `[this, val_natCast_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_smul_of_mem_torsion {n : ℕ}
     {x : IdealPoint Ω (lubinTateFormalGroup (irreducible_natCast_integer p)
@@ -242,19 +242,17 @@ theorem val_smul_of_mem_torsion {n : ℕ}
 omit [TopologicalSpace Ω] [IsValuativeTopology Ω] [Algebra.IsAlgebraic ℚ_[p] Ω] in
 
 /- English proof (translation)
-Establish `hp1 : valuation Ω (p : Ω) < 1`. Establish `h` using `valuation_algebraMap_lt_one_of_irreducible (L := Ω) (irreducible_natCast_integer p)`. Simplify using `using h`. Proceed by induction on `n generalizing ζ with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Rewrite `hζ` using `[pow_zero, pow_one]`. Simplify using `[hζ]`. Consider the case `succ n ih`. Establish `h1 : (ζ ^ p) ^ (p ^ n) = 1` using `by rw [← pow_mul, ← pow_succ']; exact hζ`. Establish `ih'` using `ih h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hge`. Use `replace hge := not_lt.1 hge`. Establish `hv1 : valuation Ω ζ = 1`. Establish `hN : valuation Ω ζ ^ (p ^ (n + 1)) = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hN0 : p ^ (n + 1) ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (valuation Ω ζ) 1 with h | h | h` into its components or cases. Conclude with `absurd hN (pow_lt_one₀ zero_le h hN0).ne`. Conclude with `h`. Conclude with `absurd hN (one_lt_pow₀ h hN0).ne'`. Establish `hle : valuation Ω (ζ - 1) ≤ 1` using `(Valuation.map_sub _ _ _).trans (by simp [hv1])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : valuation Ω (ζ - 1) = 1` using `le_antisymm hle hge`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp.out (⟨ζ - 1, (Valuation.mem_integer_iff _ _).2 hle⟩ : 𝒪[Ω]) 1`. Establish `e : ζ ^ p - 1 = (ζ - 1) ^ p + (p : Ω) * (ζ - 1) * (r : Ω)`. Use `congrArg Subtype.val hr` as an intermediate fact. Simplify using `only [Subring.coe_pow, Subring.coe_add, Subring.coe_mul, Subring.coe_one, Subring.coe_natCast, one_pow, mul_one, sub_add_cancel] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr1 : valuation Ω (r : Ω) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 r.2`. Establish `hlt : valuation Ω ((p : Ω) * (ζ - 1) * (r : Ω)) < valuation Ω ((ζ - 1) ^ p)`. Rewrite using `[map_pow, heq, one_pow, map_mul, map_mul, heq, mul_one]`.
-
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hr1) hp1`. Establish `: valuation Ω (ζ ^ p - 1) = 1`. Rewrite using `[e, (valuation Ω).map_add_eq_of_lt_left hlt, map_pow, heq, one_pow]`. Conclude with `absurd ih' (by rw [this]; exact lt_irrefl 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_sub_one_lt_one {n : ℕ} {ζ : Ω} (hζ : ζ ^ (p ^ n) = 1) :
     valuation Ω (ζ - 1) < 1 := by
@@ -303,7 +301,7 @@ end PadicPoints
 section Explicit
 
 /- English proof (translation)
-Rewrite `h` using `[ZMod.natCast_eq_natCast_iff]`. Establish `key : ∀ c, ξ ^ c = ξ ^ (c % m)` using `fun c => by conv_lhs => rw [← Nat.div_add_mod c m, pow_add, pow_mul, hξ, one_pow, one_mul]`. Rewrite using `[key a, key b, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_pow_of_natCast_eq {M : Type*} [Monoid M] {ξ : M} {m a b : ℕ} (hξ : ξ ^ m = 1)
     (h : (a : ZMod m) = b) : ξ ^ a = ξ ^ b := by
@@ -317,11 +315,11 @@ namespace Padic
 variable (p : ℕ) [hp : Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra ℚ_[p] Ω] [IsSepClosure ℚ_[p] Ω]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hcard : ((Nat.card 𝓀[ℚ_[p]] : ℕ) : 𝓀[ℚ_[p]]) = 0`. Use `Fintype.ofFinite 𝓀[ℚ_[p]]` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero 𝓀[ℚ_[p]]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcard` using `[card_residueField]`. Establish `hc : ringChar 𝓀[ℚ_[p]] ∣ p` using `(CharP.cast_eq_zero_iff 𝓀[ℚ_[p]] (ringChar 𝓀[ℚ_[p]]) p).1 hcard`. Establish `hcp : ringChar 𝓀[ℚ_[p]] = p` using `((Nat.dvd_prime hp.out).1 hc).resolve_left CharP.ringChar_ne_one`. Establish `hdvd : p ∣ m`. Rewrite using `[← hcp, ← CharP.cast_eq_zero_iff 𝓀[ℚ_[p]] (ringChar 𝓀[ℚ_[p]])]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h` using `Nat.Coprime.coprime_dvd_left hdvd hm`. Rewrite `h` using `[Nat.coprime_self]`. Conclude with `hp.out.one_lt.ne' h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_residueField_ne_zero {m : ℕ} (hm : m.Coprime p) : (m : 𝓀[ℚ_[p]]) ≠ 0 := by
   intro h0
@@ -342,19 +340,17 @@ theorem natCast_residueField_ne_zero {m : ℕ} (hm : m.Coprime p) : (m : 𝓀[�
   exact hp.out.one_lt.ne' h
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp.out.one_lt.ne' ((Nat.coprime_zero_left p).1 hm)`. Establish `: NeZero m` using `⟨hm0⟩`. Use `set F := maximalUnramifiedExtensionFrobenius ℚ_[p] Ω`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := ZMod.unitOfCoprime p hm.symm`. Establish `he : ((e : (ZMod m)ˣ) : ZMod m) = p` using `ZMod.coe_unitOfCoprime p hm.symm`. Establish `hF : ∀ η : maximalUnramifiedExtension ℚ_[p] Ω, η ^ m = 1 → F η = η ^ p` using `fun η hη => by`. Rewrite using `[maximalUnramifiedExtensionFrobenius_apply_of_pow_eq_one (natCast_residueField_ne_zero p hm) hη, card_residueField]`. Establish `hnat : ∀ (k : ℕ) (η : maximalUnramifiedExtension ℚ_[p] Ω), η ^ m = 1 → (F ^ k) η = η ^ (((e ^ k : (ZMod m)ˣ) : ZMod m)).val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `η hη`. Rewrite using `[pow_zero, pow_zero, Units.val_one, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← pow_one η]`. Conclude with `pow_eq_pow_of_natCast_eq hη (by rw [ZMod.natCast_zmod_val, Nat.cast_one])`. Consider the case `succ k ih`. Introduce `η hη`. Establish `hk : ((F ^ k) η) ^ m = 1` using `by rw [← map_pow, hη, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', AlgEquiv.mul_apply, hF _ hk, ih η hη, ← pow_mul]`. Use `pow_eq_pow_of_natCast_eq hη ?_` and prove the remaining obligations. Rewrite using `[ZMod.natCast_zmod_val, Nat.cast_mul, ZMod.natCast_zmod_val, pow_succ, Units.val_mul, he]`. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg r`. Rewrite using `[zpow_natCast, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnat k ξ hξ`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast] set η := (F ^ k)⁻¹ ξ`. Establish `hη : η ^ m = 1` using `by rw [← map_pow, hξ, map_one]`. Establish `hFη : (F ^ k) η = ξ`. Express the relevant statement in the definitionally equal form `(F ^ k) ((F ^ k).symm ξ) = ξ`.
-
-Conclude with `AlgEquiv.apply_symm_apply _ ξ`. Rewrite using `[← hFη, hnat k η hη, ← pow_mul]`. Use `conv_lhs => rw [← pow_one η]`. Use `pow_eq_pow_of_natCast_eq hη ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Nat.cast_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_zpow_apply_of_pow_eq_one {m : ℕ} (hm : m.Coprime p) (r : ℤ)
     {ξ : maximalUnramifiedExtension ℚ_[p] Ω} (hξ : ξ ^ m = 1) :
@@ -411,7 +407,7 @@ theorem coe_integerUnit (u : ℤ_[p]ˣ) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hx, unitUniformizerPow, Units.val_mul, Units.coe_map, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitUniformizerPow_integerUnit (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
     (hx : (x : ℚ_[p]) = ((u : ℤ_[p]) : ℚ_[p]) * (p : ℚ_[p]) ^ r) :
@@ -422,9 +418,9 @@ theorem unitUniformizerPow_integerUnit (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
   rfl
 
 /- English proof (translation)
-Establish `hπ` using `irreducible_natCast_integer p`. Establish `hp0 : (((p : 𝒪[ℚ_[p]]) : ℚ_[p])) ≠ 0` using `coe_ne_zero_of_irreducible hπ`. Establish `e : (x : ℚ_[p]) = (((integerUnit p u : 𝒪[ℚ_[p]]ˣ) : 𝒪[ℚ_[p]]) : ℚ_[p]) * ((p : 𝒪[ℚ_[p]]) : ℚ_[p]) ^ r`. Rewrite using `[← unitUniformizerPow_integerUnit p x u r hx, unitUniformizerPow, Units.val_mul, Units.coe_map, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ord_mul (by simp) (zpow_ne_zero _ hp0), ord_unit, ord_zpow hp0, ord_uniformizer hπ, mul_one, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_eq_of_eq_mul_zpow (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
     (hx : (x : ℚ_[p]) = ((u : ℤ_[p]) : ℚ_[p]) * (p : ℚ_[p]) ^ r) :
@@ -440,17 +436,17 @@ theorem ord_eq_of_eq_mul_zpow (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
     mul_one, zero_add]
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel ℚ_[p] Ω`. Set `` to `algebraicTopology ℚ_[p] Ω`. Use `algebraicValuativeRel_valuativeExtension ℚ_[p] Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology ℚ_[p] Ω` as an intermediate fact. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hζ` using `[pow_zero, pow_one]`. Substitute `hζ` using the available equality. Simplify using the standard rewrite rules. Establish `hπ` using `irreducible_natCast_integer p`. Establish `hf` using `isLubinTateSeries_multiplicativeLTPoly p`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k := (PadicInt.toZModPow n ((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p])).val`. Set `y : IdealPoint Ω (lubinTateFormalGroup hπ hf)` to `IdealPoint.mk (ζ - 1) (valuation_sub_one_lt_one p hζ)`. Establish `hy : y ∈ lubinTateTorsion Ω hf n`. Rewrite using `[mem_lubinTateTorsion]`. Apply `IdealPoint.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_pow_smul, IdealPoint.val_zero, IdealPoint.val_mk, add_sub_cancel, hζ, sub_self]`. Establish `h1` using `apply_val_of_mk_eq_localReciprocityLimit hπ hf hn (integerUnit p u) r (hσ.trans (by rw [unitUniformizerPow_integerUnit p x u r hx])) hy`. Establish `hdvd : (p : 𝒪[ℚ_[p]]) ^ n ∣ (((integerUnit p u)⁻¹ : 𝒪[ℚ_[p]]ˣ) : 𝒪[ℚ_[p]]) - k`. Establish `hker : ((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) - k ∈ RingHom.ker (PadicInt.toZModPow (p` using `p) n) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hker` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Establish `h` using `map_dvd (PadicRank.padicIntEquivInteger p) hker`. Rewrite `h` using `[map_pow, map_natCast, map_sub, map_natCast]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `[integerUnit]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[val_smul_of_mem_torsion p hy hdvd]`. Simplify using `only [y, IdealPoint.val_mk, add_sub_cancel, map_sub, map_one] at h1`. Conclude with `sub_left_injective h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_of_pow_eq_one_of_prime_pow (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
     (hx : (x : ℚ_[p]) = ((u : ℤ_[p]) : ℚ_[p]) * (p : ℚ_[p]) ^ r) {σ : Ω ≃ₐ[ℚ_[p]] Ω}
@@ -489,13 +485,13 @@ theorem apply_of_pow_eq_one_of_prime_pow (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : �
   exact sub_left_injective h1
 
 /- English proof (translation)
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed ℚ_[p]`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero fun h => by`. Substitute `h` using the available equality. Conclude with `hp.out.one_lt.ne' ((Nat.coprime_zero_left p).1 hm)`. Establish `hζur : ζ ∈ maximalUnramifiedExtension ℚ_[p] Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[maximalUnramifiedExtension_eq_adjoin_rootsOfUnity]`. Conclude with `subset_adjoin _ _ ⟨m, hm0, hm, hζ⟩`. Establish `hdeg` using `unramifiedDegree_of_mk_eq_localReciprocityLimit hσ`. Rewrite `hdeg` using `[ord_eq_of_eq_mul_zpow p x u r hx]`. Establish `hres : σ.restrictNormal (maximalUnramifiedExtension ℚ_[p] Ω) = maximalUnramifiedExtensionFrobenius ℚ_[p] Ω ^ r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `unramifiedDegree_maximalUnramifiedExtension_injective` to reduce the goal to its premises. Rewrite using `[unramifiedDegree_restrictNormal, hdeg, map_zpow, unramifiedDegree_maximalUnramifiedExtensionFrobenius, ← ofAdd_zsmul, zsmul_one]`. Establish `hξ : (⟨ζ, hζur⟩ : maximalUnramifiedExtension ℚ_[p] Ω) ^ m = 1` using `Subtype.ext (by simpa using hζ)`. Establish `c` using `AlgEquiv.restrictNormal_commutes σ (maximalUnramifiedExtension ℚ_[p] Ω) ⟨ζ, hζur⟩`. Rewrite `c` using `[hres]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `c` using `[frobenius_zpow_apply_of_pow_eq_one p hm r hξ]`. Express the relevant statement in the definitionally equal form `((⟨ζ, hζur⟩ ^ _ : maximalUnramifiedExtension ℚ_[p] Ω) : Ω) = σ ζ at c`. Rewrite using `[← c, SubmonoidClass.coe_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_of_pow_eq_one_of_coprime (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
     (hx : (x : ℚ_[p]) = ((u : ℤ_[p]) : ℚ_[p]) * (p : ℚ_[p]) ^ r) {σ : Ω ≃ₐ[ℚ_[p]] Ω}
@@ -525,9 +521,9 @@ theorem apply_of_pow_eq_one_of_coprime (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℤ)
   rw [← c, SubmonoidClass.coe_pow]
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `fun h => by`. Substitute `h` using the available equality. Conclude with `hp.out.one_lt.ne' ((Nat.coprime_zero_left p).1 hm)`. Establish `: NeZero m` using `⟨hm0⟩`. Rewrite using `[apply_of_pow_eq_one_of_coprime p x u r (by rw [hx, zpow_natCast]) hσ hm hζ]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_eq_pow_of_natCast_eq hζ ?_` and prove the remaining obligations. Rewrite using `[ZMod.natCast_zmod_val, zpow_natCast, Units.val_pow_eq_pow_val, ZMod.coe_unitOfCoprime, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_of_pow_eq_one_of_coprime_of_nat (x : ℚ_[p]ˣ) (u : ℤ_[p]ˣ) (r : ℕ)
     (hx : (x : ℚ_[p]) = ((u : ℤ_[p]) : ℚ_[p]) * (p : ℚ_[p]) ^ r) {σ : Ω ≃ₐ[ℚ_[p]] Ω}

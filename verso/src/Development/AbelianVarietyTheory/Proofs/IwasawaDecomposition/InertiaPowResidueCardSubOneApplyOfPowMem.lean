@@ -5,15 +5,15 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hξA : A.valuation ξ ≤ 1`. Establish `: ξ = (ξ - 1) + 1` using `by ring`. Rewrite using `[this]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le h1.le (by simp))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : (∑ k ∈ Finset.range n, ξ ^ k) = 0`. Establish `h` using `geom_sum_mul ξ n`. Rewrite `h` using `[hξ, sub_self]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (sub_eq_zero.mp h) hne`. Establish `hsum : (n : Ω) = ∑ k ∈ Finset.range n, (1 - ξ ^ k)`. Rewrite using `[Finset.sum_sub_distrib, hS]`. Simplify using the standard rewrite rules. Establish `hlt : A.valuation (n : Ω) < 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Use `Valuation.map_sum_lt _ one_ne_zero fun k _ => ?_` and prove the remaining obligations. Establish `e : 1 - ξ ^ k = -((∑ j ∈ Finset.range k, ξ ^ j) * (ξ - 1))`. Rewrite using `[geom_sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, Valuation.map_neg, Valuation.map_mul]`. Establish `hs : A.valuation (∑ j ∈ Finset.range k, ξ ^ j) ≤ 1` using `Valuation.map_sum_le _ fun j _ => by rw [Valuation.map_pow]; exact pow_le_one' hξA j`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[hn]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_eq_one_of_val_sub_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {n : ℕ}
     (hn : A.valuation (n : Ω) = 1) {ξ : Ω} (hξ : ξ ^ n = 1) (h1 : A.valuation (ξ - 1) < 1) : ξ = 1 := by
@@ -45,7 +45,7 @@ theorem eq_one_of_pow_eq_one_of_val_sub_lt {Ω : Type} [Field Ω] (A : Valuation
   exact lt_irrefl _ hlt
 
 /- English proof (translation)
-Establish `h : A.valuation ζ ^ n = 1` using `by rw [← Valuation.map_pow, hζ, Valuation.map_one]`. Conclude with `valuation_eq_one_of_pow_eq_one A hn0 hζ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_pow_eq_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {n : ℕ} (hn0 : n ≠ 0)
     {ζ : Ω} (hζ : ζ ^ n = 1) : A.valuation ζ = 1 := by
@@ -53,27 +53,23 @@ theorem val_eq_one_of_pow_eq_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω
   exact valuation_eq_one_of_pow_eq_one A hn0 hζ
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ v A hA w π hπ ρ hρ`. Use `set n := normV v - 1 with hn_def`. Break down `eq_or_ne n 0 with hn0 | hn0` into its components or cases. Rewrite using `[hn0, pow_zero]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne π 0 with hπ0 | hπ0` into its components or cases. Rewrite using `[hπ0, map_zero]`. Establish `hq1 : 1 ≤ normV v` using `by omega`. Establish `hqv : ((normV v : ℕ) : 𝓞 E) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show ((Nat.card (𝓞 E ⧸ v.asIdeal) : ℕ) : 𝓞 E ⧸ v.asIdeal) = 0`. Break down `finite_or_infinite (𝓞 E ⧸ v.asIdeal) with hf | hf` into its components or cases. Use `haveI := Fintype.ofFinite (𝓞 E ⧸ v.asIdeal)`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_eq_zero_of_infinite]`. Simplify using the standard rewrite rules. Establish `hqA : A.valuation ((normV v : ℕ) : Ω) < 1`. Use `(hA _).mpr hqv` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnA : A.valuation (n : Ω) = 1`. Rewrite using `[hn_def, Nat.cast_sub hq1, Nat.cast_one, Valuation.map_sub_swap]`. Conclude with `Valuation.map_one_sub_of_lt _ hqA`. Establish `hρπ : (ρ π) ^ n = π ^ n`. Rewrite using `[← map_pow, hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ρ.commutes w`. Use `set ζ := ρ π * π⁻¹ with hζ_def`. Establish `hζn : ζ ^ n = 1`. Rewrite using `[hζ_def, mul_pow, hρπ, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hπ0)]`. Establish `hρπ' : ρ π = ζ * π` using `by rw [hζ_def, mul_assoc, inv_mul_cancel₀ hπ0, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hζ1 : A.valuation ζ = 1` using `valuation_eq_one_of_pow_eq_one A hn0 hζn`. Establish `hζ0 : ζ ≠ 0` using `by intro h; rw [h, zero_pow hn0] at hζn; exact zero_ne_one hζn`. Establish `hρζn : (ρ ζ) ^ n = 1` using `by rw [← map_pow, hζn, map_one]`. Establish `hclose : A.valuation (ρ ζ - ζ) < 1` using `hρ.2 ζ hζ1.le`. Establish `hξ : ρ ζ * ζ⁻¹ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `eq_one_of_pow_eq_one_of_val_sub_lt A hnA ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_pow, hρζn, inv_pow, hζn, inv_one, one_mul]`. Establish `e : ρ ζ * ζ⁻¹ - 1 = (ρ ζ - ζ) * ζ⁻¹` using `by field_simp`. Rewrite using `[e, Valuation.map_mul, map_inv₀, hζ1, inv_one, mul_one]`. Conclude with `hclose`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hρζ : ρ ζ = ζ`. Use `congrArg (· * ζ) hξ` as an intermediate fact. Simplify `this` using `[mul_assoc, inv_mul_cancel₀ hζ0]`. Establish `key : ∀ k : ℕ, (ρ ^ k) π = ζ ^ k * π`. Introduce `k`.
-
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_mul, map_pow, hρζ, hρπ', pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key, hζn, one_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ine_pow_normV_sub_one_apply_of_pow_mem : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (v : HeightOneSpectrum (𝓞 E))
     (A : ValuationSubring Ω), IsPlaceOver A v → ∀ (w : E) (π : Ω), π ^ (normV v - 1) = algebraMap E Ω w →

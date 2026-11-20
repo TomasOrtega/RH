@@ -7,17 +7,15 @@ open scoped Classical
 namespace GlobalTheory.OrbWeights
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ht`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(ht y).1 hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h1 : ((t⁻¹ : Aˣ) : A) * y ∈ L`. Rewrite using `[ht]`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨((t⁻¹ : Aˣ) : A) * y, h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t : A) * (((t⁻¹ : Aˣ) : A) * y) = y`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Introduce `h y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hy`. Rewrite using `[← h]`. Conclude with `⟨y, hy, rfl⟩`. Introduce `hy`. Rewrite `hy` using `[← h]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨z, hz, hzy⟩` from `hy`. Express the relevant statement in the definitionally equal form `(t : A) * z = (t : A) * y at hzy`. Establish `: z = y`. Use `congrArg (fun w => ((t⁻¹ : Aˣ) : A) * w) hzy` as an intermediate fact. Simplify `this` using `[← mul_assoc]`.
-
-Rewrite using `[← this]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabLat_iff_mulLat_eq {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
     (t : Aˣ) (L : Submodule O A) :
@@ -51,23 +49,21 @@ theorem mem_stabLat_iff_mulLat_eq {O A : Type} [CommRing O] [CommRing A] [Algebr
       exact hz
 
 /- English proof (translation)
-Introduce `G _ _ Kg δ O A _ _ _ Tb M τ hK hM hτ hsurj hmul hinj hcpt g`. Use `set T := twCent (MonoidHom.id G) δ with hT`. Establish `hone : τ 1 = 1`. Use `hmul 1 T.one_mem 1 T.one_mem` as an intermediate fact. Rewrite `this` using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(mul_eq_left.mp this.symm)`. Set `φ : T →* Aˣ` to `{ toFun := fun h => τ h map_one' := hone map_mul' := fun a b => hmul a a.2 b b.2 }`. Establish `hφ : ∀ x : T, φ x = τ x` using `fun _ => rfl`. Establish `hinjφ : Function.Injective φ` using `fun a b hab => Subtype.ext (hinj a a.2 b b.2 hab)`. Establish `hCT : cptPart T ≤ T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cptPart`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`. Conclude with `hx.1`. Rewrite using `[← Subgroup.relIndex_subgroupOf (H := T ⊓ Kg.map (MulAut.conj g).toMonoidHom) hCT, ← Subgroup.relIndex_map_map_of_injective _ _ hinjφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `t`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨_, k, hk, hkx⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, (hτ x x.2).1⟩` and prove the remaining obligations. Rewrite using `[hφ, mem_stabLat_iff_mulLat_eq, ← (hτ x x.2).2 g]`. Establish `: (x : G) * g = g * k`. Rewrite using `[← hkx]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, hK g k hk]`. Introduce and unpack `⟨hs, hb⟩`. Take `⟨h, hh, rfl⟩` from `hsurj t hb`. Use `⟨⟨h, hh⟩, ⟨hh, g⁻¹ * (h * g), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Apply `hM` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite `hs` using `[mem_stabLat_iff_mulLat_eq, ← (hτ h hh).2 g]`. Conclude with `hs.symm`. Simplify using `[mul_assoc]`. Use extensionality with `t`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_subgroupOf, Subgroup.mem_inf]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨(hcpt x x.2).1 hx, (hτ x x.2).1⟩`. Introduce and unpack `⟨hi, hb⟩`. Take `⟨h, hh, rfl⟩` from `hsurj t hb`.
-
-Conclude with `⟨⟨h, hh⟩, (hcpt h hh).2 hi, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relIndex_stab_eq_relIndex_stabLat : ∀ {G : Type} [Group G] [TopologicalSpace G] (Kg : Subgroup G) (δ : G) {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (Tb : Subgroup Aˣ) (M : G → Submodule O A) (τ : G → Aˣ), (∀ g k : G, k ∈ Kg → M (g * k) = M g) → (∀ g g' : G, M g = M g' → g⁻¹ * g' ∈ Kg) → (∀ h ∈ twCent (MonoidHom.id G) δ, τ h ∈ Tb ∧ ∀ g : G, M (h * g) = GlobalTheory.UnitLemma.mulLat O (τ h : A) (M g)) → (∀ s ∈ Tb, ∃ h ∈ twCent (MonoidHom.id G) δ, τ h = s) → (∀ h ∈ twCent (MonoidHom.id G) δ, ∀ h' ∈ twCent (MonoidHom.id G) δ, τ (h * h') = τ h * τ h') → (∀ h ∈ twCent (MonoidHom.id G) δ, ∀ h' ∈ twCent (MonoidHom.id G) δ, τ h = τ h' → h = h') → (∀ h ∈ twCent (MonoidHom.id G) δ, h ∈ cptPart (twCent (MonoidHom.id G) δ) ↔ τ h ∈ GlobalTheory.UnitLemma.intUnits O A) → ∀ g : G, (twCent (MonoidHom.id G) δ ⊓ Kg.map (MulAut.conj g).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id G) δ)) = (GlobalTheory.UnitLemma.stabLat O (M g) ⊓ Tb).relIndex (GlobalTheory.UnitLemma.intUnits O A ⊓ Tb) := by
   intro G _ _ Kg δ O A _ _ _ Tb M τ hK hM hτ hsurj hmul hinj hcpt g

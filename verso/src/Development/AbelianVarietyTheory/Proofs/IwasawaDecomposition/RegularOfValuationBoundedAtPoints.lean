@@ -13,9 +13,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.RegCrit
 
 /- English proof (translation)
-Establish `hU : t (IsLocalRing.closedPoint R) ∈ W` using `h trivial`. Establish `e : X.presheaf.germ W _ hU ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of R) t = t.appLE W ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom := by`. Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`. Rewrite using `[← e, X.mem_basicOpen g _ hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of R) t).hom _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_eval_iff {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (t : Sp R ⟶ X) {W : X.Opens}
     (h : ⊤ ≤ t ⁻¹ᵁ W) (g : Γ(X, W)) :
@@ -30,9 +30,9 @@ theorem isUnit_eval_iff {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}}
   exact isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of R) t).hom _
 
 /- English proof (translation)
-Establish `h0 : (c : AlgebraicClosure F) ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`. Conclude with `absurd hc (by norm_num)`. Establish `h1 : (c : AlgebraicClosure F)⁻¹ ∈ e.O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.mem_O, map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hc`. Conclude with `IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (mul_inv_cancel₀ h0))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_one_le {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (c : e.O)
     (hc : 1 ≤ e.w c) : IsUnit c := by
@@ -46,7 +46,7 @@ theorem isUnit_of_one_le {F : Type} [Field F] [NumberField F] {v : HeightOneSpec
   exact IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (mul_inv_cancel₀ h0))
 
 /- English proof (translation)
-The claim follows from `N.ar.isIntegral; ∀ (U : N.X.Opens) (f : N.X.functionField), (∀ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (y : AlgPt Y) (yt : Sp e.O ⟶ N.X), spMap e.O.subtype ≫ yt = y.1 ≫ N.j → ⊤ ≤ yt ⁻¹ᵁ U → e.w (valAt (y.1 ≫ N.j) f) ≤ 1) → ∀ x ∈ U, RegAt x f := by intro F _ _ Y N hN haveI := N. …`.
+A detailed English derivation is pending.
 -/
 theorem regAt_of_integral_values : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (N : TrueGeo.Model Y), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.X → haveI := N.ar.isIntegral; ∀ (U : N.X.Opens) (f : N.X.functionField), (∀ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (y : AlgPt Y) (yt : Sp e.O ⟶ N.X), spMap e.O.subtype ≫ yt = y.1 ≫ N.j → ⊤ ≤ yt ⁻¹ᵁ U → e.w (valAt (y.1 ≫ N.j) f) ≤ 1) → ∀ x ∈ U, RegAt x f := by
   intro F _ _ Y N hN

@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Unfold `letS`. Rewrite using `[LinearMap.mem_ker, LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_letS (c : ZMod n) (x : W.DD T) : x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
   unfold letS
@@ -27,14 +27,14 @@ theorem mem_letS (c : ZMod n) (x : W.DD T) : x ∈ letS W T c ↔ (letE c : LetA
     LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Unfold `DelS`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_DelS (x : W.DD T) : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
   unfold DelS
   simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Unfold `NcS`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.restrictScalars_mem, mem_DelS, mem_letS, and_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_NcS (c : ZMod n) (x : W.DD T) :
     x ∈ NcS W T c ↔ x ∈ W.N T ∧ (∀ δ ∈ W.DelF, W.γD T δ x = x) ∧ (letE c : LetA O n) • x = x := by
@@ -42,7 +42,7 @@ theorem mem_NcS (c : ZMod n) (x : W.DD T) :
   rw [Submodule.mem_inf, Submodule.mem_inf, Submodule.restrictScalars_mem, mem_DelS, mem_letS, and_assoc]
 
 /- English proof (translation)
-Unfold `PiNS`. Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem, mem_DelS]`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.aN`. Rewrite using `[Submodule.mem_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_PiNS (π' : LetA O n) (k : ℕ) (x : W.DD T) :
     x ∈ PiNS W T π' k ↔ (∃ y ∈ W.N T, π' ^ k • y = x) ∧ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
@@ -53,7 +53,7 @@ theorem mem_PiNS (π' : LetA O n) (k : ℕ) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Unfold `LamPS`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_comap, mem_DelS, mem_letS, and_assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_LamPS (Eπ : LetA O n) (h' : ℕ) (c : ZMod n) (x : W.DD T) :
     x ∈ LamPS W T Eπ h' c ↔ Eπ ^ h' • x ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T (W.Nl T (c - 1)) ∧
@@ -64,7 +64,7 @@ theorem mem_LamPS (Eπ : LetA O n) (h' : ℕ) (c : ZMod n) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Unfold `InvS`. Rewrite using `[Submodule.mem_inf, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_InvS (π' Eπ : LetA O n) (h' k : ℕ) (c : ZMod n) (x : W.DD T) :
     x ∈ InvS W T π' Eπ h' k c ↔ x ∈ LamPS W T Eπ h' c ∧ W.γD T W.gamK x - x ∈ PiNS W T π' k := by
@@ -72,39 +72,39 @@ theorem mem_InvS (π' Eπ : LetA O n) (h' k : ℕ) (c : ZMod n) (x : W.DD T) :
   rw [Submodule.mem_inf, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply]
 
 /- English proof (translation)
-Take `⟨⟨y, hy, rfl⟩, -⟩` from `(mem_PiNS W T π' k x).1 hx`. Conclude with `(W.N T).smul_mem _ hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PiNS_le_N (π' : LetA O n) (k : ℕ) {x : W.DD T} (hx : x ∈ PiNS W T π' k) : x ∈ W.N T := by
   obtain ⟨⟨y, hy, rfl⟩, -⟩ := (mem_PiNS W T π' k x).1 hx
   exact (W.N T).smul_mem _ hy
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_γD_smul, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem γD_letE (g : W.Gam) (c : ZMod n) (x : W.DD T) :
     W.γD T g ((letE c : LetA O n) • x) = (letE c : LetA O n) • W.γD T g x := by
   rw [Formalism.MainNotions.LiftingTheory.wmap_γD_smul, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_φD_smul, Formalism.MainNotions.LiftingTheory.wmap_φA_letE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φD_letE (c : ZMod n) (x : W.DD T) :
     W.φD T ((letE (c - 1) : LetA O n) • x) = (letE c : LetA O n) • W.φD T x := by
   rw [Formalism.MainNotions.LiftingTheory.wmap_φD_smul, Formalism.MainNotions.LiftingTheory.wmap_φA_letE]
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.LiftingTheory.wmap_map_smul W f a x`.
+A detailed English derivation is pending.
 -/
 theorem map_letA_smul {T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
     W.map f (a • x) = a • W.map f x :=
   Formalism.MainNotions.LiftingTheory.wmap_map_smul W f a x
 
 /- English proof (translation)
-Rewrite using `[← W.map_comp]`. Establish `hext : ∀ g₁ g₂ : LatHom T.L T''.L, g₁.f = g₂.f → g₁ = g₂`. Introduce and unpack `⟨f1, _, _, _⟩ ⟨f2, _, _, _⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Establish `hg : latAdd (latComp π ι) (latComp π ι) = latComp π ι`. Apply `hext` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `[latAdd, latComp, h0]`. Use `W.map_latAdd (latComp π ι) (latComp π ι) x` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hg]`. Conclude with `left_eq_add.mp this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comp_zero {T' T'' : LocLat G Qp LL O} (ι : LatHom T.L T'.L) (π : LatHom T'.L T''.L)
     (h0 : ∀ y, π.f (ι.f y) = 0) (x : W.DD T) : W.map π (W.map ι x) = 0 := by

@@ -18,18 +18,18 @@ variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I 
 def Kd (r : ℕ) (f : MvPowerSeries (Fin 2) C) : Prop := ∀ i j, j < r → coeff (ee i j) f = 0
 
 /- English proof (translation)
-Introduce `i j h` and use `kmul hf hg i j h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Kd.mul {a b : ℕ} {f g : MvPowerSeries (Fin 2) C} (hf : Kd a f) (hg : Kd b g) : Kd (a + b) (f * g) :=
   fun i j h => kmul hf hg i j h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `absurd h (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Kd.zero' (f : MvPowerSeries (Fin 2) C) : Kd 0 f := fun _ _ h => absurd h (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact Kd.zero' _`. Consider the case `succ k ih => rw [pow_succ, Nat.mul_succ]`. Conclude with `ih.mul hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Kd.pow {m : ℕ} {f : MvPowerSeries (Fin 2) C} (hf : Kd m f) (k : ℕ) : Kd (m * k) (f ^ k) := by
   induction k with
@@ -39,16 +39,16 @@ theorem Kd.pow {m : ℕ} {f : MvPowerSeries (Fin 2) C} (hf : Kd m f) (k : ℕ) :
 def zdeg (e : Fin 2 × κ →₀ ℕ) : ℕ := ∑ i, e (1, i)
 
 /- English proof (translation)
-Unfold `zdeg`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem zdeg_add (e e' : Fin 2 × κ →₀ ℕ) : zdeg (e + e') = zdeg e + zdeg e' := by
   unfold zdeg
   simp only [Finsupp.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `zdeg`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hb (Prod.mk.inj h).2.symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem zdeg_single1 (i : κ) (k : ℕ) : zdeg (Finsupp.single ((1 : Fin 2), i) k) = k := by
   unfold zdeg
@@ -62,15 +62,13 @@ theorem zdeg_single1 (i : κ) (k : ℕ) : zdeg (Finsupp.single ((1 : Fin 2), i) 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Proceed by induction on `e using Finsupp.induction_linear with`. Consider the case `zero`. Establish `: zdeg (0 : Fin 2 × κ →₀ ℕ) = 0` using `by simp [zdeg]`. Rewrite using `[this, mul_zero]`. Conclude with `Kd.zero' _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add f g hf hg`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), zdeg_add, mul_add]`. Conclude with `hf.mul hg`. Consider the case `single s k`. Rewrite using `[Finsupp.prod_single_index (h := fun s k => a s ^ k) (pow_zero _)]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨g, i⟩` from `s`. Distinguish the cases in `hg : g = 1`. Substitute `hg` using the available equality. Rewrite using `[zdeg_single1]`. Conclude with `(ha i).pow k`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: zdeg (Finsupp.single (g, i) k) = 0`. Unfold `zdeg`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[Finsupp.single_apply, if_neg]`.
-
-Introduce `h`. Conclude with `hg (Prod.mk.inj h).1`. Rewrite using `[this, mul_zero]`. Conclude with `Kd.zero' _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kd_prod {a : Fin 2 × κ → MvPowerSeries (Fin 2) C} {m : ℕ} (ha : ∀ i, Kd m (a (1, i)))
     (e : Fin 2 × κ →₀ ℕ) : Kd (m * zdeg e) (e.prod fun s k => a s ^ k) := by
@@ -100,9 +98,9 @@ theorem Kd_prod {a : Fin 2 × κ → MvPowerSeries (Fin 2) C} {m : ℕ} (ha : �
       exact Kd.zero' _
 
 /- English proof (translation)
-Introduce `i j hj`. Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero ha0)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `e`. Distinguish the cases in `he : zdeg e < r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hf e he, zero_smul]`. Rewrite using `[Kd_prod ha e i j (lt_of_lt_of_le hj (Nat.mul_le_mul_left m (not_lt.1 he))), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kd_subst {a : Fin 2 × κ → MvPowerSeries (Fin 2) C} (ha0 : ∀ s, constantCoeff (a s) = 0) {m : ℕ}
     (ha : ∀ i, Kd m (a (1, i))) {f : MvPowerSeries (Fin 2 × κ) C} {r : ℕ} (hf : ∀ e, zdeg e < r → coeff e f = 0) :
@@ -116,9 +114,9 @@ theorem Kd_subst {a : Fin 2 × κ → MvPowerSeries (Fin 2) C} (ha0 : ∀ s, con
   · rw [Kd_prod ha e i j (lt_of_lt_of_le hj (Nat.mul_le_mul_left m (not_lt.1 he))), smul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `DFunLike.congr_fun h 0`. Establish `h1` using `DFunLike.congr_fun h 1`. Rewrite `h0` using `[ee_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ee_one]`. Simplify using `at h0 h1`. Conclude with `⟨h0, h1⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `[ee]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ee_eq_single0 {a b k : ℕ} : ee a b = Finsupp.single 0 k ↔ a = k ∧ b = 0 := by
   constructor
@@ -133,9 +131,9 @@ theorem ee_eq_single0 {a b k : ℕ} : ee a b = Finsupp.single 0 k ↔ a = k ∧ 
     simp [ee]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `DFunLike.congr_fun h 0`. Establish `h1` using `DFunLike.congr_fun h 1`. Rewrite `h0` using `[ee_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ee_one]`. Simplify using `at h0 h1`. Conclude with `⟨h0, h1⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `[ee]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ee_eq_single1 {a b k : ℕ} : ee a b = Finsupp.single 1 k ↔ a = 0 ∧ b = k := by
   constructor
@@ -150,11 +148,11 @@ theorem ee_eq_single1 {a b k : ℕ} : ee a b = Finsupp.single 1 k ↔ a = 0 ∧ 
     simp [ee]
 
 /- English proof (translation)
-Unfold `inV`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_X 0))]`. Simplify using `only [coeff_X_pow, ee_eq_single0]`. Distinguish the cases in `hb : b = 0`. Rewrite using `[if_pos hb, finsum_eq_single _ a]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb]`. Introduce `k hk`. Rewrite using `[if_neg (fun h => hk h.1.symm), smul_zero]`. Rewrite using `[if_neg hb]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Rewrite using `[if_neg (fun h => hb h.2), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_embedFirstVar (a b : ℕ) (f : PowerSeries C) :
     coeff (ee a b) (inV 0 f) = if b = 0 then PowerSeries.coeff a f else 0 := by
@@ -172,11 +170,11 @@ theorem coeff_embedFirstVar (a b : ℕ) (f : PowerSeries C) :
     rw [if_neg (fun h => hb h.2), smul_zero]
 
 /- English proof (translation)
-Unfold `inV`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_X 1))]`. Simplify using `only [coeff_X_pow, ee_eq_single1]`. Distinguish the cases in `ha : a = 0`. Rewrite using `[if_pos ha, finsum_eq_single _ b]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha]`. Introduce `k hk`. Rewrite using `[if_neg (fun h => hk h.2.symm), smul_zero]`. Rewrite using `[if_neg ha]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Rewrite using `[if_neg (fun h => ha h.1), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_embedSecondVar (a b : ℕ) (f : PowerSeries C) :
     coeff (ee a b) (inV 1 f) = if a = 0 then PowerSeries.coeff b f else 0 := by
@@ -194,17 +192,17 @@ theorem coeff_embedSecondVar (a b : ℕ) (f : PowerSeries C) :
     rw [if_neg (fun h => ha h.1), smul_zero]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_eq_single (ee 0 j, ee n 0)]`. Rewrite using `[coeff_embedSecondVar, coeff_embedFirstVar, if_pos rfl, if_pos rfl]`. Introduce and unpack `⟨p, q⟩ hpq hne`. Establish `e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hpq`. Establish `e0 : p 0 + q 0 = n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun e 0` as an intermediate fact. Simplify `this` using `[ee_zero]`. Establish `e1 : p 1 + q 1 = j`. Use `DFunLike.congr_fun e 1` as an intermediate fact. Simplify `this` using `[ee_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show coeff p (inV 1 P) * coeff q (inV 0 Q) = 0`. Rewrite using `[eq_ee p, eq_ee q, coeff_embedSecondVar, coeff_embedFirstVar]`. Distinguish the cases in `hp : p 0 = 0`. Distinguish the cases in `hq : q 1 = 0`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_ee p, eq_ee q, hp, hq]`. Establish `h1 : p 1 = j` using `by omega`. Establish `h2 : q 0 = n` using `by omega`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hq, mul_zero]`. Rewrite using `[if_neg hp, zero_mul]`. Introduce `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use extensionality with `x`. Apply the tactic sequence `fin_cases x <;> simp [ee]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coeff_inV_mul (n j : ℕ) (P Q : PowerSeries C) :
     coeff (ee n j) (inV 1 P * inV 0 Q) = PowerSeries.coeff j P * PowerSeries.coeff n Q := by
@@ -244,12 +242,12 @@ def h2 (X : RawChart C d I κ) : MvPowerSeries (Fin 2 × κ) C :=
   X.h + ∑ i, MvPowerSeries.X ((1 : Fin 2), i) * rho (X.sg (Pi.single i 1))
 
 /- English proof (translation)
-Introduce `_ _ h` and use `(Prod.mk.inj h).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iota_inj : Function.Injective (fun x : κ => ((0 : Fin 2), x)) := fun _ _ h => (Prod.mk.inj h).2
 
 /- English proof (translation)
-Rewrite using `[X_def, coeff_monomial_mul, if_neg]`. Introduce `hle`. Use `hle (1, i)` as an intermediate fact. Rewrite `this` using `[Finsupp.single_eq_same, h]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_X_mul_rho (i : κ) (F : MvPowerSeries κ C) (e : Fin 2 × κ →₀ ℕ) (h : e (1, i) = 0) :
     coeff e (MvPowerSeries.X ((1 : Fin 2), i) * rho F) = 0 := by
@@ -260,23 +258,21 @@ theorem coeff_X_mul_rho (i : κ) (F : MvPowerSeries κ C) (e : Fin 2 × κ →�
   omega
 
 /- English proof (translation)
-Unfold `h2`. Rewrite using `[map_add, map_sum]`. Distinguish the cases in `h0 : ∀ i, e (1, i) = 0`. Rewrite using `[Finset.sum_eq_zero fun i _ => coeff_X_mul_rho i _ e (h0 i), add_zero]`. Apply `hax` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨g, i⟩ hs hg`. Simplify using `only at hg`. Substitute `hg` using the available equality. Conclude with `(Finsupp.mem_support_iff.1 hs) (h0 i)`. Use `push Not at h0`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i0, hi0⟩` from `h0`. Establish `hsum : e (1, i0) + ∑ i ∈ Finset.univ.erase i0, e (1, i) = zdeg e` using `Finset.add_sum_erase Finset.univ (fun i => e (1, i)) (Finset.mem_univ i0)`. Establish `h1 : e (1, i0) = 1` using `by omega`. Establish `hrest : ∑ i ∈ Finset.univ.erase i0, e (1, i) = 0` using `by omega`. Establish `hoth : ∀ i, i ≠ i0 → e (1, i) = 0` using `fun i hi => (Finset.sum_eq_zero_iff.1 hrest) i (Finset.mem_erase.2 ⟨hi, Finset.mem_univ i⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single i0 (fun i _ hi => coeff_X_mul_rho i _ e (hoth i hi)) (fun h => absurd (Finset.mem_univ i0) h)]`. Establish `hle : Finsupp.single ((1 : Fin 2), i0) 1 ≤ e`. Introduce `s`. Distinguish the cases in `hs : s = (1, i0)`. Substitute `hs` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_eq_same, h1]`. Rewrite using `[Finsupp.single_apply, if_neg (fun h => hs h.symm)]`. Conclude with `Nat.zero_le _`. Rewrite using `[X_def, coeff_monomial_mul, if_pos hle, one_mul]`. Use `set e' := e - Finsupp.single ((1 : Fin 2), i0) 1 with he'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hee : e' + Finsupp.single ((1 : Fin 2), i0) 1 = e` using `tsub_add_cancel_of_le hle`. Establish `hran : (↑e'.support : Set (Fin 2 × κ)) ⊆ Set.range (fun x : κ => ((0 : Fin 2), x))`. Introduce and unpack `⟨g, i⟩ hs`. Establish `hs' : e' (g, i) ≠ 0` using `Finsupp.mem_support_iff.1 hs`. Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨i, rfl⟩`. It suffices to derive a contradiction. Apply `hs'` to reduce the goal to its premises. Rewrite using `[he', Finsupp.tsub_apply]`. Distinguish the cases in `hi : i = i0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Rewrite using `[Finsupp.single_eq_same, h1]`. Rewrite using `[hoth i hi]`. Simplify using the standard rewrite rules. Establish `hmap` using `Finsupp.mapDomain_comapDomain (fun x : κ => ((0 : Fin 2), x)) iota_inj e' hran`.
-
-Unfold `rho`. Rewrite using `[← hmap, coeff_subst_rename_inj _ iota_inj]`. Use `show coeff e X.h + -∑ j, (Pi.single i0 (1 : C) : κ → C) j * coeff _ X.h = 0`. Rewrite using `[Finset.sum_eq_single i0 (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_mul]) (fun h => absurd (Finset.mem_univ i0) h), Pi.single_eq_same, one_mul, hmap, hee, add_neg_cancel]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_gaugeSquare_low_degree (X : RawChart C d I κ)
     (hax : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 1) → coeff e X.h = 0) (e : Fin 2 × κ →₀ ℕ)
@@ -331,31 +327,27 @@ end SelfConjCharts
 open SelfConjCharts MvPowerSeries
 
 /- English proof (translation)
-Introduce `C _ d I _ κ _ X hax x c hx m hm hc`. Use `set a : Fin 2 × κ → MvPowerSeries (Fin 2) C := pairSubst (fun i => inV 0 (x i)) (fun i => inV 1 (c i)) with ha`. Establish `hc0 : ∀ i, PowerSeries.constantCoeff (c i) = 0` using `fun i => by`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]; exact hc i 0 (by omega)`. Establish `cc0 : ∀ (j : Fin 2) (f : PowerSeries C), PowerSeries.constantCoeff f = 0 → constantCoeff (inV j f) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j f hf`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← ee_00]`. Use `fin_cases j`. Use `show coeff (ee 0 0) (inV 0 f) = 0`. Rewrite using `[coeff_embedFirstVar, if_pos rfl, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show coeff (ee 0 0) (inV 1 f) = 0`. Rewrite using `[coeff_embedSecondVar, if_pos rfl, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. Establish `ha0 : ∀ s, constantCoeff (a s) = 0`. Introduce and unpack `⟨g, i⟩`. Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `cc0 0 _ (hx i)`. Conclude with `cc0 1 _ (hc0 i)`. Establish `haK : ∀ i, Kd m (a (1, i))`. Introduce `i n j hj`. Use `show coeff (ee n j) (inV 1 (c i)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_embedSecondVar]`. Use `split_ifs`. Conclude with `hc i j hj`. Both sides reduce to the same expression. Establish `hS` using `hasSubst_of_constantCoeff_zero ha0`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdec : HH X x c = subst a (h2 X) - ∑ i, inV 1 (c i) * inV 0 (alongCv x (X.sg (Pi.single i 1)))`. Establish `e1 : subst a (h2 X) = subst a X.h + ∑ i, a (1, i) * subst a (rho (X.sg (Pi.single i 1)))`. Unfold `h2`. Rewrite using `[subst_add hS]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← substAlgHom_apply hS, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[substAlgHom_apply hS, subst_mul hS, subst_X hS]`. Establish `e2 : ∀ F : MvPowerSeries κ C, subst a (rho F) = inV 0 (alongCv x F)`. Introduce `F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `SelfConjCharts.rho`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hS]`. Simplify using `only [subst_X hS]`. Conclude with `SelfConjGauge.subst_inV 0 hx F`. Simplify using `only [e2] at e1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Use `show subst a X.h = _`. Establish `: ∀ i, a (1, i) = inV 1 (c i)` using `fun i => rfl`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hK2 : Kd (m * 2) (subst a (h2 X))` using `Kd_subst ha0 haK (coeff_gaugeSquare_low_degree X hax)`. Prove the components needed by the constructor for the conclusion. Introduce `n j hj`. Rewrite using `[hdec, map_sub, hK2 n j (by omega), map_sum, zero_sub, neg_eq_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i _`. Rewrite using `[coeff_inV_mul, hc i j hj, zero_mul]`. Introduce `n`. Rewrite using `[hdec, map_sub, hK2 n m (by omega), map_sum, zero_sub]`. Use `congr 1`.
-
-Simplify using `only [coeff_inV_mul]`. Establish `hv : (fun i => PowerSeries.coeff m (c i)) = fun k => ∑ q, PowerSeries.coeff m (c q) * (Pi.single q (1 : C) : κ → C) k`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_eq_single k (fun q _ hq => by rw [Pi.single_eq_of_ne (Ne.symm hq), mul_zero]) (fun h => absurd (Finset.mem_univ k) h), Pi.single_eq_same, mul_one]`. Rewrite using `[hv, sg_lin, alongCv_lin hx, map_sum]`.
-
-Simplify using `only [PowerSeries.coeff_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem r1sHLin_holds : GaugeLeadingTermLinear := by
   intro C _ d I _ κ _ X hax x c hx m hm hc

@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Establish `h` using `Formalism.MainNotions.product_first_zeroth_parts.rank_nat W`. Establish `hT2 : 2 ≤ (D.mem u).A.T` using `((D.mem u).A.T_prime).two_le`. Unfold `RamShare dU`. Rewrite using `[d0_eq]`. Establish `h' : ((D.mem u).A.du : ℝ) * (((D.mem u).A.T : ℝ) - 1) ^ D.R.f = (D.duS u : ℝ) * (((D.mem u).A.T : ℝ) - 2) ^ D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (D.mem u).A.T - 1 - 1 = (D.mem u).A.T - 2` using `by omega`. Rewrite `h` using `[e2]`. Use `congrArg (fun n : ℕ => (n : ℝ)) h` as an intermediate fact. Simplify using `only [Nat.cast_mul, Nat.cast_pow] at this`. Rewrite `this` using `[Nat.cast_sub (by omega : 1 ≤ (D.mem u).A.T), Nat.cast_sub hT2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hpos : (0 : ℝ) < ((D.mem u).A.T : ℝ) - 1`. Establish `: (2 : ℝ) ≤ ((D.mem u).A.T : ℝ)` using `by exact_mod_cast hT2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e : (1 - 1 / (((D.mem u).A.T : ℝ) - 1)) = (((D.mem u).A.T : ℝ) - 2) / (((D.mem u).A.T : ℝ) - 1)` using `by field_simp; ring`. Rewrite using `[e, div_pow]`. Establish `hne : (((D.mem u).A.T : ℝ) - 1) ^ D.R.f ≠ 0` using `pow_ne_zero _ hpos.ne'`. Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ramShare_of_freeT {D : D7} {u : D.what₂.Word} (W : Formalism.MainNotions.product_first_zeroth_parts.FreeT D u) : RamShare D u := by
   have h := Formalism.MainNotions.product_first_zeroth_parts.rank_nat W
@@ -43,7 +43,7 @@ theorem ramShare_of_freeT {D : D7} {u : D.what₂.Word} (W : Formalism.MainNotio
   linarith [h']
 
 /- English proof (translation)
-The claim follows from `TrueD.elim (Q := fun D => ∀ u : D.what₂.Word, RamShare D u) (fun _ _ _ _ _ w u => ramShare_of_freeT (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.freeT_0 (w.C.forms u).to0).some) hD u`.
+A detailed English derivation is pending.
 -/
 theorem ramShare_of_trueD (D : D7) (u : D.what₂.Word) (hD : TrueD D) : RamShare D u :=
   TrueD.elim (Q := fun D => ∀ u : D.what₂.Word, RamShare D u)

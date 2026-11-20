@@ -9,7 +9,7 @@ open GlobalTheory.CuspRep PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.G8
 namespace GlobalTheory.CompanionTheory.CompIsoProof
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map hf)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glMap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     (f : R →+* S) (hf : Continuous f) (a : ℕ) :
@@ -17,7 +17,7 @@ theorem continuous_glMap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpac
   Continuous.units_map _ (continuous_id.matrix_map hf)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cornerGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing S] (s : R →ₙ+* S) (hs : Continuous s) (a : ℕ) :
@@ -45,7 +45,7 @@ def glOf (y : InfinitePlace E → GL (Fin a) ℂ) : GL (Fin a) (Cinf E) where
     exact h
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_eval_glOf (y : InfinitePlace E → GL (Fin a) ℂ) (v : InfinitePlace E) :
     GeneralLinearGroup.map (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v) (glOf y) = y v := by
@@ -53,7 +53,7 @@ theorem map_eval_glOf (y : InfinitePlace E → GL (Fin a) ℂ) (v : InfinitePlac
   rfl
 
 /- English proof (translation)
-Establish `h2 : Continuous fun x : GL (Fin a) ℂ => ((x⁻¹ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ)` using `(Units.continuous_iff.1 (continuous_id (X := GL (Fin a) ℂ))).2`. Use `Units.continuous_iff.2 ⟨continuous_matrix fun i j => continuous_pi fun v => ?_, continuous_matrix fun i j => continuous_pi fun v => ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_elem i j).comp (continuous_apply v)`. Conclude with `(h2.matrix_elem i j).comp (continuous_apply v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_glOf : Continuous (glOf : (InfinitePlace E → GL (Fin a) ℂ) → GL (Fin a) (Cinf E)) := by
   have h2 : Continuous fun x : GL (Fin a) ℂ => ((x⁻¹ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) :=
@@ -66,7 +66,7 @@ theorem continuous_glOf : Continuous (glOf : (InfinitePlace E → GL (Fin a) ℂ
 variable [NumberField E]
 
 /- English proof (translation)
-The claim follows from `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sFin : Continuous (sFin E) :=
   (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))
@@ -74,13 +74,13 @@ theorem continuous_sFin : Continuous (sFin E) :=
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sInf : Continuous (sInf E) :=
   ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) :=
   continuous_pi fun w =>
@@ -88,13 +88,13 @@ theorem continuous_pInf : Continuous (pInf E) :=
       ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `(continuous_apply v).comp continuous_pInf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordinate (v : InfinitePlace E) : Continuous (cV v : Ad E → ℂ) :=
   (continuous_apply v).comp continuous_pInf
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_cV (v : InfinitePlace E) (g : GA E a) :
     GeneralLinearGroup.map (cV v) g =
@@ -109,9 +109,9 @@ def glue (p : (InfinitePlace E → GL (Fin a) ℂ) × GL (Fin a) (Af E)) : GA E 
   infGL E a (glOf p.1) * finGL E a p.2
 
 /- English proof (translation)
-Establish `h : glOf (fun v => GeneralLinearGroup.map (cV v) g) = GeneralLinearGroup.map (pInf E) g`. Use extensionality with `i j v`. Both sides reduce to the same expression. Rewrite using `[glue, parts]`. Simplify using `only [h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `infGL_mul_finGL g`.
+A detailed English derivation is pending.
 -/
 theorem glue_parts (g : GA E a) : glue (parts g) = g := by
   have h : glOf (fun v => GeneralLinearGroup.map (cV v) g) = GeneralLinearGroup.map (pInf E) g := by
@@ -122,7 +122,7 @@ theorem glue_parts (g : GA E a) : glue (parts g) = g := by
   exact infGL_mul_finGL g
 
 /- English proof (translation)
-Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (cV v) (glue p) = p.1 v`. Rewrite using `[map_cV, glue, map_mul, pInf_infGL, pInf_finGL, mul_one, map_eval_glOf]`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pFin E) (glue p) = p.2`. Rewrite using `[glue, map_mul, pFin_infGL, pFin_finGL, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem parts_glue (p : (InfinitePlace E → GL (Fin a) ℂ) × GL (Fin a) (Af E)) : parts (glue p) = p := by
   refine Prod.ext (funext fun v => ?_) ?_
@@ -132,25 +132,25 @@ theorem parts_glue (p : (InfinitePlace E → GL (Fin a) ℂ) × GL (Fin a) (Af E
     rw [glue, map_mul, pFin_infGL, pFin_finGL, one_mul]
 
 /- English proof (translation)
-The claim follows from `(continuous_pi fun v => continuous_glMap (cV v) (continuous_coordinate v) a).prodMk (continuous_glMap (pFin E) continuous_snd a)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_parts : Continuous (parts : GA E a → _) :=
   (continuous_pi fun v => continuous_glMap (cV v) (continuous_coordinate v) a).prodMk
     (continuous_glMap (pFin E) continuous_snd a)
 
 /- English proof (translation)
-The claim follows from `((continuous_cornerGL (sInf E) continuous_sInf a).comp (continuous_glOf.comp continuous_fst)).mul ((continuous_cornerGL (sFin E) continuous_sFin a).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous (glue : _ → GA E a) :=
   ((continuous_cornerGL (sInf E) continuous_sInf a).comp (continuous_glOf.comp continuous_fst)).mul
     ((continuous_cornerGL (sFin E) continuous_sFin a).comp continuous_snd)
 
 /- English proof (translation)
-Introduce `E _ _ _ a b`. Use `⟨{ toFun := comps invFun := fun p => (glue (fun v => (p.1 v).1, p.2.1), glue (fun v => (p.1 v).2, p.2.2)) left_inv := fun x => Prod.ext (glue_parts x.1) (glue_parts x.2) right_inv := fun p => ?_ map_mul' := fun x y => ?_ continuous_toFun := ?_ continuous_invFun := ?_ }, fun _ => …` and prove the remaining obligations. Establish `h1` using `fun v => congrFun (congrArg Prod.fst (parts_glue (a := a) (E := E) (fun v => (p.1 v).1, p.2.1))) v`. Establish `h2` using `fun v => congrFun (congrArg Prod.fst (parts_glue (a := b) (E := E) (fun v => (p.1 v).2, p.2.2))) v`. Establish `h3` using `congrArg Prod.snd (parts_glue (a := a) (E := E) (fun v => (p.1 v).1, p.2.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `congrArg Prod.snd (parts_glue (a := b) (E := E) (fun v => (p.1 v).2, p.2.2))`. Conclude with `Prod.ext (funext fun v => Prod.ext (h1 v) (h2 v)) (Prod.ext h3 h4)`. Apply the tactic sequence `refine Prod.ext (funext fun v => Prod.ext ?_ ?_) (Prod.ext ?_ ?_) <;> exact map_mul _ _ _`. Establish `p1 : Continuous fun x : GA E a × GA E b => parts x.1` using `continuous_parts.comp continuous_fst`. Establish `p2 : Continuous fun x : GA E a × GA E b => parts x.2` using `continuous_parts.comp continuous_snd`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_pi fun v => ((continuous_apply v).comp p1.fst).prodMk ((continuous_apply v).comp p2.fst)).prodMk (p1.snd.prodMk p2.snd)`. Establish `q1 : Continuous fun p : Gi E a b × Gf E a b => ((fun v => (p.1 v).1, p.2.1) : (InfinitePlace E → GL (Fin a) ℂ) × GL (Fin a) (Af E))` using `(continuous_pi fun v => ((continuous_apply v).comp continuous_fst).fst).prodMk continuous_snd.fst`. Establish `q2 : Continuous fun p : Gi E a b × Gf E a b => ((fun v => (p.1 v).2, p.2.2) : (InfinitePlace E → GL (Fin b) ℂ) × GL (Fin b) (Af E))` using `(continuous_pi fun v => ((continuous_apply v).comp continuous_fst).snd).prodMk continuous_snd.snd`. Conclude with `(continuous_glue.comp q1).prodMk (continuous_glue.comp q2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compIso : CompIso := by
   intro E _ _ _ a b

@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.Divisibility.Tuples
 open NumberField IsDedekindDomain Formalism.L2.DIV Formalism.UG
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ClassCover.exists_finset_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdelesFiniteClassDecomposition.lean&line=65#L65)
 -/

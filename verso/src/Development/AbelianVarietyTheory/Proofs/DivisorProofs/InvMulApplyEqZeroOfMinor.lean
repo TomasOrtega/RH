@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheor
 namespace GlobalTheory.FlagZ
 
 /- English proof (translation)
-Rewrite using `[det_submatrix_mul_eq_sum_minors, det_submatrix_mul_eq_sum_minors, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Use `hu I` as an intermediate fact. Rewrite `this` using `[minor, minor]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,15 +22,15 @@ theorem det_submatrix_mul_of_minor {N : ℕ} {A : Type} [CommRing A] (M g h : Ma
   ring
 
 /- English proof (translation)
-Establish `H (r : Fin l → Fin N)` using `det_submatrix_mul_of_minor (g⁻¹).1 g.1 h.1 l u hu r`. Simplify using `only [← Units.val_mul, inv_mul_cancel, Units.val_one] at H`. Use `set c := (g⁻¹ * h).1`. Use `set c₁ := c.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le) with hc₁`. Establish `h₁ : c₁.det = u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc₁, H, submatrix_one _ (Fin.castLE_injective _), det_one, mul_one]`. Establish `h₂ : cramer c₁ᵀ (fun k => c i (Fin.castLE l.is_le k)) = 0`. Use function extensionality and compare the values at `k`. Establish `e : c₁.updateRow k (fun k => c i (Fin.castLE l.is_le k)) = c.submatrix (Function.update (Fin.castLE l.is_le) k i) (Fin.castLE l.is_le)`. Use extensionality with `p q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hp : p = k`. Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hc₁, updateRow_ne hp, Function.update_of_ne hp]`. Rewrite using `[cramer_transpose_apply, e, H, det_eq_zero_of_row_eq_zero k, mul_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Rewrite using `[submatrix_apply, Function.update_self]`. Use `one_apply_ne fun e => ?_` and prove the remaining obligations. Establish `: (i : ℕ) = q` using `congrArg Fin.val e`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₃` using `congrFun (mulVec_cramer c₁ᵀ (fun k => c i (Fin.castLE l.is_le k))) ⟨j, hj⟩`. Rewrite `h₃` using `[h₂, mulVec_zero, det_transpose, h₁]`. Conclude with `(Units.mul_right_eq_zero u).1 h₃.symm`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_apply_eq_zero_of_minor {N : ℕ} {A : Type} [CommRing A] (g h : GL (Fin N) A) (l : Fin (N + 1))
     (u : Aˣ) (hu : ∀ I, minor h.1 l I = u * minor g.1 l I) (i j : Fin N) (hj : (j : ℕ) < l) (hi : (l : ℕ) ≤ i) :
@@ -61,9 +61,9 @@ theorem inv_mul_apply_eq_zero_of_minor {N : ℕ} {A : Type} [CommRing A] (g h : 
   exact (Units.mul_right_eq_zero u).1 h₃.symm
 
 /- English proof (translation)
-Introduce `ι κ _ _ N a l A _ g h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `e _ i j ⟨k, rfl, hj, hi⟩`. Take `⟨u, hu⟩` from `(flagPt_eq_iff a l g h).1 e k`. Conclude with `inv_mul_apply_eq_zero_of_minor _ _ _ u hu i j hj hi`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Use `flagPt_mul a l g (g⁻¹ * h) fun k i j hj hi => H (a k) i j ⟨k, rfl, hj, hi⟩` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagPt_eq_iff_below : ∀ (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1)) (A : Type)
     [CommRing A] (g h : ι → GL (Fin N) A),

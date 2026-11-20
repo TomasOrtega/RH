@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.AlterationOrder
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[IsFinite.SpecMap_iff]`. Express the relevant statement in the definitionally equal form `(algebraMap ℤ k).Finite`. Conclude with `RingHom.finite_algebraMap.2 h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isFinite_spMap_int (k : Type) [CommRing k] (h : Module.Finite ℤ k) :
     IsFinite (spMap (Int.castRingHom k)) := by
@@ -19,13 +19,13 @@ theorem isFinite_spMap_int (k : Type) [CommRing k] (h : Module.Finite ℤ k) :
   exact RingHom.finite_algebraMap.2 h
 
 /- English proof (translation)
-The claim follows from `specZIsTerminal.hom_ext f g`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_int {X : Scheme.{0}} (f g : X ⟶ Sp ℤ) : f = g :=
   specZIsTerminal.hom_ext f g
 
 /- English proof (translation)
-Use `isFinite_spMap_int k h.finite` as an intermediate fact. Take `⟨hp, L, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB r).1 h.isProjOver`. Use `⟨inferInstance, inferInstance, h.isIntegral, hL.isProjOver _, ?_, h.dim_eq⟩` and prove the remaining obligations. Rewrite using `[hom_ext_int (_ ≫ spMap (Int.castRingHom ℤ)) (r ≫ spMap (Int.castRingHom k))]`. Conclude with `h.flat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar_int {k : Type} [CommRing k] {Z : Scheme.{0}} {r : Z ⟶ Sp k} {d : ℕ}
     (h : IsArithVar r d) : IsArithVar (r ≫ spMap (Int.castRingHom k)) d := by
@@ -36,9 +36,9 @@ theorem isArithVar_int {k : Type} [CommRing k] {Z : Scheme.{0}} {r : Z ⟶ Sp k}
   exact h.flat
 
 /- English proof (translation)
-Use `isFinite_spMap_int k hf` as an intermediate fact. Take `⟨hp, L, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 h.isProjOver`. Establish `: IsProper r` using `IsProper.of_comp r (spMap (Int.castRingHom k))`. Use `⟨hd, hf, h.isIntegral, hL.isProjOver _, ?_, h.dim_eq⟩` and prove the remaining obligations. Rewrite using `[hom_ext_int (r ≫ spMap (Int.castRingHom k)) ((r ≫ spMap (Int.castRingHom k)) ≫ spMap (Int.castRingHom ℤ))]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.flat`.
+A detailed English derivation is pending.
 -/
 theorem isArithVar_of_int {k : Type} [CommRing k] (hd : IsDomain k) (hf : Module.Finite ℤ k)
     {Z : Scheme.{0}} {r : Z ⟶ Sp k} {d : ℕ} (h : IsArithVar (r ≫ spMap (Int.castRingHom k)) d) :
@@ -52,7 +52,7 @@ theorem isArithVar_of_int {k : Type} [CommRing k] (hd : IsDomain k) (hf : Module
   exact h.flat
 
 /- English proof (translation)
-Introduce `H k _ Z _ r d h`. Take `⟨Y, hY, ρ, h1, h2, h3, h4⟩` from `H Z _ d (isArithVar_int h)`. Use `⟨Y, hY, ρ, isArithVar_of_int h.isDomain h.finite ?_, h2, h3, h4⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem regularAlteration_order : RegularAlteration → ∀ (k : Type) [CommRing k] (Z : Scheme.{0}) [IsIntegral Z] (r : Z ⟶ Sp k) (d : ℕ),
     IsArithVar r d → ∃ (B' : Scheme.{0}) (_ : IsIntegral B') (ρ : B' ⟶ Z), IsArithVar (ρ ≫ r) d ∧

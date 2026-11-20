@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace MainStatements.Hodge.Pf.WedgeProjections
 
 /- English proof (translation)
-Establish `: IsAffineHom (Limits.pullback.diagonal s)` using `inferInstance`. Conclude with `isAffineHom_diagonal_iff.mp this ⊤ (isAffineOpen_top _) U (by simp) V (by simp) hU hV`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem affInf {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : IsSeparated s)
     (U V : X.Opens) (hU : IsAffineOpen U) (hV : IsAffineOpen V) : IsAffineOpen (U ⊓ V) := by
@@ -35,7 +35,7 @@ theorem affInf {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : I
       (le_inf hab.2 hac.2 : a.1.2.1 ≤ b.1.2.1 ⊓ c.1.2.1)⟩ }
 
 /- English proof (translation)
-Use `eq_top_iff.2 (fun x _ => ?_)` and prove the remaining obligations. Take `⟨V, hV, hxV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show φ x ∈ (⊤ : X.Opens) from trivial)`. Take `⟨U, hU, hxU, hUV⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X'.isBasis_affineOpens) (show x ∈ φ ⁻¹ᵁ V from hxV)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, ⟨V, hV⟩), hUV⟩, hxU⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pair_cover {X X' : Scheme.{0}} (φ : X' ⟶ X) : ⨆ p : Pair φ, p.1.1.1 = ⊤ := by
   refine eq_top_iff.2 (fun x _ => ?_)
@@ -46,7 +46,7 @@ theorem pair_cover {X X' : Scheme.{0}} (φ : X' ⟶ X) : ⨆ p : Pair φ, p.1.1.
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, ⟨V, hV⟩), hUV⟩, hxU⟩
 
 /- English proof (translation)
-Use `letI : SemilatticeInf (Pair φ) := pairSL φ (affInf s hs) (affInf s' hs')`. Set `S : Sys X' (Pair φ)` to `⟨fun p => p.1.1, fun _ _ => rfl, pair_cover φ⟩`. Establish `hq : AllQIso (pairRes φ s')` using `hD R X' s' hs' (Pair φ) S`. Conclude with `(hL R _ _ _ _ (pairRes φ s') hq).2.1.1`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairRes_pull2_injective (hD : DescentSt) (hL : LowSt) {R : Type} [CommRing R] {X X' : Scheme.{0}}
     (s : X ⟶ Sp R) (s' : X' ⟶ Sp R) (φ : X' ⟶ X) (hs : IsSeparated s) (hs' : IsSeparated s') :

@@ -10,13 +10,13 @@ namespace PI.ScPiFrameW
 open PI.ScPiExists
 
 /- English proof (translation)
-Introduce `I r k e f z hn hfr ⟨t, ht, hzz⟩ hε v`. Take `⟨hee, hff, hef, hz⟩` from `hfr`. Establish `hσ : ∃ σ : Fin (r + 1) → Fin I.n, ∀ i, I.ε v i = false → ∃ j, σ j = i`. Use `⟨fun j => ⟨min ((k - 1) + 2 * j.val + 1) (I.n - 1), by omega⟩, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[hε v i]`. Establish `h2 : ¬ i.val < k - 1 ∧ (i.val - (k - 1)) % 2 ≠ 0`. Distinguish the cases in `h1 : i.val < k - 1`. Simplify using `[h1] at hi`. Simplify using `[h1] at hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h1, by omega⟩`. Establish `hi'` using `i.isLt`. Use `⟨⟨(i.val - (k - 1)) / 2, by omega⟩, ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Use `show min ((k - 1) + 2 * ((i.val - (k - 1)) / 2) + 1) (I.n - 1) = i.val`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨σ, hσ⟩` from `hσ`. Apply the tactic sequence `obtain ⟨w, hw1, hw2⟩ := frame_core (I.ε v) hn σ hσ (fun a => rv I v (e a)) (fun a => rv I v (f a)) (rv I v z) (t : ℝ) (by exact_mod_cast ht) (fun a b => by rw [hJ_rv, hee a b, map_zero]) (fun a b => by rw [hJ_rv, hff a b, map_zero]) (fun a b => by rw [hJ_rv, hef a b]; split_ifs < …`. Conclude with `⟨w, hw1, hw2⟩`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_holds : PI.ScPiExists.Frame := by
   intro I r k e f z hn hfr ⟨t, ht, hzz⟩ hε v

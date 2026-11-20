@@ -31,7 +31,7 @@ def ClassMean : Prop :=
     IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ClassMeanAt D
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (discr (lamOf D ⊤ 1)) (n := 12) (by norm_num)`. Conclude with `⟨⊤, δ, ⟨top_ne_bot, by simp⟩, hδ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_curveIdeal_delta (D : D7) :
     ∃ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), IsCurveIdeal D cc ∧ IsDiscriminantTwelfthRootOfIdealLattice D cc δ := by
@@ -39,7 +39,7 @@ theorem exists_curveIdeal_delta (D : D7) :
   exact ⟨⊤, δ, ⟨top_ne_bot, by simp⟩, hδ⟩
 
 /- English proof (translation)
-Use `⟨fun h D => ?_, fun h D _ _ _ _ => h D⟩` and prove the remaining obligations. Take `⟨cc, δ, h1, h2⟩` from `exists_curveIdeal_delta D`. Conclude with `h D cc δ h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem classMean_iff : ClassMean ↔ ∀ D : D7, ClassMeanAt D := by
   refine ⟨fun h D => ?_, fun h D _ _ _ _ => h D⟩

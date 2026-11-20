@@ -3,35 +3,31 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P M N _ _ _ s π u hπs hu hker KP KM L hsK hπK huK TM CM TP CP _ hTP _ _ q X`. Use `set S : Subgroup M := TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM with hS`. Use `set C : Subgroup M := KP.comap ((MulAut.conj (u X)⁻¹).toMonoidHom.comp s) with hC`. Use `letI : MulAction M (P ⧸ KP) := MulAction.compHom (P ⧸ KP) s`. Establish `hsmul : ∀ (r : M) (p : P), r • (QuotientGroup.mk p : P ⧸ KP) = QuotientGroup.mk (s r * p)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `r p`. Both sides reduce to the same expression. Establish `memS : ∀ r : M, r ∈ S ↔ (∃ t ∈ TM, q⁻¹ * t * q = r) ∧ r ∈ KM`. Introduce `r`. Simplify using `only [hS, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπu : ∀ Y, π (u Y) = 1` using `fun Y => (hker _).2 ⟨Y, rfl⟩`. Use `set x0 : P ⧸ KP := QuotientGroup.mk (u X) with hx0`. Establish `key : ∀ Y : N, DoubleCoset.mk TP KP (s q * u Y) = DoubleCoset.mk TP KP (s q * u X) ↔ (QuotientGroup.mk (u Y) : P ⧸ KP) ∈ MulAction.orbit S x0`. Introduce `Y`. Rewrite using `[eq_comm, DoubleCoset.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, k, hk, e⟩`. Take `⟨t, ht, rfl⟩` from `(hTP h).1 hh`. Establish `e2 : u Y = s (q⁻¹ * t * q) * u X * k`. Apply `mul_left_cancel (a := s q)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_mul, map_mul, map_inv]`. Use `group`. Establish `e3` using `congrArg π e2`. Simplify using `only [map_mul, hπs, hπu, mul_one] at e3`. Establish `e4 : q⁻¹ * t * q = (π k)⁻¹` using `eq_inv_of_mul_eq_one_left e3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hr : q⁻¹ * t * q ∈ S` using `(memS _).2 ⟨⟨t, ht, rfl⟩, e4 ▸ KM.inv_mem (hπK k hk)⟩`. Use `⟨⟨_, hr⟩, ?_⟩` and prove the remaining obligations. Use `show (q⁻¹ * t * q) • x0 = _`. Rewrite using `[hx0, hsmul, QuotientGroup.eq, e2]`. Use `hk using 1` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Introduce and unpack `⟨⟨r, hr⟩, e⟩`. Express the relevant statement in the definitionally equal form `r • x0 = _ at e`. Rewrite `e` using `[hx0, hsmul, QuotientGroup.eq]`. Take `⟨⟨t, ht, rfl⟩, -⟩` from `(memS r).1 hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s t, (hTP _).2 ⟨t, ht, rfl⟩, _, e, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hinj : ∀ x y : N ⧸ L, (QuotientGroup.mk (u (Quotient.out x)) : P ⧸ KP) = QuotientGroup.mk (u (Quotient.out y)) → x = y`. Introduce `x y h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[QuotientGroup.eq, ← map_inv, ← map_mul, huK]`. Rewrite using `[← Quotient.out_eq' x, ← Quotient.out_eq' y]`. Conclude with `(QuotientGroup.eq (s := L)).2 h`. Establish `hcard : Nat.card {x : N ⧸ L // DoubleCoset.mk TP KP (s q * u (Quotient.out x)) = DoubleCoset.mk TP KP (s q * u X)} = Nat.card (MulAction.orbit S x0)`. Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨QuotientGroup.mk (u (Quotient.out x.1)), (key _).1 x.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x y h`. Conclude with `Subtype.ext (hinj _ _ (congrArg Subtype.val h))`. Introduce and unpack `⟨y, ⟨⟨r, hr⟩, rfl⟩⟩`. Establish `hk : π (s r * u X * (s r)⁻¹) = 1`. Rewrite using `[map_mul, map_mul, map_inv, hπs, hπu]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Take `⟨Z, hZ⟩` from `(hker _).1 hk`. Establish `hrK : (r : M) ∈ KM` using `((memS r).1 hr).2`. Establish `hyo : (QuotientGroup.mk (u (Quotient.out (QuotientGroup.mk Z : N ⧸ L))) : P ⧸ KP) = r • x0`. Take `⟨l, hl⟩` from `QuotientGroup.mk_out_eq_mul L Z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `_ = r • x0`. Rewrite using `[hx0, hsmul, hl, QuotientGroup.eq, map_mul, hZ]`. Establish `h1 : s (r : M) ∈ KP` using `hsK _ hrK`. Establish `h2 : u (l : N) ∈ KP` using `(huK _).2 l.2`. Use `KP.mul_mem (KP.inv_mem h2) h1 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `⟨⟨QuotientGroup.mk Z, (key _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hyo]`. Conclude with `⟨⟨r, hr⟩, rfl⟩`. Conclude with `Subtype.ext hyo`.
-
-Establish `hstab : MulAction.stabilizer S x0 = (S ⊓ C).subgroupOf S`. Use extensionality with `⟨r, hr⟩`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, Subgroup.mem_inf, hC, Subgroup.mem_comap]`. Express the relevant statement in the definitionally equal form `(r • x0 = x0) ↔ _`. Rewrite using `[hx0, hsmul, QuotientGroup.eq]`.
-
-Simplify using `only [hr, true_and, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply, MulAut.conj_apply, inv_inv]`. Rewrite using `[← KP.inv_mem_iff]`. Apply the tactic sequence `constructor <;> intro h <;> convert h using 1 <;> group`. Rewrite using `[hcard, Subgroup.relIndex, ← hstab, MulAction.index_stabilizer, Nat.card_coe_set_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_count_parabolic_unfold : ∀ (P M N : Type) [Group P] [Group M] [Group N] (s : M →* P) (π : P →* M) (u : N →* P), (∀ m, π (s m) = m) → Function.Injective u → (∀ p, π p = 1 ↔ ∃ X, u X = p) → ∀ (KP : Subgroup P) (KM : Subgroup M) (L : Subgroup N), (∀ k ∈ KM, s k ∈ KP) → (∀ k ∈ KP, π k ∈ KM) → (∀ X, u X ∈ KP ↔ X ∈ L) → ∀ (TM CM : Subgroup M) (TP CP : Subgroup P), CM ≤ TM → (∀ p, p ∈ TP ↔ ∃ t ∈ TM, s t = p) → (∀ p, p ∈ CP ↔ ∃ t ∈ CM, s t = p) → (∀ q : M, TM ⊓ KM.map (MulAut.conj q).toMonoidHom ≤ CM) → ∀ (q : M) (X : N), Nat.card {x : N ⧸ L // DoubleCoset.mk TP KP (s q * u (Quotient.out x)) = DoubleCoset.mk TP KP (s q * u X)} = (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM ⊓ KP.comap ((MulAut.conj (u X)⁻¹).toMonoidHom.comp s)).relIndex (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM) := by
   intro P M N _ _ _ s π u hπs hu hker KP KM L hsK hπK huK TM CM TP CP _ hTP _ _ q X

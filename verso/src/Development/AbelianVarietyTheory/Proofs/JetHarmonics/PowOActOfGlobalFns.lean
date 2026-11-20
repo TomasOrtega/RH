@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H V _ _ _ t P n D' pD`. Use `letI := H.starRing`. Use `letI M : Module (𝓞 E) D'.toPre.X := pD.xe.module (𝓞 E)`. Establish `h : ∀ (a : 𝓞 E) (x : D'.toPre.X), pD.xe (a • x) = a • pD.xe x`. Introduce `a x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pD.xe.apply_symm_apply _`. Take `⟨oa', hoa'⟩` from `powDeg_diagonal_action hG V n P.D.toPre D'.toPre pD (𝓞 E) h P.oD`. Conclude with `⟨M, oa', fun a x i => by rw [h]; rfl, hoa'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem powOAct_of_globalFns : GlobalFnsSt → PowOActSt := by
   intro hG E _ _ _ H V _ _ _ t P n D' pD

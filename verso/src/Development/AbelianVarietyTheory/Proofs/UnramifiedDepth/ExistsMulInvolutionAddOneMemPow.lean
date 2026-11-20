@@ -5,15 +5,15 @@ namespace GlobalTheory.NormResidue
 open Polynomial
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hne`. Set `F : Subfield k` to `σ.eqLocusField (RingHom.id k)`. Set `_ : Fintype F` to `Fintype.ofFinite F`. Establish `memF : ∀ y : k, y ∈ F ↔ σ y = y` using `fun y => Iff.rfl`. Establish `hθ : σ (x - σ x) = -(x - σ x)` using `by rw [map_sub, hσ]; ring`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ0 : x - σ x ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Set `d : F` to `⟨(x - σ x) * (x - σ x), (memF _).2 (by rw [map_mul, hθ]; ring)⟩`. Establish `hd0 : d ≠ 0`. Introduce `h`. Establish `h' : (x - σ x) * (x - σ x) = 0` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hθ0 (mul_self_eq_zero.mp h')`. Establish `hchar : ringChar F ≠ 2`. Introduce `hc`. Apply `h2` to reduce the goal to its premises. Establish `h0 : ((2 : ℕ) : F) = 0` using `by rw [← hc]; exact ringChar.Nat.cast_ringChar`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0'` using `congrArg F.subtype h0`. Rewrite `h0'` using `[map_natCast, map_zero, Nat.cast_ofNat]`. Then use the resulting hypothesis. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (R := F) (f := Polynomial.X ^ 2 + Polynomial.C 1) (g := Polynomial.C (-d) * Polynomial.X ^ 2) (Polynomial.degree_X_pow_add_C (by norm_num) _) (Polynomial.degree_C_mul_X_pow 2 (neg_ne_zero.mpr hd0)) (FiniteField.odd_card_of_char_ne_two hchar)`. Establish `hab'` using `congrArg Subtype.val hab`. Simplify using `[d] at hab'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha : σ a = a` using `(memF _).1 a.2`. Establish `hb : σ b = b` using `(memF _).1 b.2`. Use `⟨a + b * (x - σ x), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, ha, hb, hθ]`. Take the linear combination `hab'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mul_involution_eq_neg_one {k : Type*} [Field k] [Finite k] (σ : k →+* k)
     (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) (h2 : (2 : k) ≠ 0) :
@@ -50,29 +50,27 @@ theorem exists_mul_involution_eq_neg_one {k : Type*} [Field k] [Finite k] (σ : 
   linear_combination hab'
 
 /- English proof (translation)
-Establish `hPP : P ≤ P.comap s` using `fun x hx => hsP x hx`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Use `letI : Field (O ⧸ P) := Ideal.Quotient.field P`. Set `σ` to `Ideal.quotientMap P s hPP`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `only [σ, Ideal.quotientMap_mk, hs]`. Establish `hne' : ∃ x, σ x ≠ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hne`. Use `⟨Ideal.Quotient.mk P x, fun h => hx ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Simplify `h` using `only [σ, Ideal.quotientMap_mk]`. Establish `h2' : (2 : O ⧸ P) ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_ofNat]`. Conclude with `h`. Take `⟨w, hw⟩` from `exists_mul_involution_eq_neg_one (k := O ⧸ P) σ hσ hne' h2'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨z, ?_, fun h => absurd rfl h⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `hw` using `only [σ, Ideal.quotientMap_mk, map_add, map_mul, map_one]`. Establish `hN0 : N ≠ 0` using `hN.ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he_def⟩ : ∃ e, e = z0 * s z0 + 1` from `⟨_, rfl⟩`. Establish `he : e ∈ P ^ N` using `he_def ▸ hz.resolve_left hN0`. Establish `heP : e ∈ P` using `Ideal.pow_le_self hN0 he`. Take `⟨y, i, hi, hyi⟩` from `hP.exists_inv h2`. Establish `hh : y + s y - 1 ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : y * 2 - 1 ∈ P`. Establish `h1e : y * 2 - 1 = -i` using `by linear_combination hyi`. Rewrite using `[h1e]`. Conclude with `P.neg_mem hi`. Establish `h1' : s y * 2 - 1 ∈ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1s` using `hsP _ h1`. Simplify `h1s` using `[map_sub, map_mul, map_ofNat]`. Establish `h3 : 2 * (y + s y - 1) ∈ P`. Establish `h3e : 2 * (y + s y - 1) = (y * 2 - 1) + (s y * 2 - 1)` using `by ring`. Rewrite using `[h3e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `P.add_mem h1 h1'`. Break down `(Ideal.IsMaximal.isPrime hP).mem_or_mem h3 with h | h` into its components or cases. Conclude with `absurd h h2`. Conclude with `h`. Use `⟨z0 + y * z0 * e, ?_, fun _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hse : s e = e` using `by rw [he_def, map_add, map_mul, hs, map_one]; ring`. Establish `key : (z0 + y * z0 * e) * s (z0 + y * z0 * e) + 1 = e * (1 - (y + s y) + (y + s y) * e) + e * (e * (y * z0 * s y * s z0))`. Rewrite using `[map_add, map_mul, map_mul, hse]`. Rewrite using `[he_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, pow_succ]`. Use `Ideal.add_mem _ (Ideal.mul_mem_mul he ?_) (Ideal.mul_mem_mul he (Ideal.mul_mem_right _ _ heP))` and prove the remaining obligations. Establish `hx : 1 - (y + s y) + (y + s y) * e = -(y + s y - 1) + (y + s y) * e` using `by ring`. Rewrite using `[hx]`. Conclude with `P.add_mem (P.neg_mem hh) (Ideal.mul_mem_left _ _ heP)`.
-
-Establish `hx : z0 + y * z0 * e - z0 = y * z0 * e` using `by ring`. Rewrite using `[hx]`. Conclude with `Ideal.mul_mem_left _ _ he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_involution_add_one_mem_pow (O : Type) [CommRing O] (s : O →+* O)
     (hs : ∀ x, s (s x) = x) (P : Ideal O) [hP : P.IsMaximal] [Finite (O ⧸ P)]

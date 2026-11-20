@@ -6,25 +6,25 @@ open scoped ValuativeRel ENNReal
 namespace GlobalTheory.CompanionTheory.GeomSum
 
 /- English proof (translation)
-Introduce `q s Y hq hs hY`. Establish `hq0 : 0 < q` using `by linarith`. Take `⟨N, hN1, hN2⟩` from `exists_mem_Ico_zpow hY hq`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = q ^ (-s)` from `⟨_, rfl⟩`. Rewrite using `[← hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : 0 ≤ r` using `hr ▸ (Real.rpow_pos_of_pos hq0 _).le`. Establish `hr1 : r < 1` using `hr ▸ Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith)`. Set `f : ℤ → ℝ≥0∞` to `fun n => if n ≤ N then ENNReal.ofReal (q ^ (s * (n : ℝ))) else 0`. Establish `h1 : (∑' n : ℤ, (if q ^ n ≤ Y then ENNReal.ofReal (q ^ (s * (n : ℝ))) else 0)) ≤ ∑' n, f n`. Use `ENNReal.tsum_le_tsum fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : q ^ n ≤ Y`. Establish `h' : n < N + 1` using `(zpow_lt_zpow_iff_right₀ hq).1 (lt_of_le_of_lt h hN2)`. Establish `h'' : n ≤ N` using `by omega`. Simplify using `[f, h, h'']`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `g : ℕ → ℤ` to `fun k => N - k`. Establish `hg : Function.Injective g`. Introduce `a b h`. Simplify using `only [g] at h`. Use linear arithmetic over natural numbers and integers.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsupp : Function.support f ⊆ Set.range g`. Introduce `n hn`. Establish `hnN : n ≤ N`. Assume the negation of the conclusion as `h`. Simplify using `[f, h] at hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(N - n).toNat, by simp only [g]; omega⟩`. Establish `h2 : ∑' n, f n = ∑' k : ℕ, f (g k)` using `(hg.tsum_eq hsupp).symm`. Establish `h3 : ∀ k : ℕ, f (g k) = ENNReal.ofReal (q ^ (s * (N : ℝ)) * r ^ k)`. Introduce `k`. Establish `hk : g k ≤ N` using `by simp only [g]; omega`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [f, hk, if_true]`. Use `congr 1`. Rewrite using `[hr, ← Real.rpow_natCast, ← Real.rpow_mul hq0.le, ← Real.rpow_add hq0]`. Use `congr 1`. Simplify using `only [g]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : Summable fun k : ℕ => q ^ (s * (N : ℝ)) * r ^ k` using `(summable_geometric_of_lt_one hr0 hr1).mul_left _`. Establish `hnn : ∀ k : ℕ, 0 ≤ q ^ (s * (N : ℝ)) * r ^ k` using `fun k => mul_nonneg (Real.rpow_pos_of_pos hq0 _).le (pow_nonneg hr0 k)`. Use `h1.trans ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, tsum_congr h3, ← ENNReal.ofReal_tsum_of_nonneg hnn hsum, tsum_mul_left, tsum_geometric_of_lt_one hr0 hr1, div_eq_mul_inv]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hpos : 0 ≤ (1 - r)⁻¹` using `inv_nonneg.2 (by linarith)`. Use `mul_le_mul_of_nonneg_right ?_ hpos` and prove the remaining obligations. Establish `hqN : 0 ≤ q ^ N` using `(zpow_pos hq0 N).le`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: q ^ (s * (N : ℝ)) = (q ^ N) ^ s`. Rewrite using `[mul_comm, Real.rpow_mul hq0.le, Real.rpow_intCast]`. Rewrite using `[this]`. Conclude with `Real.rpow_le_rpow hqN hN1 hs.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_zpow_le_rpow_div :
     ∀ (q s Y : ℝ), 1 < q → 0 < s → 0 < Y →

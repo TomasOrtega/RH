@@ -15,11 +15,9 @@ end Alg
 section Gal
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 /- English proof (translation)
-Use `letI : Algebra K L := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsGalois K L := IsGalois.tower_top_of_isGalois ℚ K L`. Use `haveI : Group.IsSolvable (L ≃ₐ[ℚ] L) := hsol`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : IsSolvable (L ≃ₐ[K] L)` using `Group.isSolvable_of_isSolvable_injective (f := (AlgEquiv.restrictScalarsHom ℚ : (L ≃ₐ[K] L) →* (L ≃ₐ[ℚ] L))) (AlgEquiv.restrictScalars_injective ℚ)`. Take `⟨P, hP⟩` from `auPair r θ hm cc`. Establish `hp : Af.IsPairing cc (r.toHomUnits.comp (Af.resG ℚ K Ω)) (θ.comp (Af.resG ℚ K Ω)) P` using `fun s s' h => by`. Establish `h' : Af.resG ℚ K Ω s' = cc * Af.resG ℚ K Ω s * cc⁻¹` using `h`. Establish `h1` using `hP (Af.resG ℚ K Ω s)`.
-
-Rewrite `h1` using `[← h']`. Conclude with `h1`. Conclude with `(Z.Bc.solQ (_root_.UpperTheory.V.Z.Bc.solC_alt H H.cyc) ℚ K L Ω s2 ⟨inferInstance, Or.inr ⟨hK, inferInstance⟩⟩ inferInstance inferInstance l ι 4 (by norm_num) (r.toHomUnits.comp (Af.resG ℚ K Ω)) θ (hr.comp (Af.continuous_restrictScalarsHom ℚ K Ω)) hirr hθ (auSign _) ⟨cc, _, hc, h …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem automorphic_of_gsp4_rigid_solvable_galois (H : _root_.UpperTheory.V.Af.HypothesesH') (K L : IntermediateField ℚ Ω) [NumberField K] [NumberField L] [IsCMField K] [IsCMField L]
     (hle : K ≤ L) (hK : Module.finrank ℚ K = 2) (hgal : IsGalois ℚ L) (hsol : IsSolvable (L ≃ₐ[ℚ] L)) (ι : Qbar l ≃+* ℂ)

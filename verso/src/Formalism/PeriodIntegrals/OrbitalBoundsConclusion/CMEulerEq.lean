@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMEulerProducts.Assembl
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMEulerProducts.FibreShapeOf
 
 /- English proof (translation)
-The claim follows from `CMEul.eulerEq_of_fib (CMEulFib.stepFib_of CMEul.euler_factor_conjugate)`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.L2.SG.MassRatio.mass_ratio_euler_eq : Formalism.L2.SG.MassRatio.EulerEq :=
   CMEul.eulerEq_of_fib (CMEulFib.stepFib_of CMEul.euler_factor_conjugate)

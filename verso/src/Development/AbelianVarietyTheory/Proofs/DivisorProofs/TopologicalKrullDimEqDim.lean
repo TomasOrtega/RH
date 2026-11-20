@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A`. Use `haveI : Nonempty A.X.left := ⟨A.origin⟩`. Conclude with `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth A.X.hom A.dim A.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_dim : ∀ (K : Type) [Field K] (A : AbVar K), topologicalKrullDim A.X.left = (A.dim : ℕ) := by
   intro K _ A

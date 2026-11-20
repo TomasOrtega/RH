@@ -15,16 +15,14 @@ def LocDensNonnegStatement : Prop :=
       ∀ j, ∀ y ∈ (A.chart j).target, 0 ≤ locDens A Φ j y
 
 /- English proof (translation)
-Introduce `e X _ A Φ hΦ hPsh j y hy`. Conclude with `locDens_nonneg_of_psh A Φ hΦ hPsh j hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locDensNonneg : LocDensNonnegStatement := by
   intro e X _ A Φ hΦ hPsh j y hy
   exact locDens_nonneg_of_psh A Φ hΦ hPsh j hy
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A Φ hΦ hPsh`. Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `⟨?_, fun g hg => ⟨⟨fun hgi => (maMeasure_forward A Φ hΦ hPsh hg hgi).1, fun hgi => maMeasure_converse A Φ hΦ hPsh hg hgi⟩, fun hgi => (maMeasure_forward A Φ hΦ hPsh hg hgi).2⟩⟩` and prove the remaining obligations. Rewrite using `[maMeasure_eq_sum A Φ hne]`. Use `haveI : ∀ j, IsFiniteMeasure (chartMeasure A hne.some Φ j) := fun j => chartMeasure_finite A hne.some Φ hΦ hPsh j`.
-
-Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maMeasure_thm : MaMeasureStatement := by
   intro e X _ _ _ _ _ A Φ hΦ hPsh
@@ -38,7 +36,7 @@ theorem maMeasure_thm : MaMeasureStatement := by
     chartMeasure_finite A hne.some Φ hΦ hPsh j
   infer_instance
 /- English proof (translation)
-Introduce `e X _ _ _ A Φ Θ hΦ hΦp hΘ hΘp`. Conclude with `maMeasure_mono_of_psh A Φ Θ hΦ hΦp hΘ hΘp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem maMeasureMono : MaMeasureMonoStatement := by
   intro e X _ _ _ A Φ Θ hΦ hΦp hΘ hΘp

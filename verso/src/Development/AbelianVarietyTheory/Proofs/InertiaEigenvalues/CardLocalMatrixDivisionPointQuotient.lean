@@ -25,7 +25,7 @@ def red (N m n : ℕ) : ↥(locDiv w N m n) →+
     simp [mul_add]
 
 /- English proof (translation)
-Establish `h : (N : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (N : E)` using `by simp`. Rewrite using `[h]`. Conclude with `(map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hN.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero {N : ℕ} (hN : 0 < N) : (N : w.adicCompletion E) ≠ 0 := by
   have h : (N : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (N : E) := by simp
@@ -33,11 +33,11 @@ theorem natCast_ne_zero {N : ℕ} (hN : 0 < N) : (N : w.adicCompletion E) ≠ 0 
   exact (map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hN.ne')
 
 /- English proof (translation)
-Introduce `Y`. Establish `hN'` using `natCast_ne_zero w hN`. Use `choose Z hZ using fun i j => Ideal.Quotient.mk_surjective (Y i j)`. Establish `key : ∀ i j, (N : w.adicCompletion E) * ((N : w.adicCompletion E)⁻¹ * (Z i j : w.adicCompletion E)) = Z i j` using `fun i j => by rw [← mul_assoc, mul_inv_cancel₀ hN', one_mul]`. Use `⟨⟨Matrix.of fun i j => (N : w.adicCompletion E)⁻¹ * (Z i j : w.adicCompletion E), ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Matrix.of_apply, key]`. Conclude with `(Z i j).2`. Use function extensionality and compare the values at `i j`. Rewrite using `[← hZ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `key i j`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem red_surjective {N : ℕ} (hN : 0 < N) (m n : ℕ) : Function.Surjective (red w N m n) := by
   intro Y
@@ -57,13 +57,13 @@ theorem red_surjective {N : ℕ} (hN : 0 < N) (m n : ℕ) : Function.Surjective 
     exact key i j
 
 /- English proof (translation)
-Establish `hN'` using `natCast_ne_zero w hN`. Use extensionality with `X`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, mem_locInt]`. Simplify using `only [funext_iff, Pi.zero_apply]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = _ ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `h` using `congrArg (fun z : w.adicCompletionIntegers E => (z : w.adicCompletion E)) hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast] at h`. Rewrite using `[mul_left_cancel₀ hN' h]`. Conclude with `c.2`. Introduce `h`. Use `⟨⟨X.1 i j, h⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_red {N : ℕ} (hN : 0 < N) (m n : ℕ) :
     (red w N m n).ker = (locInt w m n).addSubgroupOf (locDiv w N m n) := by
@@ -86,7 +86,7 @@ theorem ker_red {N : ℕ} (hN : 0 < N) (m n : ℕ) :
     simp
 
 /- English proof (translation)
-Establish `e` using `(QuotientAddGroup.quotientAddEquivOfEq (ker_red w hN m n).symm).trans (QuotientAddGroup.quotientKerEquivOfSurjective (red w N m n) (red_surjective w hN m n))`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_fun, ← pow_mul]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_locQ (E : Type) [Field E] [NumberField E] (w : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
     (N m n : ℕ) (hN : 0 < N) :

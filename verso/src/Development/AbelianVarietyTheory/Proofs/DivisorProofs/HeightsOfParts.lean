@@ -10,19 +10,19 @@ open scoped ComplexOrder
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Introduce `D Y A inner hF hA H c₀ hc₀`. Take `⟨t₀, ht₀, C, hC, H⟩` from `H c₀ hc₀`. Take `⟨C₁, h₁⟩` from `GlobalTheory.T.lower_bound_log_ratio_half C`. Take `⟨C₂, h₂⟩` from `GlobalTheory.T.lower_bound_log_ratio_unit C hC`. Use `⟨min t₀ (1 / 2), lt_min ht₀ (by norm_num), max (max C₁ C₂) (3 * C), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B hB u t hu hs ht htt hg hcp _`. Establish `htR : (0 : ℝ) < (t : ℝ)` using `by exact_mod_cast ht`. Establish `hth : (t : ℝ) ≤ 1 / 2` using `htt.trans (min_le_right _ _)`. Take `⟨Hi, Hb, Hd⟩` from `H B hB u t hu hs ht (htt.trans (min_le_left _ _)) hg hcp`. Establish `hs0 : (0 : ℝ) < (t : ℝ) ^ 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs1 : (t : ℝ) ^ 2 ≤ 1` using `by nlinarith`. Establish `hlog : 0 ≤ Real.log (B / (t : ℝ) ^ 2)`. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hs0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlB : (1 : ℝ) / 2 ≤ Real.log B`. Use `Real.log_two_gt_d9` as an intermediate fact. Establish `h2` using `Real.log_le_log (by norm_num : (0 : ℝ) < 2) hB`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun y => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy : inner y`. Use `h₁ B t _ _ hB htR hth (le_max_right (hF y) 0) (Hi y hy)` as an intermediate fact. Establish `hle : C₁ ≤ max (max C₁ C₂) (3 * C)` using `(le_max_left _ _).trans (le_max_left _ _)`. Use `mul_le_mul_of_nonneg_right hle hlog` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h₂ B _ _ _ hB hs0 hs1 (Hb y hy).1 (Hb y hy).2` as an intermediate fact. Establish `hle : C₂ ≤ max (max C₁ C₂) (3 * C)` using `(le_max_right _ _).trans (le_max_left _ _)`. Use `mul_le_mul_of_nonneg_right hle hlog` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Z, hZ, hZ'⟩` from `Hd c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, hZ, fun y hy => (hZ' y hy).trans ?_⟩` and prove the remaining obligations. Establish `hle : 3 * C ≤ max (max C₁ C₂) (3 * C)` using `le_max_right _ _`. Use `mul_le_mul_of_nonneg_right hle (by linarith : 0 ≤ Real.log B)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem heights_of_parts : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), ∀ (inner : Y.Pt → Prop) (hF hA : Y.Pt → ℝ), (∀ c₀ : ℝ, 0 < c₀ → ∃ t₀ : ℝ, 0 < t₀ ∧ ∃ C : ℝ, 1 ≤ C ∧ ∀ B : ℝ, 2 ≤ B → ∀ (u : Wt Y) (t : ℚ), IsRat Y u → supAbs Y u ≤ 1 → 0 < t → (t : ℝ) ≤ t₀ → (∀ τ, (t : ℝ) ≤ gap Y u τ) → CptGaps Y c₀ u → (∀ y, inner y → (t : ℝ) / 4 * max (hF y) 0 - C * Real.log (2 + max (hF y) 0) - C * Real.log B - C ≤ A.ht (Y.Mbar B u (t ^ 2)) y) ∧ (∀ y, ¬ inner y → -C ≤ hA y ∧ (t : ℝ) ^ 2 * hA y - C * Real.log (2 + C + hA y) - C * Real.log (B / (t : ℝ) ^ 2) - C ≤ A.ht (Y.Mbar B u (t ^ 2)) y) ∧ ∀ c, ∃ Z, A.dense c Z ∧ ∀ y ∈ Z, A.ht (Y.Mbar B u (t ^ 2)) y ≤ C * Real.log B + C) → Heights A := by
   intro D Y A inner hF hA H c₀ hc₀

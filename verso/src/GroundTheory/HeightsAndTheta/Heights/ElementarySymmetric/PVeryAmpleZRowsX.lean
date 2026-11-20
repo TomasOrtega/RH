@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u v w
 
 /- English proof (translation)
-The claim follows from `VeryAmpleZRows.proof CechPartition.proof ZChartSmul.proof (ZChartLocal.proof ZChartSmul.proof)`.
+A detailed English derivation is pending.
 -/
 theorem VeryAmpleZRows.proof_closed : VeryAmpleZRows.Statement.{u, v, w} :=
   VeryAmpleZRows.proof CechPartition.proof ZChartSmul.proof (ZChartLocal.proof ZChartSmul.proof)

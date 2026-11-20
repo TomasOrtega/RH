@@ -11,15 +11,15 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Introduce `E _ _ _ n hn π`. Take `⟨κ, hκ⟩` from `GlobalTheory.CuspRep.Central.exists_hasCentral E n π`. Set `z : {r : ℝ // 0 < r} →* (Ad E)ˣ` to `(Reduction.posIdeleHom E).comp (Reduction.rpowHom ((n * Module.finrank ℚ E : ℝ))⁻¹)`. Establish `hz : ∀ s, Reduction.centralSection E n s = GeneralLinearGroup.scalar (Fin n) (z s)` using `fun s => Units.ext rfl`. Establish `hc : Continuous z` using `Reduction.continuous_posIdeleHom.comp (Reduction.continuous_rpowHom _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ s, GroundTheory.Global.IdeleGroup.ideleModule E (z s ^ n) = s` using `fun s => by`. Establish `h` using `Reduction.detModule_centralSection (K := E) hn s`. Rewrite `h` using `[hz]`. Use `Eq.trans (congrArg _ (Units.ext ?_)) h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Matrix.det (Matrix.diagonal fun _ : Fin n => (z s).val)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Set `ν : Formalism.L2.Host.HChar E` to `⟨(κ⁻¹.1.comp z).comp (GroundTheory.Global.IdeleGroup.ideleModule E), (κ⁻¹.2.1.comp hc).comp GroundTheory.Global.IdeleGroup.continuous_ideleModule, fun k => by`. Establish `h` using `GroundTheory.Global.IdeleGroup.ideleModule_diagonal (K := E) k`. Conclude with `(congrArg (κ⁻¹.1.comp z) h).trans (map_one _)⟩`. Use `⟨ν, fun φ hφ s g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, (hκ.twist ν).apply hφ]`. Establish `e : (κ * ν ^ n).1 (z s) = 1`. Express the relevant statement in the definitionally equal form `κ.1 (z s) * (ν.1 ^ n) (z s) = 1`. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Express the relevant statement in the definitionally equal form `κ.1 (z s) * (κ.1 (z (GroundTheory.Global.IdeleGroup.ideleModule E (z s ^ n))))⁻¹ = 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, mul_inv_cancel]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.normTwist :
     UpperTheory.V.Af.StrongMultiplicityOne.NormTwist := by

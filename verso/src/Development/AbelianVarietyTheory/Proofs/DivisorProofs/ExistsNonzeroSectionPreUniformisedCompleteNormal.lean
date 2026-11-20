@@ -20,7 +20,7 @@ namespace GlobalTheory.Mum.ModelSection
 open GlobalTheory.UU GlobalTheory.TwistLoc
 
 /- English proof (translation)
-Establish `h1 : gc q z (1 : K) = 1`. Unfold `gc gs`. Conclude with `(dif_pos trivial).trans ((congrArg _ ((congrArg _ (map_one _)).trans (map_one _))).trans (map_one _))`. Conclude with `IsUnit.of_mul_eq_one (gc q z c⁻¹) (by rw [← gc_mul, mul_inv_cancel₀ hc, h1])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isUnit_gc {K : Type} [Field K] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K)) (z : Z) {c : K} (hc : c ≠ 0) :
     IsUnit (gc q z c) := by
@@ -30,17 +30,15 @@ theorem isUnit_gc {K : Type} [Field K] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRin
   exact IsUnit.of_mul_eq_one (gc q z c⁻¹) (by rw [← gc_mul, mul_inv_cancel₀ hc, h1])
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `h2` using `GlobalTheory.abelianSchemeLaws_all.2`. Take `⟨v, hv⟩` from `ThetaIntegral.exists_sec_ne_zero h1 h2 _ A (Kbar R) (jFK (R := R) (Kbar R))`. Take `⟨n, c, a, ha⟩` from `ExpTotal.exists_span h1.secBaseChange A 1 le_rfl (Kbar R) (jFK (R := R) (Kbar R)) (SecM.toSec A.A v)`. Use `choose d hd σ hσ using fun i => ExpTotal.exists_integral U 1 (a i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Establish `hz : ∀ i j, (σ i).f j = 0` using `fun i j => by`. Assume the negation of the conclusion as `h`. Conclude with `hn ⟨σ i, j, h⟩`. Use `hv (Subtype.ext (funext fun j => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `sec_ext_val (L := A.L) (φ := fun _ : Fin 1 => (snd (TFK (R := R) (Kbar R)) A.A).left) (ε := fun _ => ((1 : ℕ) : ℤ)) A.isLB (s := SecM.toSec A.A v) (s' := SecM.toSec A.A 0) (fun z JA hJA => ?_) j` and prove the remaining obligations. Take `⟨JG, hJG⟩` from `exists_good_pt U.P.L.isLB z`. Set `y` to `(snd (TFK (R := R) (Kbar R)) A.A).left ≫ U.gen.inv.left`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk ((y ≫ pullback.fst G.hom (jK R)) ≫ G.hom)`. Set `x : T ⟶ G` to `Over.homMk (y ≫ pullback.fst G.hom (jK R)) rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y ≫ U.gen.hom.left = 𝟙 _ ≫ (snd (TFK (R` using `R) (Kbar R)) A.A).left := by`. Rewrite using `[Category.id_comp, Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.comp_id]`. Use `(ha _ (𝟙 _) z JA hJA).trans (Eq.trans (Finset.sum_eq_zero fun i _ => ?_) (ThetaIntegral.sval_eq_zero _ (fun _ => rfl) _ _ _).symm)` and prove the remaining obligations. Establish `e` using `hσ i _ y (lift (toUnit T) x).left (congrArg (fun q => q.left) (lift_snd (toUnit T) x)) z JA JG hJA hJG`. Rewrite `e` using `[ThetaIntegral.sval_eq_zero (σ i) (hz i)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : y ≫ pullback.fst G.hom (jK R) ≫ G.hom = (y ≫ pullback.snd G.hom (jK R)) ≫ jK R` using `(congrArg (y ≫ ·) pullback.condition).trans (Category.assoc _ _ _).symm`. Establish `hu : IsUnit (gc (y ≫ pullback.fst G.hom (jK R) ≫ G.hom) z (d i))`. Establish `e₄` using `(congrArg (gc · z (d i)) e₃).trans (ExpTotal.gc_map _ _ z _)`. Conclude with `e₄ ▸ isUnit_gc _ z ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 (hd i))`. Establish `e₅` using `hu.mul_right_eq_zero.1 e.symm`.
-
-Rewrite `e₅` using `[← Units.val_pow_eq_pow_val, Units.mul_right_eq_zero]`. Establish `e₆` using `(congrArg (fun q => sval (a i) q z JA) hy).symm.trans e₅`. Conclude with `(congrArg (_ * ·) e₆).trans (mul_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) :
@@ -79,7 +77,7 @@ theorem exists_ne_zero {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : D
   exact (congrArg (_ * ·) e₆).trans (mul_zero _)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ U` and use `exists_ne_zero U`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G), ∃ σ : U.SecGT (𝟙_ _) 1, ∃ j, σ.f j ≠ 0 :=
   fun _ _ _ _ _ _ _ _ _ _ U => exists_ne_zero U

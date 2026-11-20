@@ -12,7 +12,7 @@ noncomputable section
 variable {n : ℕ} {MS : Type} [TopologicalSpace MS]
 
 /- English proof (translation)
-Introduce `p`. Take `⟨e, hp, hz, han⟩` from `hu p`. Conclude with `⟨e, hp, hz, fun x hx => (han x hx).inv (h0 _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HolomorphicAlong.inv {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) (h0 : ∀ p, u p ≠ 0) : HolomorphicAlong z (fun p => (u p)⁻¹) := by
@@ -21,15 +21,15 @@ theorem HolomorphicAlong.inv {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
   exact ⟨e, hp, hz, fun x hx => (han x hx).inv (h0 _)⟩
 
 /- English proof (translation)
-Unfold `shareExp`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem le_sixteen_mul_shareExp (e : ℕ) : e ≤ 16 * shareExp e := by
   unfold shareExp; omega
 
 /- English proof (translation)
-Establish `hsc : 0 < Real.sqrt cw` using `Real.sqrt_pos.2 hcw`. Rewrite using `[le_div_iff₀ hsc]`. Establish `h1 : (Real.exp (-(rh / 4)) * Real.sqrt cw) ^ 2 = cw * Real.exp (-(rh / 2))`. Rewrite using `[mul_pow, Real.sq_sqrt hcw.le, ← Real.exp_nat_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Establish `h2 : 0 ≤ Real.exp (-(rh / 4)) * Real.sqrt cw` using `by positivity`. Use polynomial arithmetic with `[h1, h, sq_nonneg (Real.exp (-(rh / 4)) * Real.sqrt cw - wn)]`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_quarter_le {rh wn cw : ℝ} (hcw : 0 < cw) (hwn : 0 ≤ wn)
     (h : cw * Real.exp (-(rh / 2)) ≤ wn ^ 2) : Real.exp (-(rh / 4)) ≤ wn / Real.sqrt cw := by
@@ -42,7 +42,7 @@ theorem exp_quarter_le {rh wn cw : ℝ} (hcw : 0 < cw) (hwn : 0 ≤ wn)
   nlinarith [h1, h, sq_nonneg (Real.exp (-(rh / 4)) * Real.sqrt cw - wn)]
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, Real.exp_le_exp]`. Establish `hae' : (e : ℝ) ≤ 16 * a` using `by exact_mod_cast hae`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_four_mul_le {rh K : ℝ} {a e : ℕ} (hK : -K ≤ rh) (hae : e ≤ 16 * a) :
     Real.exp (-(4 * rh)) ^ a ≤ Real.exp (K * (4 * a - e / 4)) * Real.exp (-(rh / 4)) ^ e := by
@@ -51,17 +51,17 @@ theorem exp_four_mul_le {rh K : ℝ} {a e : ℕ} (hK : -K ≤ rh) (hae : e ≤ 1
   nlinarith
 
 /- English proof (translation)
-Use `set E := Real.exp (K * (4 * a - e / 4))`. Use `set S := Real.sqrt (1 + N)`. Establish `hS : (1 + N) ^ ((e : ℝ) / 2) = S ^ e`. Simplify using `only [S]`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS]`. Establish `hsc : 0 < Real.sqrt cw` using `Real.sqrt_pos.2 hcw`. Establish `hCf : 0 ≤ Cf` using `(by positivity : 0 ≤ x * hF).trans hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCθ : 0 ≤ Cθ` using `(by positivity : 0 ≤ y * hθ).trans hth`. Establish `hCτ : 0 ≤ Cτ`. Establish `: 0 ≤ Cτ * Real.exp (-(4 * rh))` using `(by positivity : 0 ≤ t * hτ).trans htau`. Conclude with `nonneg_of_mul_nonneg_left this (Real.exp_pos _)`. Establish `hprod : (x * hF) * (y * hθ) * (t * hτ) ^ a ≤ Cf * Cθ * Cτ ^ a * (E * Real.exp (-(rh / 4)) ^ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hq : Real.exp (-(rh / 4)) ≤ CompactFixesLatticeTheory / Real.sqrt cw * (hW * ω * S)`. Combine the equalities or inequalities in the displayed calculation. Establish `hqe : Real.exp (-(rh / 4)) ^ e ≤ (CompactFixesLatticeTheory / Real.sqrt cw) ^ e * (hW ^ e * ω ^ e * S ^ e)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hden : 0 < κ * hW ^ e * ω ^ e` using `by positivity`. Establish `hlhs : x * (y * (ω ^ e)⁻¹) * t ^ a = (x * hF) * (y * hθ) * (t * hτ) ^ a / (κ * hW ^ e * ω ^ e)`. Rewrite using `[← hbk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hlhs, div_le_iff₀ hden]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem share_pointwise {x y t ω N hF hθ hτ hW wn rh κ Cf Cθ Cτ cw CompactFixesLatticeTheory K : ℝ} {a e : ℕ}
     (hae : e ≤ 16 * a) (hx : 0 ≤ x) (hy : 0 ≤ y) (ht : 0 ≤ t) (hω : 0 < ω) (hN : 0 ≤ N)
@@ -117,17 +117,15 @@ theorem share_pointwise {x y t ω N hF hθ hτ hW wn rh κ Cf Cθ Cτ cw Compact
         field_simp
 
 /- English proof (translation)
-Introduce `n MS _ _ _ _ De z δ e f τ w₀ s hF hθ hτ hW wn rh κ Cf Cτ cw CompactFixesLatticeTheory K hDe hcov hf hτ hw₀ hw₀0 hs hF0 hθ0 hτ0 hW0 hκ hbk hfb hex hτne htau hcw hwn hw hK hfl`. Take `⟨θ, Cθ, hθ, hθne, hθb⟩` from `hex`. Use `set a := shareExp e`. Use `set θ' : MS → ℂ := fun p => θ p * (w₀ p ^ e)⁻¹`. Establish `hw₀e : HolomorphicAlong z (fun p => w₀ p ^ e)` using `hw₀.pow e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ' : HolomorphicAlong z θ'` using `hθ.mul (hw₀e.inv fun p => pow_ne_zero _ (hw₀0 p))`. Establish `hθ'ne : θ' ≠ 0`. Introduce `H`. Apply `hθne` to reduce the goal to its premises. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun H p` as an intermediate fact. Simplify using `only [θ', Pi.zero_apply, mul_eq_zero, inv_eq_zero] at this`. Conclude with `this.resolve_right (pow_ne_zero _ (hw₀0 p))`. Establish `hbound : ∀ p, ‖f p * θ' p * τ p ^ a‖ ≤ Cf * Cθ * Cτ ^ a * Real.exp (K * (4 * a - e / 4)) * (CompactFixesLatticeTheory / Real.sqrt cw) ^ e / κ * (1 + normSq (z p)) ^ ((e : ℝ) / 2)`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsum : ‖w₀ p‖ ^ 2 + ∑ i, ‖s i p‖ ^ 2 = ‖w₀ p‖ ^ 2 * (1 + normSq (z p))`. Simplify using `only [hs p, norm_mul, mul_pow, normSq, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfl' : wn p ≤ CompactFixesLatticeTheory * (hW p * (‖w₀ p‖ * Real.sqrt (1 + normSq (z p))))`. Use `hfl p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hsum, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis. Establish `hN : 0 ≤ normSq (z p)` using `Finset.sum_nonneg fun i _ => sq_nonneg _`. Use `share_pointwise (le_sixteen_mul_shareExp e) (norm_nonneg (f p)) (norm_nonneg (θ p)) (norm_nonneg (τ p)) (norm_pos_iff.2 (hw₀0 p)) hN (hF0 p) (hθ0 p) (hτ0 p) (hW0 p) hκ (hbk p) (hfb p) (hθb p) (htau p) hcw (hwn p) (hw p) (hK p) hfl'` as an intermediate fact. Simplify `this` using `only [θ', norm_mul, norm_inv, norm_pow]`. Distinguish the cases in `H : ∀ p, z p = 0 → OrderGT z f p e`.
-
-Use `left`. Conclude with `ShareCore.proof hNorm n MS De z δ f θ' τ _ e a hDe hcov hf hθ' hτ hθ'ne hτne hbound H`. Use `right push Not at H`. Conclude with `H`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem ShareBound.proof (hNorm : NormLemma.Statement) : ShareBound.Statement := by
   intro n MS _ _ _ _ De z δ e f τ w₀ s hF hθ hτ hW wn rh κ Cf Cτ cw CompactFixesLatticeTheory K hDe hcov hf hτ hw₀

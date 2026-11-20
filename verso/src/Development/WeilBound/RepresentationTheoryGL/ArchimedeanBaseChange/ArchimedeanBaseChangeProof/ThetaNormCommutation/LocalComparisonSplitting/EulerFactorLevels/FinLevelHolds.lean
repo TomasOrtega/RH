@@ -22,28 +22,28 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalComparison
 namespace PositivityTheory.Rg.BcB.G8.Fin
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_kernel_compact_open`.
+A detailed English derivation is pending.
 -/
 theorem kfOC_holds : PositivityTheory.Rg.BcB.G8.KfOC := GlobalTheory.T.finite_kernel_compact_open
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_level_facts`.
+A detailed English derivation is pending.
 -/
 theorem finLevel_holds : PositivityTheory.Rg.BcB.G8.FinLevel := GlobalTheory.T.finite_level_facts
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_support_of_twist GlobalTheory.T.local_support_facts unitAE_holds GlobalTheory.T.rational_finite_places GlobalTheory.T.local_good_reduction`.
+A detailed English derivation is pending.
 -/
 theorem suppFin_holds : SuppFin := GlobalTheory.T.finite_support_of_twist GlobalTheory.T.local_support_facts unitAE_holds GlobalTheory.T.rational_finite_places GlobalTheory.T.local_good_reduction
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_euler_product_of GlobalTheory.T.finite_conjugacy_exists GlobalTheory.T.finite_restriction_vanishing GlobalTheory.T.aux_statement_21 (GlobalTheory.T.local_comparison_of GlobalTheory.T.local_comparison_inert GlobalTheory.T.local_comparison_split) GlobalTheory. …`.
+A detailed English derivation is pending.
 -/
 theorem eulerFin_holds : EulerFin :=
   GlobalTheory.T.finite_euler_product_of GlobalTheory.T.finite_conjugacy_exists GlobalTheory.T.finite_restriction_vanishing GlobalTheory.T.aux_statement_21 (GlobalTheory.T.local_comparison_of GlobalTheory.T.local_comparison_inert GlobalTheory.T.local_comparison_split) GlobalTheory.T.local_hypotheses_hold GlobalTheory.T.finite_reindexing
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_half_of_twist DcCount_pf GlobalTheory.T.finite_mass_product_formula GlobalTheory.T.rational_finite_places suppFin_holds eulerFin_holds kfOC_holds finLevel_holds`.
+A detailed English derivation is pending.
 -/
 theorem finHalf_holds : PositivityTheory.Rg.BcB.G8.FinHalf :=
   GlobalTheory.T.finite_half_of_twist DcCount_pf GlobalTheory.T.finite_mass_product_formula GlobalTheory.T.rational_finite_places suppFin_holds eulerFin_holds kfOC_holds finLevel_holds

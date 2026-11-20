@@ -15,9 +15,9 @@ namespace GlobalTheory.ThetaWeberRoad.OddDeriv
 def tailProd (τ : ℍ) (v : ℂ) : ℂ := ∏' n : ℕ, (1 - ModularForm.eta_q n (τ : ℂ) * v)
 
 /- English proof (translation)
-Establish `hs : Summable fun n : ℕ => ‖-(ModularForm.eta_q n (τ : ℂ) * v)‖`. Establish `h` using `ModularForm.summable_eta_q τ`. Simplify using `only [norm_neg, norm_mul] at h ⊢`. Conclude with `h.mul_right _`. Establish `hm : Multipliable fun n : ℕ => 1 + -(ModularForm.eta_q n (τ : ℂ) * v)` using `multipliable_one_add_of_summable hs`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← sub_eq_add_neg] at hm`. Conclude with `hm.hasProd`.
+A detailed English derivation is pending.
 -/
 lemma hasProd_tailProd (τ : ℍ) (v : ℂ) :
     HasProd (fun n : ℕ => 1 - ModularForm.eta_q n (τ : ℂ) * v) (tailProd τ v) := by
@@ -31,11 +31,11 @@ lemma hasProd_tailProd (τ : ℍ) (v : ℂ) :
   exact hm.hasProd
 
 /- English proof (translation)
-Establish `hK : IsCompact (Metric.closedBall v₀ 1)` using `isCompact_closedBall v₀ 1`. Establish `hu : Summable fun n : ℕ => ‖ModularForm.eta_q n (τ : ℂ)‖ * (‖v₀‖ + 1)`. Establish `h` using `ModularForm.summable_eta_q τ`. Simplify using `only [norm_neg] at h`. Conclude with `h.mul_right _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `H` using `Summable.hasProdUniformlyOn_nat_one_add (f := fun n v => -(ModularForm.eta_q n (τ : ℂ) * v)) hK hu (Filter.Eventually.of_forall fun n v hv => by`. Rewrite using `[norm_neg, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_le_of_mem_closedBall hv) (norm_nonneg _))`. Use the proof step `(fun n => by fun_prop)`. Rewrite `H` using `[hasProdUniformlyOn_iff_tendstoUniformlyOn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `H.continuousOn (Frequently.of_forall fun s => (continuous_finsetProd s fun i _ => by fun_prop).continuousOn)`. Establish `: ContinuousOn (tailProd τ) (Metric.closedBall v₀ 1)`. Use `hc.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[tailProd, sub_eq_add_neg]`. Conclude with `this.continuousAt (Metric.closedBall_mem_nhds v₀ one_pos)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuousAt_tailProd (τ : ℍ) (v₀ : ℂ) : ContinuousAt (tailProd τ) v₀ := by
   have hK : IsCompact (Metric.closedBall v₀ 1) := isCompact_closedBall v₀ 1
@@ -58,13 +58,13 @@ lemma continuousAt_tailProd (τ : ℍ) (v₀ : ℂ) : ContinuousAt (tailProd τ)
   exact this.continuousAt (Metric.closedBall_mem_nhds v₀ one_pos)
 
 /- English proof (translation)
-Establish `hm : cexp (-(π * I)) = -1` using `by rw [Complex.exp_neg, Complex.exp_pi_mul_I]; norm_num`. Establish `hp : cexp (π * I) = -1` using `Complex.exp_pi_mul_I`. Establish `h1 : cexp (π * I * (2 * (n : ℂ) + 1) * (τ : ℂ) + 2 * π * I * (z + ((τ : ℂ) + 1) / 2)) = -(cexp (2 * π * I * ((n : ℂ) + 1) * (τ : ℂ)) * cexp (2 * π * I * z))`. Rewrite using `[show -(cexp (2 * π * I * ((n : ℂ) + 1) * (τ : ℂ)) * cexp (2 * π * I * z)) = cexp (2 * π * I * ((n : ℂ) + 1) * (τ : ℂ)) * cexp (2 * π * I * z) * cexp (π * I) by`. Rewrite using `[hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : cexp (π * I * (2 * (n : ℂ) + 1) * (τ : ℂ) - 2 * π * I * (z + ((τ : ℂ) + 1) / 2)) = -(cexp (2 * π * I * n * (τ : ℂ)) * cexp (-(2 * π * I * z)))`. Rewrite using `[show -(cexp (2 * π * I * n * (τ : ℂ)) * cexp (-(2 * π * I * z))) = cexp (2 * π * I * n * (τ : ℂ)) * cexp (-(2 * π * I * z)) * cexp (-(π * I)) by`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use the proof step `ring, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `tpFactor`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ModularForm.eta_q_eq_cexp, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma tpFactor_shift (τ : ℍ) (z : ℂ) (n : ℕ) :
     tpFactor τ (z + ((τ : ℂ) + 1) / 2) n =
@@ -90,13 +90,13 @@ lemma tpFactor_shift (τ : ℍ) (z : ℂ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hA` using `hasProd_tailProd τ 1`. Establish `hB` using `hasProd_tailProd τ (cexp (2 * π * I * z))`. Establish `h0` using `hasProd_tailProd τ (cexp (-(2 * π * I * z)))`. Establish `h1 : HasProd (fun n : ℕ => 1 - cexp (2 * π * I * ((n + 1 : ℕ) : ℂ) * (τ : ℂ)) * cexp (-(2 * π * I * z))) (tailProd τ (cexp (-(2 * π * I * z))))`. Use `h0 using 2 with n` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[ModularForm.eta_q_eq_cexp]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hC` using `HasProd.zero_mul (f := fun n : ℕ => 1 - cexp (2 * π * I * (n : ℂ) * (τ : ℂ)) * cexp (-(2 * π * I * z))) h1`. Establish `e0 : (1 - cexp (2 * π * I * ((0 : ℕ) : ℂ) * (τ : ℂ)) * cexp (-(2 * π * I * z))) = 1 - cexp (-(2 * π * I * z))` using `by simp`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hC` using `[e0]`. Establish `hAll` using `(hA.mul hB).mul hC`. Use `(hT τ (z + ((τ : ℂ) + 1) / 2)).unique ?_` and prove the remaining obligations. Use `hAll using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[tpFactor_shift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma jacobiTheta₂_shift (hT : TripleProduct) (τ : ℍ) (z : ℂ) :
     jacobiTheta₂ (z + ((τ : ℂ) + 1) / 2) τ =
@@ -125,9 +125,9 @@ end GlobalTheory.ThetaWeberRoad.OddDeriv
 namespace GlobalTheory.ThetaWeberRoad.OddDeriv
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[hasDerivAt_iff_tendsto_slope]`. Establish `hR' : Tendsto R (𝓝[≠] (0 : ℂ)) (𝓝 (R 0))` using `hR.tendsto.mono_left nhdsWithin_le_nhds`. Use `(hF.mul hR').congr' ?_` and prove the remaining obligations. Use `filter_upwards with z`. Simplify using `only [slope_def_field, hF0, sub_zero, zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mul_of_eq_zero {F R : ℂ → ℂ} {F' : ℂ} (hF : HasDerivAt F F' 0) (hF0 : F 0 = 0)
     (hR : ContinuousAt R 0) : HasDerivAt (fun z => F z * R z) (F' * R 0) 0 := by
@@ -139,21 +139,21 @@ theorem hasDerivAt_mul_of_eq_zero {F R : ℂ → ℂ} {F' : ℂ} (hF : HasDerivA
   ring
 
 /- English proof (translation)
-Introduce `hT τ`. Use `set F : ℂ → ℂ := fun z => cexp (π * I * (τ : ℂ) / 4 + π * I * (z + 1 / 2)) * (1 - cexp (-(2 * π * I * z))) with hFdef`. Use `set R : ℂ → ℂ := fun z => tailProd τ 1 * tailProd τ (cexp (2 * π * I * z)) * tailProd τ (cexp (-(2 * π * I * z))) with hRdef`. Establish `hfun : oddTheta τ = fun z => F z * R z`. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [oddTheta, F, R]`. Rewrite using `[jacobiTheta₂_shift hT]`. Expand and normalize the polynomial expressions, which then agree. Establish `hF0 : F 0 = 0` using `by simp [F]`. Establish `h1 : HasDerivAt (fun z : ℂ => cexp (π * I * (τ : ℂ) / 4 + π * I * (z + 1 / 2))) (cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) * (π * I * 1)) 0` using `((((hasDerivAt_id (0 : ℂ)).add_const (1 / 2)).const_mul (π * I)).const_add _).cexp`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun z : ℂ => 1 - cexp (-(2 * π * I * z))) (-(cexp (-(2 * π * I * 0)) * -(2 * π * I * 1))) 0` using `(((hasDerivAt_id (0 : ℂ)).const_mul (2 * π * I)).neg.cexp).const_sub 1`. Establish `hF : HasDerivAt F (cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) * (π * I * 1) * (1 - cexp (-(2 * π * I * 0))) + cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) * (-(cexp (-(2 * π * I * 0)) * -(2 * π * I * 1)))) 0` using `h1.mul h2`. Establish `hR : ContinuousAt R 0`. Establish `hu : Continuous fun z : ℂ => cexp (2 * π * I * z)` using `by fun_prop`. Establish `hv : Continuous fun z : ℂ => cexp (-(2 * π * I * z))` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(continuousAt_const.mul ((continuousAt_tailProd τ _).comp hu.continuousAt)).mul ((continuousAt_tailProd τ _).comp hv.continuousAt)`. Rewrite using `[hfun]`. Establish `key` using `hasDerivAt_mul_of_eq_zero hF hF0 hR`. Use `key using 1` and compare the differences between its conclusion and the goal. Establish `hT1 : tailProd τ 1 = ∏' n : ℕ, (1 - ModularForm.eta_q n (τ : ℂ))`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[tailProd]`. Establish `hq : (Function.Periodic.qParam 24 (τ : ℂ)) ^ 3 = cexp (π * I * (τ : ℂ) / 4)`. Rewrite using `[Function.Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hI : cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) = cexp (π * I * (τ : ℂ) / 4) * I`. Rewrite using `[Complex.exp_add]`. Use `congr 1`. Rewrite using `[show π * I * (0 + 1 / 2) = ((π / 2 : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_mul_I]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.ofReal_cos, ← Complex.ofReal_sin, Real.cos_pi_div_two, Real.sin_pi_div_two]`. Simplify using the standard rewrite rules. Simplify using `only [R, mul_zero, neg_zero, Complex.exp_zero, hT1, hI]`. Unfold `ModularForm.eta`. Rewrite using `[mul_pow, hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_oddTheta_zero :
     TripleProduct → ∀ τ : UpperHalfPlane,

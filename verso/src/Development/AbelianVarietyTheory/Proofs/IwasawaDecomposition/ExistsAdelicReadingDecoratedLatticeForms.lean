@@ -20,15 +20,15 @@ namespace GlobalTheory.Mem.R3.BrgRead
 set_option maxHeartbeats 1000000
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`.
+A detailed English derivation is pending.
 -/
 theorem embLL_labLL_eq {D : D7} (τ : D.what₂.Tau) (x : D.host.E) : D.what₂.embLL (labLL D τ x) = tauE D τ x :=
   DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)
 
 /- English proof (translation)
-Take `⟨hs, -, -, -, -, hV⟩` from `h`. Establish `h1` using `hV ((i : ℕ) + 1)`. Establish `hn : X.toD7.sp.Vneg ((i : ℕ) + 1) = false` using `X.B.V_pos _ (by omega) i.2`. Rewrite `h1` using `[hn]`. Express the relevant statement in the definitionally equal form `(X.toD7.sp.V ((i : ℕ) + 1)).gram = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Use `Matrix.ext fun a b => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ a b).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_V (X : Stages) (h : DiagSpaces X.toD7.sp) (i : Fin X.toD7.R.m) : (Vc X.toD7 i).gram = 1 := by
   obtain ⟨hs, -, -, -, -, hV⟩ := h
@@ -41,7 +41,7 @@ theorem gram_V (X : Stages) (h : DiagSpaces X.toD7.sp) (i : Fin X.toD7.R.m) : (V
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Use `⟨smul_ne_zero hc h.1, fun τ g hg w v u hu => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[h.2 τ g hg w v u hu]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDualPair_smul {D : D7} {θ : InfFam D} {MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)} {cX : CoefA D.sp.X'}
     {prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ} (h : IsDualPair θ MX cX prX) {c : ℂ} (hc : c ≠ 0) :
@@ -51,9 +51,9 @@ theorem isDualPair_smul {D : D7} {θ : InfFam D} {MX : DSModel D.sp.X' (parB (Pt
   rw [h.2 τ g hg w v u hu]
 
 /- English proof (translation)
-Introduce `D hV θ hθ MX`. Take `⟨cX, prX, c0R, gramR, hcX, hdual, hg, hmap, hin⟩` from `GlobalTheory.CoefSpace.exists_coef_dualPair D θ MX hθ`. Establish `hL` using `fun i => GlobalTheory.CoefModel.exists_coef_lift D i (hV i)`. Use `choose cV c0L hcV hmapL hinL using hL`. Take `⟨c, hc, hiso⟩` from `GlobalTheory.PrIsoScale.exists_smul_prIso D θ MX cX prX hθ hcX hdual`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨cX, cV, c • prX, gramR, c0R, c0L, hcX, hcV, isDualPair_smul hdual hc, hiso, hg, hmap, hmapL, hin, hinL⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_coefData : ∀ (D : D7), Seed.VPos D → ∀ θ : InfFam D, IsInfFam θ → ∀ MX : DSModel D.sp.X' (parB (Ptw D) D.R.m),
   ∃ (cX : CoefA D.sp.X') (cV : ∀ i, CoefA (Vc D i)) (prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ)
@@ -74,13 +74,13 @@ theorem exists_coefData : ∀ (D : D7), Seed.VPos D → ∀ θ : InfFam D, IsInf
   obtain ⟨c, hc, hiso⟩ := GlobalTheory.PrIsoScale.exists_smul_prIso D θ MX cX prX hθ hcX hdual
   exact ⟨cX, cV, c • prX, gramR, c0R, c0L, hcX, hcV, isDualPair_smul hdual hc, hiso, hg, hmap, hmapL, hin, hinL⟩
 /- English proof (translation)
-Introduce `X px I hX U Xg tr`. Establish `hk3` using `X.B.R.m_add_three_le_k`. Use `⟨fun t P => ⟨heckeCSD_zero _ _ _ _ _ _, fun k hk => ?_⟩, fun i t P => ⟨heckeCSD_zero _ _ _ _ _ _, fun k hk => ?_⟩⟩` and prove the remaining obligations. Use `(congrArg _ (Formalism.L2.Col.heckeFam_eq_zero_of_lt _ _ _ ?_)).trans (LinearEquiv.map_zero _)` and prove the remaining obligations. Establish `e` using `X.toD7.sp.X'_rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `X.toD7.sp.X'.rank < k at hk`. Rewrite `hk` using `[e]`. Express the relevant statement in the definitionally equal form `_ < k`. Unfold `Ranks.rankX' at hk`. Unfold `Ranks.N`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Simplify using `only [Ranks.r] at hk ⊢`. Express the relevant statement in the definitionally equal form `X.B.R.k + X.B.R.m - 1 + X.B.R.m * X.B.R.t < k at hk`. Rewrite using `[Nat.mul_add, Nat.mul_one]`. Use linear arithmetic over natural numbers and integers. Use `(congrArg _ (Formalism.L2.Col.heckeFam_eq_zero_of_lt _ _ _ ?_)).trans (LinearEquiv.map_zero _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `X.toD7.sp.V_rank _ (by omega) i.2`. Express the relevant statement in the definitionally equal form `(X.toD7.sp.V ((i : ℕ) + 1)).rank < k at hk`. Rewrite `hk` using `[e]`. Conclude with `hk`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_degrees : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px),
     (∀ t P, (famR X I hX U Xg tr).A.heckeR t (P, 0) = 1 ∧
@@ -108,13 +108,13 @@ theorem hecke_degrees : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X
     exact hk
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG hI hV hL hG hβX hβV hsX hsV θ hθ MX`. Establish `hVP : Seed.VPos X.toD7` using `fun i => X.B.V_posDef _ (by omega) i.2`. Take `⟨cX, cV, prX, gramR, c0R, c0L, hcX, hcV, hdual, hiso, hgram, hmapR, hmapL, hinR, hinL⟩` from `exists_coefData X.toD7 hVP θ hθ MX`. Establish `hR` using `GlobalTheory.T.exists_rowForms_adelic_decoratedLattices X px I hX U Xg tr L eG hI hV hL hG cX gramR c0R hcX hgram hmapR hinR hβX hsX`. Establish `hLf` using `fun i => GlobalTheory.T.exists_liftForms_adelic_decoratedLattices X px I hX U Xg tr L eG hI hV hL hG cV i (c0L i) (hcV i) (hmapL i) (hinL i) (hβV i) (gram_V X hI.spaces i) (hsV i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨sR, hsR, hstR⟩` from `hR`. Use `choose sL hsL hstL using hLf`. Take `⟨hok, hon, hit, hion⟩` from `GlobalTheory.Mem.R3.famR_places X px I hX U Xg tr L eG hI hV hL hG`. Take `⟨hmu, heta, hroots⟩` from `GlobalTheory.Mem.R3.Brg.values X px I hX U Xg tr L eG hI hV hL hG`. Take `⟨hdR, hdL⟩` from `hecke_degrees X px I hX U Xg tr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrk : X.toD7.sp.X'.rank = (famR X I hX U Xg tr).A.r + X.toD7.R.m * (famR X I hX U Xg tr).A.t` using `X.toD7.sp.X'_rank`. Establish `hrkL : ∀ i : Fin X.toD7.R.m, (Vc X.toD7 i).rank = (famR X I hX U Xg tr).A.r + (famR X I hX U Xg tr).A.t` using `fun i => X.toD7.sp.V_rank _ (by omega) i.2`. Set `B : Seed.BType (famR X I hX U Xg tr) L cX cV (fun P : PlS X.B px => (P.1 : Pl X.toD7.host.E))` to `{ R := sR, L := fun i t => sL i t, rankR := hrk, rankL := hrkL }`. Use `⟨cX, cV, fun P => P.1, L.Pg, B, fun Q => Q.1, L.Pg.image (fun PP => PP.under (𝓞 X.toD7.host.F)), prX, hcX, hcV, hdual, hiso, ?_, hstR, hstL⟩` and prove the remaining obligations. Conclude with `{ red_R := fun t q => (hsR t).1 q red_L := fun i t q => (hsL i t).1 q tie := ⟨gramR, c0R, c0L, { ranks := ⟨rfl, rfl, rfl⟩ v0 := rfl tauL_ok := fun τ => RingHom.ext fun x => embLL_labLL_eq τ x pl_inj := fun a b h => Subtype.ext h q := fun P => rfl S_fin := Set.toFinite _ ok := hok …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_image]`. Use `exists_congr fun PP => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.ext_iff, HeightOneSpectrum.under_asIdeal, Ideal.under_def] }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_brgL : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → L.βX = 1 → (∀ i, L.βV i = 1) → Seed.FrmC.StdLat X.toD7.sp.X' → (∀ i, Seed.FrmC.StdLat (Vc X.toD7 i)) → ∀ θ : InfFam X.toD7, IsInfFam θ → ∀ MX : DSModel X.toD7.sp.X' (parB (Ptw X.toD7) X.toD7.R.m), ∃ (cX : CoefA X.toD7.sp.X') (cV : ∀ i, CoefA (Vc X.toD7 i)) (pl : PlS X.B px → Pl X.toD7.host.E) (Sb : Finset (Pl X.toD7.host.E)) (Bd : Seed.BType (famR X I hX U Xg tr) L cX cV pl) (plI : PlI X.B px → Pl X.toD7.host.E) (SF : Finset (HeightOneSpectrum (𝓞 X.toD7.host.F))) (prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ), cX.Is ∧ (∀ i, (cV i).Is) ∧ IsDualPair θ MX cX prX ∧ Seed.PrIso MX cX prX ∧ Seed.BrgL (famR X I hX U Xg tr) L eG cX cV pl Sb Bd plI SF ∧ BrgStdR X I hX U Xg tr L cX (fun t φ => Bd.jR t φ) ∧ ∀ i, BrgStdV X I hX U Xg tr L i (cV i) fun t φ => Bd.jL i t φ := by
   intro X px I hX U Xg tr L eG hI hV hL hG hβX hβV hsX hsV θ hθ MX

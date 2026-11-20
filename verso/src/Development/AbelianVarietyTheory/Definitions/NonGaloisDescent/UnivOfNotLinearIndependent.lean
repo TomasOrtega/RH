@@ -17,7 +17,7 @@ def flat (ν : kˣ →* Rˣ) (y : Matrix (Fin r) (Fin n) k) : R :=
   if h : IsUnit (topL r y).det then ((ν h.unit : Rˣ) : R) else 0
 
 /- English proof (translation)
-Establish `hu : IsUnit (topL r y).det` using `h ▸ u.isUnit`. Establish `hu' : hu.unit = u` using `Units.ext (by rw [IsUnit.unit_spec, h])`. Unfold `flat`. Rewrite using `[dif_pos hu, hu']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_of_isUnit (ν : kˣ →* Rˣ) {y : Matrix (Fin r) (Fin n) k} {u : kˣ} (h : (topL r y).det = u) :
     flat ν y = ((ν u : Rˣ) : R) := by
@@ -27,7 +27,7 @@ theorem flat_of_isUnit (ν : kˣ →* Rˣ) {y : Matrix (Fin r) (Fin n) k} {u : k
   rw [dif_pos hu, hu']
 
 /- English proof (translation)
-Unfold `flat`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_of_not_isUnit (ν : kˣ →* Rˣ) {y : Matrix (Fin r) (Fin n) k} (h : ¬ IsUnit (topL r y).det) :
     flat ν y = 0 := by
@@ -35,7 +35,7 @@ theorem flat_of_not_isUnit (ν : kˣ →* Rˣ) {y : Matrix (Fin r) (Fin n) k} (h
   rw [dif_neg h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hj : j.val < n` using `lt_of_lt_of_le j.isLt hr`. Simplify using `[topL, Matrix.mul_apply, hj]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem topL_mul (hr : r ≤ n) (g : Matrix (Fin r) (Fin r) k) (y : Matrix (Fin r) (Fin n) k) :
     topL r (g * y) = g * topL r y := by
@@ -44,9 +44,9 @@ theorem topL_mul (hr : r ≤ n) (g : Matrix (Fin r) (Fin r) k) (y : Matrix (Fin 
   simp [topL, Matrix.mul_apply, hj]
 
 /- English proof (translation)
-Establish `hdet : (topL r ((g : Matrix (Fin r) (Fin r) k) * y)).det = (GeneralLinearGroup.det g : k) * (topL r y).det`. Rewrite using `[topL_mul hr, Matrix.det_mul]`. Both sides reduce to the same expression. Distinguish the cases in `hu : IsUnit (topL r y).det`. Rewrite using `[flat_of_isUnit ν (u := GeneralLinearGroup.det g * hu.unit) (by rw [hdet, Units.val_mul, hu.unit_spec]), flat_of_isUnit ν (u := hu.unit) hu.unit_spec.symm, map_mul, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hu' : ¬ IsUnit (topL r ((g : Matrix (Fin r) (Fin r) k) * y)).det`. Rewrite using `[hdet, Units.isUnit_units_mul]`. Conclude with `hu`. Rewrite using `[flat_of_not_isUnit ν hu', flat_of_not_isUnit ν hu, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_mul (hr : r ≤ n) (ν : kˣ →* Rˣ) (g : GL (Fin r) k) (y : Matrix (Fin r) (Fin n) k) :
     flat ν ((g : Matrix (Fin r) (Fin r) k) * y) = ((ν (GeneralLinearGroup.det g) : Rˣ) : R) * flat ν y := by
@@ -84,7 +84,7 @@ instance [Finite k] : Finite (Planes k r n) :=
   Subtype.finite
 
 /- English proof (translation)
-Establish `h1` using `Submodule.finrank_quotient_add_finrank U.1`. Establish `h2` using `U.2`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_quot (U : Planes k r n) : Module.finrank k ((Fin n → k) ⧸ U.1) = r := by
   have h1 := Submodule.finrank_quotient_add_finrank U.1
@@ -109,13 +109,13 @@ def dU (β : DetBases k r n) (U : Planes k r n) (y : Matrix (Fin r) (Fin n) k) :
   β.form U fun i => U.1.mkQ (y.row i)
 
 /- English proof (translation)
-Establish `hspan : Submodule.span k (Set.range fun i => U.1.mkQ (y.row i)) = ⊤ ↔ Compl U.1 y`. Establish `hr : (Set.range fun i => U.1.mkQ (y.row i)) = U.1.mkQ '' Set.range y.row`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, Submodule.map_mkQ_eq_top, Compl, sup_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card (Fin r) = Module.finrank k ((Fin n → k) ⧸ U.1)`. Rewrite using `[Fintype.card_fin, finrank_quot U]`. Unfold `dU`. Rewrite using `[← hspan]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hne`. Establish `hli : LinearIndependent k (fun i => U.1.mkQ (y.row i))`. Assume the negation of the conclusion as `hdep`. Conclude with `hne ((β.form U).map_linearDependent _ hdep)`. Conclude with `hli.span_eq_top_of_card_eq_finrank' hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `htop`. Establish `hli : LinearIndependent k (fun i => U.1.mkQ (y.row i))` using `linearIndependent_of_top_le_span_of_card_eq_finrank htop.ge hcard`. Establish `hb` using `(β.form U).map_basis_ne_zero_iff (Module.Basis.mk hli htop.ge)`. Rewrite `hb` using `[Module.Basis.coe_mk]`. Conclude with `hb.2 (β.ne U)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dU_ne_zero_iff (β : DetBases k r n) (U : Planes k r n) (y : Matrix (Fin r) (Fin n) k) :
     dU β U y ≠ 0 ↔ Compl U.1 y := by
@@ -142,13 +142,13 @@ theorem dU_ne_zero_iff (β : DetBases k r n) (U : Planes k r n) (y : Matrix (Fin
     exact hb.2 (β.ne U)
 
 /- English proof (translation)
-Set `e` to `Module.finBasisOfFinrankEq k ((Fin n → k) ⧸ U.1) (finrank_quot U)`. Establish `hrow : ∀ i, U.1.mkQ ((g * y).row i) = ∑ j, g i j • U.1.mkQ (y.row j)`. Introduce `i`. Establish `hgy : (g * y).row i = ∑ j, g i j • y.row j`. Use extensionality with `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, Matrix.row, Finset.sum_apply]`. Rewrite using `[hgy, map_sum]`. Simplify using `only [map_smul]`. Establish `hM : e.toMatrix (fun i => U.1.mkQ ((g * y).row i)) = e.toMatrix (fun i => U.1.mkQ (y.row i)) * g.transpose`. Use extensionality with `a i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Module.Basis.toMatrix_apply, hrow, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Unfold `dU`. Rewrite using `[(β.form U).eq_smul_basis_det e]`. Simplify using `only [AlternatingMap.smul_apply, Module.Basis.det_apply, hM, Matrix.det_mul, Matrix.det_transpose, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem dU_mul (β : DetBases k r n) (U : Planes k r n) (g : Matrix (Fin r) (Fin r) k) (y : Matrix (Fin r) (Fin n) k) :
     dU β U (g * y) = g.det * dU β U y := by
@@ -189,15 +189,13 @@ def univCoef (β : DetBases k r n) (κ : kˣ →* Multiplicative C) (c : C) (y :
   (univ β κ y).coeff c
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (Planes k r n)`. Establish `hterm : ∀ U : Planes k r n, (univTerm β κ y U).coeff c = if ∃ u : kˣ, (u : k) = dU β U y ∧ Multiplicative.toAdd (κ u) = c then 1 else 0`. Introduce `U`. Unfold `univTerm`. Distinguish the cases in `hC : Compl U.1 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hC, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Distinguish the cases in `hE : ∃ u : kˣ, (u : k) = dU β U y ∧ Multiplicative.toAdd (κ u) = c`. Take `⟨u, hu, hc⟩` from `hE`. Establish `hmk : Units.mk0 _ ((dU_ne_zero_iff β U y).2 hC) = u` using `Units.ext (by simp [hu])`. Rewrite using `[hmk, if_pos hc, if_pos ⟨u, hu, hc⟩]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hE, if_neg]`. Conclude with `fun hc => hE ⟨_, rfl, hc⟩`. Rewrite using `[dif_neg hC, if_neg, AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply]`. Introduce and unpack `⟨u, hu, -⟩`. Conclude with `hC ((dU_ne_zero_iff β U y).1 (hu ▸ u.ne_zero))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `univCoef univ`. Rewrite using `[AddMonoidAlgebra.coeff_smul_apply, AddMonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Repeatedly rewrite using `[hterm]`. Use `clear hterm`. Rewrite using `[Finset.sum_boole, smul_eq_mul]`.
-
-Use `congr 2`. Rewrite using `[← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun U => by simp)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univCoef_eq (β : DetBases k r n) (κ : kˣ →* Multiplicative C) (c : C) (y : Matrix (Fin r) (Fin n) k) :
     univCoef β κ c y = ((Nat.card k : ℚ) ^ (r * (n - r)))⁻¹ *
@@ -235,15 +233,15 @@ structure IsAdmissible (κ : kˣ →* Multiplicative C) (Φ : C → Matrix (Fin 
       Φ (c + Multiplicative.toAdd (κ (GeneralLinearGroup.det g))) y
 
 /- English proof (translation)
-Establish `hq : (Nat.card k : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `⟨r * (n - r), Nat.card {U : Planes k r n // ∃ u : kˣ, (u : k) = dU β U y ∧ Multiplicative.toAdd (κ u) = c}, ?_⟩` and prove the remaining obligations. Rewrite using `[univCoef_eq, mul_comm, mul_inv_cancel_left₀ (pow_ne_zero _ hq)]`. Simplify using the standard rewrite rules. Use `equiv g c y := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[univCoef_eq, univCoef_eq]`. Use `congr 2`. Apply `Nat.card_congr` to reduce the goal to its premises. Apply `Equiv.subtypeEquivRight` to reduce the goal to its premises. Introduce `U`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set a := GeneralLinearGroup.det g`. Establish `hd : dU β U (((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * y) = ((a⁻¹ : kˣ) : k) * dU β U y`. Rewrite using `[dU_mul]`. Use `congr 1`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hc⟩`. Use `⟨a * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hu, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite using `[map_mul, toAdd_mul, hc, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨u, hu, hc⟩`. Use `⟨a⁻¹ * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hu]`. Rewrite using `[map_mul, toAdd_mul, hc, map_inv, toAdd_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isAdmissible_univCoef (β : DetBases k r n) (κ : kˣ →* Multiplicative C) : IsAdmissible κ (univCoef β κ) where
   den c y := by
@@ -274,9 +272,9 @@ theorem isAdmissible_univCoef (β : DetBases k r n) (κ : kˣ →* Multiplicativ
         abel
 
 /- English proof (translation)
-Establish `hz : ∀ U : Planes k r n, univTerm β κ y U = 0`. Introduce `U`. Establish `hd : dU β U y = 0` using `(β.form U).map_linearDependent _ fun hli => h (LinearIndependent.of_comp U.1.mkQ hli)`. Establish `hc : ¬ Compl U.1 y` using `fun hc => (dU_ne_zero_iff β U y).2 hc hd`. Unfold `univTerm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg hc]`. Unfold `univ`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem univ_of_not_linearIndependent (β : DetBases k r n) (κ : kˣ →* Multiplicative C) {y : Matrix (Fin r) (Fin n) k}
     (h : ¬ LinearIndependent k y.row) : univ β κ y = 0 := by
@@ -293,20 +291,20 @@ theorem univ_of_not_linearIndependent (β : DetBases k r n) (κ : kˣ →* Multi
 end Univ
 
 /- English proof (translation)
-Rewrite using `[flat_of_isUnit ν (u := 1) (by simp [topL])]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 example {k : Type} [Field k] (ν : kˣ →* ℂˣ) : flat ν (!![1, 0] : Matrix (Fin 1) (Fin 2) k) = 1 := by
   rw [flat_of_isUnit ν (u := 1) (by simp [topL])]; simp
 
 /- English proof (translation)
-The claim follows from `flat_of_isUnit ν (by simp [topL])`.
+A detailed English derivation is pending.
 -/
 example {k : Type} [Field k] (ν : kˣ →* ℂˣ) (a : kˣ) (b : k) :
     flat ν (!![(a : k), b] : Matrix (Fin 1) (Fin 2) k) = ν a :=
   flat_of_isUnit ν (by simp [topL])
 
 /- English proof (translation)
-The claim follows from `flat_of_not_isUnit ν (by simp [topL])`.
+A detailed English derivation is pending.
 -/
 example {k : Type} [Field k] (ν : kˣ →* ℂˣ) : flat ν (!![0, 1] : Matrix (Fin 1) (Fin 2) k) = 0 :=
   flat_of_not_isUnit ν (by simp [topL])

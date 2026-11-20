@@ -8,15 +8,15 @@ open ValuativeRel Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ A D _ _ _ _ X`. Set `V` to `LinearMap.range X.mulVecLin`. Set `b : Module.Basis (Fin X.rank) K V` to `Module.finBasis K V`. Take `⟨g, hg⟩` from `LinearMap.exists_extend (p := V) b.equivFun.toLinearMap`. Establish `hpre : ∀ i, ∃ v : D → K, X *ᵥ v = ((b i : V) : A → K)` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `LinearMap.mem_range.mp (b i).2`. Conclude with `⟨v, hv⟩`. Use `choose q hq using hpre`. Use `⟨LinearMap.toMatrix' g, Matrix.of fun d i => q i d, ?_⟩` and prove the remaining obligations. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.one_mulVec]`. Establish `hcol : (Matrix.of fun d i => q i d).col j = q j`. Use extensionality with `d`. Simplify using `[Matrix.col]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol, hq j, LinearMap.toMatrix'_mulVec]`. Use `congrArg (fun f => f (b j)) hg` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearEquiv.coe_coe] at this`. Rewrite using `[this]`. Use extensionality with `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.equivFun_self]`. Simplify using `[Pi.single_apply, Finsupp.single_apply, eq_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_frame_exists :
     ∀ (K : Type) [Field K] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]

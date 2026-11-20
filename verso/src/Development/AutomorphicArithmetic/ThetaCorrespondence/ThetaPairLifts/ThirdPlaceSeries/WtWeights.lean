@@ -14,17 +14,15 @@ attribute [local instance] algKkT
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `_ D cf jE A _ _`. Use `⟨fun l _ j => ⟨⊥, inferInstance⟩, fun b0 b1 Sx T Sp _ => ?_⟩` and prove the remaining obligations. Establish `hlam : ∀ (j : Fin D.R.m) (t : D.what₂.Tau), ∃ lam : DomWeight D.R.nV, ∀ sh : ℂ, D.naut.infG D.naut.etaT (embT D t) = {sh} → NG.infOf lam.w = NG.paramV D.R (D.hc t) j sh`. Introduce `j t`. Distinguish the cases in `h : ∃ sh, D.naut.infG D.naut.etaT (embT D t) = {sh}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨sh, hs⟩` from `h`. Take `⟨lam, hl⟩` from `GlobalTheory.T.liftWeightParam_eq_infinitesimalCharacter_of_halfInt D.R (D.hc t) j sh (_root_.GlobalTheory.T.infG_eq_half_integer D cf jE A t sh hs)`. Use `⟨lam, fun sh' hs' => ?_⟩` and prove the remaining obligations. Rewrite `hs'` using `[hs, Multiset.singleton_inj]`. Rewrite using `[← hs']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl`. Conclude with `⟨⟨fun _ => 0, antitone_const⟩, fun sh hs => absurd ⟨sh, hs⟩ h⟩`. Use `choose lamF hlamF using hlam`. Set `lamD : ℕ → D.what₂.Tau → DomWeight D.R.nV` to `fun j t => if h : 1 ≤ j ∧ j ≤ D.R.m then lamF ⟨j - 1, by omega⟩ t else ⟨fun _ => 0, antitone_const⟩`. Establish `hc : NX.cE D = (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E)` using `RingHom.ext fun x => (Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨{ Wt := fun i j _ => Module.Dual (FractionRing (T.O i)) (Formalism.L2.DIV.VV (FractionRing (T.O i)) (lamD j)) fd := fun i j _ => GlobalTheory.AlgWtF.finDualVV (lamD j) rhoW := fun i j b => GlobalTheory.AlgWtF.wtRepF (kEmbT D T i b) (lamD j) }, fun i j b hj hjm => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.T.charZero_fractionRing_coefficientRing D T i`. Establish `hE` using `GlobalTheory.T.cmTypeEmbeddingAtSide_distinct_nonconjugate D T i b`. Establish `hl : lamD j = lamF ⟨j - 1, by omega⟩`. Simplify using `only [lamD, dif_pos (And.intro hj hjm)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.T.contragredient_isIrreducible_finiteDimensional _ _ _ _ (GlobalTheory.T.weightTensorRepOfEmbeddings_isIrreducible _ _ _ _ _ _ hE), GlobalTheory.T.isAlgWeightF_weightTensorDualRepOfEmbeddings _ _ _ _ _ _, fun k => @GlobalTheory.T.isIrreducible_baseChange_weightTenso …` and prove the remaining obligations. Rewrite `hw` using `[hc]`. Establish `h1` using `GlobalTheory.T.highestWeight_doubleDual_coefficientSpace_unique _ _ _ _ _ _ hE t lam hw`. Rewrite using `[h1]`. Use `show NG.infOf (lamD j t).w = _`.
-
-Rewrite using `[hl]`. Conclude with `hlamF _ t sh hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_weights_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE),
     (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) →

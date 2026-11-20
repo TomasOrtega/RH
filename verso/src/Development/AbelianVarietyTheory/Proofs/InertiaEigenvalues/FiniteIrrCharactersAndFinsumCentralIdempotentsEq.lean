@@ -12,21 +12,21 @@ open CategoryTheory
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Simplify using `only [zOf, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, MonoidAlgebra.single_apply, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zOf_coeff (χ : G → ℂ) (y : G) : (zOf χ).coeff y = χ 1 / (Fintype.card G : ℂ) * χ y⁻¹ := by
   simp only [zOf, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, MonoidAlgebra.single_apply,
     Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[← hV 1, FDRep.char_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem irr_one_eq_finrank {χ : G → ℂ} {V : FDRep ℂ G} (hV : ∀ x, V.character x = χ x) :
     χ 1 = (Module.finrank ℂ V : ℂ) := by
   rw [← hV 1, FDRep.char_one]
 
 /- English proof (translation)
-Establish `h1` using `irr_one_eq_finrank hV`. Unfold `zOf Formalism.IrreducibleCountingLemmas.TYPES.zIdem`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[h1, ← hV x⁻¹]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zOf_eq_zIdem (χ : G → ℂ) (V : FDRep ℂ G) (hV : ∀ x, V.character x = χ x) :
     zOf χ = Formalism.IrreducibleCountingLemmas.TYPES.zIdem V := by
@@ -37,15 +37,15 @@ theorem zOf_eq_zIdem (χ : G → ℂ) (V : FDRep ℂ G) (hV : ∀ x, V.character
   rfl
 
 /- English proof (translation)
-Introduce `χ hχ χ' hχ' h`. Take `⟨V, hs, hV⟩` from `hχ`. Take `⟨V', hs', hV'⟩` from `hχ'`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `h1` using `irr_one_eq_finrank hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'` using `irr_one_eq_finrank hV'`. Establish `e1` using `congrArg (fun a => a.coeff 1) h`. Simplify using `only [zOf_coeff, inv_one] at e1`. Rewrite `e1` using `[h1, h1']`. Establish `e2 : ((Module.finrank ℂ V * Module.finrank ℂ V : ℕ) : ℂ) = ((Module.finrank ℂ V' * Module.finrank ℂ V' : ℕ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear denominators, using `at e1` for the nonvanishing conditions. Take the linear combination `e1`. Establish `hn : Module.finrank ℂ V = Module.finrank ℂ V'` using `Nat.mul_self_inj.mp (by exact_mod_cast e2)`. Establish `h11 : χ 1 = χ' 1` using `by rw [h1, h1', hn]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := PI.GreenLabelSurjWork.nontrivial_of_simple V hs`. Establish `hpos : (Module.finrank ℂ V : ℂ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℂ) (M := V)).ne'` after adjusting the coercions. Establish `hk : χ 1 / (Fintype.card G : ℂ) ≠ 0` using `div_ne_zero (h1 ▸ hpos) hc`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3` using `congrArg (fun a => a.coeff y⁻¹) h`. Simplify using `only [zOf_coeff, inv_inv] at e3`. Rewrite `e3` using `[← h11]`. Conclude with `mul_left_cancel₀ hk e3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_injOn : Set.InjOn (zOf (G := G)) {χ | IsIrr χ} := by
   intro χ hχ χ' hχ' h
@@ -75,9 +75,9 @@ theorem zOf_injOn : Set.InjOn (zOf (G := G)) {χ | IsIrr χ} := by
   exact mul_left_cancel₀ hk e3
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨χ, ⟨V, hs, hV⟩, rfl⟩`. Conclude with `⟨V, hs, (zOf_eq_zIdem χ V hV).symm⟩`. Introduce and unpack `⟨τ, hs, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨τ.character, ⟨τ, hs, fun _ => rfl⟩, zOf_eq_zIdem _ τ fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem zOf_image :
     zOf '' {χ : G → ℂ | IsIrr χ} =
@@ -94,9 +94,9 @@ end GlobalTheory.GLq.ZSumOne
 namespace GlobalTheory.GLq
 
 /- English proof (translation)
-Introduce `G _ _`. Establish `hZ` using `GlobalTheory.SerOSys.zIdem_finite_and_finsum_eq_one G`. Rewrite `hZ` using `[← ZSumOne.zOf_image]`. Use `⟨Set.Finite.of_finite_image hZ.1 ZSumOne.zOf_injOn, ?_⟩` and prove the remaining obligations. Establish `himg` using `finsum_mem_image (f := fun z : MonoidAlgebra ℂ G => z) (ZSumOne.zOf_injOn (G := G))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← himg]`. Conclude with `hZ.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_finite_and_finsum_zOf_eq_one : ∀ (G : Type) [Group G] [Fintype G],
     {χ : G → ℂ | IsIrr χ}.Finite ∧ ∑ᶠ χ ∈ {χ : G → ℂ | IsIrr χ}, zOf χ = 1 := by

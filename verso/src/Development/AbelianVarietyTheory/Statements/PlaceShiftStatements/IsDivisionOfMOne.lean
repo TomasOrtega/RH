@@ -12,9 +12,9 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.IwLevel.IwInhab
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h.map (Algebra.norm ℤ)`. Establish `h2 : Algebra.norm ℤ ((5 : ℕ) : 𝓞 gaussOneDatum.F) = (5 : ℤ) ^ Module.finrank ℤ (𝓞 gaussOneDatum.F)`. Rewrite using `[← map_natCast (algebraMap ℤ (𝓞 gaussOneDatum.F)), Algebra.norm_algebraMap]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `h1` using `[h2]`. Establish `hpos : Module.finrank ℤ (𝓞 gaussOneDatum.F) ≠ 0` using `Module.finrank_pos.ne'`. Rewrite `h1` using `[isUnit_pow_iff hpos, Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem five_not_unit : ¬ IsUnit ((5 : ℕ) : 𝓞 gaussOneDatum.F) := by
   intro h
@@ -31,14 +31,14 @@ def wG : Ideal (𝓞 gaussOneDatum.F) :=
     (by rw [Ne, Ideal.span_singleton_eq_top]; exact five_not_unit))
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (Ideal.exists_le_maximal (Ideal.span {((5 : ℕ) : 𝓞 gaussOneDatum.F)}) (by rw [Ne, Ideal.span_singleton_eq_top]; exact five_not_unit))).symm`.
+A detailed English derivation is pending.
 -/
 theorem wG_spec : Ideal.span {((5 : ℕ) : 𝓞 gaussOneDatum.F)} ≤ wG ∧ wG.IsMaximal :=
   (Classical.choose_spec (Ideal.exists_le_maximal (Ideal.span {((5 : ℕ) : 𝓞 gaussOneDatum.F)})
     (by rw [Ne, Ideal.span_singleton_eq_top]; exact five_not_unit))).symm
 
 /- English proof (translation)
-The claim follows from `wG_spec.1 (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem five_mem : ((5 : ℕ) : 𝓞 gaussOneDatum.F) ∈ wG := wG_spec.1 (Ideal.mem_span_singleton_self _)
 
@@ -46,12 +46,12 @@ instance wG_max : wG.IsMaximal := wG_spec.2
 instance wG_prime : wG.IsPrime := wG_max.isPrime
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem five_ne_zero : ((5 : ℕ) : 𝓞 gaussOneDatum.F) ≠ 0 := Nat.cast_ne_zero.2 (by norm_num)
 
 /- English proof (translation)
-Introduce `h` and use `by have := five_mem rw [h, Ideal.mem_bot] at this exact five_ne_zero this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wG_ne_bot : wG ≠ ⊥ := fun h => by
   have := five_mem
@@ -66,14 +66,14 @@ instance : IsDiscreteValuationRing RG :=
 def ϖG : RG := Classical.choose (IsDiscreteValuationRing.exists_irreducible RG)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible RG)`.
+A detailed English derivation is pending.
 -/
 theorem ϖG_irr : Irreducible ϖG := Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible RG)
 
 /- English proof (translation)
-Introduce `hkw`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.2 hk)`. Establish `h1 : ((u * (k : ℤ) + v * ((5 : ℕ) : ℤ) : ℤ) : 𝓞 gaussOneDatum.F) = 1` using `by rw [huv]; simp`. Establish `: (1 : 𝓞 gaussOneDatum.F) ∈ wG`. Rewrite using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `wG.add_mem (wG.mul_mem_left _ (by exact_mod_cast hkw)) (wG.mul_mem_left _ (by exact_mod_cast five_mem))`. Conclude with `wG_max.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem natCast_not_mem (k : ℕ) (hk : k.Coprime 5) : ((k : ℕ) : 𝓞 gaussOneDatum.F) ∉ wG := by
   intro hkw
@@ -103,7 +103,7 @@ def bG : Base gaussOneDatum RG where
 def i0 : Fin gaussOneDatum.a := ⟨0, Nat.one_pos⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SemistableModel.isStrictlySemistable_base RG ϖG`.
+A detailed English derivation is pending.
 -/
 example : GlobalTheory.Et.IsStrictlySemistable ϖG (𝟙 (Spec (CommRingCat.of RG))) :=
   GlobalTheory.SemistableModel.isStrictlySemistable_base RG ϖG

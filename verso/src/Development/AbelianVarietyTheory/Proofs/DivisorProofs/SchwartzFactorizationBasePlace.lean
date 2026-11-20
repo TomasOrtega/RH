@@ -15,33 +15,29 @@ namespace GlobalTheory.FacAtFixed
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT Φ hΦ`. Establish `hstd` using `hT.geo.hM'.std`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, φ, hSB, hev, hv, rfl⟩` from `hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hφ : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hstd).mono fun v hv => hv.1.trans hv.2`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor B.v₁ f φ hφ`. Use `⟨1, fun _ => φ B.v₁, fun _ => r, fun _ => hv, fun _ χ hχ => ⟨hr, ?_⟩, fun _ χ hχ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrt χ]`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φ B.v₁ χ hφ)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w = B.v₁`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hχ`. Rewrite using `[Function.update_of_ne hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hSB w`. Rewrite using `[hrt χ]`. Use `Submodule.subset_span ⟨f, Function.update φ B.v₁ χ, fun w => ?_, ?_, by rwa [Function.update_self], rfl⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = B.v₁`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `hχ.1`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Use `filter_upwards [hev, Filter.eventually_cofinite_ne B.v₁] with w hw hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw`. Rewrite using `[Fin.sum_univ_one, hrt, Function.update_eq_self]`. Consider the case `zero`. Use `⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun j => j.elim0, fun j => j.elim0, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Take `⟨N₁, ψ₁, r₁, h1, h2, h3, rfl⟩` from `hx`. Take `⟨N₂, ψ₂, r₂, k1, k2, k3, rfl⟩` from `hy`. Use `⟨N₁ + N₂, Fin.append ψ₁ ψ₂, Fin.append r₁ r₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `h1 i`. Rewrite using `[Fin.append_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k1 i`. Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `h2 i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.append_right]`. Conclude with `k2 i`. Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h3 i`. Rewrite using `[Fin.append_right]`. Conclude with `k3 i`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Take `⟨N₁, ψ₁, r₁, h1, h2, h3, rfl⟩` from `hx`. Establish `htc : ∀ (χ : (Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ) (s : (Fin a' × Fin (a + a') → AF F) → ℂ), tens (evFin F B.v₁) χ (c • s) = c • tens (evFin F B.v₁) χ s`. Introduce `χ s`. Use function extensionality and compare the values at `x`.
-
-Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨N₁, ψ₁, fun j => c • r₁ j, h1, fun j χ hχ => ⟨fun x z hz => ?_, ?_⟩, fun j χ hχ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, (h2 j χ hχ).1 x z hz]`. Rewrite using `[htc]`.
-
-Conclude with `Submodule.smul_mem _ c (h2 j χ hχ).2`. Rewrite using `[htc]`. Conclude with `Submodule.smul_mem _ c (h3 j χ hχ)`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [htc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ∃ (N : ℕ) (ψ : Fin N → ((Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ)) (r : Fin N → ((Fin a' × Fin (a + a') → AF F) → ℂ)), (∀ j, ψ j ∈ G.M'.SoLoc B.ψ B.τ₁) ∧ (∀ j, ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), Rest (evFin F B.v₁) φ (r j)) ∧ (∀ j, ∀ φ ∈ G.M'.SoLoc B.ψ B.τ₁, tens (evFin F B.v₁) φ (r j) ∈ G.M'.So B.ψ B.τ₁) ∧ Φ = ∑ j, tens (evFin F B.v₁) (ψ j) (r j) := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT Φ hΦ

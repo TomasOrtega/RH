@@ -32,7 +32,7 @@ def semiMor {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {C : Type
   nat φ x := hn φ.1 x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [CH.d, LinearMap.coe_mk, AddHom.coe_mk, CH.aug, LinearMap.pi_apply, he]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem d_aug_zero {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
     {M : Type w₁} [AddCommGroup M] [Module R M] (e : ∀ T : C, M →ₗ[R] F.obj T)
@@ -43,7 +43,7 @@ theorem d_aug_zero {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C 
   simp
 
 /- English proof (translation)
-The claim follows from `d_aug_zero _ _ (fun {X Y} φ y => by change (F.map (j.map φ.1)).hom ((F.map X.2).hom y) = (F.map Y.2).hom y rw [← ModuleCat.comp_apply, ← F.map_comp] exact congrArg (fun g => (F.map g).hom y) φ.2) x`.
+A detailed English derivation is pending.
 -/
 theorem ptsAug_d {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
     (F : C ⥤ ModuleCat.{w} R) (A : C) (x : F.obj A) :
@@ -54,11 +54,11 @@ theorem ptsAug_d {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type
     exact congrArg (fun g => (F.map g).hom y) φ.2) x
 
 /- English proof (translation)
-Use `forall_congr' fun A => ?_` and prove the remaining obligations. Set `m : CH.Mor (CH.elF (CH.pts j A) (j ⋙ F)) (CH.elF (CH.pts j A) (j ⋙ F')) σ` to `semiMor σ (CH.pts j A) (j ⋙ F) (j ⋙ F') (fun X => τ (j.obj X)) (fun X => hσ _) (fun f x => hn (j.map f) x)`. Use `CrystallineSemistableComparison.P.res_semilinear m.hom (CH.ptsAug j F A) (CH.ptsAug j F' A) (semilinearOfAdditive σ (τ A) (hσ A)) s (hb A) (fun n => ⟨?_, ?_⟩) (fun x => ?_)` and prove the remaining obligations. Introduce `f g h`. Use function extensionality and compare the values at `t`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h' : τ (j.obj (t.obj (Fin.last n)).1) (f t) = τ (j.obj (t.obj (Fin.last n)).1) (g t)` using `congrFun h t`. Conclude with `(hb _).1 h'`. Introduce `g`. Conclude with `⟨fun t => Function.surjInv (hb (j.obj (t.obj (Fin.last n)).1)).2 (g t),`. Use function extensionality and compare the values at `fun t => Function.surjInv_eq (hb (j.obj (t.obj (Fin.last n)).1)).2 (g t)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Conclude with `hn _ x`.
+A detailed English derivation is pending.
 -/
 theorem des_semi {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
     (F : C ⥤ ModuleCat.{w} R) (F' : C ⥤ ModuleCat.{w} R') (τ : ∀ A : C, F.obj A →+ F'.obj A)
@@ -81,7 +81,7 @@ theorem des_semi {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {C :
     exact hn _ x
 
 /- English proof (translation)
-The claim follows from `des_semi σ j (F ⋙ ModuleCat.restrictScalars σ) F (fun A => AddMonoidHom.id (F.obj A)) (fun _ _ _ => rfl) (fun _ => Function.bijective_id) (fun _ _ => rfl) s`.
+A detailed English derivation is pending.
 -/
 theorem des_res {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {C : Type u} [Category.{v} C] {T : Type u'}
     [Category.{v'} T] (j : T ⥤ C) (F : C ⥤ ModuleCat.{w} R') (s : R) :
@@ -106,9 +106,9 @@ def natRes {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] (σ
     exact nα f x
 
 /- English proof (translation)
-Establish `key : ∀ A : C, ((CH.cx (CH.elF (CH.pts j A) (j ⋙ G₁))).ResUpTo s (CH.ptsAug j G₁ A) → (CH.cx (CH.elF (CH.pts j A) (j ⋙ G₃))).ResUpTo s (CH.ptsAug j G₃ A) → (CH.cx (CH.elF (CH.pts j A) (j ⋙ G₂))).ResUpTo (s ^ 3) (CH.ptsAug j G₂ A)) ∧ ((CH.cx (CH.elF (CH.pts j A) (j ⋙ G₂))).ResUpTo …`. Introduce `A`. Set `a` to `Functor.whiskerLeft (CategoryOfElements.π (CH.pts j A)) (Functor.whiskerLeft j α)`. Set `b` to `Functor.whiskerLeft (CategoryOfElements.π (CH.pts j A)) (Functor.whiskerLeft j β)`. Take `⟨h1, h2, h3⟩` from `CrystallineSemistableComparison.P.ses_cochains a b (fun X => hi _) (fun X => he _) (fun X => hs _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨k1, k2, -⟩` from `CrystallineSemistableComparison.P.res_2of3 _ _ h1 h2 h3 (α.app A).hom (β.app A).hom (hi A) (he A) (hs A) (CH.ptsAug j G₁ A) (CH.ptsAug j G₂ A) (CH.ptsAug j G₃ A) (fun x => funext fun t => (congrArg (fun φ => ModuleCat.Hom.hom φ x) (α.naturality (t.obj (Fin.last 0)).2)).symm) (fun …`. Conclude with `⟨k1, k2⟩`. Conclude with `⟨fun h1 h3 A => (key A).1 (h1 A) (h3 A), fun h2 h3 A => (key A).2 (h2 A) (h3 A)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem des_ses_nat {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
     {G₁ G₂ G₃ : C ⥤ ModuleCat.{w} R} (α : G₁ ⟶ G₂) (β : G₂ ⟶ G₃)
@@ -135,7 +135,7 @@ theorem des_ses_nat {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {T : T
   exact ⟨fun h1 h3 A => (key A).1 (h1 A) (h3 A), fun h2 h3 A => (key A).2 (h2 A) (h3 A)⟩
 
 /- English proof (translation)
-Establish `key` using `des_ses_nat j (natRes σ₁ σ₂ F₁ F₂ α hα nα) (natRes σ₂ σ₃ F₂ F₃ β hβ nβ) (fun A x y h => hi A h) (fun A y => he A y) (fun A y => hs A y) s`. Use `⟨fun h1 h3 => ?_, fun h2 h3 => ?_⟩` and prove the remaining obligations. Conclude with `(des_res σ₂ j F₂ (s ^ 3)).1 (key.1 ((des_res σ₁ j F₁ s).2 h1) ((des_res σ₃ j F₃ s).2 h3))`. Conclude with `(des_res σ₁ j F₁ (s ^ 3)).1 (key.2 ((des_res σ₂ j F₂ s).2 h2) ((des_res σ₃ j F₃ s).2 h3))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem des_ses {R R₁ R₂ R₃ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] [CommRing R₃] (σ₁ : R →+* R₁) (σ₂ : R →+* R₂) (σ₃ : R →+* R₃)
     {C : Type u} [Category.{v} C] {T : Type u'} [Category.{v'} T] (j : T ⥤ C)

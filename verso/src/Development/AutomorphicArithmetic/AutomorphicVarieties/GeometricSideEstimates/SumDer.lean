@@ -11,9 +11,9 @@ section
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `h : (v ᵥ* Matrix.of Z) j = ∑ i, v i * Z i j` using `rfl`. Rewrite using `[h]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `h2 : ∀ i ∈ (Finset.univ : Finset (Fin a)), ‖v i * Z i j‖ ≤ ‖v‖ * ‖Z‖` using `fun i _ => (norm_mul_le _ _).trans (mul_le_mul (norm_le_pi_norm v i) ((norm_le_pi_norm (Z i) j).trans (norm_le_pi_norm Z i)) (norm_nonneg _) (norm_nonneg _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Finset.sum_le_sum h2).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem vm_le (v : Fin a → Cinf E) (Z : Lie E a) : ‖v ᵥ* Matrix.of Z‖ ≤ a * ‖v‖ * ‖Z‖ := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_
@@ -36,23 +36,21 @@ private noncomputable def vmL (v : Fin a → Cinf E) : Lie E a →L[ℝ] (Fin a 
     (a * ‖v‖) (fun Z => vm_le v Z)
 
 /- English proof (translation)
-The claim follows from `LinearMap.mkContinuous_norm_le _ (by positivity) _`.
+A detailed English derivation is pending.
 -/
 private theorem vmL_norm (v : Fin a → Cinf E) : ‖vmL v‖ ≤ a * ‖v‖ :=
   LinearMap.mkContinuous_norm_le _ (by positivity) _
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hy`. Use `set B : ℝ := a * ‖toL (u⁻¹).val‖ with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `ha : (0:ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `hp : 0 < 2 * (B * a + 1)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 / (2 * (B * a + 1)), 2 * B, by positivity, by positivity, fun z hz v => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖v‖ ≤ B * ‖v ᵥ* Matrix.of y‖`. Establish `h` using `vm_le (v ᵥ* Matrix.of y) (toL (u⁻¹).val)`. Establish `e : (v ᵥ* Matrix.of y) ᵥ* Matrix.of (toL (u⁻¹).val) = v`. Rewrite using `[Matrix.vecMul_vecMul, ← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `v ᵥ* (u.val * (u⁻¹).val) = v`. Rewrite using `[Units.mul_inv, Matrix.vecMul_one]`. Rewrite `h` using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : v ᵥ* Matrix.of y = v ᵥ* Matrix.of z + v ᵥ* Matrix.of (y - z)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(vmL v).map_add z (y - z)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Establish `h3 : ‖y - z‖ * (2 * (B * a + 1)) ≤ 1`. Rewrite `hz` using `[Metric.mem_ball, dist_comm, dist_eq_norm, lt_div_iff₀ hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz.le`. Establish `h4 : ‖v ᵥ* Matrix.of y‖ ≤ ‖v ᵥ* Matrix.of z‖ + a * ‖v‖ * ‖y - z‖`. Rewrite using `[h2]`. Conclude with `(norm_add_le _ _).trans (by gcongr; exact vm_le v _)`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 hB0`.
-
-Establish `h6` using `mul_le_mul_of_nonneg_left h3 (norm_nonneg v)`. Establish `h7 : 0 ≤ ‖v‖ * ‖y - z‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem low {y : Lie E a} (hy : y ∈ invSet E a) :
     ∃ r M : ℝ, 0 < r ∧ 0 ≤ M ∧ ∀ z ∈ Metric.ball y r, ∀ v : Fin a → Cinf E, ‖v‖ ≤ M * ‖v ᵥ* Matrix.of z‖ := by
@@ -87,9 +85,9 @@ private theorem low {y : Lie E a} (hy : y ∈ invSet E a) :
   nlinarith
 
 /- English proof (translation)
-Use `⟨k.factorial * Real.exp 1, by positivity, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h` using `Real.pow_div_factorial_le_exp (1 + t) (by positivity) k`. Rewrite `h` using `[div_le_iff₀ (by positivity)]`. Establish `h2 : Real.exp (1 + t) * Real.exp (-Real.pi * t) ≤ Real.exp 1 * Real.exp (-Real.pi * (t / 2))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use polynomial arithmetic with `[Real.pi_gt_three]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem expb (k : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ t : ℝ, 0 ≤ t →
     (1 + t) ^ k * Real.exp (-Real.pi * t) ≤ K * Real.exp (-Real.pi * (t / 2)) := by
@@ -106,15 +104,15 @@ private theorem expb (k : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ t : ℝ, 0 ≤ t �
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨r, M, hr, hM, h⟩` from `low hy`. Establish `hq` using `(UpperTheory.geometric_side_quadraticForm_identity E a).2.2.2.2.2`. Use `set D : ℝ := a * Fintype.card (InfinitePlace E) with hD`. Establish `hD0 : 0 ≤ D` using `by positivity`. Establish `hp : 0 < 2 * (D * M ^ 2 + 1)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, M, 1 / (2 * (D * M ^ 2 + 1)), hr, hM, by positivity, fun k => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hk⟩` from `expb k`. Use `⟨K, fun z hz v => ?_⟩` and prove the remaining obligations. Establish `h1` using `h z hz v`. Establish `h2` using `(hq (v ᵥ* Matrix.of z)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(hq v).2`. Establish `h0` using `qf_nonneg (v ᵥ* Matrix.of z)`. Use `⟨h1.trans (mul_le_mul_of_nonneg_left (by nlinarith [sq_nonneg (‖v ᵥ* Matrix.of z‖ - 1)]) hM), ?_⟩` and prove the remaining obligations. Use `(hk _ h0).trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hK)` and prove the remaining obligations. Establish `h4 : ‖v‖ ^ 2 ≤ M ^ 2 * qf (v ᵥ* Matrix.of z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h5 : 1 / (2 * (D * M ^ 2 + 1)) * qf v ≤ qf (v ᵥ* Matrix.of z) / 2`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hp]`. Use `mul_le_mul_of_nonneg_left h4 hD0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left h5 Real.pi_pos.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem dom {y : Lie E a} (hy : y ∈ invSet E a) :
     ∃ r M c : ℝ, 0 < r ∧ 0 ≤ M ∧ 0 < c ∧ ∀ k : ℕ, ∃ K : ℝ, ∀ z ∈ Metric.ball y r, ∀ v : Fin a → Cinf E,
@@ -148,21 +146,17 @@ private theorem dom {y : Lie E a} (hy : y ∈ invSet E a) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ a ι x N hS P hP y hy`. Take `⟨r, M, c, hr, hM, hc, hd⟩` from `dom hy`. Take `⟨-, ⟨C, k, hC⟩, -⟩` from `UpperTheory.admissibleFunctionClass_closure_properties E a P hP`. Take `⟨hsm, ⟨C', k', hC'⟩, -⟩` from `UpperTheory.quadratic_form_gradient_formula E a P hP`. Establish `hs` using `(hS.2 c c hc le_rfl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : y ∈ Metric.ball y r` using `Metric.mem_ball_self hr`. Establish `hg : ∀ v : Fin a → Cinf E, 0 < gauss v` using `fun v => Real.exp_pos _`. Establish `h0 : Summable fun i => pg P (x i ᵥ* Matrix.of y)`. Take `⟨K, hK⟩` from `hd k`. Use `Summable.of_norm_bounded (hs.mul_left (|C| * K)) fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hK y hy0 (x i)).2`. Establish `h2` using `qf_nonneg (x i ᵥ* Matrix.of y)`. Establish `h3` using `hg (x i ᵥ* Matrix.of y)`. Rewrite using `[pg, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos h3]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(hC _).trans (by gcongr; exact le_abs_self C)`. Use `_ = |C| * ((1 + qf (x i ᵥ* Matrix.of y)) ^ k * gauss (x i ᵥ* Matrix.of y)) := by ring`. Use `_ ≤ |C| * (K * _) := by gcongr`. Use `_ = _ := by ring`. Take `⟨K, hK⟩` from `hd (k' + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu` using `hs.mul_left (|C'| * (a * M) * K)`. Establish `hb : ∀ i z, z ∈ Metric.ball y r → ‖(fderiv ℝ (pg P) (x i ᵥ* Matrix.of z)).comp (vmL (x i))‖ ≤ |C'| * (a * M) * K * Real.exp (-Real.pi * (c * qf (x i)))`. Introduce `i z hz`. Take `⟨h1, h2⟩` from `hK z hz (x i)`. Establish `h3` using `qf_nonneg (x i ᵥ* Matrix.of z)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `hg (x i ᵥ* Matrix.of z)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul ((hC' _).trans (by gcongr; exact le_abs_self C')) ((vmL_norm _).trans (by gcongr)) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `_ = |C'| * (a * M) * ((1 + qf (x i ᵥ* Matrix.of z)) ^ (k' + 1) * gauss (x i ᵥ* Matrix.of z)) := by ring`. Use `_ ≤ |C'| * (a * M) * (K * _) := by gcongr`.
-
-Use `_ = _ := by ring`. Establish `hF` using `hasFDerivAt_tsum_of_isPreconnected (𝕜 := ℝ) (f := fun i (z : Lie E a) => pg P (x i ᵥ* Matrix.of z)) (f' := fun i z => (fderiv ℝ (pg P) (x i ᵥ* Matrix.of z)).comp (vmL (x i))) hu Metric.isOpen_ball (convex_ball y r).isPreconnected (fun i z _ => ((hsm.differentiable (by simp)) _).h …`. Establish `hF' : HasFDerivAt (msum x P) _ y` using `hF`. Use `⟨h0, hF'.differentiableAt, fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[hF'.fderiv]`.
-
-Conclude with `(ContinuousLinearMap.apply ℝ ℂ Z).map_tsum (Summable.of_norm_bounded hu fun i => hb i y hy0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sum_der :
     SumDer := by

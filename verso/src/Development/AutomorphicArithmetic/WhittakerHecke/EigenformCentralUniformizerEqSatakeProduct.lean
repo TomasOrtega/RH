@@ -10,9 +10,9 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `K _ _ v ϖ hϖ α β f hEig h`. Take `⟨R, -, -, hR⟩` from `H.heckeExpl K v ϖ hϖ`. Establish `hc` using `(hR α β _ (hEig h) 1).2`. Establish `hcomm : Matrix.GeneralLinearGroup.scalar (Fin 2) (H.idl v ϖ) * h = h * Matrix.GeneralLinearGroup.scalar (Fin 2) (H.idl v ϖ)` using `Units.ext (Matrix.scalar_commute ((H.idl v ϖ : (A K)ˣ) : A K) (fun r => Commute.all _ r) (h : Matrix (Fin 2) (Fin 2) (A K))).eq`. Rewrite using `[hcomm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul, map_one, mul_one] at hc`. Rewrite using `[← (H.lcLaws K v).2.2.2.2.1]`. Conclude with `hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigenform_central_uniformizer_eq_satake_product :
     ∀ (K : Type) [Field K] [NumberField K] (v : H.P K) (ϖ : (H.Kv v)ˣ), H.IsU ϖ → ∀ (α β : ℂˣ) (f : GL (Fin 2) (A K) → ℂ),

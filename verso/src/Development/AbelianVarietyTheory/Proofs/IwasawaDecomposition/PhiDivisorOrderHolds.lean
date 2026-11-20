@@ -30,7 +30,7 @@ theorem comb_evalZ {O : Type} [CommRing O] (a : ℕ) (ψ : InvFun O) (b : ℕ) (
     (comb a ψ b φ).evalZ β = a * ψ.evalZ β + b * φ.evalZ β := rfl
 
 /- English proof (translation)
-Introduce `c hc`. Rewrite using `[comb_eval, h₁ c hc, h₂ c hc]`. Simplify using `only [comb_evalZ, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comb_linearOn {O : Type} [CommRing O] {a : ℕ} {ψ : InvFun O} {b : ℕ} {φ : InvFun O} {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (h₁ : ψ.LinearOn γ)
@@ -41,7 +41,7 @@ theorem comb_linearOn {O : Type} [CommRing O] {a : ℕ} {ψ : InvFun O} {b : ℕ
   congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Rewrite using `[InvFun.eval_eq _ hr]`. Conclude with `φs.eval_comp (r := r.restrictScalars ℤ) hr B`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resInt_eval (φs : InvFun ℤ) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X]
     [Module.Finite ℤ X] (B : X → X → ℝ) : (resInt (𝓞 E) φs).eval X B = φs.eval X B := by
@@ -50,7 +50,7 @@ theorem resInt_eval (φs : InvFun ℤ) (X : Type) [AddCommGroup X] [Module (𝓞
   exact φs.eval_comp (r := r.restrictScalars ℤ) hr B
 
 /- English proof (translation)
-The claim follows from `resInt_eval φs X _`.
+A detailed English derivation is pending.
 -/
 theorem resInt_evalZ (φs : InvFun ℤ) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X]
     [Module.Finite ℤ X] (β : LinearMap.BilinForm ℤ X) : (resInt (𝓞 E) φs).evalZ β = φs.evalZ β :=
@@ -63,9 +63,9 @@ namespace GlobalTheory.TorRef.PhiDivO
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `⟨(hR.1 X hX).exists_nat (hγ.mem i) (hγ.nonneg i), ?_⟩` and prove the remaining obligations. Take `⟨hfree, hrk⟩` from `GlobalTheory.T.free_and_rank_bound_integers E X`. Establish `: Module.Finite ℤ X` using `Module.Finite.trans (𝓞 E) X`. Establish `hP : IsPolFanOn id φs X` using `hs X (hrk.trans ((Nat.mul_le_mul_left _ hX).trans hg))`. Establish `hmem : γ i ∈ balForms id X` using `⟨(hγ.mem i).1, fun (a : ℤ) y z => by simp only [LinearMap.map_smul, LinearMap.smul_apply, id]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `hP.exists_nat hmem (hγ.nonneg i)`. Conclude with `⟨n, by rw [resInt_evalZ]; exact hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vals {H : Host E} {q g : ℕ} {φs : InvFun ℤ} {𝒩 : Finset ℕ} {φ : InvFun (𝓞 E)}
     (hg : Module.finrank ℚ E * q ≤ g) (hs : IsPolFan id g φs) (hR : Refines H q φs 𝒩 φ)
@@ -82,17 +82,15 @@ theorem vals {H : Host E} {q g : ℕ} {φs : InvFun ℤ} {𝒩 : Finset ℕ} {φ
   exact ⟨n, by rw [resInt_evalZ]; exact hn⟩
 
 /- English proof (translation)
-Establish `hc : IsCone H.bar φ γ` using `hγ`. Take `⟨hfree, -⟩` from `GlobalTheory.T.free_and_rank_bound_integers E X`. Establish `: Module.Finite ℤ X` using `Module.Finite.trans (𝓞 E) X`. Use `choose ny hny using fun i => (vals hg hs hR hX hc i).1`. Use `choose nx hnx using fun i => (vals hg hs hR hX hc i).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ψ := comb a (comb d (resInt _ φs) 0 φ) b φ with hψ`. Establish `hval : ∀ i, ψ.evalZ (γ i) = ((a * (d * nx i) + b * ny i : ℕ) : ℝ)` using `fun i => by`. Rewrite using `[hψ, comb_evalZ, comb_evalZ, hnx, hny]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ℓ, hℓ⟩` from `GlobalTheory.T.integral_linear_form_on_basis H.bar X m γ hc.mem hc.basis fun i => ((a * (d * nx i) + b * ny i : ℕ) : ℤ)`. Establish `hlin : ψ.LinearOn γ` using `comb_linearOn (comb_linearOn ((hR.2.2.2.2.2 X hX m γ hc).1) hc.linear) hc.linear`. Use `⟨ℓ, fun be _ ⟨c, hc0, hbe⟩ => ?_⟩` and prove the remaining obligations. Establish `hreal` using `GlobalTheory.T.linear_form_real_combination X ℓ m γ c be hbe`. Establish `hpt : (fun x y => (be x y : ℝ)) = fun x y => ∑ i, c i * (γ i x y : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `x y`. Use `LinearMap.congr_fun₂ hbe x y` as an intermediate fact. Simplify `this` using `[toReal, LinearMap.sum_apply]`. Establish `h1 : ψ.evalZ be = ∑ i, c i * (ℓ (γ i) : ℝ)`. Rewrite using `[InvFun.evalZ, hpt, hlin c hc0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hval, hℓ]; push_cast; rfl`. Use `⟨h1.trans hreal.symm, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ (ℓ be : ℝ)`. Rewrite using `[hreal]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc0 i) (by rw [hℓ]; positivity)`.
-
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem cone {H : Host E} {q g : ℕ} {φs : InvFun ℤ} {𝒩 : Finset ℕ} {φ : InvFun (𝓞 E)}
     (hg : Module.finrank ℚ E * q ≤ g) (hs : IsPolFan id g φs) (hR : Refines H q φs 𝒩 φ) (a d b : ℕ)
@@ -130,7 +128,7 @@ theorem cone {H : Host E} {q g : ℕ} {φs : InvFun ℤ} {𝒩 : Finset ℕ} {φ
 end GlobalTheory.TorRef.PhiDivO
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z g φs 𝒩 φ hg hs hR hZ a d b`. Conclude with `GlobalTheory.T.linear_forms_on_cones E H D l Xo c Z (ConeO H φ) _ (fun X _ _ _ _ hX m γ hγ => GlobalTheory.TorRef.PhiDivO.cone hg hs hR a d b X hX m γ hγ) hZ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TorRef.phiDivO : PhiDivOSt := by
   intro E _ _ _ H D l Xo c Z g φs 𝒩 φ hg hs hR hZ a d b

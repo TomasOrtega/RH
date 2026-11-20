@@ -20,15 +20,15 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E]
   (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => funext k`. Simplify using `[Matrix.mulVec, dotProduct]`. Consider the case `tmul r e`. Establish `h1 : inclR R t * (r ⊗ₜ[F] e) = r ⊗ₜ[F] (t * e)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h2 : (fun j => ((Algebra.TensorProduct.basis R b).repr (r ⊗ₜ[F] e)) j) = r • (algebraMap F R ∘ b.repr e)`. Use function extensionality and compare the values at `j`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`. Rewrite using `[h1, h2, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Pi.smul_apply, ← RingHom.map_mulVec, Algebra.leftMulMatrix_mulVec_repr]`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add y1 y2 h1 h2`. Establish `e1 : (fun k => ((Algebra.TensorProduct.basis R b).repr (y1 + y2)) k) = (fun k => ((Algebra.TensorProduct.basis R b).repr y1) k) + (fun k => ((Algebra.TensorProduct.basis R b).repr y2) k)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `e2 : (fun k => ((Algebra.TensorProduct.basis R b).repr (inclR R t * (y1 + y2))) k) = (fun k => ((Algebra.TensorProduct.basis R b).repr (inclR R t * y1)) k) + (fun k => ((Algebra.TensorProduct.basis R b).repr (inclR R t * y2)) k)`. Use function extensionality and compare the values at `k`. Simplify using `[mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, Matrix.mulVec_add, h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_inclR_mul {d : ℕ} (b : Module.Basis (Fin d) F E) (t : E) (y : R ⊗[F] E) :
     (fun k => (Algebra.TensorProduct.basis R b).repr (inclR R t * y) k) =
@@ -62,13 +62,13 @@ variable [TopologicalSpace R] [IsTopologicalRing R] [SecondCountableTopology R]
   [MeasurableSpace R] [BorelSpace R]
 
 /- English proof (translation)
-Establish `: BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (R ⊗[F] E)` using `TopK.isTopRing R`. Set `L : (R ⊗[F] E) ≃L[R] (Fin d → R)` to `{ toLinearEquiv := (Algebra.TensorProduct.basis R b).equivFun, continuous_toFun := (TopK.coordHomeo R b).continuous, continuous_invFun := (TopK.coordHomeo R b).symm.continuous }`. Establish `hL : ∀ y, L y = fun k => ((Algebra.TensorProduct.basis R b).repr y) k` using `fun y => Module.Basis.equivFun_apply _ _`. Establish `: (μ.map L).IsAddHaarMeasure` using `L.isAddHaarMeasure_map μ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν` using `h (μ.map L) inferInstance`. Establish `hA : Continuous fun x : Fin d → R => (Algebra.leftMulMatrix b t).map (algebraMap F R) *ᵥ x` using `continuous_const.matrix_mulVec continuous_id`. Establish `hmul : (fun y => inclR R t * y) = L.symm ∘ (fun x => (Algebra.leftMulMatrix b t).map (algebraMap F R) *ᵥ x) ∘ L`. Use function extensionality and compare the values at `y`. Apply `L.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Function.comp_apply, ContinuousLinearEquiv.apply_symm_apply]`. Rewrite using `[hL, hL]`. Conclude with `repr_inclR_mul R b t y`. Establish `hid : (μ.map L).map L.symm = μ`. Rewrite using `[Measure.map_map L.symm.continuous.measurable L.continuous.measurable]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (L.symm ∘ L) = id` using `funext fun y => L.symm_apply_apply y`. Rewrite using `[this, Measure.map_id]`. Rewrite using `[hmul, ← Measure.map_map L.symm.continuous.measurable (hA.comp L.continuous).measurable, ← Measure.map_map hA.measurable L.continuous.measurable, hν, Measure.map_smul, hid]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inclR_mul [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (t : E) (c : ℝ≥0)
     (h : ∀ μ : Measure (Fin d → R), μ.IsAddHaarMeasure →
@@ -108,11 +108,9 @@ end GlobalTheory.CompanionTheory.SW.PfK
 open GlobalTheory.CompanionTheory.SW.PfK in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM t ht`. Establish `hfin : Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨cinf, c, hU, hinf, hv⟩` from `T.addHaar_map_mulVec_eq_smul_at_all_places F (Fin (Module.finrank F E)) (Algebra.leftMulMatrix (Module.finBasis F E) t) (by`. Rewrite using `[← Algebra.norm_eq_matrix_det]`. Conclude with `Algebra.norm_ne_zero_iff.2 ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨cinf, c, hU, fun μ hμ => ?_, fun v μ hμ => ?_⟩` and prove the remaining obligations. Establish `: BorelSpace (Ainf F)` using `⟨rfl⟩`. Conclude with `map_inclR_mul (Ainf F) (Module.finBasis F E) t cinf hinf μ hμ`. Establish `: SecondCountableTopology (Fv F v)` using `(LocFv.isLocR_Fv F v).2.2.1`. Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`.
-
-Conclude with `map_inclR_mul (Fv F v) (Module.finBasis F E) t (c v) (hv v) μ hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.map_inclR_prodFormula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ t : E, t ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ : Measure (Ainf F ⊗[F] E), μ.IsAddHaarMeasure → μ.map (fun y => inclR (Ainf F) t * y) = cinf • μ) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ μ : Measure (Fv F v ⊗[F] E), μ.IsAddHaarMeasure → μ.map (fun y => inclR (Fv F v) t * y) = c v • μ) := by
   intro F E _ _ _ _ _ σ hCM t ht

@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.ExRefEff
 
 /- English proof (translation)
-Proceed by induction on `M, hk using Nat.le_induction with`. Consider the case `base`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `n hn`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (by simpa using hn)]`. Consider the case `succ M hM ih`. Rewrite using `[Finset.sum_range_succ, ih, if_pos hM]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tele (F : ℕ → ℤ) (k M : ℕ) (hk : k ≤ M) :
     ∑ n ∈ Finset.range M, (if k ≤ n then F n - F (n + 1) else 0) = F k - F M := by
@@ -36,13 +36,13 @@ theorem tele (F : ℕ → ℤ) (k M : ℕ) (hk : k ≤ M) :
     ring
 
 /- English proof (translation)
-Set `F : ℕ → ℤ` to `fun n => if h : n < N then f ⟨n, h⟩ else 0`. Establish `hF : ∀ i : Fin N, (f i - if h : (i : ℕ) + 1 < N then f ⟨i + 1, h⟩ else 0) = F i - F (i + 1)`. Introduce `i`. Simplify using `[F, i.2]`. Establish `hFN : F N = 0` using `by simp [F]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∀ k : Fin N, ∑ i ∈ Finset.Ici k, (F i - F (i + 1)) = f k`. Introduce `k`. Establish `h2` using `tele F k N k.2.le`. Rewrite `h2` using `[hFN, sub_zero, ← Fin.sum_univ_eq_sum_range (fun n => if (k : ℕ) ≤ n then F n - F (n + 1) else 0) N]`. Establish `h3 : Finset.Ici k = Finset.univ.filter (fun i => k ≤ i)` using `by ext i; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, Finset.sum_filter]`. Simplify using `only [Fin.le_def]`. Rewrite using `[h2]`. Simplify using `[F, k.2]`. Repeatedly rewrite using `[hF, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm' (t' := Finset.univ) (s' := fun k => Finset.Ici k) (by intro i k; simp)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem abel (N : ℕ) (f x : Fin N → ℤ) :
     ∑ i : Fin N, (f i - if h : (i : ℕ) + 1 < N then f ⟨i + 1, h⟩ else 0) * ∑ k ∈ Finset.Iic i, x k =
@@ -73,16 +73,16 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {J : K → Type} {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-The claim follows from `(Finset.prod_ne_zero_iff.1 h.1) k (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem ne_of_chart {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀ k, J k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) :
     y ⟨k, c k⟩ ≠ 0 :=
   (Finset.prod_ne_zero_iff.1 h.1) k (Finset.mem_univ k)
 
 /- English proof (translation)
-Establish `h1` using `h.2 (Function.update c k i)`. Establish `h2 : (∏ l, y ⟨l, Function.update c k i l⟩) / ∏ l, y ⟨l, c l⟩ = y ⟨k, i⟩ / y ⟨k, c k⟩`. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne hl, div_self (ne_of_chart h l)]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratio_mem {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀ k, J k => ∏ k, y ⟨k, c' k⟩) c p)
     (k : K) (i : J k) : y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ regAt ξ p := by
@@ -97,13 +97,11 @@ theorem ratio_mem {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀ k,
   rwa [h2] at h1
 
 /- English proof (translation)
-Establish `hne : ∀ k, y ⟨k, Function.update c k₀ i k⟩ ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `using hi.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Function.update_of_ne hk]`. Conclude with `ne_of_chart h k`. Use `⟨Finset.prod_ne_zero_iff.2 fun k _ => hne k, fun c' => ?_⟩` and prove the remaining obligations. Use `show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, Function.update c k₀ i k⟩ ∈ regAt ξ p`. Rewrite using `[← Finset.prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Subring.prod_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `using hi.2 (c' k)`. Rewrite using `[Function.update_of_ne hk]`.
-
-Conclude with `ratio_mem h k (c' k)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_update {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀ k, J k => ∏ k, y ⟨k, c' k⟩) c p)
     [DecidableEq K] (k₀ : K) (i : J k₀) (hi : InChart ξ (fun i' : J k₀ => y ⟨k₀, i'⟩) i p) :
@@ -126,9 +124,9 @@ theorem chart_update {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀
     exact ratio_mem h k (c' k)
 
 /- English proof (translation)
-Unfold `chartRingZ at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Conclude with `ratio_mem h q.1 q.2`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `algebraMap r => simpa using intCast_mem (regAt ξ p) r`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chartRing_mem {p : Cpt ξ} {c : ∀ k, J k} (h : InChart ξ (fun c' : ∀ k, J k => ∏ k, y ⟨k, c' k⟩) c p)
     {a : Ω} (ha : a ∈ chartRingZ y c) : a ∈ regAt ξ p := by
@@ -149,9 +147,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β₀ : O →+* c.F} {Y : Model Xo c β₀}
 
 /- English proof (translation)
-Rewrite using `[PB.combLine_a, Fintype.sum_option, Fintype.sum_prod_type, Fintype.sum_prod_type, ← Finset.sum_neg_distrib]`. Simplify using `only [gapN, zero_mul, zero_add]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `abel (D.p + D.q) (fun i => ν (τ, i)) (fun k => G.xdeg (τ, k) κ)`. Rewrite using `[← h, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[A.fund_deg τ i]`. Simplify using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comb_a {G : RefGeo Y} (A : G.An) (ν : RootIx D → ℤ) (κ : G.K) :
     (PB.combLine A.Re.ref (gapN ν)).a κ = -∑ r, ν r * G.xdeg r κ := by
@@ -167,35 +165,29 @@ theorem comb_a {G : RefGeo Y} (A : G.An) (ν : RootIx D → ℤ) (κ : G.K) :
 open Classical in
 
 /- English proof (translation)
-Establish `hDeg` using `GlobalTheory.T.lattice_tensor_power_degree _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)`. Introduce `p hp i t hi ht`. Take `⟨c0, hc0⟩` from `G.𝔐.tie.cover p`. Establish `hc` using `chart_update hc0 G.k₀ i hi`. Use `set cc := Function.update c0 G.k₀ i with hcc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcck : cc G.k₀ = i` using `by simp [hcc]`. Establish `hne` using `ne_of_chart hc`. Establish `hgen` using `hDeg.2 p (Set.mem_univ _) cc hc`. Use `set a : G.K → ℤ := ∑ r, (-n r) • G.xdeg r with ha`. Use `set E₀ : G.Ω := ∏ r, G.e r ^ (-n r) with hE₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE₀0 : E₀ ≠ 0` using `hDeg.1`. Use `set Pa : G.Ω := ∏ k, G.y ⟨k, cc k⟩ ^ a k with hPa`. Establish `hPa0 : Pa ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hne k)`. Establish `hsp : (Lat.tens G.Fl.rootLat fun r => -n r) p = Submodule.span (regAt G.𝔐.ξ p) {Pa * E₀}`. Rewrite using `[hgen, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0 : Pa * E₀ ≠ 0` using `mul_ne_zero hPa0 hE₀0`. Take `⟨ht0, htp⟩` from `ht`. Establish `hgt : Pa * E₀ ∈ Submodule.span (regAt G.𝔐.ξ p) {t}`. Rewrite using `[← htp, hsp]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `Submodule.mem_span_singleton.1 hgt`. Establish `hv' : (v : G.Ω) * t = Pa * E₀` using `hv`. Establish `hv0 : (v : G.Ω) ≠ 0` using `fun h => hg0 (by rw [← hv', h, zero_mul])`. Establish `hvm : (v : G.Ω) ∈ regAt G.𝔐.ξ p` using `v.2`. Establish `hW` using `chartRing_mem hc (he cc hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB` using `chartRing_mem hc (hb cc hne)`. Use `set Q1 : G.Ω := ∏ k, G.y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * (a k - 1 - dβ k))) with hQ1`. Use `set Q2 : G.Ω := ∏ k, G.y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * (dβ k : ℤ))) with hQ2`. Use `set M : G.Ω := ∏ κ ∈ Finset.univ.erase G.k₀, G.y ⟨κ, i₀ κ⟩ with hM`. Use `set Ec : G.Ω := ∏ κ ∈ Finset.univ.erase G.k₀, G.y ⟨κ, cc κ⟩ with hEc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hEc0 : Ec ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hne k`. Establish `hMc : M / Ec ∈ regAt G.𝔐.ξ p`. Rewrite using `[hM, hEc, ← Finset.prod_div_distrib]`. Conclude with `Subring.prod_mem _ fun k _ => ratio_mem hc k (i₀ k)`. Establish `hP : Q1 * Q2 * Pa = G.y ⟨G.k₀, i⟩ * Ec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : G.y ⟨G.k₀, i⟩ * Ec = ∏ k, G.y ⟨k, cc k⟩`. Rewrite using `[hEc, ← Finset.mul_prod_erase Finset.univ (fun k => G.y ⟨k, cc k⟩) (Finset.mem_univ G.k₀), hcck]`. Rewrite using `[h1, hQ1, hQ2, hPa, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hne k), ← zpow_add₀ (hne k)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: -(((1 : ℕ) : ℤ) * (a k - 1 - dβ k)) + -(((1 : ℕ) : ℤ) * (dβ k : ℤ)) + a k = 1` using `by push_cast; ring`. Rewrite using `[this, zpow_one]`. Establish `hX : e * b * M * E₀ * G.y ⟨G.k₀, i⟩ ^ 1 / t = (v : G.Ω) * ((e * Q1) * (b * Q2) * (M / Ec))`. Establish `ht' : t = Pa * E₀ / v` using `by field_simp; rw [mul_comm]; exact hv'`. Establish `hq : Q1 * Q2 = G.y ⟨G.k₀, i⟩ * Ec / Pa` using `by field_simp; exact hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (e * Q1) * (b * Q2) * (M / Ec) = e * b * (Q1 * Q2) * (M / Ec)` using `by ring`. Rewrite using `[this, hq, ht']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hX]`. Use `⟨mul_mem hvm (mul_mem (mul_mem hW hB) hMc), fun hab hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hbd p hp hab cc hc ⟨?_, hB, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hu.1` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b * Q2 ≠ 0` using `fun h0 => hu.1 (by rw [h0]; simp)`. Establish `: (b * Q2)⁻¹ = ((v : G.Ω) * ((e * Q1) * (b * Q2) * (M / Ec)))⁻¹ * ((v : G.Ω) * (e * Q1) * (M / Ec))`. Establish `hx` using `hu.1`. Establish `hx1 : (v : G.Ω) * (e * Q1) * (M / Ec) ≠ 0`. Introduce `h0`.
-
-Apply `hx` to reduce the goal to its premises. Establish `: (v : G.Ω) * ((e * Q1) * (b * Q2) * (M / Ec)) = ((v : G.Ω) * (e * Q1) * (M / Ec)) * (b * Q2)` using `by ring`. Rewrite using `[this, h0, zero_mul]`. Establish `: (v : G.Ω) * ((e * Q1) * (b * Q2) * (M / Ec)) = ((v : G.Ω) * (e * Q1) * (M / Ec)) * (b * Q2)` using `by ring`. Establish `key : ∀ w z : G.Ω, w ≠ 0 → z ≠ 0 → z⁻¹ = (w * z)⁻¹ * w`.
-
-Introduce `w z hw hz`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `key _ _ hx1 hb0`. Rewrite using `[this]`.
-
-Conclude with `mul_mem hu.2.2 (mul_mem (mul_mem hvm hW) hMc)`.
+Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEff_of_data (G : RefGeo Y) (n : RootIx D → ℤ) (e : G.Ω) (b : G.Ω) (dβ : G.K → ℕ)
     (i₀ : ∀ k, G.J k) (hi₀ : ∀ k, G.y ⟨k, i₀ k⟩ ≠ 0)
@@ -281,23 +273,21 @@ theorem isEff_of_data (G : RefGeo Y) (n : RootIx D → ℤ) (e : G.Ω) (b : G.Ω
 end Ref
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D Xo l c Y hgl hp hq G ⟨A⟩ ν hν`. Establish `hIn : PB.Inputs` using `hG.2.2.2.2.2.2.2.2.2.1`. Use `haveI : Nonempty G.K := ⟨G.k₀⟩`. Establish `hb : Birational G.y` using `(GlobalTheory.T.hodge_cpt_birational_arith_var E H D l (Xo l) c (𝓞 c.F) (algebraMap _ _) Y ∅ G.Ω G.K G.J G.y G.𝔐 G.Fl (RingOfIntegers.coe_injective)).1`. Take `⟨β, dβ, hβ, hβP, hb0, hβc, hbd⟩` from `GlobalTheory.T.reference_geometry_multihomog_form E H D l (Xo l) c _ _ Y G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Fl : Set (Option (RootIx D))` to `{a | ∃ (τ : CMType H) (i : Fin (D.p + D.q)), (i : ℕ) + 1 = D.p + D.q ∧ a = some (τ, i)}`. Establish `hFl : ∀ a ∈ Fl, ∀ t, ReciprocityTheory.AnForm.M.IsPsh A.Sys.A ((A.Sys.potT a t).rsmul (-1)) ∧ ReciprocityTheory.AnForm.M.IsPsh A.Sys.A (A.Sys.potT a t)`. Introduce and unpack `_ ⟨τ, i, hi, rfl⟩ t`. Conclude with `A.flat τ i hi t`. Establish `hn : ∀ a ∉ Fl, 0 ≤ gapN ν a`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `a ha`. Consider the cases of `a with`. Consider the case `none => simp [gapN]`. Consider the case `some r`. Take `⟨τ, i⟩` from `r`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hi : (i : ℕ) + 1 < D.p + D.q`. Assume the negation of the conclusion as `h`. Conclude with `ha ⟨τ, i, by have := i.2; omega, rfl⟩`. Use `hν τ i ⟨i + 1, hi⟩ (by simp [Fin.lt_def])` as an intermediate fact. Simplify using `only [gapN, dif_pos hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨-, h2⟩` from `GlobalTheory.T.nef_polarization hIn _ _ A.Sys Fl hFl G.K G.J G.Ω G.y A.Re A.J_top hb (fun V _ L => GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ V L) (GroundTheory.Heights₂.Heights.NumbersDVR.IntNumIsFieldIntersection.full ℚ G.K G.J) (gapN ν) hn`. Take `⟨k, hk, e, he, he0⟩` from `h2 (GlobalTheory.T.global_reference_gap_positive hG E H D Xo l c Y hgl hp hq G A ν hν) β dβ hβ hβP`. Establish `hne0 : ∀ κ, ∃ i, G.y ⟨κ, i⟩ ≠ 0`. Take `⟨c0, hc0⟩` from `G.𝔐.tie.cover ⟨genPt G.𝔐.ξ, specializes_rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun κ => ⟨c0 κ, ne_of_chart hc0 κ⟩`. Use `choose i₀ hi₀ using hne0`. Use `set n : RootIx D → ℤ := fun r => ((k * 1 : ℕ) : ℤ) * ν r with hn'`. Establish `hdeg : ∀ κ, (∑ r, (-n r) • G.xdeg r) κ = (k : ℤ) * (PB.combLine A.Re.ref (gapN ν)).a κ`. Introduce `κ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[comb_a, Finset.sum_apply, mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `[hn']`. Expand and normalize the polynomial expressions, which then agree. Establish `he' : e ∈ chartLat G.y (fun κ => (∑ r, (-n r) • G.xdeg r) κ - 1 - dβ κ) 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun κ => (∑ r, (-n r) • G.xdeg r) κ - 1 - (dβ κ : ℤ)) = fun κ => (k : ℤ) * (PB.combLine A.Re.ref (gapN ν)).a κ - 1 - dβ κ`. Use function extensionality and compare the values at `κ`. Rewrite using `[hdeg]`. Rewrite using `[this]`. Conclude with `he`.
-
-Use `⟨k, 1, _, by omega, one_pos, ?_, isEff_of_data G n e _ dβ i₀ hi₀ he' hβc hbd⟩` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero he0 hb0) (Finset.prod_ne_zero_iff.2 fun κ _ => hi₀ κ)) ?_` and prove the remaining obligations. Establish `hDeg` using `GlobalTheory.T.lattice_tensor_power_degree _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)`. Conclude with `hDeg.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eff : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)), Top.IsGlobal Xo l c Y → 1 ≤ D.p → 1 ≤ D.q → ∀ (G : RefGeo Y), Nonempty G.An → ∀ ν : RootIx D → ℤ, (∀ τ (i k : Fin (D.p + D.q)), i < k → ν (τ, k) < ν (τ, i)) → ∃ (k q' : ℕ) (s : G.Ω), 0 < k ∧ 0 < q' ∧ s ≠ 0 ∧ G.IsEff (fun r => (k * q' : ℕ) * ν r) q' s := by
   intro hG E _ _ _ H D Xo l c Y hgl hp hq G ⟨A⟩ ν hν

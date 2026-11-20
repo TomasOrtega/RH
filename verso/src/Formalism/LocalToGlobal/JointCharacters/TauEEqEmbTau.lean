@@ -12,9 +12,9 @@ open Formalism.L2.Theta Formalism.L2.Host
 variable {D : D7} {X : ThetaX D} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch}
 
 /- English proof (translation)
-Unfold `plOf`. Use `congr 1`. Use extensionality with `k`. Establish `h` using `(hθ τ).1 k`. Establish `e1 : Theta.infPart D (incA D k) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] k`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Theta.infPart, incA, inclR]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[e1, h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem plOf_eq {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam (D := D) θ) (τ : D.what₂.Tau) :
     plOf D θ τ = InfinitePlace.mk (embTau D τ) := by

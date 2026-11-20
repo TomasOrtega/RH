@@ -13,9 +13,9 @@ variable {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGroup M] [Module R M] (
 def Bl : Submodule R (Γ → M) := LinearMap.range (LinearMap.pi fun g => ρ g - LinearMap.id)
 
 /- English proof (translation)
-Rewrite using `[Bl, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨m, fun g => rfl⟩`. Introduce and unpack `⟨m, hm⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, funext fun g => (hm g).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Bl {z : Γ → M} : z ∈ Bl ρ ↔ ∃ m, ∀ g, z g = ρ g m - m := by
   rw [Bl, LinearMap.mem_range]
@@ -41,7 +41,7 @@ def Zl : Submodule R (Γ → M) where
     exact ⟨a1.comp (c • ·), fun g h => by simp [a2]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Zl {z : Γ → M} : z ∈ Zl ρ ↔ IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ g (z h) := Iff.rfl
 

@@ -16,41 +16,41 @@ def HasOrd (n : ℕ) (z : MvPowerSeries τ R) : Prop :=
   ∀ d : τ →₀ ℕ, d.degree < n → coeff d z = 0
 
 /- English proof (translation)
-Introduce `_ hd` and use `absurd hd (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasOrd_zero_left (z : MvPowerSeries τ R) : HasOrd 0 z :=
   fun _ hd => absurd hd (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Introduce `_ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasOrd_zero (n : ℕ) : HasOrd n (0 : MvPowerSeries τ R) := fun _ _ => by simp
 
 /- English proof (translation)
-Introduce `d hd` and use `h d (lt_of_lt_of_le hd hmn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasOrd.mono {m n : ℕ} {z : MvPowerSeries τ R} (h : HasOrd n z) (hmn : m ≤ n) :
     HasOrd m z :=
   fun d hd => h d (lt_of_lt_of_le hd hmn)
 
 /- English proof (translation)
-Introduce `d hd` and use `by rw [map_add, hx d hd, hy d hd, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasOrd.add {n : ℕ} {x y : MvPowerSeries τ R} (hx : HasOrd n x) (hy : HasOrd n y) :
     HasOrd n (x + y) :=
   fun d hd => by rw [map_add, hx d hd, hy d hd, add_zero]
 
 /- English proof (translation)
-Introduce `d hd` and use `by rw [map_sub, hx d hd, hy d hd, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasOrd.sub {n : ℕ} {x y : MvPowerSeries τ R} (hx : HasOrd n x) (hy : HasOrd n y) :
     HasOrd n (x - y) :=
   fun d hd => by rw [map_sub, hx d hd, hy d hd, sub_zero]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Establish `hp' : p.1 + p.2 = d` using `by simpa using hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg : p.1.degree + p.2.degree = d.degree` using `by rw [← map_add, hp']`. Distinguish the cases in `h1 : p.1.degree < m`. Rewrite using `[hx _ h1, zero_mul]`. Rewrite using `[hy _ (by omega), mul_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasOrd.mul {m n : ℕ} {x y : MvPowerSeries τ R} (hx : HasOrd m x) (hy : HasOrd n y) :
     HasOrd (m + n) (x * y) := by
@@ -69,15 +69,15 @@ def Good (N k : ℕ) (x x' : MvPowerSeries τ R) : Prop :=
   HasOrd k x ∧ HasOrd k x' ∧ HasOrd (N + k) (x - x')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hasOrd_zero_left _, hasOrd_zero_left _, by rw [sub_self]; exact hasOrd_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_one (N : ℕ) : Good N 0 (1 : MvPowerSeries τ R) 1 :=
   ⟨hasOrd_zero_left _, hasOrd_zero_left _, by rw [sub_self]; exact hasOrd_zero _⟩
 
 /- English proof (translation)
-Take `⟨hx1, hx2, hx3⟩` from `hx`. Take `⟨hy1, hy2, hy3⟩` from `hy`. Use `⟨hx1.mul hy1, hx2.mul hy2, ?_⟩` and prove the remaining obligations. Establish `e : x * y - x' * y' = x * (y - y') + (x - x') * y'` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hx1.mul hy3).mono (by omega)).add ((hx3.mul hy2).mono (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem Good.mul {N k l : ℕ} {x x' y y' : MvPowerSeries τ R} (hx : Good N k x x')
     (hy : Good N l y y') : Good N (k + l) (x * y) (x' * y') := by
@@ -89,7 +89,7 @@ theorem Good.mul {N k l : ℕ} {x x' y y' : MvPowerSeries τ R} (hx : Good N k x
   exact ((hx1.mul hy3).mono (by omega)).add ((hx3.mul hy2).mono (by omega))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using good_one N`. Consider the case `succ n ih => rw [pow_succ, pow_succ, Nat.mul_succ]`. Conclude with `ih.mul hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Good.pow {N k : ℕ} {x x' : MvPowerSeries τ R} (hx : Good N k x x') (n : ℕ) :
     Good N (k * n) (x ^ n) (x' ^ n) := by
@@ -98,7 +98,7 @@ theorem Good.pow {N k : ℕ} {x x' : MvPowerSeries τ R} (hx : Good N k x x') (n
   | succ n ih => rw [pow_succ, pow_succ, Nat.mul_succ]; exact ih.mul hx
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using good_one N`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i s)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_prod {N : ℕ} {ι : Type*} (s : Finset ι) (k : ι → ℕ)
     (x x' : ι → MvPowerSeries τ R) (h : ∀ i ∈ s, Good N (k i) (x i) (x' i)) :
@@ -112,13 +112,13 @@ theorem good_prod {N : ℕ} {ι : Type*} (s : Finset ι) (k : ι → ℕ)
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Rewrite `he` using `[Finsupp.degree_eq_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_exists, not_not] at hc`. Rewrite `he` using `[Finset.sum_eq_zero (fun k _ => hc k)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one he`. Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun k => e k) (Finset.mem_univ i)`. Rewrite `hsplit` using `[he]`. Establish `hei : e i = 1` using `by omega`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hei]`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hk)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: e k ≤ ∑ x ∈ Finset.univ.erase i, e x` using `Finset.single_le_sum (f := fun x => e x) (fun _ _ => Nat.zero_le _) (Finset.mem_erase.2 ⟨hk, Finset.mem_univ k⟩)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_single_of_degree_eq_one {ι : Type*} [Fintype ι] (e : ι →₀ ℕ)
     (he : e.degree = 1) : ∃ i, e = Finsupp.single i 1 := by
@@ -143,7 +143,7 @@ theorem eq_single_of_degree_eq_one {ι : Type*} [Fintype ι] (e : ι →₀ ℕ)
     omega
 
 /- English proof (translation)
-Introduce `d hd`. Establish `: d = 0` using `(Finsupp.degree_eq_zero_iff d).1 (by omega)`. Substitute `this` using the available equality. Simplify using `using hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasOrd_one_of_cc {z : MvPowerSeries τ R} (hz : constantCoeff z = 0) : HasOrd 1 z := by
   intro d hd
@@ -152,19 +152,19 @@ theorem hasOrd_one_of_cc {z : MvPowerSeries τ R} (hz : constantCoeff z = 0) : H
   simpa using hz
 
 /- English proof (translation)
-Establish `haS : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `hbS : HasSubst b` using `hasSubst_of_constantCoeff_zero hb`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `(hasOrd_one_of_cc (ha i)).sub (hasOrd_one_of_cc (hb i))`. Consider the case `succ N ih`. Introduce `j d hd`. Establish `hgood : ∀ i, Good N 1 (a i) (b i)` using `fun i => ⟨hasOrd_one_of_cc (ha i), hasOrd_one_of_cc (hb i), ih i⟩`. Establish `hj` using `congrArg (coeff d) (h j)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[coeff_subst haS, coeff_subst hbS]`. Establish `hdiff` using `congrArg (fun t => t - finsum (fun e : ι →₀ ℕ => coeff e (f j) • coeff d (e.prod fun s n => b s ^ n))) hj`. Simplify using `only [sub_self] at hdiff`. Rewrite `hdiff` using `[← finsum_sub_distrib (coeff_subst_finite haS (f j) d) (coeff_subst_finite hbS (f j) d)]`. Rewrite `hdiff` using `[finsum_eq_single _ (Finsupp.single j 1)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdiff` using `[Finsupp.prod_single_index (by simp), Finsupp.prod_single_index (by simp), hf.2 j j, if_pos rfl, one_smul, one_smul, pow_one, pow_one]`. Rewrite using `[map_sub, hdiff]`. Introduce `e he`. Rewrite using `[← smul_sub, ← map_sub]`. Break down `Nat.lt_or_ge e.degree 2 with hlt | hge` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge e.degree 1 with h0 | h1` into its components or cases. Establish `: e = 0` using `(Finsupp.degree_eq_zero_iff e).1 (by omega)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Take `⟨i, rfl⟩` from `eq_single_of_degree_eq_one e (by omega)`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun hij => he (by rw [hij])`. Rewrite using `[hf.2 j i, if_neg hij, zero_smul]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `hg` using `good_prod Finset.univ (fun i => 1 * e i) (fun i => a i ^ e i) (fun i => b i ^ e i) (fun i _ => (hgood i).pow (e i))`. Establish `hsum : ∑ i ∈ Finset.univ, 1 * e i = e.degree`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules. Rewrite `hg` using `[hsum]`. Rewrite using `[hg.2.2.mono (n := N + e.degree) (by omega) d hd, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {ι : Type*} [Fintype ι] [DecidableEq ι] [Finite τ]
     (f : ι → MvPowerSeries ι R) (a b : ι → MvPowerSeries τ R) (hf : IsIdMod2 f)
@@ -214,7 +214,7 @@ end InjVAux
 
 open MvPowerSeries in
 /- English proof (translation)
-Introduce `R _ ι _ _ τ _ f a b hf ha hb h`. Use function extensionality and compare the values at `i`. Use extensionality with `d`. Use `InjVAux.main f a b hf ha hb h d.degree i d (by omega)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem subst_injective_vector : Formalism.FG.SubstInjectiveV.{u, v, w} := by
   intro R _ ι _ _ τ _ f a b hf ha hb h

@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.ThK.LiftConst
 
 /- English proof (translation)
-Establish `hE : Countable E` using `(Module.finBasis ℚ E).equivFun.toEquiv.injective.countable`. Establish `hM : Countable (Matrix (Fin n) (Fin n) E)` using `inferInstanceAs (Countable (Fin n → Fin n → E))`. Establish `hG : Countable (GL (Fin n) E)` using `Function.Injective.countable (f := fun x : GL (Fin n) E => (x : Matrix (Fin n) (Fin n) E)) Units.val_injective`. Establish `hR : Countable (Matrix.GeneralLinearGroup.map (n` using `Fin n) (inclR (F := F) (E := E) (AF F))).range := (MonoidHom.rangeRestrict_surjective _).countable`. Use `Function.Injective.countable (f := fun x : ratU σ J => (⟨x.1.1, x.2⟩ : (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratU_countable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
@@ -29,19 +29,13 @@ theorem ratU_countable {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simpa using congrArg Subtype.val hxy
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalRing (Matrix (Fin d) (Fin d) (AE F E)) := Matrix.topologicalRing`. Use `haveI : IsTopologicalGroup (GL (Fin d) (AE F E)) := inferInstance`. Use `haveI : IsTopologicalGroup (UA σ W.J) := Subgroup.instIsTopologicalGroupSubtypeMem _`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : MeasurableMul (UA σ W.J) := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`. Use `haveI : Countable (ratU σ W.J) := ratU_countable W.J`. Use `haveI : MeasurableConstSMul (ratU σ W.J) (UA σ W.J) := ⟨fun γ => measurable_const_mul (γ : UA σ W.J)⟩`. Use `haveI : μ.IsMulLeftInvariant := hμ.toIsMulLeftInvariant`. Use `haveI : SMulInvariantMeasure (UA σ W.J) (UA σ W.J) μ := Measure.IsMulLeftInvariant.smulInvariantMeasure`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SMulInvariantMeasure (ratU σ W.J) (UA σ W.J) μ := Subgroup.smulInvariantMeasure _`. Use `set Ψ' := om (1, h₁⁻¹) Ψ with hΨ'`. Use `set G : UA σ W.J → ℂ := fun u => f u * starRingEnd ℂ (theta om Ψ' g u) with hG`. Establish `key : ∀ h, theta om Ψ g h = theta om Ψ' g (h * h₁)`. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [theta, hΨ']`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel_right]`. Establish `hL : thLift om Ψ μ 𝓕 (fun h => f (h * h₁)) g = ∫ h in 𝓕, G (h * h₁) ∂μ`. Simplify using `only [thLift_def, hG, key]`. Rewrite using `[hL, thLift_def]`.
-
-Establish `hmp : MeasurePreserving (fun x : UA σ W.J => x * h₁) μ μ` using `measurePreserving_mul_right μ h₁`. Establish `hme : MeasurableEmbedding (fun x : UA σ W.J => x * h₁)` using `(MeasurableEquiv.mulRight h₁).measurableEmbedding`. Use `set T := (fun x : UA σ W.J => x * h₁⁻¹) ⁻¹' 𝓕 with hTdef`. Establish `hT : (fun x : UA σ W.J => x * h₁) ⁻¹' T = 𝓕`. Use extensionality with `x`.
-
-Simplify using `[hTdef]`. Establish `h1 : ∫ h in 𝓕, G (h * h₁) ∂μ = ∫ u in T, G u ∂μ`. Rewrite using `[← hT]`. Conclude with `hmp.setIntegral_preimage_emb hme G T`. Establish `hTf : IsFundamentalDomain (ratU σ W.J) T μ` using `h𝓕.preimage_of_equiv (measurePreserving_mul_right μ h₁⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc])`.
-
-Rewrite using `[h1, hTf.setIntegral_eq h𝓕]`. Introduce `γ x`. Simplify using `only [hG, Subgroup.smul_def, smul_eq_mul, hf γ γ.2, hθ γ γ.2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thLift_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d}

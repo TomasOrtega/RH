@@ -11,7 +11,7 @@ namespace DiscreteGroups.T1.G
 attribute [local instance] borelH
 
 /- English proof (translation)
-Simplify using `only [lInt, _root_.sub_apply, inner_sub_right, Finset.sum_sub_distrib, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kerSplit_lInt_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {ι : Type} [Fintype ι]
     (D : Dom E a b) (k₁ k₂ : H E a b → ι → Hs (ι := ι) D) (τ : ℝ)
@@ -20,21 +20,17 @@ theorem kerSplit_lInt_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {a 
   simp only [lInt, _root_.sub_apply, inner_sub_right, Finset.sum_sub_distrib, mul_sub]
 
 /- English proof (translation)
-Introduce `E _ _ _ n D π ι _ k₁ k₂ τ C N hb U _ _`. Use `set S := piSp D π ι with hS`. Use `set W := U ∘L Sᗮ.subtypeL with hW`. Use `⟨U ∘L S.starProjection, ⟨fun f hf => ?_, fun f hf => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, Submodule.starProjection_eq_self_iff.2 hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.comp_apply, (Submodule.starProjection_apply_eq_zero_iff S).2 hf, map_zero]`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg U) fun f => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `set V := U - U ∘L S.starProjection with hV`. Establish `hWU : ‖W‖ ≤ ‖U‖`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg U) fun f => ?_` and prove the remaining obligations. Conclude with `U.le_opNorm (f : Hs (ι := ι) D)`. Establish `hVW : ‖V‖ ≤ ‖W‖`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg W) fun f => ?_` and prove the remaining obligations. Establish `h1 : V f = W ⟨Sᗮ.starProjection f, Sᗮ.starProjection_apply_mem f⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `U f - U (S.starProjection f) = U (Sᗮ.starProjection f)`. Rewrite using `[Submodule.starProjection_orthogonal_val, map_sub]`. Rewrite using `[h1]`. Use `(W.le_opNorm _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg W))` and prove the remaining obligations. Conclude with `Sᗮ.norm_starProjection_apply_le f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∫ x, lInt D k₁ k₂ τ U x ∂D.ν - ∫ x, lInt D k₁ k₂ τ (U ∘L S.starProjection) x ∂D.ν = ∫ x, lInt D k₁ k₂ τ V x ∂D.ν`. Rewrite using `[← integral_sub (hb U).1 (hb _).1]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hV, kerSplit_lInt_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hint]`. Establish `hc` using `(hb V).2`. Establish `hU0 : 0 ≤ C * (1 + τ) ^ N * ‖U‖` using `(norm_nonneg _).trans (hb U).2`. Break down `le_or_gt 0 (C * (1 + τ) ^ N) with hc0 | hc0` into its components or cases. Conclude with `hc.trans (mul_le_mul_of_nonneg_left hVW hc0)`.
-
-Establish `hUz : ‖U‖ = 0` using `le_antisymm (not_lt.1 fun h => absurd hU0 (not_le.2 (mul_neg_of_neg_of_pos hc0 h))) (norm_nonneg U)`. Establish `hWz : ‖W‖ = 0` using `le_antisymm (hWU.trans hUz.le) (norm_nonneg W)`. Establish `hVz : ‖V‖ = 0` using `le_antisymm (hVW.trans hWz.le) (norm_nonneg V)`. Rewrite using `[hWz, mul_zero]`. Rewrite `hc` using `[hVz, mul_zero]`.
-
-Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerSplit : KerSplit := by
   intro E _ _ _ n D π ι _ k₁ k₂ τ C N hb U _ _

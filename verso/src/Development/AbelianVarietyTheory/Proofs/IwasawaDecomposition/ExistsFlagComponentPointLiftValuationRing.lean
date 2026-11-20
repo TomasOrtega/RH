@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.FlagCptLift
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C V _ _ _ L _ _ _ yV pL h`. Establish `: IsProper Z.s` using `projProper O Z.X Z.s Z.proj`. Establish `: IsProper (genStr Z)` using `inferInstance`. Establish `: IsIso (spMap e.toRingHom)`. Establish `: IsIso (CommRingCat.ofHom e.toRingHom)` using `e.toCommRingCatIso.isIso_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `: IsSeparated (genStr Z ≫ spMap e.toRingHom)` using `inferInstance`. Establish `: IsProper (C.π ≫ genStr Z ≫ spMap e.toRingHom)` using `by rw [C.π_str]; infer_instance`. Establish `: IsProper C.π` using `IsProper.of_comp C.π (genStr Z ≫ spMap e.toRingHom)`. Establish `hv : ValuativeCriterion.Existence C.π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : UniversallyClosed C.π` using `inferInstance`. Rewrite `h'` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h'.1`. Take `⟨⟨q, q1, q2⟩⟩` from `(hv ⟨V, L, pL, yV, ⟨h⟩⟩).exists_lift`. Conclude with `⟨q, q2, q1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] (L : Type) [Field L] [Algebra V L] [IsFractionRing V L] (yV : Sp V ⟶ gen Z) (pL : Sp L ⟶ C.Y.X), pL ≫ C.π = spMap (algebraMap V L) ≫ yV → ∃ q : Sp V ⟶ C.Y.X, q ≫ C.π = yV ∧ spMap (algebraMap V L) ≫ q = pL := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C V _ _ _ L _ _ _ yV pL h

@@ -22,7 +22,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `e1 : MeasurableEmbedding (fun x : F => s * x)` using `(Homeomorph.mulLeft₀ s hs).measurableEmbedding`. Rewrite using `[← Measure.map_prod_map _ _ e1.measurable measurable_id', map_mul_left_eq_smul _ hs, Measure.prod_smul_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_dil (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) :
     Measure.map (Prod.map (fun x : F => s * x) (fun x : F => x)) (muS χ) = (modulus s)⁻¹ • muS χ := by
@@ -32,9 +32,9 @@ theorem map_dil (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `e1 : MeasurableEmbedding (fun x : F => s * x)` using `(Homeomorph.mulLeft₀ s hs).measurableEmbedding`. Establish `h` using `(e1.prodMap MeasurableEmbedding.id).integral_map (μ := muS χ) G`. Establish `hm : ((modulus s : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hs`. Establish `h' : ((modulus s : ℝ) : ℂ)⁻¹ * ∫ u, G u ∂muS χ = ∫ u, G (s * u.1, u.2) ∂muS χ`. Establish `e2 : Measure.map (Prod.map (fun x : F => s * x) id) (muS χ) = (modulus s)⁻¹ • muS χ` using `map_dil χ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e2, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Move the coercions through the operations in `at h`. Conclude with `h`. Rewrite using `[← h', mul_inv_cancel_left₀ hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_dil (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F × F → ℂ) :
     ∫ u, G u ∂muS χ = ((modulus s : ℝ) : ℂ) * ∫ u, G (s * u.1, u.2) ∂muS χ := by
@@ -50,9 +50,9 @@ theorem integral_dil (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F × F 
   rw [← h', mul_inv_cancel_left₀ hm]
 
 /- English proof (translation)
-Unfold `nsg`. Rewrite using `[if_pos]`. Use `⟨⟨(y, 1), (y⁻¹, 1), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [hy]`. Apply the tactic sequence `ext <;> simp [hy]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[norm_pair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nsg_pair {y : F} (hy : y ≠ 0) : nsg (F × F) y = 1 := by
   unfold nsg
@@ -63,24 +63,24 @@ theorem nsg_pair {y : F} (hy : y ≠ 0) : nsg (F × F) y = 1 := by
   · simp [norm_pair]
 
 /- English proof (translation)
-Simplify using `only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mp_mul' (a b : Fˣ) (s : ℂ) : mp (a * b) s = mp a s * mp b s := by
   simp only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s
 
 /- English proof (translation)
-Take `⟨x1, x2⟩` from `x`. Establish `hA : (A : F) ≠ 0` using `A.ne_zero`. Distinguish the cases in `hc : c = 0`. Establish `hc' : c / (A : F) = 0` using `by simp [hc]`. Simplify using `only [rW, if_pos hc, if_pos hc', norm_pair]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : a * ((A : F) * b) * (x1 * x2) = a * b * ((A : F) * x1 * x2)` using `by ring`. Establish `e2 : algebraMap F (F × F) a * (x1, x2) * ((A : F), 1) = algebraMap F (F × F) a * ((A : F) * x1, x2)`. Apply the tactic sequence `ext <;> simp`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : c / (A : F) ≠ 0` using `div_ne_zero hc hA`. Simplify using `only [rW, if_neg hc, if_neg hc', norm_pair, trace_swap, nsg_pair (neg_ne_zero.2 hc), nsg_pair (neg_ne_zero.2 hc')]`. Establish `hm : (((modulus (c / (A : F)) : ℝ)⁻¹ : ℝ) : ℂ) = (((modulus c : ℝ)⁻¹ : ℝ) : ℂ) * ((modulus (A : F) : ℝ) : ℂ)`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_inv, inv_inv]`. Use `set G : F × F → ℂ := fun v => (χ ((a * ((A : F) * x1 * x2) + d * (v.1 * v.2) - (v.1 * x2 + v.2 * ((A : F) * x1))) / c) : ℂ) * f v with hG`. Rewrite using `[integral_dil χ hA G, hm]`. Establish `hI : ∫ u : F × F, (χ ((a * (x1 * x2) + d * (u.1 * u.2) - (u.1 * x2 + u.2 * x1)) / (c / (A : F))) : ℂ) * f (u * ((A : F), 1)) ∂muS χ = ∫ u, G ((A : F) * u.1, u.2) ∂muS χ`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : (a * (x1 * x2) + d * (u.1 * u.2) - (u.1 * x2 + u.2 * x1)) / (c / (A : F)) = (a * ((A : F) * x1 * x2) + d * ((A : F) * u.1 * u.2) - ((A : F) * u.1 * x2 + u.2 * ((A : F) * x1))) / c`. Clear the denominators using the available nonvanishing facts. Establish `e2 : u * (((A : F), 1) : F × F) = ((A : F) * u.1, u.2)`. Apply the tactic sequence `ext <;> simp [mul_comm]`. Simplify using `only [hG, e1, e2]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rW_dil (χ : AddChar F Circle) (a b c d : F) (A : Fˣ) (f : F × F → ℂ) (x : F × F) :
     rW χ swapE (muS χ) 1 a ((A : F) * b) (c / A) d (fun y => f (y * ((A : F), 1))) x =
@@ -124,19 +124,19 @@ theorem rW_dil (χ : AddChar F Circle) (a b c d : F) (A : Fˣ) (f : F × F → �
 end GlobalTheory.CompanionTheory.SplitDiag
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ _ _ c₁ Φ _ _ a g x`. Establish `hv : ((dg2 a 1 * g).val).det = (a : F) * (g.val).det`. Establish `h0 : ((dg2 a 1 : GL (Fin 2) F).val).det = (a : F)`. Simplify using `[dg2, Matrix.det_fin_two]`. Rewrite using `[Units.val_mul, Matrix.det_mul, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : Matrix.GeneralLinearGroup.det (dg2 a 1 * g) = a * Matrix.GeneralLinearGroup.det g`. Use `ext`. Simplify `hv` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hD : (g.val).det ≠ 0`. Use `(Matrix.GeneralLinearGroup.det g).ne_zero` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `e00 : (dg2 a 1 * g).val 0 0 = (a : F) * g.val 0 0`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (dg2 a 1 * g).val 0 1 = (a : F) * g.val 0 1`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e10 : (dg2 a 1 * g).val 1 0 = g.val 1 0`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : (dg2 a 1 * g).val 1 1 = g.val 1 1`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hA : (a : F) ≠ 0` using `a.ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (a : F) * g.val 0 0 / ((a : F) * (g.val).det) = g.val 0 0 / (g.val).det`. Clear the denominators using the available nonvanishing facts. Establish `h2 : g.val 1 0 / ((a : F) * (g.val).det) = g.val 1 0 / (g.val).det / (a : F)`. Clear the denominators using the available nonvanishing facts. Establish `key` using `GlobalTheory.CompanionTheory.SplitDiag.rW_dil χ (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) a (fun y => Φ (y * ((g.val).det, 1))) x`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hf : (fun y : F × F => Φ (y * ((a : F) * (g.val).det, 1))) = fun y => Φ (y * ((a : F), 1) * ((g.val).det, 1))`. Use function extensionality and compare the values at `y`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Simplify using `only [GL2LocalData.piS]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, hv, e00, e01, e10, e11, h1, h2, hf, key, map_mul, Units.val_mul, GlobalTheory.CompanionTheory.SplitDiag.mp_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.CompanionTheory.SplitDiag.piS_diag : GL2LocalData.ForES fun F _ _ _ _ _ _ _ χ => ∀ (c₁ : Fˣ →* ℂˣ) (Φ : F × F → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ →
   ∀ (a : Fˣ) (g : GL (Fin 2) F) (x : F × F),

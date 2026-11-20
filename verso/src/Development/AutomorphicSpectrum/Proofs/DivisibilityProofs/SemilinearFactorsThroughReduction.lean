@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Div
 
 /- English proof (translation)
-Introduce `A O _ _ θ hθ ξ hξ M D L _ _ _ _ _ _ r q hr hker`. Establish `hq : ∀ m m', r m = r m' → q m = q m'`. Introduce `m m' h`. Take `⟨n, hn⟩` from `(hker (m - m')).1 (by rw [map_sub, h, sub_self])`. Establish `h0 : q (m - m') = 0` using `by rw [hn, map_smulₛₗ, hξ, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `s` to `Function.surjInv hr`. Establish `hs : ∀ d, r (s d) = d` using `Function.surjInv_eq hr`. Use `⟨{ toFun := fun d => q (s d), map_add' := ?_, map_smul' := ?_ }, fun m => hq _ _ (hs _)⟩` and prove the remaining obligations. Introduce `d d'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_add]`. Conclude with `hq _ _ (by rw [map_add, hs, hs, hs])`. Introduce `o d`. Take `⟨a, rfl⟩` from `hθ o`. Simplify using `only [RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smulₛₗ]`. Conclude with `hq _ _ (by rw [map_smulₛₗ, hs, hs])`.
+A detailed English derivation is pending.
 -/
 theorem semilinear_factors_through_reduction :
     ∀ (A O : Type) [CommRing A] [CommRing O] (θ : A →+* O), Function.Surjective θ →

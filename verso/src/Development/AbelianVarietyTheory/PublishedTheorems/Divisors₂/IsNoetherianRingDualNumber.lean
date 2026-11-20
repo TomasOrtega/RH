@@ -38,7 +38,7 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {hI : I ^ 2 
   {A₀ : Over (Sp R₀)} [GrpObj A₀] {A' : Over (Sp R)} [GrpObj A'] {i' : A₀.left ⟶ A'.left}
 
 /- English proof (translation)
-The claim follows from `(H g A₀ A' i' h' hA hg).1.1 X i h hX`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAdmissible (H : At hI π) (h' : IsGrpPullback A₀ A' (spMap π) i') (hA : IsAbelianScheme A')
     (hg : SmoothOfRelativeDimension g A'.hom) {X : Over (Sp R)} {i : A₀.left ⟶ X.left}
@@ -48,7 +48,7 @@ theorem exists_isAdmissible (H : At hI π) (h' : IsGrpPullback A₀ A' (spMap π
   (H g A₀ A' i' h' hA hg).1.1 X i h hX
 
 /- English proof (translation)
-The claim follows from `(H g A₀ A' i' h' hA hg).1.2 F hF`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift (H : At hI π) (h' : IsGrpPullback A₀ A' (spMap π) i') (hA : IsAbelianScheme A')
     (hg : SmoothOfRelativeDimension g A'.hom) {F : Submodule R (HdR A')}
@@ -58,7 +58,7 @@ theorem exists_lift (H : At hI π) (h' : IsGrpPullback A₀ A' (spMap π) i') (h
   (H g A₀ A' i' h' hA hg).1.2 F hF
 
 /- English proof (translation)
-The claim follows from `(H g A₀ A' i' h' hA hg).2 X Y i j h k hX hY e`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso (H : At hI π) (h' : IsGrpPullback A₀ A' (spMap π) i') (hA : IsAbelianScheme A')
     (hg : SmoothOfRelativeDimension g A'.hom) {X Y : Over (Sp R)} {i : A₀.left ⟶ X.left} {j : A₀.left ⟶ Y.left}

@@ -6,13 +6,13 @@ open MvPolynomial GlobalTheory.CovTest GlobalTheory.ArInt GlobalTheory.BlockPoin
 namespace GlobalTheory.AltLowDeg
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro S _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `S hS`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : S.Nonempty` using `Finset.card_pos.1 (by omega)`. Establish `hmem` using `S.max'_mem hne`. Establish `hM : n ≤ S.max' hne`. Establish `hsub : S ⊆ Finset.range (S.max' hne + 1)` using `fun x hx => Finset.mem_range.2 (Nat.lt_succ_of_le (S.le_max' x hx))`. Use `Finset.card_le_card hsub` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.card_range] at this`. Use linear arithmetic over natural numbers and integers. Establish `hc : (S.erase (S.max' hne)).card = n`. Rewrite using `[Finset.card_erase_of_mem hmem]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `ih _ hc` as an intermediate fact. Rewrite using `[Finset.sum_range_succ, ← Finset.add_sum_erase S _ hmem]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_range_le_sum_of_card (n : ℕ) : ∀ S : Finset ℕ, S.card = n → ∑ i ∈ Finset.range n, i ≤ ∑ s ∈ S, s := by
   induction n with
@@ -34,7 +34,7 @@ theorem sum_range_le_sum_of_card (n : ℕ) : ∀ S : Finset ℕ, S.card = n → 
     omega
 
 /- English proof (translation)
-Establish `h` using `sum_range_le_sum_of_card n (Finset.univ.image f) (by rw [Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_fin])`. Rewrite `h` using `[Finset.sum_image (fun x _ y _ h => hf h)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_fin_le_sum_of_injective {n : ℕ} {f : Fin n → ℕ} (hf : Function.Injective f) :
     ∑ i : Fin n, (i : ℕ) ≤ ∑ i, f i := by
@@ -44,11 +44,11 @@ theorem sum_fin_le_sum_of_injective {n : ℕ} {f : Fin n → ℕ} (hf : Function
   rwa [Fin.sum_univ_eq_sum_range (fun i => i) n]
 
 /- English proof (translation)
-Establish `h1 : MvPolynomial.rename (Equiv.swap i j) (monomial α c) = monomial α c`. Establish `hα : Finsupp.mapDomain (Equiv.swap i j) α = α`. Use extensionality with `k`. Rewrite using `[Finsupp.mapDomain_equiv_apply, Equiv.symm_swap]`. Break down `eq_or_ne k i with rfl | hki` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Equiv.swap_apply_left, he]`. Break down `eq_or_ne k j with rfl | hkj` into its components or cases. Rewrite using `[Equiv.swap_apply_right, he]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hki hkj]`. Rewrite using `[rename_monomial, hα]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hψ (Equiv.swap i j) (monomial α c)`. Rewrite `h2` using `[h1, Equiv.Perm.sign_swap hij]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem alt_monomial_eq_zero {n : ℕ} (ψ : MvPolynomial (Fin n) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin n)) (P : MvPolynomial (Fin n) ℝ),
@@ -71,11 +71,11 @@ theorem alt_monomial_eq_zero {n : ℕ} (ψ : MvPolynomial (Fin n) ℝ →ₗ[ℝ
   linarith
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ i j, i ≠ j ∧ α i = α j`. Take `⟨i, j, hij, he⟩` from `h`. Conclude with `alt_monomial_eq_zero ψ hψ α _ hij he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. It suffices to derive a contradiction.
 
-Use `exfalso push_neg at h`. Establish `hinj : Function.Injective (α : Fin n → ℕ)` using `fun i j e => by`. Assume the negation of the conclusion as `hne`. Conclude with `h i j hne e`. Establish `hw` using `hP (mem_support_iff.1 hα)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : ∑ i, α i = d`. Rewrite using `[← Finsupp.degree_eq_sum, Finsupp.degree_eq_weight_one]`. Conclude with `hw`. Use `sum_fin_le_sum_of_injective hinj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem alt_eq_zero_of_lt (n : ℕ) (ψ : MvPolynomial (Fin n) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin n)) (P : MvPolynomial (Fin n) ℝ),

@@ -18,7 +18,7 @@ def TrueF (D : D7) : Prop :=
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
 /- English proof (translation)
-Take `⟨B, X, I, l, Z, rfl, h1, w, hw⟩` from `hD`. Conclude with `h B X I l Z w h1 hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem TrueF.elim {Q : D7 → Prop}
     (h : ∀ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z),
@@ -35,7 +35,7 @@ def IsScaleWithBoundedGamma (D : D7) (L C' : ℝ) : Prop := ∃ large₂ : SizeD
 def StdE (D : D7) (L C' : ℝ) : Prop := CanE D L C' ∧ IsScaleWithBoundedGamma D L C'
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2` and use `let ⟨C, a, b, hC, h⟩ := h Cg cb Cu cT CT h1 h2 ⟨C, a, b, hC, fun C' Cl ha hb D L u hD he hH => h C' Cl ha hb D L u hD (hE _ _ _ he) hH⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Row.mono {E E' : D7 → ℝ → ℝ → Prop} (hE : ∀ D L C', E' D L C' → E D L C') {Q : ∀ D : D7, D.what₂.Word → ℝ → ℝ → Prop}
     (h : Row E Q) : Row E' Q := fun Cg cb Cu cT CT h1 h2 =>

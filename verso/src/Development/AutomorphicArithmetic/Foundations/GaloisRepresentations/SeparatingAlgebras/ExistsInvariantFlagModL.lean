@@ -6,25 +6,23 @@ open Module
 namespace UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Use `haveI : Module.Finite (ZMod l) V := Module.Finite.of_finite`. Proceed by induction on `m with`. Consider the case `zero`. Conclude with `⟨Fin.elim0, linearIndependent_empty_type, fun _ j => j.elim0⟩`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hs⟩` from `ih (Nat.le_of_succ_le hm)`. Use `set U := Submodule.span (ZMod l) (Set.range v) with hU`. Establish `hmono : ∀ j, Submodule.span (ZMod l) (v '' {i | i < j}) ≤ U` using `fun j => Submodule.span_mono (Set.image_subset_range _ _)`. Establish `hvU : ∀ j, v j ∈ U` using `fun j => Submodule.subset_span ⟨j, rfl⟩`. Establish `hst : ∀ h, ∀ u ∈ U, ρ h u ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h u hu`. Establish `hle : U ≤ U.comap (ρ h)`. Rewrite using `[hU, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h1` using `hmono j (hs h j)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `U.add_mem h1 (hvU j)`. Simplify using `using h2`. Conclude with `hle hu`. Establish `hne : U ≠ ⊤`. Introduce `htop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : finrank (ZMod l) U = m`. Rewrite using `[hU, finrank_span_eq_card hv]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[htop, finrank_top]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, hxs⟩` from `hF l H hH V ρ U hst hne`. Use `⟨Fin.snoc v x, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(linearIndependent_fin_snoc).2 ⟨hv, hx⟩`. Introduce `h j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `himg : (Fin.snoc v x : Fin (m+1) → V) '' {i | i < Fin.last m} = Set.range v`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Establish `hi' : i ≠ Fin.last m` using `ne_of_lt hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨i', rfl⟩` from `Fin.exists_castSucc_eq.2 hi'`. Conclude with `⟨i', by simp⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i.castSucc, Fin.castSucc_lt_last i, by simp⟩`. Simplify using `only [Fin.snoc_last]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[himg]`. Conclude with `hxs h`. Establish `himg : v '' {i | i < j} ⊆ (Fin.snoc v x : Fin (m+1) → V) '' {i | i < j.castSucc}`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `⟨i.castSucc, by simpa using hi, by simp⟩`.
-
-Simplify using `only [Fin.snoc_castSucc]`. Conclude with `Submodule.span_mono himg (hs h j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_invariant_flag_mod_l (hF : FixVec) (l : ℕ) [Fact l.Prime] (H : Type) [Group H] (hH : IsPGroup l H)
     (V : Type) [AddCommGroup V] [Module (ZMod l) V] [Finite V] (ρ : Representation (ZMod l) H V)
@@ -81,13 +79,13 @@ private theorem exists_invariant_flag_mod_l (hF : FixVec) (l : ℕ) [Fact l.Prim
         exact Submodule.span_mono himg (hs h j)
 
 /- English proof (translation)
-Introduce `hF l _ H _ hH V _ _ _ ρ`. Use `haveI : Module.Finite (ZMod l) V := Module.Finite.of_finite`. Take `⟨v, hv, hs⟩` from `exists_invariant_flag_mod_l hF l H hH V ρ _ le_rfl`. Establish `hsp : ⊤ ≤ Submodule.span (ZMod l) (Set.range v)` using `(hv.span_eq_top_of_card_eq_finrank' (by simp)).ge`. Set `b : Basis (Fin (finrank (ZMod l) V)) (ZMod l) V` to `Basis.mk hv hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Introduce `h i j hji`. Establish `hb : ∀ j, b j = v j` using `fun j => Basis.mk_apply hv hsp j`. Establish `hmem : ρ h (b j) - b j ∈ Submodule.span (ZMod l) (b '' {i | i < j})`. Establish `: (b : _ → V) '' {i | i < j} = v '' {i | i < j}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[hb]`. Rewrite using `[this, hb]`. Conclude with `hs h j`. Establish `hsupp` using `(Basis.mem_span_image b).1 hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hi : i ∈ ((b.repr (ρ h (b j) - b j)).support : Set _)`. Simplify using `using hne`. Use `hsupp hi` as an intermediate fact. Conclude with `absurd this (not_lt.2 hji)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flag_pf : FixVec → Flag := by
   intro hF l _ H _ hH V _ _ _ ρ

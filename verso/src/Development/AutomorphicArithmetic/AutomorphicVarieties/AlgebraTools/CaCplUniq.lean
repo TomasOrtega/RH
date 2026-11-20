@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ p B _ _ _ B' _ _ _ hB hB'`. Use `haveI : IsAdicComplete (maximalIdeal B) B := hB.complete`. Use `haveI : IsAdicComplete (maximalIdeal B') B' := hB'.complete`. Take `⟨ψ, hψ, -⟩` from `IsCplAt.existsUnique_lift R p B hB B' (algebraMap R B') hB'.comap_eq`. Take `⟨χ, hχ, -⟩` from `IsCplAt.existsUnique_lift R p B' hB' B (algebraMap R B) hB.comap_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, -, huB⟩` from `IsCplAt.existsUnique_lift R p B hB B (algebraMap R B) hB.comap_eq`. Take `⟨_, -, huB'⟩` from `IsCplAt.existsUnique_lift R p B' hB' B' (algebraMap R B') hB'.comap_eq`. Establish `h1 : χ.comp ψ = RingHom.id B`. Establish `ha : (χ.comp ψ).comp (algebraMap R B) = algebraMap R B`. Rewrite using `[RingHom.comp_assoc, hψ, hχ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[huB _ ha, huB (RingHom.id B) (RingHom.id_comp _)]`. Establish `h2 : ψ.comp χ = RingHom.id B'`. Establish `ha : (ψ.comp χ).comp (algebraMap R B') = algebraMap R B'`. Rewrite using `[RingHom.comp_assoc, hχ, hψ]`. Rewrite using `[huB' _ ha, huB' (RingHom.id B') (RingHom.id_comp _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom ψ χ h2 h1) ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `congrArg (fun φ : R →+* B' => φ x) hψ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.nonempty_algEquiv :
     ∀ (R : Type) [CommRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B] (B' : Type) [CommRing B'] [IsLocalRing B'] [Algebra R B'],

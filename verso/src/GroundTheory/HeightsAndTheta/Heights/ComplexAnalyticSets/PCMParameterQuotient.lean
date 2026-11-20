@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights
 open IsLocalRing
 
 /- English proof (translation)
-Establish `: Nontrivial C` using `e.injective.nontrivial`. Establish `: IsLocalRing C` using `IsLocalRing.of_surjective' e.toRingHom e.surjective`. Establish `: IsNoetherianRing C` using `isNoetherianRing_of_ringEquiv A e`. Take `⟨rs, hm, hreg, hdim⟩` from `IsCohenMacaulayLocalRing.exists_isWeaklyRegular (B := A)`. Use `{ exists_isWeaklyRegular := ⟨rs.map e, ?_, ?_, ?_⟩ }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr`. Take `⟨s, hs, rfl⟩` from `List.mem_map.1 hr`. Establish `hs'` using `hm s hs`. Rewrite `hs'`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hs' (by simpa using h.map e.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `RingHomInvPair.of_ringEquiv e` as an intermediate fact. Use `RingHomInvPair.symm (↑e : A →+* C) (e.symm : C →+* A)` as an intermediate fact. Conclude with `(e.toSemilinearEquiv.isWeaklyRegular_congr' rs).1 hreg`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv e, hdim, List.length_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCohenMacaulayLocalRing.of_ringEquiv {A C : Type*} [CommRing A] [CommRing C]
     [IsCohenMacaulayLocalRing A] (e : A ≃+* C) : IsCohenMacaulayLocalRing C := by
@@ -33,9 +33,9 @@ theorem IsCohenMacaulayLocalRing.of_ringEquiv {A C : Type*} [CommRing A] [CommRi
   · rw [← ringKrullDim_eq_of_ringEquiv e, hdim, List.length_map]
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => simp at h`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `h` using `[← WithBot.coe_natCast, ← WithBot.coe_natCast, ← WithBot.coe_add, WithBot.coe_inj, top_add]`. Conclude with `absurd h (ENat.top_ne_natCast n)`. Consider the case `coe k`. Use `⟨k, rfl, ?_⟩` and prove the remaining obligations. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_nat_of_add_natCast_eq {a : WithBot ℕ∞} {m n : ℕ}
     (h : a + (m : WithBot ℕ∞) = (n : WithBot ℕ∞)) : ∃ k : ℕ, a = k ∧ k + m = n := by
@@ -51,27 +51,25 @@ theorem exists_nat_of_add_natCast_eq {a : WithBot ℕ∞} {m n : ℕ}
       exact_mod_cast h
 
 /- English proof (translation)
-Introduce `B _ _ d`. Proceed by induction on `d generalizing B with`. Consider the case `zero`. Introduce `x _ _`. Establish `h0 : Ideal.span (Set.range x) = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Set.range_eq_empty, Ideal.span_empty]`. Conclude with `IsCohenMacaulayLocalRing.of_ringEquiv ((RingEquiv.quotientBot B).symm.trans (Ideal.quotEquivOfEq h0.symm))`. Consider the case `succ d ih => classical`. Introduce `x hx hdim`. Set `x' : Fin d → B ⧸ Ideal.span {x 0}` to `fun i => Ideal.Quotient.mk _ (x i.succ)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hIJ : Ideal.span (Set.range x) = Ideal.span {x 0} ⊔ Ideal.span (Set.range (Fin.tail x))`. Rewrite using `[Fin.range_fin_succ, Ideal.span_insert]`. Establish `hmap : (Ideal.span (Set.range (Fin.tail x))).map (Ideal.Quotient.mk (Ideal.span {x 0})) = Ideal.span (Set.range x')`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `e : (B ⧸ Ideal.span {x 0}) ⧸ Ideal.span (Set.range x') ≃+* B ⧸ Ideal.span (Set.range x)` to `(Ideal.quotEquivOfEq hmap.symm).trans ((DoubleQuot.quotQuotEquivQuotSup _ _).trans (Ideal.quotEquivOfEq hIJ.symm))`. Establish `hIne : Ideal.span {x 0} ≠ ⊤` using `fun h => (maximalIdeal.isMaximal B).ne_top (top_le_iff.1 (h ▸ (Ideal.span_singleton_le_iff_mem _).2 (hx 0)))`. Establish `: Nontrivial (B ⧸ Ideal.span {x 0})` using `Ideal.Quotient.nontrivial_iff.2 hIne`. Establish `: IsLocalRing (B ⧸ Ideal.span {x 0})` using `IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `: IsLocalHom (Ideal.Quotient.mk (Ideal.span {x 0}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ∀ i, x' i ∈ maximalIdeal (B ⧸ Ideal.span {x 0})` using `fun i => (mem_maximalIdeal _).2 fun hu => (mem_maximalIdeal _).1 (hx i.succ) (isUnit_of_map_unit (Ideal.Quotient.mk _) _ hu)`. Take `⟨rs, -, -, hD⟩` from `IsCohenMacaulayLocalRing.exists_isWeaklyRegular (B := B)`. Establish `he` using `ringKrullDim_eq_of_ringEquiv e`. Take `⟨k, hk, hkn⟩` from `exists_nat_of_add_natCast_eq (hdim.trans hD)`. Establish `hKrull : ringKrullDim (B ⧸ Ideal.span {x 0}) ≤ (k : WithBot ℕ∞) + (d : WithBot ℕ∞)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ((Finset.univ.image x' : Finset _) : Set _) ⊆ SetLike.coe (Ring.jacobson (B ⧸ Ideal.span {x 0}))`. Rewrite using `[IsLocalRing.ringJacobson_eq_maximalIdeal]`. Introduce `z hz`. Rewrite `hz` using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Take `⟨i, rfl⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hx' i`. Establish `h1` using `ringKrullDim_le_ringKrullDim_quotient_add_card _ hs`. Rewrite `h1` using `[Finset.coe_image, Finset.coe_univ, Set.image_univ, he, hk]`. Use `h1.trans ?_` and prove the remaining obligations. Use `gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.card_image_le.trans (Finset.card_univ.trans (Fintype.card_fin d)).le` after adjusting the coercions. Establish `hmin : ∀ p ∈ minimalPrimes B, x 0 ∉ p`. Introduce `p hp hyp`. Establish `hle : Ideal.span {x 0} ≤ p` using `(Ideal.span_singleton_le_iff_mem _).2 hyp`. Establish `h1` using `ringKrullDim_quotient_eq_of_mem_minimalPrimes hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ringKrullDim (B ⧸ p) ≤ ringKrullDim (B ⧸ Ideal.span {x 0})` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle)`. Establish `h3` using `(h1.symm.trans_le h2).trans hKrull`. Rewrite `h3` using `[hD]`. Establish `h4 : rs.length ≤ k + d` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hnzd, hCM⟩` from `hreg B (x 0) (hx 0) hmin`. Establish `hdimI : ringKrullDim (B ⧸ Ideal.span {x 0}) + ((1 : ℕ) : WithBot ℕ∞) = (rs.length : WithBot ℕ∞)`. Rewrite using `[Nat.cast_one, ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim_of_mem_nonZeroDivisors hnzd (hx 0), hD]`. Take `⟨k', hk', hk'n⟩` from `exists_nat_of_add_natCast_eq hdimI`. Establish `hdim' : ringKrullDim ((B ⧸ Ideal.span {x 0}) ⧸ Ideal.span (Set.range x')) + (d : WithBot ℕ∞) = ringKrullDim (B ⧸ Ideal.span {x 0})`.
-
-Rewrite using `[he, hk, hk']`. Conclude with `(by omega : k + d = k')` after adjusting the coercions. Establish `: IsCohenMacaulayLocalRing (B ⧸ Ideal.span {x 0})` using `hCM`. Use `ih (B ⧸ Ideal.span {x 0}) x' hx' hdim'` as an intermediate fact. Conclude with `IsCohenMacaulayLocalRing.of_ringEquiv e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CMParameterQuotient.proof (hreg : CMRegularElement.Statement.{0}) :
     CMParameterQuotient.Statement := by

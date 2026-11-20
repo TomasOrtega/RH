@@ -1,27 +1,23 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L2Cusps.AbsCompactAlt
 
 /- English proof (translation)
-Introduce `G G₁ H L _ _ _ _ _ _ _ _ π ρ J r hr hρ X hXJ hX`. Take `⟨⟨hXc, hXinv⟩, hXne, hXmin⟩` from `hX`. Establish `hVc : IsClosed ((Submodule.comap J.toLinearMap X : Submodule ℂ H) : Set H)` using `hXc.preimage J.continuous`. Use `haveI hVcomp : CompleteSpace (Submodule.comap J.toLinearMap X) := hVc.completeSpace_coe`. Establish `hinv : π.IsInvariant (Submodule.comap J.toLinearMap X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₁ v hv`. Take `⟨g, rfl⟩` from `hr g₁`. Use `show J (π (r g) v) ∈ X`. Rewrite using `[← hρ]`. Conclude with `hXinv g _ hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hVcomp, hinv, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hXne`. Take `⟨h, rfl⟩` from `hXJ hx`. Use `nontrivial_of_ne (⟨h, hx⟩ : Submodule.comap J.toLinearMap X) 0 ?_` and prove the remaining obligations. Introduce `e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hx0` to reduce the goal to its premises. Establish `e' : h = 0` using `congrArg Subtype.val e`. Rewrite using `[e', map_zero]`. Introduce `U' hU'c hU'inv`. Set `V` to `Submodule.comap J.toLinearMap X`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `U : Submodule ℂ L` to `(U'.map V.subtype).map J.toLinearMap`. Establish `hUX : U ≤ X`. Introduce and unpack `_ ⟨_, ⟨u, _, rfl⟩, rfl⟩`. Conclude with `u.2`. Establish `hU'H : IsClosed ((U'.map V.subtype : Submodule ℂ H) : Set H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.map_coe]`. Conclude with `hVc.isClosedEmbedding_subtypeVal.isClosedMap _ hU'c`. Establish `hUc : IsClosed (U : Set L)`. Rewrite using `[Submodule.map_coe]`. Conclude with `J.isometry.isClosedEmbedding.isClosedMap _ hU'H`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUinv : ∀ g, ∀ v ∈ U, ρ g v ∈ U`. Introduce and unpack `g _ ⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Use `⟨_, ⟨⟨π (r g) u, hinv _ _ u.2⟩, hU'inv (r g) u hu, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hρ g u).symm`. Break down `hXmin U hUX ⟨hUc, hUinv⟩ with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Establish `hJu : J u ∈ U` using `⟨u, ⟨u, hu, rfl⟩, rfl⟩`. Rewrite `hJu` using `[h, Submodule.mem_bot]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hn : ‖(u : H)‖ = 0` using `by rw [← J.norm_map, hJu, norm_zero]`. Simplify using `using hn`. Use `right`.
-
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `hJu : J u ∈ U`. Rewrite using `[h]`. Conclude with `u.2`.
-
-Take `⟨_, ⟨u', hu', rfl⟩, he⟩` from `hJu`. Establish `: u' = u` using `Subtype.ext (J.injective he)`. Rewrite using `[← this]`. Conclude with `hu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KernelIndexFullLattice.absIrr_holds :
     UpperTheory.V.KernelIndexFullLattice.AbsIrr := by

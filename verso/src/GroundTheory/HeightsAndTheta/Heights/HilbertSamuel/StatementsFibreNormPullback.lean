@@ -35,7 +35,7 @@ def FibreNormPullback.Statement : Prop :=
 open ProjLine in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨FibreNormMax.hyps_inhabited, FibreNormMax.coords_inhabited⟩`.
+Supply the required witnesses or components.
 -/
 theorem FibreNormPullback.hyps_inhabited :
     (IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y) ∧

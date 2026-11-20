@@ -18,21 +18,19 @@ open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 namespace GlobalTheory.CMTorsion
 
 /- English proof (translation)
-Introduce `Λ Ω hΩ x hx`. Establish `hx' : x ≫ GlobalTheory.WeierstrassCurve.toSpec (curve Λ Ω) = Spec.map (CommRingCat.ofHom (RingHom.id ℂ))`. Rewrite using `[hx]`. Conclude with `(Spec.map_id _).symm`. Take `⟨P, h, rfl⟩` from `GlobalTheory.WeierstrassCurve.exists_eq_ptHom (curve Λ Ω) (RingHom.id ℂ) x hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `(WeierstrassCurve.Projective.equation_iff _).mp h.equation`. Simplify using `only [WeierstrassCurve.map_id, curve] at e`. Establish `hne : P ≠ 0` using `(GlobalTheory.WeierstrassCurve.isUnimodularSol_iff_ne_zero.mp h).2`. Distinguish the cases in `h2 : P 2 = 0`. Establish `h0 : P 0 = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h2]`. Establish `: P 0 ^ 3 = 0` using `by linear_combination -e`. Conclude with `pow_eq_zero_iff (n := 3) (by norm_num) |>.mp this`. Establish `h1 : P 1 ≠ 0`. Apply the tactic sequence `intro h1; apply hne; ext i; fin_cases i <;> simp [h0, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `pt`. Use `(GlobalTheory.WeierstrassCurve.ptHom_eq_ptHom_iff _ _ _).mpr ⟨Units.mk0 (P 1) h1, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i; fin_cases i <;> simp [coords, h0, h2]`. Use `set a := P 0 / P 2 set b := P 1 / P 2`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hY : (2 * b * Ω ^ 3) ^ 2 = 4 * (a * Ω ^ 2) ^ 3 - Λ.g₂ * (a * Ω ^ 2) - Λ.g₃`. Simplify using `only [a, b]`. Take the linear combination `(norm := skip) (4 * Ω ^ 6 / P 2 ^ 3) * e`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨z, hz, hp, hd⟩` from `GlobalTheory.exists_weierstrassP_eq_and_derivWeierstrassP_eq Λ hY`. Use `⟨z, ?_⟩` and prove the remaining obligations. Unfold `pt`. Use `(GlobalTheory.WeierstrassCurve.ptHom_eq_ptHom_iff _ _ _).mpr ⟨Units.mk0 (P 2) h2, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `[coords, hz, hp, a]`. Clear the denominators using the available nonvanishing facts. Simplify using `[coords, hz, hd, b]`. Clear the denominators using the available nonvanishing facts.
-
-Simplify using `[coords, hz]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pt_eq : ∀ (Λ : PeriodPair) (Ω : ℂ), Ω ≠ 0 → ∀ x : Sp ℂ ⟶ scheme (curve Λ Ω), x ≫ toSpec (curve Λ Ω) = 𝟙 _ → ∃ z : ℂ, pt Λ Ω z = x := by
   intro Λ Ω hΩ x hx

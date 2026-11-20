@@ -5,25 +5,23 @@ open GlobalTheory.Cong
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `κ _ _ a ha`. Take `⟨p, hp⟩` from `CharP.exists κ`. Use `haveI : Fact p.Prime := ⟨CharP.char_is_prime κ p⟩`. Use `haveI : NeZero a := ⟨by omega⟩`. Set `L` to `FiniteField.Extension κ p a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `b : Module.Basis (Fin a) κ L` to `Module.finBasisOfFinrankEq κ L (FiniteField.finrank_extension κ p a)`. Take `⟨g, hg⟩` from `IsCyclic.exists_monoid_generator (α := Lˣ)`. Set `β : L` to `(g : L)`. Use `⟨LinearMap.toMatrix b b (Algebra.lmul κ L β), fun W hW => ?_⟩` and prove the remaining obligations. Set `e` to `b.equivFun`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x : L, (LinearMap.toMatrix b b (Algebra.lmul κ L β)).mulVec (e x) = e (β * x)`. Introduce `x`. Simplify `LinearMap.toMatrix_mulVec_repr b b (Algebra.lmul κ L β) x` using `[e, Module.Basis.equivFun_apply]`. Establish `stepβ : ∀ x : L, e x ∈ W → e (β * x) ∈ W` using `fun x hx => key x ▸ hW _ hx`. Establish `stepPow : ∀ n : ℕ, ∀ x : L, e x ∈ W → e (β ^ n * x) ∈ W`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ n ih`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Use `stepβ _ (ih x hx)` as an intermediate fact. Simplify `this` using `[pow_succ', mul_assoc]`. Establish `stepAll : ∀ y x : L, e x ∈ W → e (y * x) ∈ W`. Introduce `y x hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using `using W.zero_mem`. Take `⟨n, hn⟩` from `Submonoid.mem_powers_iff _ _ |>.1 (hg (Units.mk0 y hy))`. Establish `: β ^ n = y`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun u : Lˣ => (u : L)) hn` as an intermediate fact. Simplify `this` using `[β]`. Rewrite using `[← this]`. Conclude with `stepPow n x hx`. Distinguish the cases in `h : W = ⊥`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Or.inl h`. Use `right`. Take `⟨v, hvW, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `hx0 : e.symm v ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hv0` to reduce the goal to its premises. Simplify using `using congrArg e h0`. Establish `hxW : e (e.symm v) ∈ W` using `by simpa using hvW`. Rewrite using `[eq_top_iff]`. Introduce `u _`.
-
-Use `stepAll (e.symm u * (e.symm v)⁻¹) (e.symm v) hxW` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hx0, mul_one]`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_matrix_no_invariant_subspace :
     ∀ (κ : Type) [Field κ] [Finite κ] (a : ℕ), 1 ≤ a → ∃ B : Matrix (Fin a) (Fin a) κ,

@@ -4,7 +4,7 @@ open UpperTheory.Gal.Int.Geo
 open CategoryTheory AlgebraicGeometry
 
 /- English proof (translation)
-Substitute `hf hφ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem powMap_congr {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f f' : S' ⟶ S} {φ φ' : A'.left ⟶ A.left}
     (hf : f = f') (hφ : φ = φ') (h : φ ≫ A.hom = A'.hom ≫ f) (h' : φ' ≫ A.hom = A'.hom ≫ f') (k : ℕ) :
@@ -13,11 +13,11 @@ private theorem powMap_congr {S' S : Scheme.{0}} {A' : Over S'} {A : Over S} {f 
   rfl
 
 /- English proof (translation)
-Introduce `hB hP p _ D G L E _ _ gb w q _ r 𝔴 𝔫 S k T K₀ hK N' N t c a hN hNum C' C u hu x y`. Take `⟨π, o, ψ, φ, hw, ov, tr, e⟩` from `T.tr_eq N' N u x y`. Take `⟨h1, h2⟩` from `hB p D G L E gb w q r 𝔴 𝔫 S k T K₀ hK N' N t c a hN hNum C' C u hu ⟨π, o, ψ, φ, ov, tr⟩`. Establish `h1' : π ≫ C.j = C'.j` using `h1`. Establish `h2' : (ψ.left ≫ φ.φ) ≫ C.m.φ = C'.m.φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc]`. Conclude with `h2`. Establish `hv` using `C.m.cart.1.w`. Establish `hw' : ((ψ.left ≫ φ.φ) ≫ C.m.φ) ≫ S.Y.univ.A.hom = (T.M N').univ.A.hom ≫ π ≫ C.j`. Rewrite using `[Category.assoc, hv, ← Category.assoc, hw, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `(hP _ _ _ (T.M N').univ.A (T.M N).univ.A S.Y.univ.A π C.j (ψ.left ≫ φ.φ) C.m.φ hw hv k).2.2 hw'`. Simplify using `only [Site.pi, Cls.pw]`. Rewrite using `[← Category.assoc, e, Category.assoc, hc]`. Conclude with `congrArg _ (powMap_congr h1' h2' _ _ k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tower_invariant_of_base_invariant_powerCartesian :
     BaseInv → PowCart → PiInv := by

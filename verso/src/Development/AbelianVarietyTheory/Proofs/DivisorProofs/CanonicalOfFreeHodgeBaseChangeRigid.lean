@@ -26,17 +26,17 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {κ : Divide
   {π : R →+* R₀}
 
 /- English proof (translation)
-Introduce `g A₀ _ A _ i h hA hg`. Use `letI : Algebra R R₀ := π.toAlgebra`. Take `⟨-, ⟨N, hN⟩, -⟩` from `PH R A g hA hg`. Establish `hF : PrimitiveSubmodule A₀ = Submodule.span R₀ ((redMor h).pull '' (PrimitiveSubmodule A))` using `(PB R A g hA hg R₀ A₀ i h).2`. Use `(PF.prim hA hg).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨PR R A g hA hg I κ hκ R₀ π hπ hI A₀ i h, ⟨N.dualAnnihilator, ?_, ?_⟩, fun y ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff, Fil, ← Submodule.dualAnnihilator_sup_eq, hN.sup_eq_top, Submodule.dualAnnihilator_top]`. Use `codisjoint_iff_le_sup.2 fun x _ ↦ Submodule.mem_sup.2 ⟨x ∘ₗ Submodule.projection _ _ hN.symm, ?_, x ∘ₗ Submodule.projection _ _ hN, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by`. Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN.symm).2 hc, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by`. Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN).2 hc, map_zero]`. Use extensionality with `c`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, ← map_add, add_comm, Submodule.projection_add_projection_eq_self hN]`. Introduce `hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `l : primDR A →ₗ[R] R₀` to `{ toFun c := y ((redMor h).pull c) map_add' := by simp map_smul' r c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }`. Take `⟨x, hx⟩` from `Module.projective_lifting_property (Algebra.linearMap R R₀) l hπ`. Use `⟨x ∘ₗ Submodule.projection _ _ hN.symm, (Submodule.mem_dualAnnihilator _).2 fun c hc ↦ by` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, (Submodule.projection_apply_eq_zero_iff hN.symm).2 hc, map_zero], fun c ↦ ?_⟩`. Establish `z : l (Submodule.projection _ _ hN c) = 0` using `(Submodule.mem_dualAnnihilator _).1 hy _ (hF ▸ Submodule.subset_span ⟨_, Submodule.projection_apply_mem hN c, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `l c = π (x _)`. Use `conv_lhs => rw [← Submodule.projection_add_projection_eq_self hN c, map_add, z, zero_add, ← hx]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, e⟩`. Rewrite using `[Fil, hF, Submodule.mem_dualAnnihilator]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Use `(Submodule.span_le (p := LinearMap.ker y)).2 (fun c hc ↦ ?_) hc` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hc`. Conclude with `(e c).trans (by rw [(Submodule.mem_dualAnnihilator _).1 hx c hc, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem canonical_of_free_hodge_baseChange_rigid (PF : AbelianDeRham.Free)
     (PH : AbelianDeRham.Hodge) (PB : AbelianDeRham.BaseChange) (PR : AbelianDeRham.Rigid)
@@ -82,7 +82,7 @@ theorem canonical_of_free_hodge_baseChange_rigid (PF : AbelianDeRham.Free)
 end GrothendieckMessing
 
 /- English proof (translation)
-The claim follows from `have hF : AbelianDeRham.Free := GlobalTheory.AbelianPrim.abelianDeRham_free hS.1 fun R _ I κ hκ R₀ _ π hπ hI ↦ ⟨GrothendieckMessing.canonical_of_free_hodge_baseChange_rigid hF hS.2.1 hS.2.2 (AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hC) hκ hπ hI, hLift R I κ hκ R₀ π hπ …`.
+A detailed English derivation is pending.
 -/
 theorem grothendieckDeformation_of_structure (hS : AbelianDeRhamStructure)
     (hC : CrystallineDeRham) (hLift : AbelianLifting) : GrothendieckDeformation :=
@@ -93,7 +93,7 @@ theorem grothendieckDeformation_of_structure (hS : AbelianDeRhamStructure)
       hLift R I κ hκ R₀ π hπ hI⟩
 
 /- English proof (translation)
-The claim follows from `grothendieckDeformation_of_structure (GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements hCrys hHdR).1 (GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements hCrys hHdR).2 hLift`.
+A detailed English derivation is pending.
 -/
 theorem grothendieckDeformation_of_abelianLifting
     (hCrys : CrystallineSmoothLift) (hHdR : AbelianHodgeDeRham) (hLift : AbelianLifting) :
@@ -101,7 +101,7 @@ theorem grothendieckDeformation_of_abelianLifting
   grothendieckDeformation_of_structure (GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements hCrys hHdR).1 (GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements hCrys hHdR).2 hLift
 
 /- English proof (translation)
-The claim follows from `grothendieckDeformation_of_abelianLifting hCrys hHdR hLift`.
+A detailed English derivation is pending.
 -/
 theorem grothendieckDeformation₂
     (hCrys : CrystallineSmoothLift) (hHdR : AbelianHodgeDeRham) (_hDual : DualAbelianScheme)
@@ -109,7 +109,7 @@ theorem grothendieckDeformation₂
   grothendieckDeformation_of_abelianLifting hCrys hHdR hLift
 
 /- English proof (translation)
-The claim follows from `grothendieckDeformation₂`.
+A detailed English derivation is pending.
 -/
 example : CrystallineSmoothLift → AbelianHodgeDeRham → DualAbelianScheme →
     PoincareDeRhamDuality → AbelianLifting → GrothendieckDeformation :=

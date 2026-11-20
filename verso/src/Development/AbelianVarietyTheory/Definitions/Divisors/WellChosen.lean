@@ -109,7 +109,7 @@ def Extension : Prop :=
     ∀ (σ : K →+* ℂ) (j : ℕ), G.D ≤ j → ExtensionBound σ hs j
 
 /- English proof (translation)
-The claim follows from `H.2.1`.
+A detailed English derivation is pending.
 -/
 example (X : Data F) (C h J : ℝ) (H : Claim X C h J) : X.z ≤ 1 := H.2.1
 

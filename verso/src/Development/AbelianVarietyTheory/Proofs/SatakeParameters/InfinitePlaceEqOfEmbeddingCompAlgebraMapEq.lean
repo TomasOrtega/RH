@@ -4,23 +4,21 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set τ : F →+* ℂ := w₁.embedding.comp (algebraMap F E) with hτ`. Establish `hτreal : ComplexEmbedding.IsReal τ`. Use `IsTotallyReal.isReal (InfinitePlace.mk τ)` as an intermediate fact. Conclude with `InfinitePlace.isReal_mk_iff.mp this`. Use `letI : Algebra F ℂ := τ.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `mkAlg : ∀ σ : E →+* ℂ, σ.comp (algebraMap F E) = τ → ∃ a : E →ₐ[F] ℂ, (a : E →+* ℂ) = σ` using `fun σ hσ => ⟨{ σ with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `σ (algebraMap F E r) = τ r`. Rewrite using `[← hσ]`. Use `rfl }, rfl⟩`. Take `⟨a, ha⟩` from `mkAlg w₁.embedding rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Take `⟨b, hb⟩` from `mkAlg (ComplexEmbedding.conjugate w₁.embedding) (by`. Use extensionality with `r`. Use `RingHom.congr_fun hτreal r` as an intermediate fact. Simplify using `only [RingHom.comp_apply, ComplexEmbedding.conjugate_coe_eq, Function.comp_apply]`. Simplify `this)` using `[ComplexEmbedding.conjugate_coe_eq, hτ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `mkAlg w₂.embedding h.symm`. Establish `hab : a ≠ b`. Introduce `hab`. Establish `hc1 : ¬ ComplexEmbedding.IsReal w₁.embedding`. Rewrite using `[← InfinitePlace.isReal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w₁)`. Apply `hc1` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff, ← hb, ← ha, hab]`. Establish `hcard : Fintype.card (E →ₐ[F] ℂ) = 2`. Rewrite using `[AlgHom.card, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hcab : c = a ∨ c = b`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h3 : ({a, b, c} : Finset (E →ₐ[F] ℂ)).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `fun e => hne.2 e.symm`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or]`. Conclude with `⟨hab, fun e => hne.1 e.symm⟩`. Use `Finset.card_le_univ ({a, b, c} : Finset (E →ₐ[F] ℂ))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← InfinitePlace.mk_embedding w₁, ← InfinitePlace.mk_embedding w₂, InfinitePlace.mk_eq_iff]`. Break down `hcab with e | e` into its components or cases. Use `left`. Rewrite using `[← ha, ← hc, e]`. Use `right`.
-
-Rewrite using `[← hb, ← hc, e]`.
+A detailed English derivation is pending.
 -/
 theorem infinitePlace_eq_of_embedding_comp_algebraMap_eq (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]

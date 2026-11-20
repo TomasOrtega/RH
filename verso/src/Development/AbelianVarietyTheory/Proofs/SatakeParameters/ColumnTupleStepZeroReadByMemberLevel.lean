@@ -17,27 +17,23 @@ namespace GlobalTheory.TwU.AtTrue.StepZeroRead
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u Ch0 chOf0 F a Q hQ hF`. Take `⟨k, hk⟩` from `hF.ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hk' : I.Reads u I.mu0 0 (fun _ => ()) (fun _ => F.to0.cls0.lev.Lb) (fun _ => F.to0.cls0.lev.U) (fun _ => F.to0.cls0.lev.chi) (fun c => (F.to0.cls0.y c).1) (fun c s => (F.to0.cls0.stabI c s).1) (fun _ => k ())` using `hk`. Use `choose κ hκ using GlobalTheory.T.memberRepresentative_moved_at_twist_eq_tupleFrames I hI hP l Z u F a Q hQ hF (k ()) hk'`. Take `⟨K0, hLb, hUloc, hU, hchi, hy, hst⟩` from `GlobalTheory.T.stepZeroChart_of_memberLevel I hI hP l Z u a Q F.to0.cls0 κ (fun c s => hk'.stab c s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `nQ : ∀ v, ¬ I.UnderQ I.mu0 v` using `fun v ⟨P, hP', _⟩ => by`. Rewrite `hP'` using `[I.twistPrimes_reference_tuple_eq_empty]`. Simplify using `at hP'`. Use `letI := StepZero.idxUnique (hI.idx_ok a)`. Use `⟨K0, ⟨fun _ => k (), ⟨?key, ?onto, ?lb, ?kstd, ?koff, ?kT, ?pt, ?lev, ?chr, ?stab⟩, ?off⟩, ?levs, ?ys⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `case key =>`. Introduce `c c'`. Conclude with `⟨fun _ => ⟨Subsingleton.elim _ _, Chart0.cos0 I _ _⟩, fun _ => rfl⟩`. Use `case onto =>`. Introduce `β`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, -⟩` from `hk'.onto ()`. Conclude with `⟨I.eCls0 l u a c0, Subsingleton.elim _ _⟩`. Use `case lb =>`. Introduce `β x`. Consider the cases of `β`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLb]`. Conclude with `hk'.lb () x`. Use `case kstd => exact fun _ => hk'.k_std ()`. Use `case koff => exact fun _ v hT _ _ => hk'.k_off () v hT (nQ v) (Or.inl rfl)`. Use `case kT => exact fun _ => hk'.k_T ()`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case pt =>`. Introduce `c`. Take `⟨c0, rfl⟩` from `(I.eCls0 l u a).surjective c`. Use `show PtOf ((show GA B (B.R.N 0) from ((K0 ()).y ⟨I.eCls0 l u a c0, rfl⟩).1) * k ()) _`. Rewrite using `[hy c0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hκ c0).2.2`. Use `case lev =>`. Introduce `c x q hq`. Take `⟨c0, rfl⟩` from `(I.eCls0 l u a).surjective c`. Express the relevant statement in the definitionally equal form `PtOf ((show GA B (B.R.N 0) from ((K0 ()).y ⟨I.eCls0 l u a c0, rfl⟩).1) * x * k ()) q at hq`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hq` using `[hy c0]`. Use `show x ∈ (K0 ()).lev.U ↔ _`. Rewrite using `[hU]`. Conclude with `GlobalTheory.T.stepZero_level_readAsReference I hI hP l Z u a _ _ _ _ _ (k ()) hk' c0 (κ c0) _ rfl (hκ c0).2.2 x q hq`. Use `case chr =>`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `c x κ' hg hq`. Take `⟨c0, rfl⟩` from `(I.eCls0 l u a).surjective c`. Express the relevant statement in the definitionally equal form `PtOf ((show GA B (B.R.N 0) from ((K0 ()).y ⟨I.eCls0 l u a c0, rfl⟩).1) * x.1 * k ()) _ at hq`. Rewrite `hq` using `[hy c0]`. Set `x' : F.to0.cls0.lev.U` to `⟨x.1, hU ▸ x.2⟩`.
-
-Use `show (((K0 ()).lev.chi x : ℂˣ) : ℂ) = _`. Rewrite using `[hchi x x' rfl]`. Conclude with `GlobalTheory.T.stepZero_levelCharacter_eq_referenceTuple I hI hP l Z u a _ _ _ _ _ (k ()) hk' c0 (κ c0) _ rfl (hκ c0).2.2 (hκ c0).2.1 x' κ' hg hq`. Use `case stab => exact fun c s => hst ⟨c, rfl⟩ s`. Use `case off => exact fun _ v hT => hk'.k_off () v hT (nQ v) (Or.inl rfl)`.
-
-Use `case levs => exact fun β => by cases β; exact ⟨hLb, hUloc, hU, hchi⟩`. Use `case ys => exact fun c => ⟨κ c, hy c, (hκ c).2.1, (hκ c).1⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reads : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))), (∀ v, v ∈ Q ↔ I.UnderQ a v) → I.StdF l Z u F → ∃ K0 : Fam I l Z u a 0 (Nat.zero_le _) (badQ (I.rec7 l Z) Q) (fun _ => ()), ReadsOne I l Z u a 0 (Nat.zero_le _) (fun _ => ()) K0 ∧ (∀ β, (K0 β).lev.Lb = F.to0.cls0.lev.Lb ∧ (K0 β).lev.Uloc = F.to0.cls0.lev.Uloc ∧ (K0 β).lev.U = F.to0.cls0.lev.U ∧ ∀ (κ : (K0 β).lev.U) (κ' : F.to0.cls0.lev.U), κ.1 = κ'.1 → (K0 β).lev.chi κ = F.to0.cls0.lev.chi κ') ∧ ∀ c, ∃ κ : F.to0.cls0.lev.U, ((K0 ((fun _ : (I.stp u a 0).Cl => ()) (I.eCls0 l u a c))).y ⟨I.eCls0 l u a c, rfl⟩).1 = (F.to0.cls0.y c).1 * κ.1 ∧ F.to0.cls0.lev.chi κ = 1 ∧ ∀ v, v ∉ Q → bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1 := by
   intro B X I hI hP l Z u Ch0 chOf0 F a Q hQ hF

@@ -6,7 +6,7 @@ namespace Formalism.CohomologicalDescent.LC
 open Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
 /- English proof (translation)
-Establish `hfil : (Finset.univ.filter (fun i : Fin n => i.val < l + 1)) = insert (⟨l, hl⟩ : Fin n) (Finset.univ.filter (fun i : Fin n => i.val < l))`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfil, Finset.sum_insert (by simp)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_c_filter_succ {A : Type*} [AddCommMonoid A] {n : ℕ} (f : Fin n → A) (l : ℕ) (hl : l < n) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < l + 1), f i =
@@ -19,7 +19,7 @@ theorem lc_c_filter_succ {A : Type*} [AddCommMonoid A] {n : ℕ} (f : Fin n → 
   rw [hfil, Finset.sum_insert (by simp)]
 
 /- English proof (translation)
-Establish `: (Finset.univ.filter (fun i : Fin n => i.val < 0)) = ∅`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.sum_empty]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_c_filter_zero {A : Type*} [AddCommMonoid A] {n : ℕ} (f : Fin n → A) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < 0), f i = 0 := by
@@ -28,7 +28,7 @@ theorem lc_c_filter_zero {A : Type*} [AddCommMonoid A] {n : ℕ} (f : Fin n → 
   rw [this, Finset.sum_empty]
 
 /- English proof (translation)
-Establish `h2` using `casimir_content_holds q (fun b => (κ b : ℤ)) r`. Unfold `casVal`. Simplify using `only [Pi.add_apply, Pi.single_apply, Nat.cast_add, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lc_c_casVal_step {q : ℕ} (κ : Fin q → ℕ) (r : Fin q) :
     casVal (κ + Pi.single r 1) - casVal κ - (q : ℤ) = 2 * ((κ r : ℤ) - (r.val : ℤ)) := by
@@ -38,11 +38,11 @@ theorem lc_c_casVal_step {q : ℕ} (κ : Fin q → ℕ) (r : Fin q) :
   exact h2
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `zero => intro _`. Rewrite using `[lc_c_filter_zero, add_zero, h0]`. Consider the case `succ l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `hl`. Establish `hl' : l < n` using `hl`. Rewrite using `[lc_c_filter_succ _ l hl']`. Establish `h1` using `lc_c_casVal_step (κ l) (ρ ⟨l, hl'⟩)`. Establish `h2` using `hs ⟨l, hl'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h2`. Rewrite `h1` using `[← h2]`. Establish `h3` using `ih hl'.le`. Simplify using `only [cseq] at h3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lc_c_casVal_path {q n : ℕ} (lam2 : Fin q → ℕ) (κ : ℕ → Fin q → ℕ) (ρ : Fin n → Fin q) (h0 : κ 0 = lam2)
     (hs : ∀ j : Fin n, κ (j.val + 1) = κ j.val + Pi.single (ρ j) 1) : ∀ l ≤ n,
@@ -63,7 +63,7 @@ theorem lc_c_casVal_path {q n : ℕ} (lam2 : Fin q → ℕ) (κ : ℕ → Fin q 
     linarith
 
 /- English proof (translation)
-Use `LinearMap.congr_fun h.eq z` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hz, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_c_eig {K V : Type*} [CommRing K] [AddCommGroup V] [Module K V] {A T : Module.End K V} (h : Commute T A)
     {z : V} {a : K} (hz : A z = a • z) : A (T z) = a • T z := by
@@ -72,7 +72,7 @@ theorem lc_c_eig {K V : Type*} [CommRing K] [AddCommGroup V] [Module K V] {A T :
   rw [← this, hz, map_smul]
 
 /- English proof (translation)
-Simplify using `[Dpart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_c_Dpart0 {k R P M : Type*} [CommRing k] [AddCommGroup M] [Module k M] [DecidableEq R] [DecidableEq P]
     {n : ℕ} (EM : R → R → Module.End k M) (b b' : R) :
@@ -80,7 +80,7 @@ theorem lc_c_Dpart0 {k R P M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
   simp [Dpart]
 
 /- English proof (translation)
-Unfold `Cas`. Simplify using `only [lc_c_Dpart0]`. Conclude with `Commute.sum_right _ _ _ fun b _ => Commute.sum_right _ _ _ fun b' _ => (h0 _ _).mul_right (h0 _ _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_casimir_zero {k R P M : Type*} [CommRing k] [AddCommGroup M] [Module k M] [DecidableEq R] [DecidableEq P]
     [Fintype R] {n : ℕ} (EM : R → R → Module.End k M) (T : Module.End k (Tens R P M n))
@@ -90,13 +90,13 @@ theorem commute_casimir_zero {k R P M : Type*} [CommRing k] [AddCommGroup M] [Mo
   exact Commute.sum_right _ _ _ fun b _ => Commute.sum_right _ _ _ fun b' _ => (h0 _ _).mul_right (h0 _ _)
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ EM n lam2 c z hz l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `_`. Rewrite using `[lc_c_filter_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz.1`. Consider the case `succ l ih`. Introduce `hl`. Establish `hl' : l < n` using `hl`. Establish `h1` using `congrArg (fun T : Module.End K (Tens (Fin q) P M n) => T z) (casimir_jucys_murphy_holds K (Fin q) P M EM n ⟨l, hl'⟩)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, Fintype.card_fin] at h1`. Rewrite using `[lc_c_filter_succ _ l hl']`. Rewrite `h1` using `[ih hl'.le, hz.2 ⟨l, hl'⟩, ← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K]`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1, smul_smul, ← add_smul, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem casimir_from_x : CasFromX := by
   intro K P M q _ _ _ _ EM n lam2 c z hz l
@@ -121,9 +121,9 @@ theorem casimir_from_x : CasFromX := by
     ring
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ _ EM n lam2 κ ρ h0 hs z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use `hz 0 (Nat.zero_le _)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Conclude with `(path_eigen_holds K P M q EM n κ ρ hs z hz).1 j`. Introduce `hz j hj`. Rewrite using `[casimir_from_x K P M q EM n lam2 _ z hz j hj, lc_c_casVal_path lam2 κ ρ h0 hs j hj]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_iff_condition : WtIff := by
   intro K P M q _ _ _ _ _ EM n lam2 κ ρ h0 hs z
@@ -137,7 +137,7 @@ theorem weight_iff_condition : WtIff := by
     rw [casimir_from_x K P M q EM n lam2 _ z hz j hj, lc_c_casVal_path lam2 κ ρ h0 hs j hj]
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ EM n lam2 c z σ hz`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `lc_c_eig (commute_casimir_zero EM _ fun a b => permFirst_commute_onModule K σ _) hz.1`. Conclude with `lc_c_eig (commute_jucysMurphy_of_commute K EM _ (fun a b => permFirst_commute_onModule K σ _) (fun i a b => permFirst_commute_unitSecond K σ i a b) j) (hz.2 j)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem permutation_weight_invariant : PermXWt := by
   intro K P M q _ _ _ _ EM n lam2 c z σ hz
@@ -147,7 +147,7 @@ theorem permutation_weight_invariant : PermXWt := by
       (fun i a b => permFirst_commute_unitSecond K σ i a b) j) (hz.2 j)
 
 /- English proof (translation)
-Introduce `K R P M _ _ _ _ _ _ _ n σ z`. Rewrite using `[← toSym_perm_eq (k := K) (permX K σ⁻¹ z) σ]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[permTensor_apply_comp, permFirst_apply, permSecond_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem to_symmetric_y_x : ToSymYX := by
   intro K R P M _ _ _ _ _ _ _ n σ z
@@ -157,28 +157,28 @@ theorem to_symmetric_y_x : ToSymYX := by
   simp [permTensor_apply_comp, permFirst_apply, permSecond_apply]
 
 /- English proof (translation)
-Rewrite using `[← permOnTensor_mul, Equiv.swap_mul_self, permSecond_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_c_ss {k R P M : Type*} [CommRing k] [AddCommGroup M] [Module k M] {n : ℕ} (a b : Fin n) :
     (permY k (Equiv.swap a b) * permY k (Equiv.swap a b) : Module.End k (Tens R P M n)) = 1 := by
   rw [← permOnTensor_mul, Equiv.swap_mul_self, permSecond_one]
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ _ EM n lam2 c z j hj hz hne`. Use `set j' : Fin n := ⟨j.val + 1, hj⟩ with hj'`. Use `set s : Module.End K (Tens (Fin q) P M n) := permY K (Equiv.swap j j') with hs`. Establish `hH` using `hecke_relations_hold K (Fin q) P M EM n j hj`. Establish `h1 : s * xJM K EM j = xJM K EM j' * s - 1` using `hH.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s * s = 1` using `lc_c_ss j j'`. Establish `h2 : xJM K EM j * s = s * xJM K EM j' - 1`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : xJM K EM j' (s z) = ((c j : ℤ) : K) • s z + z`. Use `LinearMap.congr_fun h1 z` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply] at this`. Rewrite `this` using `[hz.2 j, map_smul]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Establish `e2 : xJM K EM j (s z) = ((c j' : ℤ) : K) • s z - z`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun h2 z` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply] at this`. Rewrite `this` using `[hz.2 j', map_smul]`. Conclude with `this`. Establish `hd : (((c j - c j' : ℤ) : ℤ) : K) ≠ 0` using `Int.cast_ne_zero.2 (sub_ne_zero.2 hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b : K := (((c j - c j' : ℤ) : ℤ) : K)⁻¹ with hbdef`. Establish `hb : b * (((c j : ℤ) : K) - ((c j' : ℤ) : K)) = 1`. Rewrite using `[← Int.cast_sub]`. Conclude with `inv_mul_cancel₀ hd`. Establish `hjj' : j ≠ j'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[hj'] at this`. Use `⟨?_, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, hz.1, lc_c_eig (commute_casimir_zero EM s fun a b => permSecond_commute_onModule K _ _) hz.1] module`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Rewrite using `[Function.comp_apply, Equiv.swap_apply_left, map_add, map_smul, e2, hz.2 l]`. Establish `e : b * ((c l : ℤ) : K) - 1 = ((c j' : ℤ) : K) * b` using `by linear_combination hb`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl' : l = j'`. Rewrite using `[hl', Function.comp_apply, Equiv.swap_apply_right, map_add, map_smul, e1, hz.2 j']`. Establish `e : 1 + b * ((c j' : ℤ) : K) = ((c j : ℤ) : K) * b` using `by linear_combination (-1 : K) * hb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne hl hl', map_add, map_smul, hz.2 l, lc_c_eig (hH.2 l hl hl') (hz.2 l)] module`.
+A detailed English derivation is pending.
 -/
 theorem exchange' : Exchange := by
   intro K P M q _ _ _ _ _ EM n lam2 c z j hj hz hne
@@ -228,17 +228,15 @@ theorem exchange' : Exchange := by
         module
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ _ _ EM n lam2 c j hj hd hgood z hz`. Establish `hne : c j ≠ c ⟨j.val + 1, hj⟩` using `by intro e; rw [e] at hd; omega`. Establish `hz'` using `exchange' K P M q EM n lam2 c z j hj hz hne`. Use `set j' : Fin n := ⟨j.val + 1, hj⟩ with hj'`. Use `set s : Module.End K (Tens (Fin q) P M n) := permY K (Equiv.swap j j') with hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b : K := (((c j - c j' : ℤ) : ℤ) : K)⁻¹ with hbdef`. Use `set z' := s z + b • z with hz'def`. Establish `hss : s * s = 1` using `lc_c_ss j j'`. Establish `t1 : toSym K z' = 0` using `hgood z' hz'`. Establish `t2 : toSym K (s z') = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hs, to_symmetric_y_x K (Fin q) P M n (Equiv.swap j j') z']`. Conclude with `hgood _ (permutation_weight_invariant K P M q EM n lam2 _ z' _ hz')`. Establish `hssz : s (s z) = z`. Use `LinearMap.congr_fun hss z` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : s z' - b • z' = (1 - b * b) • z`. Rewrite using `[hz'def, map_add, map_smul, hssz]`. Use `module`. Establish `t3 : (1 - b * b) • toSym K z = 0`. Rewrite using `[← map_smul, ← e, map_sub, map_smul, t1, t2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hD : (((c j - c j' : ℤ) : ℤ) : K) ≠ 0` using `Int.cast_ne_zero.2 (sub_ne_zero.2 hne)`. Establish `hb : b * (((c j - c j' : ℤ) : ℤ) : K) = 1` using `inv_mul_cancel₀ hD`. Establish `hbb : 1 - b * b ≠ 0`. Introduce `h0`.
-
-Establish `h1 : (((c j - c j' : ℤ) : ℤ) : K) * (((c j - c j' : ℤ) : ℤ) : K) = 1`. Take the linear combination `((((c j - c j' : ℤ) : ℤ) : K) * (((c j - c j' : ℤ) : ℤ) : K)) * h0 + (b * (((c j - c j' : ℤ) : ℤ) : K) + 1) * hb`. Establish `h2 : (c j - c j') * (c j - c j') = 1` using `by exact_mod_cast h1`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(smul_eq_zero.1 t3).resolve_left hbb`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem good_swap_exists : GoodSwap := by
   intro K P M q _ _ _ _ _ _ EM n lam2 c j hj hd hgood z hz
@@ -273,17 +271,17 @@ theorem good_swap_exists : GoodSwap := by
   exact (smul_eq_zero.1 t3).resolve_left hbb
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ _ EM n lam2 hp c z hz hc`. Set `TT : Set (Fin (n + 1) → K)` to `{t | ∃ (tau : Fin q → ℕ) (κ : ℕ → Fin q → ℕ) (ρ : Fin n → Fin q), IsPath n lam2 tau κ ρ ∧ ∀ j : Fin (n + 1), t j = ((casVal (κ j.val) : ℤ) : K)}`. Set `E : Set (Tens (Fin q) P M n)` to `⋃ tau : Fin q → ℕ, {z | ∃ (κ : ℕ → Fin q → ℕ) (ρ : Fin n → Fin q), IsPath n lam2 tau κ ρ ∧ ∀ j ≤ n, Cas K EM j z = ((casVal (κ j) : ℤ) : K) • z}`. Establish `hE : Submodule.span K E = ⊤`. Rewrite using `[← hp, Submodule.span_iUnion]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `T0 : ℕ → ℤ` to `fun l => casVal lam2 + ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < l), (2 * c i + (q : ℤ))`. Use `h K (Tens (Fin q) P M n) (Fin (n + 1)) (fun j => Cas K EM j.val) TT E ?_ z (by rw [hE]; trivial) (fun j => ((T0 j.val : ℤ) : K)) ?_ ?_` and prove the remaining obligations. Introduce `e he`. Take `⟨tau, κ, ρ, hpath, hcas⟩` from `Set.mem_iUnion.1 he`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun j => ((casVal (κ j.val) : ℤ) : K), ⟨tau, κ, ρ, hpath, fun _ => rfl⟩, fun j => hcas j.val (Nat.lt_succ_iff.1 j.2)⟩`. Introduce and unpack `⟨tau, κ, ρ, hpath, ht⟩`. Apply `hc` to reduce the goal to its premises. Use `⟨tau, κ, ρ, hpath, ?_⟩` and prove the remaining obligations. Establish `hT : ∀ l ≤ n, T0 l = casVal (κ l)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `: ((T0 l : ℤ) : K) = ((casVal (κ l) : ℤ) : K)` using `ht ⟨l, Nat.lt_succ_iff.2 hl⟩`. Conclude with `Int.cast_injective this`. Use function extensionality and compare the values at `i`. Establish `a1` using `hT i.val i.2.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hT (i.val + 1) i.2`. Rewrite `a1` using `[lc_c_casVal_path lam2 κ ρ hpath.start hpath.step _ i.2.le]`. Rewrite `a2` using `[lc_c_casVal_path lam2 κ ρ hpath.start hpath.step _ i.2]`. Simplify using `only [T0] at a1 a2`. Rewrite `a2` using `[lc_c_filter_succ _ i.val i.2, lc_c_filter_succ _ i.val i.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.eta] at a2`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j`. Conclude with `casimir_from_x K P M q EM n lam2 c z hz j.val (Nat.lt_succ_iff.1 j.2)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem NoWt_of (h : NoTuple) : NoWt := by
   intro K P M q _ _ _ _ _ EM n lam2 hp c z hz hc
@@ -320,9 +318,9 @@ theorem NoWt_of (h : NoTuple) : NoWt := by
     exact casimir_from_x K P M q EM n lam2 c z hz j.val (Nat.lt_succ_iff.1 j.2)
 
 /- English proof (translation)
-Introduce `K P M q _ _ _ _ _ EM n lam2 hp c z j hj hz hc hn`. Establish `hne : c j ≠ c ⟨j.val + 1, hj⟩` using `by rw [hc]; omega`. Establish `hz'` using `exchange' K P M q EM n lam2 c z j hj hz hne`. Establish `h0` using `NoWt_of h K P M q EM n lam2 hp _ _ hz' hn`. Establish `h1 : c j - c ⟨j.val + 1, hj⟩ = 1` using `by rw [hc]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[h1]`. Simplify using `only [Int.cast_one, inv_one, one_smul] at h0`. Conclude with `eq_neg_of_add_eq_zero_left h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AntiStep_of (h : NoTuple) : AntiStep := by
   intro K P M q _ _ _ _ _ EM n lam2 hp c z j hj hz hc hn

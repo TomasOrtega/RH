@@ -5,31 +5,27 @@ universe u
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ A _ _ _ φ e he hφe hnil H _ _ _ _ _ _`. Establish `: Module.Finite A H` using `Module.Finite.of_restrictScalars_finite k A H`. Use `set I : Ideal A := Ideal.span {1 - e} with hI`. Establish `hIφ : ∀ a ∈ I, φ a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `[hφe]`. Establish `hItop : I ≠ ⊤`. Introduce `h`. Use `hIφ 1 (h ▸ Submodule.mem_top)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Set `B` to `A ⧸ I`. Establish `: Nontrivial B` using `Ideal.Quotient.nontrivial_iff.mpr hItop`. Establish `hloc : IsLocalRing B`. Apply `IsLocalRing.of_isUnit_or_isUnit_one_sub_self` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : ∀ x : A, φ x ≠ 0 → IsUnit (Ideal.Quotient.mk I x)`. Introduce `x hx`. Establish `he1 : Ideal.Quotient.mk I e = 1`. Rewrite using `[eq_comm, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk I), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := x - algebraMap k A (φ x) with ha`. Establish `hφa : φ a = 0` using `by simp [ha]`. Establish `hxa : x = algebraMap k A (φ x) + a` using `by simp [ha]`. Rewrite using `[hxa, map_add]`. Establish `hn : IsNilpotent (Ideal.Quotient.mk I a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Ideal.Quotient.mk I a = Ideal.Quotient.mk I (e * a)` using `by rw [map_mul, he1, one_mul]`. Rewrite using `[this]`. Conclude with `(hnil a hφa).map _`. Apply `hn.isUnit_add_left_of_commute _ (Commute.all _ _)` to reduce the goal to its premises. Establish `: IsUnit (algebraMap k B (φ x))` using `(isUnit_iff_ne_zero.mpr hx).map _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify `this` using `[Ideal.Quotient.mk_algebraMap]`. Introduce `b`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Distinguish the cases in `hx : φ x = 0`. Use `right`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← map_one (Ideal.Quotient.mk I), ← map_sub]`. Conclude with `key _ (by simp [hx])`. Use `left`. Conclude with `key x hx`. Set `T` to `B ⊗[A] H`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free B T` using `Module.free_of_flat_of_isLocalRing`. Establish `h3 : Module.finrank k (H ⧸ (I • ⊤ : Submodule A H)) = Module.finrank B T * Module.finrank k B`. Set `b` to `Module.Free.chooseBasis B T`. Set `e1 : T ≃ₗ[A] H ⧸ (I • ⊤ : Submodule A H)` to `TensorProduct.quotTensorEquivQuotSMul H I`. Set `e3 : (H ⧸ (I • ⊤ : Submodule A H)) ≃ₗ[A] (Module.Free.ChooseBasisIndex B T → B)` to `e1.symm.trans (b.equivFun.restrictScalars A)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[(e3.restrictScalars k).finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul, Module.finrank_eq_card_chooseBasisIndex (R := B) (M := T)]`. Establish `h4 : Module.finrank k (H ⧸ (RingHom.ker φ • ⊤ : Submodule A H)) = Module.finrank B T`. Establish `hsurj : Function.Surjective φ` using `fun c => ⟨algebraMap k A c, φ.commutes c⟩`. Set `φB : B →ₐ[k] k` to `Ideal.Quotient.liftₐ I φ hIφ`. Use `letI : Algebra A k := φ.toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `letI : Algebra B k := φB.toRingHom.toAlgebra`. Use `haveI : IsScalarTower A B k := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `haveI : IsScalarTower k A k := IsScalarTower.of_algebraMap_eq (fun c => (φ.commutes c).symm)`. Set `f` to `Ideal.quotientKerAlgEquivOfSurjective hsurj`. Set `g : (A ⧸ RingHom.ker φ) ≃ₗ[A] k` to `{ f.toLinearEquiv with map_smul' := by`.
-
-Introduce `a x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `f (Ideal.Quotient.mk _ (a * y)) = φ a * f (Ideal.Quotient.mk _ y)`. Simplify using `[f, Ideal.quotientKerAlgEquivOfSurjective_apply] }`. Set `e6 : (k ⊗[A] H) ≃ₗ[A] H ⧸ (RingHom.ker φ • ⊤ : Submodule A H)` to `(LinearEquiv.rTensor H g.symm).trans (TensorProduct.quotTensorEquivQuotSMul H (RingHom.ker φ))`.
-
-Rewrite using `[← (e6.restrictScalars k).finrank_eq, ← (TensorProduct.AlgebraTensorModule.cancelBaseChange A B k k H).finrank_eq, Module.finrank_baseChange]`. Rewrite using `[h3, h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quot_one_sub_idem_eq_mul : ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Algebra k A] [FiniteDimensional k A] (φ : A →ₐ[k] k) (e : A), IsIdempotentElem e → φ e = 1 → (∀ a, φ a = 0 → IsNilpotent (e * a)) → ∀ (H : Type u) [AddCommGroup H] [Module A H] [Module k H] [IsScalarTower k A H] [FiniteDimensional k H] [Module.Projective A H], Module.finrank k (H ⧸ (Ideal.span {1 - e} • ⊤ : Submodule A H)) = Module.finrank k (H ⧸ (RingHom.ker φ • ⊤ : Submodule A H)) * Module.finrank k (A ⧸ Ideal.span {1 - e}) := by
   intro k _ A _ _ _ φ e he hφe hnil H _ _ _ _ _ _

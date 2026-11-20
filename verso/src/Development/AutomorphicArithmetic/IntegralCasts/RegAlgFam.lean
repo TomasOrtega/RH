@@ -6,9 +6,9 @@ open NumberField
 namespace UpperTheory.RegAlgFam
 
 /- English proof (translation)
-Proceed by induction on `s using Quotient.inductionOn with | _ l =>`. Proceed by induction on `t using Quotient.inductionOn with | _ k =>`. Establish `hl : l.length = k.length` using `by simpa using h`. Use `⟨(l.zip k : List (α × α)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[List.map_fst_zip hl.le]`.
+Proceed by induction. Proceed by induction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[List.map_snd_zip hl.ge]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_pairs {α : Type*} (s t : Multiset α) (h : s.card = t.card) :
     ∃ P : Multiset (α × α), P.map Prod.fst = s ∧ P.map Prod.snd = t := by
@@ -20,23 +20,23 @@ theorem exists_pairs {α : Type*} (s t : Multiset α) (h : s.card = t.card) :
   · simp [List.map_snd_zip hl.ge]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ⟨ha, hr⟩, he⟩ τ`. Use `⟨he τ ▸ hr τ, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha τ z (he τ ▸ hz)`. Conclude with `⟨m, by rw [hm, add_comm]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h choose P h1 h2 using fun τ : F →+* ℂ => exists_pairs (μ τ) (μ (ComplexEmbedding.conjugate τ)) ((hc _).trans (hc _).symm)`. Establish `cc : ∀ τ : F →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => star_star τ`. Set `g : (F →+* ℂ) → Prop` to `fun τ => (InfinitePlace.mk τ).embedding = τ`. Establish `hg : ∀ τ, g (ComplexEmbedding.conjugate τ) ↔ ¬ g τ`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun e => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ))) ⟨τ, ComplexEmbedding.isReal_iff.2 e, rfl⟩`. Simplify using `only [g, InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with e | e` into its components or cases. Rewrite using `[e]`. Simplify using `[hne.symm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `[hne]`. Set `Q : (F →+* ℂ) → Multiset (ℂ × ℂ)` to `fun τ => if g τ then P τ else (P (ComplexEmbedding.conjugate τ)).map Prod.swap`. Establish `q1 : ∀ τ, (Q τ).map Prod.fst = μ τ`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `e : g τ`. Simplify using `[Q, e, h1]`. Use `h2 (ComplexEmbedding.conjugate τ)` as an intermediate fact. Rewrite `this` using `[cc]`. Simplify `this` using `[Q, e, Multiset.map_map]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `qc : ∀ τ, Q (ComplexEmbedding.conjugate τ) = (Q τ).map Prod.swap`. Introduce `τ`. Distinguish the cases in `e : g τ`. Establish `e' : ¬ g (ComplexEmbedding.conjugate τ)` using `fun x => (hg τ).1 x e`. Simplify using `only [Q, if_pos e, if_neg e', cc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q, if_neg e, if_pos ((hg τ).2 e), Multiset.map_map]`. Simplify using the standard rewrite rules. Use `⟨⟨Q, fun τ => by rw [← hc τ, ← q1 τ, Multiset.card_map], fun τ p hp => ?_, qc⟩, ⟨fun τ z hz => ?_, fun τ => ?_⟩, q1⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(h τ).2 p.1 (q1 τ ▸ Multiset.mem_map_of_mem _ hp)`. Establish `hp' : p.2 ∈ μ (ComplexEmbedding.conjugate τ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← q1, qc]`. Conclude with `Multiset.mem_map.2 ⟨p.swap, Multiset.mem_map_of_mem _ hp, rfl⟩`. Take `⟨b, hb⟩` from `(h _).2 p.2 hp'`. Conclude with `⟨a - b, by rw [ha, hb]; push_cast; ring⟩`. Take `⟨m, hm⟩` from `(h τ).2 z (q1 τ ▸ hz)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m, by rw [hm, add_comm]⟩`. Use `(h τ).1` as an intermediate fact. Rewrite `this` using `[← q1 τ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_iff {F : Type*} [Field F] [IsTotallyComplex F] {n : ℕ} (μ : (F →+* ℂ) → Multiset ℂ)
     (hc : ∀ τ, (μ τ).card = n) :

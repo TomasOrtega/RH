@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B _ _ _ P _ θ D a b hmax hgen hD hb hab y`. Take `⟨b', i, hi, hbi⟩` from `hmax.exists_inv (x := b) (by rwa [Ideal.mem_comap])`. Take `⟨D', j, hj, hDj⟩` from `hmax.exists_inv (x := D) (by rwa [Ideal.mem_comap])`. Rewrite `hi`, `hj` using `[Ideal.mem_comap]`. Take `⟨u, v, hy⟩` from `hgen y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hbi'` using `congrArg (algebraMap A B) hbi`. Establish `hDj'` using `congrArg (algebraMap A B) hDj`. Simplify using `only [map_add, map_mul, map_one] at hbi' hDj'`. Use `⟨D' * (u - v * a * b'), ?_⟩` and prove the remaining obligations. Establish `key : y - algebraMap A B (D' * (u - v * a * b')) = algebraMap A B D' * algebraMap A B v * algebraMap A B b' * (algebraMap A B a + algebraMap A B b * θ) + (algebraMap A B D' * algebraMap A B v * θ) * algebraMap A B i + y * algebraMap A B j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul]`. Take the linear combination `algebraMap A B D' * hy - y * hDj' - algebraMap A B D' * algebraMap A B v * θ * hbi'`. Rewrite using `[key]`. Conclude with `P.add_mem (P.add_mem (P.mul_mem_left _ hab) (P.mul_mem_left _ hi)) (P.mul_mem_left _ hj)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_degree_one_of_linear_mem : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (P : Ideal B) [P.IsPrime] (θ : B) (D a b : A), (P.comap (algebraMap A B)).IsMaximal → (∀ y : B, ∃ u v : A, algebraMap A B D * y = algebraMap A B u + algebraMap A B v * θ) → algebraMap A B D ∉ P → algebraMap A B b ∉ P → algebraMap A B a + algebraMap A B b * θ ∈ P → ∀ y : B, ∃ u : A, y - algebraMap A B u ∈ P := by
   intro A B _ _ _ P _ θ D a b hmax hgen hD hb hab y

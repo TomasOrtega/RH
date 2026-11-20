@@ -20,7 +20,7 @@ def DixmierMalliavinLie : Prop :=
         ∀ y, f y = ∑ i, ∫ x, g i x * h i (x⁻¹ * y) ∂μ
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : LieGroup 𝓘(ℝ, ℝ) ∞ ℝˣ := inferInstance
 

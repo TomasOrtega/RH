@@ -26,7 +26,7 @@ def LeafKunQcqs : Prop := LateralTheory.E.E8.Base → ∀ (q : ℕ) [NeZero q] (
   ∀ {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) [QuasiCompact p] [QuasiSeparated p], KunAt q p r S deg j b
 
 /- English proof (translation)
-Introduce `hB q _ k _ _ hq Y r _ _ S _ deg j b hb hSH X p _ _`. Conclude with `h3 hB q k hq r S deg j b (h2 hB q k hq r S deg j b (h1 hB q k hq r S deg j b hb hSH)) p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : LeafKunFT) (h2 : LeafKunAffine) (h3 : LeafKunQcqs) : LateralTheory.E.LeafKunnethCut.LeafKunGlobal := by
   intro hB q _ k _ _ hq Y r _ _ S _ deg j b hb hSH X p _ _

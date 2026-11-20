@@ -11,23 +11,21 @@ namespace PositivityTheory.Rg.Sw.FFTSteps
 variable {ι A B : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective g.mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr hg`. Establish `hM : (gᴴ * g).PosDef` using `Matrix.PosDef.conjTranspose_mul_self g hinj`. Establish `hspec : gᴴ * g = (hM.1.eigenvectorUnitary : Matrix ι ι ℂ) * diagonal (fun i => (hM.1.eigenvalues i : ℂ)) * star (hM.1.eigenvectorUnitary : Matrix ι ι ℂ)`. Establish `h` using `hM.1.spectral_theorem`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hVmem : (hM.1.eigenvectorUnitary : Matrix ι ι ℂ) ∈ Matrix.unitaryGroup ι ℂ` using `hM.1.eigenvectorUnitary.2`. Generalize the expression as in `(hM.1.eigenvectorUnitary : Matrix ι ι ℂ) = V at hspec hVmem`. Establish `hV1 : star V * V = 1` using `Matrix.mem_unitaryGroup_iff'.mp hVmem`. Establish `hV2 : V * star V = 1` using `Matrix.mem_unitaryGroup_iff.mp hVmem`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlpos : ∀ i, 0 < hM.1.eigenvalues i` using `fun i => hM.eigenvalues_pos i`. Generalize the expression as in `hM.1.eigenvalues = l at hspec hlpos`. Use `set a : ι → ℝ := fun i => Real.log (l i) / 2 with ha`. Establish `hDD : diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ)) * diagonal (fun i => cexp (a i)) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Complex.ofReal_exp, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Establish `hDs : star (diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ))) = diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `Complex.conj_ofReal _`. Establish `hreal : ∀ i, Real.exp (-(a i)) * l i * Real.exp (-(a i)) = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h2 : Real.exp (-(a i)) * Real.exp (-(a i)) = (l i)⁻¹`. Rewrite using `[← Real.exp_add, show -(a i) + -(a i) = -Real.log (l i) by simp only [ha]; ring, Real.exp_neg, Real.exp_log (hlpos i)]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨g * V * diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ)), star V, a, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[star_mul, star_mul, hDs, Matrix.star_eq_conjTranspose g]`. Simplify using `only [mul_assoc]`. Use `_ = diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ)) * diagonal (fun i => (l i : ℂ)) * diagonal (fun i => ((Real.exp (-(a i)) : ℝ) : ℂ)) := by`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspec, show star V * (V * diagonal (fun i => (l i : ℂ)) * star V) * V = diagonal (fun i => (l i : ℂ)) by`. Simplify using `only [← mul_assoc, hV1, one_mul]`. Rewrite using `[mul_assoc, hV1, mul_one]]`. Use `_ = 1 := by`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hreal i` after adjusting the coercions. Conclude with `Unitary.star_mem hVmem`. Rewrite using `[mul_assoc (g * V), hDD, mul_one, mul_assoc, hV2, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_diagonal_unitary' (g : Matrix ι ι ℂ) (hg : IsUnit g) :
     ∃ (u₁ u₂ : Matrix ι ι ℂ) (a : ι → ℝ), u₁ ∈ Matrix.unitaryGroup ι ℂ ∧
@@ -94,9 +92,9 @@ def actZ (g h : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) : (ι ×
   Sum.elim (fun x => ∑ j, g x.1 j * z (Sum.inl (j, x.2))) (fun y => ∑ j, h y.1 j * z (Sum.inr (j, y.2)))
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [sub]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Break down `v with x | y` into its components or cases. Simplify using `[sub, actZ]`. Simplify using `[sub, actZ]`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_sub (g h : Matrix ι ι ℂ) (p : PV ι A B) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     eval z (sub g h p) = eval (actZ g h z) p := by
@@ -112,9 +110,7 @@ theorem eval_sub (g h : Matrix ι ι ℂ) (p : PV ι A B) (z : (ι × A) ⊕ (ι
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Break down `v with x | y` into its components or cases. Simplify using `only [actZ, Sum.elim_inl, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Simplify using `only [actZ, Sum.elim_inr, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
-
-Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actZ_mul (g h g' h' : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     actZ (g * g') (h * h') z = actZ g h (actZ g' h' z) := by
@@ -126,7 +122,7 @@ theorem actZ_mul (g h g' h' : Matrix ι ι ℂ) (z : (ι × A) ⊕ (ι × B) →
     exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Break down `v with x | y` into its components or cases. Simplify using `[actZ, diagonal_apply]`. Simplify using `[actZ, diagonal_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actZ_diagonal (a b : ι → ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     actZ (diagonal a) (diagonal b) z = Sum.elim (fun x => a x.1 * z (Sum.inl x)) (fun y => b y.1 * z (Sum.inr y)) := by
@@ -136,9 +132,9 @@ theorem actZ_diagonal (a b : ι → ℂ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
   · simp [actZ, diagonal_apply]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Conclude with `hp.mul (hf v)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_eval' {σ : Type} (p : MvPolynomial σ ℂ) (f : ℂ → σ → ℂ)
     (hf : ∀ v, Differentiable ℂ (fun c => f c v)) :
@@ -153,32 +149,28 @@ theorem differentiable_eval' {σ : Type} (p : MvPolynomial σ ℂ) (f : ℂ → 
     exact hp.mul (hf v)
 
 /- English proof (translation)
-Rewrite using `[← eval_sub, hp u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_inv (p : PV ι A B) (hp : IsInv p) (u : Matrix ι ι ℂ) (hu : u ∈ Matrix.unitaryGroup ι ℂ)
     (z : (ι × A) ⊕ (ι × B) → ℂ) : eval (actZ u (u.map star) z) p = eval z p := by
   rw [← eval_sub, hp u hu]
 
 /- English proof (translation)
-Use `set F : ℂ → ℂ := fun c => eval (actZ (diagonal fun i => cexp (c * a i)) (diagonal fun i => cexp (-(c * a i))) z) p with hF`. Establish `hdiff : Differentiable ℂ F`. Establish `hF' : F = fun c => eval (Sum.elim (fun x : ι × A => cexp (c * a x.1) * z (Sum.inl x)) (fun y : ι × B => cexp (-(c * a y.1)) * z (Sum.inr y))) p`. Use function extensionality and compare the values at `c`. Simplify using `only [hF, actZ_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF']`. Apply `differentiable_eval'` to reduce the goal to its premises. Introduce `v`. Break down `v with x | y` into its components or cases. Simplify using `only [Sum.elim_inl] fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr] fun_prop`. Establish `himag : ∀ t : ℝ, F (I * t) = eval z p`. Introduce `t`. Establish `hs : ∀ i, star (cexp (I * t * a i)) = cexp (-(I * t * a i))`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show star (cexp (I * t * a i)) = conj (cexp (I * t * a i)) from rfl, ← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : (diagonal fun i => cexp (I * t * a i)) ∈ Matrix.unitaryGroup ι ℂ`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.star_apply, hs i, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hmap : (diagonal fun i => cexp (I * t * a i)).map star = diagonal fun i => cexp (-(I * t * a i))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_map (star_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hs i`. Use `show eval (actZ (diagonal fun i => cexp (I * t * a i)) (diagonal fun i => cexp (-(I * t * a i))) z) p = eval z p`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmap]`. Conclude with `eval_inv p hp _ hu z`. Establish `hconst : F 1 = eval z p`. Establish `han : AnalyticOnNhd ℂ F Set.univ` using `analyticOnNhd_univ_iff_differentiable.mpr hdiff`. Establish `hg : AnalyticOnNhd ℂ (fun _ : ℂ => eval z p) Set.univ` using `analyticOnNhd_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hfreq : ∃ᶠ w in 𝓝[≠] (0 : ℂ), F w = eval z p`. Establish `ht : Tendsto (fun t : ℝ => I * (t : ℂ)) (𝓝[≠] 0) (𝓝[≠] 0)`. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises. Establish `hc : Continuous (fun t : ℝ => I * (t : ℂ))` using `by fun_prop`. Establish `h0 : Tendsto (fun t : ℝ => I * (t : ℂ)) (𝓝 0) (𝓝 0)` using `by simpa using hc.tendsto 0`.
-
-Conclude with `h0.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Simplify `ht` using `[Complex.I_ne_zero]`. Conclude with `ht.frequently (Filter.Eventually.frequently (Filter.Eventually.of_forall fun t => himag t))`. Conclude with `han.eqOn_of_preconnected_of_frequently_eq hg isPreconnected_univ (Set.mem_univ 0) hfreq (Set.mem_univ 1)`.
-
-Simplify `hconst` using `[hF]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eval_diag (p : PV ι A B) (hp : IsInv p) (a : ι → ℝ) (z : (ι × A) ⊕ (ι × B) → ℂ) :
     eval (actZ (diagonal fun i => cexp (a i)) (diagonal fun i => cexp (-(a i : ℂ))) z) p = eval z p := by
@@ -238,19 +230,19 @@ theorem eval_diag (p : PV ι A B) (hp : IsInv p) (a : ι → ℝ) (z : (ι × A)
   simpa [hF] using hconst
 
 /- English proof (translation)
-Introduce `ι A B _ _ _ _ p hp g h hgh`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Establish `hg : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_right_inverse hgh)`. Take `⟨u₁, u₂, a, hu₁, hu₂, hfac⟩` from `exists_unitary_diagonal_unitary' g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcancel : ∀ {P Q : Matrix ι ι ℂ} (X : Matrix ι ι ℂ), P * Q = 1 → P * (Q * X) = X`. Introduce `P Q X hPQ`. Rewrite using `[← mul_assoc, hPQ, one_mul]`. Establish `hu1s : u₁ * u₁ᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.mem_unitaryGroup_iff.mp hu₁`. Establish `hu2s : u₂ * u₂ᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.mp hu₂`. Establish `hDD : diagonal (fun i => cexp (a i)) * diagonal (fun i => cexp (-(a i : ℂ))) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hK : g * (u₂ᴴ * diagonal (fun i => cexp (-(a i : ℂ))) * u₁ᴴ) = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfac]`. Simplify using `only [mul_assoc]`. Rewrite using `[hcancel _ hu2s, hcancel _ hDD, hu1s]`. Establish `hT : hᵀ = u₂ᴴ * diagonal (fun i => cexp (-(a i : ℂ))) * u₁ᴴ`. Establish `h1 : hᵀ * g = 1` using `_root_.mul_eq_one_comm.mp hgh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hct : ∀ M : Matrix ι ι ℂ, Mᴴᵀ = M.map star`. Introduce `M`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : h = u₁.map star * diagonal (fun i => cexp (-(a i : ℂ))) * u₂.map star`. Rewrite using `[← Matrix.transpose_transpose h, hT, Matrix.transpose_mul, Matrix.transpose_mul, hct, hct, Matrix.diagonal_transpose, mul_assoc]`. Rewrite using `[eval_sub, hfac, hh, actZ_mul, actZ_mul, eval_inv p hp u₁ hu₁, eval_diag p hp a, eval_inv p hp u₂ hu₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext : Ext := by
   intro ι A B _ _ _ _ p hp g h hgh

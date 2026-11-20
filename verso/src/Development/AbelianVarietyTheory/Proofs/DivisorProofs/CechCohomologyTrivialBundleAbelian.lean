@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh.FDim
 
 /- English proof (translation)
-Rewrite using `[Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSpecStalk_comp_spec {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (z : Y) :
     Y.fromSpecStalk z ≫ p =
@@ -29,11 +29,11 @@ theorem fromSpecStalk_comp_spec {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y 
     ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
 /- English proof (translation)
-Establish `hr : Set.range (η[A]).left.base = {(η[A]).left.base p}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Establish `hs : Subsingleton (Sp K)` using `inferInstance`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `rfl : q = p` from `hs.elim q p`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨p, rfl⟩`. Rewrite using `[← hr]`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(η[A]).left.isClosedEmbedding.isClosed_range`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_origin (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (p : Sp K) :
     IsClosed ({(η[A]).left.base p} : Set A.left) := by
@@ -50,19 +50,17 @@ theorem isClosed_origin (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (p : S
   exact (η[A]).left.isClosedEmbedding.isClosed_range
 
 /- English proof (translation)
-Introduce `K _ _ A _ g hA hsm κ _ _ D hD hcov`. Take `⟨L, H, _, j, hL, hproj, hgen, hj, hci, hfin, hK⟩` from `GlobalTheory.T.exists_ample_kernel_finite_subgroupScheme K A hA`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstance`. Establish `hx₀ : (η[A]).left.base p ∈ Set.range (η[A]).left.base` using `⟨p, rfl⟩`. Take `⟨J, C, φ, hJ, hφ, hfree, hbdd, hcok, hfib, hiso⟩` from `GlobalTheory.T.exists_free_complex_structureSheaf_cech_origin K A g hA hsm L H j hL hproj hgen hj hci hfin hK _ hx₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `GlobalTheory.T.finiteSubgroupScheme_ideal_generated_by_dim_elements K A g hA hsm H j hj hci hfin _ hx₀ J hJ`. Take `⟨hJt, hart⟩` from `GlobalTheory.T.closed_subfunctor_stalk_ideal_criterion K A H j hj hci hfin _ hx₀ J hJ`. Substitute `hf` using the available equality. Set `σ : K →+* A.left.presheaf.stalk ((η[A]).left.base p)` to `((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ A.hom.appTop ≫ A.left.presheaf.germ ⊤ ((η[A]).left.base p) trivial).hom`. Establish `hσ : A.left.fromSpecStalk ((η[A]).left.base p) ≫ A.hom = Spec.map (CommRingCat.ofHom σ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[fromSpecStalk_comp_spec]`. Both sides reduce to the same expression. Establish `hloc : IsLocalHom σ` using `⟨fun a ha => by`. Break down `eq_or_ne a 0 with rfl | h` into its components or cases. Simplify using `at ha`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `h.isUnit⟩`. Take `⟨-, -, hreg, hdim⟩` from `GlobalTheory.T.stalk_regular_flat_of_smooth K A.left A.hom g hsm _ (isClosed_origin K A p) σ hσ hloc`. Establish `hbot : (IsLocalRing.maximalIdeal K).map σ = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot]`. Set `e` to `(Ideal.quotEquivOfEq hbot).trans (RingEquiv.quotientBot (A.left.presheaf.stalk ((η[A]).left.base p)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsRegularLocalRing (A.left.presheaf.stalk ((η[A]).left.base p)) := IsRegularLocalRing.of_ringEquiv e`. Establish `hdim' : ringKrullDim (A.left.presheaf.stalk ((η[A]).left.base p)) = g`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv e]`. Conclude with `hdim`. Establish `hex` using `GlobalTheory.T.exact_dualMap_of_exactAt_extendScalars_fibres _ g hdim' C hfree hbdd hfib`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.finrank_homology_one_two_dualResolution _ g hdim' f hJt hart C hfree hex hcok K φ hφ`. Use `haveI := hA.proper`. Use `⟨fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover K A.left A.hom (LB.triv A.left) κ D (LB.isLB_triv _) inferInstance hproj hD hcov i`. Take `⟨e1⟩` from `hiso κ D hD hcov 1`.
-
-Rewrite using `[← e1.finrank_eq]`. Conclude with `h1`. Take `⟨e2⟩` from `hiso κ D hD hcov 2`. Rewrite using `[← e2.finrank_eq]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → A.left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (∀ i, Module.Finite K ((cechLB A.hom (LB.triv A.left) D).homology i)) ∧ Module.finrank K ((cechLB A.hom (LB.triv A.left) D).homology 1) = g ∧ Module.finrank K ((cechLB A.hom (LB.triv A.left) D).homology 2) ≤ g.choose 2 := by
   intro K _ _ A _ g hA hsm κ _ _ D hD hcov

@@ -18,7 +18,7 @@ open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.HalfFalt
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range_add_sum_Ico _ h, Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_range.1 hi)), Finset.sum_eq_zero (fun i hi => if_neg (by rw [Finset.mem_Ico] at hi; omega)), add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem sum_range_ite_lt (f : ℕ → ℝ) {j N : ℕ} (h : j ≤ N) :
     ∑ i ∈ Finset.range N, (if i < j then f i else 0) = ∑ i ∈ Finset.range j, f i := by
@@ -29,41 +29,39 @@ theorem sum_range_ite_lt (f : ℕ → ℝ) {j N : ℕ} (h : j ≤ N) :
 open Classical in
 
 /- English proof (translation)
-Introduce `_ _ hF D O hC hN A T H h`. Take `⟨C1, hC1⟩` from `hF D O hC hN A T H h`. Take `⟨C2, hC2⟩` from `GlobalTheory.T.letter_height_difference_bounded D O`. Use `⟨((letters O.S.Dw).length * C2 + Fintype.card D.what₂.Tau * C1) / 2, fun y hy => ?_⟩` and prove the remaining obligations. Use `set c := compPt O.s y with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set z := basePt O.Φ y with hz`. Establish `hind0 : ArIn.ind ∅ = fun _ => false` using `by funext q; simp [ArIn.ind]`. Set `ℓ : Sym D.host.E → ℝ` to `fun a => (adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single a 1)).ht z`. Establish `hneg : ∀ a : Sym D.host.E, a.1 = (fun _ => false) → a.2.1 = none → (adlOf (O.Φ.C c) (O.met.hm c) (Finsupp.single a (-1))).ht z = -ℓ a`. Introduce `a ha hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.T.height_additive_in_symbols D O hC A T H h c z (Finset.univ : Finset Unit) (fun _ => a) (fun _ => -1) (fun _ _ => ⟨ha, hb⟩)` as an intermediate fact. Simplify using `using this`. Establish `hfalt : H.falt y = -∑ k ∈ Finset.range (letters O.S.Dw).length, ℓ ((fun _ => false), none, .inr k)`. Rewrite using `[h.ht.falt y hy]`. Express the relevant statement in the definitionally equal form `(adlOf (O.Φ.C c) (O.met.hm c) (detOmSym D.host.E (D.R.f * O.N))).ht z = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : detOmSym D.host.E (D.R.f * O.N) = ∑ k : Fin (D.R.f * O.N), Finsupp.single (((fun _ => false), none, .inr ((Fin.rev k : Fin _) : ℕ)) : Sym D.host.E) (-1)` using `rfl`. Rewrite using `[e, GlobalTheory.T.height_additive_in_symbols D O hC A T H h c z _ _ _ (fun _ _ => ⟨rfl, rfl⟩), length_letters]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun k => ℓ ((fun _ => false), none, .inr k)), ← Finset.sum_neg_distrib]`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[ℓ]`. Set `e : (D.host.E →+* ℂ) × ℕ → ℝ` to `fun p => ℓ ((fun _ => false), none, .inl p)`. Establish `hjN : O.j ≤ O.N` using `O.indef.2.le`. Establish `hp : O.S.Dw.p = O.j` using `O.S.p_eq`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hroot : ∀ (τ : D.what₂.Tau) (i : Fin O.N), (O.rootH c (τ, i)).ht z = if (i : ℕ) < O.j then e (DV.tauEmb D τ, i) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - ((i : ℕ) - O.j))`. Introduce `τ i`. Express the relevant statement in the definitionally equal form `(adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind ∅) none (DV.tauEmb D τ) i)).ht z = _`. Rewrite using `[hind0]`. Unfold `rootSym`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
 
-Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[hneg _ rfl rfl]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: O.S.Dw.p + O.S.Dw.q - 1 - (i : ℕ) = O.N - O.j - 1 - ((i : ℕ) - O.j)` using `by omega`. Rewrite using `[this]`. Set `Aτ : D.what₂.Tau → ℝ` to `fun τ => ∑ i ∈ Finset.range O.j, e (DV.tauEmb D τ, i)`. Set `Bτ : D.what₂.Tau → ℝ` to `fun τ => ∑ i ∈ Finset.range (O.N - O.j), e (conjEmb (DV.tauEmb D τ), i)`. Establish `hmid : H.hH (midWt O.Y) y = -∑ τ, Aτ τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.ht.hH _ y hy]`. Express the relevant statement in the definitionally equal form `-∑ x : DV.Rt D.what₂.Tau O.N, midWt O.Y x.1 x.2 * (O.rootH c x).ht z = _`. Rewrite using `[Fintype.sum_prod_type]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show ∑ i : Fin O.N, midWt O.Y τ i * (O.rootH c (τ, i)).ht z = ∑ i : Fin O.N, (fun k : ℕ => if k < O.j then e (DV.tauEmb D τ, k) else 0) (i : ℕ) from Finset.sum_congr rfl fun i _ => by`. Rewrite using `[hroot]`. Express the relevant statement in the definitionally equal form `(if (i : ℕ) < O.j then (1 : ℝ) else 0) * _ = if (i : ℕ) < O.j then _ else _`. Apply the tactic sequence `split_ifs <;> simp]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => if k < O.j then e (DV.tauEmb D τ, k) else 0) O.N, sum_range_ite_lt _ hjN]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hind : ∀ τ, H.hH (fun τ' _ => if τ' = τ then 1 else 0) y = -Aτ τ + Bτ τ`. Introduce `τ`. Rewrite using `[h.ht.hH _ y hy]`. Express the relevant statement in the definitionally equal form `-∑ x : DV.Rt D.what₂.Tau O.N, (if x.1 = τ then (1 : ℝ) else 0) * (O.rootH c x).ht z = _`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true, one_mul]`. Establish `h1 : ∑ i : Fin O.N, (O.rootH c (τ, i)).ht z = ∑ i ∈ Finset.range O.N, (if i < O.j then e (DV.tauEmb D τ, i) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - (i - O.j)))`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => if i < O.j then e (DV.tauEmb D τ, i) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - (i - O.j))) O.N]`. Conclude with `Finset.sum_congr rfl fun i _ => hroot τ i`. Establish `h3 : ∑ i ∈ Finset.range O.j, (if i < O.j then e (DV.tauEmb D τ, i) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - (i - O.j))) = Aτ τ` using `Finset.sum_congr rfl fun i hi => if_pos (Finset.mem_range.1 hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∑ k ∈ Finset.range (O.N - O.j), (if O.j + k < O.j then e (DV.tauEmb D τ, O.j + k) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - (O.j + k - O.j))) = -Bτ τ`. Establish `h5 : ∀ k ∈ Finset.range (O.N - O.j), (if O.j + k < O.j then e (DV.tauEmb D τ, O.j + k) else -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - (O.j + k - O.j))) = -e (conjEmb (DV.tauEmb D τ), O.N - O.j - 1 - k)`. Introduce `k _`. Rewrite using `[if_neg (by omega), show O.j + k - O.j = k by omega]`. Rewrite using `[Finset.sum_congr rfl h5, Finset.sum_neg_distrib, Finset.sum_range_reflect (fun k => e (conjEmb (DV.tauEmb D τ), k)) (O.N - O.j)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Finset.sum_range_add_sum_Ico _ hjN, Finset.sum_Ico_eq_sum_range, h3, h4]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS : |∑ k ∈ Finset.range (letters O.S.Dw).length, ℓ ((fun _ => false), none, .inr k) - ∑ τ, (Aτ τ + Bτ τ)| ≤ (letters O.S.Dw).length * C2`. Rewrite using `[← GlobalTheory.T.letter_sum_eq_tau_sum D O e, ← Fin.sum_univ_eq_sum_range (fun k => ℓ ((fun _ => false), none, .inr k)), ← Finset.sum_sub_distrib]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_sum fun j _ => hC2 c z j).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hI : |∑ τ, H.hH (fun τ' _ => if τ' = τ then 1 else 0) y| ≤ Fintype.card D.what₂.Tau * C1`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun τ _ => (hC1 τ y).2 hy).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hsum : ∑ τ, H.hH (fun τ' _ => if τ' = τ then 1 else 0) y = -∑ τ, Aτ τ + ∑ τ, Bτ τ`. Rewrite using `[Finset.sum_congr rfl fun τ _ => hind τ, Finset.sum_add_distrib, Finset.sum_neg_distrib]`. Establish `hAB : ∑ τ, (Aτ τ + Bτ τ) = ∑ τ, Aτ τ + ∑ τ, Bτ τ` using `Finset.sum_add_distrib`. Rewrite using `[hmid, hfalt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hS` using `[hAB]`. Rewrite `hI` using `[hsum]`. Use `set S := ∑ k ∈ Finset.range (letters O.S.Dw).length, ℓ ((fun _ => false), none, .inr k)`. Use `set A' := ∑ τ, Aτ τ`. Use `set B' := ∑ τ, Bτ τ`.
-
-Establish `e2 : -A' - (-S) / 2 = (S - (A' + B')) / 2 + (-A' + B') / 2` using `by ring`. Rewrite using `[e2]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_div, abs_div, abs_two]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem faltSt : Hypotheses2 → HypothesesH → FlatHt → FaltSt := by
   intro _ _ hF D O hC hN A T H h

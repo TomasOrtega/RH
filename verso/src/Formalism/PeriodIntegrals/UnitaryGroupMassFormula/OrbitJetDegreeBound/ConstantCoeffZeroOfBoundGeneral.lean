@@ -13,7 +13,7 @@ section Lin
 variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N0 N1 : ℕ} {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `OJ.applyAt0`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[h μ hμ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_congr (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ)
     (h : ∀ μ ∈ P.support, coeff (Finsupp.sumFinsuppEquivProdFinsupp μ).2 T =
@@ -24,7 +24,7 @@ theorem applyAt0_congr (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (
   rw [h μ hμ]
 
 /- English proof (translation)
-Unfold `applyAt0`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem applyAt0_zero_left (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (0 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) P = 0 := by
@@ -32,7 +32,7 @@ theorem applyAt0_zero_left (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
   simp
 
 /- English proof (translation)
-Unfold `OJ.applyAt0`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, mul_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_add_left (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (T + T') P = applyAt0 N0 N1 l T P + applyAt0 N0 N1 l T' P := by
@@ -42,7 +42,7 @@ theorem applyAt0_add_left (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]
   rw [map_add, mul_add, map_add]
 
 /- English proof (translation)
-Unfold `OJ.applyAt0`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_smul, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -57,9 +57,9 @@ theorem applyAt0_smul_left (c : ℂ_[l]) (T : MvPowerSeries (Lt × Fin N0 × Fin
   ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `applyAt0_zero_left P`. Consider the case `insert a S ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, applyAt0_add_left, applyAt0_smul_left, ih]`.
+A detailed English derivation is pending.
 -/
 theorem applyAt0_sum_left {ι : Type*} (S : Finset ι) (c : ι → ℂ_[l]) (T : ι → MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
@@ -74,7 +74,7 @@ theorem applyAt0_sum_left {ι : Type*} (S : Finset ι) (c : ι → ℂ_[l]) (T :
 end Lin
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_coeff_monomial_one {σ : Type*} {l : ℕ} [Fact l.Prime] (k m : σ →₀ ℕ) :
     ‖coeff m (monomial k (1 : ℂ_[l]))‖ ≤ 1 := by
@@ -82,7 +82,7 @@ theorem norm_coeff_monomial_one {σ : Type*} {l : ℕ} [Fact l.Prime] (k m : σ 
   split_ifs <;> simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `(h 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])).1`. Apply `h1` to reduce the goal to its premises. Simplify using `[OJ.bideg]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_zero_of_bound_general (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]) (h : OJ.B3 l d be) :
     constantCoeff be = 0 := by
@@ -103,7 +103,7 @@ def Pm (N0 N1 : ℕ) (ep : ℂ_[p]) (R : Finset (Pl D)) (sg : Pl D → ℂ_[p])
   ∏ r ∈ R, rename (pE D p r (Fin N0 × Fin N1)) (Fk D p N0 N1 ep (sg r) (be r) (resM D p r m))
 
 /- English proof (translation)
-Establish `hG` using `(isTri_log D p (β := Fin N0 × Fin N1) ep).hasSubst`. Rewrite using `[Pm, ← coe_substAlgHom hG, map_prod, E_eq D p R sg be hcc, mono_eq D p hR m, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[coe_substAlgHom, subst_rename, Fk, Tri.subst_sol hep (isTri_jet p (nP D p) ep), map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_Pm {N0 N1 : ℕ} (ep : ℂ_[p]) (hep : ep ≠ 0) {R : Finset (Pl D)} (hR : IsReps D p R)
     (sg : Pl D → ℂ_[p]) (be : Pl D → MvPowerSeries (ZMod (nP D p)) ℂ_[p])
@@ -116,29 +116,25 @@ theorem subst_Pm {N0 N1 : ℕ} (ep : ℂ_[p]) (hep : ep ≠ 0) {R : Finset (Pl D
   rw [coe_substAlgHom, subst_rename, Fk, Tri.subst_sol hep (isTri_jet p (nP D p) ep), map_mul]
 
 /- English proof (translation)
-Introduce `D E p _ h u i hi R hR ep sg be hbe β hβ Th hTh`. Take `⟨hep, _, hB⟩` from `hbe`. Establish `hcc : ∀ r ∈ R, constantCoeff (be r) = 0` using `fun r hr => constantCoeff_zero_of_bound_general p (nP D p) (be r) (hB r hr).2.2.1`. Establish `hep0 : ep ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hep` using `[h0, norm_zero]`. Conclude with `zero_ne_one hep`. Take `⟨U, hU, hEq⟩` from `hTh`. Establish `hTG` using `isTri_log D p (β := Fin (D.R.N i) × Fin (D.R.N (i + 1))) ep`. Establish `hFk : ∀ r ∈ R, ∀ k, KvalGe (D.R.N i) (D.R.N (i + 1)) p (fun s => E.nu u i (orbMap D p r s)) (Fk D p (D.R.N i) (D.R.N (i + 1)) ep (sg r) (be r) k) (β r)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr k`. Apply `hβ r hr` to reduce the goal to its premises. Use `⟨monomial k 1, fun m => norm_coeff_monomial_one k m, ?_⟩` and prove the remaining obligations. Conclude with `Tri.subst_sol hep0 (isTri_jet p (nP D p) ep) _`. Establish `hPk : ∀ m, KvalGe (D.R.N i) (D.R.N (i + 1)) p (E.nu u i) (Pm D p _ _ ep R sg be m) (∑ r ∈ R, β r)` using `fun m => kval_prod D p hR _ _ β (fun r hr => hFk r hr _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `I mx`. Use `set G := Gxz (D.R.N i) (D.R.N (i + 1)) (E.nu u i) I with hGdef`. Use `set n := G.support.sup (fun μ => (Finsupp.sumFinsuppEquivProdFinsupp μ).2.degree) + 1 with hn`. Use `set S := (Finsupp.finite_of_degree_lt (σ := Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1))) n).toFinset with hS`. Use `set Th' := ∑ m ∈ S, coeff m U • Pm D p _ _ ep R sg be m with hTh'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Eall := subst (logPl D p (β := Fin (D.R.N i) × Fin (D.R.N (i + 1)))) (OJ.expS ℂ_[p] (beAll D p R sg be)) with hEall`. Establish `hsub : subst (fun v : Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)) => C ep * logPl D p v) (Th - Th') = (U - ∑ m ∈ S, monomial m (coeff m U)) * Eall`. Rewrite using `[subst_sub hTG.hasSubst, hEq, hTh', ← coe_substAlgHom hTG.hasSubst, map_sum]`. Repeatedly rewrite using `[map_smul, coe_substAlgHom, subst_Pm D p ep hep0 hR sg be hcc]`. Rewrite using `[sub_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, ← mul_assoc, ← monomial_zero_eq_C_apply, monomial_mul_monomial, zero_add, mul_one]`. Establish `hagree : ∀ κ : Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1)) →₀ ℕ, κ.degree < n → coeff κ Th = coeff κ Th'`. Establish `hv` using `Tri.vanish_of_subst hep0 hTG (Th - Th') n (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `κ hκ`. Rewrite using `[hsub, coeff_mul]`. Use `Finset.sum_eq_zero fun ab hab => ?_` and prove the remaining obligations. Rewrite `hab` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hdeg : ab.1.degree < n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: κ.degree = ab.1.degree + ab.2.degree` using `by rw [← hab, map_add]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : ab.1 ∈ S`. Rewrite using `[hS, Set.Finite.mem_toFinset]`. Conclude with `hdeg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_sub, map_sum, Finset.sum_eq_single ab.1]`. Rewrite using `[coeff_monomial, if_pos rfl, sub_self, zero_mul]`. Introduce `b _ hb`. Rewrite using `[coeff_monomial, if_neg (Ne.symm hb)]`. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hmem h)`. Introduce `κ hκ`. Use `hv κ hκ` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hjet : applyAt0 (D.R.N i) (D.R.N (i + 1)) p Th G = applyAt0 (D.R.N i) (D.R.N (i + 1)) p Th' G`.
-
-Use `applyAt0_congr Th Th' G fun μ hμ => hagree _ ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun μ => (Finsupp.sumFinsuppEquivProdFinsupp μ).2.degree) hμ)`. Rewrite using `[hjet, hTh', applyAt0_sum_left, MvPolynomial.coeff_sum]`. Establish `hpos : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`.
-
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hpos.le _) fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbAddUp_main : ∀ (D : Formalism.BasicNotions.D7) (E : PI.OrbJet.Ent D), PI.OrbJet.OrbitsAddLowerBound E := by
   intro D E p _ h u i hi R hR ep sg be hbe β hβ Th hTh

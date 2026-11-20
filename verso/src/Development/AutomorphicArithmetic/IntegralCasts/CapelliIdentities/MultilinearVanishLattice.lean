@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `ι _ _ M N _ _ _ _ T L G hL hG`. Establish `key : ∀ s : Finset ι, ∀ v : ∀ i, M i, (∀ i ∈ s, v i ∈ Submodule.span ℂ (G i)) → (∀ i, i ∉ s → v i ∈ L i) → T v = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun v _ h => hL v fun i => h i (Finset.notMem_empty i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Introduce `v hs hn`. Establish `hker : Submodule.span ℂ (G a) ≤ LinearMap.ker (T.toLinearMap v a)`. Rewrite using `[Submodule.span_le]`. Introduce `w hw`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w0, hw0, h⟩` from `hG a w hw`. Establish `h0 : T (Function.update v a w0) = 0`. Apply `ih` to reduce the goal to its premises. Introduce `i hi`. Establish `hia : i ≠ a` using `fun e => ha (e ▸ hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hia]`. Conclude with `hs i (Finset.mem_insert_of_mem hi)`. Introduce `i hi`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self]`. Conclude with `hw0`. Rewrite using `[Function.update_of_ne hia]`. Conclude with `hn i (by simp [hia, hi])`. Conclude with `h v h0`.
-
-Establish `hv : T (Function.update v a (v a)) = 0` using `hker (hs a (Finset.mem_insert_self a s))`. Rewrite `hv` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Introduce `v hv`. Use `haveI := Fintype.ofFinite ι`. Conclude with `key Finset.univ v (fun i _ => hv i) (fun i hi => absurd (Finset.mem_univ i) hi)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.multilinear_vanish_lattice :
     ∀ {ι : Type} [Finite ι] [DecidableEq ι] {M : ι → Type} {N : Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]

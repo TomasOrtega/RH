@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseLiftWeight
 
 /- English proof (translation)
-Establish `h1` using `hB.inf τ`. Rewrite `h1` using `[hmu]`. Establish `h2` using `GlobalTheory.Mem.HeckeExp.hasInfExp_unique h1 (GlobalTheory.ConjRefChar.reference_lift_character_exponent_neg_base hL j τ)`. Establish `hs` using `hB.sig τ`. Establish `hp : B.w.p τ = ((Wc D j).sig (tauE D τ)).1` using `congrArg Prod.fst hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : B.w.q τ = ((Wc D j).sig (tauE D τ)).2` using `congrArg Prod.snd hs`. Establish `h3` using `GlobalTheory.ConjTwist.liftC_cast D j τ`. Rewrite `h2` using `[hp, hq]`. Establish `h4 : (B.w.c τ : ℚ) = (GlobalTheory.ConjTwist.liftC D j τ : ℚ)`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.pS, GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.qS] at *`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h4` after adjusting the coercions.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem c_eq {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)}
     (hL : L.Is μ0) (hB : B.Good) (hmu : B.mu0 = L.mu0 ((j : ℕ) + 1)) (τ : D.what₂.Tau) :
@@ -38,11 +38,11 @@ theorem c_eq {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} {j : Fin D.R.m} {B
   exact_mod_cast h4
 
 /- English proof (translation)
-Introduce `D T0 L μ0 j B hL hB hmu hap ham`. Use function extensionality and compare the values at `τ`. Establish `hs` using `hB.sig τ`. Establish `hp : B.w.p τ = ((Wc D j).sig (tauE D τ)).1` using `congrArg Prod.fst hs`. Establish `hq : B.w.q τ = ((Wc D j).sig (tauE D τ)).2` using `congrArg Prod.snd hs`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `c_eq hL hB hmu τ`. Establish `e1` using `hB.wt.lam_eq τ`. Establish `e2` using `(GlobalTheory.ConjTwist.liftWeight_good D j).lam_eq τ`. Rewrite `e1` using `[hp, hq, hap τ, ham τ, hc]`. Establish `key : (B.w.lam τ).w = (FWT.lamV D j τ).w` using `funext fun a => (e1 a).trans (e2 a).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `B.w.lam τ = x at key`. Generalize the expression as in `FWT.lamV D j τ = y at key`. Consider the cases of `x`. Consider the cases of `y`. Consider the cases of `key`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/

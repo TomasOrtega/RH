@@ -11,42 +11,42 @@ section Alg
 variable {e : ℕ} {X : Type*} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.HoloOn.mono' {A : FinHolAtlas e X} {U V : Set X} {g : X → ℂ}
     (h : A.HoloOn U g) (hVU : V ⊆ U) : A.HoloOn V g :=
   fun j => (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))
 
 /- English proof (translation)
-Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.SmoothOn.mono' {A : FinHolAtlas e X} {U V : Set X} {f : X → ℝ}
     (h : A.SmoothOn U f) (hVU : V ⊆ U) : A.SmoothOn V f :=
   fun j => (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).add (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.HoloOn.add' {A : FinHolAtlas e X} {U : Set X} {f g : X → ℂ}
     (hf : A.HoloOn U f) (hg : A.HoloOn U g) : A.HoloOn U (fun x => f x + g x) :=
   fun j => (hf j).add (hg j)
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).sub (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.HoloOn.sub' {A : FinHolAtlas e X} {U : Set X} {f g : X → ℂ}
     (hf : A.HoloOn U f) (hg : A.HoloOn U g) : A.HoloOn U (fun x => f x - g x) :=
   fun j => (hf j).sub (hg j)
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).mul (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.HoloOn.mul' {A : FinHolAtlas e X} {U : Set X} {f g : X → ℂ}
     (hf : A.HoloOn U f) (hg : A.HoloOn U g) : A.HoloOn U (fun x => f x * g x) :=
   fun j => (hf j).mul (hg j)
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).add (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinHolAtlas.SmoothOn.add' {A : FinHolAtlas e X} {U : Set X} {f g : X → ℝ}
     (hf : A.SmoothOn U f) (hg : A.SmoothOn U g) : A.SmoothOn U (fun x => f x + g x) :=
@@ -57,9 +57,9 @@ end Alg
 namespace CompatibleChartOperations
 
 /- English proof (translation)
-Introduce `j`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Establish `hx' : x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source` using `⟨hx.1, hx.2.1⟩`. Conclude with `(L.toContinuousLinearMap.analyticAt _).comp (A.holo j i x hx')`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : L.symm x ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' (A.chart j).source` using `⟨hx.1.2, hx.2⟩`. Conclude with `(A.holo i j (L.symm x) hx').comp (L.symm.toContinuousLinearMap.analyticAt x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompatChart_trans_cle {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     (i : Fin A.n) (L : (Fin e → ℂ) ≃L[ℂ] (Fin e → ℂ)) :
@@ -74,7 +74,7 @@ theorem isCompatChart_trans_cle {e : ℕ} {X : Type*} [TopologicalSpace X] (A : 
     exact (A.holo i j (L.symm x) hx').comp (L.symm.toContinuousLinearMap.analyticAt x)
 
 /- English proof (translation)
-Introduce `j`. Prove the components needed by the constructor for the conclusion. Conclude with `(A.holo j i).mono (fun x hx => ⟨hx.1, hx.2.1⟩)`. Conclude with `(A.holo i j).mono (fun x hx => ⟨hx.1.1, hx.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem isCompatChart_restrOpen {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     (i : Fin A.n) (s : Set X) (hs : IsOpen s) : IsCompatChart A ((A.chart i).restrOpen s hs) := by
@@ -136,11 +136,11 @@ def chartIndexAt (a : OnePoint ℂ) : Fin 2 := if a = ∞ then 1 else 0
 def chartCoordAt (a p : OnePoint ℂ) : ℂ := (p1.chart (chartIndexAt a) p) 0
 
 /- English proof (translation)
-Rewrite `h` using `[fsPot_U_ite]`. Distinguish the cases in `ha : a = ∞`. Rewrite `h` using `[if_pos ha]`. Proceed by induction on `p with`. Consider the case `infty => exact ⟨1, one_ne_zero, by simp [homogeneousLift, ha, homogeneousCoord, crd1]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `coe z`. Establish `hz : z ≠ 0` using `fun hz => h (by rw [hz])`. Use `⟨z⁻¹, inv_ne_zero hz, ?_⟩` and prove the remaining obligations. Simplify using `[homogeneousLift, ha, homogeneousCoord, crd1, hz]`. Rewrite `h` using `[if_neg ha]`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, rfl⟩` from `h`. Conclude with `⟨1, one_ne_zero, by simp [homogeneousLift, ha, homogeneousCoord, crd0]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem homogeneousLift_eq_smul {a p : OnePoint ℂ} (h : p ∈ fsPot.U a) :
     ∃ c : ℂ, c ≠ 0 ∧ homogeneousLift a p = c • homogeneousCoord p := by
@@ -158,7 +158,7 @@ theorem homogeneousLift_eq_smul {a p : OnePoint ℂ} (h : p ∈ fsPot.U a) :
     exact ⟨1, one_ne_zero, by simp [homogeneousLift, ha, homogeneousCoord, crd0]⟩
 
 /- English proof (translation)
-Take `⟨c, hc, e1⟩` from `homogeneousLift_eq_smul h`. Take `⟨c', hc', e2⟩` from `homogeneousLift_eq_smul h'`. Use `⟨c / c', div_ne_zero hc hc', ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, smul_smul, div_mul_cancel₀ _ hc']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem homogeneousLift_eq_smul' {a a' p : OnePoint ℂ} (h : p ∈ fsPot.U a) (h' : p ∈ fsPot.U a') :
     ∃ c : ℂ, c ≠ 0 ∧ homogeneousLift a p = c • homogeneousLift a' p := by
@@ -168,21 +168,21 @@ theorem homogeneousLift_eq_smul' {a a' p : OnePoint ℂ} (h : p ∈ fsPot.U a) (
   rw [e1, e2, smul_smul, div_mul_cancel₀ _ hc']
 
 /- English proof (translation)
-Simplify using `only [det2, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairDet_smul (c d : ℂ) (u v : ℂ × ℂ) : det2 (c • u) (d • v) = c * d * det2 u v := by
   simp only [det2, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]
   ring
 
 /- English proof (translation)
-Simplify using `only [nrm2, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, norm_mul, mul_pow]`. Rewrite using `[← mul_add, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairNorm_smul (c : ℂ) (u : ℂ × ℂ) : nrm2 (c • u) = ‖c‖ * nrm2 u := by
   simp only [nrm2, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, norm_mul, mul_pow]
   rw [← mul_add, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Unfold `nrm2 homogeneousLift`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Apply the tactic sequence `split_ifs <;> simp only [norm_one, one_pow] <;> positivity`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairNorm_homogeneousLift_pos (a p : OnePoint ℂ) : 0 < nrm2 (homogeneousLift a p) := by
   unfold nrm2 homogeneousLift
@@ -190,7 +190,7 @@ theorem pairNorm_homogeneousLift_pos (a p : OnePoint ℂ) : 0 < nrm2 (homogeneou
   split_ifs <;> simp only [norm_one, one_pow] <;> positivity
 
 /- English proof (translation)
-Rewrite using `[fsPot_φ_ite]`. Unfold `nrm2 homogeneousLift`. Apply the tactic sequence `split_ifs <;> simp only [norm_one, one_pow] <;> rw [Real.log_sqrt (by positivity)] <;> ring_nf`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fsPot_φ_eq (a p : OnePoint ℂ) : fsPot.φ a p = Real.log (nrm2 (homogeneousLift a p)) := by
   rw [fsPot_φ_ite]
@@ -198,11 +198,11 @@ theorem fsPot_φ_eq (a p : OnePoint ℂ) : fsPot.φ a p = Real.log (nrm2 (homoge
   split_ifs <;> simp only [norm_one, one_pow] <;> rw [Real.log_sqrt (by positivity)] <;> ring_nf
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `infty`. Proceed by induction on `q with`. Consider the case `infty => rfl`. Consider the case `coe w => simp [homogeneousCoord, det2] at h`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe z`. Proceed by induction on `q with`. Consider the case `infty => simp [homogeneousCoord, det2] at h`. Consider the case `coe w`. Simplify using `[homogeneousCoord, det2, sub_eq_zero] at h`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairDet_homogeneousCoord_eq_zero {p q : OnePoint ℂ} (h : det2 (homogeneousCoord p) (homogeneousCoord q) = 0) : p = q := by
   induction p with
@@ -218,7 +218,7 @@ theorem pairDet_homogeneousCoord_eq_zero {p q : OnePoint ℂ} (h : det2 (homogen
       rw [h]
 
 /- English proof (translation)
-Take `⟨c, hc, e1⟩` from `homogeneousLift_eq_smul hp`. Take `⟨d, hd, e2⟩` from `homogeneousLift_eq_smul hq`. Rewrite `h` using `[e1, e2, pairDet_smul]`. Conclude with `pairDet_homogeneousCoord_eq_zero ((mul_eq_zero.1 h).resolve_left (mul_ne_zero hc hd))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairDet_homogeneousLift_eq_zero {a b p q : OnePoint ℂ} (hp : p ∈ fsPot.U a) (hq : q ∈ fsPot.U b)
     (h : det2 (homogeneousLift a p) (homogeneousLift b q) = 0) : p = q := by
@@ -228,21 +228,21 @@ theorem pairDet_homogeneousLift_eq_zero {a b p q : OnePoint ℂ} (hp : p ∈ fsP
   exact pairDet_homogeneousCoord_eq_zero ((mul_eq_zero.1 h).resolve_left (mul_ne_zero hc hd))
 
 /- English proof (translation)
-Rewrite using `[chartIndexAt, if_pos ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chart_chartIndexAt_infty {a : OnePoint ℂ} (ha : a = ∞) : p1.chart (chartIndexAt a) = projectiveLineChartAtInfinity := by
   rw [chartIndexAt, if_pos ha]
   rfl
 
 /- English proof (translation)
-Rewrite using `[chartIndexAt, if_neg ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chart_chartIndexAt_fin {a : OnePoint ℂ} (ha : a ≠ ∞) : p1.chart (chartIndexAt a) = projectiveLineChartAtZero := by
   rw [chartIndexAt, if_neg ha]
   rfl
 
 /- English proof (translation)
-Rewrite using `[fsPot_U_ite]`. Distinguish the cases in `ha : a = ∞`. Rewrite using `[chart_chartIndexAt_infty ha, if_pos ha]`. Rewrite using `[chart_chartIndexAt_fin ha, if_neg ha]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartIndexAt_source (a : OnePoint ℂ) : (p1.chart (chartIndexAt a)).source = fsPot.U a := by
   rw [fsPot_U_ite]
@@ -252,7 +252,7 @@ theorem chartIndexAt_source (a : OnePoint ℂ) : (p1.chart (chartIndexAt a)).sou
 
 open scoped Classical in
 /- English proof (translation)
-Distinguish the cases in `ha : a = ∞`. Simplify using `only [det2, homogeneousLift, chartCoordAt, if_pos ha, chart_chartIndexAt_infty ha] show crd1 p * 1 - 1 * crd1 q = 1 * (crd1 p - crd1 q)`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [det2, homogeneousLift, chartCoordAt, if_neg ha, chart_chartIndexAt_fin ha] show 1 * crd0 q - crd0 p * 1 = -1 * (crd0 p - crd0 q)`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairDet_homogeneousLift_same (a p q : OnePoint ℂ) :
     det2 (homogeneousLift a p) (homogeneousLift a q) = (if a = ∞ then 1 else -1) * (chartCoordAt a p - chartCoordAt a q) := by
@@ -265,17 +265,15 @@ theorem pairDet_homogeneousLift_same (a p q : OnePoint ℂ) :
     ring
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = ∞`. Establish `e : (fun p => (homogeneousLift a p).1) = crd1`. Use function extensionality and compare the values at `p`. Simplify using `[homogeneousLift, ha]`. Rewrite using `[e, fsPot_U_ite, if_pos ha]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `FinHolAtlas.HoloOn`. Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show AnalyticOnNhd ℂ (crd1 ∘ projectiveLineChartAtZero.symm) (projectiveLineChartAtZero.target ∩ projectiveLineChartAtZero.symm ⁻¹' projectiveLineChartAtInfinity.source)`. Introduce `w hw`. Establish `hw0 : w 0 ≠ 0` using `projLineChart0_symm_ne_zero.1 hw.2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (crd1 ∘ projectiveLineChartAtZero.symm) = fun w : Fin 1 → ℂ => (w 0)⁻¹`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w).inv hw0`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show AnalyticOnNhd ℂ (crd1 ∘ projectiveLineChartAtInfinity.symm) (projectiveLineChartAtInfinity.target ∩ projectiveLineChartAtInfinity.symm ⁻¹' projectiveLineChartAtInfinity.source)`. Introduce `w _`. Establish `e2 : (crd1 ∘ projectiveLineChartAtInfinity.symm) = fun w : Fin 1 → ℂ => w 0`. Use function extensionality and compare the values at `w`. Conclude with `infiniteCoord_projLineChart1_symm w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w`. Establish `e : (fun p => (homogeneousLift a p).1) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `p`. Simplify using `[homogeneousLift, ha]`.
-
-Rewrite using `[e]`. Conclude with `fun j w _ => analyticAt_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem homogeneousLift_holomorphicOn_fst (a : OnePoint ℂ) : p1.HoloOn (fsPot.U a) (fun p => (homogeneousLift a p).1) := by
   by_cases ha : a = ∞
@@ -307,17 +305,15 @@ theorem homogeneousLift_holomorphicOn_fst (a : OnePoint ℂ) : p1.HoloOn (fsPot.
     exact fun j w _ => analyticAt_const
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = ∞`. Establish `e : (fun p => (homogeneousLift a p).2) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `p`. Simplify using `[homogeneousLift, ha]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun j w _ => analyticAt_const`. Establish `e : (fun p => (homogeneousLift a p).2) = crd0`. Use function extensionality and compare the values at `p`. Simplify using `[homogeneousLift, ha]`. Rewrite using `[e, fsPot_U_ite, if_neg ha]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `FinHolAtlas.HoloOn`. Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show AnalyticOnNhd ℂ (crd0 ∘ projectiveLineChartAtZero.symm) (projectiveLineChartAtZero.target ∩ projectiveLineChartAtZero.symm ⁻¹' projectiveLineChartAtZero.source)`. Introduce `w _`. Establish `e2 : (crd0 ∘ projectiveLineChartAtZero.symm) = fun w : Fin 1 → ℂ => w 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w`. Use `show AnalyticOnNhd ℂ (crd0 ∘ projectiveLineChartAtInfinity.symm) (projectiveLineChartAtInfinity.target ∩ projectiveLineChartAtInfinity.symm ⁻¹' projectiveLineChartAtZero.source)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hw0 : w 0 ≠ 0` using `projLineChart1_symm_mem_range.1 hw.2`. Establish `e2 : (crd0 ∘ projectiveLineChartAtInfinity.symm) = fun w : Fin 1 → ℂ => (w 0)⁻¹`. Use function extensionality and compare the values at `w`. Conclude with `finiteCoord_projLineChart1_symm w`.
-
-Rewrite using `[e2]`. Conclude with `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w).inv hw0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogeneousLift_holomorphicOn_snd (a : OnePoint ℂ) : p1.HoloOn (fsPot.U a) (fun p => (homogeneousLift a p).2) := by
   by_cases ha : a = ∞
@@ -349,7 +345,7 @@ theorem homogeneousLift_holomorphicOn_snd (a : OnePoint ℂ) : p1.HoloOn (fsPot.
       exact ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w).inv hw0
 
 /- English proof (translation)
-Rewrite using `[pairDet_smul, pairNorm_smul, pairNorm_smul, norm_mul, norm_mul]`. Rewrite using `[show ‖c‖ * nrm2 u * (‖d‖ * nrm2 v) = (‖c‖ * ‖d‖) * (nrm2 u * nrm2 v) by ring, mul_div_mul_left _ _ (mul_ne_zero (norm_ne_zero_iff.2 hc) (norm_ne_zero_iff.2 hd))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ratio_smul (u v : ℂ × ℂ) {c d : ℂ} (hc : c ≠ 0) (hd : d ≠ 0) :
     ‖det2 (c • u) (d • v)‖ / (nrm2 (c • u) * nrm2 (d • v)) = ‖det2 u v‖ / (nrm2 u * nrm2 v) := by

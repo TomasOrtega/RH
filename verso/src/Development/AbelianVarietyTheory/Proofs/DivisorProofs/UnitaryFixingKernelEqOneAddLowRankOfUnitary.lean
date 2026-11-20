@@ -12,32 +12,30 @@ namespace GlobalTheory.PlaneSU
 open Formalism.UG
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT_invol {R : Type} [CommRing R] (c : R →+* R) (hc : ∀ x, c (c x) = x) {m p : Type}
     (P : Matrix m p R) : cT c (cT c P) = P := by
   ext i j; simp [cT, hc]
 
 /- English proof (translation)
-Use `set N := 1 - A * B with hNdef`. Establish `hBN : B * N = 0`. Rewrite using `[hNdef, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hBA, Matrix.one_mul, sub_self]`. Establish `hcN : cT c N = 1 - cT c B * cT c A`. Rewrite using `[hNdef, cT_sub, cT_one, cT_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNJ : cT c N * J = J - cT c B * H * B`. Rewrite using `[hcN, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_assoc]`. Establish `hNJA : cT c N * J * A = 0`. Rewrite using `[hNJ, Matrix.sub_mul, h2, Matrix.mul_assoc, hBA, Matrix.mul_one, sub_self]`. Establish `hNJN : cT c N * J * N = J * N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hNJ, Matrix.sub_mul, Matrix.mul_assoc (cT c B * H), hBN, Matrix.mul_zero, sub_zero]`. Establish `hAJA : cT c A * J * A = H`. Rewrite using `[h1, Matrix.mul_assoc, hBA, Matrix.mul_one]`. Establish `hAJN : cT c A * J * N = 0`. Rewrite using `[h1, Matrix.mul_assoc, hBN, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set W := N * G * A with hWdef`. Establish `hcW : cT c W = cT c A * cT c G * cT c N`. Rewrite using `[hWdef, cT_mul, cT_mul, Matrix.mul_assoc]`. Establish `hWJA : cT c W * J * A = 0`. Rewrite using `[hcW, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT c N), hNJA, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWJN : cT c W * J * N = 0`. Establish `e1 : cT c W * J * N = cT c A * cT c G * (cT c N * J * N)`. Rewrite using `[hcW]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : cT c G * (J * N) = J * N`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, hNJN, Matrix.mul_assoc, e2, ← Matrix.mul_assoc, hAJN]`. Establish `hsplit : A * B + N = 1` using `by rw [hNdef]; abel`. Establish `hWJ : cT c W * J = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_add]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hWJA, hWJN, Matrix.zero_mul, add_zero]`. Establish `hcW0 : cT c W = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hW0 : W = 0`. Rewrite using `[← cT_cT_invol c hc W, hcW0]`. Use extensionality with `i j`. Simplify using `[cT]`. Use `set X := B * G * A with hXdef`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hGA : G * A = A * X`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[emb, hNdef, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`.
-
-Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_emb_of_fix {R : Type} [CommRing R] (c : R →+* R) (hc : ∀ x, c (c x) = x) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) R) (hJ : IsUnit J.det) (A : Matrix (Fin M) (Fin 2) R)

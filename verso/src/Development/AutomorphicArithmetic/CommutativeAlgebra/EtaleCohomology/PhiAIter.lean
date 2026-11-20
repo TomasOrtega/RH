@@ -21,14 +21,14 @@ namespace UpperTheory.Ru.crystallineComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mk _) (r.s (r.ρ x)) ^ l ^ f = (Ideal.Quotient.mk _) (r.s (r.ρ x))`. Rewrite using `[← map_pow, ← map_pow, hk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gRes_pow (r : Res l K) (f : ℕ) (hk : ∀ x : r.k, x ^ l ^ f = x) (x : OK l K) : gRes r x ^ l ^ f = gRes r x := by
   change (Ideal.Quotient.mk _) (r.s (r.ρ x)) ^ l ^ f = (Ideal.Quotient.mk _) (r.s (r.ρ x))
   rw [← map_pow, ← map_pow, hk]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cycloChar K (IntermediateField.fixingSubgroupEquiv K g), by have := ACris.gal_smul_periodT (K := K) (IntermediateField.fixingSubgroupEquiv K g) (untilt_epsilon (p := l)) rwa [ACris.gal_smul_def] at this⟩`.
+Supply the required witnesses or components.
 -/
 private theorem galA_tA (g : K.fixingSubgroup) : ∃ χ : ℤ_[l]ˣ, galA g (tA l) = zA l χ * tA l :=
   ⟨cycloChar K (IntermediateField.fixingSubgroupEquiv K g), by
@@ -36,12 +36,12 @@ private theorem galA_tA (g : K.fixingSubgroup) : ∃ χ : ℤ_[l]ˣ, galA g (tA 
     rwa [ACris.gal_smul_def] at this⟩
 
 /- English proof (translation)
-The claim follows from `ACris.phi_periodT_eq_mul _`.
+A detailed English derivation is pending.
 -/
 private theorem phiA_tA : phiA l (tA l) = (l : Acris l) * tA l := ACris.phi_periodT_eq_mul _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ACris.phi ℂ_[l] l (algebraMap (Ainf l) (Acris l) (IsPerfectoidField.padicIntToWitt l x)) = _`. Rewrite using `[ACris.phi_algebraMap, ACris.frobenius_padicIntToWitt]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem phiA_zA (x : ℤ_[l]) : phiA l (zA l x) = zA l x := by
   change ACris.phi ℂ_[l] l (algebraMap (Ainf l) (Acris l) (IsPerfectoidField.padicIntToWitt l x)) = _
@@ -49,7 +49,7 @@ private theorem phiA_zA (x : ℤ_[l]) : phiA l (zA l x) = zA l x := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_comm A, h, smul_smul, smul_smul, ← sub_smul]`. Use `zero_smul R E using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem aux_sub {R Mo : Type*} [CommRing R] [AddCommGroup Mo] [Module R Mo] (A X t : R) (u s : ℕ) (G E : Mo)
     (h : A • G = (A * X ^ s) • E) : A • ((X * t) ^ u • G) - (A * X ^ (u + s)) • (t ^ u • E) = 0 := by
@@ -58,7 +58,7 @@ private theorem aux_sub {R Mo : Type*} [CommRing R] [AddCommGroup Mo] [Module R 
   ring
 
 /- English proof (translation)
-Proceed by induction on `N generalizing a x with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Function.iterate_succ_apply, h, ih, Function.iterate_succ_apply, Function.iterate_succ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem iter_smul_gen {R Mo : Type*} [SMul R Mo] (φ : R → R) (ϕ : Mo → Mo)
     (h : ∀ (a : R) (x : Mo), ϕ (a • x) = φ a • ϕ x) (N : ℕ) (a : R) (x : Mo) :
@@ -68,14 +68,14 @@ private theorem iter_smul_gen {R Mo : Type*} [SMul R Mo] (φ : R → R) (ϕ : Mo
   | succ N ih => rw [Function.iterate_succ_apply, h, ih, Function.iterate_succ_apply, Function.iterate_succ_apply]
 
 /- English proof (translation)
-The claim follows from `iter_smul_gen (phiA l) (phiH P n j) (fun a x => LinearMap.map_smulₛₗ ((phiMor P n).pull j) a x) N a x`.
+A detailed English derivation is pending.
 -/
 private theorem phi_iter_smul (P : PAlg l ⥤ Type) (n j N : ℕ) (a : Acris l) (x : MH P n j) :
     (phiH P n j)^[N] (a • x) = ((phiA l)^[N] a) • (phiH P n j)^[N] x :=
   iter_smul_gen (phiA l) (phiH P n j) (fun a x => LinearMap.map_smulₛₗ ((phiMor P n).pull j) a x) N a x
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Function.iterate_succ_apply', ih, map_natCast]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem phiA_iter_l (N : ℕ) : (phiA l)^[N] (l : Acris l) = l := by
   induction N with
@@ -83,7 +83,7 @@ private theorem phiA_iter_l (N : ℕ) : (phiA l)^[N] (l : Acris l) = l := by
   | succ N ih => rw [Function.iterate_succ_apply', ih, map_natCast]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih => rw [Function.iterate_succ_apply', ih, map_mul, map_pow, map_natCast, phiA_tA]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem phiA_iterate_tA (N : ℕ) : (phiA l)^[N] (tA l) = (l : Acris l) ^ N * tA l := by
   induction N with
@@ -91,7 +91,7 @@ private theorem phiA_iterate_tA (N : ℕ) : (phiA l)^[N] (tA l) = (l : Acris l) 
   | succ N ih => rw [Function.iterate_succ_apply', ih, map_mul, map_pow, map_natCast, phiA_tA]; ring
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Function.iterate_succ_apply', ih, phiA_zA]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem phiA_iterate_zA (N : ℕ) (x : ℤ_[l]) : (phiA l)^[N] (zA l x) = zA l x := by
   induction N with
@@ -99,11 +99,11 @@ private theorem phiA_iterate_zA (N : ℕ) (x : ℤ_[l]) : (phiA l)^[N] (zA l x) 
   | succ N ih => rw [Function.iterate_succ_apply', ih, phiA_zA]
 
 /- English proof (translation)
-Take `⟨a, c, hac⟩` from `hab g`. Establish `h0` using `hker (((l : R) ^ a * t ^ c) • G g h - ((l : R) ^ a * t ^ c * X g ^ (u + s)) • h) fun n => by`. Rewrite using `[map_sub, map_smul, map_smul, hgal, hh]`. Establish `e2 : γ g n (t ^ u • E n) = (X g * t) ^ u • γ g n (E n)`. Rewrite using `[← hχ g, LinearMap.map_smulₛₗ, map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `aux_sub _ _ _ _ _ _ _ (hac n)`. Rewrite `h0` using `[smul_sub, smul_smul, smul_smul, sub_eq_zero]`. Establish `h1` using `congrArg α h0`. Rewrite `h1` using `[lin, lin, gal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `it : ∀ (x y : R), φ^[N] (x * y) = φ^[N] x * φ^[N] y` using `fun x y => iterate_map_mul φ N x y`. Establish `ip : ∀ (x : R) (k : ℕ), φ^[N] (x ^ k) = (φ^[N] x) ^ k` using `fun x k => iterate_map_pow φ N x k`. Simplify using `only [it, ip, hl, ht, hX] at h1`. Use `⟨a + N * (c + u), c + u, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `convert h1 using 2 <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem chain1 {R Q H Γ : Type*} {Mn : ℕ → Type*} [CommRing R] [AddCommGroup Q] [Module R Q] [AddCommGroup H] [Module R H]
     [∀ n, AddCommGroup (Mn n)] [∀ n, Module R (Mn n)] (l : ℕ) (t : R) (φ : R →+* R) (σ : Γ → R →+* R) (X : Γ → R)
@@ -131,11 +131,11 @@ private theorem chain1 {R Q H Γ : Type*} {Mn : ℕ → Type*} [CommRing R] [Add
   convert h1 using 2 <;> ring
 
 /- English proof (translation)
-Establish `hP : ∀ (k : ℕ) x, b n (P^[k] x) = (ϕ n)^[k] (b n x)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ih => intro x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hphi, ih]`. Establish `h1` using `congrArg (fun x => b n (β x)) hy`. Simplify using `only [map_smul, fac, smul_smul, hP, hh, hit, hE] at h1`. Establish `ip : ∀ (x : R) (k : ℕ), φ^[N] (x ^ k) = (φ^[N] x) ^ k` using `fun x k => iterate_map_pow φ N x k`. Simplify using `only [ip, ht, smul_smul] at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : t ^ (b' + u + r) = t ^ (b' + (u + r))` using `by rw [add_assoc]`. Rewrite using `[e1, ← h1]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem chain2 {R Q H : Type*} {Mn : ℕ → Type*} [CommRing R] [AddCommGroup Q] [Module R Q] [AddCommGroup H] [Module R H]
     [∀ n, AddCommGroup (Mn n)] [∀ n, Module R (Mn n)] (l : ℕ) (t : R) (φ : R →+* R)
@@ -159,7 +159,7 @@ private theorem chain2 {R Q H : Type*} {Mn : ℕ → Type*} [CommRing R] [AddCom
   ring
 
 /- English proof (translation)
-The claim follows from `Exists.elim (hPin n) fun m hm => Exists.elim (absCl l K r M f N n j hk Fr ρ hFr hρ m hm.1 (y.1 n)) fun x hx => ⟨x, hx.1, (congrArg (betaM M n j) (hm.2 y)).trans hx.2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem keyStep {r : Res l K} {M : Model l K} {f N j : ℕ} (hk : ∀ x : r.k, x ^ l ^ f = x)
     {Fr : PQ M.p (gRes r) ⟶ PQ M.p (gRes r)} {ρ : M.P ⟶ PQ M.p (gRes r)} (hFr : IsFr f Fr) (hρ : IsRd N ρ)
@@ -174,7 +174,7 @@ private def bl (M : Model l K) (j n : ℕ) : (M.HS true j).lim →ₗ[Acris l] M
   (B.β (B.schFn M.p) (okToOC l K) true n j).comp ((LinearMap.proj n).comp (M.HS true j).lim.subtype)
 
 /- English proof (translation)
-Take `⟨m, b, e⟩` from `WittVector.exists_eq_pow_p_mul' y hy`. Conclude with `⟨m, b, e, b.isUnit⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem witt_fac (k : Type) [Field k] [CharP k l] [PerfectRing k l] (y : WittVector l k) (hy : y ≠ 0) :
     ∃ (m : ℕ) (b : WittVector l k), y = (l : WittVector l k) ^ m * b ∧ IsUnit b := by
@@ -182,7 +182,7 @@ private theorem witt_fac (k : Type) [Field k] [CharP k l] [PerfectRing k l] (y :
   exact ⟨m, b, e, b.isUnit⟩
 
 /- English proof (translation)
-Establish `h : (l : B₀.C) = algebraMap ℚ_[l] B₀.C (l : ℚ_[l])` using `(map_natCast _ _).symm`. Rewrite using `[h]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_l (B₀ : PB l K) : IsUnit (l : B₀.C) := by
   have h : (l : B₀.C) = algebraMap ℚ_[l] B₀.C (l : ℚ_[l]) := (map_natCast _ _).symm
@@ -193,13 +193,13 @@ end UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Ru.crystallineComparison in
 /- English proof (translation)
-Introduce `l _ K r B₀ hC e he M hM f N j hk hfN hT F hPin hB ϖ hϖ`. Take `⟨N', rfl⟩` from `hfN`. Establish `hg` using `gRes_pow r f hk`. Take `⟨⟨Fr, hFr⟩, hρ', -⟩` from `frEx l (OK l K) M.X M.p (okToOC l K) (gRes r) (f * N') f hg`. Take `⟨ρ, hρ⟩` from `hρ' (fun x w h => UpperTheory.integersResidue_eq_theta_coeff_pow_of_teichmuller r _ hT x w h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f * N', N', gRes r, Fr, ρ, UpperTheory.integersResidue_eq_zero_of_not_isUnit r ϖ hϖ, hg, hFr, hρ, ?_⟩` and prove the remaining obligations. Introduce `ι _ v c s hinv`. Take `⟨⟨u, hsurj, hker⟩, hphi, hgal⟩` from `hB`. Establish `hy` using `UpperTheory.evalEtaleFamily_mem_limit_of_reduced e he.red M j v c`. Use `Exists.elim (hsurj ⟨_, hy⟩) fun h hh => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose χ hχ using (galA_tA (K := K))`. Use `letI iQ : Module (Acris l) (Pb.AL r M j) := (inferInstance : Module (per l K).A (Pb.AL r M j))`. Establish `hz` using `chain1 (R := Acris l) (Q := Pb.AL r M j) (H := (M.HS true j).lim) (Γ := K.fixingSubgroup) (Mn := fun n => M.MH n j) l (tA l) (phiA l) galA (fun g => zA l (χ g)) (fun n => bl M j n) (fun g => Pb.galL M j g) (fun g n => M.galMH (IntermediateField.fixingSubgroupEquiv K g) n j) u s ( …`. Establish `hd` using `UpperTheory.galois_equivariant_tensor_descent_of_prime_power_units l (W := WittVector l r.k) (A := Pb.AW r) (C := B₀.C) (Γ := K.fixingSubgroup) (L := Pb.LW r M j) B₀.c (tA l) galA (fun g => (B₀.σ g).toRingHom) (fun g => zA l (χ g)) (F.galT M j) (F.α M j h) (u + s) (witt_fac r.k) …`. Take `⟨a', b', y, hab⟩` from `hd`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `keyStep hk hFr hρ F hPin y`. Use `choose x hx1 hx2 using key`. Use `⟨a' + F.e M j + f * N' * u, b' + u, x, fun n => ⟨hx1 n, ?_⟩⟩` and prove the remaining obligations. Establish `hc` using `chain2 (R := Acris l) (Q := Pb.AL r M j) (H := (M.HS true j).lim) (Mn := fun n => M.MH n j) l (tA l) (phiA l) (fun n => bl M j n) (fun x => Pb.phiL M j x) (fun n => phiH M.P n j) u s (f * N') (F.e M j) a' b' (F.α M j) (F.β M j) h ((1 : Pb.AW r) ⊗ₜ y) (fun n => evE e M j n v c) (f …`. Conclude with `hc.trans (congrArg _ (hx2 n))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.absInvOf :
     UpperTheory.Ru.crystallineComparison.AbsInvOf := by

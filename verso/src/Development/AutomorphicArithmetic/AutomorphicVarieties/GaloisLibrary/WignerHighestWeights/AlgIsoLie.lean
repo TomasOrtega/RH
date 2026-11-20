@@ -8,9 +8,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `f` to `(Matrix.toLinAlgEquiv' : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ ≃ₐ[ℂ] Module.End ℂ (Fin Ξ.d → ℂ)).toAlgHom`. Establish `hf : ∀ M v, f M v = M *ᵥ v` using `fun _ _ => rfl`. Establish `h1` using `Formalism.REAL.qDetHW _ a (fun i j => f (eL Ξ.dmat τ i j)) ν v hgl hw u`. Establish `h2 : Formalism.REAL.qdet (eL Ξ.dmat τ) u = (m.map (u - ((a : ℂ) - 1) / 2 + ·)).prod • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ)`. Establish `h3` using `h.2 (u - ((a : ℂ) - 1) / 2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3`. Rewrite `h1` using `[← map_qdet, h2, hf, Matrix.smul_mulVec, Matrix.one_mulVec]`. Conclude with `(smul_left_injective ℂ hv h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hw_prod {E : Type} [Field E] [NumberField E] {a : ℕ} (Ξ : AlgRep E a) (τ : E →+* ℂ) (m : Multiset ℂ)
     (h : UpperTheory.V.Af.AlgInfChar Ξ τ m) (hgl : Formalism.REAL.GlRel (eEnd Ξ τ)) (ν : Fin a → ℂ) (v : Fin Ξ.d → ℂ)
@@ -28,9 +28,9 @@ private theorem hw_prod {E : Type} [Field E] [NumberField E] {a : ℕ} (Ξ : Alg
   exact (smul_left_injective ℂ hv h1).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ Ξ' m h h'`. Use `haveI : Nonempty (Fin Ξ.d) := ⟨⟨0, Ξ.pos⟩⟩`. Use `haveI : Nonempty (Fin Ξ'.d) := ⟨⟨0, Ξ'.pos⟩⟩`. Take `⟨hM, hS⟩` from `algIrr E a Ξ`. Take `⟨hM', hS'⟩` from `algIrr E a Ξ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, v, hv, hν⟩` from `multiHW _ _ a (eEnd Ξ) hM`. Take `⟨ν', v', hv', hν'⟩` from `multiHW _ _ a (eEnd Ξ') hM'`. Take `rfl : ν = ν'` from `funext fun τ => wtEq a _ _ (hν τ).2 (hν' τ).2 fun u => (hw_prod Ξ τ _ (h τ) (hM.1 τ) _ v hv (hν τ).1 u).trans (hw_prod Ξ' τ _ (h' τ) (hM'.1 τ) _ v' hv' (hν' τ).1 u).symm`. Conclude with `hwIso _ _ a (eEnd Ξ) _ (eEnd Ξ') hM hM' hS hS' ν v v' hv hv' (fun τ => (hν τ).1) (fun τ => (hν' τ).1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.algIsoLie :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ Ξ' : AlgRep E a) (m : (E →+* ℂ) → Multiset ℂ),

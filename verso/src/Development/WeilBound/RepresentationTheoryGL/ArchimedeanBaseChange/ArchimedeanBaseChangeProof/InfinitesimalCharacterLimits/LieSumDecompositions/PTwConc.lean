@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [IsCMField E] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (unip x)) = 1`. Rewrite using `[det_unip, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_unip {a r : ℕ} (χ : Formalism.L2.Host.HChar E) (x : BlockIx a r → Ad E) : chiDet a χ (unip x) = 1 := by
   change (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (unip x)) = 1
@@ -21,7 +21,7 @@ theorem chiDet_unip {a r : ℕ} (χ : Formalism.L2.Host.HChar E) (x : BlockIx a 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (lev (Ad E) r s m)) = (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det m.1) * (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det m.2)`. Rewrite using `[← map_mul]`. Use `congr 1`. Conclude with `det_emb₂ _ _ m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chiDet_lev {r s : ℕ} (χ : Formalism.L2.Host.HChar E) (m : GA E r × GA E s) :
     chiDet (r + s) χ (lev (Ad E) r s m) = chiDet r χ m.1 * chiDet s χ m.2 := by
@@ -34,7 +34,7 @@ theorem chiDet_lev {r s : ℕ} (χ : Formalism.L2.Host.HChar E) (m : GA E r × G
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `h : Matrix.GeneralLinearGroup.det g = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_isEmpty]`. Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det g) = 1`. Rewrite using `[h, map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiDet_zero (χ : Formalism.L2.Host.HChar E) (g : GA E 0) : chiDet 0 χ g = 1 := by
   have h : Matrix.GeneralLinearGroup.det g = 1 := by
@@ -44,7 +44,7 @@ theorem chiDet_zero (χ : Formalism.L2.Host.HChar E) (g : GA E 0) : chiDet 0 χ 
   rw [h, map_one]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulChi_mulChi {n : ℕ} (a b : ℂ) (φ : Sm E n) :
     mulChi n (Model.absC E b) (mulChi n (Model.absC E a) φ) = mulChi n (Model.absC E (a + b)) φ := by
@@ -53,7 +53,7 @@ theorem mulChi_mulChi {n : ℕ} (a b : ℂ) (φ : Sm E n) :
     ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add, add_mul]
 
 /- English proof (translation)
-Unfold `tw`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `φ : 1`. Conclude with `mulChi_mulChi a b φ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tw_tw {n : ℕ} (V : Submodule ℂ (Sm E n)) (a b : ℂ) : tw (tw V a) b = tw V (a + b) := by
   unfold tw
@@ -63,9 +63,9 @@ theorem tw_tw {n : ℕ} (V : Submodule ℂ (Sm E n)) (a b : ℂ) : tw (tw V a) b
   exact mulChi_mulChi a b φ
 
 /- English proof (translation)
-Establish `h : (mulChi 0 (Model.absC E z)).toLinearMap = LinearMap.id`. Use extensionality with `φ : 1`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, mulChi_apply, chiDet_zero, Units.val_one, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `tw`. Rewrite using `[h, Submodule.map_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_zero_dim (V : Submodule ℂ (Sm E 0)) (z : ℂ) : tw V z = V := by
   have h : (mulChi 0 (Model.absC E z)).toLinearMap = LinearMap.id := by
@@ -77,9 +77,9 @@ theorem tw_zero_dim (V : Submodule ℂ (Sm E 0)) (z : ℂ) : tw V z = V := by
   rw [h, Submodule.map_id]
 
 /- English proof (translation)
-Establish `h : (mulChi n (Model.absC E 0)).toLinearMap = LinearMap.id`. Use extensionality with `φ : 1`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, mulChi_apply, ExponentTwist.chiDet_absC_val, zero_mul, Complex.exp_zero, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `tw`. Rewrite using `[h, Submodule.map_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_zero' {n : ℕ} (V : Submodule ℂ (Sm E n)) : tw V 0 = V := by
   have h : (mulChi n (Model.absC E 0)).toLinearMap = LinearMap.id := by
@@ -93,13 +93,13 @@ theorem tw_zero' {n : ℕ} (V : Submodule ℂ (Sm E n)) : tw V 0 = V := by
 variable {r s : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hF`. Use `Submodule.subset_span ⟨mulChi r (Model.absC E z) φ₁, ⟨φ₁, h₁, rfl⟩, mulChi s (Model.absC E z) φ₂, ⟨φ₂, h₂, rfl⟩, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [mulChi_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `zero_mem (tens2 (tw W₁ z) (tw W₂ z)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add F G _ _ hF hG`. Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`. Consider the case `smul c F _ hF`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `Submodule.smul_mem _ c hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tensor_span_mul_det_character {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 W₁ W₂) :
@@ -126,9 +126,9 @@ theorem tensor_span_mul_det_character {W₁ : Submodule ℂ (Sm E r)} {W₂ : Su
     simp [mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun x g => ?_, fun k g => ?_⟩` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, hφ.1 x g, map_mul, chiDet_unip, one_mul]`. Use `set y := infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g`. Establish `h1` using `Submodule.smul_mem _ ((chiDet (r + s) (Model.absC E z) y : ℂˣ) : ℂ) (tensor_span_mul_det_character z (hφ.2 k g))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mulChi_apply, map_mul, chiDet_lev, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem memInd2_tw {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) {φ : Sm E (r + s)}
     (hφ : MemInd2 W₁ W₂ φ) : MemInd2 (tw W₁ z) (tw W₂ z) (mulChi (r + s) (Model.absC E z) φ) := by
@@ -143,9 +143,9 @@ theorem memInd2_tw {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s
     ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hK⟩`. Use `⟨mulChi (r + s) (Model.absC E (-z)) ψ, ⟨?_, Trees.mulChi_mem_finVec _ hK⟩, ParabolicProjection.mulChi_absC_neg' _ z ψ⟩` and prove the remaining obligations. Establish `h2` using `memInd2_tw (-z) h`. Rewrite `h2` using `[tw_tw, tw_tw, add_neg_cancel, tw_zero', tw_zero']`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨φ, ⟨hφ, hK⟩, rfl⟩`. Conclude with `⟨memInd2_tw z hφ, Trees.mulChi_mem_finVec _ hK⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem memInd2_tw_iff {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) (ψ : Sm E (r + s)) :
     (MemInd2 (tw W₁ z) (tw W₂ z) ψ ∧ ψ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))) ↔
@@ -159,7 +159,7 @@ theorem memInd2_tw_iff {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm
     exact ⟨memInd2_tw z hφ, Trees.mulChi_mem_finVec _ hK⟩
 
 /- English proof (translation)
-Rewrite using `[show tw (Submodule.span ℂ {φ | MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))}) z = (Submodule.span ℂ {φ | MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))}).map (mulChi (r + s) (Model.absC E z)).toLinearMap from rfl, Submodule.map_spa …`. Use `congr 1`. Use extensionality with `ψ`. Conclude with `memInd2_tw_iff z ψ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem span_memInd2_tw (W₁ : Submodule ℂ (Sm E r)) (W₂ : Submodule ℂ (Sm E s)) (z : ℂ) :
     Submodule.span ℂ {φ | MemInd2 (tw W₁ z) (tw W₂ z) φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))} =
@@ -177,9 +177,9 @@ def twT (z : ℂ) : {N : ℕ} → Tr E N → Tr E N
   | _, .node t₁ t₂ => .node (twT z t₁) (twT z t₂)
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `@leaf M V w`. Distinguish the cases in `hM : M = 0`. Substitute `hM` using the available equality. Simplify using `only [twT, Tr.space, tw_zero_dim]`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [twT, if_neg hM, Tr.space]`. Rewrite using `[tw_tw]`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Simplify using `only [twT, Tr.space]`. Rewrite using `[ih₁, ih₂, tw_tw, tw_tw, add_comm z, add_comm z, ← tw_tw _ _ z, ← tw_tw _ _ z, span_memInd2_tw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem space_twT (z : ℂ) {N : ℕ} (t : Tr E N) : (twT z t).space = tw t.space z := by
   induction t with
@@ -194,9 +194,9 @@ theorem space_twT (z : ℂ) {N : ℕ} (t : Tr E N) : (twT z t).space = tw t.spac
     rw [ih₁, ih₂, tw_tw, tw_tw, add_comm z, add_comm z, ← tw_tw _ _ z, ← tw_tw _ _ z, span_memInd2_tw]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `@leaf M V w`. Break down `ht with ⟨hM, hV, hw⟩ | ⟨hM, hV, hw⟩` into its components or cases. Substitute `hM` using the available equality. Simplify using `only [twT]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inl ⟨rfl, hV, hw⟩`. Simplify using `only [twT, if_neg hM.ne']`. Conclude with `Or.inr ⟨hM, hV, by rw [Complex.add_re, hw, hz, add_zero]⟩`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Conclude with `⟨ih₁ ht.1, ih₂ ht.2⟩`.
+Prove the first alternative. Simplify using the standard rewrite rules. Prove the second alternative. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem good_twT {z : ℂ} (hz : z.re = 0) {N : ℕ} (t : Tr E N) (ht : t.Good) : (twT z t).Good := by
   induction t with
@@ -211,7 +211,7 @@ theorem good_twT {z : ℂ} (hz : z.re = 0) {N : ℕ} (t : Tr E N) (ht : t.Good) 
     exact ⟨ih₁ ht.1, ih₂ ht.2⟩
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `@leaf M V w => exact ht`. Consider the case `@node r s t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ ht.1, ih₂ ht.2⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pos_twT (z : ℂ) {N : ℕ} (t : Tr E N) (ht : t.AllLeaves (fun M _ => 0 < M)) :
     (twT z t).AllLeaves (fun M _ => 0 < M) := by
@@ -225,9 +225,9 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz
 
 open TwistConcentration in
 /- English proof (translation)
-Introduce `E _ _ _ N U z hz hU φ _ hc`. Take `⟨t, T, ht, hpos, hTe, hTm, hT0⟩` from `hc`. Use `⟨twT z t, ParabolicProjection.twMap N z T, good_twT hz t ht, pos_twT z t hpos, ParabolicProjection.twMap_equiv hU.1 hTe, fun ψ hψ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[space_twT]`. Conclude with `ParabolicProjection.twMap_mem hTm ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ParabolicProjection.twMap_apply, ParabolicProjection.mulChi_absC_neg]`. Conclude with `(LinearEquiv.map_ne_zero_iff _).2 hT0`.
+A detailed English derivation is pending.
 -/
 theorem twConc_holds : TwConc := by
   intro E _ _ _ N U z hz hU φ _ hc

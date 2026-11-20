@@ -10,9 +10,9 @@ namespace GroundTheory.PAdicHodge
 section Congr
 
 /- English proof (translation)
-Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `algebraMap c => exact τ.commutes c`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `inv x _ hx => rw [map_inv₀, hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy]`.
+Treat this case separately.
 -/
 theorem algEquiv_apply_eq_of_mem_adjoin {F M : Type*} [Field F] [Field M] [Algebra F M]
     (τ : M ≃ₐ[F] M) {S : Set M} (hS : ∀ s ∈ S, τ s = s) {x : M}
@@ -25,9 +25,7 @@ theorem algEquiv_apply_eq_of_mem_adjoin {F M : Type*} [Field F] [Field M] [Algeb
   | mul x y _ _ hx hy => rw [map_mul, hx, hy]
 
 /- English proof (translation)
-Use `set B := Module.finBasis F W`. Use `⟨Set.range fun i => (B i : M), Set.finite_range _, fun x hx => ?_⟩` and prove the remaining obligations. Use `congrArg (fun u : W => (u : M)) (B.sum_repr (⟨x, hx⟩ : W))` as an intermediate fact. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at this`. Rewrite using `[← this]`.
-
-Conclude with `sum_mem fun i _ => IntermediateField.smul_mem _ (IntermediateField.subset_adjoin _ _ (Set.mem_range_self i))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_le_adjoin {F M : Type*} [Field F] [Field M] [Algebra F M]
     (W : IntermediateField F M) [FiniteDimensional F W] :
@@ -61,13 +59,13 @@ theorem conjAlgEquiv_apply {L M : Type*} [Field L] [Field M] [Algebra F L] [Alge
   rfl
 
 /- English proof (translation)
-Establish `hmul : ∀ σ τ : L ≃ₐ[F] L, conjAlgEquiv e E hE (σ * τ) = conjAlgEquiv e E hE σ * conjAlgEquiv e E hE τ` using `fun σ τ => AlgEquiv.ext fun x => by simp [conjAlgEquiv_apply]`. Set `φ : (L ≃ₐ[F] L) →* (M ≃ₐ[F'] M)` to `{ toFun := conjAlgEquiv e E hE map_one' := AlgEquiv.ext fun x => by simp [conjAlgEquiv_apply] map_mul' := hmul }`. Express the relevant statement in the definitionally equal form `Continuous φ`. Apply `continuous_of_continuousAt_one φ (continuousAt_def.mpr _)` to reduce the goal to its premises. Introduce `U hU`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hU` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨W, hW, hsub⟩` from `hU`. Take `⟨S, hSfin, hWS⟩` from `exists_finite_le_adjoin W`. Rewrite using `[krullTopology_mem_nhds_one_iff]`. Establish `: Finite (E.symm '' S)` using `(hSfin.image _).to_subtype`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: FiniteDimensional F (IntermediateField.adjoin F (E.symm '' S))` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨IntermediateField.adjoin F (E.symm '' S), this, fun σ hσ => hsub ?_⟩` and prove the remaining obligations. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Use `algEquiv_apply_eq_of_mem_adjoin (φ σ) (fun s hs => ?_) (hWS hx)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `E (σ (E.symm s)) = s`. Rewrite using `[hσ _ (IntermediateField.subset_adjoin _ _ ⟨s, hs, rfl⟩), RingEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_conjAlgEquiv {L M : Type*} [Field L] [Field M] [Algebra F L] [Algebra F' M]
     [Algebra.IsIntegral F L] (e : F ≃+* F') (E : L ≃+* M)
@@ -142,9 +140,9 @@ def untiltRingHomOfCharP : 𝒪♭ →+* normInteger K where
   map_add' := untilt_add_of_natCast_eq_zero (CharP.cast_eq_zero K p)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Conclude with `untilt_eq_zero_iff.1 (congrArg Subtype.val hx)`. Introduce `a`. Take `⟨x, hx⟩` from `exists_mk_untilt_eq (p := p) a`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hp : (p : normInteger K) = 0` using `Subtype.ext (by simp)`. Rewrite `hx` using `[Ideal.Quotient.eq, hp, Ideal.span_singleton_eq_bot.2 rfl, Ideal.mem_bot, sub_eq_zero]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltRingHomOfCharP_bijective : Function.Bijective (untiltRingHomOfCharP K p) := by
   constructor

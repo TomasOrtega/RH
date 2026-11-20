@@ -18,9 +18,9 @@ variable {L L' M M' : Type*} [Field L] [NumberField L] [Field L'] [NumberField L
   [NumberField M] [Field M'] [NumberField M'] [Algebra L M] [Algebra L' M']
 
 /- English proof (translation)
-Establish `: IsScalarTower ℚ L M` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `: IsScalarTower ℚ L' M'` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `key : ((adeleRingEquiv ρ : 𝔸[M] →+* 𝔸[M']).comp (adeleMap L M) : 𝔸[L] →+* 𝔸[M']) = (adeleMap L' M').comp (adeleRingEquiv τ : 𝔸[L] →+* 𝔸[L'])`. Use `adeleRingHom_ext_rat (fun l ↦ ?_) (fun a ↦ ?_)` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, adeleMap_algebraMap, adeleRingEquiv_algebraMap, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, adeleMap_adeleMap, adeleRingEquiv_adeleMap_rat]`. Conclude with `congrArg (fun f : 𝔸[L] →+* 𝔸[M'] ↦ f a) key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adeleRingEquiv_adeleMap_of_comm (τ : L ≃+* L') (ρ : M ≃+* M')
     (h : ∀ l : L, ρ (algebraMap L M l) = algebraMap L' M' (τ l)) (a : 𝔸[L]) :
@@ -37,7 +37,7 @@ theorem adeleRingEquiv_adeleMap_of_comm (τ : L ≃+* L') (ρ : M ≃+* M')
   exact congrArg (fun f : 𝔸[L] →+* 𝔸[M'] ↦ f a) key
 
 /- English proof (translation)
-The claim follows from `Units.ext (adeleRingEquiv_adeleMap_of_comm τ ρ h (x : 𝔸[L]))`.
+A detailed English derivation is pending.
 -/
 theorem ideleEquiv_ideleEmbedding_of_comm (τ : L ≃+* L') (ρ : M ≃+* M')
     (h : ∀ l : L, ρ (algebraMap L M l) = algebraMap L' M' (τ l)) (x : IdeleGroup L) :
@@ -45,7 +45,7 @@ theorem ideleEquiv_ideleEmbedding_of_comm (τ : L ≃+* L') (ρ : M ≃+* M')
   Units.ext (adeleRingEquiv_adeleMap_of_comm τ ρ h (x : 𝔸[L]))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective L c`. Rewrite using `[ideleClassMap_mk, ideleClassEquiv_mk, ideleClassEquiv_mk, ideleClassMap_mk, ideleEquiv_ideleEmbedding_of_comm τ ρ h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleClassEquiv_ideleClassMap_of_comm (τ : L ≃+* L') (ρ : M ≃+* M')
     (h : ∀ l : L, ρ (algebraMap L M l) = algebraMap L' M' (τ l)) (c : IdeleClassGroup L) :
@@ -74,17 +74,17 @@ theorem coe_mapEquiv (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (x : F.
   rfl
 
 /- English proof (translation)
-The claim follows from `IntermediateField.map_mono _ (show F.1 ≤ E.1 from h)`.
+A detailed English derivation is pending.
 -/
 theorem map_mono (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) {F E : FiniteSubfield} (h : F ≤ E) : map σ F ≤ map σ E :=
   IntermediateField.map_mono _ (show F.1 ≤ E.1 from h)
 
 /- English proof (translation)
-Establish `hE : E = E'`. Use `Subtype.ext (SetLike.ext fun y ↦ ⟨fun hy ↦ ?_, fun hy ↦ ?_⟩)` and prove the remaining obligations. Take `⟨x, hx⟩` from `τ.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ' x : E'.1) : ℚ̄)` using `by rw [← h x, hx]`. Rewrite using `[hy']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(τ' x).2`. Take `⟨x, hx⟩` from `τ'.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ x : E.1) : ℚ̄)` using `by rw [h x, hx]`. Rewrite using `[hy']`. Conclude with `(τ x).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hE` using the available equality. Establish `: τ = τ'` using `RingEquiv.ext fun x ↦ Subtype.ext (h x)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_ideleClassEquiv_congr {F E E' : FiniteSubfield} (τ : F.1 ≃+* E.1) (τ' : F.1 ≃+* E'.1)
     (h : ∀ x : F.1, (τ x : ℚ̄) = τ' x) (c : IdeleClassGroup F.1) :
@@ -120,7 +120,7 @@ theorem conjOf_apply (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (c : Id
   rfl
 
 /- English proof (translation)
-Rewrite using `[conjOf_apply, conjOf_apply, FiniteSubfield.ideleClassMap]`. Set `` to `algebraOfLE h`. Set `` to `algebraOfLE (map_mono σ h)`. Rewrite using `[ideleClassEquiv_ideleClassMap_of_comm (mapEquiv σ F) (mapEquiv σ E) (fun x ↦ rfl)]`. Conclude with `of_ideleClassMap (map_mono σ h) _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjOf_compat (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F E : FiniteSubfield) (h : F ≤ E)
     (c : IdeleClassGroup F.1) : conjOf σ E (FiniteSubfield.ideleClassMap h c) = conjOf σ F c := by
@@ -141,7 +141,7 @@ theorem galoisHom_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (c : Id
   rfl
 
 /- English proof (translation)
-Take `⟨F, c, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of]`. Use `(of_ideleClassEquiv_congr (mapEquiv 1 F) (RingEquiv.refl F.1) (fun x ↦ rfl) c).trans ?_` and prove the remaining obligations. Rewrite using `[ideleClassEquiv_refl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem galoisHom_one (z : IdeleClassLimit) : galoisHom 1 z = z := by
   obtain ⟨F, c, rfl⟩ := exists_of z
@@ -150,7 +150,7 @@ theorem galoisHom_one (z : IdeleClassLimit) : galoisHom 1 z = z := by
   rw [ideleClassEquiv_refl]
 
 /- English proof (translation)
-Take `⟨F, c, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of, galoisHom_of, galoisHom_of, ← ideleClassEquiv_trans]`. Conclude with `of_ideleClassEquiv_congr (mapEquiv (σ * τ) F) ((mapEquiv τ F).trans (mapEquiv σ (map τ F))) (fun x ↦ rfl) c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galoisHom_mul (σ τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleClassLimit) :
     galoisHom (σ * τ) z = galoisHom σ (galoisHom τ z) := by
@@ -180,7 +180,7 @@ theorem smul_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (c : IdeleCl
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_of]`. Use `(of_ideleClassEquiv_congr (mapEquiv σ F) (RingEquiv.refl F.1) (fun x ↦ (IntermediateField.mem_fixingSubgroup_iff F.1 σ).1 hσ x x.2) c).trans ?_` and prove the remaining obligations. Rewrite using `[ideleClassEquiv_refl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_of_eq_of_mem_fixingSubgroup {F : FiniteSubfield} {σ : ℚ̄ ≃ₐ[ℚ] ℚ̄}
     (hσ : σ ∈ F.1.fixingSubgroup) (c : IdeleClassGroup F.1) : σ • of F c = of F c := by

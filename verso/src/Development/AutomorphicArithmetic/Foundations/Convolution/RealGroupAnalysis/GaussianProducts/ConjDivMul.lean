@@ -13,7 +13,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `((mD a).1 * g.1) 1 j = _`. Simplify using `[mD, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem row_mD {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) (g : G1 F) :
     UpperTheory.ConvolutionTheory.R2.G.row (mD a * g) = fun j => ((a⁻¹ : (A F)ˣ) : A F) * g 1 j := by
@@ -22,9 +22,9 @@ private theorem row_mD {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) (g : G
   simp [mD, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `e : (fun p : IdeleGroup F × G1 F => UpperTheory.ConvolutionTheory.R2.G.row (mD p.1 * p.2)) = fun p j => (((p.1 : (A F)ˣ)⁻¹ : (A F)ˣ) : A F) * p.2 1 j`. Use function extensionality and compare the values at `p`. Conclude with `row_mD _ _`. Rewrite using `[e]`. Use `continuous_pi fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun p : IdeleGroup F × G1 F => (((p.1 : (A F)ˣ)⁻¹ : (A F)ˣ) : A F)` using `Units.continuous_val.comp (continuous_inv.comp continuous_fst)`. Establish `h2 : Continuous fun g : G1 F => g 1 j` using `(continuous_apply j).comp ((continuous_apply (1 : Fin 2)).comp (Matrix.SpecialLinearGroup.isClosedEmbedding_val.continuous))`. Conclude with `h1.mul (h2.comp continuous_snd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_row {F : Type} [Field F] [NumberField F] :
     Continuous (fun p : IdeleGroup F × G1 F => UpperTheory.ConvolutionTheory.R2.G.row (mD p.1 * p.2)) := by
@@ -42,9 +42,9 @@ private theorem cont_row {F : Type} [Field F] [NumberField F] :
   exact h1.mul (h2.comp continuous_snd)
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Establish `hn : (‖z‖ : ℂ) ≠ 0` using `by simpa using hz`. Establish `h1 : starRingEnd ℂ z * z = (‖z‖ : ℂ) ^ 2` using `Complex.conj_mul' z`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hc]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(c : ℂ) * h1`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem conj_div_mul (c : ℝ) (hc : 0 ≤ c) (z : ℂ) :
     (starRingEnd ℂ z) / (‖z‖ : ℂ) * ((c : ℂ) * z) = ((‖(c : ℂ) * z‖ : ℝ) : ℂ) := by
@@ -58,9 +58,9 @@ private theorem conj_div_mul (c : ℝ) (hc : 0 ≤ c) (z : ℂ) :
   linear_combination (c : ℂ) * h1
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Establish `e : {p : IdeleGroup F × G1 F | ¬ p.2 ∈ KK F} = Set.univ ×ˢ (KK F)ᶜ`. Use extensionality with `p`. Simplify using the standard rewrite rules. Use `haveI := M.prob`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Meas.ν, Measure.prod_prod, M.supp, mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem ae_KK {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F) :
     ∀ᵐ p ∂M.ν, p.2 ∈ KK F := by
@@ -72,11 +72,11 @@ private theorem ae_KK {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (M 
   rw [e, Meas.ν, Measure.prod_prod, M.supp, mul_zero]
 
 /- English proof (translation)
-Establish `hr` using `cont_row (F := F)`. Use `haveI : CompactSpace (KK F) := isCompact_iff_compactSpace.1 (UpperTheory.ConvolutionTheory.R2.M.kkCpt F).2`. Establish `hι : Continuous fun x : IdeleGroup F × KK F => ((x.1, x.2.1) : IdeleGroup F × G1 F)` using `continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)`. Establish `hmem : ∀ x : IdeleGroup F × KK F, ((x.1, x.2.1) : IdeleGroup F × G1 F) ∈ (Set.univ ×ˢ KK F : Set (IdeleGroup F × G1 F))` using `fun x => Set.mk_mem_prod (Set.mem_univ _) x.2.2`. Establish `hH : Continuous fun x : IdeleGroup F × KK F => u (mD x.1 * x.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `ContinuousOn.comp_continuous (g := fun p : IdeleGroup F × G1 F => u (mD p.1 * p.2)) (f := fun x : IdeleGroup F × KK F => ((x.1, x.2.1) : IdeleGroup F × G1 F)) hc hι hmem`. Simplify `h` using `only [Function.comp_def]`. Establish `hR : Continuous fun x : IdeleGroup F × KK F => UpperTheory.ConvolutionTheory.R2.G.row (mD x.1 * x.2.1)`. Establish `h` using `hr.comp hι`. Simplify `h` using `only [Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hm, hh⟩` from `UpperTheory.ConvolutionTheory.R2.G.factor (IdeleGroup F × KK F) (Fin 2 → A F) (fun x => UpperTheory.ConvolutionTheory.R2.G.row (mD x.1 * x.2.1)) (fun x => u (mD x.1 * x.2.1)) hR hH (fun x x' e => hrow _ _ e)`. Conclude with `⟨h, hm, fun a k hk => hh (a, ⟨k, hk⟩)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_q {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     (u : G1 F → ℂ)
@@ -104,17 +104,15 @@ private theorem exists_q {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
   exact ⟨h, hm, fun a k hk => hh (a, ⟨k, hk⟩)⟩
 
 /- English proof (translation)
-Take `⟨h, hm, hh⟩` from `exists_q u hc hrow`. Set `q : (Fin 2 → A F) → ℂ` to `fun y => (starRingEnd ℂ (h y)) / (‖h y‖ : ℂ)`. Establish `hqm : Measurable q` using `(Complex.continuous_conj.measurable.comp hm).div (Complex.continuous_ofReal.measurable.comp hm.norm)`. Establish `hq1 : ∀ y, ‖q y‖ ≤ 1`. Introduce `y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `e : h y = 0`. Simplify using `[q, e]`. Establish `hn : ‖h y‖ ≠ 0` using `by simpa using e`. Simplify using `[q, hn]`. Establish `hae : (fun p : IdeleGroup F × G1 F => q (UpperTheory.ConvolutionTheory.R2.G.row (mD p.1 * p.2)) * iw u p) =ᵐ[M.ν] fun p => ((‖iw u p‖ : ℝ) : ℂ)` using `by filter_upwards [ae_KK M] with p hp`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e' : h (UpperTheory.ConvolutionTheory.R2.G.row (mD p.1 * p.2)) = u (mD p.1 * p.2)` using `hh p.1 p.2 hp`. Simplify using `only [q, e', iw]`. Conclude with `conj_div_mul _ (by positivity) _`. Establish `hz : ∫ p, ‖iw u p‖ ∂M.ν = 0`. Establish `h1 : ∫ p, ((‖iw u p‖ : ℝ) : ℂ) ∂M.ν = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_congr_ae hae]`. Conclude with `hmom q hqm hq1`. Rewrite `h1` using `[integral_complex_ofReal]`. Conclude with `h1` after adjusting the coercions. Establish `hz'` using `(integral_eq_zero_iff_of_nonneg (fun _ => norm_nonneg _) hI.norm).1 hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `UpperTheory.ConvolutionTheory.R2.G.aeZero F M (fun p => u (mD p.1 * p.2)) hc ?_` and prove the remaining obligations. Use `filter_upwards [hz'] with p hp`. Establish `hp' : iw u p = 0` using `by simpa using hp`. Establish `hpos : 0 < ab (p.1 : (A F)ˣ)` using `(IdeleGroup.ideleModule F p.1).2`. Establish `hne : ((((ab p.1)⁻¹ ^ 2 : ℝ)) : ℂ) ≠ 0`.
-
-Establish `: ((ab p.1)⁻¹ ^ 2 : ℝ) ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions. Conclude with `(mul_eq_zero.1 hp').resolve_left hne`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem core {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F)
     (u : G1 F → ℂ)
@@ -157,9 +155,9 @@ private theorem core {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (M :
   exact (mul_eq_zero.1 hp').resolve_left hne
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf h0 φ hφ`. Take `⟨hc, hrow⟩` from `UpperTheory.ConvolutionTheory.R2.G.contW F E D W M π f hf φ hφ`. Establish `hE` using `UpperTheory.ConvolutionTheory.R2.G.expInt F E D W M π f hf φ hφ`. Establish `hI : Integrable (iw (w1 W f.1 φ 1)) M.ν`. Simplify using `using hE 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `core M _ hc hrow hI fun q hq hq1 => UpperTheory.ConvolutionTheory.R2.G.momAdel F (IdeleGroup F × G1 F) M.ν (fun p => UpperTheory.ConvolutionTheory.R2.G.row (mD p.1 * p.2)) (iw (w1 W f.1 φ 1)) cont_row.measurable hE (UpperTheory.ConvolutionTheory.R2.G.momZero F E D W M π f hf h0 φ …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.zeroW :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, (∀ φ ∈ Fock D.δ, W1 W M f.1 φ 1 = 0) → ∀ φ ∈ Fock D.δ, ∀ a, ∀ k ∈ KK F, w1 W f.1 φ 1 (mD a * k) = 0 := by

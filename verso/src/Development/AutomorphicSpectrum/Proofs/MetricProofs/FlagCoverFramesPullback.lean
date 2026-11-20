@@ -13,7 +13,7 @@ section Minors
 variable {R S : Type} [CommRing R] [CommRing S] {N : ℕ}
 
 /- English proof (translation)
-Unfold `minorIJ`. Use `split_ifs with e`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_map (f : R →+* S) (A : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) :
     minorIJ (A.map f) I J = f (minorIJ A I J) := by
@@ -23,20 +23,20 @@ theorem minor_map (f : R →+* S) (A : Matrix (Fin N) (Fin N) R) (I J : Finset (
   · rw [map_zero]
 
 /- English proof (translation)
-Unfold `minorIJ`. Rewrite using `[dif_pos rfl, Matrix.submatrix_one _ (I.orderEmbOfFin rfl).injective, Matrix.det_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_one_self (I : Finset (Fin N)) : minorIJ (1 : Matrix (Fin N) (Fin N) R) I I = 1 := by
   unfold minorIJ
   rw [dif_pos rfl, Matrix.submatrix_one _ (I.orderEmbOfFin rfl).injective, Matrix.det_one]
 
 /- English proof (translation)
-Simplify using `[detFac, minor_one_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detFac_one' (j : ℕ) (i : Fin N) : detFac j i (1 : Matrix (Fin N) (Fin N) R) = 1 := by
   simp [detFac, minor_one_self]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Apply `Finset.Nonempty.ne_empty` to reduce the goal to its premises. Distinguish the cases in `h : (i : ℕ) + 1 ≤ j`. Conclude with `⟨⟨N - j, by omega⟩, by simp [stepCols, h]; omega⟩`. Conclude with `⟨⟨0, by omega⟩, by simp [stepCols, h]; omega⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem stepCols_ne_empty (j : ℕ) (i : Fin N) : stepCols N j i ≠ ∅ := by
   have hi := i.2
@@ -46,7 +46,7 @@ theorem stepCols_ne_empty (j : ℕ) (i : Fin N) : stepCols N j i ≠ ∅ := by
   · exact ⟨⟨0, by omega⟩, by simp [stepCols, h]; omega⟩
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.T.block_diagonal_minor_vanishing E N j i hj).2.2.2 T T⁻¹ hT (hT.inv (isUnit_iff_ne_zero.2 hd))).2`. Rewrite `h` using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), detFac_one']`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `one_ne_zero h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detFac_ne_zero' {E : Type} [Field E] {j : ℕ} (hj : j ≤ N) (i : Fin N) {T : Matrix (Fin N) (Fin N) E}
     (hT : IsBlockDiag j T) (hd : T.det ≠ 0) : detFac j i T ≠ 0 := by
@@ -57,7 +57,7 @@ theorem detFac_ne_zero' {E : Type} [Field E] {j : ℕ} (hj : j ≤ N) (i : Fin N
   exact one_ne_zero h
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero f).2 hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_map_ne {A B : Type} [Field A] [Field B] (f : A →+* B) {T : Matrix (Fin N) (Fin N) A} (hd : T.det ≠ 0) :
     (T.map f).det ≠ 0 := by
@@ -65,7 +65,7 @@ theorem det_map_ne {A B : Type} [Field A] [Field B] (f : A →+* B) {T : Matrix 
   exact (map_ne_zero f).2 hd
 
 /- English proof (translation)
-Use `(Matrix.inv_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd)]`. Conclude with `Matrix.map_one _ (map_zero f) (map_one f)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_map' {A B : Type} [Field A] [Field B] (f : A →+* B) {T : Matrix (Fin N) (Fin N) A} (hd : T.det ≠ 0) :
     (T⁻¹).map f = (T.map f)⁻¹ := by
@@ -79,24 +79,22 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-The claim follows from `(hT.inv (isUnit_iff_ne_zero.2 hd)).mul hg`.
+A detailed English derivation is pending.
 -/
 theorem flag_in_frame_blockDiag {E : Type} [Field E] {T g : Matrix (Fin N) (Fin N) E}
     (hT : IsBlockDiag j T) (hd : T.det ≠ 0) (hg : IsBlockDiag j g) : IsBlockDiag j (T⁻¹ * g) :=
   (hT.inv (isUnit_iff_ne_zero.2 hd)).mul hg
 
 /- English proof (translation)
-Use `set α : M.Ω →+* Φ := algebraMap M.Ω Φ with hα`. Use `set T := (F.T p.1).map α with hTdef`. Establish `hdet : T.det ≠ 0` using `det_map_ne α (hF.1 p.1).2`. Establish `hTb : IsBlockDiag j T` using `(hF.1 p.1).1.map α`. Use `set h := T⁻¹ * M.g p.1 with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : IsBlockDiag j h` using `flag_in_frame_blockDiag hTb hdet (M.g_block p.1)`. Establish `hTh : T * h = M.g p.1`. Rewrite using `[hh, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hdet)]`. Establish `hy : ∀ m : ι k, detFac j p.2 T * y ⟨k, m⟩ = α (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * ∑ I, α (F.u ⟨k, m⟩ I) * minorIJ h I (stepCols N j p.2)` using `fun m => by`. Use `GlobalTheory.T.block_minor_sum_frame_identity K ι Φ y Ψ N j M Φ α F hF p k hk m h hb` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← hTdef, hTh]`. Rewrite using `[M.y_step p k hk m]`. Conclude with `this`. Establish `hv : ∀ I, ¬ IsStepRows N j p.2 I → minorIJ h I (stepCols N j p.2) = 0` using `fun I hI => ((GlobalTheory.T.block_diagonal_minor_vanishing Φ N j p.2 M.j_le).2.1 h I hb hI).resolve_right (stepCols_ne_empty j p.2)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun m _ => by ring`. Use `_ = α (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * ∑ I, (∑ m : ι k, α (F.u' I' ⟨k, m⟩) * α (F.u ⟨k, m⟩ I)) * minorIJ h I (stepCols N j p.2) := by`. Simplify using `only [hy, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun m _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Use `congr 1`. Establish `hs : ∀ I, IsStepRows N j p.2 I → ∑ m : ι k, α (F.u' I' ⟨k, m⟩) * α (F.u ⟨k, m⟩ I) = if I' = I then 1 else 0` using `fun I hI => by`. Use `hF.2.2.1 p k hk I' I hI' hI` as an intermediate fact. Simplify using `only [← map_mul, ← map_sum, this]`.
-
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_eq_single I' (fun I _ hne => ?_) (by simp), hs I' hI', if_pos rfl, one_mul]`. Distinguish the cases in `hI : IsStepRows N j p.2 I`. Rewrite using `[hs I hI, if_neg (Ne.symm hne), zero_mul]`. Rewrite using `[hv I hI, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_minor (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (hF : M.IsFrame F)
     (p : Ψ × Fin N) (k : K) (hk : M.blk p = some k) (I' : Finset (Fin N)) (hI' : IsStepRows N j p.2 I') :
@@ -140,29 +138,25 @@ theorem read_minor (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (
         · rw [hv I hI, mul_zero]
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv F' F hF' hF hc' hc p k k' hk hk'`. Use `set α : M'.Ω →+* Φ' := algebraMap M'.Ω Φ' with hα`. Use `set ρ : M.Ω →+* Φ' := α.comp Cv.φ with hρ`. Use `set T' := (F'.T p.1).map α with hT'`. Use `set T := (F.T p.1).map ρ with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetφ : ((F.T p.1).map Cv.φ).det ≠ 0` using `det_map_ne Cv.φ (hF.1 p.1).2`. Establish `hdet' : T'.det ≠ 0` using `det_map_ne α (hF'.1 p.1).2`. Establish `hdet : T.det ≠ 0` using `det_map_ne ρ (hF.1 p.1).2`. Establish `hTb' : IsBlockDiag j T'` using `(hF'.1 p.1).1.map α`. Establish `hTb : IsBlockDiag j T` using `(hF.1 p.1).1.map ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set h' := T'⁻¹ * M'.g p.1 with hh'`. Use `set h₀ := T⁻¹ * M'.g p.1 with hh₀`. Establish `hb' : IsBlockDiag j h'` using `flag_in_frame_blockDiag hTb' hdet' (M'.g_block p.1)`. Establish `hb₀ : IsBlockDiag j h₀` using `flag_in_frame_blockDiag hTb hdet (M'.g_block p.1)`. Establish `hTh₀ : T * h₀ = M'.g p.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hh₀, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hdet)]`. Establish `hμ' : α (∏ k'', M'.x ⟨k'', F'.c k''⟩ ^ M'.b p k'') ≠ 0` using `(map_ne_zero α).2 (Finset.prod_ne_zero_iff.2 fun k'' _ => zpow_ne_zero _ (hc' k''))`. Establish `hμ : ρ (∏ k'', M.x ⟨k'', F.c k''⟩ ^ M.b p k'') ≠ 0` using `(map_ne_zero ρ).2 (Finset.prod_ne_zero_iff.2 fun k'' _ => zpow_ne_zero _ (hc k''))`. Establish `hd' : detFac j p.2 T' ≠ 0` using `detFac_ne_zero' M'.j_le p.2 hTb' hdet'`. Establish `hd : detFac j p.2 T ≠ 0` using `detFac_ne_zero' M.j_le p.2 hTb hdet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μ' := α (∏ k'', M'.x ⟨k'', F'.c k''⟩ ^ M'.b p k'') with hμ'def`. Use `set μ := ρ (∏ k'', M.x ⟨k'', F.c k''⟩ ^ M.b p k'') with hμdef`. Use `set d' := detFac j p.2 T' with hd'def`. Use `set d := detFac j p.2 T with hddef`. Establish `hread : ∀ I', IsStepRows N j p.2 I' → minorIJ h' I' (stepCols N j p.2) = d' / μ' * ∑ m' : ι' k', α (F'.u' I' ⟨k', m'⟩) * y' ⟨k', m'⟩` using `fun I' hI' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `read_minor M' F' hF' p k' hk' I' hI'` as an intermediate fact. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hμ', mul_comm]`. Conclude with `this.symm`. Establish `hv : ∀ I, ¬ IsStepRows N j p.2 I → minorIJ h' I (stepCols N j p.2) = 0` using `fun I hI => ((GlobalTheory.T.block_diagonal_minor_vanishing Φ' N j p.2 M'.j_le).2.1 h' I hb' hI).resolve_right (stepCols_ne_empty j p.2)`. Establish `hmat : h₀ = (trMat Cv F' F p.1).map α * h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((F.T p.1).map Cv.φ).map α = T` using `Matrix.ext fun _ _ => rfl`. Rewrite using `[trMat, Matrix.map_mul, inv_map' α hdetφ, e, ← hT', hh', Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hdet')]`. Establish `e3 : ∀ I, minorIJ h₀ I (stepCols N j p.2) = ∑ I' ∈ Finset.univ.filter (IsStepRows N j p.2), α (minorIJ (trMat Cv F' F p.1) I I') * minorIJ h' I' (stepCols N j p.2)` using `fun I => by`. Rewrite using `[hmat, (GlobalTheory.T.block_diagonal_minor_vanishing Φ' N j p.2 M'.j_le).1]`. Simplify using `only [minor_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_subset (Finset.filter_subset _ _) fun I' _ hI' => ?_).symm` and prove the remaining obligations. Rewrite using `[hv I' (by simpa using hI'), mul_zero]`. Establish `e1 : ∀ m : ι k, d * transPt Cv ⟨k, m⟩ = μ * ∑ I, α (Cv.φ (F.u ⟨k, m⟩ I)) * minorIJ h₀ I (stepCols N j p.2)` using `fun m => by`. Use `GlobalTheory.T.block_minor_sum_frame_identity K ι Φ y Ψ N j M Φ' ρ F hF p k hk m h₀ hb₀` as an intermediate fact. Rewrite `this` using `[← hT, hTh₀]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[transPt_step Cv p k hk m]`. Conclude with `this`. Use `⟨μ / d * (d' / μ'), mul_ne_zero (div_ne_zero hμ hd) (div_ne_zero hd' hμ'), fun m => ?_⟩` and prove the remaining obligations. Establish `htr : transPt Cv ⟨k, m⟩ = μ / d * ∑ I, α (Cv.φ (F.u ⟨k, m⟩ I)) * minorIJ h₀ I (stepCols N j p.2)`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hd, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1 m`. Establish `hR : ∑ m' : ι' k', α (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * y' ⟨k', m'⟩ = ∑ I, ∑ I' ∈ Finset.univ.filter (IsStepRows N j p.2), α (Cv.φ (F.u ⟨k, m⟩ I)) * α (minorIJ (trMat Cv F' F p.1) I I') * ∑ m' : ι' k', α (F'.u' I' ⟨k', m'⟩) * y' ⟨k', m'⟩`. Simplify using `only [coE, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m' _ => by ring`. Rewrite using `[htr, mul_assoc, hR]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[e3 I, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I' hI' => ?_` and prove the remaining obligations. Rewrite using `[hread I' (Finset.mem_filter.1 hI').2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transPt_eq_smul_sum : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk), M'.IsFrame F' → M.IsFrame F → (∀ k, M'.x ⟨k, F'.c k⟩ ≠ 0) → (∀ k, M.x ⟨k, F.c k⟩ ≠ 0) → ∀ (p : Ψ × Fin N) (k : K) (k' : K'), M.blk p = some k → M'.blk p = some k' → ∃ c : Φ', c ≠ 0 ∧ ∀ m : ι k, transPt Cv ⟨k, m⟩ = c * ∑ m' : ι' k', algebraMap M'.Ω Φ' (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * y' ⟨k', m'⟩ := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv F' F hF' hF hc' hc p k k' hk hk'

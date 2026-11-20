@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.EtC.GmPhiBij
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `GlobalTheory.T.class_zero_of_geometric_points q R hq (i - 1) a fun K _ _ f => ?_` and prove the remaining obligations. Establish `hqK : IsUnit (q : K)` using `by simpa using hq.map f`. Establish `hK : AIC K` using `fun p _ hd => IsAlgClosed.exists_root p (Polynomial.natDegree_pos_iff_degree_pos.mp hd).ne'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(GlobalTheory.T.units_cohomology_bijective q K hK hqK i).1` to reduce the goal to its premises. Rewrite using `[map_zero, ← gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q f hq, ha, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inj (q : ℕ) [NeZero q] (R : Type) [CommRing R] (hq : IsUnit (q : R)) (i : ℤ) : Function.Injective (gmPhi q R i) := by
   rw [injective_iff_map_eq_zero]
@@ -29,13 +29,13 @@ theorem inj (q : ℕ) [NeZero q] (R : Type) [CommRing R] (hq : IsUnit (q : R)) (
   rw [map_zero, ← gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q f hq, ha, map_zero]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨A', _, _, hint, hker, a', ha'⟩` from `GlobalTheory.T.laurent_class_from_integral q A hA hq i x`. Establish `hq' : IsUnit (q : A')` using `by simpa using hq.map (algebraMap A A')`. Use `set L := (Algebra.TensorProduct.includeLeft : A' →ₐ[A] A' ⊗[A] A').toRingHom with hLdef`. Use `set R := (Algebra.TensorProduct.includeRight : A' →ₐ[A] A' ⊗[A] A').toRingHom with hRdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLR : L.comp (algebraMap A A') = R.comp (algebraMap A A')`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.includeLeft : A' →ₐ[A] A' ⊗[A] A') (algebraMap A A' a) = (Algebra.TensorProduct.includeRight : A' →ₐ[A] A' ⊗[A] A') (algebraMap A A' a)`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Establish `hq2 : IsUnit (q : A' ⊗[A] A')` using `by simpa using hq'.map L`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : pull _ (spMap L) _ 0 a' = pull _ (spMap R) _ 0 a'`. Apply `inj q _ hq2 i` to reduce the goal to its premises. Rewrite using `[← gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q L hq', ← gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q R hq', ← ha', ← GmPhiNat.pull_spMap_comp, ← GmPhiNat.pull_spMap_comp, ← GmPhiNat.laurentMap_comp, ← GmPhiNat.laurentMap_comp, hLR]`. Take `⟨a, ha⟩` from `GlobalTheory.T.descent_equalizer_degree_zero q A A' hint hker hq (i - 1) a' heq`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsub : gmPhi q A i a - x = 0`. Apply `GlobalTheory.T.laurent_cohomology_injective q A A' hint hker hq (fun j => GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf (ZMod q) A hA (tw q j) 1 one_pos) i` to reduce the goal to its premises. Rewrite using `[map_sub, gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q (algebraMap A A') hq, ha, ha', sub_self]`. Conclude with `sub_eq_zero.mp hsub`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_noeth (q : ℕ) [NeZero q] (A : Type) [CommRing A] [IsNoetherianRing A] (hA : SH A) (hq : IsUnit (q : A)) (i : ℤ) :
     Function.Surjective (gmPhi q A i) := by
@@ -64,7 +64,7 @@ theorem surj_noeth (q : ℕ) [NeZero q] (A : Type) [CommRing A] [IsNoetherianRin
 end GmPhiBij
 
 /- English proof (translation)
-Introduce `q _ A _ hA hq i`. Conclude with `⟨GmPhiBij.inj q A hq i, GlobalTheory.T.surjective_of_noetherian_case q (fun B _ _ hB hqB j => GmPhiBij.surj_noeth q B hB hqB j) A hA hq i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem gmPhi_bijective : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → IsUnit (q : A) → ∀ i : ℤ,
     Function.Bijective (gmPhi q A i) := by

@@ -14,9 +14,7 @@ def uniq_ev_basic : Prop :=
   ∀ (R : Type) [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}, (∀ (α β : Cochain ((chains R).obj E) I n) p s h U x, ev (α + β) p s h U x = ev α p s h U x + ev β p s h U x ∧ ev (α - β) p s h U x = ev α p s h U x - ev β p s h U x ∧ ev (0 : Cochain ((chains R).obj E) I n) p s h U x = 0 ∧ ∀ c : ℤ, ev (c • α) p s h U x = c • ev α p s h U x) ∧ (∀ (α : Cochain ((chains R).obj E) I n) p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (ev α p s h U x) = ev α p s h V (x.res g)) ∧ (∀ α β : Cochain ((chains R).obj E) I n, (∀ p s h U x, ev α p s h U x = ev β p s h U x) → α = β) ∧ (∀ {E' : Spc} (f : E' ⟶ E) (α : Cochain ((chains R).obj E) I n) p s h U (x : Sx E' p U), ev ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)) p s h U x = ev α p s h U (x.map f)) ∧ ∀ {J : Cx R} (m : I ⟶ J) (α : Cochain ((chains R).obj E) I n) p s h U x, ev (α.comp (Cochain.ofHom m) (add_zero n)) p s h U x = Sec.map (m.f s) (ev α p s h U x)
 
 /- English proof (translation)
-Establish `h0 : IsZero ((res _ (tw q 1)).X s)`. Unfold `res`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 _ (by omega)`. Establish `h1 : IsZero (((res _ (tw q 1)).X s).obj.obj (op U))` using `((sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op U)).map_isZero h0)`. Establish `: Subsingleton (((res _ (tw q 1)).X s).obj.obj (op U))` using `(ModuleCat.isZero_iff_subsingleton).mp h1`.
-
-Conclude with `Subsingleton.elim a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_neg_eq (q : ℕ) [NeZero q] (s : ℤ) (hs : s < 0) (U : Scheme.{0})
     (a b : Sec ((res _ (tw q 1)).X s) U) : a = b := by
@@ -30,7 +28,7 @@ theorem sec_neg_eq (q : ℕ) [NeZero q] (s : ℤ) (hs : s < 0) (U : Scheme.{0})
   exact Subsingleton.elim a b
 
 /- English proof (translation)
-Establish `e : (Sx.res (E` using `sch.obj X) (p := 0) g x : V ⟶ X) = g ≫ x := rfl`. Rewrite using `[hv, e]`. Use `ext`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem root_res (q : ℕ) (X U V : Scheme.{0}) (u : (Γ(X, ⊤))ˣ) (x : U ⟶ X) (g : V ⟶ U) (v : (Γ(V, ⊤))ˣ)
     (hv : v ^ q = Units.map g.appTop.hom.toMonoidHom (Units.map x.appTop.hom.toMonoidHom u)) :
@@ -40,15 +38,15 @@ theorem root_res (q : ℕ) (X U V : Scheme.{0}) (u : (Γ(X, ⊤))ˣ) (x : U ⟶ 
   rfl
 
 /- English proof (translation)
-Introduce `q _ X u hq γ γ' h h'`. Establish `key : γ = γ'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(hb (ZMod q)).2.2.1` to reduce the goal to its premises. Introduce `p s hs U x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `p with _ | _ | p` into its components or cases. Establish `hs' : s = 1` using `by omega`. Substitute `hs'` using the available equality. Establish `hqU : IsUnit ((q : ℕ) : Γ(U, ⊤))`. Use `hq.map x.appTop.hom` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨S, hS, hP⟩` from `(hl q U).2.2.2 hqU (Units.map x.appTop.hom.toMonoidHom u)`. Apply `(hg (ZMod q) _ U).1` to reduce the goal to its premises. Use `⟨S, hS, fun V g hgS => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hP V g hgS`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hb (ZMod q)).2.1, (hb (ZMod q)).2.1]`. Establish `hv'` using `root_res q X U V u x g v hv`. Rewrite using `[h.2 V _ v hv', h'.2 V _ v hv']`. Establish `hs' : s = 0` using `by omega`. Substitute `hs'` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[h.1 U x, h'.1 U x]`. Conclude with `sec_neg_eq q s (by omega) U _ _`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_uniq_of (hl : uniq_prim_loc) (hg : sections_unique_of_local_agreement) (hb : uniq_ev_basic) : kum_uniq := by
   intro q _ X u hq γ γ' h h'

@@ -16,35 +16,31 @@ namespace GlobalTheory.ConjCartan
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Introduce `n M θ₁ θ₂ hM h1 h2`. Establish `key : ∀ θ, IsCartan M θ → θ.map star * θ.map star = 1 ∧ (θ.map star)ᴴ * M * θ.map star = M ∧ (M * θ.map star).PosDef`. Introduce and unpack `θ ⟨hθ, hu, hp⟩`. Establish `hS : θ.map star = θᵀᴴ` using `rfl`. Establish `hT : (θ.map star)ᴴ = θᵀ` using `by rw [hS, Matrix.conjTranspose_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSS : θ.map star * θ.map star = 1`. Rewrite using `[hS, ← Matrix.conjTranspose_mul, ← Matrix.transpose_mul, hθ, Matrix.transpose_one, Matrix.conjTranspose_one]`. Establish `hMS : M * θ.map star = θᵀ * M`. Combine the equalities or inequalities in the displayed calculation. Establish `hH : (M * θ.map star)ᴴ = M * θ.map star`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul, hT, hM, hMS]`. Use `⟨hSS, by rw [hT]; exact hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`. Use `⟨hH, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : star x ≠ 0` using `by simpa using hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hre` using `hp (star x) hx'`. Establish `e1 : star x ⬝ᵥ (M * θ.map star) *ᵥ x = (θ *ᵥ star x) ⬝ᵥ M *ᵥ star (star x)`. Rewrite using `[star_star, hMS, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Establish `e2 : star (star x ⬝ᵥ (M * θ.map star) *ᵥ x) = star x ⬝ᵥ (M * θ.map star) *ᵥ x` using `by conv_rhs => rw [Matrix.star_dotProduct, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, hH]`. Rewrite using `[Complex.lt_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [e1]; simpa using hre, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg Complex.im e2`. Establish `h4 : (star (star x ⬝ᵥ (M * θ.map star) *ᵥ x)).im = -(star x ⬝ᵥ (M * θ.map star) *ᵥ x).im` using `Complex.conj_im _`. Rewrite using `[Complex.zero_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨hs1, hs2, hs3⟩` from `key θ₁ h1`. Take `⟨ht1, ht2, ht3⟩` from `key θ₂ h2`. Use `set S₁ := θ₁.map star`. Use `set S₂ := θ₂.map star`. Take `⟨p, q, B, B', hBB, hB'B, hBG, hBs⟩` from `GlobalTheory.exists_basis_adapted_to_cartan_involution n M S₁ hs1 hs2 hs3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := Matrix.fromBlocks 1 0 0 (-1)`. Establish `hDh : Dᴴ = D` using `by simp [D, Matrix.fromBlocks_conjTranspose]`. Establish `hDD : D * D = 1` using `by simp [D, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`. Use `set T := B' * S₂ * B`. Establish `hTT : T * T = 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hinj : Function.Injective B.mulVec` using `fun x y hxy => by`. Use `congrArg (B'.mulVec) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hB'B]`. Establish `hDT : (D * T).PosDef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `ht3.conjTranspose_mul_mul_same hinj`. Establish `e : Bᴴ * (M * S₂) * B = D * T`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Take `⟨a, ha1, ha2⟩` from `GlobalTheory.cartanInvolution_conj_of_posDef _ D T hDh hDD hTT hDT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `haL : (D * aᴴ * D) * a = 1` using `by simp only [Matrix.mul_assoc]; rw [← Matrix.mul_assoc aᴴ, ha1, hDD]`. Use `set U := B * a * B'`. Use `set V := B * (D * aᴴ * D) * B'`. Establish `hVU : V * U = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hUU : Uᴴ * M * U = M`. Establish `hBh : B'ᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hBB, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [U, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = B'ᴴ * (Bᴴ * M * B) * B' := by rw [hBG, ha1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = (B'ᴴ * Bᴴ) * M * (B * B') := by simp only [Matrix.mul_assoc]`. Use `_ = M := by rw [hBh, hBB, Matrix.one_mul, Matrix.mul_one]`. Establish `hB'S : B' * S₁ = D * B'`. Combine the equalities or inequalities in the displayed calculation. Establish `hUS : U * S₁ = S₂ * U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨U.map star, V.map star, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hUV : U * V = 1` using `mul_eq_one_comm.1 hVU`. Establish `: (U * V).map star = (1 : Matrix (Fin n) (Fin n) ℂ).map star` using `by rw [hUV]`. Rewrite using `[show (1 : Matrix (Fin n) (Fin n) ℂ) = (1 : Matrix (Fin n) (Fin n) ℂ).map star by simp, ← this]; ext i j; simp [Matrix.mul_apply, star_sum]`.
-
-Establish `e : (U.map star)ᵀ = Uᴴ` using `rfl`. Rewrite using `[e, show (U.map star).map star = U by ext i j; simp, hUU]`. Establish `: (U * S₁).map star = (S₂ * U).map star` using `by rw [hUS]`. Establish `e1 : (U * S₁).map star = U.map star * θ₁` using `by ext i j; simp [S₁, Matrix.mul_apply, star_sum]`. Establish `e2 : (S₂ * U).map star = θ₂ * U.map star` using `by ext i j; simp [S₂, Matrix.mul_apply, star_sum]`.
-
-Rewrite using `[← e1, ← e2, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_cartan_matrix : ∀ (n : ℕ) (M θ₁ θ₂ : Matrix (Fin n) (Fin n) ℂ), Mᴴ = M → IsCartan M θ₁ → IsCartan M θ₂ →
     ∃ u v : Matrix (Fin n) (Fin n) ℂ, u * v = 1 ∧ uᵀ * M * u.map star = M ∧ u * θ₁ = θ₂ * u := by
@@ -137,7 +133,7 @@ theorem exists_conj_cartan_matrix : ∀ (n : ℕ) (M θ₁ θ₂ : Matrix (Fin n
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[piInf, inclR, compInf, infEmb_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   simp [piInf, inclR, compInf, infEmb_tmul]
@@ -152,7 +148,7 @@ def archIdeal : Ideal (AE F E) where
     rw [smul_eq_mul, ← mul_smul_comm, hz u hu, mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← map_smul, hz u hu, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cA_mem_archIdeal (σ : E →ₐ[F] E) {z : AE F E} (hz : z ∈ archIdeal F E) : cA σ z ∈ archIdeal F E :=
   fun u hu => by rw [← map_smul, hz u hu, map_zero]
@@ -168,31 +164,29 @@ theorem mapMatrix_transpose {R S : Type} [Semiring R] [Semiring S] (f : R →+* 
     (A : Matrix (Fin n) (Fin n) R) : f.mapMatrix Aᵀ = (f.mapMatrix A)ᵀ := rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n r s X Y hB hX hY`. Establish `cm` using `hB.cm`. Establish `hM : ∀ w, (X.J.map (B.emb w).1)ᴴ = X.J.map (B.emb w).1` using `fun w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cm.2.2.2 (B.emb w).1, hX.herm]`. Establish `hU` using `fun w => exists_conj_cartan_matrix n _ (X.θ w) (Y.θ w) (hM w) (hX.cartan w) (hY.cartan w)`. Use `choose u v huv hun hint using hU`. Use `choose lift hlat hlev using GlobalTheory.T.exists_supportedAtInfinity_adele_with_complexComponents F E σ cm B.emb`. Set `π` to `Ideal.Quotient.mk (archIdeal F E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Dm : Matrix (Fin n) (Fin n) (AE F E)` to `Matrix.of fun i j => lift fun w => (u w - 1) i j`. Set `Dv : Matrix (Fin n) (Fin n) (AE F E)` to `Matrix.of fun i j => lift fun w => (v w - 1) i j`. Establish `hDm : π.mapMatrix Dm = 0`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hlat _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hDv : π.mapMatrix Dv = 0`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hlat _)`. Establish `hDc : π.mapMatrix ((cA σ).toRingHom.mapMatrix Dm) = 0`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (cA_mem_archIdeal σ (hlat _))`. Establish `hDmw : ∀ w, (piInf (B.emb w)).mapMatrix Dm = u w - 1` using `fun w => by`. Use extensionality with `i j`. Conclude with `hlev _ w`. Establish `hDvw : ∀ w, (piInf (B.emb w)).mapMatrix Dv = v w - 1` using `fun w => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Conclude with `hlev _ w`. Establish `zero : ∀ Z : Matrix (Fin n) (Fin n) (AE F E), π.mapMatrix Z = 0 → (∀ w, (piInf (B.emb w)).mapMatrix Z = 0) → Z = 0`. Introduce `Z h1 h2`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.supportedAtInfinity_adele_eq_zero_of_complexComponents F E σ cm B.emb _ (Ideal.Quotient.eq_zero_iff_mem.1 (congrFun (congrFun h1 i) j)) (fun w => congrFun (congrFun (h2 w) i) j)`. Establish `hGH : (1 + Dm) * (1 + Dv) = 1`. Use `sub_eq_zero.1 (zero _ ?_ fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_add, map_add, map_one, hDm, hDv]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_add, map_add, map_one, hDmw, hDvw, add_sub_cancel, add_sub_cancel, huv w, sub_self]`. Set `g0 : GL (Fin n) (AE F E)` to `⟨1 + Dm, 1 + Dv, hGH, mul_eq_one_comm.1 hGH⟩`. Establish `hcw : ∀ w, (piInf (B.emb w)).mapMatrix ((cA σ).toRingHom.mapMatrix Dm) = (u w).map star - 1` using `fun w => by`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (cA σ).toRingHom (Dm i j) = cA σ (Dm i j) from rfl, GlobalTheory.T.realPlaceComponent_adeleConjugation_eq_complexConj F E σ cm w (B.emb w)]`. Simplify using `only [Dm, Matrix.of_apply]`. Rewrite using `[hlev]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, Matrix.map_apply, star_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hJw : ∀ w, (piInf (B.emb w)).mapMatrix (incM F X.J) = X.J.map (B.emb w).1` using `fun w => by`. Use extensionality with `i j`. Simplify using `[incM, piInf_inclR]`. Establish `hUG : g0 ∈ UG (cA σ) (incM F X.J)`. Express the relevant statement in the definitionally equal form `(1 + Dm)ᵀ * incM F X.J * (cA σ).toRingHom.mapMatrix (1 + Dm) = incM F X.J`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[map_add, map_one]`. Use `sub_eq_zero.1 (zero _ ?_ fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, mapMatrix_transpose, map_add, map_add, map_one, hDm, hDc]`. Simplify using the standard rewrite rules. Rewrite using `[map_sub, map_mul, map_mul, mapMatrix_transpose, map_add, map_add, map_one, hDmw, hcw, hJw, add_sub_cancel, add_sub_cancel, hun w, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨g0, hUG⟩, ?_, fun w => ?_⟩` and prove the remaining obligations. Introduce `a ha show a • ((1 + Dm) - 1) = 0`. Use extensionality with `i j`. Simplify using `only [add_sub_cancel_left, Matrix.smul_apply, Matrix.zero_apply]`. Conclude with `hlat _ a ha`.
-
-Establish `: (mat (⟨g0, hUG⟩ : UA σ X.J)).map (piInf (B.emb w)) = u w` using `by show (piInf (B.emb w)).mapMatrix (1 + Dm) = u w`. Rewrite using `[map_add, map_one, hDmw]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `hint w`.
+A detailed English derivation is pending.
 -/
 theorem conj_cartan_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n r s : ℕ) (X Y : Spc F E n), B.IsGood σ → X.IsHerm σ B r s → (reS X Y).IsHerm σ B r s →

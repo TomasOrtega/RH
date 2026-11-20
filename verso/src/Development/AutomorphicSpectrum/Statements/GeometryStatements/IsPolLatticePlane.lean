@@ -66,13 +66,13 @@ def planeForm : (Fin 2 → 𝓞 ℚ) →ₗ[ℤ] (Fin 2 → 𝓞 ℚ) →ₗ[ℤ
 variable {C O : Type} [Field C] [CommRing O] [Algebra O C] {v : Valuation C NNReal} {p : ℕ}
 
 /- English proof (translation)
-Establish `h1 : v ζ ≤ 1`. Use `congrArg v hζ.pow_eq_one` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg zero_le hp.out.ne_zero).1 this).le`. Set `z : v.integer` to `⟨ζ, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : IsPrimitiveRoot z p` using `IsPrimitiveRoot.of_map_of_injective (f := v.integer.subtype) hζ Subtype.val_injective`. Establish `key : ∀ k ∈ Finset.range (p - 1), v (1 - ζ ^ (k + 1)) = v (ζ - 1)`. Introduce `k hk`. Establish `hk' : k + 1 < p` using `by have := Finset.mem_range.1 hk; omega`. Establish `hc : (k + 1).Coprime p` using `((Nat.Prime.coprime_iff_not_dvd hp.out).2 (Nat.not_dvd_of_pos_of_lt k.succ_pos hk')).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `hz.associated_sub_one_pow_sub_one_of_coprime hc`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `le_antisymm ((Valuation.integer.integers v).le_of_dvd ha.dvd) ((Valuation.integer.integers v).le_of_dvd ha.symm.dvd)`. Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, by have := hp.out.pos; omega⟩`. Rewrite `key` using `[Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg v hζ.prod_one_sub_pow_eq_order` as an intermediate fact. Rewrite `this` using `[map_prod, Finset.prod_congr rfl key, Finset.prod_const, Finset.card_range]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_sub_one_pow [hp : Fact p.Prime] {ζ : C} (hζ : IsPrimitiveRoot ζ p) : v (ζ - 1) ^ (p - 1) = v (p : C) := by
   have h1 : v ζ ≤ 1 := by
@@ -97,7 +97,7 @@ theorem val_sub_one_pow [hp : Fact p.Prime] {ζ : C} (hζ : IsPrimitiveRoot ζ p
   simpa using this
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [map_sub, map_one]`. Conclude with `hζ.sub_one_ne_zero hp.out.one_lt`. Conclude with `(val_sub_one_pow hζ).le`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isHTConst_sub_one [hp : Fact p.Prime] {ζ : O} (hζ : IsPrimitiveRoot (algebraMap O C ζ) p) :
     IsHTConst v p (ζ - 1) := by
@@ -106,13 +106,13 @@ theorem isHTConst_sub_one [hp : Fact p.Prime] {ζ : O} (hζ : IsPrimitiveRoot (a
   · exact (val_sub_one_pow hζ).le
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [map_ofNat]; exact two_ne_zero, by rw [map_ofNat]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHTConst_two [CharZero C] : IsHTConst v 2 (2 : O) :=
   ⟨by rw [map_ofNat]; exact two_ne_zero, by rw [map_ofNat]; simp⟩
 
 /- English proof (translation)
-Introduce `h1` and use `absurd (by simpa using h1.2) (not_le.2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isHTConst_one (h : v (p : C) < 1) : ¬ IsHTConst v p (1 : O) := fun h1 =>
   absurd (by simpa using h1.2) (not_le.2 h)

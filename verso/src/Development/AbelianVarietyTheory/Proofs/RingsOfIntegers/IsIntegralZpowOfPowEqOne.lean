@@ -15,7 +15,7 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Use `IsIntegral.of_pow hN ?_` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `isIntegral_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_pow_eq_one {F : Type} [Field F] {z : F} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) :
     IsIntegral ℤ z := by
@@ -24,7 +24,7 @@ theorem isIntegral_of_pow_eq_one {F : Type} [Field F] {z : F} {N : ℕ} (hN : 0 
   exact isIntegral_one
 
 /- English proof (translation)
-Use `GlobalTheory.PlaceInt.isIntegral_of_pow_eq_one hN ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm a, zpow_mul, zpow_natCast, hz, one_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegral_zpow_of_pow_eq_one {F : Type} [Field F] {z : F} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) (a : ℤ) :
     IsIntegral ℤ (z ^ a) := by
@@ -33,36 +33,34 @@ theorem isIntegral_zpow_of_pow_eq_one {F : Type} [Field F] {z : F} {N : ℕ} (hN
   rw [← zpow_natCast, ← zpow_mul, mul_comm a, zpow_mul, zpow_natCast, hz, one_zpow]
 
 /- English proof (translation)
-The claim follows from `h.map f.toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 private theorem isIntegral_int_ringHom_apply {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {a : A}
     (h : IsIntegral ℤ a) : IsIntegral ℤ (f a) :=
   h.map f.toIntAlgHom
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d hd ph ψ x₀ hpin x0 q`. Take `⟨-, hM, -, -, hII, -⟩` from `id hd`. Take `⟨hloc, hsupp, hequi, hone, hspan0, hsum⟩` from `hpin`. Establish `hpd : 0 < d.pd`. Break down `Nat.eq_zero_or_pos d.pd with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3` using `d.l₂.three_le`. Rewrite `h3` using `[hM, h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hI : d.I ≠ ⊥`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hII` using `[h, Ideal.map_bot, sup_bot_eq]`. Conclude with `bot_ne_top hII`. Establish `: Finite (𝓞 E ⧸ d.I)` using `Ideal.finiteQuotientOfFreeOfNeBot d.I hI`. Use `Dw.fin` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Dw.proj` as an intermediate fact. Take `⟨eI⟩` from `GlobalTheory.HalfPairing.nonempty_equiv_quot (N := Dw.La) d.I (Dw.p + Dw.q) Dw.rank`. Establish `: Finite (LaI Xo c d)` using `Finite.of_equiv _ eI.symm.toEquiv`. Establish `: Finite (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d)` using `Finite.of_injective (fun e : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d => (e : LaI Xo c d → LaI Xo c d)) (fun a b h => LinearEquiv.ext (congrFun h))`. Establish `hph : ∀ x, IsIntegral ℤ (ph x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `x`. Distinguish the cases in `h0 : ph x = 0`. Rewrite using `[h0]`. Conclude with `isIntegral_zero`. Establish `hspan` using `hsupp x h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨-, htrans, adj, -, hadj⟩` from `GlobalTheory.HalfPairing.halves_free_and_adjoint E H Dw l Xo c n d hd`. Set `pad : (Fin n → LaJ Xo c d) → Fin (Dw.p + Dw.q) → LaJ Xo c d` to `fun z i => if h : i.val < n then z ⟨i.val, h⟩ else 0`. Establish `hpadv : ∀ z i (h : i.val < n), pad z i = z ⟨i.val, h⟩` using `fun z i h => dif_pos h`. Establish `hpad : ∀ z : Fin n → LaJ Xo c d, Submodule.span (𝓞 E) (z '' {b | b.val < Dw.p + Dw.q}) = ⊤ → Submodule.span (𝓞 E) (Set.range (pad z)) = ⊤`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_top_iff, ← hz]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `⟨⟨b.val, hb⟩, hpadv z _ b.isLt⟩`. Take `⟨g, hg, -⟩` from `htrans (pad x₀) (pad x) (hpad x₀ hspan0) (hpad x hspan)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hequi (adj g) g ((hadj (adj g) g).mpr rfl) x₀`. Rewrite `h1` using `[hone, _root_.mul_one]`. Establish `h2 : ph x = ph (fun b => g (x₀ b))`. Apply `hloc` to reduce the goal to its premises. Introduce `b hb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb'` using `hg ⟨b.val, hb⟩`. Rewrite `hb'` using `[hpadv x₀ _ b.isLt, hpadv x _ b.isLt]`. Conclude with `hb'.symm`. Rewrite using `[h2, h1]`. Take `⟨m, hm, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.mp (ψ.isOfFinOrder (isOfFinOrder_of_finite (adj g))).inv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.PlaceInt.isIntegral_of_pow_eq_one hm ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, hpow, Units.val_one]`. Establish `hz : IsIntegral ℤ (zetaM c ^ pairL (l` using `l) x0 (fun b => levRep (q b))) := GlobalTheory.PlaceInt.isIntegral_zpow_of_pow_eq_one (N := l.M) (by have := l.three_le; omega) (GlobalTheory.DatumInverseCharacter.root_pow c dvd_rfl) _`. Establish `hφ : IsIntegral ℤ (d.φδ q)`. Establish `he : IsIntegral ℤ (d.eF (d.φδ q))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsum q]`. Use `finsum_induction (fun y => IsIntegral ℤ y) isIntegral_zero (fun a b ha hb => ha.add hb) (fun x => ?_)` and prove the remaining obligations. Use `(isIntegral_int_ringHom_apply d.eF.toRingHom (hph x)).mul ?_` and prove the remaining obligations. Conclude with `GlobalTheory.PlaceInt.isIntegral_zpow_of_pow_eq_one hpd (GlobalTheory.DatumInverseCharacter.root_pow d.c₂ (Dvd.intro_left _ hM.symm)) _`. Establish `hb` using `isIntegral_int_ringHom_apply d.eF.symm.toRingHom he`.
-
-Simplify using `using hb`. Conclude with `isIntegral_int_ringHom_apply d.eF.toRingHom (hz.mul hφ)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem datum_isIntegral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → ∀ ph ψ x₀, d.PhiPin ph ψ x₀ → ∀ (x0 : Fin n → Dw.La) (q : Fin n → LevQ Dw d.l₂), IsIntegral ℤ (d.w x0 q) := by
   intro E _ _ _ H Dw l Xo c n d hd ph ψ x₀ hpin x0 q

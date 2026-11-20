@@ -12,7 +12,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [GlobalTheory.AbLaw.cst, GlobalTheory.SmallExtLift.cst, GlobalTheory.AbLaw.rs, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.appTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem abLawCst_eq_smallExtLiftCst {X : Scheme} {R : Type} [CommRing R]
     (f : X ⟶ Spec (CommRingCat.of R)) (U : X.Opens) :
@@ -23,17 +23,15 @@ theorem abLawCst_eq_smallExtLiftCst {X : Scheme} {R : Type} [CommRing R]
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ G hsm hgc U hU y hyU hy`. Use `haveI := hsm`. Use `haveI := hgc`. Set `f : G.left ⟶ Spec (CommRingCat.of R)` to `G.hom`. Set `g : Spec (CommRingCat.of (ResidueField R)) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (residue R))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI hI : IsIntegral (pullback f g) := GlobalTheory.isIntegral_specialFibre_of_smooth f`. Set `q` to `pullback.fst f g`. Establish `H : IsPullback q (pullback.snd f g) f g` using `IsPullback.of_hasPullback f g`. Establish `hsurj : Function.Surjective (q.app U).hom` using `GlobalTheory.SmallExtLift.app_surj (residue_surjective) H hU`. Establish `hker : RingHom.ker (q.app U).hom = (maximalIdeal R).map (GlobalTheory.AbLaw.cst G.hom U)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[abLawCst_eq_smallExtLiftCst]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Use `GlobalTheory.SmallExtLift.mem_of_app_eq_zero (residue_surjective) H hU a ha` as an intermediate fact. Rewrite `this` using `[ker_residue]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, GlobalTheory.SmallExtLift.app_cst H.w, (residue_eq_zero_iff r).2 hr, map_zero]`. Establish `hne : Nonempty (q ⁻¹ᵁ U)`. Establish `hpt : f y = g (closedPoint (ResidueField R))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[show f y = G.hom y from rfl, hy]`. Conclude with `(IsLocalRing.comap_closedPoint (residue R)).symm`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback y _ hpt`. Conclude with `⟨⟨z, show q z ∈ U from hz ▸ hyU⟩⟩`. Use `haveI : IsDomain Γ(pullback f g, q ⁻¹ᵁ U) := inferInstance`.
-
-Rewrite using `[← hker]`. Conclude with `(RingHom.quotientKerEquivOfSurjective hsurj).toMulEquiv.isDomain`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDomain_quot_maximalIdeal_of_smooth :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)), Smooth G.hom →

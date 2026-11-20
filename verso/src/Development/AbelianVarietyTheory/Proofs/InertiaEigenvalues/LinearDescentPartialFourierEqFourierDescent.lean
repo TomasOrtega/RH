@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.JR.LinDesc.Swap
 
 /- English proof (translation)
-Establish `h1 : ‖x‖ ≤ max ‖x - y‖ ‖y‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (x - y) y`. Establish `h2 : ‖y‖ ≤ max ‖y - x‖ ‖x‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (y - x) x`. Rewrite `h2` using `[norm_sub_rev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `h1.trans (max_le h.le le_rfl)`. Break down `le_max_iff.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (not_le.mpr h)`. Conclude with `h3`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem norm_eq_of_sub_lt {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K}
     (h : ‖x - y‖ < ‖y‖) : ‖x‖ = ‖y‖ := by
@@ -26,9 +26,9 @@ theorem norm_eq_of_sub_lt {K : Type} [NormedField K] [IsUltrametricDist K] {x y 
     · exact h3
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `filter_upwards [Metric.ball_mem_nhds x hpos] with y hy`. Rewrite `hy` using `[Metric.mem_ball, dist_eq_norm]`. Use `norm_eq_of_sub_lt hy` as an intermediate fact. Unfold `eta`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem eta_eventually {F : Type} [NormedField F] [IsUltrametricDist F] {x : F} (hx : x ≠ 0) :
     ∀ᶠ y in 𝓝 x, eta x = eta y := by
@@ -40,7 +40,7 @@ theorem eta_eventually {F : Type} [NormedField F] [IsUltrametricDist F] {x : F} 
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hd : ((g : Matrix (Fin r) (Fin r) F).det) ≠ 0` using `(Matrix.isUnits_det_units g).ne_zero`. Establish `hc : Continuous (fun g : GL (Fin r) F => (g : Matrix (Fin r) (Fin r) F).det)` using `Units.continuous_val.matrix_det`. Conclude with `ContinuousAt.comp (f := fun g : GL (Fin r) F => (g : Matrix (Fin r) (Fin r) F).det) (continuousAt_const.congr (eta_eventually hd)) hc.continuousAt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_eta_det {F : Type} [NontriviallyNormedField F] [IsUltrametricDist F] (r : ℕ) :
     Continuous (fun g : GL (Fin r) F => eta ((g : Matrix (Fin r) (Fin r) F).det)) := by
@@ -53,9 +53,9 @@ theorem continuous_eta_det {F : Type} [NontriviallyNormedField F] [IsUltrametric
     (continuousAt_const.congr (eta_eventually hd)) hc.continuousAt
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Use `ContinuousAt.congr (f := fun _ => ψ x) continuousAt_const ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds x one_pos] with y hy`. Rewrite `hy` using `[Metric.mem_ball, dist_eq_norm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: y = x + (y - x)` using `by ring`. Rewrite using `[this, AddChar.map_add_eq_mul, hψ.1 _ hy.le, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_psi {F : Type} [NormedField F] (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :
     Continuous ψ := by
@@ -68,7 +68,7 @@ theorem continuous_psi {F : Type} [NormedField F] (ψ : AddChar F ℂ) (hψ : Is
   rw [this, AddChar.map_add_eq_mul, hψ.1 _ hy.le, mul_one]
 
 /- English proof (translation)
-Unfold `act`. Establish `h1 : Continuous (fun z : GL (Fin r) F × Gl r F => ((z.1 : Matrix (Fin r) (Fin r) F)))` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous (fun z : GL (Fin r) F × Gl r F => (((z.1⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F)))` using `Units.continuous_coe_inv.comp continuous_fst`. Conclude with `((h1.matrix_mul continuous_snd.fst).matrix_mul h2).prodMk ((h1.matrix_mulVec continuous_snd.snd.fst).prodMk ((continuous_snd.snd.snd.fst.matrix_vecMul h2).prodMk continuous_snd.snd.snd.snd))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_act {F : Type} [NontriviallyNormedField F] (r : ℕ) :
     Continuous (fun z : GL (Fin r) F × Gl r F => act z.1 z.2) := by
@@ -86,7 +86,7 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   [StarRing E] (A : Et F E)
 
 /- English proof (translation)
-Establish `hc : Continuous (bas A hG).equivFun` using `IsModuleTopology.continuous_of_linearMap (bas A hG).equivFun.toLinearMap`. Establish `hc' : Continuous (bas A hG).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (bas A hG).equivFun.symm.toLinearMap`. Set `e : A.K ≃ₜ (Fin r → F)` to `{ toEquiv := (bas A hG).equivFun.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`. Conclude with `⟨e.isEmbedding.t2Space, e.isEmbedding.secondCountableTopology⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem K_inst {r : ℕ} {τ : A.K} {p : Fin r → F} (hG : A.IsGen τ p) [SecondCountableTopology F] :
     T2Space A.K ∧ SecondCountableTopology A.K := by
@@ -99,7 +99,7 @@ theorem K_inst {r : ℕ} {τ : A.K} {p : Fin r → F} (hG : A.IsGen τ p) [Secon
   exact ⟨e.isEmbedding.t2Space, e.isEmbedding.secondCountableTopology⟩
 
 /- English proof (translation)
-Unfold `pt`. Establish `he : Continuous (bas A hG).equivFun` using `IsModuleTopology.continuous_of_linearMap (bas A hG).equivFun.toLinearMap`. Establish `htr : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `continuous_const.prodMk ((he.comp continuous_fst).prodMk ((continuous_pi fun i => htr.comp (continuous_const.mul continuous_snd)).prodMk continuous_const))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pt {r : ℕ} {τ : A.K} {p : Fin r → F} (hG : A.IsGen τ p) (lam : F) :
     Continuous (fun q : A.K × A.K => pt A hG lam q.1 q.2) := by
@@ -115,17 +115,13 @@ end GlobalTheory.JR.LinDesc.Swap
 namespace GlobalTheory.JR.LinDesc.Swap
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict S) := ⟨by rw [Measure.restrict_apply_univ]; exact hS.measure_lt_top⟩`. Use `set Φ : (Y × Y) × X → ℂ := fun z => k z.2 z.1.1 z.1.2 with hΦdef`. Establish `hΦc : HasCompactSupport Φ`. Use `HasCompactSupport.intro ((hB.prod hC).prod hS) fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, h3⟩` from `hsupp _ _ _ h`. Conclude with `hz ⟨⟨h2, h3⟩, h1⟩`. Establish `hΦ : Integrable Φ ((ν.prod ν).prod (μ.restrict S))` using `hk.integrable_of_hasCompactSupport hΦc`. Establish `hL : ∫ g, ∫ b, ∫ c, k g b c ∂ν ∂ν ∂μ = ∫ g in S, ∫ b, ∫ c, k g b c ∂ν ∂ν ∂μ`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `: ∀ b c, k g b c = 0` using `fun b c => by`. Assume the negation of the conclusion as `h`. Conclude with `hg (hsupp _ _ _ h).1`. Simplify using `[this]`. Establish `hR : ∀ b c, ∫ g, k g b c ∂μ = ∫ g in S, k g b c ∂μ` using `fun b c => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hg (hsupp _ _ _ h).1`. Repeatedly rewrite using `[hR]`. Rewrite using `[hL]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hΦ.prod_left_ae] with g hg`. Conclude with `(integral_prod (fun q => Φ (q, g)) hg).symm`. Use `_ = ∫ q, ∫ g, Φ (q, g) ∂(μ.restrict S) ∂(ν.prod ν) := (integral_integral_swap (f := fun q g => Φ (q, g)) hΦ).symm`.
-
-Use `_ = ∫ b, ∫ c, ∫ g in S, k g b c ∂μ ∂ν ∂ν := integral_prod _ hΦ.integral_prod_left`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem swap_triple {X Y : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [T2Space X]
     [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y] [T2Space Y] [SecondCountableTopology Y]
@@ -167,29 +163,25 @@ end GlobalTheory.JR.LinDesc.Swap
 namespace GlobalTheory.JR.LinDesc.Swap
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A r τ p hG lam M ψ hψ μK hμK α f' hf' hα hαc hyp x`. Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI := M.haarG`. Use `haveI : LocallyCompactSpace F := Unram.lcF (F := F) (E := E)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI : IsUltrametricDist F := Unram.ultraF (F := F) (E := E)`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Take `⟨hT2, hSC⟩` from `K_inst A hG`. Use `haveI := hT2`. Use `haveI := hSC`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hμK.1`. Use `set k : GL (Fin r) F → A.K → A.K → ℂ := fun g b' c' => f' (act g (pt A hG lam b' c')) * A.psiK ψ (x.1 * c' + b' * x.2) * (eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ)) with hk`. Establish `hL : desc A M hG lam α (fourG M ψ f') x = ∫ g, ∫ b', ∫ c', k g b' c' ∂μK ∂μK ∂M.μG`. Unfold `desc`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[hyp g x.1 x.2]`. Unfold `Et.fourK`. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun b' => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[← integral_mul_const]`. Establish `hR : A.fourK μK ψ (desc A M hG lam α f') x = ∫ b', ∫ c', ∫ g, k g b' c' ∂M.μG ∂μK ∂μK`. Unfold `Et.fourK desc`. Use `integral_congr_ae (Eventually.of_forall fun b' => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hk]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR]`. Establish `hbij` using `(GlobalTheory.JR.EtInv.invK_regular_iff_isUnit F E A r τ p lam hG).1`. Set `ρl : A.K →ₗ[F] (Fin r → F)` to `LinearMap.pi fun i : Fin r => (Algebra.trace F A.K).comp (LinearMap.mulLeft F (τ ^ (i : ℕ)))`. Set `ρe : A.K ≃ₗ[F] (Fin r → F)` to `LinearEquiv.ofBijective ρl (by exact hbij)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρs : Continuous ρe.symm` using `IsModuleTopology.continuous_of_linearMap ρe.symm.toLinearMap`. Establish `hes : Continuous (bas A hG).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (bas A hG).equivFun.symm.toLinearMap`. Establish `htr : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hST : IsCompact (tsupport α ×ˢ tsupport f')` using `hαc.prod hf'.2`. Use `swap_triple M.μG μK k ?_ (tsupport α) ((bas A hG).equivFun.symm '' ((fun z : GL (Fin r) F × Gl r F => ((z.1⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) *ᵥ z.2.2.1) '' (tsupport α ×ˢ tsupport f'))) (ρe.symm '' ((fun z : GL (Fin r) F × Gl r F => z.2.2.2.1 ᵥ* (z.1 : Matrix (Fin r) …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous (fun z : (A.K × A.K) × GL (Fin r) F => f' (act z.2 (pt A hG lam z.1.1 z.1.2)))` using `hf'.1.continuous.comp ((continuous_act r).comp (continuous_snd.prodMk ((continuous_pt A hG lam).comp continuous_fst)))`. Establish `h2 : Continuous (fun z : (A.K × A.K) × GL (Fin r) F => A.psiK ψ (x.1 * z.1.2 + z.1.1 * x.2))` using `(continuous_psi ψ hψ).comp (htr.comp ((continuous_const.mul continuous_fst.snd).add (continuous_fst.fst.mul continuous_const)))`. Establish `h3 : Continuous (fun z : (A.K × A.K) × GL (Fin r) F => eta ((z.2 : Matrix (Fin r) (Fin r) F).det))` using `(continuous_eta_det r).comp continuous_snd`. Establish `h4 : Continuous (fun z : (A.K × A.K) × GL (Fin r) F => ((α z.2 : ℝ) : ℂ))` using `Complex.continuous_ofReal.comp (hα.continuous.comp continuous_snd)`. Conclude with `(h1.mul h2).mul (h3.mul h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hST.image ((Units.continuous_coe_inv.comp continuous_fst).matrix_mulVec continuous_snd.snd.fst)).image hes`. Conclude with `(hST.image (continuous_snd.snd.snd.fst.matrix_vecMul (Units.continuous_val.comp continuous_fst))).image hρs`. Introduce `g b c hne`. Establish `hf0 : f' (act g (pt A hG lam b c)) ≠ 0` using `fun h => hne (by simp only [hk, h, zero_mul])`. Establish `hα0 : α g ≠ 0` using `fun h => hne (by simp only [hk, h, Complex.ofReal_zero, mul_zero])`.
-
-Establish `hgS : g ∈ tsupport α` using `subset_tsupport _ hα0`. Establish `hYT : act g (pt A hG lam b c) ∈ tsupport f'` using `subset_tsupport _ hf0`. Establish `hinv : ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) * (g : Matrix (Fin r) (Fin r) F) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use `⟨hgS, ⟨_, ⟨(g, _), ⟨hgS, hYT⟩, rfl⟩, ?_⟩, ⟨_, ⟨(g, _), ⟨hgS, hYT⟩, rfl⟩, ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `only [act, pt, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, LinearEquiv.symm_apply_apply]`. Establish `hρc : ρe c = fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * c)` using `rfl`. Simplify using `only [act, pt, Matrix.vecMul_vecMul, hinv, Matrix.vecMul_one]`. Rewrite using `[← hρc, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_fourG_eq_fourK_desc : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (lam : F), ∀ (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ μK : Measure A.K, SelfDual μK (A.kerK ψ) → ∀ (α : GL (Fin r) F → ℝ) (f' : Gl r F → ℂ), IsTest f' → IsLocallyConstant α → HasCompactSupport α → (∀ (g : GL (Fin r) F) (b c : A.K), fourG M ψ f' (act g (LinDesc.pt A hG lam b c)) = A.fourK μK ψ (fun x => f' (act g (LinDesc.pt A hG lam x.1 x.2))) (b, c)) → ∀ x : A.K × A.K, LinDesc.desc A M hG lam α (fourG M ψ f') x = A.fourK μK ψ (LinDesc.desc A M hG lam α f') x := by
   intro F E _ _ _ _ _ A r τ p hG lam M ψ hψ μK hμK α f' hf' hα hαc hyp x

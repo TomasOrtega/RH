@@ -10,20 +10,20 @@ open GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma negOnePow_smul_smul {M : Type*} [AddCommGroup M] (n : ℤ) (x : M) :
     ((n.negOnePow : ℤ) • ((n.negOnePow : ℤ) • x)) = x := by
   rw [smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[mul_add, mul_one, Int.negOnePow_add, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma coef1 (s t : ℤ) : ((t * s).negOnePow : ℤ) * (t.negOnePow : ℤ) = ((t * (s + 1)).negOnePow : ℤ) := by
   rw [mul_add, mul_one, Int.negOnePow_add, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[add_mul, one_mul, Int.negOnePow_add, Units.val_mul, mul_left_comm, ← Units.val_mul, Int.units_mul_self, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma coef2 (s t : ℤ) : (s.negOnePow : ℤ) * (((t + 1) * s).negOnePow : ℤ) = ((t * s).negOnePow : ℤ) := by
   rw [add_mul, one_mul, Int.negOnePow_add, Units.val_mul, mul_left_comm, ← Units.val_mul,
@@ -54,7 +54,7 @@ def sw (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R
         (TensorProduct.comm (ULift.{1} R) _ _).toLinearMap)
 
 /- English proof (translation)
-Unfold `sw`. Use `erw [DirectSum.toModule_lof]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma sw_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -67,7 +67,7 @@ lemma sw_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1
   rfl
 
 /- English proof (translation)
-Unfold `Pair.lift`. Use `erw [DirectSum.toModule_lof]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma lift_lof {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -79,11 +79,9 @@ lemma lift_lof {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : 
   rfl
 
 /- English proof (translation)
-Establish `key : (flipPair μ).lift U w ∘ₗ sw I J U w = μ.lift U w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[sw_lof, map_zsmul, lift_lof]`. Use `erw [lift_lof (flipPair μ) U w (swIx p) b a]`. Simplify using `only [flipPair, LinearMap.smul_apply, LinearMap.flip_apply]`. Conclude with `negOnePow_smul_smul _ _`.
-
-Conclude with `LinearMap.congr_fun key x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lift_sw {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     (flipPair μ).lift U w (sw I J U w x) = μ.lift U w x := by
@@ -97,11 +95,9 @@ lemma lift_sw {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (x : T
   exact LinearMap.congr_fun key x
 
 /- English proof (translation)
-Establish `key : sw J I U w ∘ₗ sw I J U w = LinearMap.id`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Rewrite using `[sw_lof, map_zsmul]`. Use `erw [sw_lof J I U w (swIx p) b a]`. Use `show ((p.1.1 * p.1.2).negOnePow : ℤ) • ((p.1.2 * p.1.1).negOnePow : ℤ) • _ = _`. Rewrite using `[mul_comm p.1.2 p.1.1]`.
-
-Conclude with `negOnePow_smul_smul _ _`. Conclude with `LinearMap.congr_fun key x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sw_sw (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     sw J I U w (sw I J U w x) = x := by
@@ -116,11 +112,9 @@ lemma sw_sw (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
   exact LinearMap.congr_fun key x
 
 /- English proof (translation)
-Establish `key : Tens.res g w ∘ₗ sw I J U w = sw I J V w ∘ₗ Tens.res g w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[sw_lof, map_zsmul]`. Unfold `Tens.res`. Use `erw [DirectSum.lmap_lof, DirectSum.lmap_lof, TensorProduct.map_tmul, TensorProduct.map_tmul, sw_lof]`. Both sides reduce to the same expression.
-
-Conclude with `LinearMap.congr_fun key x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma res_sw (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     Tens.res g w (sw I J U w x) = sw I J V w (Tens.res g w x) := by
@@ -134,7 +128,7 @@ lemma res_sw (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I
   exact LinearMap.congr_fun key x
 
 /- English proof (translation)
-Use `conv_rhs => rw [← sw_sw J I U w x]`. Rewrite using `[lift_sw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lift_sw' {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (x : Tens J I U w) :
     μ.lift U w (sw J I U w x) = (flipPair μ).lift U w x := by
@@ -142,11 +136,11 @@ lemma lift_sw' {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (x : 
   rw [lift_sw]
 
 /- English proof (translation)
-Take `⟨hs, hi⟩` from `hμ`. Prove the components needed by the constructor for the conclusion. Introduce `U w y`. Take `⟨S, hS, hP⟩` from `hs U w y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hP V g hg`. Conclude with `⟨sw I J V w x, by rw [lift_sw, hx]⟩`. Introduce `U w x hx`. Establish `h0 : μ.lift U w (sw J I U w x) = 0` using `by rw [lift_sw', hx]`. Take `⟨S, hS, hP⟩` from `hi U w _ h0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : Tens.res g w (sw J I U w x) = 0` using `hP V g hg`. Use `show Tens.res g w x = 0`. Rewrite using `[← sw_sw J I U w x, res_sw, h1, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isTensor_flip {I J K : Cx R} (μ : Pair I J K) (hμ : μ.IsTensor) : (flipPair μ).IsTensor := by
   obtain ⟨hs, hi⟩ := hμ
@@ -167,9 +161,9 @@ lemma isTensor_flip {I J K : Cx R} (μ : Pair I J K) (hμ : μ.IsTensor) : (flip
 end LateralTheory.EtaleFoundations.FlipPf
 
 /- English proof (translation)
-Introduce `R _ I J K μ`. Use `⟨LateralTheory.EtaleFoundations.FlipPf.flipPair μ, ?_, ?_, LateralTheory.EtaleFoundations.FlipPf.isTensor_flip μ⟩` and prove the remaining obligations. Introduce `U s t w h a b`. Simplify using `only [LateralTheory.EtaleFoundations.FlipPf.flipPair, LinearMap.smul_apply, LinearMap.flip_apply, Units.smul_def]`. Introduce `U s t w h b a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LateralTheory.EtaleFoundations.FlipPf.flipPair, LinearMap.smul_apply, LinearMap.flip_apply, Units.smul_def]`. Rewrite using `[mul_comm s t]`. Conclude with `(LateralTheory.EtaleFoundations.FlipPf.negOnePow_smul_smul _ _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_complex_pairing_flip_exists : LateralTheory.EtaleFoundations.EtaleComplexPairingFlipExists := by
   intro R _ I J K μ

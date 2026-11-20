@@ -6,11 +6,11 @@ namespace GlobalTheory.Cut
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass GlobalTheory.Cut
 
 /- English proof (translation)
-Establish `key : ∀ y : X, ∃ f ∈ T, f x ≠ 0 ∧ (y ≠ x → f y = 0)`. Introduce `y`. Distinguish the cases in `hy : y = x`. Conclude with `⟨1, one_mem _, one_ne_zero, fun h => absurd hy h⟩`. Take `⟨f, hf, hne⟩` from `hsep y x hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨f - algebraMap _ _ (f y), sub_mem hf (Subalgebra.algebraMap_mem _ _), ?_, fun _ => ?_⟩` and prove the remaining obligations. Simplify `hne.symm` using `[sub_eq_zero]`. Simplify using the standard rewrite rules. Use `choose f hf h1 h2 using key`. Use `⟨∏ y, f y, prod_mem fun y _ => hf y, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun y _ => h1 y`. Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ y) (h2 y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutVal_exists_single {O X : Type} [CommRing O] [IsDomain O] [Fintype X]
     (T : Subalgebra O (X → O)) (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (x : X) :
@@ -32,11 +32,11 @@ theorem cutVal_exists_single {O X : Type} [CommRing O] [IsDomain O] [Fintype X]
     exact Finset.prod_eq_zero (Finset.mem_univ y) (h2 y hy)
 
 /- English proof (translation)
-Take `⟨g, hg, hx, hy⟩` from `cutVal_exists_single T hsep x`. Establish `h` using `huniq (fun k => ⟨g, hg⟩ * cf k) (by`. Use function extensionality and compare the values at `x'`. Establish `: (∑ k, ((fun x' => (((⟨g, hg⟩ : T) * cf k : T) : X → O) (p x')) : X' → O) * b k) x' = g (p x') * (∑ k, ((fun x' => (cf k : X → O) (p x')) : X' → O) * b k) x'`. Simplify using `[Finset.sum_apply, Finset.mul_sum, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Distinguish the cases in `hp : p x' = x`. Rewrite using `[h0 x' hp]`. Simplify using the standard rewrite rules. Rewrite using `[hy _ hp]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `h2 : g x * (cf k : X → O) x = 0`. Use `congrArg (fun c : ι → T => (c k : X → O) x) h` as an intermediate fact. Simplify using `using this`. Conclude with `(mul_eq_zero.1 h2).resolve_left hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cutVal_coord_eq_zero {O X X' ι : Type} [CommRing O] [IsDomain O] [Fintype X] [Fintype ι]
     (T : Subalgebra O (X → O)) (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y)
@@ -62,13 +62,13 @@ theorem cutVal_coord_eq_zero {O X X' ι : Type} [CommRing O] [IsDomain O] [Finty
   exact (mul_eq_zero.1 h2).resolve_left hx
 
 /- English proof (translation)
-Introduce `D i r ρ π Xs S _ hS _ f hf h0`. Take `⟨-, -, -, -, -, -, -, ⟨-, -, -, ⟨b, -, hb⟩, -⟩, -, ⟨hπ, -⟩, -⟩` from `hS`. Take `⟨cf, hcf, -⟩` from `hb f hf`. Establish `huniq : ∀ c : Fin D.R.t.factorial → D.nd.T i, (0 : S.X' → D.nd.O i) = ∑ k, ((fun x' => (c k : D.nd.X i → D.nd.O i) (S.p x')) : S.X' → D.nd.O i) * b k → c = 0`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c0, -, hc0⟩` from `hb 0 (zero_mem _)`. Rewrite using `[hc0 c hc, hc0 0 (by funext x'; simp)]`. Establish `hz : ∀ k, ∀ x ∈ Xs, x ∉ D.nd.Z i → (cf k : D.nd.X i → D.nd.O i) x = 0`. Introduce `k x hx hZ`. Use `cutVal_coord_eq_zero (D.nd.T i) (D.nd.T_sep i) S.p b huniq cf x (fun x' hp => ?_) k` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcf]`. Conclude with `h0 x' (hp ▸ hx) (hp ▸ hZ)`. Rewrite using `[hcf, Finset.sum_apply]`. Use `Ideal.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨cf k, (cf k).2, hz k, ?_⟩)` and prove the remaining obligations. Rewrite using `[hπ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_mem_ccOff :
     ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (S : IdempotentChoiceData D.nd i), GoodR D.nd i r → GoodCongruenceObjects D.nd r ρ π S → π ∈ Xs → ∀ f ∈ S.T', (∀ x', S.p x' ∈ Xs → S.p x' ∉ D.nd.Z i → f x' = 0) → f S.π' ∈ ccOff i Xs π := by

@@ -17,15 +17,15 @@ open PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics (mkGR inFrame_m
 variable {d : SD σ}
 
 /- English proof (translation)
-Simplify using `only [SD.crd, Matrix.add_apply, map_add, Finsupp.coe_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_add (X Z : Mx F E d.m d.n) (k : Fin d.m × Fin d.n × Fin 2) : d.crd (X + Z) k = d.crd X k + d.crd Z k := by
   simp only [SD.crd, Matrix.add_apply, map_add, Finsupp.coe_add, Pi.add_apply]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => d.crd M k) hZ`. Simplify using `only [SD.crd, Matrix.smul_apply, map_smul, Finsupp.smul_apply, Matrix.zero_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply, smul_eq_mul] at h`. Establish `h2` using `congrArg Prod.snd h`. Establish `e : ∀ c : AF F, (finOne F * c).2 = c.2` using `fun c => by show (1 : Af F) * c.2 = c.2`. Conclude with `one_mul _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SD.crd]`. Rewrite using `[← e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_fin {Z : Mx F E d.m d.n} (hZ : finOne F • Z = 0) (k : Fin d.m × Fin d.n × Fin 2) : (d.crd Z k).2 = 0 := by
   have h := congrArg (fun M => d.crd M k) hZ
@@ -40,7 +40,7 @@ theorem crd_fin {Z : Mx F E d.m d.n} (hZ : finOne F • Z = 0) (k : Fin d.m × F
   exact h2
 
 /- English proof (translation)
-Establish `: d.cw w (X + Z) = d.cw w X`. Simplify using `only [SD.cw] at hZ ⊢`. Rewrite using `[Matrix.map_add _ (map_add _), hZ, add_zero]`. Unfold `RD.loc`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_add_of (R : RD d) (w : InfinitePlace F) {Z : Mx F E d.m d.n} (hZ : d.cw w Z = 0) (X : Mx F E d.m d.n) :
     R.loc w (X + Z) = R.loc w X := by
@@ -54,7 +54,7 @@ def psiW (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (w : In
   (∏ w' ∈ Finset.univ.erase w, fP 1 (R.loc w' X)) * g fun k => (d.crd X k).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [vg, RD.tens, psiW]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w)]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vg_tens (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (w : InfinitePlace F) :
     vg R g = R.tens w (fP 1) (psiW R g w) := by
@@ -64,9 +64,9 @@ theorem vg_tens (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) 
   ring
 
 /- English proof (translation)
-Introduce `X Z h1 h2`. Establish `e1 : (∏ w' ∈ Finset.univ.erase w, fP 1 (R.loc w' (X + Z))) = ∏ w' ∈ Finset.univ.erase w, fP 1 (R.loc w' X)` using `Finset.prod_congr rfl fun w' hw' => by rw [loc_add_of R w' (h1 w' (Finset.ne_of_mem_erase hw'))]`. Establish `e2 : (fun k => (d.crd (X + Z) k).2) = fun k => (d.crd X k).2`. Use function extensionality and compare the values at `k`. Rewrite using `[crd_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show (d.crd X k).2 + (d.crd Z k).2 = (d.crd X k).2`. Rewrite using `[crd_fin h2, add_zero]`. Unfold `psiW`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiW_indep (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) (w : InfinitePlace F) :
     ∀ X Z, (∀ w', w' ≠ w → d.cw w' Z = 0) → finOne F • Z = 0 → psiW R g w (X + Z) = psiW R g w X := by
@@ -82,7 +82,7 @@ theorem psiW_indep (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → �
   rw [e1, e2]
 
 /- English proof (translation)
-Introduce `X Z h`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [loc_add_of R w (h w)]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gauss_indep (R : RD d) :
     ∀ X Z, (∀ w, d.cw w Z = 0) → (∏ w, fP 1 (R.loc w (X + Z))) = ∏ w, fP 1 (R.loc w X) := by
@@ -90,13 +90,13 @@ theorem gauss_indep (R : RD d) :
   exact Finset.prod_congr rfl fun w _ => by rw [loc_add_of R w (h w)]
 
 /- English proof (translation)
-Simplify using `only [fP, evX, MvPolynomial.smul_eq_C_mul, mul_one, MvPolynomial.eval_C, map_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fP_smul_one (c : ℂ) (u : Fin d.m → Fin d.n → ℂ) : fP (c • (1 : PX d.m d.n)) u = c * fP 1 u := by
   simp only [fP, evX, MvPolynomial.smul_eq_C_mul, mul_one, MvPolynomial.eval_C, map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `KMain.schwartz_polyGauss (m := d.m) (n := d.n) (2 * Real.pi) (by positivity) 1`. Conclude with `⟨φ, hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSchwartz_indicator_one : IsSw (fP (1 : PX d.m d.n)) := by
   obtain ⟨φ, hφ⟩ := KMain.schwartz_polyGauss (m := d.m) (n := d.n) (2 * Real.pi) (by positivity) 1

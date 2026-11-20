@@ -14,14 +14,14 @@ section Basic
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega) x y`.
+A detailed English derivation is pending.
 -/
 theorem orth_embedding_isometry (x y : (D.sp.X 0).V) :
     (D.sp.Y 0).hT (D.sp.iXY 0 x) (D.sp.iXY 0 y) = (D.sp.X 0).hT x y :=
   D.sp.iXY_isom 0 (by have := D.R.two_le_m; omega) x y
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Use `(D.sp.X 0).nondeg.1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← orth_embedding_isometry, hx]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orth_embedding_injective : Function.Injective (D.sp.iXY 0) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -29,7 +29,7 @@ theorem orth_embedding_injective : Function.Injective (D.sp.iXY 0) := by
   rw [← orth_embedding_isometry, hx]; simp
 
 /- English proof (translation)
-Rewrite using `[(D.sp.X 0).rank_eq, D.sp.X_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.N]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_orth_space_eq_k : finrank D.host.E (D.sp.X 0).V = D.R.k := by
   rw [(D.sp.X 0).rank_eq, D.sp.X_rank 0 (Nat.zero_le _)]
@@ -40,11 +40,11 @@ variable {D} {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.
 
 include he hz in
 /- English proof (translation)
-Establish `h : Xplus (lf D F0) ≤ LinearMap.ker ((hS D).hT.flip (D.sp.iXY 0 x))`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ show (hS D).hT (F0.e a) (D.sp.iXY 0 x) = 0`. Rewrite using `[he]`. Conclude with `c_symm0 (D.sp.hyp_orthX a x).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite `hv` using `[Set.mem_singleton_iff]`. Substitute `hv` using the available equality. Use `show (hS D).hT F0.z (D.sp.iXY 0 x) = 0`. Rewrite using `[hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `D7.zmOf`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, c_symm0 (D.sp.zm_orth x), smul_zero]`. Conclude with `c_mem_orth.2 fun v hv => h hv`.
+A detailed English derivation is pending.
 -/
 theorem orth_embedding_mem_orth_plus (x : (D.sp.X 0).V) : D.sp.iXY 0 x ∈ orth (hS D) (Xplus (lf D F0)) := by
   have h : Xplus (lf D F0) ≤ LinearMap.ker ((hS D).hT.flip (D.sp.iXY 0 x)) := by
@@ -64,11 +64,11 @@ theorem orth_embedding_mem_orth_plus (x : (D.sp.X 0).V) : D.sp.iXY 0 x ∈ orth 
 
 include he in
 /- English proof (translation)
-Establish `hx' : D.sp.iXY 0 x ∈ Submodule.span D.host.E (Set.range D.sp.hypE)` using `by rw [← he]; exact hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hx'`. Establish `h0 : ∀ i, c i = 0`. Introduce `i`. Establish `h1` using `(D.sp.hyp_orthX i x).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hc, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, D.sp.hyp_ef, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Simplify using `using h1`. Apply `orth_embedding_injective D` to reduce the goal to its premises. Rewrite using `[← hc, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun i _ => by rw [h0 i, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_embedding_mem_isotropic {x : (D.sp.X 0).V} (hx : D.sp.iXY 0 x ∈ Xsp (lf D F0)) : x = 0 := by
   have hx' : D.sp.iXY 0 x ∈ Submodule.span D.host.E (Set.range D.sp.hypE) := by rw [← he]; exact hx
@@ -87,7 +87,7 @@ theorem eq_zero_of_embedding_mem_isotropic {x : (D.sp.X 0).V} (hx : D.sp.iXY 0 x
 include he hz in
 
 /- English proof (translation)
-Introduce `τ x hx`. Establish `h1` using `p_posX D (Tu D u) hT (lf D F0) τ (D.sp.iXY 0 x) (orth_embedding_mem_orth_plus F0 he hz x) (fun h => hx (eq_zero_of_embedding_mem_isotropic F0 he h))`. Unfold `nrm at h1`. Rewrite `h1` using `[orth_embedding_isometry]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem orth_space_posDef_every_place (hT : 0 < Tu D u) : Cnt.IsPosDef (D.sp.X 0).hT := by
   intro τ x hx
@@ -103,14 +103,14 @@ section Lat
 variable {D : D7} {T : D.host.E} (Λ : LatV D) (F : LFlag (hS D) D.R.rS T)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_orthLattice_iff_mem_sub {x : (D.sp.X 0).V} : x ∈ L0X D Λ F ↔ D.sp.iXY 0 x ∈ L0sub Λ F := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx y hy`. Take `⟨l, hl, ξ, hξ, e⟩` from `Submodule.mem_sup.1 ((mem_orthLattice_iff_mem_sub Λ F).1 hx).1.1`. Take `⟨l', hl', ξ', hξ', e'⟩` from `Submodule.mem_sup.1 ((mem_orthLattice_iff_mem_sub Λ F).1 hy).1.1`. Rewrite using `[← orth_embedding_isometry, ← e, ← e']`. Establish `h1 : (hS D).hT l ξ' = 0` using `c_symm0 (c_mem_orth.1 hl.2 ξ' hξ')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (hS D).hT ξ l' = 0` using `c_mem_orth.1 hl'.2 ξ hξ`. Establish `h3 : (hS D).hT ξ ξ' = 0` using `p_X_iso F hξ hξ'`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[h1, h2, h3, add_zero, add_zero, add_zero]`. Conclude with `i_int Λ hu hl.1 hl'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthLattice_isIntegral_of_unimodular (hu : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT Λ) :
     Formalism.HermitianLatticesTheory.IsIntegralLat (D.sp.X 0).hT (L0X D Λ F) := by

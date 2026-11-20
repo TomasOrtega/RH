@@ -7,17 +7,15 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h R _ _ _ _ _ _ _ _ _ u k hu hk`. Take `⟨-, -, h2, hc⟩` from `h`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hc, hc, star_star]`. Establish `hss : ∀ z : R ⊗[F] E, sigR R σ (sigR R σ z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = _`. Rewrite using `[hσ]`. Set `b : Module.Basis (Fin 2) R (R ⊗[F] E)` to `Algebra.TensorProduct.basis R (Module.finBasisOfFinrankEq F E h2)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hku : IsUnit k`. Establish `h1 : IsUnit (algebraMap R (R ⊗[F] E) k)`. Rewrite using `[hk]`. Conclude with `hu.mul (hu.map _)`. Establish `h3` using `h1.map (Algebra.norm R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Algebra.norm_algebraMap_of_basis b, Fintype.card_fin]`. Conclude with `(isUnit_pow_iff two_ne_zero).1 h3`. Use `⟨hku, ?_⟩` and prove the remaining obligations. Use `letI : StarRing (R ⊗[F] E) := { star := sigR R σ star_involutive := hss star_mul := fun x y => by rw [map_mul, mul_comm] star_add := fun x y => map_add _ x y }`. Use `haveI : ContinuousStar (R ⊗[F] E) := ⟨GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ⟩`.
-
-Rewrite using `[modu, modu, dif_pos hu, dif_pos hku]`. Conclude with `GlobalTheory.JR.ModuleNorm.distribHaarChar_eq_norm R (R ⊗[F] E) b.equivFun.symm (IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap) (IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap) hu.unit hku.unit hk`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modu_eq_modu_norm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], ∀ (u : R ⊗[F] E) (k : R), IsUnit u → algebraMap R (R ⊗[F] E) k = u * sigR R σ u → IsUnit k ∧ modu (R ⊗[F] E) u = modu R k := by
   intro F E _ _ _ _ _ σ h R _ _ _ _ _ _ _ _ _ u k hu hk

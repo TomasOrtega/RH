@@ -8,7 +8,7 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer.TopNil
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GroundTheory.PAdicHodge.IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l ⟨y, GroundTheory.PAdicHodge.mem_normInteger.2 hy⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h` using `GroundTheory.PAdicHodge.IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus (K := ℂ_[l]) l a`. Rewrite `h` using `[ha]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_thB_wB {l : ℕ} [Fact l.Prime] (y : ℂ_[l]) (hy : ‖y‖ ≤ 1) :
     ∃ a, thB l (wB l a) = y := by
@@ -21,11 +21,11 @@ theorem exists_thB_wB {l : ℕ} [Fact l.Prime] (y : ℂ_[l]) (hy : ‖y‖ ≤ 1
   exact h
 
 /- English proof (translation)
-Use `set c : ℂ_[l] := thB l (tch l x) with hc`. Establish `hpos : 0 < ‖thB l ϖ‖` using `norm_pos_iff.2 hϖ`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hpos hx`. Use `⟨N + 1, Nat.succ_pos N, ?_⟩` and prove the remaining obligations. Establish `hle : ‖c‖ ^ (N + 1) ≤ ‖thB l ϖ‖`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hy : ‖c ^ (N + 1) / thB l ϖ‖ ≤ 1`. Rewrite using `[norm_div, norm_pow, div_le_one hpos]`. Conclude with `hle`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `exists_thB_wB _ hy`. Use `⟨wB l a, hS a, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, FB, pow_one, RingHom.mem_ker, map_sub, map_pow, map_mul, ha, ← hc]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem near_tch_pow {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)) (hS : ∀ a, wB l a ∈ S)
     (ϖ : Formalism.Per6.BdRp l) (hϖ : thB l ϖ ≠ 0) (x : Tl l) (hx : ‖thB l (tch l x)‖ < 1) :
@@ -50,7 +50,7 @@ theorem near_tch_pow {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp 
   simp
 
 /- English proof (translation)
-Introduce `S hS ϖ hϖ x hx` and use `near_tch_pow S hS ϖ hϖ x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)), (∀ a, wB l a ∈ S) →
     ∀ (ϖ : Formalism.Per6.BdRp l), thB l ϖ ≠ 0 → ∀ x : Tl l, ‖thB l (tch l x)‖ < 1 →

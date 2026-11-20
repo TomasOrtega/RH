@@ -35,9 +35,9 @@ abbrev NabP : Submodule (𝓞 X.K) (Fin (dimP W Ch sel mu P hX) → X.K) :=
 abbrev eP (i : Fin (dimP W Ch sel mu P hX)) : Fin (dimP W Ch sel mu P hX) → X.K := Pi.single i 1
 
 /- English proof (translation)
-Establish `e : ∀ x, (fun c => (zOf W Ch sel mu P hX x).1 ((mtildeKGSD W Ch sel mu).outSec.rep c)) = ((formK W Ch sel mu P hX x).1 : _ → _)`. Introduce `x`. Use function extensionality and compare the values at `c`. Rewrite using `[zOf_val, ← GSD.resOf_apply _ (mtildeKOk W Ch sel mu hX) (mtildeKGSD W Ch sel mu).outSec]`. Use `show (((resK W Ch sel mu hX) ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x))).1 : _ → _) c = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Unfold `ipK GSD.ip GSD.ipOf`. Rewrite using `[e, e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipK_zOf (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
     ipK W Ch sel mu P hX (zOf W Ch sel mu P hX x) (zOf W Ch sel mu P hX y) =
@@ -53,7 +53,7 @@ theorem ipK_zOf (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
   rw [e, e]
 
 /- English proof (translation)
-Establish `hP : (Nat.card P.grp : X.K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `mul_left_cancel₀ hP ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.rowFormClassSum_principal_eq_card_mul_level W Ch sel mu P hX, ipK_zOf]`. Conclude with `LiftForms.csum_lvlForm _ _ _ _ x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipLev_zOf (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
     ipLev W Ch sel mu P hX (zOf W Ch sel mu P hX x) (zOf W Ch sel mu P hX y) =
@@ -77,7 +77,7 @@ section TC
 attribute [local instance] starE
 
 /- English proof (translation)
-Introduce `x` and use `B.starLL_cx x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sig_starCx (B : Base) : StarCx (X := B.fields) (sig B) := fun x => B.starLL_cx x
 

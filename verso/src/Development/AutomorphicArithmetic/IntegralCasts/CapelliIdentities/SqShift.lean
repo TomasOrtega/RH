@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ _ Γ _ D hD f hf g`. Establish `hD' : MeasureTheory.IsFundamentalDomain (↥Γ) ((fun y : G => y * g⁻¹) ⁻¹' D) μ` using `hD.preimage_of_equiv (MeasureTheory.measurePreserving_mul_right μ g⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ y => by show ((γ : G) * y) * g⁻¹ = (γ : G) * (y * g⁻¹)`. Conclude with `mul_assoc _ _ _)`. Establish `h1` using `(MeasureTheory.measurePreserving_mul_right μ g).setIntegral_preimage_emb (measurableEmbedding_mulRight g) f ((fun y : G => y * g⁻¹) ⁻¹' D)`. Establish `h2 : (fun y : G => y * g) ⁻¹' ((fun y : G => y * g⁻¹) ⁻¹' D) = D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Conclude with `hD'.setIntegral_eq hD (fun γ y => hf γ γ.2 y)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk59.sq_shift :
     ∀ {G : Type} [inst : Group G]

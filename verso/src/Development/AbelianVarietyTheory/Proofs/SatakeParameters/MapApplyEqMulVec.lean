@@ -7,7 +7,7 @@ open NumberField
 open scoped Matrix
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[← LinearMap.toMatrix'_mulVec f x]`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_apply_eq_mulVec {E K : Type} [Field E] [Field K] (ρ : E →+* K) {N n : ℕ}
     (f : (Fin N → E) →ₗ[E] (Fin n → E)) (x : Fin N → E) :
@@ -17,7 +17,7 @@ theorem map_apply_eq_mulVec {E K : Type} [Field E] [Field K] (ρ : E →+* K) {N
   simp [Matrix.mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Unfold `locSp`. Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Use `congr 1`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Conclude with `map_apply_eq_mulVec ρ f x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locSp_map {E : Type} [Field E] [NumberField E] (W K : Type) [CommRing W] [Field K] [Algebra W K]
     (ρ : E →+* K) {N n : ℕ} (f : (Fin N → E) →ₗ[E] (Fin n → E)) (Λ : Submodule (𝓞 E) (Fin N → E)) :

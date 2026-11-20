@@ -17,7 +17,7 @@ def mInt (μ : Measure H) {m n : Type} (F : H → Matrix m n ℂ) : Matrix m n �
   Matrix.of fun i j => ∫ h, F h i j ∂μ
 
 /- English proof (translation)
-The claim follows from `(hF.matrix_elem i j).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 lemma integrable_entry (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {m n : Type}
     {F : H → Matrix m n ℂ} (hF : Continuous F) (i : m) (j : n) :
@@ -25,7 +25,7 @@ lemma integrable_entry (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {m n : Ty
   (hF.matrix_elem i j).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mInt, Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `rw [integral_finsetSum _ (fun k _ => (integrable_entry μ hF k j).const_mul (A i k))]`. Simplify using `only [integral_const_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mul_mInt (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {l m n : Type} [Fintype m]
     (A : Matrix l m ℂ) {F : H → Matrix m n ℂ} (hF : Continuous F) :
@@ -36,7 +36,7 @@ lemma mul_mInt (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {l m n : Type} [F
   simp only [integral_const_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mInt, Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `rw [integral_finsetSum _ (fun k _ => (integrable_entry μ hF i k).mul_const (B k j))]`. Simplify using `only [integral_mul_const]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mInt_mul (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {l m n : Type} [Fintype m]
     {F : H → Matrix l m ℂ} (hF : Continuous F) (B : Matrix m n ℂ) :
@@ -47,7 +47,7 @@ lemma mInt_mul (μ : Measure H) [IsFiniteMeasureOnCompacts μ] {l m n : Type} [F
   simp only [integral_mul_const]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mInt, integral_const]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma mInt_const (μ : Measure H) {m n : Type} (C : Matrix m n ℂ) :
     mInt μ (fun _ => C) = μ.real Set.univ • C := by
@@ -55,7 +55,7 @@ lemma mInt_const (μ : Measure H) {m n : Type} (C : Matrix m n ℂ) :
   simp [mInt, integral_const]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mInt, Matrix.of_apply]`. Conclude with `integral_mul_left_eq_self (fun h => F h i j) g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mInt_left (μ : Measure H) [μ.IsMulLeftInvariant] {m n : Type} (F : H → Matrix m n ℂ)
     (g : H) : mInt μ (fun h => F (g * h)) = mInt μ F := by
@@ -66,17 +66,15 @@ lemma mInt_left (μ : Measure H) [μ.IsMulLeftInvariant] {m n : Type} (F : H →
 end Integral
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ N M π σ hπ hσ T X hT hXT`. Set `_ : MeasurableSpace H` to `borel H`. Establish `: BorelSpace H` using `⟨rfl⟩`. Use `set μ : Measure H := Measure.haar with hμ`. Use `set F : H → Matrix (Fin M) (Fin N) ℂ := fun h => ((σ h : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ) * X * ((π h⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) with hFdef`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπi : Continuous (fun h : H => ((π h⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ))` using `(show Continuous (fun g : H => ((π g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) from hπ).comp continuous_inv`. Establish `hF : Continuous F` using `((show Continuous (fun g : H => ((σ g : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ)) from hσ).matrix_mul continuous_const).matrix_mul hπi`. Use `set S₀ := mInt μ F with hS₀`. Establish `hequi : ∀ g, ((σ g : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ) * S₀ = S₀ * ((π g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hFg : Continuous (fun h => F (g * h))` using `hF.comp (continuous_const.mul continuous_id)`. Establish `hpt : (fun h => ((σ g : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ) * F h) = (fun h => F (g * h) * ((π g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ))`. Use function extensionality and compare the values at `h`. Simplify using `only [hFdef, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((σ g : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ), ← Units.val_mul, ← map_mul, ← Units.val_mul (π (g * h)⁻¹), ← map_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS₀, mul_mInt μ _ hF, hpt, ← mInt_mul μ hFg, mInt_left μ F g]`. Establish `hST : S₀ * T = μ.real Set.univ • (1 : Matrix (Fin M) (Fin M) ℂ)`. Establish `hpt : (fun h => F h * T) = (fun _ => (1 : Matrix (Fin M) (Fin M) ℂ))`. Use function extensionality and compare the values at `h`. Simplify using `only [hFdef]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hT h⁻¹, ← Matrix.mul_assoc, Matrix.mul_assoc _ X T, hXT, Matrix.mul_one, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite using `[hS₀, mInt_mul μ hF, hpt, mInt_const]`. Establish `hc : 0 < μ.real Set.univ`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos (isOpen_univ.measure_pos μ Set.univ_nonempty).ne' (measure_ne_top μ _)`.
-
-Use `⟨(μ.real Set.univ)⁻¹ • S₀, fun g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, hequi g, Matrix.smul_mul]`. Rewrite using `[Matrix.smul_mul, hST, smul_smul, inv_mul_cancel₀ hc.ne', one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avStep : AvStep := by
   intro H _ _ _ _ _ N M π σ hπ hσ T X hT hXT

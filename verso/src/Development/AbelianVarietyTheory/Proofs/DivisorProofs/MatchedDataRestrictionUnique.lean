@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 namespace GlobalTheory.ThKRealConj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.real_maps_relevant_space`.
+A detailed English derivation is pending.
 -/
 theorem realMaps_transport : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
@@ -30,9 +30,9 @@ theorem realMaps_transport : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] 
   GlobalTheory.T.real_maps_relevant_space
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [Model.SoLoc, Model.IsLinBar, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ι, ⟨a, b, c⟩, h2⟩`. Conclude with `⟨h1, ι, ⟨a, b, c⟩, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, ι, ⟨a, b, c⟩, h2⟩`. Conclude with `⟨h1, ι, ⟨a, b, c⟩, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem soLoc_reG' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (G : Geo σ a a') (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a')) (ψ : AddChar (AF F) ℂ) {v : Pl F}
@@ -44,7 +44,7 @@ theorem soLoc_reG' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   · rintro ⟨h1, ι, ⟨a, b, c⟩, h2⟩; exact ⟨h1, ι, ⟨a, b, c⟩, h2⟩
 
 /- English proof (translation)
-Unfold `Model.So`. Rewrite using `[soLoc_reG']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem so_reG' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (G : Geo σ a a') (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a')) (ψ : AddChar (AF F) ℂ) {v : Pl F}

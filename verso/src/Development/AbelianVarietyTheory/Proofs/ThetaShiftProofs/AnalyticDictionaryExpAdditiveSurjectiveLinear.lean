@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.ArcPts
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H inst D l c O _ β _ _ b a Λ`. Use `⟨GtAnModel.isAdd Λ, GtAnModel.analyticTorusPoint_surjective Λ, ?_⟩` and prove the remaining obligations. Take `rfl : inst = H.starRing` from `Λ.star_eq`. Conclude with `GtAnModel.gtAct Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ex0_additive_surjective_equivariant : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)

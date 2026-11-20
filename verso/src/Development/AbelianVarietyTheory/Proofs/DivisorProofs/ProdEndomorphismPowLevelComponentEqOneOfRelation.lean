@@ -5,7 +5,7 @@ open GlobalTheory.HTLat
 namespace GlobalTheory.TateRel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, Tate.lev_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lev_sum {M : Type} [CommGroup M] {l : ℕ} {ι : Type} (s : Finset ι) (f : ι → Tate l M) (N : ℕ) :
     (∑ i ∈ s, f i).lev N = ∏ i ∈ s, (f i).lev N := by
@@ -15,11 +15,11 @@ theorem lev_sum {M : Type} [CommGroup M] {l : ℕ} {ι : Type} (s : Finset ι) (
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, Tate.lev_add, ih]
 
 /- English proof (translation)
-Establish `h0 : ((∑ i, c i • Tate.map l (φ i)) t).lev N = 1` using `by rw [h]; rfl`. Rewrite `h0` using `[LinearMap.sum_apply, lev_sum]`. Rewrite using `[← h0]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Tate.lev_smul, Tate.lev_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set y := φ i (t.lev N)`. Establish `hy : y ^ ((l ^ N : ℕ) : ℤ) = 1`. Rewrite using `[zpow_natCast, ← map_pow, Tate.lev_pow, map_one]`. Establish `hc : ((GlobalTheory.PDiv.digit N (c i) : ℕ) : ZMod (l ^ N)) = ((m i : ℤ) : ZMod (l ^ N))`. Rewrite using `[GlobalTheory.PDiv.cast_digit, hm i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : (((GlobalTheory.PDiv.digit N (c i) : ℕ) : ℤ) : ZMod (l ^ N)) = ((m i : ℤ) : ZMod (l ^ N))`. Rewrite using `[Int.cast_natCast]`. Conclude with `hc`. Rewrite `hc'` using `[ZMod.intCast_eq_intCast_iff']`. Rewrite using `[zpow_eq_zpow_emod (m i) hy, ← hc', ← zpow_eq_zpow_emod _ hy, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_eq_one (M : Type) [CommGroup M] (l : ℕ) [Fact l.Prime] (n : ℕ)
     (φ : Fin n → (M →* M)) (c : Fin n → ℤ_[l]) (h : ∑ i, c i • Tate.map l (φ i) = 0) (N : ℕ)

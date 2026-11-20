@@ -7,33 +7,27 @@ namespace GlobalTheory.LocFinIso
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hU1 : ∀ e, U 1 e = e`. Introduce `e`. Establish `h` using `hint 1 1 e`. Rewrite `h` using `[← MonoidAlgebra.one_def, one_smul, one_smul]`. Conclude with `(hg.1 h).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ (c : ℂ) e, (MonoidAlgebra.single (1 : Mon) c : MonoidAlgebra ℂ Mon) • g e = g (c • e)`. Introduce `c e`. Rewrite using `[hint, hU1]`. Set `gi` to `(AddEquiv.ofBijective g hg).symm`. Establish `hggi : ∀ n, g (gi n) = n` using `fun n => (AddEquiv.ofBijective g hg).apply_symm_apply n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgig : ∀ e, gi (g e) = e` using `fun e => (AddEquiv.ofBijective g hg).symm_apply_apply e`. Use `{ exists_isCompl := fun S => ?_ }` and prove the remaining obligations. Set `SE : Submodule ℂ E` to `{ carrier := {e | g e ∈ S} add_mem' := fun {a b} ha hb => by simpa using S.add_mem ha hb zero_mem' := by simp smul_mem' := fun c e he => by show g (c • e) ∈ S`. Rewrite using `[← hsc]`. Conclude with `S.smul_mem _ he }`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSE : ∀ κ, ∀ e ∈ SE, U κ e ∈ SE`. Introduce `κ e he`. Use `show g (U κ e) ∈ S`. Use `hint κ 1 e` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← this]`. Conclude with `S.smul_mem _ he`. Establish `hT : ∀ κ, ∀ t ∈ SEᗮ, U κ t ∈ SEᗮ`. Introduce `κ t ht`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Set `Ur : SE →ₗ[ℂ] SE` to `(U κ).restrict (fun e he => hSE κ e he)`. Establish `hinj : Function.Injective Ur`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : U κ (x : E) = 0`. Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[Ur, LinearMap.restrict_apply]`. Establish `: ⟪(x : E), (x : E)⟫_ℂ = 0` using `by rw [← hU κ, h0, inner_zero_left]`. Conclude with `Subtype.ext (by simpa using this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s', hs'⟩` from `(LinearMap.injective_iff_surjective.mp hinj) ⟨s, hs⟩`. Establish `hs'' : U κ (s' : E) = s` using `congrArg Subtype.val hs'`. Rewrite using `[← hs'', hU]`. Conclude with `(Submodule.mem_orthogonal _ _).mp ht _ s'.2`. Set `T : Submodule (MonoidAlgebra ℂ Mon) N` to `{ carrier := {n | gi n ∈ SEᗮ} add_mem' := fun {a b} ha hb => by show gi (a + b) ∈ SEᗮ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `SEᗮ.add_mem ha hb`. Use the proof step `zero_mem' := by show gi 0 ∈ SEᗮ; rw [map_zero]; exact SEᗮ.zero_mem`. Use the proof step `smul_mem' := fun r n hn => by show gi (r • n) ∈ SEᗮ`. Proceed by induction on `r using MonoidAlgebra.induction_linear with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => rw [zero_smul, map_zero]`. Conclude with `SEᗮ.zero_mem`. Consider the case `add x y hx hy => rw [add_smul, map_add]`. Conclude with `SEᗮ.add_mem hx hy`. Consider the case `single κ c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hggi n, hint, hgig]`. Conclude with `SEᗮ.smul_mem c (hT κ _ hn) }`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `n hS hTn`.
-
-Establish `h1 : gi n ∈ SE` using `by show g (gi n) ∈ S; rw [hggi]; exact hS`. Establish `h2 : gi n = 0` using `(Submodule.disjoint_def.mp SE.orthogonal_disjoint) _ h1 hTn`. Rewrite using `[← hggi n, h2, map_zero]`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `n`.
-
-Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.mp (show gi n ∈ SE ⊔ SEᗮ by rw [Submodule.sup_orthogonal_of_hasOrthogonalProjection]; trivial)`. Rewrite using `[Submodule.mem_sup]`. Use `⟨g p, hp, g q, ?_, ?_⟩` and prove the remaining obligations. Use `show gi (g q) ∈ SEᗮ`. Rewrite using `[hgig]`.
-
-Conclude with `hq`. Rewrite using `[← map_add, hpq, hggi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemisimple_of_unitary_model {Mon : Type} [Monoid Mon] {N : Type} [AddCommGroup N]
     [Module (MonoidAlgebra ℂ Mon) N] {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
@@ -118,7 +112,7 @@ namespace GlobalTheory.LocFinIso
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.adjoint_inner_right, ← Matrix.toEuclideanLin_conjTranspose_eq_adjoint]`. Establish `h : A.conjTranspose * A = 1` using `Matrix.mem_unitaryGroup_iff'.mp hA`. Use `congr 1`. Rewrite using `[Matrix.toEuclideanLin_apply, Matrix.toEuclideanLin_apply]`. Simplify using `[Matrix.mulVec_mulVec, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_toEuclideanLin_of_unitary {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ)
     (hA : A ∈ Matrix.unitaryGroup (Fin m) ℂ) (x y : EuclideanSpace ℂ (Fin m)) :
@@ -130,7 +124,7 @@ theorem inner_toEuclideanLin_of_unitary {m : ℕ} (A : Matrix (Fin m) (Fin m) �
   simp [Matrix.mulVec_mulVec, h]
 
 /- English proof (translation)
-Simplify using `[Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 example (m : ℕ) (A : Matrix (Fin m) (Fin m) ℂ) (e : EuclideanSpace ℂ (Fin m)) (i : Fin m) :
     (Matrix.toEuclideanLin A e) i = ∑ j, A i j * e j := by
@@ -142,39 +136,33 @@ namespace GlobalTheory.LocFinIso
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `G _ K V _ _ ρ D h1 hmul _hinv hst hloc`. Use `set π := repD ρ D K h1 hmul hst with hπ`. Establish `hspan : ∀ (m : ℕ) (b : Fin m → V) (A : G → Matrix (Fin m) (Fin m) ℂ), (∀ k ∈ K, ∀ j, ρ k (b j) = ∑ i, A k i j • b i) → ∀ k ∈ K, ∀ y ∈ Submodule.span ℂ (Set.range b), ρ k y ∈ Submodule.span ℂ (Set.range b)`. Introduce `m b A hact k hk y hy`. Establish `hle : Submodule.span ℂ (Set.range b) ≤ (Submodule.span ℂ (Set.range b)).comap (ρ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[hact k hk j]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hle hy`. Set `Wsub : ∀ (m : ℕ) (b : Fin m → V) (A : G → Matrix (Fin m) (Fin m) ℂ), (∀ k ∈ K, ∀ j, ρ k (b j) = ∑ i, A k i j • b i) → Submodule (MonoidAlgebra ℂ (subK K h1 hmul)) π.asModule` to `fun m b A hact => { carrier := {u | ((π.asModuleEquiv u : D) : V) ∈ Submodule.span ℂ (Set.range b)} add_mem' := fun {u w} hu hw => by`. Rewrite `hu`, `hw`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[map_add, Submodule.coe_add]`. Conclude with `Submodule.add_mem _ hu hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := by`. Rewrite using `[Set.mem_setOf_eq]`. Rewrite using `[map_zero, Submodule.coe_zero]`. Conclude with `Submodule.zero_mem _`. Use the proof step `smul_mem' := fun a u hu => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[hπ, smul_val]`. Conclude with `Submodule.sum_mem _ fun κ _ => Submodule.smul_mem _ _ (hspan m b A hact κ κ.2 _ hu) }`. Establish `hW : ∀ (m : ℕ) (b : Fin m → V) (A : G → Matrix (Fin m) (Fin m) ℂ) (hact : ∀ k ∈ K, ∀ j, ρ k (b j) = ∑ i, A k i j • b i), LinearIndependent ℂ b → (∀ i, b i ∈ D) → (∀ k ∈ K, A k ∈ Matrix.unitaryGroup (Fin m) ℂ) → IsSemisimpleModule (MonoidAlgebra ℂ (subK K h1 hmul)) (Wsub m b A hac …`. Introduce `m b A hact hli hbD hun`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `vec : EuclideanSpace ℂ (Fin m) → V` to `fun e => ∑ i, e i • b i`. Establish `vecD : ∀ e, vec e ∈ D` using `fun e => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hbD i)`. Establish `vecS : ∀ e, vec e ∈ Submodule.span ℂ (Set.range b)` using `fun e => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `gfun : EuclideanSpace ℂ (Fin m) → Wsub m b A hact` to `fun e => ⟨π.asModuleEquiv.symm ⟨vec e, vecD e⟩, by show ((π.asModuleEquiv (π.asModuleEquiv.symm ⟨vec e, vecD e⟩) : D) : V) ∈ Submodule.span ℂ (Set.range b)`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `vecS e⟩`. Establish `gval : ∀ e, ((π.asModuleEquiv (gfun e : π.asModule) : D) : V) = vec e`. Introduce `e`. Simplify using `[gfun]`. Establish `gext : ∀ (u w : Wsub m b A hact), ((π.asModuleEquiv (u : π.asModule) : D) : V) = ((π.asModuleEquiv (w : π.asModule) : D) : V) → u = w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `u w h`. Conclude with `Subtype.ext (π.asModuleEquiv.injective (Subtype.ext h))`. Set `g : EuclideanSpace ℂ (Fin m) →+ Wsub m b A hact` to `AddMonoidHom.mk' gfun (by`. Introduce `e f`. Apply `gext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_add, map_add, Submodule.coe_add, gval, gval, gval]`. Simplify using `[vec, add_smul, Finset.sum_add_distrib])`. Establish `hg : ∀ e, g e = gfun e` using `fun e => rfl`. Establish `hbij : Function.Bijective g`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e f hef`. Rewrite `hef` using `[hg, hg]`. Establish `h` using `congrArg (fun u : Wsub m b A hact => ((π.asModuleEquiv (u : π.asModule) : D) : V)) hef`. Simplify using `only [gval] at h`. Establish `h0 : ∑ i, (e i - f i) • b i = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vec] at h`. Simplify using `[sub_smul, Finset.sum_sub_distrib, h]`. Use `Fintype.linearIndependent_iff.mp hli _ h0` as an intermediate fact. Use extensionality with `i`. Conclude with `sub_eq_zero.mp (this i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u`. Establish `hu : ((π.asModuleEquiv (u : π.asModule) : D) : V) ∈ Submodule.span ℂ (Set.range b)` using `u.2`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hu`. Use `⟨WithLp.toLp 2 c, ?_⟩` and prove the remaining obligations. Apply `gext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, gval, ← hc]`. Establish `hint : ∀ (κ : subK K h1 hmul) (c : ℂ) (e : EuclideanSpace ℂ (Fin m)), MonoidAlgebra.single κ c • g e = g (c • Matrix.toEuclideanLin (A κ) e)`. Introduce `κ c e`. Apply `gext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, Representation.asModuleEquiv_map_smul, Representation.asAlgebraHom_single, hg, hg, gval, LinearMap.smul_apply, Submodule.coe_smul,`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `]`. Establish `hρ : ((π κ (π.asModuleEquiv (gfun e : π.asModule)) : D) : V) = ρ κ (vec e)`. Rewrite using `[← gval]`. Both sides reduce to the same expression. Rewrite using `[hρ]`.
-
-Simplify using `only [vec, map_sum, map_smul, hact κ κ.2, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [vec, Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => by rw [mul_comm (e.ofLp x)]`. Conclude with `isSemisimple_of_unitary_model (fun κ => Matrix.toEuclideanLin (A κ)) (fun κ => inner_toEuclideanLin_of_unitary _ (hun κ κ.2)) g hbij hint`.
-
-Use `choose m b A hli hbD hx hact hun using hloc`. Set `p : π.asModule → Submodule (MonoidAlgebra ℂ (subK K h1 hmul)) π.asModule` to `fun u => Wsub (m _ (π.asModuleEquiv u).2) (b _ (π.asModuleEquiv u).2) (A _ (π.asModuleEquiv u).2) (hact _ (π.asModuleEquiv u).2)`. Use `isSemisimpleModule_of_isSemisimpleModule_submodule' (p := p) (fun u => hW _ _ _ (hact _ (π.asModuleEquiv u).2) (hli _ _) (hbD _ _) (hun _ _)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.eq_top_iff']`. Introduce `u`.
-
-Use `Submodule.mem_iSup_of_mem u ?_` and prove the remaining obligations. Use `show ((π.asModuleEquiv u : D) : V) ∈ Submodule.span ℂ (Set.range (b _ (π.asModuleEquiv u).2))`. Conclude with `hx _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSemisimpleModule_repD_of_locally_unitary : ∀ (G : Type) [Group G] (K : Set G) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : G →* Module.End ℂ V) (D : Submodule ℂ V) (h1 : (1 : G) ∈ K) (hmul : ∀ k ∈ K, ∀ k' ∈ K, k * k' ∈ K), (∀ k ∈ K, k⁻¹ ∈ K) → ∀ (hst : ∀ k ∈ K, ∀ x ∈ D, ρ k x ∈ D), (∀ x ∈ D, ∃ (m : ℕ) (b : Fin m → V) (A : G → Matrix (Fin m) (Fin m) ℂ), LinearIndependent ℂ b ∧ (∀ i, b i ∈ D) ∧ x ∈ Submodule.span ℂ (Set.range b) ∧ (∀ k ∈ K, ∀ j, ρ k (b j) = ∑ i, A k i j • b i) ∧ (∀ k ∈ K, A k ∈ Matrix.unitaryGroup (Fin m) ℂ)) → IsSemisimpleModule (MonoidAlgebra ℂ (subK K h1 hmul)) (repD ρ D K h1 hmul hst).asModule := by
   intro G _ K V _ _ ρ D h1 hmul _hinv hst hloc

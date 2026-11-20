@@ -15,11 +15,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hAC hHS k _ X _ p D hX L N`. Take `⟨P₀, b, s, t, hL, hG⟩` from `GlobalTheory.VolBr.exists_good_pair hAC k X p D hX L`. Take `⟨c₀, hc₀, hgen⟩` from `GlobalTheory.T.exists_globalGeneration_ample_pair_multiples k X p D hX P₀ hG.ample`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.exists_small_section_add_multiple_ample_after_shift k X p D hX P₀ N s hG.ample hG.s_mem.1 hG.s_ne`. Establish `hc : c₁ ≤ c₀ * (c₁ + 1)` using `by nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcpos : 0 < c₀ * (c₁ + 1)` using `Nat.mul_pos hc₀ (Nat.succ_pos _)`. Take `⟨u₁, hu₁⟩` from `hc₁ (c₀ * (c₁ + 1)) hc hcpos`. Take `⟨u₂, hu₂⟩` from `GlobalTheory.T.exists_shift_smallSectionCount_regime_from_radius_one hAC hHS k X p D hX P₀ hG.ample hG.nef.semiPos`. Use `⟨shiftA P₀ (max 0 (max u₁ u₂)), b, s, t, c₀ * (c₁ + 1), hL, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.hermPairSections_good_shiftSecondBundleNormPair k X p D hX P₀ b s t _ (le_max_left _ _) hG`.
-
-Conclude with `(GlobalTheory.T.shiftSecondBundleNormPair_norm_ball_generation k X p P₀ _).2.2 _ (hgen (c₁ + 1))`. Conclude with `hu₂ _ (le_trans (le_max_right _ _) (le_max_right _ _))`. Conclude with `hu₁ _ (le_trans (le_max_left _ _) (le_max_right _ _))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_good_pair_twist : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ L N : HermLB p, ∃ (P : Pair p) (b : ℕ) (s t : X.functionField) (c : ℕ),

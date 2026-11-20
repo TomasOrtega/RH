@@ -173,7 +173,7 @@ def ProductFrameSym : Prop :=
     ∃ h : PS C 2 d, B.IsCanonGauge C h ∧ ProductFrameFor g B ε h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] : CompleteSpace ℂ_[p] ∧ IsAlgClosed ℂ_[p] ∧ CharZero ℂ_[p] ∧
     IsUltrametricDist ℂ_[p] :=

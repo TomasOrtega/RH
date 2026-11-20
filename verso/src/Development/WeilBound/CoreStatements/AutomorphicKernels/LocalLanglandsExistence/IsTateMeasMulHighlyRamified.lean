@@ -15,9 +15,9 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hs0 : 0 < valuation k (s : k)` using `by simp [zero_lt_iff]`. Establish `hmem : u * s⁻¹ ∈ unitFilt k m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hus, mul_inv_cancel₀ hs0.ne']`. Establish `e : ((u * s⁻¹ : kˣ) : k) - 1 = ((u : k) - s) * (s : k)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, sub_mul, mul_inv_cancel₀ s.ne_zero]`. Rewrite using `[e, map_mul, map_inv₀, mul_inv_le_iff₀ hs0]`. Conclude with `h`. Use `hθ _ hmem` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_of_close {θ : kˣ →* ℂˣ} {m : ℕ} (hθ : ∀ x ∈ unitFilt k m, θ x = 1) {u s : kˣ}
     (hus : valuation k (u : k) = valuation k (s : k))
@@ -40,12 +40,12 @@ def ballSub (p : kˣ) : AddSubgroup k where
   neg_mem' := neg_mem_cball
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ballSub {p : kˣ} {z : k} : z ∈ ballSub p ↔ valuation k z ≤ valuation k (p : k) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Valuation.map_one_add_of_lt _ (lt_of_le_of_lt (mem_ballSub.1 z.2) hp)`.
+A detailed English derivation is pending.
 -/
 theorem val_one_add {p : kˣ} (hp : valuation k (p : k) < 1) (z : ballSub p) : valuation k (1 + (z : k)) = 1 :=
   Valuation.map_one_add_of_lt _ (lt_of_le_of_lt (mem_ballSub.1 z.2) hp)

@@ -12,9 +12,9 @@ namespace GlobalTheory.LeviHC
 open Matrix
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simp [blk]`. Consider the case `right k => simp [blk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `right a => simp [blk]`.
+Treat this case separately.
 -/
 theorem blk_le_two (n₁ : ℕ) (i : Fin (1 + n₁ + 1)) : blk n₁ i ≤ 2 := by
   induction i using Fin.addCases with
@@ -25,9 +25,9 @@ theorem blk_le_two (n₁ : ℕ) (i : Fin (1 + n₁ + 1)) : blk n₁ i ≤ 2 := b
   | right a => simp [blk]
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => exact Or.inl ⟨a, rfl⟩`. Consider the case `right k => exact Or.inr (Or.inl ⟨k, rfl⟩)`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `right a => exact Or.inr (Or.inr ⟨a, rfl⟩)`.
+Treat this case separately.
 -/
 theorem blk_cases {n₁ : ℕ} (i : Fin (1 + n₁ + 1)) :
     (∃ a, i = Fin.castAdd 1 (Fin.castAdd n₁ a)) ∨ (∃ k, i = mid k) ∨ (∃ a, i = Fin.natAdd (1 + n₁) a) := by
@@ -39,26 +39,26 @@ theorem blk_cases {n₁ : ℕ} (i : Fin (1 + n₁ + 1)) :
   | right a => exact Or.inr (Or.inr ⟨a, rfl⟩)
 
 /- English proof (translation)
-Apply the tactic sequence `interval_cases a <;> interval_cases b <;> first | exact absurd rfl hab | norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_sub_four_mul_ne_zero {a b : ℕ} (ha : a ≤ 2) (hb : b ≤ 2) (hab : a + b ≠ 2) :
     (1 - 4 * (2⁻¹ : ℂ) ^ (a + b)) ≠ 0 := by
   interval_cases a <;> interval_cases b <;> first | exact absurd rfl hab | norm_num
 
 /- English proof (translation)
-Take `⟨D, hD⟩ : ∃ D : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) ℂ, D = diagonal fun i => (2 : ℂ) ^ blk n₁ i` from `⟨_, rfl⟩`. Take `⟨Di, hDi⟩ : ∃ D : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) ℂ, D = diagonal fun i => (2⁻¹ : ℂ) ^ blk n₁ i` from `⟨_, rfl⟩`. Establish `hDDi : D * Di = 1`. Rewrite using `[hD, hDi, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Establish `hMDi : M * Di = (4⁻¹ : ℂ) • (D * M)`. Use extensionality with `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hD, hDi, mul_diagonal, Matrix.smul_apply, diagonal_mul, smul_eq_mul]`. Distinguish the cases in `h : blk n₁ i + blk n₁ j = 2`. Establish `e : (2 : ℂ) ^ blk n₁ i = 4 * 2⁻¹ ^ blk n₁ j`. Establish `: (2 : ℂ) ^ blk n₁ i * 2 ^ blk n₁ j = 4` using `by rw [← pow_add, h]; norm_num`. Rewrite using `[← this, mul_assoc, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM i j h]`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hNM : N * M = 1` using `mul_eq_one_comm.1 hMN`. Establish `h1 : M * ((4 : ℂ) • (Di * N * Di)) = 1`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hMDi, Matrix.smul_mul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc D M N, hMN, Matrix.mul_one, hDDi]`. Evaluate the numerical expressions. Establish `key : N = (4 : ℂ) • (Di * N * Di)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `i j hij`. Establish `e` using `congrFun (congrFun key i) j`. Rewrite `e` using `[Matrix.smul_apply, hDi, mul_diagonal, diagonal_mul, smul_eq_mul]`. Establish `h0 : (1 - 4 * (2⁻¹ : ℂ) ^ (blk n₁ i + blk n₁ j)) * N i j = 0`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Take the linear combination `e`. Conclude with `(mul_eq_zero.1 h0).resolve_left (one_sub_four_mul_ne_zero (blk_le_two n₁ i) (blk_le_two n₁ j) hij)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem blk_support_of_mul_eq_one {n₁ : ℕ} {M N : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) ℂ}
     (hM : ∀ i j, blk n₁ i + blk n₁ j ≠ 2 → M i j = 0) (hMN : M * N = 1) :
@@ -95,31 +95,29 @@ theorem blk_support_of_mul_eq_one {n₁ : ℕ} {M N : Matrix (Fin (1 + n₁ + 1)
   exact (mul_eq_zero.1 h0).resolve_left (one_sub_four_mul_ne_zero (blk_le_two n₁ i) (blk_le_two n₁ j) hij)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n n₁ Y Y₁ H hsk hn hxx hyy hxy horth hgram hdet1 R hQR hRQ c hc hA hA₁ τ s X hX i j hij`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`. Establish `hQR' : (frame H).map τ * R.map τ = 1`. Rewrite using `[← Matrix.map_mul, hQR, Matrix.map_one _ τ.map_zero τ.map_one]`. Establish `hRQ' : R.map τ * (frame H).map τ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hRQ, Matrix.map_one _ τ.map_zero τ.map_one]`. Establish `hAu : IsUnit ((c • Y.J.map σ).map τ).det` using `isUnit_det_map hA τ`. Establish `hGf : ∀ a b, ((frame H)ᵀ * Y.J * (frame H).map σ) a b = form σ Y.J (fun r => frame H r a) (fun r => frame H r b)`. Introduce `a b`. Simplify using `only [Matrix.mul_apply, form, dotProduct, mulVec, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Establish `hskew : ∀ u v : Fin n → E, form σ Y.J u v = -σ (form σ Y.J v u)`. Introduce `u v`. Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hsk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcol : ∀ k : Fin n₁, (fun r => H.ι r k) = H.ι *ᵥ Pi.single k 1`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`. Establish `hGs : ∀ a b, blk n₁ a + blk n₁ b ≠ 2 → ((frame H)ᵀ * Y.J * (frame H).map σ) a b = 0`. Introduce `a b hab`. Rewrite using `[hGf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases blk_cases a with ⟨a, rfl⟩ | ⟨k, rfl⟩ | ⟨a, rfl⟩ <;>`. Apply the tactic sequence `rcases blk_cases b with ⟨b, rfl⟩ | ⟨l, rfl⟩ | ⟨b, rfl⟩ <;>`. Simplify using `only [block_matrix_mulVec_basis, blk_mid, blk_y, frame_alt, frame_mid, frame_y] at hab ⊢`. Conclude with `hxx`. Rewrite using `[hcol, hskew, (horth _).1, map_zero, neg_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd rfl hab`. Rewrite using `[hcol]`. Conclude with `(horth _).1`. Conclude with `absurd rfl hab`. Rewrite using `[hcol]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(horth _).2`. Conclude with `absurd rfl hab`. Rewrite using `[hcol, hskew, (horth _).2, map_zero, neg_zero]`. Conclude with `hyy`. Establish `hA'e : ∀ a b, (((frame H).map τ)ᴴ * (c • Y.J.map σ).map τ * (frame H).map τ) a b = τ c * star (τ (((frame H)ᵀ * Y.J * (frame H).map σ) a b))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, transpose_apply, map_mul, map_sum, h.2.2.2, star_sum, star_mul', star_star, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`. Establish `hA's : ∀ a b, blk n₁ a + blk n₁ b ≠ 2 → (((frame H).map τ)ᴴ * (c • Y.J.map σ).map τ * (frame H).map τ) a b = 0`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA'e, hGs a b hab, map_zero, star_zero, mul_zero]`. Establish `hAB : (((frame H).map τ)ᴴ * (c • Y.J.map σ).map τ * (frame H).map τ) * (R.map τ * ((c • Y.J.map σ).map τ)⁻¹ * (R.map τ)ᴴ) = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((frame H).map τ) (R.map τ), hQR', Matrix.one_mul, ← Matrix.mul_assoc ((c • Y.J.map σ).map τ), Matrix.mul_nonsing_inv _ hAu, Matrix.one_mul, ← conjTranspose_mul, hRQ', conjTranspose_one]`. Establish `hB's` using `blk_support_of_mul_eq_one hA's hAB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcancel : ∀ {p : Type} (M : Matrix (Fin n) p ℂ), (R.map τ)ᴴ * (((frame H).map τ)ᴴ * M) = M`. Introduce `p M`. Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, hQR', conjTranspose_one, Matrix.one_mul]`. Establish `hid : R.map τ * adj ((c • Y.J.map σ).map τ) X * (frame H).map τ = (R.map τ * ((c • Y.J.map σ).map τ)⁻¹ * (R.map τ)ᴴ) * (R.map τ * X * (frame H).map τ)ᴴ * (((frame H).map τ)ᴴ * (c • Y.J.map σ).map τ * (frame H).map τ)`. Simplify using `only [adj, conjTranspose_mul, Matrix.mul_assoc, hcancel]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : blk n₁ i + blk n₁ k = 2`.
-
-Distinguish the cases in `h2 : blk n₁ l + blk n₁ j = 2`. Rewrite using `[conjTranspose_apply, hX l k (by omega), star_zero, mul_zero, zero_mul]`. Rewrite using `[hA's l j h2, mul_zero]`. Rewrite using `[hB's i k h1, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem adj_frame_blockTri : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁),

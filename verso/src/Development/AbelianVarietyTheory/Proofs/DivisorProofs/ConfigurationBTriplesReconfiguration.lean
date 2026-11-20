@@ -22,11 +22,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.ConeArchB GlobalTheory.XTermDecay in
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hM` using `hT.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hΦc : Continuous fun k : KAt K (evI F) => locOpInf (om' (k.1, 1)) f` using `(GlobalTheory.ArchWeilCont.continuousOn_locOpInf hP G.M' hT.base.cm hψ hT.weil' f).comp_continuous continuous_subtype_val fun k => k.2.2`. Establish `hl : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => q.2.1` using `continuous_subtype_val.comp continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : Continuous X.ν` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Simplify using `only [coneInfInt, (locOpInf_rho_eq hψ hM _ _).2]`. Use `(((continuous_subtype_val.comp hν).comp hl).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hl))).pow z)).smul (ei.continuous.comp (continuous_archOp (hΦc.comp continuous_fst) ?_))` and prove the remaining obligations. Set `L` to `G.M'.co.e.toLinearMap ∘ₗ (realAd F 1 • ((LinearMap.toSpanSingleton (AE F E) _ (Matrix.vecMulVec (incV F H.y) (incV F H'.x))).restrictScalars (AF F) ∘ₗ (cA σ).toLinearMap))`. Establish `hL : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => G.M'.co.e (partInf F (shiftB σ H H' q.2.1))` using `(IsModuleTopology.continuous_of_linearMap L).comp (Units.continuous_val.comp hl)`.
-
-Conclude with `(continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coneInfInt (hP : GlobalTheory.FunPr.Hypotheses₂) (B : Base F E) {a b : ℕ} {G : Geo σ a (b + 2)}
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)) {X : Chars F E} {om : Rep σ G.V G.W}
@@ -56,7 +54,7 @@ theorem continuous_coneInfInt (hP : GlobalTheory.FunPr.Hypotheses₂) (B : Base 
     (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hKP B a b G G₁ H H' _ X om om' om₁ om₁' hT _ e' _ ei' ev' _ _ _ K _ μKI μI _ _ f y`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hc` using `((BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)).continuous.comp (continuous_coneInfInt hKP.base B H H' hT ei' K ((a - (b + 2)) / 2 + 1) f)`. Conclude with `⟨hc.aestronglyMeasurable, fun k hk => (hc.comp ((continuous_const (y := (⟨k, hk⟩ : KAt K (evI F)))).prodMk continuous_id)).aestronglyMeasurable⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_coneInfInt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (_hKP : KP) (B : Base F E) {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {H : Plane E (b + 2) b}

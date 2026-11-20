@@ -18,7 +18,7 @@ section Local
 variable {p : ℕ} [hp : Fact p.Prime] {Ωl : Type} [Field Ωl] [Algebra (O0 p) Ωl]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => e, fun _ => a, fun _ => ⟨h1, h2⟩, fun r => by simp [hc], by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem ev_single (ψ : O0 p →+* Ωl) (e : Ωl) (h1 : IsInt p e) (h2 : IsAlgZp p e) (a : Lau p) (c : ℤ → Ωl)
     (hc : ∀ r, c r = e * zp Ωl (a.coeff r)) :
@@ -26,7 +26,7 @@ theorem ev_single (ψ : O0 p →+* Ωl) (e : Ωl) (h1 : IsInt p e) (h2 : IsAlgZp
   ⟨1, fun _ => e, fun _ => a, fun _ => ⟨h1, h2⟩, fun r => by simp [hc], by simp, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[zp, ← HahnSeries.C_apply, map_intCast, map_intCast, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zp_intCast (m : ℤ) : zp Ωl (m : ℤ_[p]) = (m : Ωl) := by
   rw [zp, ← HahnSeries.C_apply, map_intCast, map_intCast, map_intCast]
@@ -34,13 +34,13 @@ theorem zp_intCast (m : ℤ) : zp Ωl (m : ℤ_[p]) = (m : Ωl) := by
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `(X.sl _).commutes c`.
+A detailed English derivation is pending.
 -/
 theorem const_mem (X : GlobalTheory.KZ.Tower Ω ε) (L : ℕ) (c : Ω) : algebraMap Ω X.K c ∈ KT X L :=
   (X.sl _).commutes c
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes, HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_apply, HahnSeries.coeff_single]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exp_const (X : GlobalTheory.KZ.Tower Ω ε) (c : Ω) (r : ℚ) :
     (X.exp (algebraMap Ω X.K c)).coeff r = if r = 0 then c else 0 := by
@@ -52,13 +52,13 @@ variable {X : GlobalTheory.KZ.Tower Ω ε} {A : ValuationSubring Ω} {T : Global
   {ψ : O0 p →+* Ωl} {io : KT X (p ^ n) →+* Ωl}
 
 /- English proof (translation)
-Take `⟨x', hx⟩` from `hio.ev ⟨algebraMap Ω X.K c, const_mem X _ c⟩ {c} (fun r => by`. Simplify using `only [exp_const]`. Use `split_ifs`. Conclude with `⟨hA, IntermediateField.subset_adjoin _ _ (by simp)⟩`. Conclude with `⟨zero_mem _, zero_mem _⟩)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hp0 : (p : ℚ) ^ n ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Establish `h2` using `ev_single ψ (j c) ((hc.int c).1 hA) (hc.alg c) 1 (fun r : ℤ => j ((X.exp (algebraMap Ω X.K c)).coeff ((r : ℚ) / (p : ℚ) ^ n))) (fun r => by`. Simplify using `only [exp_const]`. Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: zp Ωl (1 : ℤ_[p]) = 1` using `by simpa using zp_intCast (p := p) (Ωl := Ωl) 1`. Simplify using `[this]`. Establish `: zp Ωl (0 : ℤ_[p]) = 0` using `by simpa using zp_intCast (p := p) (Ωl := Ωl) 0`. Establish `h3 : (r : ℚ) / (p : ℚ) ^ n ≠ 0` using `div_ne_zero (by exact_mod_cast hr) hp0`. Simplify using `[this, h3, HahnSeries.coeff_one, hr])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(GlobalTheory.EvUniq.ev_unique p Ωl h T n ψ hψ _ _ _ _ _ hx h2).1` as an intermediate fact. Rewrite `this` using `[map_one, map_one, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem io_const_of_mem (h : IsClo p Ωl) (hc : IsCusp ε A T j) (hψ : IsReb T n ψ) (hio : IsIo X A T j n ψ io)
     (c : Ω) (hA : c ∈ A) : io ⟨algebraMap Ω X.K c, const_mem X _ c⟩ = j c := by
@@ -83,9 +83,7 @@ theorem io_const_of_mem (h : IsClo p Ωl) (hc : IsCusp ε A T j) (hψ : IsReb T 
   rwa [map_one, map_one, mul_one] at this
 
 /- English proof (translation)
-Break down `A.mem_or_inv_mem c with hA | hA` into its components or cases. Conclude with `io_const_of_mem h hc hψ hio c hA`. Establish `h1` using `io_const_of_mem h hc hψ hio c⁻¹ hA`. Establish `h2 : (⟨algebraMap Ω X.K c⁻¹, const_mem X _ c⁻¹⟩ : KT X (p ^ n)) = ⟨algebraMap Ω X.K c, const_mem X _ c⟩⁻¹` using `Subtype.ext (map_inv₀ _ _)`. Rewrite `h1` using `[h2, map_inv₀, map_inv₀]`.
-
-Conclude with `inv_injective h1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_const (h : IsClo p Ωl) (hc : IsCusp ε A T j) (hψ : IsReb T n ψ) (hio : IsIo X A T j n ψ io)
     (c : Ω) : io ⟨algebraMap Ω X.K c, const_mem X _ c⟩ = j c := by

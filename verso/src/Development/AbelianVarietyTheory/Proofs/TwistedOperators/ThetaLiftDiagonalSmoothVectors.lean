@@ -24,11 +24,11 @@ open GlobalTheory.Size
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨A, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D V.rank W.rank`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne V W`. Take `⟨C, hC0, hC⟩` from `(H V W rfl rfl).real ψ hθ hU`. Take `⟨B, hB⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact W hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : 0 ≤ C * (sobO ψ θ μ 𝓕 d f).toReal` using `mul_nonneg hC0 ENNReal.toReal_nonneg`. Use `⟨C * (sobO ψ θ μ 𝓕 d f).toReal * max B 1 ^ A, A, mul_nonneg hs (pow_nonneg (by positivity) _), fun h hh g => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hC χS χT ω hω μ 𝓕 hμ f hl).2 g h`. Establish `hW : GlobalTheory.Grow.height W h ≤ max B 1` using `(hB h hh).trans (le_max_left _ _)`. Establish `hW0 : 0 ≤ GlobalTheory.Grow.height W h` using `(GlobalTheory.Grow.height_pos W h).le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV0 : 0 ≤ GlobalTheory.Grow.height V g` using `(GlobalTheory.Grow.height_pos V g).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem thetaKO_le_unif {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f : WO V W → ℂ}
@@ -55,11 +55,11 @@ theorem thetaKO_le_unif {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : Inf
     _ = C * (sobO ψ θ μ 𝓕 d f).toReal * max B 1 ^ A * GlobalTheory.Grow.height V g ^ A := by ring
 
 /- English proof (translation)
-Establish `e : ∀ g h, thetaKO ω g h Φ = thetaKO (ω.toSgn ε) ((GlobalTheory.Grid.ofSgn ε S).symm g) h Φ` using `fun g h => by show ω (g, h) Φ 0 = ω (GlobalTheory.Grid.ofSgn ε S ((GlobalTheory.Grid.ofSgn ε S).symm g), h) Φ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`. Establish `hinv : ∀ h, ∀ γ ∈ GQ S, ∀ g, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ` using `fun h γ hγ g => by`. Rewrite using `[e, e, map_mul]`. Use `GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hω hΦ h _ ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.SgnIdent.mem_GQ_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hγ`. Take `⟨C, A, hC0, hC⟩` from `thetaKO_le_unif hθ hω hΦ hK`. Establish `hC' : ∀ h ∈ K, ∀ g, ‖thetaKO ω g h Φ‖ ≤ C * GlobalTheory.Grow.height S g ^ A` using `fun h hh g => by`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `hC h hh _`. Conclude with `⟨C * 2 ^ A, A, by positivity, fun h hh g => GlobalTheory.Grow.norm_le_quotHeight_pow (hinv h) (hC' h hh) g⟩`.
+A detailed English derivation is pending.
 -/
 theorem thetaKO_le_quotHeight {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hθ : IsInfFam θ) (ε : Bool) {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {ω : GlobalTheory.Grid.WRep S T}
@@ -81,17 +81,15 @@ theorem thetaKO_le_quotHeight {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   exact ⟨C * 2 ^ A, A, by positivity, fun h hh g => GlobalTheory.Grow.norm_le_quotHeight_pow (hinv h) (hC' h hh) g⟩
 
 /- English proof (translation)
-Introduce `_ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hB hG i hi Φ hΦ φ hφ hint C hC ε hε`. Take `⟨hν, h𝓕⟩` from `GlobalTheory.DownConv.MeasDat.haar_fd (hG.meas.P (i + 1) hi)`. Take `⟨C1, A1, hC1, hK⟩` from `thetaKO_le_quotHeight hB.inf true ((hG.arrows.dn i hi).weil) hΦ hC`. Establish `hfin : (G.mP (i + 1)).ν (G.mP (i + 1)).fd < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hν h𝓕`. Use `set X := C1 * ((G.mP (i + 1)).ν (G.mP (i + 1)).fd).toReal with hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 ≤ X` using `mul_nonneg hC1 ENNReal.toReal_nonneg`. Use `set δ := ε / (2 * (X + 1)) with hδ`. Establish `hδ0 : 0 < δ` using `div_pos hε (by positivity)`. Take `⟨n, F, v, hF, happ⟩` from `GlobalTheory.T.cusp_form_uniform_height_approx D R.θ hB.inf hP (G.P (i + 1)) φ hφ A1 δ hδ0`. Establish `hI : ∀ l h, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * F l (v l) g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν` using `fun l h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ha, hc, -⟩` from `GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP.cuspRapidDecay D _ _ _ R.θ hB.inf _ _ (F l) (hF l) (v l)`. Conclude with `GlobalTheory.DownConv.integrableOn_thetaKO_mul_cusp hP.cuspRapidDecay hB.inf true ((hG.arrows.dn i hi).weil) hΦ hν h𝓕 ha hc h`. Use `⟨n, F, v, hF, hI, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_finset_sum Finset.univ fun l _ => hI l h, ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hI l h)]`. Establish `: IsFiniteMeasure ((G.mP (i + 1)).ν.restrict (G.mP (i + 1)).fd)` using `isFiniteMeasure_restrict.2 hfin.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : ∀ g, ‖thetaKO (G.dn i).ω g h Φ * φ g - ∑ l, thetaKO (G.dn i).ω g h Φ * F l (v l) g‖ ≤ C1 * δ` using `fun g => by`. Rewrite using `[← Finset.mul_sum, ← mul_sub, norm_mul]`. Establish `h1` using `hK h hh g`. Establish `h2` using `happ g`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall hpt)).trans_lt ?_` and prove the remaining obligations. Establish `hv : C1 * δ * ((G.mP (i + 1)).ν (G.mP (i + 1)).fd).toReal = X * δ` using `by rw [hX]; ring`. Establish `hlt : X * δ < ε`. Rewrite using `[hδ, ← mul_div_assoc, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Simplify `hlt` using `[Measure.real, Measure.restrict_apply_univ, hv]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem approx_cusp : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.P (i + 1)) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * φ g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν) → ∀ C : Set (GA D (G.P i).V), IsCompact C → ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (F : Fin n → (G.P (i + 1)).Maps) (v : Fin n → SmT (G.P (i + 1)).M), (∀ l, F l ∈ (G.P (i + 1)).Cusp R.θ) ∧ (∀ l h, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * F l (v l) g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν) ∧ ∀ h ∈ C, ‖(∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h Φ * φ g ∂(G.mP (i + 1)).ν) - ∑ l, ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h Φ * F l (v l) g ∂(G.mP (i + 1)).ν‖ < ε := by
   intro _ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hB hG i hi Φ hΦ φ hφ hint C hC ε hε

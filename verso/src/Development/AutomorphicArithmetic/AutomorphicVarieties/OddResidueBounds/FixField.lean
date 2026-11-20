@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.L
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec N ℚ K`. Establish `e : f.toRatAlgHom = g.toRatAlgHom` using `AlgHom.ext_of_adjoin_eq_top (IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ) fun x hx => by`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `h _ hζ.pow_eq_one`. Conclude with `RingHom.ext fun x => DFunLike.congr_fun e x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyc_hom_ext {K Ω : Type} [Field K] [CharZero K] [Field Ω] [CharZero Ω] (N : ℕ) [NeZero N]
     [IsCyclotomicExtension {N} ℚ K] (f g : K →+* Ω) (h : ∀ x : K, x ^ N = 1 → f x = g x) : f = g := by
@@ -17,23 +17,17 @@ private theorem cyc_hom_ext {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Cha
   exact RingHom.ext fun x => DFunLike.congr_fun e x
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ N _ ρ hρ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : IsScalarTower ℚ E Ω := IsScalarTower.of_algebraMap_eq fun q => by simp`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ E Ω`. Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Use `haveI : IsGalois ℚ Ω := {}`. Use `haveI : NeZero (N : Ω) := ⟨Nat.cast_ne_zero.2 (NeZero.ne N)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Set `L : IntermediateField ℚ Ω` to `IntermediateField.adjoin ℚ {ζ}`. Establish `hζL : ζ ∈ L` using `IntermediateField.mem_adjoin_simple_self ℚ ζ`. Establish `hE : ∀ e : E, algebraMap E Ω e ∈ L` using `fun e => by`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup L, IntermediateField.mem_fixedField_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `σ hσ`. Establish `h1 : σ ζ = ζ` using `(IntermediateField.mem_fixingSubgroup_iff L σ).1 hσ ζ hζL`. Establish `hc : CycLift N 1 σ.toRingEquiv` using `fun x hx => by`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Establish `h2 : σ x = x` using `by rw [← hi, map_pow, h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ hx, pow_one]`. Conclude with `h2`. Use `hρ 1 _ hc e` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `K : IntermediateField E Ω` to `L.toSubfield.toIntermediateField hE`. Use `haveI hL : IsCyclotomicExtension {N} ℚ L := hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap E K).injective`. Set `φ : L ≃+* K` to `RingEquiv.refl L`. Establish `hK : @IsCyclotomicExtension {N} ℚ K _ _ DivisionRing.toRatAlgebra` using `@IsCyclotomicExtension.equiv {N} ℚ L _ _ _ K _ DivisionRing.toRatAlgebra hL (@AlgEquiv.ofRingEquiv ℚ L K _ _ _ _ DivisionRing.toRatAlgebra φ fun q => by simp)`.
-
-Use `letI : Algebra ℚ K := DivisionRing.toRatAlgebra`. Use `haveI : NumberField K := IsCyclotomicExtension.numberField {N} ℚ K`. Establish `hmu : ∀ x : Ω, x ^ N = 1 → x ∈ K` using `fun x hx => by`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Conclude with `(pow_mem hζL i : ζ ^ i ∈ L)`.
-
-Establish `hpow : ∀ x : K, x ^ N = 1 → algebraMap K Ω x ^ N = 1` using `fun x hx => by rw [← map_pow, hx, map_one]`. Use `⟨K, inferInstance, hK, ?_, fun b σ hσ x => ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Use `⟨fun h x hx => h ⟨x, hmu x hx⟩, fun h x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (cyc_hom_ext N (g.toRingEquiv.toRingHom.comp (algebraMap K Ω)) (algebraMap K Ω) fun y hy => h _ (hpow y hy)) x`.
-
-Use `DFunLike.congr_fun (cyc_hom_ext N (σ.toRingHom.comp (algebraMap K Ω)) ((algebraMap K Ω).comp (Stick.sg N K b).toRingEquiv.toRingHom) fun y hy => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (algebraMap K Ω y) = algebraMap K Ω (Stick.sg N K b y)`. Rewrite using `[hσ _ (hpow y hy), Stick.sg_apply N K b hy, map_pow]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.fixField :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → ∃ (K : IntermediateField E Ω) (_ : NumberField K) (_ : IsCyclotomicExtension {N} ℚ K), galOf E K Ω = fixMu E Ω N ∧ ∀ (b : (ZMod N)ˣ) (σ : Ω ≃+* Ω), CycLift N b σ → IsLift (Stick.sg N K b).toRingEquiv σ := by

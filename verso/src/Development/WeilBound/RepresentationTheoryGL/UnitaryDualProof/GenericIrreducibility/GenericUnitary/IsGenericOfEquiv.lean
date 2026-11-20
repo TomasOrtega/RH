@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Take `⟨ψ, hc, h1, hg⟩` from `h`. Conclude with `⟨ψ, hc, h1, hg.of_equiv φ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGeneric_of_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W} (h : IsGeneric π)
@@ -22,9 +22,9 @@ theorem isGeneric_of_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V
   exact ⟨ψ, hc, h1, hg.of_equiv φ⟩
 
 /- English proof (translation)
-Use `⟨ω * absPow k ((-s : ℝ) : ℂ) ^ x.1, GlobalTheory.LocGL.UnitaryOrder.hasCentralChar_nu x hω _, fun z => ?_⟩` and prove the remaining obligations. Establish `hz` using `nabs_pos' k z`. Establish `hpos : 0 < ‖(((ω * absPow k ((-s : ℝ) : ℂ) ^ x.1) z : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `hlog` using `GlobalTheory.LocGL.UnitaryOrder.log_norm_mul_absPow ω (-s) x.1 z`. Rewrite `hlog` using `[hn, Real.log_rpow hz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Real.eq_one_of_pos_of_log_eq_zero hpos` to reduce the goal to its premises. Rewrite using `[hlog]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem unitCC_nu_neg (x : IrrGL k) (ω : kˣ →* ℂˣ) (hω : HasCentralChar x.rep ω) (s : ℝ)
     (hn : ∀ z, ‖(ω z : ℂ)‖ = nabs k z ^ ((x.1 : ℝ) * s)) : UOrder.UnitCC (x.nu ((-s : ℝ) : ℂ)).rep := by
@@ -38,15 +38,15 @@ theorem unitCC_nu_neg (x : IrrGL k) (ω : kˣ →* ℂˣ) (hω : HasCentralChar 
   ring
 
 /- English proof (translation)
-Unfold `GenUnitCCOf GenUnitCC`. Introduce `hE hZ k _ _ _ _ _ N V _ _ π hs hi hu hg`. Take `⟨h, Δ, x, hd, -, hL, ⟨φ⟩⟩` from `hZ k N V π hs hi hg`. Establish `hiP : (prodIrr x hd).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv φ hi`. Establish `huP : IsUnitarisable (prodIrr x hd)` using `GlobalTheory.GenericUnitary.isUnitarisable_of_equiv φ hu`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgP : IsGeneric (prodIrr x hd)` using `isGeneric_of_equiv hg φ`. Establish `hpos : ∀ j, 0 < (x j).1` using `fun j => by`. Rewrite using `[← (hL j).deg_eq]`. Conclude with `Nat.mul_pos (Δ j).len_pos (Δ j).d_pos`. Establish `key : ∀ j, ∃ s : ℝ, |s| < 1 / 2 ∧ UOrder.UnitCC ((x j).nu ((-s : ℝ) : ℂ)).rep` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ω, hωs, hω⟩` from `exists_smooth_hasCentralChar (x j).2.rep.smooth (x j).2.rep.irr`. Take `⟨t, ht⟩` from `Rpow.norm_eq_nabs_rpow k ω hωs`. Establish `hn0 : ((x j).1 : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (hpos j).ne'`. Establish `hn : ∀ z, ‖(ω z : ℂ)‖ = nabs k z ^ (((x j).1 : ℝ) * (t / (x j).1))` using `fun z => by`. Rewrite using `[ht z, mul_div_cancel₀ t hn0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨t / (x j).1, hE k h N x hd hiP huP hgP j ω (t / (x j).1) (hpos j) hω hn, unitCC_nu_neg (x j) ω hω _ hn⟩`. Use `choose s hs hU using key`. Use `⟨h, fun j => (x j).nu ((-s j : ℝ) : ℂ), fun j => (Δ j).nu ((-s j : ℝ) : ℂ), s, fun j => GlobalTheory.isLSeg_nu (hL j) _, hU, hs, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun j => ((x j).nu ((-s j : ℝ) : ℂ)).nu (s j)) = x` using `funext fun j => by`. Rewrite using `[IrrGL.nu_nu, Complex.ofReal_neg, neg_add_cancel, IrrGL.nu_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `aux : ∀ y : Fin h → IrrGL k, y = x → ∃ hd' : ∑ j, (y j).1 = N, Nonempty (π.Equiv (prodIrr y hd'))`. Introduce and unpack `y rfl`. Conclude with `⟨hd, ⟨φ⟩⟩`. Conclude with `aux (fun j => ((x j).nu ((-s j : ℝ) : ℂ)).nu (s j)) hfun`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genUnitCCOf : GenUnitCCOf := by
   unfold GenUnitCCOf GenUnitCC

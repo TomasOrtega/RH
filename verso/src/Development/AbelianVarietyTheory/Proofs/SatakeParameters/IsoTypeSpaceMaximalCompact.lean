@@ -37,7 +37,7 @@ theorem rtHom_apply (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (x : GA
     rtHom (L := L) n W x = NG.rt L n x := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun a b => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem map_symm_map (s : SplitPlace L) (c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L) {n : ℕ} (g : GL (Fin n) (s.v.adicCompletion L⁺)) :
     Matrix.GeneralLinearGroup.map c.symm.toRingHom
@@ -45,7 +45,7 @@ theorem map_symm_map (s : SplitPlace L) (c : s.v.adicCompletion L⁺ ≃+* s.w.a
   Units.ext (Matrix.ext fun a b => by simp)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun a b => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem map_map_symm (s : SplitPlace L) (c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L) {n : ℕ} (g : GL (Fin n) (s.w.adicCompletion L)) :
     Matrix.GeneralLinearGroup.map c.toRingHom
@@ -53,7 +53,7 @@ theorem map_map_symm (s : SplitPlace L) (c : s.v.adicCompletion L⁺ ≃+* s.w.a
   Units.ext (Matrix.ext fun a b => by simp)
 
 /- English proof (translation)
-Use `show c a ∈ s.w.adicCompletionIntegers L ↔ a ∈ s.v.adicCompletionIntegers L⁺`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.SplitConjVal.valuation_eq s c hc hcL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Ov_iff {s : SplitPlace L} {c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L} (hc : Continuous c) (hcL : ∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x)
     (a : s.v.adicCompletion L⁺) :
@@ -63,7 +63,7 @@ theorem mem_Ov_iff {s : SplitPlace L} {c : s.v.adicCompletion L⁺ ≃+* s.w.adi
     GlobalTheory.SplitConjVal.valuation_eq s c hc hcL]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LFun.KGL, GlobalTheory.HeckeScalarSph.mem_GLint_iff, GlobalTheory.HeckeScalarSph.mem_GLint_iff, ← map_inv]`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, mem_Ov_iff hc hcL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_mem_KGL_iff {s : SplitPlace L} {c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L} (hc : Continuous c) (hcL : ∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) {n : ℕ}
     (g : GL (Fin n) (s.v.adicCompletion L⁺)) :
@@ -73,7 +73,7 @@ theorem map_mem_KGL_iff {s : SplitPlace L} {c : s.v.adicCompletion L⁺ ≃+* s.
   simp only [Matrix.GeneralLinearGroup.map_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, mem_Ov_iff hc hcL]
 
 /- English proof (translation)
-Use `show Valued.v (c ϖ) = _`. Rewrite using `[GlobalTheory.SplitConjVal.valuation_eq s c hc hcL]`. Conclude with `hϖ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnifV_map {s : SplitPlace L} {c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L} (hc : Continuous c) (hcL : ∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x)
     {ϖ : s.v.adicCompletion L⁺} (hϖ : IsUnif L s.v ϖ) : Formalism.UG.IsUnifV L s.w (c ϖ) := by
@@ -89,7 +89,7 @@ theorem coe_glMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : �
   rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.diagJ, Matrix.diagonal_map (map_zero f)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagJ_map {A B : Type} [Field A] [Field B] (f : A →+* B) (n : ℕ) (ϖ : A) (k : ℕ) :
     (Formalism.UG.diagJ n ϖ k).map f = Formalism.UG.diagJ n (f ϖ) k := by
@@ -119,31 +119,27 @@ theorem locAct_apply (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (s : S
     locAct n W s c e g f = NG.rt L n (e (Matrix.GeneralLinearGroup.map c.symm.toRingHom g)) f := rfl
 
 /- English proof (translation)
-Establish `hψφ : ∀ g : GL (Fin n) (s.v.adicCompletion L⁺), Matrix.GeneralLinearGroup.map c.symm.toRingHom (Matrix.GeneralLinearGroup.map c.toRingHom g : GL (Fin n) (s.w.adicCompletion L)) = g` using `map_symm_map s c`. Establish `hφψ : ∀ g : GL (Fin n) (s.w.adicCompletion L), Matrix.GeneralLinearGroup.map c.toRingHom (Matrix.GeneralLinearGroup.map c.symm.toRingHom g : GL (Fin n) (s.v.adicCompletion L⁺)) = g` using `map_map_symm s c`. Take `⟨α0, -, hT0⟩` from `GlobalTheory.HeckeScalarSph.exists_tSet_eq (n := n) s ϖ k hϖ`. Take `⟨R, hR1, hR2⟩` from `GlobalTheory.HeckeScalarSph.exists_repsU (n := n) s.v α0`. Establish `hR1' : ∀ γ ∈ R, γ ∈ tSet L n s ϖ k` using `fun γ hγ => (hT0 γ).2 (hR1 γ hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR2' : ∀ x ∈ tSet L n s ϖ k, ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ Umax L n` using `fun x hx => hR2 x ((hT0 x).1 hx)`. Establish `hD : ∀ x ∈ tSet L n s ϖ k, TrivOutside {s.v} x` using `fun x hx => hx.1`. Rewrite using `[GlobalTheory.HeckeEigConj.heckeD_eq_sum_of_agree J hJ hD hR1' hR2' hF]`. Establish `hU` using `isUnifV_map hc hcL hϖ`. Rewrite using `[GlobalTheory.SatHecke.Tj_eq_dosetInd hU k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ x, TrivOutside {s.v} x → (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x) ∈ GlobalTheory.LFun.KGL s.w n ↔ x ∈ Umax L n)` using `fun x hx => (map_mem_KGL_iff hc hcL _).trans (GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s hx)`. Establish `hFK : F ∈ GlobalTheory.PRep.fixed (locAct n W s c e) (GlobalTheory.LFun.KGL s.w n)`. Use `GlobalTheory.LGrp.mem_fixed.2 fun A hA => ?_` and prove the remaining obligations. Rewrite using `[locAct_apply]`. Use `hF _ ((hK _ (he1 _)).1 ?_) (he1 _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he2, hφψ]`. Conclude with `hA`. Establish `hdiag : ∀ a b x : GL (Fin n) (s.v.adicCompletion L⁺), (x : Matrix (Fin n) (Fin n) _) = (a : Matrix (Fin n) (Fin n) _) * Formalism.UG.diagJ n ϖ k * (b : Matrix (Fin n) (Fin n) _) → (Matrix.GeneralLinearGroup.map c.toRingHom x : GL (Fin n) (s.w.adicCompletion L)) = Matrix.GeneralLi …`. Introduce `a b x h`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, coe_glMap, h, Matrix.map_mul, diagJ_map, Matrix.GeneralLinearGroup.val_mkOfDetNeZero]`. Both sides reduce to the same expression. Establish `hinj : Set.InjOn (fun γ => (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n γ) : GL (Fin n) (s.w.adicCompletion L))) R`. Introduce `γ hγ δ hδ h`. Establish `h' : s.loc n γ = s.loc n δ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Matrix.GeneralLinearGroup.map c.symm.toRingHom) h` as an intermediate fact. Simplify `this` using `only [hψφ]`. Conclude with `GlobalTheory.SplitLocEq.eq_of_trivOutside_of_loc_eq L n s γ δ (hD γ (hR1' γ hγ)) (hD δ (hR1' δ hδ)) h'`. Establish `hmem : ∀ γ ∈ R, (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n γ) : GL (Fin n) (s.w.adicCompletion L)) ∈ DoubleCoset.doubleCoset (Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n (c ϖ) k) (GlobalTheory.SatHecke.diagJ_det_ne hU k)) (GlobalTheory.LFun.KGL s.w n : …`. Introduce `γ hγ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, a, ha, b, hb, h⟩` from `hR1' γ hγ`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨_, (map_mem_KGL_iff hc hcL a).2 ha, _, (map_mem_KGL_iff hc hcL b).2 hb, hdiag a b _ h⟩`. Establish `huniq : ∀ g ∈ DoubleCoset.doubleCoset (Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n (c ϖ) k) (GlobalTheory.SatHecke.diagJ_det_ne hU k)) (GlobalTheory.LFun.KGL s.w n : Set (GL (Fin n) (s.w.adicCompletion L))) (GlobalTheory.LFun.KGL s.w n), ∃! r, r ∈ R.image (fun γ …`. Introduce `g hg`. Take `⟨y, hy, z, hz, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩ : ∃ x, x = e (Matrix.GeneralLinearGroup.map c.symm.toRingHom (y * Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n (c ϖ) k) (GlobalTheory.SatHecke.diagJ_det_ne hU k) * z))` from `⟨_, rfl⟩`. Establish `hxt : TrivOutside {s.v} x` using `hx ▸ he1 _`. Establish `hxT : x ∈ tSet L n s ϖ k`. Use `⟨hxt, Matrix.GeneralLinearGroup.map c.symm.toRingHom y, ?_, Matrix.GeneralLinearGroup.map c.symm.toRingHom z, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(map_mem_KGL_iff hc hcL _).1 (by rw [hφψ]; exact hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(map_mem_KGL_iff hc hcL _).1 (by rw [hφψ]; exact hz)`. Rewrite using `[hx, he2, map_mul, map_mul, Units.val_mul, Units.val_mul]`. Use `congr 2`. Rewrite using `[coe_glMap, Matrix.GeneralLinearGroup.val_mkOfDetNeZero, diagJ_map]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, ⟨hγR, hγx⟩, hγu⟩` from `hR2' x hxT`. Establish `hkey : ∀ δ ∈ R, ((Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n δ) : GL (Fin n) (s.w.adicCompletion L))⁻¹ * (y * Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n (c ϖ) k) (GlobalTheory.SatHecke.diagJ_det_ne hU k) * z) ∈ GlobalTheory.LFun.KGL s.w n ↔ δ⁻¹ * x ∈ Um …`. Introduce `δ hδ`. Establish `e1 : (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n δ) : GL (Fin n) (s.w.adicCompletion L))⁻¹ * (y * Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n (c ϖ) k) (GlobalTheory.SatHecke.diagJ_det_ne hU k) * z) = Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n (δ⁻ …`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, hx, he2, hφψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `hK _ (GlobalTheory.HeckeScalarSph.triv_mul (GlobalTheory.HeckeScalarSph.triv_inv (hD δ (hR1' δ hδ))) hxt)`. Use `⟨_, ⟨Finset.mem_image_of_mem _ hγR, (hkey γ hγR).2 hγx⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨hr, hr'⟩`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hr`.
-
-Rewrite using `[hγu δ ⟨hδ, (hkey δ hδ).1 hr'⟩]`. Rewrite using `[GlobalTheory.LFun.heckeVec_dosetInd hFK (R := R.image fun γ => (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n γ) : GL (Fin n) (s.w.adicCompletion L))) (fun r hr => ?_) huniq, Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[locAct_apply, hψφ, GlobalTheory.SplitLocEq.eq_of_trivOutside_of_loc_eq L n s (e (s.loc n γ)) γ (he1 _) (hD γ (hR1' γ hγ)) (he2 _)]`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hr`.
-
-Conclude with `hmem γ hγ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem heckeD_eq_heckeVec {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (s : SplitPlace L)
     (c : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L) (hc : Continuous c)
@@ -252,25 +248,23 @@ section Main
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `_ hL D P i Q sp hJ B hB F hFiso hFty hF0 hFeig`. Establish `hirr` using `P.H.av.irr i Q`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV ({ (P.M.loc i).wt with S := P.H.av.S i Q, irrS := hirr } : NG.AutRep D.host.E D.R.nV) sp`. Establish `hσ' : IsLocS (P.H.av.S i Q) sp σ` using `hσ`. Take `⟨c, T0, hc, hcL, -, -, -⟩` from `hσ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hFfix : ∀ κ ∈ Umax D.host.E D.R.nV, TrivOutside {sp.v} κ → NG.rt D.host.E D.R.nV κ F = F`. Introduce `κ hκ ht`. Establish `hJκ` using `((hJ κ ht).1).2 hκ`. Establish `h1` using `hFty.2 ⟨κ, hJκ⟩`. Rewrite `h1` using `[(hJ κ ht).2 hJκ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`. Take `⟨u, hu0, hu⟩` from `GlobalTheory.LocVec.main D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) hirr sp σ hσ c hc hcL (Formalism.UG.GLint (Fin D.R.nV) (sp.v.adicCompletionIntegers (maximalRealSubfield D.host.E)).toSubring) 1 (fun g hg => hg) (by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ …`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `hFfix κ ((GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff sp ht).1 h) ht)`. Establish `hufix : u ∈ GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.LFun.KGL sp.w D.R.nV)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.LGrp.mem_fixed.2 fun A hA => ?_` and prove the remaining obligations. Establish `hA'` using `(map_mem_KGL_iff hc hcL (Matrix.GeneralLinearGroup.map c.symm.toRingHom A)).1 (by rw [map_map_symm]; exact hA)`. Use `hu _ hA'` as an intermediate fact. Rewrite `this` using `[map_map_symm, MonoidHom.one_apply, Units.val_one, one_smul]`. Then use the resulting hypothesis. Establish `hsph : GlobalTheory.SmGL.IsSpherical σ.ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u ∈ GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.SplitWeil.KO (sp.w.adicCompletion D.host.E) (Fin D.R.nV))`. Rewrite using `[GlobalTheory.HeckeEigConj.KO_eq_KGL D.host.E sp.w D.R.nV]`. Conclude with `hufix`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨u, this, hu0⟩`. Establish `hR` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 sp.w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake_of_unr hR ((GlobalTheory.CuspRep.ParLaws.unr_iff hR σ).2 hsph)`. Establish `hSat` using `GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake D.host.E sp.w D.R.nV σ.V σ.ρ α hα`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc D.host.E D.R.nV sp`. Establish `hspan` using `GlobalTheory.SpanLoc.main D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) hirr sp σ hσ c hc hcL hFiso`. Rewrite `hspan` using `[iSup_subtype']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hFK : F ∈ GlobalTheory.PRep.fixed (locAct D.R.nV (P.M.loc i).wt.W sp c e) (GlobalTheory.LFun.KGL sp.w D.R.nV)`. Use `GlobalTheory.LGrp.mem_fixed.2 fun A hA => ?_` and prove the remaining obligations. Rewrite using `[locAct_apply]`. Use `hFfix _ ((GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff sp (he1 _)).1 ?_) (he1 _)` and prove the remaining obligations. Rewrite using `[he2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(map_mem_KGL_iff hc hcL _).1 (by rw [map_map_symm]; exact hA)`. Establish `hspan' : F ∈ ⨆ T : {T : σ.V →ₗ[ℂ] (GAf D.host.E D.R.nV → (P.M.loc i).wt.W) // (∀ v, T v ∈ NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ) ∧ ∀ x : GAf D.host.E D.R.nV, TrivOutside {sp.v} x → ∀ v, T (σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (sp.loc D.R.nV x)) v) = NG.rt D.host.E D …` using `hspan`. Establish `hequiv : ∀ (T : {T : σ.V →ₗ[ℂ] (GAf D.host.E D.R.nV → (P.M.loc i).wt.W) // (∀ v, T v ∈ NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ) ∧ ∀ x : GAf D.host.E D.R.nV, TrivOutside {sp.v} x → ∀ v, T (σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (sp.loc D.R.nV x)) v) = NG.rt D.host.E D.R. …`. Introduce `T g v`. Rewrite using `[locAct_apply, ← T.2.2 _ (he1 _) v, he2, map_map_symm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIs : GlobalTheory.LFun.IsSatVecGL sp.w (locAct D.R.nV (P.M.loc i).wt.W sp c e) F (Finset.univ.val.map α)` using `GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup (ρ := locAct D.R.nV (P.M.loc i).wt.W sp c e) σ.irr hSat Subtype.val hequiv hspan' hFK hF0`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV (E := maximalRealSubfield D.host.E) sp.v`. Establish `hϖ' : IsUnif D.host.E sp.v ϖ` using `hϖ`. Establish `heq : ∀ k ≤ D.R.nV, GlobalTheory.LFun.satEig (Formalism.UG.qV D.host.E sp.w) D.R.nV (Finset.univ.val.map α) k = GlobalTheory.LFun.satEig (Formalism.UG.qV D.host.E sp.w) D.R.nV B k`. Introduce `k hk`.
-
-Establish `h1` using `hIs.2.2.2 (c ϖ) (isUnifV_map hc hcL hϖ') k hk`. Rewrite `h1` using `[← heckeD_eq_heckeVec sp c hc hcL e he1 he2 _ (fun κ ht => (hJ κ ht).1) hϖ' k hFfix, hFeig ϖ hϖ' k hk]`. Conclude with `(smul_left_injective ℂ hF0 h1).symm`. Conclude with `⟨σ, α, hσ, hα, GlobalTheory.LFun.eq_of_satEig_eq (GlobalTheory.LFun.qV_ne_zero sp.w) (by simp) hB heq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locComp_hasSatake : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (i : D.nd.Loc) (Q : D.naut.AV i) (sp : SplitPlace D.host.E), (∀ κ : GAf D.host.E D.R.nV, TrivOutside {sp.v} κ → (κ ∈ (P.M.loc i).J ↔ κ ∈ Umax D.host.E D.R.nV) ∧ ∀ hκ : κ ∈ (P.M.loc i).J, (P.M.loc i).χ ⟨κ, hκ⟩ = 1) → ∀ B : Multiset ℂˣ, B.card = D.R.nV → ∀ F ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q), F ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ → F ≠ 0 → (∀ ϖ, IsUnif D.host.E sp.v ϖ → ∀ k ≤ D.R.nV, NG.heckeD (P.M.loc i).J (Formalism.AUTREP.tSet D.host.E D.R.nV sp ϖ k) F = GlobalTheory.LFun.satEig (Formalism.UG.qV D.host.E sp.w) D.R.nV B k • F) → ∃ (σ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (sp.w.adicCompletion D.host.E))) (α : Fin D.R.nV → ℂˣ), IsLocS (P.H.av.S i Q) sp σ ∧ GlobalTheory.SmGL.HasSatake σ.ρ α ∧ Finset.univ.val.map α = B := by
   intro _ hL D P i Q sp hJ B hB F hFiso hFty hF0 hFeig

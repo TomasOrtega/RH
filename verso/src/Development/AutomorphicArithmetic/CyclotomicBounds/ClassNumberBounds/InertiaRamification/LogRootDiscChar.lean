@@ -71,11 +71,11 @@ def vdFormula (l a e : ℕ) : ℚ :=
   (a : ℚ) - 1 / ((l : ℚ) - 1) + 1 / (((l : ℚ) - 1) * (l : ℚ) ^ (a - 1)) - 1 / (e : ℚ)
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[vdFormula]`.
+Evaluate the numerical expressions.
 -/
 example : vdFormula 3 2 3 = 4 / 3 := by norm_num [vdFormula]
 /- English proof (translation)
-Evaluate the numerical expressions using `[vdFormula]`.
+Evaluate the numerical expressions.
 -/
 example : vdFormula 7 2 21 = 38 / 21 := by norm_num [vdFormula]
 

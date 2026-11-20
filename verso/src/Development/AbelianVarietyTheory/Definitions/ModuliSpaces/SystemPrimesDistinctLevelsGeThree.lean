@@ -40,19 +40,19 @@ def zeroTriple (H : Host E) (S : Scheme.{0}) : SAB H S :=
     ⟨fun _ => 𝟙 _, fun _ => inferInstance, rfl, fun _ _ => toUnit_unique _ _, fun _ _ => toUnit_unique _ _⟩
 
 /- English proof (translation)
-The claim follows from `(UU.isAbelianScheme_unit S).proper`.
+A detailed English derivation is pending.
 -/
 theorem isProper_zeroTriple (S : Scheme.{0}) : IsProper (zeroTriple H S).G.hom :=
   (UU.isAbelianScheme_unit S).proper
 
 /- English proof (translation)
-The claim follows from `Set.eq_univ_of_forall fun _ _ _ _ _ _ => inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem abLocus_eq_univ {S : Scheme.{0}} (G : Over S) (h : IsProper G.hom) : abLocus G = Set.univ :=
   Set.eq_univ_of_forall fun _ _ _ _ _ _ => inferInstance
 
 /- English proof (translation)
-Use `⟨⟨⊤, (abLocus_eq_univ _ h).symm, inferInstance⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `⟨S.residueField x, inferInstance, Algebra.id _, inferInstance, inferInstance, _, ZJ.isGt_splitExtOfAbelian _ (isAbelianScheme_pullback_obj _ t.G ⟨t.semi.comm, t.semi.smooth, h, t.semi.geomConnected⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem abOpen_and_splitFib {S : Scheme.{0}} (t : SAB H S) (h : IsProper t.G.hom) : AbOpen t.G ∧ SplitFib t.G := by
   refine ⟨⟨⊤, (abLocus_eq_univ _ h).symm, inferInstance⟩, fun x => ?_⟩
@@ -60,7 +60,7 @@ theorem abOpen_and_splitFib {S : Scheme.{0}} (t : SAB H S) (h : IsProper t.G.hom
     ZJ.isGt_splitExtOfAbelian _ (isAbelianScheme_pullback_obj _ t.G ⟨t.semi.comm, t.semi.smooth, h, t.semi.geomConnected⟩)⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `abOpen_and_splitFib (zeroTriple H S) (isProper_zeroTriple S)`. Use `⟨h₁, h₂, fun x => ⟨⊤, trivial, fun _ => 1, fun i j => ?_, fun y _ => ⟨y, PUnit.unit, rfl, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(map_one _).trans ((congrArg₂ (· * ·) (map_one _) (map_one _)).trans (_root_.mul_one _)).symm`. Rewrite using `[Scheme.basicOpen_one]`. Conclude with `⟨trivial, trivial⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_zeroTriple (S : Scheme.{0}) : Good (zeroTriple H S) := by
   obtain ⟨h₁, h₂⟩ := abOpen_and_splitFib (zeroTriple H S) (isProper_zeroTriple S)
@@ -70,7 +70,7 @@ theorem good_zeroTriple (S : Scheme.{0}) : Good (zeroTriple H S) := by
     exact ⟨trivial, trivial⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f t
@@ -97,9 +97,9 @@ section Above
 variable {U : Scheme.{0}} {F O : Type} [Field F] [CommRing O] {c : U ⟶ Sp F} {t₀ : SAB H U} {β : O →+* F}
 
 /- English proof (translation)
-Take `⟨ν, hν⟩` from `ObjMaps.exists_sab_id t₀`. Take `⟨mu, hmu⟩` from `ObjMaps.exists_sab_id C.t`. Establish `e : spMap (RingHom.id O) = 𝟙 _` using `Spec.map_id _`. Establish `w : 𝟙 C.X ≫ C.s = C.s ≫ spMap (RingHom.id O)` using `by simp [e]`. Establish `hφ : C.m.φ ≫ mu.φ = ν.φ ≫ C.m.φ` using `by rw [hν, hmu]; simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ν, hν, ⟨⟨𝟙 _, w, ?_, mu, by simp, hφ⟩⟩, Iso.refl _, mu, by simp, by simp, hφ⟩` and prove the remaining obligations. Establish `: IsIso (spMap (RingHom.id O))` using `e ▸ inferInstance`. Establish `h : pullback.lift (𝟙 C.X) C.s w ≫ pullback.fst _ _ = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `: IsIso (pullback.lift (𝟙 C.X) C.s w)` using `IsIso.of_isIso_fac_right h`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem above_refl (C : Cpt c t₀ β) : ∃ ν : SABMap t₀ t₀ (𝟙 U), ν.φ = 𝟙 _ ∧
     Nonempty (C.Above C (RingHom.id O) (𝟙 U) ν) ∧ C.ExtendsAut (Iso.refl U) ν := by
@@ -115,7 +115,7 @@ theorem above_refl (C : Cpt c t₀ β) : ∃ ν : SABMap t₀ t₀ (𝟙 U), ν.
   infer_instance
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall fun x => (abLocus_pullback abLocusOne C.t.semi C.m.cart.1 x).1 ?_` and prove the remaining obligations. Establish `h : C.jQ x ∈ pullback.fst C.s (spMap β) ⁻¹' abLocus C.t.G` using `C.ab_gen ▸ Set.mem_range_self x`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem abLocus_open_part (C : Cpt c t₀ β) : abLocus t₀.G = Set.univ := by
   refine Set.eq_univ_of_forall fun x => (abLocus_pullback abLocusOne C.t.semi C.m.cart.1 x).1 ?_
@@ -125,15 +125,13 @@ theorem abLocus_open_part (C : Cpt c t₀ β) : abLocus t₀.G = Set.univ := by
 end Above
 
 /- English proof (translation)
-Take `⟨t', ⟨mu⟩⟩` from `exists_pull g t`. Establish `ha' : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) mu.cart.1 ha`. Take `⟨t₀, ⟨m⟩⟩` from `exists_pull (𝟙 _ ≫ pullback.fst s (spMap β)) t`. Take `⟨t₀', ⟨m'⟩⟩` from `exists_pull (𝟙 _ ≫ pullback.fst (g ≫ s) (spMap β)) t'`. Set `r : pullback (g ≫ s) (spMap β) ⟶ pullback s (spMap β)` to `pullback.lift (pullback.fst _ _ ≫ g) (pullback.snd _ _) (by simpa using pullback.condition)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hr : (𝟙 _ ≫ pullback.fst (g ≫ s) (spMap β)) ≫ g = r ≫ (𝟙 _ ≫ pullback.fst s (spMap β))`. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨n, hn₁⟩` from `ObjMaps.exists_sab_comp mu m'`. Establish `key : ∀ (f : pullback (g ≫ s) (spMap β) ⟶ X) (n : SABMap t₀' t f), f = r ≫ (𝟙 _ ≫ pullback.fst s (spMap β)) → ∃ ν : SABMap t₀' t₀ r, n.φ = ν.φ ≫ m.φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ n rfl`. Conclude with `ObjMaps.exists_sab_cancel m n`. Take `⟨ν, hν⟩` from `key _ n hr`. Establish `e : spMap (RingHom.id O) = 𝟙 _` using `Spec.map_id _`. Establish `w : g ≫ s = (g ≫ s) ≫ spMap (RingHom.id O)` using `by simp [e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : IsFinite (pullback.lift g (g ≫ s) w)`. Establish `: IsIso (spMap (RingHom.id O))` using `e ▸ inferInstance`. Establish `h : pullback.lift g (g ≫ s) w = g ≫ inv (pullback.fst s (spMap (RingHom.id O)))`. Rewrite using `[IsIso.eq_comp_inv]`. Conclude with `pullback.lift_fst _ _ _`.
-
-Rewrite using `[h]`. Use `infer_instance`. Conclude with `⟨t₀, t₀', ofAbelian β s t hn hp hf ha t₀ m, ofAbelian β (g ≫ s) t' hn' (isProjOver_comp_of_isFinite g hp) hf' ha' t₀' m', r, ν, ⟨g, w, hfin, mu, hr, hn₁.symm.trans hν⟩, rfl, rfl, HEq.rfl, HEq.rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_above_of_finite {O F : Type} [CommRing O] [Field F] (β : O →+* F) {X X' : Scheme.{0}} (s : X ⟶ Sp O)
     (g : X' ⟶ X) [IsFinite g] (t : SAB H X) (hn : Geo.Tor.IsNormalScheme X) (hn' : Geo.Tor.IsNormalScheme X') (hp : IsProjOver s)
@@ -168,20 +166,18 @@ theorem exists_above_of_finite {O F : Type} [CommRing O] [Field F] (β : O →+*
     ⟨g, w, hfin, mu, hr, hn₁.symm.trans hν⟩, rfl, rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Use `ProjSpace.Model.isIso_str_zero (R := R)` as an intermediate fact. Conclude with `⟨0, inv (PSpace.str R 0), inferInstance, IsIso.inv_hom_id _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isProjOver_id (R : Type) [CommRing R] : IsProjOver (𝟙 (Sp R)) := by
   have := ProjSpace.Model.isIso_str_zero (R := R)
   exact ⟨0, inv (PSpace.str R 0), inferInstance, IsIso.inv_hom_id _⟩
 
 /- English proof (translation)
-Use `⟨⟨⟨inferInstance, inferInstance⟩, inferInstance, inferInstanceAs (IsFractionRing ℤ ℚ)⟩, ?_⟩` and prove the remaining obligations. Establish `hM : Module.Finite ℤ GaussianInt`. Use `Module.Finite.of_surjective ((LinearMap.toSpanSingleton ℤ _ 1).coprod (LinearMap.toSpanSingleton ℤ _ (⟨0, 1⟩ : GaussianInt))) fun z => ⟨(z.re, z.im), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Establish `: IsFinite (spMap (algebraMap ℤ GaussianInt))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 hM`. Establish `hfl : Flat (spMap (algebraMap ℤ GaussianInt) ≫ 𝟙 _)`. Rewrite using `[Category.comp_id, HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₀, t₀', C, C', r, ν, a, h₁, h₂, h₃, h₄⟩` from `exists_above_of_finite (algebraMap ℤ ℚ) (𝟙 (Sp ℤ)) (spMap (algebraMap ℤ GaussianInt)) (zeroTriple HostModel.host _) (ZJ.isNormalScheme_sp ℤ) (ZJ.isNormalScheme_sp GaussianInt) (isProjOver_id ℤ) inferInstance hfl (isProper_zeroTriple _)`. Use `⟨_, _, _, _, t₀, t₀', C, C', r, ν, a, h₁, h₂, h₃, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (Y : Scheme.{0}) (t : SAB HostModel.host Y), Y = Sp ℤ → HEq t (zeroTriple HostModel.host (Sp ℤ)) → Good t`. Introduce and unpack `_ _ rfl h`. Take `rfl` from `eq_of_heq h`.
-
-Conclude with `good_zeroTriple _`. Conclude with `key _ _ h₁ h₄`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gaussian : IsDedFrac (algebraMap ℤ ℚ) ∧
     ∃ (U U' : Scheme.{0}) (c : U ⟶ Sp ℚ) (c' : U' ⟶ Sp ℚ) (t₀ : SAB HostModel.host U) (t₀' : SAB HostModel.host U')
@@ -211,9 +207,9 @@ theorem exists_gaussian : IsDedFrac (algebraMap ℤ ℚ) ∧
   exact key _ _ h₁ h₄
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `S.ch_ne (S.n true)` as an intermediate fact. Apply the tactic sequence `cases hc : S.ch (S.n true) <;> simp_all`. Take `⟨hp, ho, -⟩` from `S.aux i`. Establish `h2` using `hp.two_le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : 3 ≤ S.n i`. Take `⟨k, hk⟩` from `ho`. Use linear arithmetic over natural numbers and integers. Conclude with `h3.trans (Nat.le_self_pow (by have := S.J_pos i; omega) _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem system_primes_distinct_levels_ge_three {D : Datum H} {Xo : ∀ l : Level H, Moduli D l} (S : System Xo) :
     S.n true ≠ S.n false ∧ ∀ i, 3 ≤ S.n i ^ S.J i := by
@@ -228,9 +224,9 @@ theorem system_primes_distinct_levels_ge_three {D : Datum H} {Xo : ∀ l : Level
     exact h3.trans (Nat.le_self_pow (by have := S.J_pos i; omega) _)
 
 /- English proof (translation)
-Take `⟨a, b, c⟩` from `h`. Take `⟨a', b', c'⟩` from `h'`. Consider the cases of `l₀`. Consider the cases of `l₀'`. Simplify using `only at a b c a' b' c'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Substitute `a b c a' b' c'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem isPrimeToPart_unique {l₀ l₀' l : Level H} {p : ℕ} (h : IsPrimeToPart l₀ l p) (h' : IsPrimeToPart l₀' l p) :
     l₀ = l₀' := by
@@ -242,9 +238,9 @@ theorem isPrimeToPart_unique {l₀ l₀' l : Level H} {p : ℕ} (h : IsPrimeToPa
   rfl
 
 /- English proof (translation)
-Establish `h : RZ H n l.A ≤ (KA l).toSubfield.toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Establish `h₁ : H.rt0 ∈ KA l` using `IntermediateField.subset_adjoin _ _ (by simp)`. Establish `h₂ : zeta l.A ∈ KA l` using `IntermediateField.subset_adjoin _ _ (by simp)`. Introduce and unpack `x (rfl | rfl | rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(KA l).div_mem (add_mem (one_mem _) h₁) (by exact_mod_cast natCast_mem (KA l) 2)`. Conclude with `(KA l).inv_mem (natCast_mem (KA l) n)`. Conclude with `h₂`. Conclude with `⟨Subring.inclusion h, fun _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isInc (l : Level H) (n : ℕ) : ∃ β : RZ H n l.A →+* KA l,
     IsInc (RZ H n l.A).subtype (KA l).val.toRingHom β := by

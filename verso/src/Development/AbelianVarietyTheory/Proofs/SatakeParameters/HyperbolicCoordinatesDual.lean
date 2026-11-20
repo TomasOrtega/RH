@@ -7,7 +7,7 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Establish `h1 : posPl D p (posPl D p z a) (b - a) = posPl D p z a`. Rewrite using `[posPl_add, Nat.add_sub_cancel' hab, he]`. Establish `hd` using `posPl_fix D p _ _ h1`. Use `Nat.eq_zero_of_dvd_of_lt hd (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posPl_inj_lt (D : D7) (p : ℕ) (z : OrbitPlaces.Pl D) {a b : ℕ} (hab : a ≤ b) (hb : b < nP D p)
     (he : posPl D p z a = posPl D p z b) : a = b := by
@@ -18,7 +18,7 @@ theorem posPl_inj_lt (D : D7) (p : ℕ) (z : OrbitPlaces.Pl D) {a b : ℕ} (hab 
   omega
 
 /- English proof (translation)
-Apply `ZMod.val_injective` to reduce the goal to its premises. Break down `le_total s.val s'.val with h | h` into its components or cases. Conclude with `posPl_inj_lt D p z h (ZMod.val_lt _) he`. Conclude with `(posPl_inj_lt D p z h (ZMod.val_lt _) he.symm).symm`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem orbMap_inj (D : D7) (p : ℕ) (z : OrbitPlaces.Pl D) {s s' : ZMod (nP D p)}
     (he : posPl D p z s.val = posPl D p z s'.val) : s = s' := by
@@ -28,40 +28,38 @@ theorem orbMap_inj (D : D7) (p : ℕ) (z : OrbitPlaces.Pl D) {s s' : ZMod (nP D 
   · exact (posPl_inj_lt D p z h (ZMod.val_lt _) he.symm).symm
 
 /- English proof (translation)
-Rewrite using `[← RingHom.coe_pow, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_mul_ringHom {K : Type*} [Semiring K] (σ : K →+* K) (m : ℕ) (x y : K) :
     σ^[m] (x * y) = σ^[m] x * σ^[m] y := by
   rw [← RingHom.coe_pow, map_mul]
 
 /- English proof (translation)
-Introduce `D p _ σ om oms R N N' r g h hOK hR hTr hσg hpair e e'`. Take `⟨⟨⟨r0, hr0⟩, k⟩, a, b⟩` from `e`. Take `⟨⟨⟨r1, hr1⟩, k'⟩, a', b'⟩` from `e'`. Take `⟨m, hm⟩` from `hOK.even`. Establish `hn2` using `hOK.two`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval : ∀ t : ZMod (nP D p), t.val % 2 = 0 → (t + 1).val = t.val + 1`. Introduce `t ht`. Establish `hlt` using `ZMod.val_lt t`. Rewrite using `[ZMod.val_add, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (show 1 < nP D p by omega)]`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `reps : ∀ (m0 m1 : ℕ), posPl D p r0 m0 = posPl D p r1 m1 → r0 = r1` using `fun m0 m1 he => (hR (posPl D p r1 m1)).unique ⟨hr0, m0, he⟩ ⟨hr1, m1, rfl⟩`. Establish `hf : ∀ i, σ (fOf D p σ om R g ((⟨r0, hr0⟩, k), a, b) i) = ∑ t : ZMod (nP D p), (if t.val % 2 = 0 then σ^[t.val + 1] (om k) else 0) * h (posPl D p r0 (t.val + 1)) a b i`. Introduce `i`. Simplify using `only [fOf, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with ht`. Rewrite using `[map_mul, hσg, ← Function.iterate_succ_apply' σ, OrbitPlaces.orbMap, posPl_add]`. Simplify using the standard rewrite rules. Establish `hf' : ∀ i, fOf' D p σ oms R g ((⟨r1, hr1⟩, k'), a', b') i = ∑ t : ZMod (nP D p), (if t.val % 2 = 0 then 0 else σ^[t.val] (oms k')) * g (posPl D p r1 t.val) a' b' i`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fOf', OrbitPlaces.orbMap]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∑ i, σ (fOf D p σ om R g ((⟨r0, hr0⟩, k), a, b) i) * fOf' D p σ oms R g ((⟨r1, hr1⟩, k'), a', b') i = ∑ t : ZMod (nP D p), ∑ t' : ZMod (nP D p), (if t.val % 2 = 0 then σ^[t.val + 1] (om k) else 0) * (if t'.val % 2 = 0 then 0 else σ^[t'.val] (oms k')) * (if posPl D p r0 (t.va …`. Rewrite using `[Finset.sum_congr rfl fun i _ => by rw [hf i, hf' i, Finset.sum_mul_sum]]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t' _ => ?_` and prove the remaining obligations. Rewrite using `[← hpair, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Establish `key : ∀ t t' : ZMod (nP D p), (if t.val % 2 = 0 then σ^[t.val + 1] (om k) else 0) * (if t'.val % 2 = 0 then 0 else σ^[t'.val] (oms k')) * (if posPl D p r0 (t.val + 1) = posPl D p r1 t'.val ∧ a = a' ∧ b = b' then 1 else 0) = if t' = t + 1 then (if t.val % 2 = 0 then σ^[t.val + 1] …`. Introduce `t t'`. Distinguish the cases in `ht : t.val % 2 = 0`. Establish `h1` using `hval t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `htt : t' = t + 1`. Substitute `htt` using the available equality. Establish `hodd : ¬ (t.val + 1) % 2 = 0` using `by omega`. Rewrite using `[if_pos rfl, h1, if_pos ht, if_pos ht, if_neg hodd, iterate_mul_ringHom]`. Distinguish the cases in `hc : r0 = r1 ∧ a = a' ∧ b = b'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, rfl, rfl⟩` from `hc`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, if_neg]`. Introduce and unpack `⟨hp, ha, hb⟩`. Conclude with `hc ⟨reps _ _ hp, ha, hb⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg htt]`. Distinguish the cases in `ht' : t'.val % 2 = 0`. Simplify using `[ht']`. Distinguish the cases in `hc : posPl D p r0 (t.val + 1) = posPl D p r1 t'.val`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr` using `reps _ _ hc`. Substitute `hr` using the available equality. Rewrite `hc` using `[← h1]`. Conclude with `htt (orbMap_inj D p r0 hc).symm`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ht]`. Rewrite using `[h2, Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun t' _ => key t t']`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_mul]`. Establish `h3 : ∑ t : ZMod (nP D p), (if t.val % 2 = 0 then σ^[t.val + 1] (om k * oms k') else 0) = σ (∑ t : ZMod (nP D p), if t.val % 2 = 0 then σ^[t.val] (om k * oms k') else 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Function.iterate_succ_apply']`. Simplify using the standard rewrite rules.
-
-Rewrite using `[h3, hTr.2 k k']`. Apply the tactic sequence `by_cases hk : k = k' <;> by_cases hr : r0 = r1 <;> by_cases ha : a = a' <;> by_cases hb : b = b' <;>`. Simplify using `[hk, hr, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fOf_fOf'_dual : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p) (R : Finset (OrbitPlaces.Pl D)) (N N' r : ℕ) (g h : OrbitPlaces.Pl D → Fin N → Fin N' → Fin r → MaximalUnramifiedExtension p), OrbitPlaces.OrbOK D p → OrbitPlaces.IsReps D p R → TrDual (nP D p) σ om oms → (∀ z a b i, σ (g z a b i) = h (posPl D p z 1) a b i) → (∀ w z a b a₁ b₁, ∑ i, h w a b i * g z a₁ b₁ i = if w = z ∧ a = a₁ ∧ b = b₁ then 1 else 0) → ∀ e e', ∑ i, σ (fOf D p σ om R g e i) * fOf' D p σ oms R g e' i = if e = e' then 1 else 0 := by
   intro D p _ σ om oms R N N' r g h hOK hR hTr hσg hpair e e'

@@ -21,7 +21,7 @@ def tupR (X : Fin n → Fin M → K) (g : Matrix (Fin n) (Fin n) K) : Fin n → 
   fun a i => ∑ c, X c i * g c a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [tupR, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupR_tupR (X : Fin n → Fin M → K) (g h : Matrix (Fin n) (Fin n) K) :
     tupR (tupR X g) h = tupR X (g * h) := by
@@ -31,7 +31,7 @@ theorem tupR_tupR (X : Fin n → Fin M → K) (g h : Matrix (Fin n) (Fin n) K) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[tupR, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tupR_one (X : Fin n → Fin M → K) : tupR X 1 = X := by
   funext a i
@@ -57,13 +57,13 @@ def tupAction : DistribMulAction (GL (Fin n) K) (Fin n → Fin M → K) where
     simp [tupR, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one' (s : K →+* K) : cT s (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   simp [cT, Matrix.map_one]
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul' (s : K →+* K) (A B : Matrix (Fin n) (Fin n) K) :
     cT s (A * B) = cT s B * cT s A := by
@@ -103,16 +103,16 @@ def hermAction (s : K →+* K) (H : AddSubgroup (Matrix (Fin n) (Fin n) K))
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inv_val :
     Continuous fun q : GL (Fin n) K => ((q⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) :=
   Units.continuous_val.comp continuous_inv
 
 /- English proof (translation)
-Use `letI := tupAction (K := K) (n := n) (M := M)`. Use `⟨?_⟩` and prove the remaining obligations. Use `show Continuous fun p : GL (Fin n) K × (Fin n → Fin M → K) => tupR p.2 ((p.1⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [tupR]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp ((continuous_apply c).comp continuous_snd)`. Conclude with `(continuous_apply a).comp ((continuous_apply c).comp (continuous_inv_val.comp continuous_fst))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tup_continuousSMul :
     @ContinuousSMul (GL (Fin n) K) (Fin n → Fin M → K) (tupAction (K := K)).toSMul _ _ := by
@@ -128,9 +128,9 @@ theorem tup_continuousSMul :
   · exact (continuous_apply a).comp ((continuous_apply c).comp (continuous_inv_val.comp continuous_fst))
 
 /- English proof (translation)
-Use `letI := hermAction s H hmem`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hq : Continuous fun p : GL (Fin n) K × H => ((p.1⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `continuous_inv_val.comp continuous_fst`. Establish `hS : Continuous fun p : GL (Fin n) K × H => (p.2 : Matrix (Fin n) (Fin n) K)` using `continuous_subtype_val.comp continuous_snd`. Establish `hc : Continuous fun p : GL (Fin n) K × H => cT s ((p.1⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cT]`. Conclude with `(hq.matrix_map hs).matrix_transpose`. Conclude with `((hc.matrix_mul hS).matrix_mul hq).subtype_mk _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_continuousSMul (s : K →+* K) (hs : Continuous s)
     (H : AddSubgroup (Matrix (Fin n) (Fin n) K))
@@ -152,27 +152,21 @@ theorem herm_continuousSMul (s : K →+* K) (hs : Continuous s)
 end Actions
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm`. Take `⟨r1, r2, r3, r4, -⟩` from `id hR`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := r4`. Take `⟨k1, k2, k3, k4, k5, -, -, k8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Use `haveI := k1`. Use `haveI := k2`. Use `haveI := k3`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := k4`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R n`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `haveI := h4`. Use `haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := k8 n M`. Establish `hmem` using `(GlobalTheory.T.gram_right_action_identities F E σ hCM M J hJ R n).2.2.2.1`. Use `letI a1 : DistribMulAction (GL (Fin n) (R ⊗[F] E)) (Fin n → Fin M → R ⊗[F] E) := tupAction`. Use `haveI c1 : ContinuousSMul (GL (Fin n) (R ⊗[F] E)) (Fin n → Fin M → R ⊗[F] E) := tup_continuousSMul`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ₁, hχ₁c, hχ₁⟩` from `GlobalTheory.T.haar_modular_character_of_continuous_action (Fin n → Fin M → R ⊗[F] E) μ (GL (Fin n) (R ⊗[F] E))`. Use `letI a2 : DistribMulAction (GL (Fin n) (R ⊗[F] E)) (HermR R σ n) := hermAction (sigR R σ) (HermR R σ n) hmem`. Use `haveI c2 : ContinuousSMul (GL (Fin n) (R ⊗[F] E)) (HermR R σ n) := herm_continuousSMul (sigR R σ) k5 (HermR R σ n) hmem`. Take `⟨χ₂, hχ₂c, hχ₂⟩` from `GlobalTheory.T.haar_modular_character_of_continuous_action (HermR R σ n) ν (GL (Fin n) (R ⊗[F] E))`. Establish `hne : ∀ (χ : GL (Fin n) (R ⊗[F] E) →* ℝ≥0) (g), χ g ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `χ g h0`. Establish `: χ (g * g⁻¹) = 1` using `by simp`. Rewrite `this` using `[map_mul, h0, zero_mul]`. Conclude with `zero_ne_one this`. Use `⟨fun g => χ₁ g * χ₂ g⁻¹, hχ₁c.mul (hχ₂c.comp continuous_inv), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `fun g => mul_ne_zero (hne χ₁ g) (hne χ₂ g⁻¹)`. Simplify using the standard rewrite rules. Introduce `g S S' hS'`. Set `τ : HermR R σ n → HermR R σ n` to `fun S => g⁻¹ • S`. Establish `hτ : ∀ S : HermR R σ n, (τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * S * (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `S`. Use `show cT (sigR R σ) (((g⁻¹)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * S * (((g⁻¹)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = _`. Rewrite using `[inv_inv]`. Establish `hS'τ : S' = τ S` using `Subtype.ext (hS'.trans (hτ S).symm)`. Establish `hmap₁ : μ.map (fun X => rmul R X (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))) = χ₁ g⁻¹ • μ`.
-
-Use `hχ₁ g⁻¹` as an intermediate fact. Establish `e : (fun v : Fin n → Fin M → R ⊗[F] E => g⁻¹ • v) = fun X => rmul R X (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))`. Use function extensionality and compare the values at `X`. Use `show tupR X (((g⁻¹)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = _`. Rewrite using `[inv_inv]`.
-
-Both sides reduce to the same expression. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hmap₂ : ν.map τ = χ₂ g⁻¹ • ν` using `hχ₂ g⁻¹`. Establish `key` using `GlobalTheory.T.gram_fiber_measures_rmul_equivariant F E σ hCM M J hJ R hR n μ ν m hμ hν hm (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (Matrix.isUnits_det_units g) τ hτ (χ₁ g⁻¹) (χ₂ g⁻¹) hmap₁ hmap₂ S`. Rewrite using `[hS'τ]`.
-
-Establish `hinv : χ₁ g * χ₁ g⁻¹ = 1` using `by rw [← map_mul]; simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Use `_ = _ := by rw [mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem fibre_scale_continuous : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib R σ J n μ ν m → ∃ κ : GL (Fin n) (R ⊗[F] E) → ℝ≥0, Continuous κ ∧ (∀ g, κ g ≠ 0) ∧ κ 1 = 1 ∧ ∀ (g : GL (Fin n) (R ⊗[F] E)) (S S' : HermR R σ n), (S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) → m S' = κ g • (m S).map (fun X => rmul R X (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm

@@ -18,9 +18,9 @@ open GlobalTheory.ThK.UnipDom.Inverse
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hux, huz⟩` from `hu`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx', Matrix.mulVec_smul, hux, Matrix.mulVec_smul, hx, smul_smul, hcc, one_smul]`. Take `⟨a, ha⟩` from `huz (M' *ᵥ z)`. Use `⟨a * c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : mat g⁻¹ *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ (M' *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, hι', ← Matrix.mulVec_mulVec]`. Establish `h2 : mat g *ᵥ (incM F H'.ι *ᵥ (M' *ᵥ z)) = incM F H'.ι *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, hι, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec (M := M), hMM, Matrix.one_mulVec]`. Rewrite using `[mat_mul, mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h1, ha, Matrix.mulVec_add, h2, Matrix.mulVec_smul, hx, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_unipSet {σ : E →ₐ[F] E} {d d₁ : ℕ} {J : Matrix (Fin d) (Fin d) E} {H' : Plane E d d₁}
     (g : UA σ J) (c c' : AE F E) (M M' : Matrix (Fin d₁) (Fin d₁) (AE F E))
@@ -41,13 +41,13 @@ theorem conj_mem_unipSet {σ : E →ₐ[F] E} {d d₁ : ℕ} {J : Matrix (Fin d)
       Matrix.mulVec_smul, hx, smul_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ _ _ _ l g₀ h hL n hn`. Take `⟨hx, -, hι⟩` from `hL`. Establish `hn'` using `mem_unipSet hn`. Establish `hx' : mat h⁻¹ *ᵥ incV F H.x = (l⁻¹).1 • incV F H.x`. Establish `e` using `congrArg (fun v => (l⁻¹).1 • (mat h⁻¹ *ᵥ v)) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mat_inv_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at e`. Conclude with `e.symm`. Establish `hι' : mat h⁻¹ * incM F H.ι = incM F H.ι * mat g₀⁻¹`. Establish `e : mat h⁻¹ * incM F H.ι * mat g₀ = incM F H.ι`. Rewrite using `[Matrix.mul_assoc, ← hι, ← Matrix.mul_assoc, ← mat_mul, inv_mul_cancel, mat_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mat_mul, mul_inv_cancel, mat_one, Matrix.mul_one]`. Use `_ = incM F H.ι * mat g₀⁻¹ := by rw [← Matrix.mul_assoc, e]`. Establish `hg : mat g₀ * mat g₀⁻¹ = 1` using `by rw [← mat_mul, mul_inv_cancel, mat_one]`. Establish `hg' : mat g₀⁻¹ * mat g₀ = 1` using `by rw [← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Subgroup.subset_closure (conj_mem_unipSet h l.1 (l⁻¹).1 _ _ hx hx' (Units.inv_mul l) hι hι' hg n hn'), ?_⟩` and prove the remaining obligations. Establish `hm` using `conj_mem_unipSet (H' := H) h⁻¹ (l⁻¹).1 l.1 (mat g₀⁻¹) (mat g₀) hx' (by rw [inv_inv]; exact hx) (Units.mul_inv l) hι' (by rw [inv_inv]; exact hι) hg' n hn'`. Rewrite `hm` using `[inv_inv]`. Conclude with `Subgroup.subset_closure hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_conj_mem_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

@@ -9,7 +9,7 @@ open ProfiniteInteger
 section Density
 
 /- English proof (translation)
-Establish `: (multiples N : Set ℤ̂) = Set.range (fun y : ℤ̂ => (N : ℤ̂) * y)`. Use extensionality with `x`. Simplify using `[multiples]`. Rewrite using `[this]`. Conclude with `(isCompact_range (continuous_const.mul continuous_id)).isClosed`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_multiples (N : ℕ) : IsClosed (multiples N : Set ℤ̂) := by
   have : (multiples N : Set ℤ̂) = Set.range (fun y : ℤ̂ => (N : ℤ̂) * y) := by
@@ -22,19 +22,19 @@ instance finiteIndex_multiples (N : ℕ+) : (multiples N).FiniteIndex :=
   ⟨by rw [index_multiples]; exact N.ne_zero⟩
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.isOpen_of_isClosed_of_finiteIndex _ (isClosed_multiples N)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_multiples (N : ℕ+) : IsOpen (multiples N : Set ℤ̂) :=
   AddSubgroup.isOpen_of_isClosed_of_finiteIndex _ (isClosed_multiples N)
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hxU`. Take `⟨W, hW⟩` from `ProfiniteGrp.exist_openNormalAddSubgroup_sub_open_nhds_of_zero (hU.preimage (continuous_const_add x)) (by simpa using hxU)`. Establish `: Finite (ℤ̂ ⧸ W.toAddSubgroup)` using `AddSubgroup.quotient_finite_of_isOpen W.toAddSubgroup W.isOpen'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfi : W.toAddSubgroup.FiniteIndex` using `AddSubgroup.finiteIndex_of_finite_quotient`. Establish `hm : W.toAddSubgroup.index ≠ 0` using `hfi.index_ne_zero`. Establish `hWm` using `eq_multiples_index hm`. Use `set m : ℕ+ := ⟨W.toAddSubgroup.index, Nat.pos_of_ne_zero hm⟩ with hmdef`. Use `⟨((((proj m x).val : ℕ) : ℤ) : ℤ̂), ?_, Set.mem_range_self _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : ((((proj m x).val : ℕ) : ℤ) : ℤ̂) - x ∈ W.toAddSubgroup`. Rewrite using `[hWm]`. Use `(proj_eq_zero_iff (n := m) (x := ((((proj m x).val : ℕ) : ℤ) : ℤ̂) - x)).1 (by` as an intermediate fact. Rewrite using `[map_sub, map_intCast, Int.cast_natCast, ZMod.natCast_zmod_val, sub_self])`. Simplify `this` using `[hmdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hW hk` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem denseRange_intCast : DenseRange (Int.cast : ℤ → ℤ̂) := by
   intro x
@@ -64,9 +64,9 @@ section FixedField
 variable {G : Type*} [Group G] {d : G →* Multiplicative ℤ̂} {L : Subgroup G} {σ : G}
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, Subgroup.coe_mul_of_left_le_normalizer_right _ _ (Subgroup.zpowers_le.2 hσ), Set.mem_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, j, hj, rfl⟩`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 ha`. Conclude with `⟨k, j, hj, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, j, hj, rfl⟩`. Conclude with `⟨σ ^ k, Subgroup.zpow_mem_zpowers σ k, j, hj, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_zpowers_sup_iff (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Subgroup G) : Set G))
     {h : G} : h ∈ Subgroup.zpowers σ ⊔ (L ⊓ d.ker) ↔ ∃ k : ℤ, ∃ j ∈ L ⊓ d.ker, h = σ ^ k * j := by
@@ -80,7 +80,7 @@ theorem mem_zpowers_sup_iff (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Su
     exact ⟨σ ^ k, Subgroup.zpow_mem_zpowers σ k, j, hj, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_zpow, hdσ, (MonoidHom.mem_ker).1 hj.2, mul_one, ← ofAdd_zsmul, toAdd_ofAdd, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_zpow_mul {N : ℕ} (hdσ : d σ = Multiplicative.ofAdd (N : ℤ̂)) (k : ℤ) {j : G}
     (hj : j ∈ L ⊓ d.ker) :
@@ -98,34 +98,34 @@ def frobeniusClosure : Subgroup G :=
   (Subgroup.zpowers σ ⊔ (L ⊓ d.ker)).topologicalClosure
 
 /- English proof (translation)
-The claim follows from `le_sup_right.trans (Subgroup.le_topologicalClosure _)`.
+A detailed English derivation is pending.
 -/
 theorem le_frobeniusClosure : L ⊓ d.ker ≤ frobeniusClosure d L σ :=
   le_sup_right.trans (Subgroup.le_topologicalClosure _)
 
 /- English proof (translation)
-The claim follows from `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left (Subgroup.mem_zpowers σ))`.
+A detailed English derivation is pending.
 -/
 theorem mem_frobeniusClosure_self : σ ∈ frobeniusClosure d L σ :=
   Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left (Subgroup.mem_zpowers σ))
 
 /- English proof (translation)
-The claim follows from `Subgroup.isClosed_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_frobeniusClosure : IsClosed (frobeniusClosure d L σ : Set G) :=
   Subgroup.isClosed_topologicalClosure _
 
 /- English proof (translation)
-The claim follows from `Subgroup.topologicalClosure_minimal _ (sup_le (Subgroup.zpowers_le.2 hσK) hLK) hK`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusClosure_le {K : Subgroup G} (hK : IsClosed (K : Set G)) (hσK : σ ∈ K)
     (hLK : L ⊓ d.ker ≤ K) : frobeniusClosure d L σ ≤ K :=
   Subgroup.topologicalClosure_minimal _ (sup_le (Subgroup.zpowers_le.2 hσK) hLK) hK
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨fixedModule_anti le_frobeniusClosure ha, ha σ mem_frobeniusClosure_self⟩`. Introduce and unpack `⟨ha, hσa⟩`. Establish `hS : IsClosed (MulAction.stabilizer G a : Set G)` using `Subgroup.isClosed_of_isOpen _ (IsDiscreteModule.isOpen_stabilizer a)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hle : frobeniusClosure d L σ ≤ MulAction.stabilizer G a` using `frobeniusClosure_le hS (MulAction.mem_stabilizer_iff.2 hσa) fun g hg => ha g hg`. Conclude with `fun g hg => MulAction.mem_stabilizer_iff.1 (hle hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_fixedModule_frobeniusClosure {A : Type*} [CommGroup A] [MulDistribMulAction G A]
     [IsDiscreteModule G A] {a : A} :
@@ -143,21 +143,17 @@ theorem mem_fixedModule_frobeniusClosure {A : Type*} [CommGroup A] [MulDistribMu
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (le_inf le_frobeniusClosure inf_le_right)` and prove the remaining obligations. Introduce `x hx0`. Take `⟨hx, hxk⟩` from `Subgroup.mem_inf.1 hx0`. Rewrite `hxk` using `[MonoidHom.mem_ker]`. Take `⟨U0, hU0⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hL L.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: Finite (G ⧸ U0.toSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ U0.isOpen'`. Use `set t := orderOf (σ : G ⧸ U0.toSubgroup) with htdef`. Establish `ht : 0 < t` using `orderOf_pos _`. Use `set M : ℕ+ := ⟨t * N, Nat.mul_pos ht (Nat.pos_of_ne_zero hN)⟩ with hMdef`. Use `set V : Set G := (U0 : Set G) ∩ d ⁻¹' (Multiplicative.toAdd ⁻¹' (multiples M : Set ℤ̂)) with hVdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : IsOpen V` using `U0.isOpen'.inter ((isOpen_multiples M).preimage (continuous_toAdd.comp hd))`. Establish `hO : IsOpen ((fun y => x⁻¹ * y) ⁻¹' V)` using `hV.preimage (continuous_const.mul continuous_id)`. Establish `hxO : x ∈ (fun y => x⁻¹ * y) ⁻¹' V`. Simplify using `only [Set.mem_preimage, inv_mul_cancel, hVdef, Set.mem_inter_iff, map_one, toAdd_one]`. Conclude with `⟨U0.one_mem', (multiples M).zero_mem⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x ∈ closure ((Subgroup.zpowers σ ⊔ (L ⊓ d.ker) : Subgroup G) : Set G)`. Rewrite using `[← Subgroup.topologicalClosure_coe]`. Conclude with `hx`. Take `⟨h, hhO, hhH⟩` from `mem_closure_iff.1 hx' _ hO hxO`. Take `⟨k, j, hj, rfl⟩` from `(mem_zpowers_sup_iff hσ).1 hhH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hU, hWm⟩` from `hhO`. Establish `hdk : Multiplicative.toAdd (d (x⁻¹ * (σ ^ k * j))) = ((k * N : ℤ) : ℤ̂)`. Rewrite using `[map_mul, map_inv, hxk, inv_one, one_mul]`. Conclude with `deg_zpow_mul hdσ k hj`. Establish `hdiv : ((M : ℕ) : ℤ) ∣ k * N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((k * N : ℤ) : ℤ̂) ∈ multiples M`. Rewrite using `[← hdk]`. Conclude with `hWm`. Conclude with `(intCast_mem_multiples_iff M.pos).1 hmem`. Establish `htk : (t : ℤ) ∣ k`.
-
-Establish `h2 : (t : ℤ) * N ∣ k * N` using `by simpa [hMdef] using hdiv`. Conclude with `(mul_dvd_mul_iff_right (by exact_mod_cast hN)).1 h2`. Establish `hσk : σ ^ k ∈ U0.toSubgroup`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_zpow, ← orderOf_dvd_iff_zpow_eq_one]`. Conclude with `htk`.
-
-Use `⟨?_, (MonoidHom.mem_ker).2 hxk⟩` and prove the remaining obligations. Establish `hx_eq : x = σ ^ k * j * (x⁻¹ * (σ ^ k * j))⁻¹` using `by group`. Rewrite using `[hx_eq]`. Conclude with `L.mul_mem (L.mul_mem (hU0 hσk) hj.1) (L.inv_mem (hU0 hU))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobeniusClosure_inf_ker (hd : Continuous d) (hL : IsOpen (L : Set G))
     (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Subgroup G) : Set G)) {N : ℕ} (hN : N ≠ 0)
@@ -207,17 +203,15 @@ theorem frobeniusClosure_inf_ker (hd : Continuous d) (hL : IsOpen (L : Set G))
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hcl : IsClosed (d ⁻¹' (Multiplicative.toAdd ⁻¹' (multiples N : Set ℤ̂)))` using `(isClosed_multiples N).preimage (continuous_toAdd.comp hd)`. Establish `hsub : ((Subgroup.zpowers σ ⊔ (L ⊓ d.ker) : Subgroup G) : Set G) ⊆ d ⁻¹' (Multiplicative.toAdd ⁻¹' (multiples N : Set ℤ̂))`. Introduce `h hh`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, j, hj, rfl⟩` from `(mem_zpowers_sup_iff hσ).1 hh`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[deg_zpow_mul hdσ k hj, mem_multiples]`. Conclude with `⟨(k : ℤ̂), by push_cast; rw [nsmul_eq_mul]; ring⟩`. Establish `hx' : x ∈ closure ((Subgroup.zpowers σ ⊔ (L ⊓ d.ker) : Subgroup G) : Set G)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← Subgroup.topologicalClosure_coe]`. Conclude with `hx`. Conclude with `closure_minimal hsub hcl hx'`. Introduce `y hy`. Establish `hy' : Multiplicative.toAdd y ∈ multiples N` using `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `mem_multiples.1 hy'`. Use `set S : Set (Multiplicative ℤ̂) := d '' (frobeniusClosure d L σ : Set G) with hSdef`. Establish `hS : IsClosed S` using `(isClosed_frobeniusClosure.isCompact.image hd).isClosed`. Establish `key : ∀ w : ℤ̂, Multiplicative.ofAdd ((N : ℤ̂) * w) ∈ S`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `denseRange_intCast.induction_on w (hS.preimage (continuous_ofAdd.comp (continuous_const.mul continuous_id))) fun k => ?_` and prove the remaining obligations. Use `⟨σ ^ k, Subgroup.zpow_mem _ mem_frobeniusClosure_self k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, hdσ, ← ofAdd_zsmul, zsmul_eq_mul, mul_comm]`. Take `⟨x, hx, hxy⟩` from `key w`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hxy, ← nsmul_eq_mul, ← hw]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_frobeniusClosure (hd : Continuous d)
     (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Subgroup G) : Set G)) {N : ℕ}
@@ -255,11 +249,11 @@ theorem map_frobeniusClosure (hd : Continuous d)
     rfl
 
 /- English proof (translation)
-Use `set S := frobeniusClosure d L σ with hSdef`. Establish `hsup : S ⊔ d.ker = (AddSubgroup.toSubgroup (multiples N)).comap d`. Rewrite using `[← map_frobeniusClosure hd hσ hdσ, Subgroup.comap_map_eq]`. Establish `hsupOpen : IsOpen ((S ⊔ d.ker : Subgroup G) : Set G)`. Rewrite using `[hsup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isOpen_multiples ⟨N, Nat.pos_of_ne_zero hN⟩).preimage (continuous_toAdd.comp hd)`. Establish `: Finite (G ⧸ (S ⊔ d.ker))` using `Subgroup.quotient_finite_of_isOpen _ hsupOpen`. Establish `h1 : (S ⊔ d.ker).FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `: Finite (G ⧸ L)` using `Subgroup.quotient_finite_of_isOpen _ hL`. Establish `: L.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : S.relIndex (S ⊔ d.ker) ≠ 0`. Rewrite using `[relIndex_sup_of_le_normalizer (Subgroup.le_normalizer_of_normal), ← Subgroup.inf_relIndex_right, frobeniusClosure_inf_ker hd hL hσ hN hdσ, Subgroup.inf_relIndex_right]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`. Establish `: S.FiniteIndex` using `⟨by rw [← Subgroup.relIndex_mul_index le_sup_left]; exact mul_ne_zero h2 h1.index_ne_zero⟩`. Conclude with `Subgroup.isOpen_of_isClosed_of_finiteIndex _ isClosed_frobeniusClosure`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_frobeniusClosure (hd : Continuous d) (hL : IsOpen (L : Set G))
     (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Subgroup G) : Set G)) {N : ℕ} (hN : N ≠ 0)
@@ -287,7 +281,7 @@ theorem isOpen_frobeniusClosure (hd : Continuous d) (hL : IsOpen (L : Set G))
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Rewrite using `[inertiaDegree, map_frobeniusClosure hd hσ hdσ, AddSubgroup.index_toSubgroup]`. Conclude with `index_multiples ⟨N, Nat.pos_of_ne_zero hN⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaDegree_frobeniusClosure (hd : Continuous d)
     (hσ : σ ∈ Subgroup.normalizer ((L ⊓ d.ker : Subgroup G) : Set G)) {N : ℕ} (hN : N ≠ 0)

@@ -29,15 +29,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators GlobalTheo
 variable {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Kset {n : ℕ} (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε :=
   ⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt`. Consider the case `exact _root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt`. Consider the case `(apply _root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isItW_of_globIt {M : DSModel V S} {M' : DSModel W S'} {θ : InfFam D} (hθ : IsInfFam θ)
     {ψ : AddChar (AF D.host.F) ℂ} {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f : WO V W → ℂ}
@@ -55,13 +55,13 @@ theorem isItW_of_globIt {M : DSModel V S} {M' : DSModel W S'} {θ : InfFam D} (h
   | (intros; exact _root_.GlobalTheory.SourceOperatorLemmas.isItW_of_globIt ..)
 
 /- English proof (translation)
-Take `⟨-, p1, p2, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1`. Establish `ht` using `hd.1.1`. Establish `hn` using `hd.1.2.1`. Take `⟨⟨e, he⟩, m, hm, hU⟩` from `hB.1 X V S M τ (al.length + be.length) (ga.length + de.length) _ _ aT ⟨by omega, by simp, by simp, p1, hX _ _ _ p1, hS⟩`. Take `⟨⟨e', he'⟩, m', hm', hU'⟩` from `hB.2 X W S' M' τ (al.length + de.length + t) (ga.length + be.length) _ _ aS ⟨by omega, by simp [block]; omega, by simp, p2, hX _ _ _ p2, hS'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `hU e he`. Take `⟨U', hU'⟩` from `hU' e' he'`. Take `⟨Φ, hΦ⟩` from `(h1.1 t al be ga de hd).1`. Take `⟨Tm, hi, hq, -⟩` from `h2.1 t al be ga de hd Φ hΦ`. Take `⟨B, hB⟩` from `GlobalTheory.T.exists_contraction_isometric_discreteSeries_fock _ _ _ _ _ _ _ _ _ _ Tm hi hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_fockPolynomialIso_unitaryPair _ _ _ _ _ _ _ _ e e' he he'`. Take `⟨v, hv, -⟩` from `(hX _ _ _ p2).1`. Establish `c1` using `Fintype.card_congr e`. Establish `c2` using `Fintype.card_congr e'`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at c1 c2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨by omega, by omega⟩, GlobalTheory.T.exists_localFockIntertwiner_realPlace_of_coverContraction D V W S S' M M' τ _ _ _ _ _ _ _ _ e e' m m' aS aT U U' κ B hm hm' hU hU' ⟨v, 0, hv⟩ hκ hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_locIt {X : ProvA} (hX : ChosenSeries X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond X)
     (hB : ModelsAreCoverSeries D) (M : DSModel V S) (M' : DSModel W S') (τ : D.what₂.Tau) {t : ℕ}
@@ -90,9 +90,9 @@ theorem exists_locIt {X : ProvA} (hX : ChosenSeries X) (h1 : Formalism.MainNotio
     GlobalTheory.T.exists_localFockIntertwiner_realPlace_of_coverContraction D V W S S' M M' τ _ _ _ _ _ _ _ _ e e' m m' aS aT U U' κ B hm hm' hU hU' ⟨v, 0, hv⟩ hκ hB⟩
 
 /- English proof (translation)
-Introduce `k V W M M' θ ψ hθ hP`. Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ (expS D k τ) (expT D k τ) A` using `fun τ => by`. Take `⟨al, be, ga, de, hd, -, e1, e2⟩` from `hP τ`. Conclude with `exists_locIt hX h1 h2 hB M M' τ hd (congrArg dualPar e1) (congrArg dualPar e2)`. Use `choose hr A hA using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' (expS D k) (expT D k) A hC.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Use `⟨It, hI.ne, fun ω f ⟨χS, χT, hω, he⟩ hf => ?_⟩` and prove the remaining obligations. Establish `hv` using `fun τ => hV V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`. Conclude with `isItW_of_globIt hθ hI hr (hF V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hv τ).2.1) fun τ => (hv τ).2.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem itPair (D : D7) (X : ProvA) (hX : ChosenSeries X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond X)
     (hF : GlobalTheory.IndefiniteRowSideFullHecke.VacuumFockVectors.VacuumFock D) (hV : VacChar D) (hB : ModelsAreCoverSeries D)

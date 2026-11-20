@@ -6,7 +6,7 @@ open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 namespace GlobalTheory.PsCo.Cw2a
 
 /- English proof (translation)
-Simplify using `only [coefM, LinearMap.comp_apply, LinearMap.restrictScalars_apply, AlgEquiv.toLinearMap_apply, Polynomial.lcoeff_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefM_apply_eq_coeff {n L : ℕ} (k : ℕ) (s : PolyM n L) :
     coefM n L k s = (optionEquivLeft ℂ (Fin L ⊕ EntIdx n) s).coeff k := by
@@ -14,7 +14,7 @@ theorem coefM_apply_eq_coeff {n L : ℕ} (k : ℕ) (s : PolyM n L) :
     Polynomial.lcoeff_apply]
 
 /- English proof (translation)
-Unfold `dMu`. Use `congrArg _ (funext fun w => ?_)` and prove the remaining obligations. Consider the cases of `w with`. Consider the case `none => rfl`. Consider the case `some v => simp only [inM]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem dMu_eq_extDerivation {n L : ℕ} (ε : Fin n → Bool) (x : Mode ε) :
     dMu L ε x = mkDerivation ℂ (fun w : Option (Fin L ⊕ EntIdx n) => match w with
@@ -27,9 +27,9 @@ theorem dMu_eq_extDerivation {n L : ℕ} (ε : Fin n → Bool) (x : Mode ε) :
   | some v => simp only [inM]
 
 /- English proof (translation)
-Introduce `n L ε x k s`. Establish `h` using `GlobalTheory.coeff_optionEquivLeft_extDerivation (dL L ε x) k s`. Rewrite using `[coefM_apply_eq_coeff, coefM_apply_eq_coeff, ← h]`. Establish `e : dMu L ε x = mkDerivation ℂ (fun w : Option (Fin L ⊕ EntIdx n) => match w with`. Consider the case `none => (0 : MvPolynomial (Option (Fin L ⊕ EntIdx n)) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `some v => rename some (dL L ε x (X v))) := dMu_eq_extDerivation ε x`. Use `congrArg (fun D : Derivation ℂ (PolyM n L) (PolyM n L) => (optionEquivLeft ℂ (Fin L ⊕ EntIdx n) (D s)).coeff k) (e.trans ?_)` and prove the remaining obligations. Use `congrArg _ (funext fun w => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases w <;> rfl`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coefM_dMu : T_coefM_dMu := by
   intro n L ε x k s

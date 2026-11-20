@@ -7,25 +7,23 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `hpk : ((p : ℚ) ^ k) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp)`. Use `set q : ℚ := ((p : ℚ) ^ k)⁻¹ with hq`. Set `f : V →ₗ[ℤ] V` to `(LinearMap.lsmul ℚ V q).toAddMonoidHom.toIntLinearMap`. Establish `hf : ∀ x, f x = q • x` using `fun x => rfl`. Use `set W : Submodule ℤ V := Submodule.span ℤ (f '' (s : Set V)) with hW`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWfg : W.FG` using `Submodule.fg_span ((s.finite_toSet).image f)`. Use `haveI : IsNoetherian ℤ W := isNoetherian_of_fg_of_noetherian W hWfg`. Establish `hNfg : (AddSubgroup.toIntSubmodule M ⊓ W).FG` using `Submodule.FG.of_le_of_isNoetherian inf_le_right`. Take `⟨t, ht⟩` from `hNfg`. Establish `hcl : ∀ y, y ∈ AddSubgroup.closure (t : Set V) ↔ y ∈ M ∧ y ∈ W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `y`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, Submodule.mem_toAddSubgroup, ht, Submodule.mem_inf]`. Both sides reduce to the same expression. Establish `hsW : ∀ y ∈ AddSubgroup.closure (s : Set V), q • y ∈ W`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← Submodule.span_int_eq_addSubgroupClosure, Submodule.mem_toAddSubgroup]`. Establish `hy' : f y ∈ (Submodule.span ℤ (s : Set V)).map f` using `Submodule.mem_map_of_mem hy`. Rewrite `hy'` using `[Submodule.map_span]`. Rewrite using `[← hf]`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨t, ?_, fun w => ⟨fun hw => ?_, fun ⟨m, hm, hmw⟩ => hsat m w hm ((hcl _).1 hmw).1⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`. Introduce `x hx`. Establish `hx1 : p ^ k • x ∈ M` using `h1 x hx`. Establish `e : p ^ k • x = q • ((p ^ k * p ^ k) • x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[hq, ← _root_.mul_assoc, inv_mul_cancel₀ hpk, _root_.one_mul]`. Establish `hx2 : p ^ k • x ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hsW _ (AddSubgroup.nsmul_mem _ (AddSubgroup.subset_closure hx) _)`. Establish `hmem : p ^ k • x ∈ Submodule.span ℚ (t : Set V)` using `(AddSubgroup.closure_le (K := (Submodule.span ℚ (t : Set V)).toAddSubgroup)).2 Submodule.subset_span ((hcl _).2 ⟨hx1, hx2⟩)`. Establish `e2 : x = q • (p ^ k • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[hq, inv_mul_cancel₀ hpk, one_smul]`. Use `show x ∈ Submodule.span ℚ (t : Set V)`. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ q hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, hmem⟩` from `h2 w hw`. Use `⟨m, hm, (hcl _).2 ⟨M.nsmul_mem hw m, ?_⟩⟩` and prove the remaining obligations. Establish `e : m • w = q • ((m * p ^ k) • w)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`. Use `congr 1`.
-
-Use `push_cast`. Rewrite using `[hq, _root_.mul_comm (m : ℚ), ← _root_.mul_assoc, inv_mul_cancel₀ hpk, _root_.one_mul]`. Rewrite using `[e]`. Conclude with `hsW _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem plat_core {V : Type} [AddCommGroup V] [Module ℚ V] (p : ℕ) (hp : p ≠ 0) (M : AddSubgroup V)
     (s : Finset V) (k : ℕ) (hs : Submodule.span ℚ (s : Set V) = ⊤)
@@ -89,7 +87,7 @@ private theorem plat_core {V : Type} [AddCommGroup V] [Module ℚ V] (p : ℕ) (
     exact hsW _ hmem
 
 /- English proof (translation)
-Introduce `p _ D M s k hs hO hsat h1 h2`. Conclude with `⟨hO, plat_core p (Fact.out : p.Prime).ne_zero M s k hs hsat h1 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.W2.pLatOf_of :
     UpperTheory.Gal.W2.PLatOf := by

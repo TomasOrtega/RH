@@ -16,31 +16,27 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M _ _ hn hM`. Establish `hPdvd : ∀ m n : ℕ, m ∣ n → (n : K) ≠ 0 → (m : K) ≠ 0`. Introduce and unpack `m n ⟨c, rfl⟩ hn hm`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hn` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul, hm, zero_mul]`. Break down `subsingleton_or_nontrivial M with hsub | hnt` into its components or cases. Establish `h1 : Nat.card M = 1` using `Nat.card_eq_one_iff_unique.2 ⟨hsub, ⟨0⟩⟩`. Rewrite using `[eulerChar_eq_one_of_subsingleton, h1, Nat.cast_one, card_quotient_span_eq_one_of_isUnit isUnit_one, Nat.cast_one, inv_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : ∀ N : Submodule (ULift.{0} ℤ) M, (∀ g, N ≤ N.comap (M.ρ g)) → N = ⊥ ∨ N = ⊤`. Conclude with `eulerChar_of_forall_eq_bot_or_eq_top M hM hs`. Use `push Not at hs`. Take `⟨N, hN, hbot, htop⟩` from `hs`. Set `i` to `Rep.subtype M N hN`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Function.Injective i.hom` using `Submodule.injective_subtype N`. Establish `hS` using `cokerShortComplex_shortExact i hi`. Establish `: IsDiscreteRep (cokerShortComplex i).X₁` using `isDiscreteRep_subrepresentation M N hN`. Establish `: IsDiscreteRep (cokerShortComplex i).X₂` using `inferInstanceAs (IsDiscreteRep M)`. Establish `: Finite (cokerShortComplex i).X₂` using `inferInstanceAs (Finite M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDiscreteRep (cokerShortComplex i).X₃` using `isDiscreteRep_quotient M (LinearMap.range i.hom.toLinearMap) (range_hom_le_comap i)`. Establish `hG` using `hasFiniteCohomology_galois_top K Ksep`. Establish `hχ` using `eulerChar_shortExact hPdvd hG hS hM`. Establish `hrange : LinearMap.range i.hom.toLinearMap = N`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX₁ : Nat.card (cokerShortComplex i).X₁ = Nat.card N` using `rfl`. Establish `hX₃ : Nat.card (cokerShortComplex i).X₃ = Nat.card (M ⧸ LinearMap.range i.hom.toLinearMap)` using `rfl`. Establish `hcardM : Nat.card M = Nat.card (cokerShortComplex i).X₁ * Nat.card (cokerShortComplex i).X₃`. Rewrite using `[hX₁, hX₃, Submodule.card_eq_card_quotient_mul_card (LinearMap.range i.hom.toLinearMap), Nat.card_congr (LinearEquiv.ofInjective i.hom.toLinearMap hi).toEquiv.symm]`. Establish `: Finite (cokerShortComplex i).X₁` using `Finite.of_injective _ hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Finite (cokerShortComplex i).X₃` using `Finite.of_surjective _ (Submodule.mkQ_surjective (LinearMap.range i.hom.toLinearMap))`. Establish `h1 : 1 < Nat.card (cokerShortComplex i).X₁`. Rewrite using `[hX₁]`. Take `⟨x, hxN, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Establish `: Nontrivial N` using `⟨⟨⟨x, hxN⟩, 0, fun h => hx0 (congrArg Subtype.val h)⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finite.one_lt_card`. Establish `h3 : 1 < Nat.card (cokerShortComplex i).X₃`. Rewrite using `[hX₃, hrange]`. Establish `: Nontrivial (M ⧸ N)` using `Submodule.Quotient.nontrivial_iff.2 htop`. Establish `: Finite (M ⧸ N)` using `Finite.of_surjective _ (Submodule.mkQ_surjective N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finite.one_lt_card`. Establish `hpos1 : 0 < Nat.card (cokerShortComplex i).X₁` using `by omega`. Establish `hpos3 : 0 < Nat.card (cokerShortComplex i).X₃` using `by omega`. Establish `hlt1 : Nat.card (cokerShortComplex i).X₁ < n`. Rewrite using `[← hn, hcardM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `lt_mul_of_one_lt_right hpos1 h3`. Establish `hlt3 : Nat.card (cokerShortComplex i).X₃ < n`. Rewrite using `[← hn, hcardM]`. Conclude with `lt_mul_of_one_lt_left hpos3 h1`. Establish `hP1 : (Nat.card (cokerShortComplex i).X₁ : K) ≠ 0` using `hPdvd _ _ ⟨_, hcardM⟩ hM`.
-
-Establish `hP3 : (Nat.card (cokerShortComplex i).X₃ : K) ≠ 0` using `hPdvd _ _ ⟨_, hcardM.trans (mul_comm _ _)⟩ hM`. Express the relevant statement in the definitionally equal form `eulerChar (cokerShortComplex i).X₂ = _`. Rewrite using `[hχ, ih _ hlt1 _ rfl hP1, ih _ hlt3 _ rfl hP3]`. Rewrite using `[hcardM, card_quotient_span_natCast_mul hP1 hP3]`. Use `push_cast`.
-
-Rewrite using `[mul_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerChar_galois_of_card_eq (n : ℕ) : ∀ (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
     [Finite M], Nat.card M = n → (Nat.card M : K) ≠ 0 →
@@ -117,7 +113,7 @@ theorem eulerChar_galois_of_card_eq (n : ℕ) : ∀ (M : Rep (ULift.{0} ℤ) Gal
   rw [mul_inv]
 
 /- English proof (translation)
-The claim follows from `eulerChar_galois_of_card_eq _ M rfl hM`.
+A detailed English derivation is pending.
 -/
 theorem eulerChar_galois (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] [Finite M]
     (hM : (Nat.card M : K) ≠ 0) :
@@ -125,7 +121,7 @@ theorem eulerChar_galois (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
   eulerChar_galois_of_card_eq _ M rfl hM
 
 /- English proof (translation)
-Rewrite using `[← eulerChar_eq, eulerChar_galois M hM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_cohomology_mul_div_eq (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] [Finite M]
     (hM : (Nat.card M : K) ≠ 0) :

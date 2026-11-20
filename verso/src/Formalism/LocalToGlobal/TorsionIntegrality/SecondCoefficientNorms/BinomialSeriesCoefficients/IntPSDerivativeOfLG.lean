@@ -15,13 +15,13 @@ section Field
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Conclude with `PowerSeries.HasSubst.of_constantCoeff_zero h`.
+A detailed English derivation is pending.
 -/
 theorem hs1 {a : PowerSeries K} (h : PowerSeries.constantCoeff a = 0) : PowerSeries.HasSubst a := by
   exact PowerSeries.HasSubst.of_constantCoeff_zero h
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`. Simplify using `only [map_pow, ha]`. Rewrite using `[finsum_eq_single _ 0 (fun d hd => by simp [zero_pow hd])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_subst {σ : Type} {a : MvPowerSeries σ K} (ha : MvPowerSeries.constantCoeff a = 0)
     (g : PowerSeries K) :
@@ -32,14 +32,14 @@ theorem cc_subst {σ : Type} {a : MvPowerSeries σ K} (ha : MvPowerSeries.consta
   simp
 
 /- English proof (translation)
-Conclude with `cc_subst (σ := Unit) ha g`.
+A detailed English derivation is pending.
 -/
 theorem cc_subst1 {a : PowerSeries K} (ha : PowerSeries.constantCoeff a = 0) (g : PowerSeries K) :
     PowerSeries.constantCoeff (PowerSeries.subst a g) = PowerSeries.constantCoeff g := by
   exact cc_subst (σ := Unit) ha g
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using `[h.2.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_derivative_log {l linv : PowerSeries K} (h : IsLogPair l linv) :
     PowerSeries.constantCoeff (PowerSeries.derivative K l) = 1 := by
@@ -47,7 +47,7 @@ theorem cc_derivative_log {l linv : PowerSeries K} (h : IsLogPair l linv) :
   simp [h.2.1]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coe_substAlgHom ha, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem powerSeries_subst_mul {τ : Type} {a : MvPowerSeries τ K} (ha : PowerSeries.HasSubst a)
     (f g : PowerSeries K) :
@@ -55,11 +55,11 @@ private theorem powerSeries_subst_mul {τ : Type} {a : MvPowerSeries τ K} (ha :
   rw [← PowerSeries.coe_substAlgHom ha, map_mul]
 
 /- English proof (translation)
-Take `⟨_, _, hi0, _, hil⟩` from `h`. Establish `hsl : PowerSeries.HasSubst linv` using `hs1 hi0`. Establish `hd : PowerSeries.subst linv (PowerSeries.derivative K l) * PowerSeries.derivative K linv = 1`. Rewrite using `[← PowerSeries.derivative_subst hsl, hil, PowerSeries.derivative_X]`. Establish `hc : PowerSeries.constantCoeff (PowerSeries.derivative K l) = 1` using `cc_derivative_log ⟨by assumption, by assumption, hi0, by assumption, hil⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (PowerSeries.derivative K l)⁻¹ * PowerSeries.derivative K l = 1` using `PowerSeries.inv_mul_cancel _ (by rw [hc]; exact one_ne_zero)`. Establish `hsubinv : PowerSeries.subst linv ((PowerSeries.derivative K l)⁻¹) * PowerSeries.subst linv (PowerSeries.derivative K l) = 1`. Rewrite using `[← powerSeries_subst_mul hsl, hinv, ← PowerSeries.coe_substAlgHom hsl, map_one]`. Establish `key : PowerSeries.subst linv ((PowerSeries.derivative K l)⁻¹) = PowerSeries.derivative K linv`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hd, mul_one]`. Use `_ = (PowerSeries.subst linv ((PowerSeries.derivative K l)⁻¹) * PowerSeries.subst linv (PowerSeries.derivative K l)) * PowerSeries.derivative K linv := by ring`. Use `_ = PowerSeries.derivative K linv := by rw [hsubinv, one_mul]`. Unfold `Dinv`. Rewrite using `[powerSeries_subst_mul hsl, key, PowerSeries.derivative_subst hsl, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_Dinv {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries K) :
     PowerSeries.subst linv (Dinv l g) =
@@ -87,7 +87,7 @@ theorem subst_Dinv {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSer
   rw [powerSeries_subst_mul hsl, key, PowerSeries.derivative_subst hsl, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', subst_Dinv h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem subst_Dinv_iterate {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries K)
     (i : ℕ) : PowerSeries.subst linv ((Dinv l)^[i] g) =
@@ -97,7 +97,7 @@ theorem subst_Dinv_iterate {l linv : PowerSeries K} (h : IsLogPair l linv) (g : 
   | succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', subst_Dinv h, ih]
 
 /- English proof (translation)
-Unfold `jet`. Rewrite using `[← subst_Dinv_iterate h g i, cc_subst1 h.2.2.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_eq_cc {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries K) (i : ℕ) :
     jet l g i =
@@ -106,7 +106,7 @@ theorem jet_eq_cc {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeri
   rw [← subst_Dinv_iterate h g i, cc_subst1 h.2.2.1]
 
 /- English proof (translation)
-Rewrite using `[jet_eq_cc h, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_iterate_derivative]`. Simplify using `[Nat.one_ascFactorial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_eq {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries K) (i : ℕ) :
     jet l g i = (i.factorial : K) * PowerSeries.coeff i (PowerSeries.subst linv g) := by
@@ -116,9 +116,9 @@ theorem jet_eq {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries 
 variable {R : Subring K}
 
 /- English proof (translation)
-Introduce `n`. Establish `hn : n = Finsupp.single () (n ())`. Use extensionality with `⟨⟩`. Simplify using the standard rewrite rules. Use `h (n ())` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hn]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMv_of_intPS {f : PowerSeries K} (h : IntPS R f) : IntMv R (f : MvPowerSeries Unit K) := by
   intro n
@@ -130,14 +130,14 @@ theorem intMv_of_intPS {f : PowerSeries K} (h : IntPS R f) : IntMv R (f : MvPowe
   exact this
 
 /- English proof (translation)
-Introduce `n`. Conclude with `h (Finsupp.single () n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intPS_of_intMv {f : PowerSeries K} (h : IntMv R (f : MvPowerSeries Unit K)) : IntPS R f := by
   intro n
   exact h (Finsupp.single () n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_mul]`. Conclude with `sum_mem fun p _ => mul_mem (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPS_mul {f g : PowerSeries K} (hf : IntPS R f) (hg : IntPS R g) : IntPS R (f * g) := by
   intro n
@@ -145,7 +145,7 @@ theorem intPS_mul {f g : PowerSeries K} (hf : IntPS R f) (hg : IntPS R g) : IntP
   exact sum_mem fun p _ => mul_mem (hf _) (hg _)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_derivative]`. Conclude with `mul_mem (hf _) (add_mem (natCast_mem R n) (one_mem R))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPS_derivative {f : PowerSeries K} (hf : IntPS R f) :
     IntPS R (PowerSeries.derivative K f) := by
@@ -154,13 +154,11 @@ theorem intPS_derivative {f : PowerSeries K} (hf : IntPS R f) :
   exact mul_mem (hf _) (add_mem (natCast_mem R n) (one_mem R))
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `h1` using `congrArg (PowerSeries.coeff n) hUV`. Rewrite `h1` using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Nat.sub_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply, hU0, one_mul] at h1`. Establish `hrest : ∑ k ∈ Finset.range n, PowerSeries.coeff (k + 1) U * PowerSeries.coeff (n - (k + 1)) V ∈ R` using `sum_mem fun k hk => mul_mem (hU _) (ih _ (by have := Finset.mem_range.mp hk; omega))`. Establish `h1' : PowerSeries.coeff n V = PowerSeries.coeff n (1 : PowerSeries K) - ∑ k ∈ Finset.range n, PowerSeries.coeff (k + 1) U * PowerSeries.coeff (n - (k + 1)) V`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1']`. Use `sub_mem ?_ hrest` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_one]`. Use `split_ifs`. Conclude with `one_mem R`.
-
-Conclude with `zero_mem R`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPS_of_mul_eq_one {U V : PowerSeries K} (hU : IntPS R U)
     (hU0 : PowerSeries.constantCoeff U = 1) (hUV : U * V = 1) : IntPS R V := by
@@ -184,7 +182,7 @@ theorem intPS_of_mul_eq_one {U V : PowerSeries K} (hU : IntPS R U)
     · exact zero_mem R
 
 /- English proof (translation)
-Unfold `Dinv`. Conclude with `intPS_mul (intPS_of_mul_eq_one hl.2 hl.1 (PowerSeries.mul_inv_cancel _ (by rw [hl.1]; exact one_ne_zero))) hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem intPS_Dinv {l f : PowerSeries K} (hl : IsOneUnit R (PowerSeries.derivative K l))
     (hf : IntPS R (PowerSeries.derivative K f)) : IntPS R (Dinv l f) := by
@@ -199,9 +197,9 @@ section CharZero
 variable {K : Type} [Field K] [CharZero K] {R : Subring K}
 
 /- English proof (translation)
-Take `⟨hf0, hE⟩` from `hf`. Establish `hEi : IntPS R (mvExp f : PowerSeries K)` using `intPS_of_intMv hE`. Establish `hE0 : PowerSeries.constantCoeff (mvExp f : PowerSeries K) = 1` using `IntegralMvPolynomialLemmas.constantCoeff_mvExp hf0`. Establish `hd` using `derivative_mvExp (K := K) (f := f) hf0`. Establish `hinv` using `PowerSeries.mul_inv_cancel (mvExp f : PowerSeries K) (by rw [hE0]; exact one_ne_zero)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : PowerSeries.derivative K f = PowerSeries.derivative K (mvExp f : PowerSeries K) * (mvExp f : PowerSeries K)⁻¹`. Rewrite using `[hd, mul_assoc, hinv, mul_one]`. Rewrite using `[e]`. Conclude with `intPS_mul (intPS_derivative hEi) (intPS_of_mul_eq_one hEi hE0 hinv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intPS_derivative_of_LG {f : PowerSeries K} (hf : LG R f) :
     IntPS R (PowerSeries.derivative K f) := by
@@ -223,18 +221,18 @@ end JetSubstitutionLemmas
 open JetSubstitutionLemmas
 
 /- English proof (translation)
-Introduce `K _ _ l linv f h i`. Conclude with `jet_eq h f i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jetAdditivity : JetAdditive := by
   intro K _ _ l linv f h i
   exact jet_eq h f i
 
 /- English proof (translation)
-Introduce `K _ _ R l f hl hf i hi`. Establish `h1 : IntPS R (Dinv l f)` using `intPS_Dinv hl (intPS_derivative_of_LG hf)`. Establish `h2 : ∀ n : ℕ, IntPS R ((Dinv l)^[n] (Dinv l f))`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact h1`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `intPS_Dinv hl (intPS_derivative ih)`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `jet`. Rewrite using `[Function.iterate_succ_apply]`. Use `h2 n 0` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem jetExpIntegral' : JetLG := by
   intro K _ _ R l f hl hf i hi
@@ -259,7 +257,7 @@ section Norm
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `mulBy`. Rewrite using `[cc_subst1 (by simp [h.1]) linv]`. Conclude with `h.2.2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K) :
     PowerSeries.constantCoeff (mulBy l linv a) = 0 := by
@@ -268,11 +266,11 @@ theorem cc_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K) :
   exact h.2.2.1
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Establish `hm : PowerSeries.HasSubst (mulBy l linv a)` using `hs1 (cc_mulBy h a)`. Establish `haX : PowerSeries.HasSubst (a • PowerSeries.X : PowerSeries K)` using `hs1 (by simp)`. Establish `hCl : PowerSeries.HasSubst (PowerSeries.C a * l)` using `hs1 (by simp [h.1])`. Rewrite using `[PowerSeries.subst_comp_subst_apply hm hi, PowerSeries.rescale_eq_subst]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : PowerSeries.subst linv (mulBy l linv a) = PowerSeries.subst (a • PowerSeries.X : PowerSeries K) linv`. Unfold `mulBy`. Rewrite using `[PowerSeries.subst_comp_subst_apply hCl hi]`. Use `congr 1`. Rewrite using `[← PowerSeries.smul_eq_C_mul, PowerSeries.subst_smul hi, h.2.2.2.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(PowerSeries.subst_comp_subst_apply hi haX ph).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_linv_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K)
     (ph : PowerSeries K) :
@@ -292,7 +290,7 @@ theorem subst_linv_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K)
   exact (PowerSeries.subst_comp_subst_apply hi haX ph).symm
 
 /- English proof (translation)
-Rewrite using `[jet_eq h, jet_eq h, subst_linv_mulBy h, PowerSeries.coeff_rescale]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jet_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K) (ph : PowerSeries K)
     (i : ℕ) : jet l (PowerSeries.subst (mulBy l linv a) ph) i = a ^ i * jet l ph i := by
@@ -300,7 +298,7 @@ theorem jet_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K) (ph : 
   ring
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Rewrite using `[jet_eq h, jet_eq h, jet_eq h, ← PowerSeries.coe_substAlgHom hi, map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jet_sub {l linv : PowerSeries K} (h : IsLogPair l linv) (f g : PowerSeries K) (i : ℕ) :
     jet l (f - g) i = jet l f i - jet l g i := by
@@ -309,7 +307,7 @@ theorem jet_sub {l linv : PowerSeries K} (h : IsLogPair l linv) (f g : PowerSeri
   ring
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Rewrite using `[jet_eq h, jet_eq h, PowerSeries.subst_smul hi, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jet_smul {l linv : PowerSeries K} (h : IsLogPair l linv) (c : K) (f : PowerSeries K)
     (i : ℕ) : jet l (c • f) i = c * jet l f i := by
@@ -322,7 +320,7 @@ end Norm
 end JetSubstitutionLemmas
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph a b h hl _ hN i hi`. Use `jetExpIntegral' K R l (PowerSeries.subst (mulBy l linv a) ph - (a * b) • ph) hl hN i hi` as an intermediate fact. Rewrite `this` using `[jet_sub h, jet_mulBy h, jet_smul h]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jetNorm' : JetNorm := by
   intro K _ _ R l linv ph a b h hl _ hN i hi
@@ -332,9 +330,9 @@ theorem jetNorm' : JetNorm := by
   ring
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph h hl hph hN h2`. Use `jetNorm' K R l linv ph (-1) (-1) h hl hph hN 1 le_rfl` as an intermediate fact. Establish `e : jet l ph 1 = (((-1 : K) ^ 1 - (-1) * (-1)) * jet l ph 1) * (-(2 : K)⁻¹)`. Rewrite using `[show ((-1 : K) ^ 1 - (-1) * (-1)) = -2 by norm_num]`. Rewrite using `[show (-2 : K) * jet l ph 1 * -(2 : K)⁻¹ = (2 * (2 : K)⁻¹) * jet l ph 1 by ring, mul_inv_cancel₀ two_ne_zero, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mul_mem this (neg_mem h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetOne' : JetOne := by
   intro K _ _ R l linv ph h hl hph hN h2
@@ -353,14 +351,14 @@ section Adj
 variable {K : Type} [Field K] {σ : Type}
 
 /- English proof (translation)
-Conclude with `PowerSeries.HasSubst.of_constantCoeff_zero h`.
+A detailed English derivation is pending.
 -/
 theorem hsM {a : MvPowerSeries σ K} (h : MvPowerSeries.constantCoeff a = 0) :
     PowerSeries.HasSubst a := by
   exact PowerSeries.HasSubst.of_constantCoeff_zero h
 
 /- English proof (translation)
-Rewrite using `[cc_subst ha g, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_subst_zero {a : MvPowerSeries σ K} (ha : MvPowerSeries.constantCoeff a = 0)
     {g : PowerSeries K} (hg : PowerSeries.constantCoeff g = 0) :
@@ -368,7 +366,7 @@ theorem cc_subst_zero {a : MvPowerSeries σ K} (ha : MvPowerSeries.constantCoeff
   rw [cc_subst ha g, hg]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM hg), h.2.2.2.2, PowerSeries.subst_X (hsM hg)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_subst_linv {l linv : PowerSeries K} (h : IsLogPair l linv) {g : MvPowerSeries σ K}
     (hg : MvPowerSeries.constantCoeff g = 0) :
@@ -376,7 +374,7 @@ theorem subst_subst_linv {l linv : PowerSeries K} (h : IsLogPair l linv) {g : Mv
   rw [← PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM hg), h.2.2.2.2, PowerSeries.subst_X (hsM hg)]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.subst_comp_subst_apply (hs1 h.1) (hsM hw), h.2.2.2.1, PowerSeries.subst_X (hsM hw)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_subst_l {l linv : PowerSeries K} (h : IsLogPair l linv) {w : MvPowerSeries σ K}
     (hw : MvPowerSeries.constantCoeff w = 0) :
@@ -384,7 +382,7 @@ theorem subst_subst_l {l linv : PowerSeries K} (h : IsLogPair l linv) {w : MvPow
   rw [← PowerSeries.subst_comp_subst_apply (hs1 h.1) (hsM hw), h.2.2.2.1, PowerSeries.subst_X (hsM hw)]
 
 /- English proof (translation)
-Conclude with `(PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM hg) ph).symm`.
+A detailed English derivation is pending.
 -/
 theorem subst_ph_linv {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : PowerSeries K)
     {g : MvPowerSeries σ K} (hg : MvPowerSeries.constantCoeff g = 0) :
@@ -393,7 +391,7 @@ theorem subst_ph_linv {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : Powe
   exact (PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM hg) ph).symm
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM (cc_subst_zero hw h.1)), subst_subst_l h hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_ph {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : PowerSeries K)
     {w : MvPowerSeries σ K} (hw : MvPowerSeries.constantCoeff w = 0) :
@@ -406,15 +404,15 @@ def Q (l ψ : PowerSeries K) (α β : K) : MvPowerSeries (Fin 2) K :=
     MvPowerSeries.C β * PowerSeries.subst (MvPowerSeries.X (1 : Fin 2)) l) ψ
 
 /- English proof (translation)
-Establish `hX : ∀ j : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) = 0` using `fun j => MvPowerSeries.constantCoeff_X j`. Establish `hdv : ∀ (i j : Fin 2) (g : PowerSeries K), MvPowerSeries.pderiv K i (PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) g) = PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) (PowerSeries.derivative K g) * (Pi.single i (1 : MvPowerSeries (Fin 2) K) : Fi …`. Introduce `i j g`. Rewrite using `[IntegralMvPolynomialLemmas.pderiv_subst g (hX j) i, MvPowerSeries.pderiv_X]`. Establish `hv : ∀ j : Fin 2, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) l) = 0` using `fun j => cc_subst_zero (hX j) hl0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Q`. Establish `hu : MvPowerSeries.constantCoeff (MvPowerSeries.C α * PowerSeries.subst (MvPowerSeries.X (0 : Fin 2)) l + MvPowerSeries.C β * PowerSeries.subst (MvPowerSeries.X (1 : Fin 2)) l : MvPowerSeries (Fin 2) K) = 0`. Rewrite using `[map_add, map_mul, map_mul, hv 0, hv 1]`. Simplify using the standard rewrite rules. Generalize the expression as in `hU : (MvPowerSeries.C α * PowerSeries.subst (MvPowerSeries.X (0 : Fin 2)) l + MvPowerSeries.C β * PowerSeries.subst (MvPowerSeries.X (1 : Fin 2)) l : MvPowerSeries (Fin 2) K) = u at hu ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Establish `hd1 : MvPowerSeries.pderiv K 1 u = MvPowerSeries.C β * PowerSeries.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) (PowerSeries.derivative K l)`. Rewrite using `[← hU, map_add, Derivation.leibniz, Derivation.leibniz, MvPowerSeries.pderiv_C, MvPowerSeries.pderiv_C, hdv, hdv]`. Simplify using the standard rewrite rules. Establish `hd0 : MvPowerSeries.pderiv K 0 u = MvPowerSeries.C α * PowerSeries.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) (PowerSeries.derivative K l)`. Rewrite using `[← hU, map_add, Derivation.leibniz, Derivation.leibniz, MvPowerSeries.pderiv_C, MvPowerSeries.pderiv_C, hdv, hdv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hd01 : MvPowerSeries.pderiv K 0 (MvPowerSeries.pderiv K 1 u) = 0`. Rewrite using `[hd1, Derivation.leibniz, MvPowerSeries.pderiv_C, hdv]`. Simplify using the standard rewrite rules. Rewrite using `[IntegralMvPolynomialLemmas.pderiv_subst ψ hu 1, Derivation.leibniz, hd01, IntegralMvPolynomialLemmas.pderiv_subst _ hu 0, hd0, hd1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_zero, smul_eq_mul, mul_zero, zero_add, map_mul]`. Rewrite using `[cc_subst hu, MvPowerSeries.constantCoeff_C, MvPowerSeries.constantCoeff_C, cc_subst (hX 0), cc_subst (hX 1), hl1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cc_pderiv_Q {l : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0)
     (hl1 : PowerSeries.constantCoeff (PowerSeries.derivative K l) = 1) (ψ : PowerSeries K)
@@ -461,9 +459,9 @@ theorem cc_pderiv_Q {l : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0)
   ring
 
 /- English proof (translation)
-Establish `hX : ∀ j : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) = 0` using `fun j => MvPowerSeries.constantCoeff_X j`. Establish `hv : ∀ (j : Fin 2) (c : K), MvPowerSeries.constantCoeff (MvPowerSeries.C c * PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) l) = 0`. Introduce `j c`. Rewrite using `[map_mul, cc_subst_zero (hX j) h.1, mul_zero]`. Establish `hsum : MvPowerSeries.constantCoeff (MvPowerSeries.C a * PowerSeries.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) l + MvPowerSeries.C b * PowerSeries.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) l) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, hv, hv, add_zero]`. Unfold `be0 fadd fmul Q`. Rewrite using `[subst_subst_linv h (hv 0 a), subst_subst_linv h (hv 1 b), subst_ph_linv h ph hsum, subst_ph_linv h ph (hv 0 a), subst_ph_linv h ph (hv 1 b)]`. Simplify using `only [map_zero, zero_mul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem addDefect_eq {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : PowerSeries K) (a b : K) :
     be0 l linv ph (fmul l linv a (MvPowerSeries.X (0 : Fin 2)))
@@ -486,7 +484,7 @@ theorem addDefect_eq {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : Power
   simp only [map_zero, zero_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Unfold `fmul`. Rewrite using `[map_one, one_mul, subst_subst_l h hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fmul_one {l linv : PowerSeries K} (h : IsLogPair l linv) {w : MvPowerSeries σ K}
     (hw : MvPowerSeries.constantCoeff w = 0) : fmul l linv 1 w = w := by
@@ -498,15 +496,15 @@ end Adj
 end JetSubstitutionLemmas
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph a b h hph hA`. Establish `hX : ∀ j : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) = 0` using `fun j => MvPowerSeries.constantCoeff_X j`. Establish `hXpt : ∀ j : Fin 2, IsPt R (MvPowerSeries.X j : MvPowerSeries (Fin 2) K)`. Introduce `j`. Use `⟨hX j, fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `one_mem R`. Conclude with `zero_mem R`. Establish `hC` using `hA (Fin 2) (MvPowerSeries.X 0) (MvPowerSeries.X 1) (hXpt 0) (hXpt 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hI` using `IntegralMvPolynomialLemmas.intMv_pderiv (expIntegralDeriv' K R (Fin 2) _ hC 1) 0 0`. Rewrite `hI` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `e1` using `addDefect_eq h ph a 1`. Rewrite `e1` using `[fmul_one h (hX 1)]`. Establish `e2` using `addDefect_eq h ph 1 b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[fmul_one h (hX 0)]`. Establish `hl1` using `cc_derivative_log h`. Rewrite `hI` using `[e1, e2]`. Simplify using `only [map_sub, cc_pderiv_Q h.1 hl1] at hI`. Establish `hj : jet l ph 2 = PowerSeries.constantCoeff (PowerSeries.derivative K (PowerSeries.derivative K (PowerSeries.subst linv ph)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jet_eq_cc h]`. Both sides reduce to the same expression. Rewrite using `[hj]`. Use `hI using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jetAdjoint' : JetAdj := by
   intro K _ _ R l linv ph a b h hph hA
@@ -544,9 +542,9 @@ section Hurwitz
 variable {K : Type} [Field K] {R : Subring K}
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_mul, Finset.mul_sum]`. Use `sum_mem fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = n` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Establish `e : (n.factorial : K) * (PowerSeries.coeff p.1 A * PowerSeries.coeff p.2 B) = ((n.choose p.1 : ℕ) : K) * ((p.1.factorial : K) * PowerSeries.coeff p.1 A) * ((p.2.factorial : K) * PowerSeries.coeff p.2 B)`. Rewrite using `[← hp', ← Nat.add_choose_mul_factorial_mul_factorial p.1 p.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Nat.choose_symm_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (natCast_mem R _) (hA _ (by omega))) (hB _ (by omega))`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hurwitz_mul {A B : PowerSeries K} (n : ℕ)
     (hA : ∀ j ≤ n, (j.factorial : K) * PowerSeries.coeff j A ∈ R)
@@ -566,7 +564,7 @@ theorem hurwitz_mul {A B : PowerSeries K} (n : ℕ)
   exact mul_mem (mul_mem (natCast_mem R _) (hA _ (by omega))) (hB _ (by omega))
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_derivative, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem factorial_succ_coeff (g : PowerSeries K) (n : ℕ) :
     ((n + 1).factorial : K) * PowerSeries.coeff (n + 1) g =
@@ -578,11 +576,11 @@ theorem factorial_succ_coeff (g : PowerSeries K) (n : ℕ) :
 variable [CharZero K]
 
 /- English proof (translation)
-Establish `hE'` using `derivative_mvExp (K := K) hF0`. Establish `hE0 : PowerSeries.constantCoeff (mvExp F : PowerSeries K) = 1` using `IntegralMvPolynomialLemmas.constantCoeff_mvExp hF0`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Consider the cases of `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [PowerSeries.coeff_zero_eq_constantCoeff_apply, hE0, one_mem]`. Consider the case `succ n`. Rewrite using `[factorial_succ_coeff, hE']`. Use `hurwitz_mul n (fun j hj => ?_) (fun k hk => ih k (by omega))` and prove the remaining obligations. Rewrite using `[← factorial_succ_coeff]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF (j + 1) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem hurwitz_exp {F : PowerSeries K} (hF0 : PowerSeries.constantCoeff F = 0)
     (hF : ∀ i : ℕ, 1 ≤ i → (i.factorial : K) * PowerSeries.coeff i F ∈ R) (n : ℕ) :
@@ -600,9 +598,9 @@ theorem hurwitz_exp {F : PowerSeries K} (hF0 : PowerSeries.constantCoeff F = 0)
       exact hF (j + 1) (by omega)
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Establish `hF0' : PowerSeries.constantCoeff (PowerSeries.subst linv F : PowerSeries K) = 0`. Rewrite using `[cc_subst1 h.2.2.1]`. Conclude with `hF0`. Establish `e : PowerSeries.subst linv (mvExp F : PowerSeries K) = (mvExp (PowerSeries.subst linv F : PowerSeries K) : PowerSeries K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `mvExp`. Conclude with `PowerSeries.subst_comp_subst_apply (hs1 hF0) hi _`. Rewrite using `[jet_eq h, e]`. Conclude with `hurwitz_exp hF0' (fun j hj => by rw [← jet_eq h]; exact hF j hj) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_exp {l linv F : PowerSeries K} (h : IsLogPair l linv)
     (hF0 : PowerSeries.constantCoeff F = 0) (hF : ∀ i : ℕ, 1 ≤ i → jet l F i ∈ R) (i : ℕ) :
@@ -619,7 +617,7 @@ theorem jet_exp {l linv F : PowerSeries K} (h : IsLogPair l linv)
   exact hurwitz_exp hF0' (fun j hj => by rw [← jet_eq h]; exact hF j hj) i
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Rewrite using `[jet_eq h, jet_eq h, ← PowerSeries.coe_substAlgHom hi, map_neg, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jet_neg {l linv : PowerSeries K} (h : IsLogPair l linv) (f : PowerSeries K) (i : ℕ) :
     jet l (-f) i = -jet l f i := by
@@ -628,9 +626,9 @@ theorem jet_neg {l linv : PowerSeries K} (h : IsLogPair l linv) (f : PowerSeries
   ring
 
 /- English proof (translation)
-Establish `hi` using `hs1 h.2.2.1`. Rewrite using `[jet_eq h]`. Establish `e : PowerSeries.subst linv (PowerSeries.C c * l ^ 2) = PowerSeries.C c * PowerSeries.X ^ 2`. Rewrite using `[← PowerSeries.smul_eq_C_mul, PowerSeries.subst_smul hi, ← PowerSeries.coe_substAlgHom hi, map_pow, PowerSeries.coe_substAlgHom hi, h.2.2.2.2, PowerSeries.smul_eq_C_mul]`. Rewrite using `[e, PowerSeries.coeff_C_mul_X_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h2`. Substitute `h2` using the available equality. Evaluate the numerical expressions using `[Nat.factorial]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Evaluate the numerical expressions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jet_sq {l linv : PowerSeries K} (h : IsLogPair l linv) (c : K) (i : ℕ) :
     jet l (PowerSeries.C c * l ^ 2) i = if i = 2 then 2 * c else 0 := by
@@ -650,7 +648,7 @@ end Hurwitz
 end JetSubstitutionLemmas
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph h hph hj i`. Conclude with `jet_exp h (by rw [map_neg, hph, neg_zero]) (fun i hi => by rw [jet_neg h]; exact neg_mem (hj i hi)) i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jetExp' : JetExp := by
   intro K _ _ R l linv ph h hph hj i
@@ -658,13 +656,13 @@ theorem jetExp' : JetExp := by
     (fun i hi => by rw [jet_neg h]; exact neg_mem (hj i hi)) i
 
 /- English proof (translation)
-Introduce `K _ _ R l linv ph h hph hj`. Establish `hq0 : PowerSeries.constantCoeff (PowerSeries.C (jet l ph 2 / 2) * l ^ 2) = 0` using `by simp [h.1]`. Establish `h0 : PowerSeries.constantCoeff (ph - PowerSeries.C (jet l ph 2 / 2) * l ^ 2) = 0`. Rewrite using `[map_sub, hph, hq0, sub_zero]`. Use `⟨mvExp (-(ph - PowerSeries.C (jet l ph 2 / 2) * l ^ 2)), fun i => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `jet_exp h (by rw [map_neg, h0, neg_zero]) (fun j hj1 => ?_) i` and prove the remaining obligations. Rewrite using `[jet_neg h, jet_sub h, jet_sq h]`. Distinguish the cases in `h2 : j = 2`. Substitute `h2` using the available equality. Establish `e : (2 : K) * (jet l ph 2 / 2) = jet l ph 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[if_pos rfl, e, sub_self, neg_zero]`. Conclude with `zero_mem R`. Rewrite using `[if_neg h2, sub_zero]`. Conclude with `neg_mem (hj j hj1 h2)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : -ph = -(PowerSeries.C (jet l ph 2 / 2) * l ^ 2) + -(ph - PowerSeries.C (jet l ph 2 / 2) * l ^ 2)`. Expand and normalize the polynomial expressions, which then agree. Establish `hadd` using `(formalExpLaws' K Unit).2.2.1 (-(PowerSeries.C (jet l ph 2 / 2) * l ^ 2)) (-(ph - PowerSeries.C (jet l ph 2 / 2) * l ^ 2)) (by rw [map_neg, neg_eq_zero]; exact hq0) (by rw [map_neg, neg_eq_zero]; exact h0)`. Conclude with `(congrArg mvExp e).trans hadd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jetExpShape' : JetExpShape := by
   intro K _ _ R l linv ph h hph hj

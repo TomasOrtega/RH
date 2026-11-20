@@ -10,11 +10,11 @@ namespace GlobalTheory.ThKUTrCont
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[Topology.IsInducing.subtypeVal.continuousAt_iff, Units.isEmbedding_embedProduct.isInducing.continuousAt_iff]`. Use `ContinuousAt.prodMk ?_ ?_` and prove the remaining obligations. Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `h i j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `MulOpposite.continuous_op.continuousAt.comp ?_` and prove the remaining obligations. Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ?_` and prove the remaining obligations. Use `(h i j).comp_of_eq continuous_inv.continuousAt inv_one` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mat, map_inv]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_entries {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} [IsTopologicalRing (AE F E)]
@@ -35,7 +35,7 @@ theorem continuous_of_entries {G : Type} [TopologicalSpace G] [Group G] [IsTopol
 open Formalism.MainNotions.S in
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `Formalism.UG.P.levelaf_denom (F := F) (E := E) x`. Take `⟨N, hN, d', e⟩` from `GlobalTheory.AutInhab.exists_nat_multiple d hd0`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.AutInhab.levelafC_natCast, ← e, Formalism.UG.P.levelafC_mul, mul_assoc]`. Conclude with `mul_mem (Formalism.UG.P.levelafC_mem _) hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem (x : E ⊗[F] Formalism.MainNotions.S.Af F) : ∃ N : ℕ, 1 ≤ N ∧ (N : E ⊗[F] Formalism.MainNotions.S.Af F) * x ∈ IntAf F E := by
   obtain ⟨d, hd0, hd⟩ := Formalism.UG.P.levelaf_denom (F := F) (E := E) x
@@ -46,7 +46,7 @@ theorem exists_nat_mul_mem (x : E ⊗[F] Formalism.MainNotions.S.Af F) : ∃ N :
 
 open Formalism.MainNotions.S in
 /- English proof (translation)
-Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ K) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mul_mem {N : ℕ} (K : ℕ) {x : E ⊗[F] Formalism.MainNotions.S.Af F} (h : (N : E ⊗[F] Formalism.MainNotions.S.Af F) * x ∈ IntAf F E) :
     ((K * N : ℕ) : E ⊗[F] Formalism.MainNotions.S.Af F) * x ∈ IntAf F E := by
@@ -56,15 +56,13 @@ theorem natCast_mul_mem {N : ℕ} (K : ℕ) {x : E ⊗[F] Formalism.MainNotions.
 open Formalism.MainNotions.S in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.AutInhab.lamAf_fg (F := F) L hfg`. Use `choose N hN1 hN using fun x : E ⊗[F] Formalism.MainNotions.S.Af F => exists_nat_mul_mem (F := F) x`. Set `den : (Fin n → E ⊗[F] Formalism.MainNotions.S.Af F) → ℕ` to `fun v => ∏ i, N (v i)`. Use `⟨∏ v ∈ s, den v, Finset.one_le_prod' fun v _ => Finset.one_le_prod' fun i _ => hN1 _, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← hs]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `i`. Rewrite using `[← Finset.prod_erase_mul _ _ hy]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (((∏ v ∈ s.erase y, den v) * ∏ i, N (y i) : ℕ) : E ⊗[F] Formalism.MainNotions.S.Af F) * y i ∈ IntAf F E`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), ← mul_assoc]`. Conclude with `natCast_mul_mem _ (hN (y i))`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => intro i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (ha i) (hb i)`. Consider the case `smul r a _ ha`. Introduce `i`.
-
-Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem r.2 (ha i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom_coord {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
     ∃ D : ℕ, 1 ≤ D ∧ ∀ z ∈ lamAf (F := F) L, ∀ i, (D : E ⊗[F] Formalism.MainNotions.S.Af F) * z i ∈ IntAf F E := by
@@ -92,13 +90,13 @@ theorem exists_denom_coord {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg
 open Formalism.MainNotions.S in
 
 /- English proof (translation)
-Use `choose M hM1 hM using fun j : Fin n => GlobalTheory.AutInhab.lamAf_absorbs (F := F) L hs (Pi.single j (1 : E ⊗[F] Formalism.MainNotions.S.Af F))`. Take `⟨D, hD1, hD⟩` from `exists_denom_coord (F := F) L hfg`. Set `M' : ℕ` to `∏ j, M j`. Establish `hM'1 : 1 ≤ M'` using `Finset.one_le_prod' fun j _ => hM1 j`. Establish `hMe : ∀ j, (M' : E ⊗[F] Formalism.MainNotions.S.Af F) • Pi.single j (1 : E ⊗[F] Formalism.MainNotions.S.Af F) ∈ lamAf (F` using `F) L := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `show (((∏ j, M j : ℕ)) : E ⊗[F] Formalism.MainNotions.S.Af F) • _ ∈ _`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), Nat.cast_mul, mul_smul]`. Conclude with `GlobalTheory.AutInhab.natCast_smul_mem _ _ (hM j)`. Use `⟨N * D * M', Nat.mul_pos (Nat.mul_pos hN hD1) hM'1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨-, hy⟩ i j`. Take `⟨z, hz, e⟩` from `hy _ (hMe j)`. Use `⟨(D : E ⊗[F] Formalism.MainNotions.S.Af F) * z i, hD z hz i, ?_⟩` and prove the remaining obligations. Establish `hu` using `GlobalTheory.AutInhab.isUnit_natCast (F := F) (E := E) M' hM'1`. Rewrite `e` using `[Matrix.mulVec_smul, Matrix.mulVec_single_one, Nat.cast_mul, mul_comm ((N * D : ℕ) : E ⊗[F] Formalism.MainNotions.S.Af F), mul_smul, hu.smul_left_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun e i` as an intermediate fact. Simplify using `only [Matrix.col_apply, Pi.smul_apply, smul_eq_mul, Nat.cast_mul] at this`. Rewrite using `[this, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_entries {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hfg : L.FG) (N : ℕ) (hN : 1 ≤ N) :
@@ -127,19 +125,15 @@ theorem exists_level_entries {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
   rw [this, mul_assoc]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J J' Φ ε P L hs hfg hU h1 h2`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Use `letI tH : TopologicalSpace (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F)) := (GlobalTheory.AutInhab.adelicBasis L hs hfg (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F))).topology`. Use `haveI : IsTopologicalGroup (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F)) := (GlobalTheory.AutInhab.adelicBasis L hs hfg (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F))).isTopologicalGroup`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `continuous_of_entries` to reduce the goal to its premises. Introduce `i j`. Establish `hq : ContinuousAt (fun y : Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F) => Φ.symm (0, (((y : GL (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) - 1) i j)) 1` using `by show Filter.Tendsto _ _ _`. Simplify using `only [OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_apply]`. Rewrite using `[show ((0 : InfinitePlace F → ℂ), (0 : E ⊗[F] Formalism.MainNotions.S.Af F)) = 0 from rfl, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(GlobalTheory.AutInhab.adelicBasis L hs hfg (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F))).nhds_one_hasBasis.tendsto_left_iff]`. Introduce `U hU0`. Take `⟨N, hN, hNU⟩` from `h2 U hU0`. Take `⟨g, hg, hgy⟩` from `exists_level_entries (F := F) L hs hfg N hN`. Use `⟨_, ⟨g, hg, rfl⟩, fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, e⟩` from `hgy _ hy i j`. Establish `e' : ((((y : GL (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) - 1) i j) = (N : E ⊗[F] Formalism.MainNotions.S.Af F) * t` using `e`. Use `show Φ.symm (0, _) ∈ U`. Rewrite using `[e']`. Conclude with `hNU t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : Continuous (fun x : ∀ v : InfinitePlace F, Formalism.REAL.UJ (ε v) => Φ.symm ((fun w => ((P w : Matrix (Fin n) (Fin n) ℂ) * Formalism.MainNotions.S.uMat (x w) * (((P w)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) i j), 0))`. Use `h1.comp (continuous_pi fun w => ?_)` and prove the remaining obligations. Establish `hw : Continuous fun x : ∀ v : InfinitePlace F, Formalism.REAL.UJ (ε v) => Formalism.MainNotions.S.uMat (x w)` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_apply w))`. Conclude with `((continuous_const.matrix_mul hw).matrix_mul continuous_const).matrix_elem i j`. Establish `key : (fun x => mat (GlobalTheory.ThKUTr.trHom σ J Φ ε P (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F)) hU x) i j) = fun x => Φ.symm ((fun w => ((P w : Matrix (Fin n) (Fin n) ℂ) * Formalism.MainNotions.S.uMat (x.1 w) * (((P w)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (F …`.
-
-Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.ThKUTr.mat_trHom, GlobalTheory.ThKUTr.rawT_val, GlobalTheory.ThKUTr.glueM_apply, ← map_add, ← map_add]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[key]`.
-
-Conclude with `((hc.comp continuous_fst).continuousAt.add continuousAt_const).add (hq.comp_of_eq continuousAt_snd rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trHom_continuous : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J J' : Matrix (Fin n) (Fin n) E) (Φ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] Formalism.MainNotions.S.Af F)) (ε : InfinitePlace F → Fin n → Bool) (P : InfinitePlace F → (Matrix (Fin n) (Fin n) ℂ)ˣ) (L : Submodule (𝓞 E) (Fin n → E)) (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hfg : L.FG) (hU : ∀ x, GlobalTheory.ThKUTr.rawT Φ ε P (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F)) x ∈ UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F J)), Continuous (fun c : InfinitePlace F → ℂ => Φ.symm (c, 0)) → (∀ U ∈ nhds (0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), ∃ N : ℕ, 1 ≤ N ∧ ∀ y ∈ Formalism.MainNotions.S.IntAf F E, Φ.symm (0, (N : E ⊗[F] Formalism.MainNotions.S.Af F) * y) ∈ U) → @Continuous _ _ (@instTopologicalSpaceProd _ _ _ (GlobalTheory.AutInhab.adelicBasis L hs hfg (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F))).topology) _ (GlobalTheory.ThKUTr.trHom σ J Φ ε P (Formalism.UG.UPts σ J' (Formalism.MainNotions.S.Af F)) hU) := by
   intro F E _ _ _ _ _ σ n J J' Φ ε P L hs hfg hU h1 h2

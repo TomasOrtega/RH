@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `h : ∀ u : Oˣ, a (u : O) = ((Units.map (a : O →* k) u : kˣ) : k)` using `fun _ => rfl`. Establish `e : Φ.rt w g = (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ w.1 * (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ w.2` using `rfl`. Rewrite using `[e, h, h (Φ.χ 0 g), h (Φ.χ 1 g), h (Φ.χ 2 g)]`. Simplify using `only [map_mul, map_zpow, map_inv, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rt_val {O Γ k : Type} [CommRing O] [Group Γ] [Field k] (Φ : Fr O Γ) (a : O →+* k) (w : ℤ × ℤ) (g : Γ) :
     a (Φ.rt w g) = (a (Φ.χ 0 g) * (a (Φ.χ 1 g))⁻¹) ^ w.1 * (a (Φ.χ 0 g) * (a (Φ.χ 2 g))⁻¹) ^ w.2 := by
@@ -13,7 +13,7 @@ private theorem rt_val {O Γ k : Type} [CommRing O] [Group Γ] [Field k] (Φ : F
   simp only [map_mul, map_zpow, map_inv, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val]
 
 /- English proof (translation)
-Simplify using `only [rt_val]`. Conclude with `(((h.lc 0).mul ((h.lc 1).comp (·⁻¹))).comp (· ^ w.1)).mul (((h.lc 0).mul ((h.lc 2).comp (·⁻¹))).comp (· ^ w.2))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rt_lc {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [Field k] (Φ : Fr O Γ) (a : O →+* k)
     (h : Φ.Ok a) (w : ℤ × ℤ) : IsLocallyConstant fun g => a (Φ.rt w g) := by
@@ -21,30 +21,28 @@ private theorem rt_lc {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace 
   exact (((h.lc 0).mul ((h.lc 1).comp (·⁻¹))).comp (· ^ w.1)).mul (((h.lc 0).mul ((h.lc 2).comp (·⁻¹))).comp (· ^ w.2))
 
 /- English proof (translation)
-Simplify using `[rt_val, h.kill g hg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_kill {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [Field k] (Φ : Fr O Γ) (a : O →+* k)
     (h : Φ.Ok a) (w : ℤ × ℤ) (g : Γ) (hg : g ∈ Φ.N) : a (Φ.rt w g) = 1 := by
   simp [rt_val, h.kill g hg]
 
 /- English proof (translation)
-Introduce `O Γ k _ _ _ _ Φ a hok w w' h1 h2 J y hy x m hx hm hz`. Establish `n1 : 1 - a (Φ.rt w Φ.g0) ≠ 0` using `sub_ne_zero.2 h1.symm`. Establish `n2 : 1 - a (Φ.rt (w + w') Φ.g0) ≠ 0` using `sub_ne_zero.2 h2.symm`. Establish `hmul : ∀ (u : ℤ × ℤ) (g h : Γ), a (Φ.rt u (g * h)) = a (Φ.rt u g) * a (Φ.rt u h)` using `fun u g h => by`. Rewrite using `[map_mul, Units.val_mul, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd : ∀ g : Γ, a (Φ.rt (w + w') g) = a (Φ.rt w g) * a (Φ.rt w' g)` using `fun g => by`. Rewrite using `[Fr.rt_add, Units.val_mul, map_mul]`. Take `⟨m1, hm1⟩ : ∃ m1 : k, x Φ.g0 = m1 - a (Φ.rt w Φ.g0) * m1` from `⟨x Φ.g0 / (1 - a (Φ.rt w Φ.g0)), by field_simp⟩`. Establish `c` using `fun t : k => (IsLocallyConstant.const t : IsLocallyConstant fun _ : Γ => t)`. Use `⟨fun g => x g - (m1 - a (Φ.rt w g) * m1), fun v => m v - m1, ⟨?_, ?_, ?_⟩, ?_, ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx.lc.sub ((c m1).sub ((rt_lc Φ a hok w).mul (c m1)))`. Introduce `g h`. Rewrite using `[hx.coc, hmul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx.kill g hg, rt_kill Φ a hok w g hg]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.2 hm1`. Introduce `v s hs beta_reduce`. Rewrite using `[hm v s hs]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `g hg beta_reduce`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `hz j`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hyj, hy0⟩` from `hy j`. Take `⟨o1, ho1⟩ : ∃ o1 : k, z Φ.g0 = o1 - a (Φ.rt (w + w') Φ.g0) * o1` from `⟨z Φ.g0 / (1 - a (Φ.rt (w + w') Φ.g0)), by field_simp⟩`. Use `⟨fun g => z g - (o1 - a (Φ.rt (w + w') g) * o1 - y j g * a (Φ.rt w g) * m1), ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hz.lc.sub (((c o1).sub ((rt_lc Φ a hok _).mul (c o1))).sub ((hyj.lc.mul (rt_lc Φ a hok w)).mul (c m1)))`. Introduce `g h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz.coc, hyj.coc, hmul, hmul, hadd g, hadd h]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g hg`. Rewrite using `[hz.kill g hg, hyj.kill g hg, rt_kill Φ a hok _ g hg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v`. Take `⟨o, ho⟩` from `hz.loc v`. Use `⟨o - o1, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[ho s hs]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `beta_reduce`. Rewrite using `[ho1, hy0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.cupNorm :
     ∀ {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [Field k] (Φ : Fr O Γ) (a : O →+* k), Φ.Ok a → ∀ (w w' : ℤ × ℤ), a (Φ.rt w Φ.g0) ≠ 1 → a (Φ.rt (w + w') Φ.g0) ≠ 1 → ∀ (J : Type) (y : J → Γ → k), (∀ j, Φ.Coc a w' (y j) ∧ y j Φ.g0 = 0) →

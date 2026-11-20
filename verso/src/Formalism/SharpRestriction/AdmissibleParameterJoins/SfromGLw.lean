@@ -11,7 +11,7 @@ open Formalism.BasicNotions NumberField
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `conv_lhs => rw [← S.frame.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, HSpace.gram, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hT_frame {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (x : S.V) :
     S.hT x x = ∑ i, ∑ j, star (S.frame.repr x i) * S.gram i j * S.frame.repr x j := by
@@ -23,33 +23,29 @@ theorem hT_frame {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E
   ring
 
 /- English proof (translation)
-Introduce `hx0`. Establish `key : ∀ (p q : ℕ), Formalism.UG.HasSignature (S.gram.map τ) p q → (p = 0 ∨ q = 0) → False`. Introduce `p q hsig hpq`. Take `⟨e, P, hP⟩` from `hsig`. Set `v : Fin p ⊕ Fin q → ℂ` to `fun k => τ (S.frame.repr x (e.symm k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hv0 : v ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Apply `S.frame.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `congrFun h (e i)` as an intermediate fact. Simplify using `only [v, Equiv.symm_apply_apply, Pi.zero_apply, map_eq_zero] at this`. Simplify using `using this`. Establish `hQ : dotProduct (star v) (Matrix.mulVec ((S.gram.map τ).reindex e e) v) = 0`. Establish `hexp : dotProduct (star v) (Matrix.mulVec ((S.gram.map τ).reindex e e) v) = τ (S.hT x x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum]`. Use `_ = ∑ i, ∑ j, star (τ (S.frame.repr x i)) * (τ (S.gram i j) * τ (S.frame.repr x j)) := by`. Use `Fintype.sum_equiv e.symm _ _ (fun k => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv e.symm _ _ (fun l => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[v, Matrix.reindex_apply]`. Use `_ = τ (S.hT x x) := by`. Rewrite using `[hT_frame]`. Simplify using `[map_sum, map_mul, hτ, Complex.star_def, mul_assoc]`. Rewrite using `[hexp, hx0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : Fin p ⊕ Fin q → ℂ` to `Matrix.mulVec (↑P⁻¹ : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) v`. Establish `hvw : v = Matrix.mulVec (↑P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) w` using `by show v = Matrix.mulVec (↑P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (Matrix.mulVec (↑P⁻¹ : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) v)`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hw0 : w ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hv0` to reduce the goal to its premises. Rewrite using `[hvw, h, Matrix.mulVec_zero]`. Establish `hcT : Formalism.UG.cT (starRingEnd ℂ) (↑P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = Matrix.conjTranspose (↑P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, Complex.star_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ' : dotProduct (star w) (Matrix.mulVec (Formalism.UG.Jpq p q) w) = 0`. Rewrite using `[← hP, hcT, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, ← hvw]`. Conclude with `hQ`. Establish `hself : dotProduct (star w) w = 0`. Break down `hpq with hp | hq` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Substitute `hp` using the available equality. Establish `hJ : Formalism.UG.Jpq 0 q = -1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Conclude with `i.elim0`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `j with j | j` into its components or cases. Conclude with `j.elim0`. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Rewrite `hQ'` using `[hJ, Matrix.neg_mulVec, Matrix.one_mulVec]`. Simplify `hQ'` using `[dotProduct_neg]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hq` using the available equality. Establish `hJ : Formalism.UG.Jpq p 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Rewrite `hQ'` using `[hJ, Matrix.one_mulVec]`. Conclude with `hQ'`.
-
-Apply `hw0` to reduce the goal to its premises. Use `open scoped ComplexOrder in`. Use `first`. Consider the case `exact Matrix.dotProduct_star_self_eq_zero.1 hself`. Consider the case `exact dotProduct_star_self_eq_zero.1 hself`.
-
-Apply the tactic sequence `exact key _ _ (h1 τ) (by rcases h2 τ with hs | hs <;> simp [hs])`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem aniso_of_definite {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (τ : E →+* ℂ)
     (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)) (h1 : S.SigOK) (h2 : S.IsDefinite) (x : S.V) (hx : x ≠ 0) :
@@ -125,13 +121,13 @@ theorem aniso_of_definite {E : Type} [Field E] [NumberField E] [StarRing E] (S :
   exact key _ _ (h1 τ) (by rcases h2 τ with hs | hs <;> simp [hs])
 
 /- English proof (translation)
-Unfold `SchurIrreducible.wittIdx`. Establish `hset : {k | ∃ W : Submodule E S.V, Module.finrank E W = k ∧ ∀ x ∈ W, ∀ y ∈ W, S.hT x y = 0} = {0}`. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨W, rfl, hW⟩`. Establish `hWb : W = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h x hne (hW x hx x hx)`. Substitute `hWb` using the available equality. Simplify using the standard rewrite rules. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⊥, by simp, fun x hx y _ => ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot E).1 hx]`. Simplify using the standard rewrite rules. Rewrite using `[hset, csSup_singleton]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittIdx_zero {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
     (h : ∀ x : S.V, x ≠ 0 → S.hT x x ≠ 0) : SchurIrreducible.wittIdx S = 0 := by

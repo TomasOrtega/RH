@@ -27,9 +27,9 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 namespace GlobalTheory.MiTop
 
 /- English proof (translation)
-Use `⟨⟨fun h => ?_, fun h => ⟨h.1, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hl` using `mem_lev.1 h.2`. Conclude with `⟨h.1, (mem_parLev.1 hl.1).2.1, hl.2⟩`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA _ κ, h.2.1, fun PP _ => GlobalTheory.SeeConjRead.blockTri_blkOf_top _ hn _, fun PP hPP => ?_⟩, h.2.2⟩` and prove the remaining obligations. Rewrite `hPP` using `[hQ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hPP (Finset.notMem_empty _)`. Unfold `Lev.levChi levFn`. Simplify using `only [hs, hQ, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem oneBlock_lev {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : LevDat D.host.E ℂ V.rank)
     (hn : V.rank ≤ Λ.r) (hs : Λ.s = 0) (hQ : Λ.Q = ∅) (κ : GA D V) :
@@ -50,17 +50,17 @@ theorem oneBlock_lev {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fi
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW u f B hP hF`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.Core.Mi.PinModel.exists_transport_adelic_correction (W.S.tr u)`. Take `⟨a, haf, hac, hSt⟩` from `GlobalTheory.T.exists_central_adapted_element W hW u f B hP hF a₀ ha₀`. Establish `hM` using `GlobalTheory.T.central_adapted_element_property W hW u f B hP a₀ ha₀ a haf hac hSt`. Establish `hC` using `GlobalTheory.T.central_adapted_element_value W hW u f B hP a₀ ha₀ a haf hac hSt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (show GA D (D.sp.Y 0) from f.g.b 0) ∈ GfC (D.sp.Y 0)`. Take `⟨k, _, _, _, _, ι, v, o, n, G, pl, -, hv, ht, -⟩` from `hP`. Establish `h1` using `hv.b 0`. Rewrite `h1` using `[ht.b 0]`. Conclude with `h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) ∈ GfC (D.sp.Y 0)` using `(GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff W.S.X W.Q.instEq _).1 (by simp)`. Establish `htf : tOf f B a₀ a ∈ GfC (D.sp.Y 0)` using `mul_mem (mul_mem (inv_mem hx) (GlobalTheory.Core.Mi.CenAct.embA_mem_GfC B.d B.o (mul_mem ha₀.1 haf))) hb`. Establish `hn : (D.sp.Y 0).rank ≤ D.R.r`. Rewrite using `[rank_eq W.S.X W.Q.instEq, W.S.X.n_eq]`. Use `⟨a₀, a, ha₀, haf, hac, htf, fun κ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv]`. Establish `h1` using `GlobalTheory.FrameConj.levS_conj_frame (D.sp.Y 0) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) (tOf f B a₀ a) htf κ`. Generalize the expression as in `tOf f B a₀ a * κ * (tOf f B a₀ a)⁻¹ = y at h1 ⊢`. Take `⟨h2, h3⟩` from `oneBlock_lev (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) hn rfl rfl y`. Establish `h4 : κ ∈ rJ W ↔ y ∈ levS (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W)` using `h1.1`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : Lev.levChi (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) y = rChi W κ` using `h1.2`. Rewrite `h4` using `[h2]`. Use `⟨h4.trans ⟨fun h => (hM y h.1 h.2.1).2 h.2.2, fun h => ?_⟩, fun hk => ?_⟩` and prove the remaining obligations. Take `⟨hf, hs⟩` from `(hSt y).2 ⟨h.1, h.2.1⟩`. Conclude with `⟨hf, hs, (hM y hf hs).1 h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, hs, hp⟩` from `h4.1 hk`. Conclude with `(hC y hf hs hp ((hM y hf hs).2 hp)).trans (h3.symm.trans h5)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ u (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), Placed f B → GlobalTheory.MiTop.Framed B → ∃ a₀ a, IsAt f B a₀ a := by
   intro D L hT Gi Gl Kc Yd cX ex W hW u f B hP hF

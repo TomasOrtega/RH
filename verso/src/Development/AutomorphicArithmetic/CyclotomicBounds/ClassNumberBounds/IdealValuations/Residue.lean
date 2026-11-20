@@ -8,7 +8,7 @@ namespace KStar.IdealValuations
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold `residueHom`. Conclude with `IsLocalization.lift_eq _ a`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem residueHom_algebraMap (P : Ideal (𝓞 K)) [P.IsMaximal] (a : 𝓞 K) :
     residueHom P (algebraMap (𝓞 K) (locAt P) a) = Ideal.Quotient.mk P a := by
@@ -16,13 +16,13 @@ private theorem residueHom_algebraMap (P : Ideal (𝓞 K)) [P.IsMaximal] (a : �
   exact IsLocalization.lift_eq _ a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, hb, h1, h2⟩`. Establish `hb0 : (b : K) ≠ 0`. Introduce `h`. Establish `: b = 0` using `by exact_mod_cast h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hb (this ▸ P.zero_mem)`. Establish `hx : x ∈ locAt P` using `⟨a, b, hb, by`. Establish `: x = (a : K) * (b : K)⁻¹` using `by rw [← h1]; field_simp`. Conclude with `this⟩`. Use `⟨⟨x, hx⟩, rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨x, hx⟩ : locAt P) * algebraMap (𝓞 K) (locAt P) b = algebraMap (𝓞 K) (locAt P) a` using `Subtype.ext h1`. Establish `e2` using `congrArg (residueHom P) e`. Rewrite `e2` using `[map_mul, residueHom_algebraMap, residueHom_algebraMap, ← h2]`. Establish `hb' : Ideal.Quotient.mk P b ≠ 0` using `fun h => hb (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Conclude with `mul_right_cancel₀ hb' e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, rfl, rfl⟩`. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj P.primeCompl y`. Use `⟨a, b, b.2, congrArg Subtype.val e, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (residueHom P) e`. Rewrite `e2` using `[map_mul, residueHom_algebraMap, residueHom_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isResidue_iff (P : Ideal (𝓞 K)) [P.IsMaximal] (x : K) (r : 𝓞 K ⧸ P) :
     IsResidue P x r ↔ ∃ y : locAt P, (y : K) = x ∧ residueHom P y = r := by
@@ -49,7 +49,7 @@ theorem isResidue_iff (P : Ideal (𝓞 K)) [P.IsMaximal] (x : K) (r : 𝓞 K ⧸
     rwa [map_mul, residueHom_algebraMap, residueHom_algebraMap] at e2
 
 /- English proof (translation)
-Establish `h1 : v.valuation K (a : K) = v.intValuation a` using `v.valuation_of_algebraMap a`. Establish `h2 : FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K) = ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)` using `(FractionalIdeal.coeIdeal_span_singleton a).symm`. Rewrite using `[h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valuation_eq_exp_count_int (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0) :
     v.valuation K (a : K) = WithZero.exp (-FractionalIdeal.count K v
@@ -61,11 +61,11 @@ private theorem valuation_eq_exp_count_int (v : HeightOneSpectrum (𝓞 K)) (a :
   rw [h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]
 
 /- English proof (translation)
-Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (𝓞 K) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `[← e]`. Establish `e' : x * (b : K) = (a : K)`. Rewrite using `[← e]`. Conclude with `div_mul_cancel₀ _ hbK`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `valuation_eq_exp_count_int v a ha0`. Establish `h2` using `valuation_eq_exp_count_int v b hb0`. Rewrite `h1` using `[← e', map_mul, h2, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hbK), neg_add, WithZero.exp_add]`. Conclude with `mul_right_cancel₀ WithZero.exp_ne_zero h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_eq_exp_count (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : x ≠ 0) :
     v.valuation K x = WithZero.exp (-FractionalIdeal.count K v
@@ -87,7 +87,7 @@ private theorem valuation_eq_exp_count (v : HeightOneSpectrum (𝓞 K)) (x : K) 
   exact mul_right_cancel₀ WithZero.exp_ne_zero h1
 
 /- English proof (translation)
-Establish `h : x ∈ locAt v.asIdeal ↔ x ∈ v.valuationSubringAtPrime K` using `Iff.rfl`. Rewrite using `[h, HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring, Valuation.mem_valuationSubring_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_locAt_iff (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ locAt v.asIdeal ↔ v.valuation K x ≤ 1 := by
@@ -96,13 +96,13 @@ private theorem mem_locAt_iff (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     Valuation.mem_valuationSubring_iff]
 
 /- English proof (translation)
-Establish `key : v.valuation K (x : K) = 1 ↔ FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ (x : K)) = 0`. Rewrite using `[valuation_eq_exp_count v _ x.ne_zero, ← WithZero.exp_zero, WithZero.exp_inj, neg_eq_zero]`. Rewrite using `[coe_toPrincipalIdeal, ← key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `(mem_locAt_iff v _).mp (u : locAt v.asIdeal).2`. Establish `h2` using `(mem_locAt_iff v _).mp ((u⁻¹ : (locAt v.asIdeal)ˣ) : locAt v.asIdeal).2`. Establish `h3 : ((u : locAt v.asIdeal) : K) * (((u⁻¹ : (locAt v.asIdeal)ˣ) : locAt v.asIdeal) : K) = 1` using `congrArg Subtype.val u.mul_inv`. Establish `h4` using `congrArg (v.valuation K) h3`. Rewrite `h4` using `[map_mul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hu]`. Conclude with `eq_one_of_one_le_mul_left h1 h2 h4.ge`. Introduce `h`. Establish `h1 : (x : K) ∈ locAt v.asIdeal` using `(mem_locAt_iff v _).mpr h.le`. Establish `h2 : (x : K)⁻¹ ∈ locAt v.asIdeal` using `(mem_locAt_iff v _).mpr (by rw [map_inv₀, h]; simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext (mul_inv_cancel₀ x.ne_zero), Subtype.ext (inv_mul_cancel₀ x.ne_zero)⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_locAt_iff (v : HeightOneSpectrum (𝓞 K)) (x : Kˣ) :
     (∃ u : (locAt v.asIdeal)ˣ, ((u : locAt v.asIdeal) : K) = (x : K)) ↔

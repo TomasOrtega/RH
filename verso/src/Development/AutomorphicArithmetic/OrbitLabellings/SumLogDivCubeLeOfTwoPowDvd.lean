@@ -3,17 +3,17 @@ import Mathlib
 open scoped BigOperators
 
 /- English proof (translation)
-Establish `hn0 : 0 < n` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`. Establish `hnu : 2 ≤ n * u` using `by nlinarith`. Establish `hl1 : 3 * (n * u) ≤ l` using `by nlinarith`. Establish `hl0 : 0 < l` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog2 : (1 / 2 : ℝ) ≤ Real.log n`. Use `Real.log_le_log (by norm_num) hn` as an intermediate fact. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : 0 < l / n` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : Real.log l = Real.log n + Real.log (l / n)`. Rewrite using `[Real.log_div hl0.ne' hn0.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Real.log_le_sub_one_of_pos hx`. Establish `hx1 : 1 ≤ l / n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hn0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : Real.log l ≤ 2 * (l / n) * Real.log n`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hx1) (sub_nonneg.2 hlog2)]`. Establish `h4 : Real.log l / l ^ 3 ≤ 2 * (l / n) * Real.log n / l ^ 3` using `by gcongr`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `h4.trans ?_` and prove the remaining obligations. Establish `h5 : 2 * (l / n) * Real.log n / l ^ 3 = Real.log n / n ^ 3 * (2 * n ^ 2 / l ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h5]`. Establish `h6 : 2 * n ^ 2 / l ^ 2 ≤ 1 / 4 * (1 / u ^ 2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 1 / 4 * (1 / u ^ 2) = 1 / (4 * u ^ 2)` using `by field_simp`. Rewrite using `[this, div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: 0 ≤ Real.log n / n ^ 3` using `by positivity`. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma log_div_cube_le_scaled (n l u : ℝ) (hn : 2 ≤ n) (hu : 1 ≤ u) (hl : 4 * n * u - 1 ≤ l) :
     Real.log l / l ^ 3 ≤ Real.log n / n ^ 3 * (1 / 4 * (1 / u ^ 2)) := by
@@ -47,9 +47,9 @@ private lemma log_div_cube_le_scaled (n l u : ℝ) (hn : 2 ≤ n) (hu : 1 ≤ u)
   gcongr
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp [Finset.sum_range_succ]`. Evaluate the numerical expressions. Consider the case `succ k ih`. Rewrite using `[show k + 1 + 2 = (k + 2) + 1 from rfl, Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Evaluate the numerical expressions. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `: 1 / ((k : ℝ) + 2) ^ 2 ≤ 1 / ((k : ℝ) + 1) - 1 / ((k : ℝ) + 1 + 1)`. Rewrite using `[div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -66,35 +66,33 @@ private lemma sum_inv_sq_range_le (M : ℕ) : ∑ u ∈ Finset.range (M + 2), (1
     linarith
 
 /- English proof (translation)
-Introduce `e he S hS`. Use `set N : ℕ := 2 ^ (e + 2) with hN`. Establish `hN1 : 1 ≤ N` using `Nat.one_le_two_pow`. Establish `hNR : (N : ℝ) = 4 * (2 : ℝ) ^ e` using `by rw [hN]; push_cast; ring`. Establish `hn : (2 : ℝ) ≤ 2 ^ e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set f : ℕ → ℝ := fun l => Real.log l / (l : ℝ) ^ 3 with hf`. Establish `hf0 : ∀ l, 0 ≤ f l` using `fun l => div_nonneg (Real.log_natCast_nonneg l) (by positivity)`. Use `set c : ℝ := Real.log ((2 : ℝ) ^ e) / ((2 : ℝ) ^ e) ^ 3 with hc`. Establish `hc0 : 0 ≤ c` using `div_nonneg (Real.log_nonneg (by linarith)) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set M := S.sup id with hM`. Use `set R := Finset.range (M + 2) with hR`. Establish `hsub : S ⊆ R.image (fun u => N * u + 1) ∪ R.image (fun u => N * u - 1)`. Introduce `l hl`. Establish `hlM : l ≤ M` using `Finset.le_sup (f := id) hl`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hZ : (2 ^ (e + 2) : ℤ) = (N : ℤ)` using `by rw [hN]; push_cast; ring`. Establish `hN2 : 2 ≤ N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mem_union, Finset.mem_image, Finset.mem_image]`. Break down `hS l hl with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Use `left`. Rewrite `h` using `[hZ]`. Establish `hl1 : 1 ≤ l`. Break down `Nat.eq_zero_or_pos l with rfl | h0` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h' : (N : ℤ) ∣ 1` using `by simpa using h`. Use `Int.le_of_dvd (by norm_num) h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `h' : N ∣ l - 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Int.natCast_dvd_natCast, Nat.cast_sub hl1]`. Simplify using `using h`. Take `⟨u, hu⟩` from `h'`. Use `⟨u, ?_, by omega⟩` and prove the remaining obligations. Establish `: u ≤ N * u` using `Nat.le_mul_of_pos_left u hN1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hR, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Use `right`. Rewrite `h` using `[hZ]`. Establish `h' : N ∣ l + 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← Int.natCast_dvd_natCast]`. Simplify using `using h`. Take `⟨u, hu⟩` from `h'`. Use `⟨u, ?_, by omega⟩` and prove the remaining obligations. Establish `: u ≤ N * u` using `Nat.le_mul_of_pos_left u hN1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hR, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Establish `hb : ∑ u ∈ R, c * (1 / 4 * (1 / (u : ℝ) ^ 2)) ≤ c / 2`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum]`. Establish `h1` using `sum_inv_sq_range_le M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `h2 : (0 : ℝ) ≤ 1 / ((M : ℝ) + 1)` using `by positivity`. Establish `h3 : 1 / 4 * ∑ u ∈ R, (1 / (u : ℝ) ^ 2) ≤ 1 / 2` using `by rw [hR]; linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : ∑ l ∈ R.image (fun u => N * u + 1), f l ≤ c / 2`. Use `(Finset.sum_image_le_of_nonneg (fun l _ => hf0 l)).trans (le_trans ?_ hb)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Finset.sum_le_sum fun u _ => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos u with rfl | h0` into its components or cases. Simplify using `[hf]`. Use `log_div_cube_le_scaled _ _ _ hn (by exact_mod_cast h0) ?_ push_cast; rw [hNR]; linarith` and prove the remaining obligations. Establish `hB : ∑ l ∈ R.image (fun u => N * u - 1), f l ≤ c / 2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `(Finset.sum_image_le_of_nonneg (fun l _ => hf0 l)).trans (le_trans ?_ hb)` and prove the remaining obligations. Use `Finset.sum_le_sum fun u _ => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos u with rfl | h0` into its components or cases. Simplify using `[hf]`. Use `log_div_cube_le_scaled _ _ _ hn (by exact_mod_cast h0) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 1 ≤ N * u` using `Nat.mul_pos hN1 h0`. Rewrite using `[Nat.cast_sub this]`. Use `push_cast`. Rewrite using `[hNR]`. Establish `h1 : ∑ l ∈ S, f l ≤ _` using `Finset.sum_le_sum_of_subset_of_nonneg hsub (fun l _ _ => hf0 l)`.
-
-Establish `h2` using `Finset.sum_union_inter (s₁ := R.image (fun u => N * u + 1)) (s₂ := R.image (fun u => N * u - 1)) (f := f)`. Establish `h3 : 0 ≤ ∑ l ∈ R.image (fun u => N * u + 1) ∩ R.image (fun u => N * u - 1), f l` using `Finset.sum_nonneg fun l _ => hf0 l`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.sum_log_div_cube_le_of_two_pow_dvd :
     ∀ (e : ℕ), 1 ≤ e → ∀ S : Finset ℕ, (∀ l ∈ S, (2 ^ (e + 2) : ℤ) ∣ (l : ℤ) - 1 ∨ (2 ^ (e + 2) : ℤ) ∣ (l : ℤ) + 1) →

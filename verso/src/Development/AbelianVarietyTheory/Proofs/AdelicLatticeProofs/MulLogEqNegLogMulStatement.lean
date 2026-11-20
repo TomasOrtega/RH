@@ -5,7 +5,7 @@ open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ClassFin.mul_log_eq_neg_log_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FMulLogEqNegLogMul.lean&line=27#L27)
 -/

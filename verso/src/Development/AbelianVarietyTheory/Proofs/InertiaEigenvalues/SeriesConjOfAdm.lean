@@ -27,9 +27,9 @@ def typeSpan {ι T : Type} (ρ : Representation ℂ G V) (b : ι → V) (ty : ι
   Submodule.span ℂ {z | ∃ (x : G) (σ : ι), ty σ = π ∧ z = ρ x (b σ)}
 
 /- English proof (translation)
-Take `⟨Λ, h1, h2⟩` from `h y hy h0`. Use `⟨Λ y, (h2 y hy).1, ?_⟩` and prove the remaining obligations. Establish `: actK π a' (Λ y) = Λ y` using `by conv_rhs => rw [← hfix]`. Rewrite using `[map_sum, actK, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, map_smulₛₗ, ha, (h2 y hy).2]`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem ConjIn.act_ne {ρ : Representation ℂ G V} {W : Submodule ℂ V} {j : Gn g n →* G}
     {π : Representation ℂ (GL (Fin n) ℚ_[g]) U} (h : ConjIn ρ W j π) (a a' : MonoidAlgebra ℂ (Gn g n))
@@ -45,9 +45,9 @@ theorem ConjIn.act_ne {ρ : Representation ℂ G V} {W : Submodule ℂ V} {j : G
   rwa [this]
 
 /- English proof (translation)
-Establish `h3` using `congrArg Polynomial.roots h`. Establish `e : ∀ m : Multiset (Formalism.CyclotomicNorms.Fbar g), ((m.map fun x => X - C (τ x)).prod).roots = m.map τ` using `fun m => by`. Rewrite using `[← roots_multiset_prod_X_sub_C (m.map τ), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h3` using `[e, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Polynomial.map_injective (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) (RingHom.injective _)` to reduce the goal to its premises. Rewrite using `[(IsAlgClosed.splits _).eq_prod_roots_of_monic (hf.map _), (IsAlgClosed.splits (f'.map _)).eq_prod_roots_of_monic (hf'.map _)]`. Conclude with `congrArg (fun m => (Multiset.map (fun x => X - C x) m).prod) (Multiset.map_injective hτ h3)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_teich (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ) (hτ : Function.Injective τ) {f f' : (ZMod g)[X]} (hf : f.Monic)
     (hf' : f'.Monic) (h : ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (τ x)).prod =
@@ -93,7 +93,7 @@ def SeriesConj (D : D7) : Prop :=
       (D.ntypes.eSer k (labAct D starRingAut k f)).coeff
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.Compare.TeichmullerRoots.dual_spec hf.1 hf.2.2`. Use `GlobalTheory.Compare.TeichmullerRoots.labAct_eq D k _ (-1) (fun ζ hζ => ?_) hf h1 h2` and prove the remaining obligations. Establish `hn : ‖ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hζ (GlobalTheory.IndefiniteRowSideFullHecke.FactorSeriesSupport.rootExp_ne_zero D.R.r _ (D.host.g_prime k).two_le)`. Rewrite using `[zpow_neg_one, Complex.inv_eq_conj hn]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem labAct_conj (D : D7) (k : Fin 2) {f : (ZMod (D.host.g k))[X]} (hf : IsLabel D k f) :
     labAct D starRingAut k f = dualLab D k f := by
@@ -105,9 +105,9 @@ theorem labAct_conj (D : D7) (k : Fin 2) {f : (ZMod (D.host.g k))[X]} (hf : IsLa
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SeriesSupportTest.atPlace_eq]`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb, add_smul, Finset.sum_add_distrib]`. Consider the case `single h c`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `: GlobalTheory.SeriesSupportTest.plHom D k v (MonoidAlgebra.single h c) = MonoidAlgebra.single (facHom D k v h) c` using `MonoidAlgebra.mapDomain_single`. Rewrite using `[this, Representation.asAlgebraHom_single]`. Simplify using `[Finsupp.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_atPlace (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (G0g D.nd) V)
     (k : Fin 2) (v : D.nd.PlG k) (a : MonoidAlgebra ℂ (Gn (D.host.g k) D.R.r)) (y : V) :
@@ -123,9 +123,9 @@ theorem act_atPlace (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Re
     simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite `he` using `[Ten.e0_eq, Ten.eGood, map_sum, LinearMap.sum_apply]`. Take `⟨p, -, hp⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (he.trans_ne hx)`. Distinguish the cases in `hg : Ten.goodVec D p`. Rewrite `hp` using `[if_pos hg]`. Use `⟨_, _, hg, hp, fun k v => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Subalgebra.mem_center_iff.1 (GlobalTheory.SeriesSupportTest.atPlace_central D k v _ (D.ntypes.eSer_central k _)), Ten.atPlace_eq, Ten.tens_mul_plc]`. Use `congr 3`. Conclude with `Function.update_eq_self_iff.2 (D.ntypes.eSer_idem _ _)`. Rewrite `hp` using `[if_neg hg]`. Simplify using `at hp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_good (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (G0g D.nd) V) {x : V}
     (hx : x ≠ 0) (he : ρ.asAlgebraHom D.ntypes.e0 x = x) :

@@ -129,14 +129,14 @@ namespace RealDat
 variable {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-Unfold `nP`. Conclude with `Nat.card_pos` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nP_pos (b : Bool) : 0 < nP F b := by
   unfold nP
   exact_mod_cast Nat.card_pos
 
 /- English proof (translation)
-Use `⟨h.mu_conj, fun w => ⟨fun hw => h.mu_ne w hw, fun hne => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hw`. Conclude with `hne (h.mu_off w hw)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem h0 (h : R.IsTup F) : (R.toCx F).H0 := by
   refine ⟨h.mu_conj, fun w => ⟨fun hw => h.mu_ne w hw, fun hne => ?_⟩⟩
@@ -144,9 +144,9 @@ theorem h0 (h : R.IsTup F) : (R.toCx F).H0 := by
   exact hne (h.mu_off w hw)
 
 /- English proof (translation)
-Introduce `w hw j`. Establish `hW : ¬ R.NonzeroIndexPlace F w` using `fun hh => hw (h.tw w hh)`. Establish `hμ : ((R.toCx F).data F.cr false).μ w = A.μ0` using `h.mu_off w hw`. Establish `hn : ¬ (((R.toCx F).data F.cr false).Iw j A.μ0 w ≠ 0 ∨ ((R.toCx F).data F.cr false).Iw j A.μ0 (conjPl w) ≠ 0 ∨ jw ((lv (F.fc (R.toCx F).zs) false).HT j A.μ0) w ((lv (F.fc (R.toCx F).zs) false).Tl j A.μ0) ≠ 0 ∨ (F.Zsc (R.toCx F).zs).F0 w j ≠ 0 ∨ (F.Zsc (R.toCx F).zs).F0 (conjPl w) …` using `fun hh => hW ⟨w, Or.inl rfl, j, hh⟩`. Use `push Not at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, -⟩` from `hn`. Use `⟨?_, h4⟩` and prove the remaining obligations. Unfold `IndefData.Aw`. Rewrite using `[hμ, h1, h2, h3]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem untw (h : R.IsTup F) (C CH : ℝ) : ((R.toCx F).data F.cr false).Untwisted (R.num F C CH) := by
   intro w hw j
@@ -163,7 +163,7 @@ theorem untw (h : R.IsTup F) (C CH : ℝ) : ((R.toCx F).data F.cr false).Untwist
   simp
 
 /- English proof (translation)
-Introduce `j x y`. Use `show cj _ (inner ℂ ((((Real.sqrt (nP F b) : ℝ) : ℂ)) • ((Tw.out x : R.WS F b j (sg0 D A)) : (R.HW j (sg0 D A)).H)) ((((Real.sqrt (nP F b) : ℝ) : ℂ)) • ((Tw.out y : R.WS F b j (sg0 D A)) : (R.HW j (sg0 D A)).H))) = ((nP F b : ℝ) : ℂ) * cj _ (inner ℂ ((Tw.out x : R.WS F b j (sg0 D …`. Rewrite using `[inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, Real.mul_self_sqrt (nP_pos b).le, map_mul, cj_ofReal]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ewNorm (b : Bool) : (R.toCx F).EWnorm b := by
   intro j x y
@@ -176,9 +176,9 @@ theorem ewNorm (b : Bool) : (R.toCx F).EWnorm b := by
   rfl
 
 /- English proof (translation)
-Introduce `j v`. Establish `hc : (((Real.sqrt (nP F b))⁻¹ : ℝ) : ℂ) ≠ 0`. Use `Real.sqrt_pos.2 (nP_pos (F := F) b)` as an intermediate fact. Conclude with `(inv_pos.2 this).ne'` after adjusting the coercions. Establish `hL : LinearIndependent D.what₂.LL (R.bL F b j)` using `(Module.finBasis D.what₂.LL (R.WL F b j)).linearIndependent.map' (R.WL F b j).subtype (Submodule.ker_subtype _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LinearIndependent ℂ (R.bC F b j (sgAt D.what₂.embLL v))` using `((hU j _).1 _ _ hL).units_smul fun _ => Units.mk0 _ hc`. Establish `h2` using `linearIndependent_span h1`. Establish `h3 : Submodule.span ℂ (Set.range fun k => (⟨R.bC F b j (sgAt D.what₂.embLL v) k, Submodule.subset_span ⟨k, rfl⟩⟩ : R.WS F b j (sgAt D.what₂.embLL v))) = ⊤` using `Submodule.span_range_subtype_eq_top_iff _ _ |>.2 rfl`. Conclude with `⟨Tw.linInd (E := R.WS F b j (sgAt D.what₂.embLL v)) _ h2, Tw.span_top (E := R.WS F b j (sgAt D.what₂.embLL v)) _ h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kForm (hU : R.LUnif) (b : Bool) : (R.toCx F).KForm b := by
   intro j v
@@ -195,7 +195,7 @@ theorem kForm (hU : R.LUnif) (b : Bool) : (R.toCx F).KForm b := by
   exact ⟨Tw.linInd (E := R.WS F b j (sgAt D.what₂.embLL v)) _ h2, Tw.span_top (E := R.WS F b j (sgAt D.what₂.embLL v)) _ h3⟩
 
 /- English proof (translation)
-The claim follows from `hL.stable inBlock := hL.block ratZ := hL.ratZ pos := hL.pos proviso := hL.proviso types := hL.types partsOrth := hL.partsOrth h0 := h0 hC.tup h2 := hL.iota ratMu := hL.ratMu h3 := hL.partsE h4pos := ⟨fun _ => hL.posScal.1, hL.posScal.2, nP_pos⟩ h4 := hL.scalE kForm := kForm hL.un …`.
+A detailed English derivation is pending.
 -/
 theorem cxLinks {Y : RealCol R F} {C CH : ℝ} (hC : R.Char F) (hL : ConcreteLinks R F Y C CH) :
     (R.toCx F).CxLinks F.cr Y.toCol C CH where
@@ -238,7 +238,7 @@ def concretePkg {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDa
   cxPkgF A hOk hsep F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc (R.toCx F) Y.toCol C CH (RealDat.cxLinks hC hL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem concretePkg_spec {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D A Ks) (F : Face D A)
     (Y : RealDat.RealCol R F) (C CH : ℝ) (hC : R.Char F) (hY : Y.Char) (hL : ConcreteLinks R F Y C CH) :
@@ -248,7 +248,7 @@ theorem concretePkg_spec {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R
       (concretePkg hOk hsep R F Y C CH hC hY hL).core.base.μ = R.mu := ⟨rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨concretePkg hOk hsep R F Y C CH hC hY hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem concreteToPkg {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D A Ks) (F : Face D A)
     (Y : RealDat.RealCol R F) (C CH : ℝ) (hC : R.Char F) (hY : Y.Char) (hL : ConcreteLinks R F Y C CH) :

@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.LSeq
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
 /- English proof (translation)
-The claim follows from `pow_mem (A.acris_torsion_free l (Fact.out : l.Prime).ne_zero) n`.
+A detailed English derivation is pending.
 -/
 theorem lpow_nzd (n : ℕ) : (l : A.Acr0) ^ n ∈ nonZeroDivisors A.Acr0 :=
   pow_mem (A.acris_torsion_free l (Fact.out : l.Prime).ne_zero) n
@@ -38,9 +38,9 @@ theorem alpha_mk (n : ℕ) (y : A.Acr0) :
     alpha A n (A.mkAcr 1 y) = A.mkAcr (n + 1) ((l : A.Acr0) ^ n * y) := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩ : ∃ y, A.mkAcr 1 y = x` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[alpha_mk]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (l : A.Acr0) ^ n * (y - c * (l : A.Acr0) ^ 1) = 0`. Rewrite using `[mul_sub, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `mem_nonZeroDivisors_iff_left.1 (lpow_nzd A n) _ h0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨c, (sub_eq_zero.1 h1).symm⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem alpha_injective (n : ℕ) : Function.Injective (alpha A n) := by
   rw [injective_iff_map_eq_zero]
@@ -54,11 +54,11 @@ theorem alpha_injective (n : ℕ) : Function.Injective (alpha A n) := by
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨c, (sub_eq_zero.1 h1).symm⟩)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, A.mkAcr (n + 1) y = x` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[red_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Conclude with `⟨A.mkAcr 1 c, by rw [alpha_mk, ← hc, mul_comm]⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨w, rfl⟩ : ∃ w, A.mkAcr 1 w = z` from `Ideal.Quotient.mk_surjective z`. Rewrite using `[← red_mk A n.le_succ y, ← hz, alpha_mk, red_mk]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨w, mul_comm _ _⟩)`.
+A detailed English derivation is pending.
 -/
 theorem alpha_exact (n : ℕ) : Function.Exact (alpha A n) (A.red n.le_succ) := by
   intro x
@@ -74,7 +74,7 @@ theorem alpha_exact (n : ℕ) : Function.Exact (alpha A n) (A.red n.le_succ) := 
     exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨w, mul_comm _ _⟩)
 
 /- English proof (translation)
-Introduce `n` and use `⟨fun A => alpha A n, fun A y => alpha_mk A n y, fun A => ⟨alpha_injective A n, alpha_exact A n⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem racrSeq (l : ℕ) [Fact l.Prime] : CrystallineSemistableComparison.D.RAcrSeq l :=
   fun n => ⟨fun A => alpha A n, fun A y => alpha_mk A n y, fun A => ⟨alpha_injective A n, alpha_exact A n⟩⟩

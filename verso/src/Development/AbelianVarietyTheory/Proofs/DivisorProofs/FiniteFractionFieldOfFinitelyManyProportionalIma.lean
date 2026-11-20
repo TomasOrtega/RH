@@ -8,13 +8,13 @@ open AlgebraicGeometry CategoryTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R K0 hfg hfrac ho halg`. Take `⟨s, hs⟩` from `hfg`. Establish `hL : FiniteDimensional K0 (IntermediateField.adjoin K0 (s : Set Ω))` using `IntermediateField.finiteDimensional_adjoin (fun x _ => (halg.isAlgebraic x).isIntegral)`. Establish `hR : ∀ a ∈ R, a ∈ IntermediateField.adjoin K0 (s : Set Ω)`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin K0 _ hx`. Consider the case `algebraMap r => exact IntermediateField.algebraMap_mem _ (⟨_, ho r⟩ : K0)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `htop : IntermediateField.adjoin K0 (s : Set Ω) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨a, ha, c, hc, rfl⟩` from `hfrac z`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `div_mem (hR a ha) (hR c hc)`. Rewrite `hL` using `[htop]`. Conclude with `(IntermediateField.topEquiv (F := K0) (E := Ω)).toLinearEquiv.finiteDimensional`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevelFinite.finite_of_isAlgebraic : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) (K0 : Subfield Ω), R.FG → (∀ z : Ω, ∃ a ∈ R, ∃ c ∈ R, z = a / c) → (∀ a : o, algebraMap o Ω a ∈ K0) → Algebra.IsAlgebraic K0 Ω → Module.Finite K0 Ω := by
   intro o Ω _ _ _ R K0 hfg hfrac ho halg
@@ -38,7 +38,7 @@ theorem GlobalTheory.LevelFinite.finite_of_isAlgebraic : ∀ (o Ω : Type) [Comm
   exact (IntermediateField.topEquiv (F := K0) (E := Ω)).toLinearEquiv.finiteDimensional
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [spMap, ← Spec.map_comp]`. Consider the case `(simp only [spMap]; rw [← Spec.map_comp]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -48,13 +48,13 @@ private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B
   | (simp only [spMap]; rw [← Spec.map_comp]; rfl)
 
 /- English proof (translation)
-Establish `h0 : z ≠ 0` using `fun h => hz (h ▸ isAlgebraic_zero)`. Establish `h1 : ∀ k : ℕ, 0 < k → z ^ k ≠ 1`. Introduce `k hk hzk`. Apply `hz` to reduce the goal to its premises. Use `⟨Polynomial.X ^ k - Polynomial.C 1, Polynomial.X_pow_sub_C_ne_zero hk 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hzk]`. Establish `key : ∀ m m' : ℕ, m < m' → z ^ m = z ^ m' → False`. Introduce `m m' h hmm`. Apply `h1 (m' - m) (Nat.sub_pos_of_lt h)` to reduce the goal to its premises. Establish `: z ^ m * z ^ (m' - m) = z ^ m * 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, Nat.add_sub_cancel' h.le, mul_one, hmm]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ h0) this`. Introduce `m m' hmm`. Simplify using `only at hmm`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `key m m' h hmm`. Conclude with `key m' m h hmm.symm`.
+A detailed English derivation is pending.
 -/
 private theorem pow_injective_of_transcendental {Ω : Type} [Field Ω] (K0 : Subfield Ω) (z : Ω) (hz : Transcendental K0 z) :
     Function.Injective (fun m : ℕ => z ^ m) := by
@@ -78,27 +78,23 @@ private theorem pow_injective_of_transcendental {Ω : Type} [Field Ω] (K0 : Sub
   · exact key m' m h hmm.symm
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R X x I _ v hfg hfrac hfin hpts`. Use `GlobalTheory.LevelFinite.finite_of_isAlgebraic o Ω R _ hfg hfrac (fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) ⟨fun z => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Take `⟨φ, hφ, hφeq⟩` from `GlobalTheory.T.exists_finite_fieldEmbedding_stalk_of_finite_stalkMap Ω X (spMap R.val.toRingHom ≫ x) hfin`. Establish `hτ : ∀ m : ℕ, ∃ τ : Ω →ₐ[Subfield.closure (Set.range (algebraMap o Ω) ∪ {z | ∃ i i', z = (v i : Ω) / (v i' : Ω)})] AlgebraicClosure Ω, τ z = algebraMap Ω (AlgebraicClosure Ω) z ^ (m + 1)` using `fun m => GlobalTheory.T.exists_algHom_algebraicClosure_apply_eq_pow' Ω _ z hz (m + 1) m.succ_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose τ hτ using hτ`. Establish `hfib : ∀ y : Sp (AlgebraicClosure Ω) ⟶ X, Set.Finite {τ' : Ω →+* AlgebraicClosure Ω | spMap τ' ≫ spMap R.val.toRingHom ≫ x = y}`. Introduce `y`. Distinguish the cases in `hne : ∃ τ0 : Ω →+* AlgebraicClosure Ω, spMap τ0 ≫ spMap R.val.toRingHom ≫ x = y`. Take `⟨τ0, hτ0⟩` from `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.finite_setOf_ringHom_comp_eq_of_finite' _ Ω _ φ (τ0.comp φ) hφ).subset ?_` and prove the remaining obligations. Introduce `τ' hτ'`. Conclude with `hφeq _ τ' τ0 (hτ'.trans hτ0.symm)`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `τ'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hne ⟨τ', h⟩`. Establish `hS` using `hpts (AlgebraicClosure Ω) (fun i => algebraMap Ω (AlgebraicClosure Ω) (v i))`. Establish `hinj : Function.Injective (fun m : ℕ => ((τ m : Ω →ₐ[_] AlgebraicClosure Ω) : Ω →+* AlgebraicClosure Ω))`. Introduce `m m' hmm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : τ m z = τ m' z`. Simplify using `using congrArg (fun f : Ω →+* AlgebraicClosure Ω => f z) hmm`. Rewrite `h1` using `[hτ, hτ, ← map_pow, ← map_pow]`. Conclude with `Nat.succ_injective (pow_injective_of_transcendental _ z hz ((algebraMap Ω (AlgebraicClosure Ω)).injective h1))`. Apply `Set.infinite_range_of_injective hinj` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hS.biUnion (fun y _ => hfib y)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Use `Set.mem_biUnion (x := spMap ((τ m : Ω →+* AlgebraicClosure Ω)) ≫ spMap R.val.toRingHom ≫ x) ?_ rfl` and prove the remaining obligations. Use `⟨((τ m : Ω →+* AlgebraicClosure Ω)).comp R.val.toRingHom, by rw [spMap_comp_moduli_spaces, Category.assoc], ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ i, (v i : Ω) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i0, hi0⟩` from `h`. Establish `hc0 : algebraMap Ω (AlgebraicClosure Ω) (v i0) ≠ 0`. Conclude with `(map_ne_zero _).mpr hi0`. Establish `hτ0 : τ m (v i0) ≠ 0`. Conclude with `(map_ne_zero _).mpr hi0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨τ m (v i0) / algebraMap Ω (AlgebraicClosure Ω) (v i0), div_ne_zero hτ0 hc0, fun i => ?_⟩` and prove the remaining obligations. Establish `hr : (v i : Ω) / (v i0 : Ω) ∈ Subfield.closure (Set.range (algebraMap o Ω) ∪ {z | ∃ i i', z = (v i : Ω) / (v i' : Ω)})` using `Subfield.subset_closure (Or.inr ⟨i, i0, rfl⟩)`. Establish `hfix : τ m ((v i : Ω) / (v i0 : Ω)) = algebraMap Ω (AlgebraicClosure Ω) ((v i : Ω) / (v i0 : Ω))`. Use `(τ m).commutes ⟨_, hr⟩` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_apply _ Ω (AlgebraicClosure Ω)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this`. Establish `key : τ m (v i) = τ m ((v i : Ω) / (v i0 : Ω)) * τ m (v i0)`. Rewrite using `[← map_mul, div_mul_cancel₀ _ hi0]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.coe_toRingHom]`. Rewrite using `[show (R.val.toRingHom (v i) : Ω) = v i from rfl, key, hfix, map_div₀]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `push_neg at h`. Use `⟨1, one_ne_zero, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.coe_toRingHom]`. Rewrite using `[show (R.val.toRingHom (v i) : Ω) = v i from rfl, h i]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevelFinite.finite_ratio_field : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) (X : Scheme.{0}) (x : Sp R ⟶ X) (I : Type) [Finite I] (v : I → R), R.FG → (∀ z : Ω, ∃ a ∈ R, ∃ c ∈ R, z = a / c) → ((spMap R.val.toRingHom ≫ x).stalkMap (genericPoint (Sp Ω))).hom.Finite → (∀ (K : Type) [Field K] [IsAlgClosed K] (c : I → K), Set.Finite {y : Sp K ⟶ X | ∃ σ : R →+* K, spMap σ ≫ x = y ∧ ∃ u : K, u ≠ 0 ∧ ∀ i, σ (v i) = u * c i}) → Module.Finite (Subfield.closure (Set.range (algebraMap o Ω) ∪ {z | ∃ i i', z = (v i : Ω) / (v i' : Ω)})) Ω := by
   intro o Ω _ _ _ R X x I _ v hfg hfrac hfin hpts

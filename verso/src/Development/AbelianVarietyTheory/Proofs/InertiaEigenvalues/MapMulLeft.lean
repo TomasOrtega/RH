@@ -11,7 +11,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.NL.SandArb
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_mulLeft {O R M : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M] [Module O M]
     (a : R) (z : R ⊗[O] M) :
@@ -38,11 +38,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Establish `hN : nOf W T = W.N T` using `nOf_crys W hT`. Establish `h1' : ∀ x ∈ nOf W T, ∃ y : TW RA T, TWincl inclR T y = inclR w • E.jD T x` using `hS.1`. Establish `h2' : ∀ t : ↥T.L.T, inclR w • ((1 : RW) ⊗ₜ[O] t : TW RW T) ∈ Submodule.span O {z : TW RW T | ∃ (a : RA), ∃ y ∈ nOf W T, z = inclR a • E.jD T y}` using `hS.2`. Rewrite `h1'`, `h2'` using `[hN]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun x hx => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mulLeft]`. Conclude with `h1' x hx`. Use `h2' t` as an intermediate fact. Rewrite `this` using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mulLeft]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem of_layers {Zl : Type} [CommRing Zl] (zl : PowerSeries Zl →+* LetA O n) (h1 : IsCrys PD W.one.ρ)
     (hP : ∀ T, @Module.Projective (PowerSeries Zl) _ ↥(W.N T) _ (Module.compHom _ zl))
@@ -74,7 +74,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (H : LocHW
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `apply_layers H F h hL (fun _ _ _ _ Mo => ∃ m : ℕ, GlobalTheory.HWL.Sand Mo T ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (AI.π₁ ^ m) : RA LL)) (fun Γ R I hI E Mo => GlobalTheory.HWL.SandProof.sandwich l P AI K s LL h Γ R I hI E Mo T hT)`.
+A detailed English derivation is pending.
 -/
 theorem sand_layers (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) :
     ∃ m : ℕ, GlobalTheory.HWL.Sand (LatL H F h hL) T ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (AI.π₁ ^ m) : RA LL) :=
@@ -83,7 +83,7 @@ theorem sand_layers (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) :
     (fun Γ R I hI E Mo => GlobalTheory.HWL.SandProof.sandwich l P AI K s LL h Γ R I hI E Mo T hT)
 
 /- English proof (translation)
-Rewrite using `[ha, ← map_pow, Algebra.TensorProduct.tmul_pow, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_pow (a : RA LL) (w : Ainf l) (ha : a = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w) (m : ℕ) :
     inclR LL a ^ m = inclR LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (w ^ m)) := by
@@ -95,7 +95,7 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h`. Establish `hL : Laws (HW l) (F l) h` using `GlobalTheory.T.wach_functor_three_layer_properties_every_place D HW F l K s LL h`. Establish `hX` using `(GlobalTheory.T.wachInclusion_X_Q_frobenius D HW F l K s LL h).1`. Use `fun T hT => (sand_layers (HW l) (F l) h hL T hT).imp fun m hm => ?_` and prove the remaining obligations. Conclude with `of_layers ((F l).E K s LL h).tie ((HW l).W_s K s LL h) (p_prime (D.loc l) K) hL.lev hL.io _ hL.one ((HW l).W_proj K s LL h) T hT _ _ (incl_pow _ _ hX m) hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sandwich : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∃ m : ℕ, (∀ x ∈ W.N T, ∃ y : TW (RA LL) T, TWincl (inclR LL) T y = TensorProduct.map (LinearMap.mulLeft ↥(OL LL) (inclR LL (E.io W.X) ^ m)) LinearMap.id (E.jD T x)) ∧ ∀ t : ↥T.L.T, ((inclR LL (E.io W.X) ^ m) ⊗ₜ[↥(OL LL)] t : TW (RW LL) T) ∈ Submodule.span ↥(OL LL) {z : TW (RW LL) T | ∃ a : RA LL, ∃ y ∈ W.N T, z = TensorProduct.map (LinearMap.mulLeft ↥(OL LL) (inclR LL a)) LinearMap.id (E.jD T y)} := by
   intro D HW F l _ K s LL h

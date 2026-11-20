@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PureLift
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Establish `h1 : (List.ofFn u).prod = u 0` using `by simp`. Rewrite using `[h1]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu 0`.
+A detailed English derivation is pending.
 -/
 theorem eq_epsScale_of_isLieComb {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {c : Fin 1 → R}
     {v : Fin 1 → (epsR R ⟶ A)} {w : epsR R ⟶ A} (h : IsLieComb c v w) : w = epsScale (c 0) ≫ v 0 := by
@@ -33,9 +33,9 @@ theorem eq_epsScale_of_isLieComb {R : Type} [CommRing R] {A : Over (Sp R)} [GrpO
   exact hu 0
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(hA.1 y).exists`. Take `⟨c, hc, -⟩` from `hv.2 u hu.1`. Establish `hu' : u = epsScale (c 0) ≫ v 0` using `eq_epsScale_of_isLieComb hc`. Establish `hW : v 0 ≫ W = epsScale (s 0) ≫ v 0` using `eq_epsScale_of_isLieComb e`. Establish `key : u ≫ W = epsScale (s 0) ≫ u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu', Category.assoc, hW, epsScale_mul_assoc, epsScale_mul_assoc, mul_comm]`. Establish `h1` using `hu.push W`. Rewrite `h1` using `[key]`. Conclude with `h1.sub_mem (hu.smul (s 0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_sub_smul_mem_Fil {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (hA : LieExact A)
     {v : Fin 1 → (epsR R ⟶ A)} (hv : IsLieBasis v) (W : A ⟶ A) [IsMonHom W] {s : Fin 1 → R}
@@ -51,11 +51,9 @@ theorem push_sub_smul_mem_Fil {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj 
   exact h1.sub_mem (hu.smul (s 0))
 
 /- English proof (translation)
-Take `⟨hall, -, -, -, e, he⟩` from `P R A g hA hg`. Take `⟨z, hz⟩ : ∃ z, IsChern (dp0 R) (A.hom ≫ 𝟙 (Sp R)) L z` from `GlobalTheory.Cris.ChernExists.exists_isChern L hL`. Take `⟨n, a, b, hab⟩` from `GlobalTheory.PolExists.exists_sum_wedge (e.symm z)`. Establish `hmem : ∀ x, x ∈ prim (dp0 R) (𝟙 (Sp R)) A` using `fun x => by`. Rewrite using `[show prim (dp0 R) (𝟙 (Sp R)) A = ⊤ from hall]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Use `⟨_, n, fun k => ⟨a k, hmem _⟩, fun k => ⟨b k, hmem _⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hz' : z = ∑ k, cup _ (a k) (b k)`. Rewrite using `[← e.apply_symm_apply z, ← hab, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => he _ _`.
-
-Rewrite `hz` using `[hz']`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPolForm (P : GlobalTheory.Published.AbelianDeRham.Free) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
     {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left} (hL : L.IsLB) :
@@ -75,13 +73,13 @@ theorem exists_isPolForm (P : GlobalTheory.Published.AbelianDeRham.Free) {R : Ty
   exact hz
 
 /- English proof (translation)
-Introduce `Z f y j j' k k' h1 h2 h3 h4`. Unfold `gw`. Simplify using `only`. Establish `e1 : (f ≫ F) y ∈ L.U j` using `h1`. Establish `e2 : (f ≫ F) y ∈ L.U j'` using `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3' : F (f y) ∈ L.U (k PUnit.unit)` using `mem_pull.1 h3`. Establish `e3 : (f ≫ F) y ∈ L.U (k PUnit.unit)` using `e3'`. Establish `e4' : F (f y) ∈ L.U (k' PUnit.unit)` using `mem_pull.1 h4`. Establish `e4 : (f ≫ F) y ∈ L.U (k' PUnit.unit)` using `e4'`. Rewrite using `[gm_pull_g L F f y (fun _ => j) k (mem_pull.2 h1) h3, gm_pull_g L F f y k k' h3 h4, gm_pull_g L F f y (fun _ => j') k' (mem_pull.2 h2) h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1` using `gm_cocycle hL (f ≫ F) y e1 e2 e4`. Establish `c2` using `gm_cocycle hL (f ≫ F) y e1 e4 e3`. Establish `c3` using `gm_cocycle hL (f ≫ F) y e3 e4 e3`. Establish `c4` using `gm_cocycle hL (f ≫ F) y e3 e3 e3`. Establish `hkk : (gm (f ≫ F) y (L.U (k PUnit.unit) ⊓ L.U (k PUnit.unit))) (L.g (k PUnit.unit) (k PUnit.unit)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (· * ((gm (f ≫ F) y (L.U (k PUnit.unit) ⊓ L.U (k PUnit.unit))) (L.g (k PUnit.unit) (k PUnit.unit)))⁻¹) c4`. Simplify using `using h`. Establish `hinv` using `eq_inv_of_mul_eq_one_right (c3.trans hkk)`. Rewrite using `[← c2, ← c1, hinv, mul_right_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pGen_pull_refl {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) (F : Y ⟶ X) :
     PGen (⟨fun p => (L.pull F).g p.1 p.2⟩ : LB.Iso (L.pull F) (L.pull F)) := by
@@ -108,31 +106,29 @@ private theorem pGen_pull_refl {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) (F : 
   rw [← c2, ← c1, hinv, mul_right_comm]
 
 /- English proof (translation)
-Introduce `hP E _ _ _ H S _ ω C`. Unfold `IsPureBC`. Introduce `R _ f A _ φ hpb W' _ hW'`. Use `haveI : IsCommMonObj A := GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback hpb`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback C.P.isAb hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgG : SmoothOfRelativeDimension 1 C.P.A.hom`. Establish `h` using `C.P.smoothDim`. Rewrite `h` using `[C.dim]`. Conclude with `h`. Establish `hgA : SmoothOfRelativeDimension 1 A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := 1)).of_isPullback hpb.1 hgG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hLie : LieExact A` using `(hP.2.1 R A 1 hA hgA).1`. Use `haveI := hgG`. Take `⟨v', hv', hv'φ⟩` from `GlobalTheory.exists_isLieBasis_baseChange S R f C.P.A A φ hpb (SmoothOfRelativeDimension.smooth 1 C.P.A.hom) 1 ![C.v] C.basis`. Establish `hu : ∀ i, (v' i).left ≫ φ = spMap (Formalism.L2.Pj.dualMap f) ≫ (![C.v] i).left` using `hv'φ`. Establish `hw : (v' 0 ≫ W').left ≫ φ = spMap (Formalism.L2.Pj.dualMap f) ≫ (C.v ≫ C.act.act (GlobalTheory.CM.wK H)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, Category.assoc, hW', ← Category.assoc, hu 0, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Establish `e : IsLieComb (fun i => f (![ω] i)) v' (v' 0 ≫ W')` using `GlobalTheory.ArcQ.NormalForm.isLieComb_baseChange hpb hu hw C.eig`. Establish `hquot : ∀ y : HdR A, push (dp0 R) (𝟙 _) W' y - f ω • y ∈ Fil A` using `fun y => push_sub_smul_mem_Fil hLie hv' W' e y`. Establish `hL' : (C.P.L.pull φ).IsLB` using `pull_isLB C.P.isLB φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, hψ⟩` from `exists_isPolForm hP.1 hA hgA hL'`. Take `⟨hiso, hperf⟩` from `hP.2.2.2.2 R A 1 hA hgA (C.P.L.pull φ) hL' ψ hψ`. Establish `hK : ReciprocityTheory.ChartRestriction.G.Out.KTriv A (C.P.L.pull φ)` using `kTriv_pull hpb C.P.isLB hL' (pGen_pull_refl C.P.L C.P.isLB φ) C.P.ktriv`. Use `haveI := hperf hK`. Take `⟨o', ho'⟩` from `GlobalTheory.CM.ellPull_exists_oAct hpb C.act`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := o'.hom (GlobalTheory.CM.wK H)`. Use `haveI := o'.hom (1 - GlobalTheory.CM.wK H)`. Establish `hWo : o'.act (GlobalTheory.CM.wK H) = W'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[ho', hW']`. Rewrite using `[Over.w, Over.w]`. Establish `hb : ((1 - GlobalTheory.CM.wK H : GlobalTheory.CM.OK H) : 𝓞 E) = H.bar ((GlobalTheory.CM.wK H : GlobalTheory.CM.OK H) : 𝓞 E)`. Rewrite using `[show ((GlobalTheory.CM.wK H : GlobalTheory.CM.OK H) : 𝓞 E) = H.w0 from rfl, GlobalTheory.CM.kform_bar_w0]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `HG : LBIso (cubeLB C.P.A ![fst C.P.A C.P.A ≫ C.act.act (GlobalTheory.CM.wK H), snd C.P.A C.P.A] C.P.L) (cubeLB C.P.A ![fst C.P.A C.P.A, snd C.P.A C.P.A ≫ C.act.act (1 - GlobalTheory.CM.wK H)] C.P.L)`. Establish `h` using `C.adj (GlobalTheory.CM.wK H) (1 - GlobalTheory.CM.wK H) hb`. Unfold `GlobalTheory.CM.LamEq at h`. Simplify `h` using `only [Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `HA` using `GlobalTheory.PolAdjoint.lbIso_cube hpb C.P.L hW' (ho' (1 - GlobalTheory.CM.wK H)) HG`. Establish `hadj : ∀ x y : HdR A, ψ (push (dp0 R) (𝟙 _) W' x) y = ψ x (push (dp0 R) (𝟙 _) (o'.act (1 - GlobalTheory.CM.wK H)) y)` using `GlobalTheory.PolAdjoint.adjoint_of_lbIso hP.1 hA hgA hL' hψ W' (o'.act (1 - GlobalTheory.CM.wK H)) HA`. Establish `hpushb : ∀ y : HdR A, push (dp0 R) (𝟙 _) (o'.act (1 - GlobalTheory.CM.wK H)) y = y - push (dp0 R) (𝟙 _) W' y`. Introduce `y`. Establish `h1 : GlobalTheory.DeRham.act (dp0 R) (𝟙 _) o' (1 - GlobalTheory.CM.wK H) = 1 - push (dp0 R) (𝟙 _) W'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, GlobalTheory.DeRham.act_apply (dp0 R) (𝟙 _) o' (GlobalTheory.CM.wK H), push_congr (dp0 R) (𝟙 _) hWo]`. Rewrite using `[← GlobalTheory.DeRham.act_apply (dp0 R) (𝟙 _) o' (1 - GlobalTheory.CM.wK H), h1]`. Both sides reduce to the same expression. Establish `hfil : ∀ x ∈ Fil A, push (dp0 R) (𝟙 _) W' x = f (1 - ω) • x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hlie : ∀ y : HdR A, ψ x (push (dp0 R) (𝟙 _) W' y) = f ω * ψ x y`. Introduce `y`. Establish `h0` using `hiso x hx _ (hquot y)`. Rewrite `h0` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `key : ψ (push (dp0 R) (𝟙 _) W' x - f (1 - ω) • x) = 0`. Use extensionality with `y`. Rewrite using `[LinearMap.map_sub₂, LinearMap.map_smul₂, hadj, hpushb, map_sub, hlie, map_sub, map_one, smul_eq_mul, LinearMap.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj` using `(LinearMap.IsPerfPair.bijective_left ψ).1`.
-
-Establish `h0 : push (dp0 R) (𝟙 _) W' x - f (1 - ω) • x = 0` using `hinj (by rw [key, map_zero])`. Conclude with `sub_eq_zero.mp h0`. Conclude with `⟨hfil, hquot⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPureBC_ell : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (S : Type) [CommRing S] (ω : S) (C : GlobalTheory.CM.Ell H S ω),

@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Rsw.L.LPosExt
 variable {X : Type} [TopologicalSpace X] [MeasurableSpace X]
 
 /- English proof (translation)
-Rewrite using `[← integral_sub hG hh, ← setIntegral_eq_integral_of_forall_compl_eq_zero (s := K) (fun x hx => hoff x hx)]`. Conclude with `norm_setIntegral_le_of_norm_le_const hK.measure_lt_top hon`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem est {μ : Measure X} [IsFiniteMeasureOnCompacts μ] {K : Set X} (hK : IsCompact K) {G h : X → ℂ}
     (hG : Integrable G μ) (hh : Integrable h μ) {C : ℝ} (hoff : ∀ x ∉ K, G x - h x = 0)
@@ -21,23 +21,21 @@ theorem est {μ : Measure X} [IsFiniteMeasureOnCompacts μ] {K : Set X} (hK : Is
 variable [BorelSpace X]
 
 /- English proof (translation)
-Take `⟨b, hbA, -, hb1⟩` from `hbump (tsupport g) g.hasCompactSupport`. Take `⟨B, hB⟩` from `(hA b hbA).1.bounded_above_of_compact_support (hA b hbA).2`. Establish `hK : IsCompact (tsupport b)` using `(hA b hbA).2`. Establish `hbK : ∀ x ∉ tsupport b, b x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport hx`. Set `G : X → ℂ` to `fun x => (g x : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hG : Continuous G` using `Complex.continuous_ofReal.comp g.continuous`. Establish `hGc : HasCompactSupport G` using `g.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hGb : ∀ x, G x ≠ 0 → b x = 1` using `fun x hx => hb1 x (subset_tsupport _ (by simpa [G, Function.mem_support] using hx))`. Establish `hGK : ∀ x ∉ tsupport b, G x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Use `hGb x h0` as an intermediate fact. Rewrite `this` using `[hbK x hx]`. Conclude with `zero_ne_one this`. Establish `key : ∫ x, G x ∂ν - ∫ x, G x ∂ν' = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `zero_of_le _ (B * (ν.real (tsupport b) + ν'.real (tsupport b)))` to reduce the goal to its premises. Introduce `ε hε`. Take `⟨h, hhA, hh⟩` from `approx A (fun f hf => (hA f hf).1) hmul hstar hsep hK hbA hbK hG hGb hε`. Establish `hoff : ∀ x ∉ tsupport b, G x - h x = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hh x` as an intermediate fact. Rewrite `this` using `[hbK x hx, norm_zero, mul_zero, norm_le_zero_iff, sub_eq_zero]`. Rewrite using `[this, sub_self]`. Establish `hon : ∀ x ∈ tsupport b, ‖G x - h x‖ ≤ ε * B`. Introduce `x _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_sub_rev]`. Conclude with `(hh x).trans (mul_le_mul_of_nonneg_left (hB x) hε.le)`. Establish `hGi : ∀ μ : Measure X, IsFiniteMeasureOnCompacts μ → Integrable G μ` using `fun μ _ => hG.integrable_of_hasCompactSupport hGc`. Establish `hhi : ∀ μ : Measure X, IsFiniteMeasureOnCompacts μ → Integrable h μ` using `fun μ _ => (hA h hhA).1.integrable_of_hasCompactSupport (hA h hhA).2`. Establish `e1` using `est hK (hGi ν inferInstance) (hhi ν inferInstance) hoff hon`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `est hK (hGi ν' inferInstance) (hhi ν' inferInstance) hoff hon`. Establish `: ∫ x, G x ∂ν - ∫ x, G x ∂ν' = (∫ x, G x ∂ν - ∫ x, h x ∂ν) - (∫ x, G x ∂ν' - ∫ x, h x ∂ν')`. Rewrite using `[heq h hhA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[e1, e2]`. Establish `h2 : ((∫ x, g x ∂ν : ℝ) : ℂ) = ((∫ x, g x ∂ν' : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal, ← integral_complex_ofReal]`. Conclude with `sub_eq_zero.mp key`.
-
-Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f)
     (hmul : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A) (hstar : ∀ f ∈ A, star f ∈ A)
@@ -90,7 +88,7 @@ theorem uniq (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧
   exact_mod_cast h2
 
 /- English proof (translation)
-The claim follows from `Measure.ext_of_integral_eq_on_compactlySupported (uniq A hA hmul hstar hsep hbump ν ν' heq)`.
+A detailed English derivation is pending.
 -/
 theorem uniq' [T2Space X] [LocallyCompactSpace X] [SecondCountableTopology X] (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f)
     (hmul : ∀ f ∈ A, ∀ g ∈ A, f * g ∈ A) (hstar : ∀ f ∈ A, star f ∈ A)

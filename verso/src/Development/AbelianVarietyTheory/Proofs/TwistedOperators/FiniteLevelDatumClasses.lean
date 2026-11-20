@@ -20,23 +20,19 @@ def vmvBil (E : Type) [Field E] [NumberField E] (n r : ℕ) :
     (fun a v u => by ext i j; simp [vecMulVec, mul_smul_comm])
 
 /- English proof (translation)
-Use `set A := tens Λ (𝔞 • L) with hA`. Use `set B := tens Λ ((𝔞 * 𝔪) • L) with hB`. Establish `hM : (Submodule.map₂ (vmvBil E n r) Λ L).FG` using `hΛ.map₂ _ hL`. Establish `hMZ : ((Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ).FG` using `hM.restrictScalars`. Establish `hle : A.toIntSubmodule ≤ (Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hsub : A ≤ ((Submodule.map₂ (vmvBil E n r) Λ L).restrictScalars ℤ).toAddSubgroup`. Rewrite using `[hA, tens, AddSubgroup.closure_le]`. Introduce and unpack `y ⟨v, hv, u, hu, rfl⟩`. Conclude with `Submodule.apply_mem_map₂ (vmvBil E n r) hv (Submodule.smul_le_right hu)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsub hx`. Establish `hAfg : A.toIntSubmodule.FG` using `(isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian _ hMZ)) _ hle`. Use `haveI : AddGroup.FG A := by`. Establish `: Module.Finite ℤ A.toIntSubmodule` using `Module.Finite.iff_fg.mpr hAfg`. Conclude with `(Module.Finite.iff_addGroup_fg).mp this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `set N := Ideal.absNorm 𝔪 with hN`. Establish `hNpos : 0 < N` using `Nat.pos_of_ne_zero (fun h => hm (Ideal.absNorm_eq_zero_iff.mp h))`. Establish `hNA : ∀ x ∈ A, N • x ∈ B`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Consider the case `mem y hy`. Take `⟨v, hv, u, hu, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨v, hv, N • u, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((N : 𝓞 E)) • u ∈ 𝔪 • (𝔞 • L)` using `Submodule.smul_mem_smul (Ideal.absNorm_mem 𝔪) hu`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 
-Rewrite `h1` using `[← Submodule.mul_smul, mul_comm]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]` and apply the resulting hypothesis. Use extensionality with `i j`. Simplify using `[vecMulVec]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
-
-Use `haveI : AddGroup.FG (A ⧸ B.addSubgroupOf A) := AddGroup.fg_of_surjective (QuotientAddGroup.mk'_surjective _)`. Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
-
-Use `isOfFinAddOrder_iff_nsmul_eq_zero.mpr ⟨N, hNpos, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Simplify using `using hNA x x.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tens_quot_finite {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) (L : Lt E r)
     (hΛ : Λ.FG) (hL : L.FG) (𝔞 𝔪 : Ideal (𝓞 E)) (hm : 𝔪 ≠ ⊥) :
@@ -83,7 +79,7 @@ theorem tens_quot_finite {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : 
     simpa using hNA x x.2
 
 /- English proof (translation)
-Introduce `D S T C Lv`. Conclude with `tens_quot_finite _ _ (Submodule.fg_span (Set.finite_range _)) C.X.Λ_fg _ _ Lv.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lvCls_finite : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : GlobalTheory.SW.Level C.X), Finite (GlobalTheory.LiftLevel.LvCls C Lv) := by
   intro D S T C Lv

@@ -7,19 +7,19 @@ open scoped InnerProductSpace
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `hHW` using `hB.2.2.2.2.1`. Establish `hHN` using `hB.2.2.2.2.2`. Use `haveI : SigmaFinite μW := hHW.1`. Use `haveI : SigmaFinite μN := hHN.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hint` using `finFub_int' hIS k r ε u lam' h z c Vp π μW μN P hP hB hgap hlam hgl T' μ' hμ v₁ v₂ ξ F C hFc hFb x hx`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hne` to reduce the goal to its premises. Establish `hae` using `ae_mem_unitary_nilpotent_product z μW μN hHW hHN`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `step1 : per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π F ξ x = ∫ p, ∫ y, F (Formalism.MainNotions.S.umat y) • (finKer T' μ' v₁ v₂ P x (Formalism.MainNotions.S.umat y) p • chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) ∂(Formalism.REAL …`. Unfold `per sInt`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with p hp'`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `unitary_hermitian_form_mul_mem hp'.1.1 hp'.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hJ` using `cayley_conj_mem_unitary_group hP (unitary_hermitian_form_mul_mem hs hx)`. Use `show F (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) • _ = _`. Rewrite using `[hrep _ hJ, ← integral_smul_const]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_smul]`. Both sides reduce to the same expression. Rewrite using `[step1, integral_integral_swap (by exact hint.swap)]`. Establish `hz : ∀ y : Formalism.REAL.UJ ε, ∫ p, F (Formalism.MainNotions.S.umat y) • (finKer T' μ' v₁ v₂ P x (Formalism.MainNotions.S.umat y) p • chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) ∂(μW.prod μN) = 0`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[integral_smul]`. Establish `hy` using `unitary_matrix_mem_set ε y`. Establish `h0` using `hall _ (cayley_conj_inv_mem_hermitian_group hP hy)`. Unfold `aaFun sInt psiCoef at h0`. Establish `hfun : (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => finKer T' μ' v₁ v₂ P x (Formalism.MainNotions.S.umat y) p • chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) = fun p => ⟪v₂, S7.PsiM T' μ' (P * ((P⁻¹ …`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Unfold `finKer`. Rewrite using `[conj_inv_mul_conj _ _ _ hd]`. Rewrite using `[hfun, h0, smul_zero]`. Simplify using `only [hz, integral_zero]`.
+A detailed English derivation is pending.
 -/
 theorem finFub (hIS : S0.IntSStatement) (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (u : Fin k → ℝ) (lam' : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
     (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (Vp : Type) [NormedAddCommGroup Vp]

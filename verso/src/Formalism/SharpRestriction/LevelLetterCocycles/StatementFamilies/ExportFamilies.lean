@@ -21,7 +21,7 @@ def KudlaFamilyStatement {eps : ℝ} (Fm : FamP eps) : Prop := AdmF Fm → Orbit
 def UniformExportStatement (eps : ℝ) : Prop := ∀ Ca : ℝ, ∃ C : ℝ, ∀ Fm : FamP eps, AdmFC Fm Ca → FamilyThinScalesBound Fm C
 
 /- English proof (translation)
-Introduce and unpack `⟨Ca, hA⟩`. Take `⟨C, hC⟩` from `h Ca`. Take `⟨x0, h0⟩` from `hC Fm hA`. Conclude with `⟨C, x0, h0⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stmtF_of_stmtU {eps : ℝ} (h : UniformExportStatement eps) (Fm : FamP eps) : KudlaFamilyStatement Fm := by
   rintro ⟨Ca, hA⟩
@@ -48,7 +48,7 @@ abbrev KudlaFamilyStatement {eps : ℝ} (Fm : FamP eps) : Prop := TwistedPlaces.
 abbrev UniformExportStatement (eps : ℝ) : Prop := TwistedPlaces.UniformExportStatement eps
 
 /- English proof (translation)
-The claim follows from `TwistedPlaces.stmtF_of_stmtU h Fm`.
+A detailed English derivation is pending.
 -/
 theorem stmtF_of_stmtU {eps : ℝ} (h : UniformExportStatement eps) (Fm : FamP eps) : KudlaFamilyStatement Fm := TwistedPlaces.stmtF_of_stmtU h Fm
 

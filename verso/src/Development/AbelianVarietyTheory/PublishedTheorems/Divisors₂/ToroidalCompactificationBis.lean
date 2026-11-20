@@ -19,9 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}
 
 /- English proof (translation)
-Use `isIso_fst Y` as an intermediate fact. Establish `h : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `e : genStr Y = genι Y ≫ Y.s` using `((Category.comp_id _).symm.trans (congrArg (genStr Y ≫ ·) h.symm)).trans pullback.condition.symm`. Use `⟨fun hs => ?_, fun hs => ?_⟩` and prove the remaining obligations. Establish `h'` using `smoothOfRelativeDimension_comp 0 d (inv (genι Y)) (genStr Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h'` using `[Nat.zero_add, e, IsIso.inv_hom_id_assoc]`. Then use the resulting hypothesis. Establish `h'` using `smoothOfRelativeDimension_comp 0 d (genι Y) Y.s`. Rewrite `h'` using `[Nat.zero_add, ← e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smooth_gen_iff {d : ℕ} : SmoothOfRelativeDimension d (genStr Y) ↔ SmoothOfRelativeDimension d Y.s := by
   have := isIso_fst Y
@@ -35,7 +35,7 @@ theorem smooth_gen_iff {d : ℕ} : SmoothOfRelativeDimension d (genStr Y) ↔ Sm
     rwa [Nat.zero_add, ← e] at h'
 
 /- English proof (translation)
-Use `⟨fun h => ?_, GlobalTheory.VarFlag.snc_genBdIdeal_of_snc_boundary⟩` and prove the remaining obligations. Use `isIso_fst Y` as an intermediate fact. Use `GlobalTheory.SncIso.snc_vanishingIdeal_of_isIso (inv (genι Y)) (genBd Y) (interior Y).compl (fun a => ?_) h` and prove the remaining obligations. Rewrite using `[mem_genBd_iff, ← coe_interior, ← Scheme.Hom.comp_apply, IsIso.inv_hom_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem snc_gen_iff : FinalTheorems.Snc (genBdIdeal Y) ↔ FinalTheorems.Snc (boundary Y) := by
   refine ⟨fun h => ?_, GlobalTheory.VarFlag.snc_genBdIdeal_of_snc_boundary⟩
@@ -62,7 +62,7 @@ def ToroidalForFanKS : Prop :=
           GlobalTheory.LogKS.HasLogKS Y.t Y.s (GlobalTheory.LogKS.interior Y)
 
 /- English proof (translation)
-Take `⟨φs, hs, -⟩` from `h (max 1 (Module.finrank ℚ E * q)) (le_max_left _ _)`. Take `⟨φ, h₁, h₂, -, h₃, -⟩` from `exists_fine_invariant_fan H hs (le_max_right _ _) ∅ (by simp)`. Conclude with `⟨φ, h₁, h₂, h₃⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SiegelToroidalIntegral.exists_fan (h : SiegelToroidalIntegral) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : Host E) (q : ℕ) :
@@ -74,7 +74,7 @@ theorem SiegelToroidalIntegral.exists_fan (h : SiegelToroidalIntegral) {E : Type
 namespace ToroidalForFanKS
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hr φ h₁ h₂ l Xo c`. Take `⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, a₇, -⟩` from `h E H Dw hr φ h₁ h₂ l Xo c`. Conclude with `⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, a₇⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toroidalChartsForFan (h : ToroidalForFanKS) : ToroidalChartsForFan := by
   intro E _ _ _ H Dw hr φ h₁ h₂ l Xo c
@@ -84,7 +84,7 @@ theorem toroidalChartsForFan (h : ToroidalForFanKS) : ToroidalChartsForFan := by
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨Y, BD, d, k, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈⟩` from `h E H Dw hr φ h₁ h₂ l Xo c`. Establish `hL` using `GlobalTheory.FanTheta.isLB_detOm_of_smooth Y hr a₃`. Conclude with `⟨Y, BD, d, k, a₁, a₂, smooth_gen_iff.1 a₃, snc_gen_iff.1 a₄, a₈, a₅, fun x hx => (mem_support_iff_stalkId _ _).2 (GlobalTheory.FanChartTest.idlAlong_ne_top h₁ a₁ hx (a₆ x hx)), a₆, hL, a₇ hL⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_model_of_fan (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q) {φ : InvFun (𝓞 E)}
     (h₁ : IsPolFan H.bar (min Dw.p Dw.q) φ) (h₂ : NoSelfInt H.bar (min Dw.p Dw.q) φ) {l : Geo.Tor.Level H}
@@ -100,7 +100,7 @@ theorem exists_model_of_fan (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q) {φ 
     fun x hx => (mem_support_iff_stalkId _ _).2 (GlobalTheory.FanChartTest.idlAlong_ne_top h₁ a₁ hx (a₆ x hx)), a₆, hL, a₇ hL⟩
 
 /- English proof (translation)
-Take `⟨φ, h₁, h₂, h₃⟩` from `hS.exists_fan H (min Dw.p Dw.q)`. Take `⟨Y, BD, d, k, a⟩` from `h.exists_model_of_fan hr h₁ h₂ Xo c`. Conclude with `⟨φ, Y, BD, d, k, h₁, h₂, h₃, a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q) {l : Geo.Tor.Level H}
     (Xo : Moduli Dw l) (c : Coeff l) :
@@ -115,7 +115,7 @@ theorem exists_model (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr : 
   exact ⟨φ, Y, BD, d, k, h₁, h₂, h₃, a⟩
 
 /- English proof (translation)
-Take `⟨φ, Y, BD, d, k, -, -, -, -, -, a₁, a₂, a₃, -, -, a₄, -⟩` from `h.exists_model hS hr Xo c`. Conclude with `⟨Y, a₁, a₂, a₃, fun x hx => (a₄ x hx).hasChart⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model_charts (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q)
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :
@@ -125,7 +125,7 @@ theorem exists_model_charts (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS)
   exact ⟨Y, a₁, a₂, a₃, fun x hx => (a₄ x hx).hasChart⟩
 
 /- English proof (translation)
-Take `⟨φ, Y, BD, d, k, -, -, -, -, hk, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈⟩` from `h.exists_model hS hr Xo c`. Conclude with `⟨Y, GlobalTheory.TorRef.selfTor Y (smooth_gen_iff.2 a₁) (snc_gen_iff.2 a₂) (fun x hx => (hasChart_iff Y x).1 (a₆ x hx).hasChart) BD a₄ a₅ k hk, rfl, a₁, a₂, a₃, a₇, a₈⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_torModel (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q)
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :
@@ -137,13 +137,13 @@ theorem exists_torModel (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr
     (fun x hx => (hasChart_iff Y x).1 (a₆ x hx).hasChart) BD a₄ a₅ k hk, rfl, a₁, a₂, a₃, a₇, a₈⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hr _ Xo c` and use `(h.exists_model_charts hS hr Xo c).imp fun _ a => ⟨a.1, a.2.1, a.2.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toroidalCompactification (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) : ToroidalCompactification :=
   fun _ _ _ _ _ _ hr _ Xo c => (h.exists_model_charts hS hr Xo c).imp fun _ a => ⟨a.1, a.2.1, a.2.2.1⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hr _ Xo c` and use `(h.exists_model_charts hS hr Xo c).imp fun _ a => ⟨smooth_gen_iff.2 a.1, snc_gen_iff.2 a.2.1, a.2.2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toroidalCharts (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) : ToroidalCharts :=
   fun _ _ _ _ _ _ hr _ Xo c =>

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CM.LieMetric
 
 /- English proof (translation)
-Rewrite using `[form_sum_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← h.conj_symm, form_sum_right, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h.conj_symm, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -27,7 +27,7 @@ theorem form_eq_sum_sum {K : Type} [Field K] {g : ℕ} (h : HermFam K (Fin g →
   rfl
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_sum_sum {g n : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin n → ℂ) (X : Fin n → Fin g → ℂ) :
     hermForm Hm (∑ j, a j • X j) (∑ i, b i • X i) = ∑ j, ∑ i, a j * star (b i) * hermForm Hm (X j) (X i) := by
@@ -38,13 +38,13 @@ theorem hermForm_sum_sum {g n : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fi
   ring
 
 /- English proof (translation)
-Introduce `hU _ K _ _ P F h H s Q ψ u Hm χ hQ hA c c' w w' v v' W W' hw hw' hv hv' hW hW'`. Take `⟨Q₀, ψ₀, v₀, u₀, Hm₀, χ₀, W₀, a₀, b₀, c₀, d₀⟩` from `H s`. Take `⟨-, -, -, -, t1, -, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU Q _ u Hm χ hA`. Use `choose x hx using fun i => (existsUnique_isVecOver hQ.2.1.1 (F.v i)).exists`. Establish `hxt : ∀ i, IsTangent (x i)` using `fun i => (hx i).isTangent hQ.2.1 (F.basis.1 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose X hX using fun i => (t1 _ (hxt i)).exists`. Establish `key : ∀ (c : Fin F.P₀.g → K) (w : epsR K ⟶ F.P₀.A) (v : epsR ℂ ⟶ Q.A) (W : Fin Q.g → ℂ), IsLieComb c F.v w → IsVecOver s ψ w v → u.IsDiff W v → W = ∑ i, s (c i) • X i` using `fun c w v W hw hv hW => by`. Establish `h1` using `(lieComb_baseChange K ℂ s _ _ ψ hQ.2.1 _ F.v w c x v hx hw).1 hv`. Establish `h2` using `UnifDifferential.isDiff_prod u (fun i => s (c i) • X i) _ (fun i => Chart.isTan_scale (s (c i)) ((Chart.isTan_iff _).2 (hxt i))) (fun i => UnifDifferential.isDiff_scale u (hX i) (s (c i)))`. Establish `h3 : IsTangent v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Chart.isLieComb_iff _ x v).1 h1]`. Conclude with `(Chart.isTan_iff _).1 h2.1`. Conclude with `(t1 v h3).unique hW (UnifDifferential.isDiff_of_isLieComb _ _ _ _ u X x _ v hxt hX h1)`. Rewrite using `[key c w v W hw hv hW, key c' w' v' W' hw' hv' hW', hermForm_sum_sum, form_eq_sum_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[d₀, hermForm_eq hU a₀ hQ b₀ hA F.basis.1 c₀ (fun i => ⟨hx i, hX i⟩)]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_eq_pi_mul_hermForm : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (h : HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ (s : K →+* ℂ) (Q : Out.PolAV (Sp ℂ)) (ψ : Q.A.left ⟶ F.P₀.A.left) (u : HolUnif Q.A Q.L Q.g) (Hm : Matrix (Fin Q.g) (Fin Q.g) ℂ) (χ : u.Λ → ℂ), IsPolFibre s F.P₀ Q ψ → u.IsAH Hm χ → ∀ (c c' : Fin F.P₀.g → K) (w w' : epsR K ⟶ F.P₀.A) (v v' : epsR ℂ ⟶ Q.A) (W W' : Fin Q.g → ℂ), IsLieComb c F.v w → IsLieComb c' F.v w' → IsVecOver s ψ w v → IsVecOver s ψ w' v' → u.IsDiff W v → u.IsDiff W' v' → h.form s c c' = Real.pi * hermForm Hm W' W := by
   intro hU _ K _ _ P F h H s Q ψ u Hm χ hQ hA c c' w w' v v' W W' hw hw' hv hv' hW hW'

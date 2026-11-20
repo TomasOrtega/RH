@@ -13,9 +13,9 @@ def TransportedAlt (P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → 
         P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc
 
 /- English proof (translation)
-Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `h Cc hCc`. Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 Cm a1 a2 a3`. Conclude with `⟨T2, hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => hP _ _ _ _ _ _ _ _ _ _ (h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TransportedAlt.mono {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (hP : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc →
@@ -30,11 +30,11 @@ theorem TransportedAlt.mono {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ 
     hP _ _ _ _ _ _ _ _ _ _ (h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5)⟩
 
 /- English proof (translation)
-Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `h Cc hCc`. Take `⟨T0', -, h0'⟩` from `h' Cc hCc`. Use `⟨max T0 T0', lt_max_of_lt_left hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 ((le_max_left _ _).trans hC0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T1', -, h1'⟩` from `h0' C0 ((le_max_right _ _).trans hC0)`. Use `⟨max T1 T1', lt_max_of_lt_left hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations. Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 Cm ((le_max_left _ _).trans a1) ((le_max_left _ _).trans a2) ((le_max_left _ _).trans a3)`. Take `⟨T2', -, h2'⟩` from `h1' CE1 CE2 Cm ((le_max_right _ _).trans a1) ((le_max_right _ _).trans a2) ((le_max_right _ _).trans a3)`. Use `⟨max T2 T2', lt_max_of_lt_left hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2 CYb Cde Ck CD Cb ((le_max_left _ _).trans b1) ((le_max_left _ _).trans b2) ((le_max_left _ _).trans b3) ((le_max_left _ _).trans b4) ((le_max_left _ _).trans b5)`. Conclude with `h2' CYb Cde Ck CD Cb ((le_max_right _ _).trans b1) ((le_max_right _ _).trans b2) ((le_max_right _ _).trans b3) ((le_max_right _ _).trans b4) ((le_max_right _ _).trans b5)`.
+A detailed English derivation is pending.
 -/
 theorem TransportedAlt.and {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop} (h : TransportedAlt P) (h' : TransportedAlt P') :
     TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc =>
@@ -57,7 +57,7 @@ theorem TransportedAlt.and {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ �
       ((le_max_right _ _).trans b3) ((le_max_right _ _).trans b4) ((le_max_right _ _).trans b5)
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨1, one_pos, fun _ _ => ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ _ => h _ _ _ _ _ _ _ _ _ _⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem TransportedAlt.of_all {P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (h : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) : TransportedAlt P :=
@@ -65,7 +65,7 @@ theorem TransportedAlt.of_all {P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ �
     ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ _ => h _ _ _ _ _ _ _ _ _ _⟩⟩⟩
 
 /- English proof (translation)
-Introduce `Cc hCc`. Use `⟨max 1 (t0 Cc), lt_max_of_lt_left one_pos, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Use `⟨max 1 (t1 Cc C0), lt_max_of_lt_left one_pos, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations. Use `⟨max 1 (t2 Cc C0 CE1 CE2 Cm), lt_max_of_lt_left one_pos, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ?_⟩` and prove the remaining obligations. Conclude with `h _ _ _ _ _ _ _ _ _ _ hCc (le_trans (le_max_left _ _) hC0) (le_trans (le_max_right _ _) hC0) (le_trans (le_max_left _ _) a1) (le_trans (le_max_left _ _) a2) (le_trans (le_max_left _ _) a3) (le_trans (le_max_right _ _) a1) (le_trans (le_max_right _ _) a2) (le_trans (le_max_right _ …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem TransportedAlt.of_explicit {P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop} (t0 : ℝ → ℝ) (t1 : ℝ → ℝ → ℝ)
     (t2 : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ)
@@ -87,7 +87,7 @@ theorem TransportedAlt.of_explicit {P : ℝ → ℝ → ℝ → ℝ → ℝ → 
     (le_trans (le_max_right _ _) b4) (le_trans (le_max_right _ _) b5)
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_thr {P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (h : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => ∃ Ckap Ct Cs : ℝ, 0 < Ckap ∧ 0 < Ct ∧ 0 < Cs ∧

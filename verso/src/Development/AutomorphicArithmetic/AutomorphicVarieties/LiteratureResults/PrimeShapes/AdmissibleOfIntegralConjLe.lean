@@ -10,7 +10,7 @@ variable {k k' G V V' W W' : Type} [Field k] [Field k'] [Group G]
   [AddCommGroup W] [Module k W] [AddCommGroup W'] [Module k' W']
 
 /- English proof (translation)
-Introduce `z v`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem semi_symm {ι : k ≃+* k'} {e : V ≃+ V'} (he : ∀ (z : k) v, e (z • v) = ι z • e v) :
     ∀ (z : k') v, e.symm (z • v) = ι.symm z • e.symm v := by
@@ -19,7 +19,7 @@ private theorem semi_symm {ι : k ≃+* k'} {e : V ≃+ V'} (he : ∀ (z : k) v,
   rw [he]; simp
 
 /- English proof (translation)
-Introduce `g v`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem int_symm {e : V ≃+ V'} {ρ : Representation k G V} {ρ' : Representation k' G V'}
     (h : ∀ g v, e (ρ g v) = ρ' g (e v)) : ∀ g v, e.symm (ρ' g v) = ρ g (e.symm v) := by
@@ -28,7 +28,7 @@ private theorem int_symm {e : V ≃+ V'} {ρ : Representation k G V} {ρ' : Repr
   rw [h]; simp
 
 /- English proof (translation)
-Use `⟨{ toFun := fun w => e'.symm (F (e w)) map_add' := by intro a b; simp map_smul' := by intro z v; rw [he, map_smul, semi_symm he']; simp }, ?_⟩` and prove the remaining obligations. Introduce `w`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem exists_map {ι : k ≃+* k'} {e : W ≃+ W'} (he : ∀ (z : k) v, e (z • v) = ι z • e v)
     {e' : V ≃+ V'} (he' : ∀ (z : k) v, e' (z • v) = ι z • e' v) (F : W' →ₗ[k'] V') :
@@ -40,7 +40,7 @@ private theorem exists_map {ι : k ≃+* k'} {e : W ≃+ W'} (he : ∀ (z : k) v
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `: (⊥ : Subrepresentation ρ) = ⊤` using `Subrepresentation.ext (Subsingleton.elim _ _)`. Conclude with `bot_ne_top this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nontrivial_of_irr {ρ : Representation k G V} (h : ρ.IsIrreducible) : Nontrivial V := by
   by_contra hn
@@ -49,7 +49,7 @@ private theorem nontrivial_of_irr {ρ : Representation k G V} (h : ρ.IsIrreduci
   exact bot_ne_top this
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_map he he' F`. Use `⟨f.intertwiningMap_of_isIntertwiningMap σ π ?_, hf⟩` and prove the remaining obligations. Introduce `g v`. Apply `e'.injective` to reduce the goal to its premises. Rewrite using `[hf, h, hF, h', hf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem maps {ι : k ≃+* k'} {e : W ≃+ W'} (he : ∀ (z : k) v, e (z • v) = ι z • e v)
     {e' : V ≃+ V'} (he' : ∀ (z : k) v, e' (z • v) = ι z • e' v)
@@ -64,21 +64,21 @@ private theorem maps {ι : k ≃+* k'} {e : W ≃+ W'} (he : ∀ (z : k) v, e (z
   rw [hf, h, hF, h', hf]
 
 /- English proof (translation)
-Establish `hn : Nontrivial W` using `nontrivial_of_irr hi`. Establish `nz : ∀ (F : W' →ₗ[k'] V') (f : σ.IntertwiningMap π), (∀ w, e' (f w) = F (e w)) → F ≠ 0 → f ≠ 0`. Introduce `F f hf hF h0`. Apply `hF` to reduce the goal to its premises. Use extensionality with `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Take `⟨w, rfl⟩` from `e.surjective w`. Rewrite using `[← hf, h0]`. Simplify using the standard rewrite rules. Establish `back : ∀ f : W →ₗ[k] V, f ≠ 0 → (∀ g v, f (σ g v) = π g (f v)) → ∃ f : W' →ₗ[k'] V', f ≠ 0 ∧ ∀ g v, f (ξ g v) = π' g (f v)`. Introduce `f h0 hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨F, hF⟩` from `maps (semi_symm he) (semi_symm he') (int_symm h) (int_symm h') f hf`. Use `⟨F.toLinearMap, fun h1 => h0 ?_, fun g v => F.isIntertwining _ _ g v⟩` and prove the remaining obligations. Use extensionality with `w`. Take `⟨w, rfl⟩` from `e.symm.surjective w`. Establish `h2 : F w = 0` using `congrArg (fun φ : W' →ₗ[k'] V' => φ w) h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hF, h2]`. Simplify using the standard rewrite rules. Use `⟨⟨?_, ?_⟩, fun h1 => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨F, h0, hF⟩`. Take `⟨f, hf⟩` from `maps he he' h h' F hF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f.toLinearMap, (Representation.IsIrreducible.injective_or_eq_zero f).resolve_right (nz F f hf h0), fun g v => f.isIntertwining _ _ g v⟩`. Introduce and unpack `⟨f, hinj, hf⟩`. Use `back f ?_ hf` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨a, b, hab⟩` from `exists_pair_ne W`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hab (hinj rfl)`. Establish `: Nontrivial (σ.IntertwiningMap π)` using `Module.nontrivial_of_finrank_eq_succ h1`. Take `⟨f, hf⟩` from `exists_ne (0 : σ.IntertwiningMap π)`. Conclude with `back f.toLinearMap (fun h2 => hf (Representation.IntertwiningMap.ext h2)) (fun g v => f.isIntertwining _ _ g v)`. Introduce `F F' h0 hF hF'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `maps he he' h h' F hF`. Take `⟨f', hf'⟩` from `maps he he' h h' F' hF'`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' f (nz F f hf h0)).1 h1 f'`. Use `⟨ι c, ?_⟩` and prove the remaining obligations. Use extensionality with `w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `e.surjective w`. Rewrite using `[LinearMap.smul_apply, ← hf, ← hf', ← he', ← hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem main {ι : k ≃+* k'} {e : W ≃+ W'} (he : ∀ (z : k) v, e (z • v) = ι z • e v)
     {e' : V ≃+ V'} (he' : ∀ (z : k) v, e' (z • v) = ι z • e' v)

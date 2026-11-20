@@ -10,23 +10,21 @@ open scoped ENNReal
 namespace GlobalTheory.VolPairExists
 
 /- English proof (translation)
-Establish `hψm : Measurable ψ` using `hψ.measurable`. Use `set μ₀ : Measure G := Measure.haar`. Use `set ρ : Measure R := (μ₀.restrict (H : Set G)).map ψ with hρdef`. Establish `hρ : ∀ s, MeasurableSet s → ρ s = μ₀ (ψ ⁻¹' s ∩ H)`. Introduce `s hsm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρdef, Measure.map_apply hψm hsm, Measure.restrict_apply (hψm hsm)]`. Establish `: ρ.IsMulLeftInvariant`. Use `⟨fun r => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, rfl⟩` from `hs r`. Use `Measure.ext fun s hsm => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hpre : ψ ⁻¹' ((fun x => ψ h * x) ⁻¹' s) ∩ H = (fun x => h * x) ⁻¹' (ψ ⁻¹' s ∩ H)`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, map_mul, SetLike.mem_coe]`. Rewrite using `[Subgroup.mul_mem_cancel_left H hh]`. Rewrite using `[Measure.map_apply (measurable_const_mul _) hsm, hρ _ ((measurable_const_mul _) hsm), hρ _ hsm, hpre, measure_preimage_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsFiniteMeasureOnCompacts ρ`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations. Use `choose W hW K hK hWK using hf`. Take `⟨t, -, ht⟩` from `hC.elim_nhds_subcover (fun x => interior (W x)) (fun x _ => interior_mem_nhds.2 (hW x))`. Establish `hUo : IsOpen (⋃ x ∈ t, interior (W x))` using `isOpen_biUnion fun x _ => isOpen_interior`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce and unpack `y ⟨hy1, hy2⟩`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion] at hy1 ⊢`. Take `⟨x, hx, hyx⟩` from `hy1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, hWK x ⟨hy2, show ψ y ∈ W x from interior_subset hyx⟩⟩`. Use `_ ≤ ∑ x ∈ t, μ₀ (K x) := measure_biUnion_finset_le t K`. Use `_ < ⊤ := ENNReal.sum_lt_top.2 fun x _ => (hK x).measure_lt_top`. Establish `hρ0 : ρ ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hρ Set.univ MeasurableSet.univ`. Rewrite `h1` using `[h0]`. Simplify using `only [Measure.coe_zero, Pi.zero_apply, Set.preimage_univ, Set.univ_inter] at h1`. Conclude with `(hH.measure_pos μ₀ ⟨1, H.one_mem⟩).ne' h1.symm`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul ρ ν`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c := Measure.haarScalarFactor ρ ν`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Apply `hρ0` to reduce the goal to its premises. Rewrite using `[hc, h0, zero_smul]`.
-
-Establish `: (c⁻¹ • μ₀).IsHaarMeasure` using `Measure.IsHaarMeasure.nnreal_smul _ (inv_ne_zero hc0)`. Use `⟨c⁻¹ • μ₀, inferInstance, fun s hsm => ?_⟩` and prove the remaining obligations. Establish `h1` using `hρ s hsm`. Rewrite `h1` using `[hc]`. Rewrite using `[Measure.smul_apply, ← h1, Measure.smul_apply, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar_image {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [MeasurableSpace G] [BorelSpace G] (H : Subgroup G) (hH : IsOpen (H : Set G))
@@ -90,14 +88,14 @@ theorem exists_haar_image {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
 variable {P Q : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.UG.Jpq`. Simplify using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem jpq_mul_self : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   unfold Formalism.UG.Jpq
   simp [Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, jpq_mul_self]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_inv_of_unitary {u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ}
     (h : uᴴ * Formalism.UG.Jpq P Q * u = Formalism.UG.Jpq P Q) : Formalism.UG.Jpq P Q * uᴴ * Formalism.UG.Jpq P Q * u = 1 := by
@@ -116,7 +114,7 @@ Both sides reduce to the same expression.
 theorem mat_mkU (u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (h) : UpqT.mat (mkU u h) = u := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Set `a' : Formalism.UG.Upq P Q` to `a`. Set `b' : Formalism.UG.Upq P Q` to `b`. Establish `h' : a'.1 = b'.1` using `Units.ext h`. Conclude with `(Subtype.ext h' : a' = b')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mat_injective : Function.Injective (UpqT.mat (P := P) (Q := Q)) := by
   intro a b h
@@ -136,20 +134,20 @@ Both sides reduce to the same expression.
 theorem mat_one : UpqT.mat (1 : UpqT P Q) = 1 := rfl
 
 /- English proof (translation)
-Establish `hb` using `(b : Formalism.UG.Upq P Q).2`. Conclude with `hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mat_unitary (b : UpqT P Q) : (UpqT.mat b)ᴴ * Formalism.UG.Jpq P Q * UpqT.mat b = Formalism.UG.Jpq P Q := by
   have hb := (b : Formalism.UG.Upq P Q).2
   exact hb
 
 /- English proof (translation)
-Conclude with `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (UpqT.mat (P := P) (Q := Q)) := by
   exact Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `hinv : Continuous fun x => Formalism.UG.Jpq P Q * (f x)ᴴ * Formalism.UG.Jpq P Q` using `(continuous_const.matrix_mul hf.matrix_conjTranspose).matrix_mul continuous_const`. Unfold `mkU`. Use `(Units.continuous_iff.2 ⟨?_, ?_⟩).subtype_mk _` and prove the remaining obligations. Conclude with `hf`. Conclude with `hinv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_mkU {X : Type} [TopologicalSpace X] (f : X → Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)
     (hf : Continuous f) (h : ∀ x, (f x)ᴴ * Formalism.UG.Jpq P Q * f x = Formalism.UG.Jpq P Q) :
@@ -164,13 +162,13 @@ theorem continuous_mkU {X : Type} [TopologicalSpace X] (f : X → Matrix (Fin P 
 variable {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Unfold `Formalism.UG.HasSignature at h`. Take `⟨e, g, hg⟩` from `h`. Establish `hg' : (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)ᴴ * Matrix.reindex e e G * g = Formalism.UG.Jpq P Q` using `hg`. Establish `key : Matrix.reindex e e G = ((g⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)ᴴ * Formalism.UG.Jpq P Q * ((g⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` using `by set u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := g.val set v : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := (g⁻¹).val`. Establish `huv : u * v = 1` using `Units.mul_inv g`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[huv, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = vᴴ * (uᴴ * Matrix.reindex e e G * u) * v := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = vᴴ * Formalism.UG.Jpq P Q * v := by rw [hg']`. Use `⟨((g⁻¹ : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).submatrix id e, (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).submatrix e id, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_submatrix, ← Matrix.submatrix_id_id (Formalism.UG.Jpq P Q), ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← key]`. Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Units.mul_inv, Matrix.submatrix_one_equiv]`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ e.bijective, Units.inv_mul, Matrix.submatrix_id_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (h : Formalism.UG.HasSignature G P Q) :
     ∃ (A : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ) (L : Matrix (Fin n) (Fin P ⊕ Fin Q) ℂ),
@@ -203,7 +201,7 @@ theorem exists_frame (h : Formalism.UG.HasSignature G P Q) :
 variable {A A' : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ} {L : Matrix (Fin n) (Fin P ⊕ Fin Q) ℂ}
 
 /- English proof (translation)
-Rewrite using `[← hA]`. Establish `h1 : Lᴴ * (Aᴴ * Formalism.UG.Jpq P Q * A) * L = (A * L)ᴴ * Formalism.UG.Jpq P Q * (A * L)`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, hr, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_frame (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1) : Lᴴ * G * L = Formalism.UG.Jpq P Q := by
   rw [← hA]
@@ -213,7 +211,7 @@ theorem conj_frame (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1) :
   rw [h1, hr, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul]`. Establish `h1 : Lᴴ * A'ᴴ * Formalism.UG.Jpq P Q * (A' * L) = Lᴴ * (A'ᴴ * Formalism.UG.Jpq P Q * A') * L`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, hA', conj_frame hA hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem change_unitary (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1) (hA' : A'ᴴ * Formalism.UG.Jpq P Q * A' = G) :
     (A' * L)ᴴ * Formalism.UG.Jpq P Q * (A' * L) = Formalism.UG.Jpq P Q := by
@@ -223,7 +221,7 @@ theorem change_unitary (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 
   rw [h1, hA', conj_frame hA hr]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Establish `h1 : Lᴴ * (gᴴ * Aᴴ) * Formalism.UG.Jpq P Q * (A * g * L) = Lᴴ * (gᴴ * (Aᴴ * Formalism.UG.Jpq P Q * A) * g) * L`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, hA, hg, conj_frame hA hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_unitary (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : gᴴ * G * g = G) : (A * g * L)ᴴ * Formalism.UG.Jpq P Q * (A * g * L) = Formalism.UG.Jpq P Q := by
@@ -234,7 +232,7 @@ theorem conj_unitary (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1)
   rw [h1, hA, hg, conj_frame hA hr]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Establish `h1 : Aᴴ * ((UpqT.mat b)ᴴ * Lᴴ) * G * (L * UpqT.mat b * A) = Aᴴ * ((UpqT.mat b)ᴴ * (Lᴴ * G * L) * UpqT.mat b) * A`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, conj_frame hA hr, mat_unitary, hA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_unitary_back (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L = 1) (b : UpqT P Q) :
     (L * UpqT.mat b * A)ᴴ * G * (L * UpqT.mat b * A) = G := by
@@ -245,9 +243,9 @@ theorem conj_unitary_back (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) (hr : A * L
   rw [h1, conj_frame hA hr, mat_unitary, hA]
 
 /- English proof (translation)
-Set `f : Γ → UpqT P Q` to `fun x => mkU (A * m x * L) (conj_unitary hA hr (hu x))`. Establish `hf : ∀ x, UpqT.mat (f x) = A * m x * L` using `fun x => mat_mkU _ _`. Use `⟨MonoidHom.mk' f fun x y => mat_injective ?_, ?_, fun x => hf x⟩` and prove the remaining obligations. Rewrite using `[mat_mul, hf, hf, hf, hmul]`. Simplify using `only [Matrix.mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc L, hl, Matrix.one_mul]`. Use `show Continuous f`. Conclude with `continuous_mkU (fun x => A * m x * L) ((continuous_const.matrix_mul hm).matrix_mul continuous_const) (fun x => conj_unitary hA hr (hu x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom {Γ : Type} [Group Γ] [TopologicalSpace Γ] (m : Γ → Matrix (Fin n) (Fin n) ℂ)
     (hm : Continuous m) (hmul : ∀ g h, m (g * h) = m g * m h) (hu : ∀ h, (m h)ᴴ * G * m h = G)
@@ -264,15 +262,15 @@ theorem exists_hom {Γ : Type} [Group Γ] [TopologicalSpace Γ] (m : Γ → Matr
       (fun x => conj_unitary hA hr (hu x))
 
 /- English proof (translation)
-Establish `hA' : A' = UpqT.mat u * A` using `by rw [hu, Matrix.mul_assoc, hl, Matrix.mul_one]`. Establish `hinv : UpqT.mat u⁻¹ * UpqT.mat u = 1` using `by rw [← mat_mul, inv_mul_cancel, mat_one]`. Establish `key : ∀ b : UpqT P Q, UpqT.mat b * A' = A' * g ↔ b = u * (t * u⁻¹)`. Introduce `b`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h2 : UpqT.mat (b * u) = UpqT.mat (u * t)`. Rewrite using `[mat_mul, mat_mul, ht]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `mat_injective h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← h3, mul_inv_cancel_right]`. Introduce and unpack `rfl`. Rewrite using `[mat_mul, mat_mul, ht, hA']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (UpqT.mat u⁻¹), hinv, Matrix.one_mul, hl, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, h⟩`. Rewrite `hb` using `[(key b).1 h]`. Then use the resulting hypothesis. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, (key _).2 rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem read_iff (hl : L * A = 1) (hr : A * L = 1) (u : UpqT P Q) (hu : UpqT.mat u = A' * L)
     {g : Matrix (Fin n) (Fin n) ℂ} (t : UpqT P Q) (ht : UpqT.mat t = A * g * L) (B : Set (UpqT P Q)) :

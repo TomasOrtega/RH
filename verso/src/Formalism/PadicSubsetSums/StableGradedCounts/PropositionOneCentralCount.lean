@@ -3,17 +3,15 @@ import Formalism.PadicSubsetSums.StableGradedCounts.IRRExcludedCount
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Introduce `N Y P hN hY hP hcard`. Establish `hb0 : (0 : ℝ) ≤ (3 * N + 1 : ℝ) * (1 + 2 * (N : ℝ) ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1))`. Use `Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ Y) ((3 : ℝ) / 4)` as an intermediate fact. Check the signs of the components of the expression. Establish `hne : P.Nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[← Finset.card_pos]`. Establish `: (0 : ℝ) < P.card` using `lt_of_le_of_lt hb0 hcard`. Conclude with `this` after adjusting the coercions. Take `⟨g₁, hg₁⟩` from `hne`. Use `set S := P.filter (fun g => ¬ Disjoint (BB g₁ N) (BB g N)) with hSdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS` using `excluded_count_bound N g₁ Y S hN hY (hP g₁ hg₁).1 (by`. Introduce `g hg`. Take `⟨h1, h2⟩` from `Finset.mem_filter.mp hg`. Conclude with `⟨(hP g h1).1, (hP g h1).2.1, (hP g h1).2.2, h2⟩)`. Establish `hlt : S.card < P.card` using `by exact_mod_cast lt_of_le_of_lt hS hcard`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g₂, hg₂, hn⟩ : ∃ g₂ ∈ P, g₂ ∉ S := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `absurd (Finset.card_le_card (fun g hg => hcon g hg)) (not_le.mpr hlt)`. Establish `hd : Disjoint (BB g₁ N) (BB g₂ N)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (Finset.mem_filter.mpr ⟨hg₂, h⟩)`. Use `⟨g₁, hg₁, g₂, hg₂, ?_, hd⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `hmem : g₁ ∈ BB g₁ N` using `by simp [BB]`.
-
-Conclude with `Finset.disjoint_left.mp hd hmem hmem`.
+A detailed English derivation is pending.
 -/
 theorem proposition_one_central_count : Prop1Core := by
   classical

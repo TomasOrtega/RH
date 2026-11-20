@@ -167,7 +167,7 @@ def OneFinitePartIsotypic : Prop :=
     Common R t (rowLev R F b) ∧ IsoOrth R t (rowLev R F b) ∧ IsoKept R t (rowLev R F b)
 
 /- English proof (translation)
-Introduce `⟨_, _, _, _, h⟩` and use `h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (P : LevelP R.Pg D.R.r ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : Sys D) : ¬ Differ R P Sb c c :=
   fun ⟨_, _, _, _, h⟩ => h rfl

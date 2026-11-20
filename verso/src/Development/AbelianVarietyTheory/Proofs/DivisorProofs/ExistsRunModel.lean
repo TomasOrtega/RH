@@ -24,25 +24,19 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Take `⟨v⟩` from `nonempty_place D`. Establish `hne : Nonempty (uAt r v i).Comp` using `GlobalTheory.ModelLatticeCheck.comp_nonempty _ _ _`. Establish `hcom` using `GlobalTheory.T.uniformisation_components_share_cmData p hm r h ho i v`. Establish `hchi` using `GlobalTheory.T.uniformisation_character_trivial_arithmeticGroup p hm r h ho i v`. Establish `hcong` using `GlobalTheory.T.lattice_preserved_by_component_stabilizer p hm r h ho i v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨act, tr, h1, hmul, hmt, hconj, hcoc, hfaith, ⟨a, ha⟩, hd2⟩` from `GlobalTheory.T.exists_levelGroup_transport_uniformisation_components p hm r h ho i v`. Use `choose Xx hXd hXL using exists_dataX_latP p r h i v`. Establish `hΓ : ∀ c, (Xx c).Γ = ((uAt r v i).X c).Γ` using `fun c => congrArg Data.Γ (hXd c)`. Establish `hΛ : ∀ c, (Xx c).Λ = ((uAt r v i).X c).Λ` using `fun c => congrArg Data.Λ (hXd c)`. Set `k0 : (uAt r v i).Comp` to `hne.some`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI inst : MulAction p.P.Gp (uAt r v i).Comp := { smul := act, one_smul := h1, mul_smul := hmul }`. Set `M : TwoLevels D.host.E D.R.r p.P.Gp (uAt r v i).Comp` to `{ Ψ := ((uAt r v i).X k0).Ψ Gm := ((uAt r v i).X k0).Gm p0 := ((uAt r v i).X k0).p0 ξ0 := ((uAt r v i).X k0).ξ0 comp := Xx comp_Ψ := fun c => (congrArg Data.Ψ (hXd c)).trans (hcom c k0).1 comp_Gm := fun c => (congrArg Data.Gm (hXd c)).trans (hcom c k0).2.2.1 comp_basePoint := fun …`. Rewrite using `[hXL c]`. Rewrite `hγ` using `[hΓ c]`. Conclude with `mem_localLattice_iff_mulVec D _ (((uAt r v i).X c).Γ_stab γ hγ).2 w`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `tr := tr`. Use `tr_herm := fun u c w w' => by`. Establish `e` using `(hmt u c).iso w w'`. Rewrite `e` using `[(hcom (act u c) k0).2.2.1, (hcom c k0).2.2.1]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `tr_Λ := fun u c w => by`. Rewrite using `[hΛ c, hΛ (u • c)]`. Conclude with `(hmt u c).lat w`. Use the proof step `tr_L' := fun u c w => by`. Rewrite using `[hXL c, hXL (u • c)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_localLattice_iff_mulVec D _ (hmt u c).lat w`. Use `tr_conj := fun u c γ => by`. Rewrite using `[hΓ c, hΓ (u • c)]`. Conclude with `hconj u c γ`. Use `tr_mul := fun u u' c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΓ]`. Conclude with `hcoc u u' c`. Use `tr_faithful := fun u c hu ht => hfaith u c hu (by rw [hΓ c] at ht; exact ht) }`. Set `ka : Wt M.Ψ D.R.r` to `fun τ j => laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) k0 τ j`. Use `⟨(uAt r v i).Comp, inferInstance, inst, M, ka, v, Equiv.refl _, fun c => hXd c, ?_, ⟨a, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `c τ h1 h2 j show laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) k0 ⟨τ, h1⟩ j = laR (r.used v).full.toTop ((i : ℕ) + 1) (p.κ i) c ⟨τ, h2⟩ j`. Unfold `laR laU`. Rewrite using `[(hcom c k0).2.1]`. Introduce `F g c x hx h1 h2`. Establish `hx' : castFrame h1 x ∈ ((uAt r v i).X c).dom` using `by show castFrame h1 x ∈ GG ((uAt r v i).X c).Ψ ((uAt r v i).X c).Gm ((uAt r v i).X c).p0`.
-
-Rewrite using `[(hcom c k0).2.2.1, (hcom c k0).2.1]`. Conclude with `fun τ => hx ⟨τ.1, by rw [h1]; exact τ.2⟩`. Establish `e` using `ha F g c (castFrame h1 x) hx' (h1.symm.trans h2)`. Conclude with `e`. Introduce `c γ hγ w hw`.
-
-Rewrite `hw`, the goal using `[hXL c]`. Rewrite `hγ` using `[hΓ c]`. Conclude with `hcong c γ hγ w hw`. Conclude with `hd2 (fun c => (Xx c).L') hXL`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_runModel (p : PtAt ex Csz) (hm : More p) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (ho : OwnPin r)
     (i : Fin D.R.m) : ∃ (C : Type) (_ : Finite C) (_ : MulAction p.P.Gp C) (M : TwoLevels D.host.E D.R.r p.P.Gp C)

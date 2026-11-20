@@ -20,7 +20,7 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f 
 def etaL (x : St P) (L : LocAll (lay0 (Dof x))) : ℕ → B.places.Pl → ℚ := L.lay.fixZ.eta
 
 /- English proof (translation)
-The claim follows from `L.lay.fixZ.eta_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem etaL_nonneg (x : St P) (L : LocAll (lay0 (Dof x))) : ∀ j v, 0 ≤ etaL x L j v := L.lay.fixZ.eta_nonneg
 
@@ -56,7 +56,7 @@ def oL (x : St P) (L : LocAll (lay0 (Dof x))) : P.q.Over :=
 abbrev DL (x : St P) (L : LocAll (lay0 (Dof x))) : D7 := (w.st (oL x L).Z).toD7
 
 /- English proof (translation)
-The claim follows from `(Eq.refl (withLoc L))`.
+A detailed English derivation is pending.
 -/
 theorem DL_eq (x : St P) (L : LocAll (lay0 (Dof x))) : DL x L = withLoc L := (Eq.refl (withLoc L))
 
@@ -69,11 +69,11 @@ def datL (x : St P) (L : LocAll (lay0 (Dof x))) : Dat (w.st (oL x L).Z) w.I P.hX
   Dat.transfer (B := B) (C := w.C) (a := x.o.Z) (b := (oL x L).Z) (sameL x L) x.m.z
 
 /- English proof (translation)
-The claim follows from `(HEq.refl x.m.z.cG)`.
+A detailed English derivation is pending.
 -/
 theorem datL_cG (x : St P) (L : LocAll (lay0 (Dof x))) : HEq (datL x L).cG x.m.z.cG := (HEq.refl x.m.z.cG)
 /- English proof (translation)
-The claim follows from `(HEq.refl (cfL L (cfOf x)))`.
+A detailed English derivation is pending.
 -/
 theorem cf_eq (x : St P) (L : LocAll (lay0 (Dof x))) : HEq (TC.cf w.I w.l (oL x L).Z) (cfL L (cfOf x)) := (HEq.refl (cfL L (cfOf x)))
 
@@ -90,7 +90,7 @@ structure YRel {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) : Prop w
 def kKsL (n : InRat x.r.Y x.m.z.cG) : (datL x L).core.Q.c.F →+* ↥(DL x L).LL0 := (n.kKs)
 
 /- English proof (translation)
-The claim follows from `(n.hk)`.
+A detailed English derivation is pending.
 -/
 theorem hkL (n : InRat x.r.Y x.m.z.cG) : ∀ y : (datL x L).core.Q.c.F,
     ((kKsL L n y : ↥(DL x L).LL0) : (DL x L).what₂.LL) = algebraMap (datL x L).core.Q.c.F (DL x L).what₂.LL y := (n.hk)
@@ -98,7 +98,7 @@ theorem hkL (n : InRat x.r.Y x.m.z.cG) : ∀ y : (datL x L).core.Q.c.F,
 abbrev SL (n : InRat x.r.Y x.m.z.cG) : RatDat (DL x L).ntw := ratDatR (datL x L).R (datL x L).cG (kKsL L n) (hkL L n)
 
 /- English proof (translation)
-The claim follows from `(HEq.refl (SL L n))`.
+A detailed English derivation is pending.
 -/
 theorem SL_heq (n : InRat x.r.Y x.m.z.cG) : HEq (ratL L n.S) (SL L n) := (HEq.refl (SL L n))
 
@@ -152,7 +152,7 @@ def eigD : ℕ → (DL x L).what₂.FT → ℕ → PlE (DL x L).host → ↥(DL 
 def sbD : Finset (PlE (DL x L).host) := (l.rat.In.Sb)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(x.fits.div.left), fun _ _ G => kc% (x.fits.div.2 x.o.S x.o.N G)⟩, ⟨(x.fits.grp.pl), (x.fits.grp.teich), (x.fits.grp.chi), (x.fits.grp.ser)⟩, ⟨(x.fits.grpAt.pl), (x.fits.grpAt.idem), (x.fits.grpAt.cen)⟩, fun eR h => ⟨((x.fits.cen eR h).amb), ((x.fits.cen eR h).mt)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fitsL : (oL x L).Fits :=
   ⟨⟨(x.fits.div.left), fun _ _ G => kc% (x.fits.div.2 x.o.S x.o.N G)⟩,
@@ -161,18 +161,18 @@ theorem fitsL : (oL x L).Fits :=
     fun eR h => ⟨((x.fits.cen eR h).amb), ((x.fits.cen eR h).mt)⟩⟩
 
 /- English proof (translation)
-The claim follows from `(x.bk)`.
+A detailed English derivation is pending.
 -/
 theorem bkL : BkLaw (w.D (oL x L).Z) := (x.bk)
 
 /- English proof (translation)
-The claim follows from `(l.c.ok)`.
+A detailed English derivation is pending.
 -/
 theorem okL : ∀ v, TwistedAt (DL x L) v → IntegralHeckeForms.TwOK ((chD L l).twI v) ((chD L l).k' v) ((chD L l).Q v)
     (((chD L l).psi' v).comp ((DL x L).ntw.art ((chD L l).twI v) ((chD L l).Q v))) := (l.c.ok)
 
 /- English proof (translation)
-Take `⟨g⟩` from `l.b.geo`. Conclude with `⟨⟨fun i j b => ⟨((g.side i j b).pt), ((g.side i j b).cover), ((g.side i j b).ev_eq), kc% (g.side (kc% i) (kc% j) b).fmUr, (by with_unfolding_all exact ((g.side ((i)) ((j)) b).hk : _)), ((g.side i j b).hk_none)⟩, (g.isUnramified₂)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem geoL : Nonempty (GlobalTheory.GeoTie.ThetaTie (ysL L l) (datL x L).geo.fw (DL x L).nth) := by
   obtain ⟨g⟩ := l.b.geo
@@ -181,7 +181,7 @@ theorem geoL : Nonempty (GlobalTheory.GeoTie.ThetaTie (ysL L l) (datL x L).geo.f
     ((g.side i j b).hk_none)⟩, (g.isUnramified₂)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Eq.refl (Dof x).R), (HEq.refl (Dof x).host), (Eq.refl (Dof x).loc), (HEq.refl (Dof x).nd.Om), (HEq.refl (Dof x).nd.instOm), (HEq.refl (Dof x).nd.algOm), (HEq.refl (Dof x).nd.plOm), (HEq.refl (Dof x).nd.PlG)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameGaloisL : GlobalTheory.TwistChoice.SameGalois (Dof x).nd (DL x L).nd :=
   ⟨(Eq.refl (Dof x).R), (HEq.refl (Dof x).host), (Eq.refl (Dof x).loc),
@@ -190,7 +190,7 @@ theorem sameGaloisL : GlobalTheory.TwistChoice.SameGalois (Dof x).nd (DL x L).nd
     (HEq.refl (Dof x).nd.PlG)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(HEq.refl (Dof x).ntw.cc), (HEq.refl (Dof x).ntw.Tw), (HEq.refl (Dof x).ntw.l), (HEq.refl (Dof x).ntw.O0), (HEq.refl (Dof x).ntw.crO0), (HEq.refl (Dof x).ntw.algO0), (HEq.refl (Dof x).ntw.topO0), (HEq.refl (Dof x).ntw.O), (HEq.refl (Dof x).ntw.crO), (HEq.refl (Dof x).ntw.algO), …`.
+Supply the required witnesses or components.
 -/
 theorem twistDataAgreeAcrossCoefficients_localized : GlobalTheory.TwistChoice.TwistDataAgreeAcrossCoefficients (Dof x).ntw (DL x L).ntw :=
   ⟨(HEq.refl (Dof x).ntw.cc), (HEq.refl (Dof x).ntw.Tw), (HEq.refl (Dof x).ntw.l),
@@ -205,7 +205,7 @@ theorem twistDataAgreeAcrossCoefficients_localized : GlobalTheory.TwistChoice.Tw
     (HEq.refl (Dof x).ntw.finRCG), (HEq.refl (Dof x).ntw.art), (HEq.refl (Dof x).ntw.th)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(HEq.refl (Dof x).nexp.Fm), (HEq.refl (Dof x).nexp.acgFm), (HEq.refl (Dof x).nexp.modFmK), (HEq.refl (Dof x).nexp.modFmO), (HEq.refl (Dof x).nexp.actG), (HEq.refl (Dof x).nexp.U), (HEq.refl (Dof x).nexp.psiU), (HEq.refl (Dof x).nexp.eAlg), (HEq.refl (Dof x).nexp.Dat), (HEq.refl …`.
+Supply the required witnesses or components.
 -/
 theorem sameFormsL : GlobalTheory.TwistChoice.SameForms (Dof x).nexp (DL x L).nexp :=
   ⟨(HEq.refl (Dof x).nexp.Fm), (HEq.refl (Dof x).nexp.acgFm), (HEq.refl (Dof x).nexp.modFmK),
@@ -217,7 +217,7 @@ theorem sameFormsL : GlobalTheory.TwistChoice.SameForms (Dof x).nexp (DL x L).ne
     (HEq.refl (Dof x).nexp.hkF)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, (HEq.refl (Dof x).ntwbr), (HEq.refl l.c.ch.twI), (HEq.refl l.c.ch.sd), (HEq.refl l.c.ch.Q), (HEq.refl l.c.ch.k'), (HEq.refl l.c.ch.psi')⟩`.
+Supply the required witnesses or components.
 -/
 theorem keptL : Kept l.c.ch (chD L l) :=
   ⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, (HEq.refl (Dof x).ntwbr), (HEq.refl l.c.ch.twI), (HEq.refl l.c.ch.sd),
@@ -226,12 +226,12 @@ theorem keptL : Kept l.c.ch (chD L l) :=
 def xdD (xd : ThData (Dof x)) : ThData (DL x L) := ⟨(xd.xd0), (xd.thetaBase_invariant_action)⟩
 
 /- English proof (translation)
-The claim follows from `(h)`.
+A detailed English derivation is pending.
 -/
 theorem xdD_all {xd : ThData (Dof x)} (h : XdAll xd) : XdAll (xdD L xd) := (h)
 
 /- English proof (translation)
-The claim follows from `(l.b.fi)`.
+A detailed English derivation is pending.
 -/
 theorem ysL_fi : ∀ i y, HEq (((ysL L l).fi i).e y) y := (l.b.fi)
 

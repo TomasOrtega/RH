@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf.RegInv
 
 /- English proof (translation)
-Establish `h : (Hpk k r).det * (Hpk k r).det = 1`. Rewrite using `[← Matrix.det_mul, GBasic.Hpk_sq, Matrix.det_one]`. Conclude with `⟨⟨_, _, h, h⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hpk_isUnit_det (k r : ℕ) : IsUnit (Hpk k r).det := by
   have h : (Hpk k r).det * (Hpk k r).det = 1 := by
@@ -16,18 +16,18 @@ theorem hpk_isUnit_det (k r : ℕ) : IsUnit (Hpk k r).det := by
   exact ⟨⟨_, _, h, h⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(unitary_group_holds _ (Hpk k r) (hpk_isUnit_det k r)).2.2 γ h`.
+A detailed English derivation is pending.
 -/
 private lemma unit_lemma' {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG k r) : IsUnit γ.det ∧ γ⁻¹ ∈ GG k r :=
   (unitary_group_holds _ (Hpk k r) (hpk_isUnit_det k r)).2.2 γ h
 
 /- English proof (translation)
-The claim follows from `(unit_lemma' h).2`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG k r) : γ⁻¹ ∈ GG k r := (unit_lemma' h).2
 
 /- English proof (translation)
-Establish `hγ : γᴴ * Hpk k r * γ = Hpk k r` using `h`. Simplify using `only [herm]`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hγ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma herm_mulVec_eq_of_mem_GG {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (γ *ᵥ x) (γ *ᵥ y) = herm (Hpk k r) x y := by
@@ -37,7 +37,7 @@ private lemma herm_mulVec_eq_of_mem_GG {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG
     ← Matrix.mul_assoc, hγ]
 
 /- English proof (translation)
-Simplify using `only [herm]`. Rewrite using `[Matrix.star_dotProduct, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, GBasic.Hpk_herm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma herm_Hpk_swap (k r : ℕ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = star (herm (Hpk k r) y x) := by
@@ -45,7 +45,7 @@ private lemma herm_Hpk_swap (k r : ℕ) (x y : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.star_dotProduct, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, GBasic.Hpk_herm]
 
 /- English proof (translation)
-Establish `hv : γ *ᵥ (γ⁻¹ *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (unit_lemma' h).1, Matrix.one_mulVec]`. Rewrite using `[← herm_mulVec_eq_of_mem_GG h (γ⁻¹ *ᵥ v) w, hv]`. Conclude with `herm_Hpk_swap k r _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_inv {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (γ⁻¹ *ᵥ v) w = star (herm (Hpk k r) (γ *ᵥ w) v) := by
@@ -55,7 +55,7 @@ theorem herm_inv {k r : ℕ} {γ : Mat k r} (h : γ ∈ GG k r) (v w : Fin (2 * 
   exact herm_Hpk_swap k r _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Zhat, Matrix.conjTranspose_apply]`. Conclude with `herm_inv h _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhat_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r} (h : γ ∈ GG k r) :
     Zhat k r z' z γ⁻¹ = (Zhat k r z z' γ)ᴴ := by
@@ -64,7 +64,7 @@ theorem zhat_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r}
   exact herm_inv h _ _
 
 /- English proof (translation)
-Simplify using `only [Dmin]`. Rewrite using `[zhat_inv z z' h, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r} (h : γ ∈ GG k r)
     (l : Fin (r + 2)) : Dmin k r z' z γ⁻¹ l = star (Dmin k r z z' γ l) := by
@@ -72,7 +72,7 @@ theorem dmin_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r}
   rw [zhat_inv z z' h, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose]
 
 /- English proof (translation)
-Simplify using `only [Gf, dmin_inv z z' h, Complex.star_def, Complex.normSq_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gf_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r} (h : γ ∈ GG k r) :
     Gf k r z' z γ⁻¹ = Gf k r z z' γ := by
@@ -80,7 +80,7 @@ theorem gf_inv {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) {γ : Mat k r} (
   ring
 
 /- English proof (translation)
-Use `⟨zhat_inv z z' h, ?_⟩` and prove the remaining obligations. Simplify using `only [Greg, Set.mem_ofPred_eq, dmin_inv z z' h, gf_inv z z' h, star_ne_zero, h, inv_mem h, true_and]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem zhat_inv_and_reg (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r) (h : γ ∈ GG k r) :
     Zhat k r z' z γ⁻¹ = (Zhat k r z z' γ)ᴴ ∧ (γ ∈ Greg k r z z' ↔ γ⁻¹ ∈ Greg k r z' z) := by

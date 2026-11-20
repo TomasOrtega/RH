@@ -9,25 +9,25 @@ open scoped TensorProduct
 namespace GlobalTheory.UTrans
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c n G hFE hG L hL hsp m hm b hb`. Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Introduce `N`. Take `⟨x, t, hx, ht, rfl⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t', k, e, ht', hk, H⟩` from `GlobalTheory.T.exists_traceZero_adjustment_of_hermitian_lattice F E c n G hFE hG L hL hsp x t (b ^ (N + 1)) (by positivity) ht`. Establish `hinv : (tv (c : E →+* E) G x t')⁻¹ = tv (c : E →+* E) G x (-t')`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.transvection_identities_unitary E n (c : E →+* E) G hG.invol hG.herm).2.2.1, hx]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[tv]`. Use `⟨_, Submonoid.subset_closure ⟨x, t', hx, ht', rfl⟩, k, (N + 1) * e, (Nat.coprime_pow_right_iff (Nat.succ_pos N) _ _).1 hk, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨⟨w, hw, h1⟩, h2, h3⟩` from `H v hv`. Use `⟨⟨b • w, L.smul_of_tower_mem _ hw, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, smul_smul, pow_succ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul]` and apply the resulting hypothesis. Rewrite using `[pow_mul, hinv]` and apply the resulting hypothesis. Consider the case `one`. Introduce `N`. Apply the tactic sequence `refine ⟨1, one_mem _, 1, 0, by simp, fun v hv => ⟨⟨0, zero_mem _, by simp⟩, ?_, ?_⟩⟩ <;> simpa using hv`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `mul m₁ m₂ _ _ ih₁ ih₂`. Introduce `N`. Take `⟨p, -, k₀, e₀, hk₀, H₀⟩` from `ih₁ 0`. Establish `hden : ∀ v ∈ L, (k₀ * b ^ e₀) • (m₁ *ᵥ v) ∈ L`. Introduce `v hv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨w, hw, h1⟩, h2, -⟩` from `H₀ v hv`. Establish `: (k₀ * b ^ e₀) • (m₁ *ᵥ v) = k₀ • b ^ e₀ • (p *ᵥ v) - b ^ e₀ • (b ^ 0 • w)`. Rewrite using `[← h1]`. Use `module`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_mem (L.smul_of_tower_mem _ h2) (L.smul_of_tower_mem _ (L.smul_of_tower_mem _ hw))`. Take `⟨q₂, hq₂, k₂, e₂, hk₂, H₂⟩` from `ih₂ (N + e₀)`. Take `⟨q₁, hq₁, k₁, e₁, hk₁, H₁⟩` from `ih₁ (N + e₂)`. Use `⟨q₁ * q₂, mul_mem hq₁ hq₂, k₀ * k₁ * k₂, e₁ + e₂, Nat.Coprime.mul_left (Nat.Coprime.mul_left hk₀ hk₁) hk₂, fun v hv => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨⟨w₂, hw₂, a1⟩, a2, -⟩` from `H₂ v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨w₁, hw₁, b1⟩, -, -⟩` from `H₁ _ a2`. Establish `hb' : ((b : E) ^ e₂) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hb.ne')`. Establish `b2 : k₁ • (q₁ *ᵥ (q₂ *ᵥ v) - m₁ *ᵥ (q₂ *ᵥ v)) = b ^ N • w₁`. Apply `smul_right_injective (Fin n → E) hb'` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec_smul] at b1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) b1`. Establish `a3 : k₂ • (m₁ *ᵥ (q₂ *ᵥ v) - m₁ *ᵥ (m₂ *ᵥ v)) = b ^ (N + e₀) • (m₁ *ᵥ w₂)`. Rewrite using `[← Matrix.mulVec_smul, ← a1, Matrix.mulVec_smul, Matrix.mulVec_sub]`. Use `⟨(k₀ * k₂) • w₁ + k₁ • (k₀ * b ^ e₀) • (m₁ *ᵥ w₂), add_mem (L.smul_of_tower_mem _ hw₁) (L.smul_of_tower_mem _ (hden _ hw₂)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) (k₀ * k₂) • b2 + (k₀ * k₁) • a3`. Use `(H₁ _ (H₂ v hv).2.1).2.1` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, smul_smul, ← pow_add, Matrix.mulVec_mulVec]`. Then use the resulting hypothesis. Use `(H₂ _ (H₁ v hv).2.2).2.2` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, smul_smul, ← pow_add, Matrix.mulVec_mulVec, ← Matrix.mul_inv_rev, add_comm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tvGen_adjust : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), Module.finrank F E = 2 → IsHerm (c : E →+* E) G → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ m ∈ TvGen (c : E →+* E) G, ∀ b : ℕ, 0 < b → ∀ N : ℕ, ∃ m' ∈ TvGen (c : E →+* E) G, ∃ k e : ℕ, k.Coprime b ∧ ∀ v ∈ L, (∃ w ∈ L, k • (m' *ᵥ v - m *ᵥ v) = b ^ N • w) ∧ b ^ e • (m' *ᵥ v) ∈ L ∧ b ^ e • (m'⁻¹ *ᵥ v) ∈ L := by
   intro F E _ _ _ _ _ c n G hFE hG L hL hsp m hm b hb

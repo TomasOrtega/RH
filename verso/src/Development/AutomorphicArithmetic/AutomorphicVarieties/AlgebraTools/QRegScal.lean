@@ -5,7 +5,7 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h` using `Submodule.restrictScalars_map_smul_eq K (⊤ : Submodule R M)`. Rewrite `h` using `[Submodule.restrictScalars_top]`. Rewrite using `[← h, Submodule.restrictScalars_mem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_map_smul_top_iff {S R M : Type} [CommRing S] [CommRing R] [Algebra S R]
     [AddCommGroup M] [Module S M] [Module R M] [IsScalarTower S R M] (K : Ideal S) (m : M) :
@@ -15,7 +15,7 @@ private theorem mem_map_smul_top_iff {S R M : Type} [CommRing S] [CommRing R] [A
   rw [← h, Submodule.restrictScalars_mem]
 
 /- English proof (translation)
-Establish `h2 : f m ∈ (K • ⊤ : Submodule S M).map f` using `Submodule.mem_map_of_mem h`. Rewrite `h2` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono (le_refl K) le_top h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem_smul_top {S M M' : Type} [CommRing S] [AddCommGroup M] [Module S M]
     [AddCommGroup M'] [Module S M'] (f : M →ₗ[S] M') (K : Ideal S) {m : M}
@@ -25,7 +25,7 @@ private theorem map_mem_smul_top {S M M' : Type} [CommRing S] [AddCommGroup M] [
   exact Submodule.smul_mono (le_refl K) le_top h2
 
 /- English proof (translation)
-Establish `hu` using `IsLocalizedModule.map_units f t`. Establish `e` using `LinearMap.congr_fun hu.unit.inv_mul x`. Rewrite `e` using `[Module.End.mul_apply, IsUnit.unit_spec, Module.End.one_apply, Module.algebraMap_end_apply]`. Rewrite using `[← e]`. Conclude with `map_mem_smul_top _ K h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_smul_mem {S M M' : Type} [CommRing S] (T : Submonoid S) [AddCommGroup M] [Module S M]
     [AddCommGroup M'] [Module S M'] (f : M →ₗ[S] M') [IsLocalizedModule T f] (K : Ideal S) (t : T) {x : M'}
@@ -37,13 +37,13 @@ private theorem mem_of_smul_mem {S M M' : Type} [CommRing S] (T : Submonoid S) [
   exact map_mem_smul_top _ K h
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ (K • ⊤ : Submodule S M'), ∃ (s : T) (m' : M), m' ∈ (K • ⊤ : Submodule S M) ∧ (s : S) • x = f m'`. Introduce `x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `k hk x _`. Take `⟨⟨m0, s⟩, hs⟩` from `IsLocalizedModule.surj T f x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hs`. Use `⟨s, k • m0, Submodule.smul_mem_smul hk Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← hs, Submonoid.smul_def, smul_comm]`. Introduce `x y hx hy`. Take `⟨s1, m1, hm1, h1⟩` from `hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s2, m2, hm2, h2⟩` from `hy`. Use `⟨s1 * s2, (s2 : S) • m1 + (s1 : S) • m2, Submodule.add_mem _ (Submodule.smul_mem _ _ hm1) (Submodule.smul_mem _ _ hm2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, ← h1, ← h2, smul_add, Submonoid.coe_mul, mul_smul, mul_smul, smul_comm (s1 : S) (s2 : S) x]`. Take `⟨s, m', hm', he⟩` from `key _ h`. Rewrite `he` using `[← map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := T) he`. Use `⟨c * s, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def] at hc`. Rewrite using `[Submonoid.coe_mul, mul_smul, hc]`. Conclude with `Submodule.smul_mem _ _ hm'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smul_mem {S M M' : Type} [CommRing S] (T : Submonoid S) [AddCommGroup M] [Module S M]
     [AddCommGroup M'] [Module S M'] (f : M →ₗ[S] M') [IsLocalizedModule T f] (K : Ideal S) {m : M}
@@ -73,17 +73,17 @@ private theorem exists_smul_mem {S M M' : Type} [CommRing S] (T : Submonoid S) [
   exact Submodule.smul_mem _ _ hm'
 
 /- English proof (translation)
-Introduce `S R σ _ _ _ _ y J a`. Prove the components needed by the constructor for the conclusion. Introduce `M _ _ _ _`. Establish `hv : ∀ α, GlobalTheory.monoVal (fun s => algebraMap S R (y s)) α = algebraMap S R (GlobalTheory.monoVal y α)` using `fun α => (GlobalTheory.map_monoVal _ _ _).symm`. Establish `e1 : Ideal.span (Set.range fun s => algebraMap S R (y s)) = (Ideal.span (Set.range y)).map (algebraMap S R)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Unfold `QRegAt`. Simplify using `only [hv, algebraMap_smul, e1, ← Ideal.map_pow, ← Ideal.map_sup, mem_map_smul_top_iff]`. Introduce `T M _ _ M' _ _ f _ hM`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `QRegAt at hM ⊢`. Introduce `c' hc' α`. Take `⟨s, hs⟩` from `IsLocalizedModule.exist_integer_multiples_of_finite T f c'`. Establish `hs' : ∀ i, ∃ m, f m = (s : S) • c' i` using `fun i => LinearMap.mem_range.1 (hs i)`. Use `choose c hc using hs'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : f (∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y (β : σ →₀ ℕ) • c β) ∈ ((Ideal.span (Set.range y) ^ (a + 1) ⊔ J) • ⊤ : Submodule S M')`. Simplify using `only [map_sum, map_smul, hc]`. Establish `e : (∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y (β : σ →₀ ℕ) • ((s : S) • c' β)) = (s : S) • ∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y (β : σ →₀ ℕ) • c' β`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun β _ => smul_comm _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hc'`. Take `⟨t, ht⟩` from `exists_smul_mem T f _ h1`. Rewrite `ht` using `[Finset.smul_sum]`. Establish `h2` using `hM (fun β => (t : S) • c β) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show (∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y (β : σ →₀ ℕ) • ((t : S) • c β)) = ∑ β : GlobalTheory.MonoDeg σ a, (t : S) • (GlobalTheory.monoVal y (β : σ →₀ ℕ) • c β) from Finset.sum_congr rfl fun β _ => smul_comm _ _ _]`. Conclude with `ht)`. Establish `h3` using `map_mem_smul_top f _ (h2 α)`. Rewrite `h3` using `[map_smul, hc, smul_smul]`. Conclude with `mem_of_smul_mem T f _ (t * s) (by rwa [Submonoid.coe_mul])`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.qRegAt_map :
     ∀ (S R σ : Type) [CommRing S] [CommRing R] [Algebra S R] [Finite σ] (y : σ → S) (J : Ideal S) (a : ℕ),

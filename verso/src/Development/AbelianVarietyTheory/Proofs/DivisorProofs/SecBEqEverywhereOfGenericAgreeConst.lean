@@ -22,9 +22,9 @@ namespace GlobalTheory.SecBGenericAgree
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Establish `hu : IsUnit (algebraMap R (FractionRing R) c)` using `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc)).isUnit`. Use `hu.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_jK_app (c : R) (hc : c ≠ 0) :
     IsUnit ((jK R).app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)) := by
@@ -38,7 +38,7 @@ theorem isUnit_jK_app (c : R) (hc : c ≠ 0) :
   exact this
 
 /- English proof (translation)
-Establish `e1 : (DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom = ((fst (TF (R` using `R) (FractionRing R)) Q.P.A).left ≫ jFK (R := R) (FractionRing R)) ≫ jK R := by`. Rewrite using `[Over.w (DegPre.prB Q (FractionRing R)), Category.assoc]`. Conclude with `(Over.w (fst (TF (R := R) (FractionRing R)) Q.P.A)).symm`. Rewrite using `[e1, ← gs_pull ((fst (TF (R := R) (FractionRing R)) Q.P.A).left ≫ jFK (R := R) (FractionRing R)) (jK R) z ⊤ trivial, gs_eq _ z (jK R ⁻¹ᵁ ⊤) trivial]`. Conclude with `((isUnit_jK_app c hc).map _).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs (Q : DegPre R) (c : R) (hc : c ≠ 0) (z : (DegPre.BF Q (FractionRing R)).left) :
     IsUnit (gs ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom) z ⊤
@@ -52,9 +52,9 @@ theorem isUnit_gs (Q : DegPre R) (c : R) (hc : c ≠ 0) (z : (DegPre.BF Q (Fract
   exact ((isUnit_jK_app c hc).map _).map _
 
 /- English proof (translation)
-Use `set p := (DegPre.prB Q (FractionRing R)).left`. Establish `H' : ∀ z J, Good Q.P.L z J → sval s p z J = sval s' p z J` using `fun z J hJ => (isUnit_gs Q c hc z).mul_left_cancel (H z J hJ)`. Use `GlobalTheory.IntegralExpansion.prB_app_injective Q _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Use `choose I hI using fun χ : (DegPre.BF Q (FractionRing R)).left ⟶ Q.P.A.left => exists_chart Q.P.isLB (χ y)`. Establish `hI' : Good Q.P.L y I` using `hI`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m` using `hI'.mem (DegPre.famφB Q β) p`. Rewrite using `[gs_pull (𝟙 _) p y _ hy, gs_pull (𝟙 _) p y _ hy, Category.id_comp]`. Conclude with `(sec_trans s p y hy m).trans ((congrArg _ (H' y I hI')).trans (sec_trans s' p y hy m).symm)`.
+A detailed English derivation is pending.
 -/
 theorem f_eq (Q : DegPre R) (k : ℕ) (β : Q.X) (s s' : Q.SecB k β) (c : R) (hc : c ≠ 0)
     (H : ∀ (z : (DegPre.BF Q (FractionRing R)).left) (J : ((DegPre.BF Q (FractionRing R)).left ⟶ Q.P.A.left) → Q.P.L.ι),
@@ -75,7 +75,7 @@ theorem f_eq (Q : DegPre R) (k : ℕ) (β : Q.X) (s s' : Q.SecB k β) (c : R) (h
   exact (sec_trans s p y hy m).trans ((congrArg _ (H' y I hI')).trans (sec_trans s' p y hy m).symm)
 
 /- English proof (translation)
-Introduce `R _ _ Q k β s s' c hc H Z x z J _`. Establish `hf : s.f = s'.f` using `funext (f_eq Q k β s s' c hc H)`. Use `show gs x z _ (s.f _) = gs x z _ (s'.f _)`. Rewrite using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (k : ℕ) (β : Q.X) (s s' : Q.SecB k β) (c : R), c ≠ 0 → (∀ (z : (DegPre.BF Q (FractionRing R)).left) (J : ((DegPre.BF Q (FractionRing R)).left ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → gs ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * sval s (DegPre.prB Q (FractionRing R)).left z J = gs ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * sval s' (DegPre.prB Q (FractionRing R)).left z J) → ∀ (Z : Scheme.{0}) (x : Z ⟶ Q.P.A.left) (z : Z) (J : (Z ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → sval s x z J = sval s' x z J := by
   intro R _ _ Q k β s s' c hc H Z x z J _

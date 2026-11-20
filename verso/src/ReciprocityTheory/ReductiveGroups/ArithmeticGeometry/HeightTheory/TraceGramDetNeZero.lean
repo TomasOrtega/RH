@@ -6,21 +6,19 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set y : ∀ c, E c := fun c => ∑ l, v l • b l c with hy`. Establish `hk : ∀ k, ∑ c, Algebra.trace F (E c) (b k c * y c) = 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hv k`. Establish `h2 : ∑ c, Algebra.trace F (E c) (b k c * y c) = ∑ l, (∑ c, Algebra.trace F (E c) (b k c * b l c)) * v l`. Simplify using `only [hy, Finset.mul_sum, map_sum, mul_smul_comm, map_smul, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Simplify `h1` using `[Matrix.mulVec, dotProduct]`. Establish `hall : ∀ x : ∀ c, E c, ∑ c, Algebra.trace F (E c) (x c * y c) = 0`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `hspan x`. Establish `hx : ∀ c, x c * y c = ∑ k, μ k • (b k c * y c)`. Introduce `c`. Rewrite using `[hμ c, Finset.sum_mul]`. Simplify using `[smul_mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hx, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[← Finset.mul_sum, hk]`. Establish `hy0 : y = 0`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0⟩` from `Function.ne_iff.mp hne`. Establish `hc0' : y c0 ≠ 0` using `by simpa using hc0`. Establish `ht` using `hall (Pi.single c0 (y c0)⁻¹)`. Rewrite `ht` using `[Finset.sum_eq_single c0]`. Establish `h1 : (1 : E c0) = algebraMap F (E c0) 1` using `(map_one _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Pi.single_eq_same, inv_mul_cancel₀ hc0', h1, Algebra.trace_algebraMap, nsmul_eq_mul, mul_one]`. Conclude with `(Nat.cast_ne_zero.mpr (Module.finrank_pos (R := F) (M := E c0)).ne') ht`. Introduce `c _ hc`. Simplify using `[Pi.single_apply, hc]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ c0) h`. Conclude with `hv0 (hind v fun c => by simpa [hy] using congrFun hy0 c)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trace_gram_det_ne_zero {F : Type} [Field F] [CharZero F] {κ : Type} [Fintype κ] [DecidableEq κ]
     {E : κ → Type} [∀ c, Field (E c)] [∀ c, Algebra F (E c)] [∀ c, FiniteDimensional F (E c)]
@@ -81,25 +79,23 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `letI alg : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra`. Use `haveI : CharZero (KTf K d.D d.N) := charZero_of_injective_algebraMap (algebraMap K (KTf K d.D d.N)).injective`. Take `⟨_, hli, hsp⟩` from `hd.a4.choose_spec`. Establish `hS : ∀ c (p : KTp K d.D d.N), d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) p) = d.sH c p`. Introduce `c p`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Data.KTtoS`. Conclude with `IsFractionRing.lift_algebraMap _ _`. Establish `hsm : ∀ c (a : KTf K d.D d.N) (x : OmS (Ω c) d.D d.N), a • x = d.KTtoS h c a * x`. Introduce `c a x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : ∀ y : ∀ c, OmS (Ω c) d.D d.N, ∃ μ : Fin d.del → KTf K d.D d.N, ∀ c, y c = ∑ k, μ k • d.bvecG hd.sel hd.a4.choose k c`. Introduce `y`. Take `⟨q, hq, p, hp⟩` from `hsp y`. Use `⟨fun k => algebraMap _ (KTf K d.D d.N) (p k) / algebraMap _ (KTf K d.D d.N) q, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [hsm, map_div₀, hS]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hq'` using `hq c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hq', one_mul]`. Use `_ = (d.sH c q)⁻¹ * ∑ k, d.sH c (p k) * d.bvecG hd.sel hd.a4.choose k c := congrArg (fun t => (d.sH c q)⁻¹ * t) (hp c)`. Use `_ = ∑ k, d.sH c (p k) / d.sH c q * d.bvecG hd.sel hd.a4.choose k c := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hind : ∀ v : Fin d.del → KTf K d.D d.N, (∀ c, ∑ l, v l • d.bvecG hd.sel hd.a4.choose l c = 0) → v = 0`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨q, hq⟩, hqv⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (KTp K d.D d.N)) v`. Establish `hqv' : ∀ l, ∃ pl : KTp K d.D d.N, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) pl = q • v l` using `fun l => hqv l`. Use `choose p hp using hqv'`. Establish `hp0` using `hli p (fun c => by`. Establish `key` using `congrArg (fun t => d.KTtoS h c (algebraMap _ (KTf K d.D d.N) q) * t) (hv c)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [mul_zero, Finset.mul_sum] at key`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hsm, ← mul_assoc, ← map_mul, ← Algebra.smul_def, ← hp l, hS]`. Apply the tactic sequence `all_goals rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `l`. Establish `h1 : q • v l = 0` using `by rw [← hp l, hp0 l, map_zero]`. Rewrite `h1` using `[Algebra.smul_def]`. Establish `hq0 : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`. Conclude with `(mul_eq_zero.mp h1).resolve_left hq0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `haveI hfd : ∀ c, FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := by`. Introduce `c`. Use `Module.finite_def.mpr ⟨Finset.univ.image (fun k => d.bvecG hd.sel hd.a4.choose k c), eq_top_iff.mpr fun y _ => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `hspan (Pi.single c y)`. Establish `hy` using `hμ c`.
-
-Rewrite `hy` using `[Pi.single_eq_same]`. Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Unfold `Data.De`. Conclude with `trace_gram_det_ne_zero (fun k c => d.bvecG hd.sel hd.a4.choose k c) hind hspan`.
+A detailed English derivation is pending.
 -/
 theorem de_ne_zero (hd : d.AxH 𝒜) (h : d.S1) : d.De hd h ≠ 0 := by
   classical

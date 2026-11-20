@@ -12,15 +12,13 @@ variable (K : Type*) [Field K] [NumberField K]
 open scoped Classical in
 
 /- English proof (translation)
-Use `set S : Set (mixedSpace K) := (Set.univ.pi (fun w : { w : InfinitePlace K // IsReal w } => Metric.closedBall 0 (g w))) ×ˢ (Set.univ.pi (fun w : { w : InfinitePlace K // IsComplex w } => Metric.closedBall 0 (g w))) with hS`. Establish `hsub : convexBodyLT K g ⊆ S` using `Set.prod_mono (Set.pi_mono fun _ _ => Metric.ball_subset_closedBall) (Set.pi_mono fun _ _ => Metric.ball_subset_closedBall)`. Establish `hneg : ∀ x ∈ S, -x ∈ S`. Introduce `x hx`. Simplify using `only [hS, Set.mem_prod, Prod.fst_neg, Set.mem_pi, Set.mem_univ, Pi.neg_apply, mem_closedBall_zero_iff, norm_neg, forall_true_left, Prod.snd_neg] at hx ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hconv : Convex ℝ S` using `Convex.prod (convex_pi (fun _ _ => convex_closedBall _ _)) (convex_pi (fun _ _ => convex_closedBall _ _))`. Establish `hcomp : IsCompact S` using `IsCompact.prod (isCompact_univ_pi fun _ => isCompact_closedBall _ _) (isCompact_univ_pi fun _ => isCompact_closedBall _ _)`. Establish `h_fund` using `ZSpan.isAddFundamentalDomain' (fractionalIdealLatticeBasis K I) volume`. Establish `: Countable (Submodule.span ℤ (Set.range (fractionalIdealLatticeBasis K I))).toAddSubgroup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Countable (Submodule.span ℤ (Set.range (fractionalIdealLatticeBasis K I)))`. Use `infer_instance`. Take `⟨⟨x, hx⟩, h_nz, h_mem⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure h_fund hneg hconv hcomp (h.trans (measure_mono hsub))`. Rewrite `hx` using `[Submodule.mem_toAddSubgroup, mem_span_fractionalIdealLatticeBasis]`. Take `⟨a, ha, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ha, by simpa using h_nz, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [hS, Set.mem_prod, Set.mem_pi, Set.mem_univ, forall_true_left, mem_closedBall_zero_iff] at h_mem`. Rewrite using `[← normAtPlace_apply]`. Break down `isReal_or_isComplex w with hw | hw` into its components or cases. Rewrite using `[normAtPlace_apply_of_isReal hw]`.
-
-Conclude with `h_mem.1 ⟨w, hw⟩`. Rewrite using `[normAtPlace_apply_of_isComplex hw]`. Conclude with `h_mem.2 ⟨w, hw⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem_fractionalIdeal_place_le (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (g : InfinitePlace K → ℝ≥0) (h : minkowskiBound K I ≤ volume (convexBodyLT K g)) :
@@ -69,17 +67,15 @@ section TotallyComplex
 variable {E : Type*} [Field E] [NumberField E] [IsTotallyComplex E] {f : ℕ}
 
 /- English proof (translation)
-Establish `hc : nrComplexPlaces E = f`. Use `IsTotallyComplex.finrank E` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hr : nrRealPlaces E = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Establish `hf0 : f ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < finrank ℚ E` using `finrank_pos`. Use linear arithmetic over natural numbers and integers. Use `set X : ℝ := (FractionalIdeal.absNorm J : ℝ) * √|(discr E : ℝ)| with hX`. Establish `hN : (0 : ℝ) ≤ (FractionalIdeal.absNorm J : ℝ)`. Conclude with `FractionalIdeal.absNorm_nonneg J` after adjusting the coercions.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 ≤ X` using `mul_nonneg hN (Real.sqrt_nonneg _)`. Use `set B : ℝ := 2 / Real.pi * X ^ ((f : ℝ)⁻¹) with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Set `R : ℝ≥0` to `⟨√B, Real.sqrt_nonneg _⟩`. Establish `hR : (R : ℝ) ^ 2 = B` using `Real.sq_sqrt hB0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha0, hle⟩` from `exists_ne_zero_mem_fractionalIdeal_place_le E (Units.mk0 J hJ) (fun _ => R) (by`. Rewrite using `[convexBodyLT_volume, minkowskiBound, volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, mixedEmbedding.finrank, Finset.prod_pow_eq_pow_sum, sum_mult_eq, hf, convexBodyLTFactor, hc, hr]`. Use `(ENNReal.toReal_le_toReal (by finiteness) (by finiteness)).mp (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_inv, ENNReal.coe_toReal, ENNReal.toReal_ofNat, Units.val_mk0, ENNReal.toReal_ofReal hN, pow_zero, one_mul, NNReal.coe_pow, NNReal.coe_real_pi, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Rewrite using `[pow_mul (R : ℝ), hR, hB, mul_pow, Real.rpow_inv_natCast_pow hX0 hf0, hX, pow_mul, div_pow, show ((2 : ℝ) ^ 2) ^ f = 2 ^ f * 2 ^ f by rw [← mul_pow]; norm_num, inv_pow]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Real.pi_pos` as an intermediate fact. Use the proof step `field_simp)`. Use `⟨a, ha, ha0, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hR]`. Use `hle (InfinitePlace.mk τ)` as an intermediate fact.
-
-Rewrite `this` using `[InfinitePlace.apply]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) this 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem_fractionalIdeal_norm_sq_le (hf : finrank ℚ E = 2 * f)
     (J : FractionalIdeal (𝓞 E)⁰ E) (hJ : J ≠ 0) :

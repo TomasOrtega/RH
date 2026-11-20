@@ -11,7 +11,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace PositivityTheory.PfEss
 
 /- English proof (translation)
-Conclude with `PositivityTheory.PfEss.H13.segment_of_twisted_square_integrable hU`.
+A detailed English derivation is pending.
 -/
 theorem segment_of_twisted_square_integrable (hU : PositivityTheory.Zltwo.EssSqIntUsed) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (δ : IrrGL k), 1 ≤ δ.1 →
@@ -19,7 +19,7 @@ theorem segment_of_twisted_square_integrable (hU : PositivityTheory.Zltwo.EssSqI
   exact PositivityTheory.PfEss.H13.segment_of_twisted_square_integrable hU
 
 /- English proof (translation)
-Conclude with `PositivityTheory.PfEss.H2.exists_unitary_central_twist hA`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_central_twist (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (y : IrrGL k), ∃ (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ),
@@ -27,7 +27,7 @@ theorem exists_unitary_central_twist (hA : GlobalTheory.Published.IrreducibleAdm
   exact PositivityTheory.PfEss.H2.exists_unitary_central_twist hA
 
 /- English proof (translation)
-Conclude with `PositivityTheory.PfEss.H13.square_integrable_of_segment_twist (exists_unitary_central_twist hA) hA hF`.
+A detailed English derivation is pending.
 -/
 theorem segment_gives_square_integrable (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hF : GlobalTheory.Published.StandardFunctorsFiniteLength) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Zc.LSegJacquet k → ∀ (δ : IrrGL k), (∃ Δ : Segment k, IsLSeg Δ δ.rep) →
@@ -35,7 +35,7 @@ theorem segment_gives_square_integrable (hA : GlobalTheory.Published.Irreducible
   exact PositivityTheory.PfEss.H13.square_integrable_of_segment_twist (exists_unitary_central_twist hA) hA hF
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ δ hδ`. Conclude with `⟨segment_of_twisted_square_integrable (PositivityTheory.Zltwo.essSqIntUsed_of hE hS hL) k δ hδ, segment_gives_square_integrable hA hF k (hJ k) δ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem essSquareIntegrableSegments_of (hE : GlobalTheory.Published.LanglandsExhaustionGL)
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hF : GlobalTheory.Published.StandardFunctorsFiniteLength)

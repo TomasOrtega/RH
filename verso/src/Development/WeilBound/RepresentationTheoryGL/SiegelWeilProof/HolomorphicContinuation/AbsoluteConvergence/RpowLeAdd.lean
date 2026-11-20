@@ -15,11 +15,11 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   {ρ : GR n → PX m n →ₗ[ℂ] PX m n}
 
 /- English proof (translation)
-Establish `hK` using `isCompact_KR (n := n)`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn (hL.cont Q).continuousOn`. Establish `hne : ((KR n : Subgroup (GR n)) : Set (GR n)).Nonempty` using `⟨1, (KR n).one_mem⟩`. Take `⟨k0, -, hmin⟩` from `hK.exists_isMinOn hne (continuous_weight_factor (n := n) hD p q e).norm.continuousOn`. Establish `hδ : 0 < ‖F0 p q e k0‖` using `norm_pos_iff.mpr (weight_factor_ne_zero hD p q e k0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨max B 0 / ‖F0 p q e k0‖, div_nonneg (le_max_right _ _) hδ.le, fun y => ?_⟩` and prove the remaining obligations. Take `⟨u, k, hu, hk, rfl⟩` from `hI n y`. Establish `hmk : ‖F0 p q e k0‖ ≤ ‖F0 p q e k‖` using `hmin hk`. Rewrite using `[hL.law Q u k hu, ((hM n p q e).1 u k hk).1, norm_mul, norm_mul]`. Establish `h1 : ‖sL Q k‖ ≤ max B 0` using `(hB k hk).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : max B 0 ≤ max B 0 / ‖F0 p q e k0‖ * ‖F0 p q e k‖`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hδ]`. Conclude with `mul_le_mul_of_nonneg_left hmk (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sL_bound (hI : Iwa) (hM : Mult) (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ) (Q : PX m n) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y : GR n, ‖sL Q y‖ ≤ C * ‖F0 p q e y‖ := by
@@ -41,9 +41,9 @@ theorem sL_bound (hI : Iwa) (hM : Mult) (hD : CayleyBlocksInvertible) (hL : LocD
     _ = max B 0 / ‖F0 p q e k0‖ * (‖F0 p q e u‖ * ‖F0 p q e k‖) := by ring
 
 /- English proof (translation)
-Break down `le_total 1 a with h | h` into its components or cases. Use `Real.rpow_le_rpow_of_exponent_le h h₂` as an intermediate fact. Use `Real.rpow_nonneg ha.le x₁` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.rpow_le_rpow_of_exponent_ge ha h h₁` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Real.rpow_nonneg ha.le x₂` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rpow_le_add {a x₁ x₂ s : ℝ} (ha : 0 < a) (h₁ : x₁ ≤ s) (h₂ : s ≤ x₂) : a ^ s ≤ a ^ x₁ + a ^ x₂ := by
   rcases le_total 1 a with h | h
@@ -61,7 +61,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)}
 
 /- English proof (translation)
-Take `⟨x₀, y, S, r, hr, rfl, h⟩` from `hG.split x`. Rewrite using `[(h y).1]`. Conclude with `mul_pos hr (hLoc_pos hD y)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ht_pos (hD : CayleyBlocksInvertible) (hG : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) (x : G) : 0 < (Ht x : ℝ) := by
   obtain ⟨x₀, y, S, r, hr, rfl, h⟩ := hG.split x
@@ -69,9 +69,9 @@ theorem Ht_pos (hD : CayleyBlocksInvertible) (hG : GlobCore ε c sL ρ G Pp Γ �
   exact mul_pos hr (hLoc_pos hD y)
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `PositivityTheory.Rg.Sw.AbsSt.FarK.sL_bound hI hM hD hL Q`. Use `⟨C, hC0, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x0, y, S, r, -, hx, hy⟩` from `hG.split x`. Substitute `hx` using the available equality. Rewrite using `[(hy y).2 Q, (hy y).2 1, hL.vac y, norm_mul, norm_mul, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC y) (norm_nonneg S)`.
+A detailed English derivation is pending.
 -/
 theorem sec_bound (hI : Iwa) (hM : Mult) (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) (Q : PX m n) :
@@ -84,7 +84,7 @@ theorem sec_bound (hI : Iwa) (hM : Mult) (hD : CayleyBlocksInvertible) (hL : Loc
   exact mul_le_mul_of_nonneg_left (hC y) (norm_nonneg S)
 
 /- English proof (translation)
-Establish `hpos` using `PositivityTheory.Rg.Sw.AbsSt.FarK.Ht_pos hD hG x`. Simplify using `only [hz, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos, Complex.sub_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem norm_hz (hD : CayleyBlocksInvertible) (hG : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) (z : ℂ) (Q : PX m n) (x : G) :
     ‖hz Ht sec s₀ z Q x‖ = (Ht x : ℝ) ^ (z.re - s₀.re) * ‖sec Q x‖ := by

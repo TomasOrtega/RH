@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E]
 def ptE (t : E) (x : Fin 2 → maximalRealSubfield E) : E := ((x 0 : maximalRealSubfield E) : E) * t + ((x 1 : maximalRealSubfield E) : E)
 
 /- English proof (translation)
-Simplify using `only [ptE, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Use `push_cast`. Establish `h : (((algebraMap (OF E) (maximalRealSubfield E) a) : maximalRealSubfield E) : E) = algebraMap (OF E) E a` using `rfl`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -42,7 +42,7 @@ def pass (t : E) (c : Ideal (OF E)) (y : (Af E)ˣ) : GlobalTheory.HilbFam.Lat (m
     rw [ptE_smul]; exact mul_mem_lattice (algebraMap_mem_orderC c a) hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_pass (t : E) (c : Ideal (OF E)) (y : (Af E)ˣ) (x : Fin 2 → maximalRealSubfield E) :
     x ∈ pass t c y ↔ ptE t x ∈ lattice c y := Iff.rfl

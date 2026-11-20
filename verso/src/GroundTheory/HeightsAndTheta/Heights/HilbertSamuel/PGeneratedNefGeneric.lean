@@ -13,13 +13,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hform (by simp; rw [← Nat.cast_succ]; exact (WithBot.natCast_ne_bot _).symm)`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h1 : (((⊤ : ℕ∞) + 1 : ℕ∞) : WithBot ℕ∞) = (((d + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[WithBot.coe_add]`. Conclude with `hform` after adjusting the coercions. Establish `h2 : ((⊤ : ℕ∞) + 1 : ℕ∞) = ((d + 1 : ℕ) : ℕ∞)` using `WithBot.coe_injective h1`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[top_add]`. Conclude with `ENat.top_ne_natCast _ h2`. Consider the case `coe y`. Establish `h1 : ((y + 1 : ℕ) : WithBot ℕ∞) = ((d + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast hform`. Establish `: y = d` using `by exact_mod_cast (by exact_mod_cast h1 : y + 1 = d + 1) |> Nat.succ_injective`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem GeneratedNefGeneric.eq_natCast_of_add_one_eq (d : ℕ) (x : WithBot ℕ∞)
     (hform : x + 1 = ((d : ℕ) : WithBot ℕ∞) + 1) : x = d := by
@@ -40,17 +40,15 @@ theorem GeneratedNefGeneric.eq_natCast_of_add_one_eq (d : ℕ) (x : WithBot ℕ�
       subst this; rfl
 
 /- English proof (translation)
-Take `⟨-, ⟨hWp, ⟨S, hS, hWS⟩, hrel⟩, hhor, hdim⟩` from `hW`. Establish `: W.IsPrime` using `hWp`. Establish `hchar : ∀ m : ℤ, (C m : MvPolynomial (Σ k, ι k) ℤ) ∈ W → m = 0`. Introduce `m hm`. Establish `h1 : m ∈ W.comap (C : ℤ →+* MRing ι)` using `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[show W.comap (C : ℤ →+* MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `h1`. Take `⟨hqp, hcomap, hform⟩` from `ReciprocityTheory.AnForm.R.extQ_spec W hchar`. Establish `hq : ReciprocityTheory.AnForm.R.extQ W = W.map (MvPolynomial.map (Int.castRingHom ℚ))` using `rfl`. Rewrite using `[← hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hqp, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`. Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `show W.map (MvPolynomial.map (Int.castRingHom ℚ)) = _`. Rewrite using `[hWS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcomap, Ideal.mem_comap, map_X]`. Conclude with `hX`. Use `GeneratedNefGeneric.eq_natCast_of_add_one_eq (d + Fintype.card K) _ ?_` and prove the remaining obligations. Rewrite using `[hform, hdim, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GeneratedNefGeneric.isProjVarF_map {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {W : Ideal (MRing ι)} {d : ℕ} (hW : IsArithVar W (d + 1)) :
@@ -83,9 +81,9 @@ theorem GeneratedNefGeneric.isProjVarF_map {K : Type} [Fintype K] {ι : K → Ty
     rfl
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D a q w _ hw hgen W hW hPW`. Set `_ : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Establish `hQ : KH.GeneratedV ℚ (KH.genIdeal y) a` using `(hG K ι Ω y a q w hw hgen).1`. Establish `hWQ : KH.GeneratedV ℚ (W.map (MvPolynomial.map (Int.castRingHom ℚ))) a` using `hR ℚ K ι _ _ a (Ideal.map_mono hPW) hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : IsProjVarF (W.map (MvPolynomial.map (Int.castRingHom ℚ))) 1` using `GeneratedNefGeneric.isProjVarF_map (d := 1) hW`. Establish `h` using `hN ℚ K ι (fun V _ L => NumbersDVR.intNum ℚ V L) _ 1 (fun _ => a) (NumbersDVR.IntNumIsFieldIntersection.full ℚ K ι) hV (fun _ => hWQ)`. Unfold `genDeg`. Use `h` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem GeneratedNefGeneric.proof (hG : GenOnFibres.Statement) (hR : GeneratedRestrict.Statement)
     (hN : GeneratedProductNonneg.Statement) : GeneratedNefGeneric.Statement := by

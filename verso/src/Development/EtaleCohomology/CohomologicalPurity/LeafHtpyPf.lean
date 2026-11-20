@@ -24,7 +24,7 @@ def LeafHtpyMV : Prop := A4 → ∀ (R : Type) [CommRing R] (F : Shv R) {X' X : 
 namespace HtpyPf
 
 /- English proof (translation)
-Introduce `p hp hz`. Apply `hp` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((I.map Polynomial.C : Ideal (Polynomial A)) : Set (Polynomial A)) ⊆ p.asIdeal`. Express the relevant statement in the definitionally equal form `(I : Set A) ⊆ (PrimeSpectrum.comap Polynomial.C p).asIdeal at hz`. Conclude with `SetLike.coe_subset_coe.2 (Ideal.map_le_iff_le_comap.2 hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem offle (A : Type) [CommRing A] (I : Ideal A) : off (Polynomial A) (I.map Polynomial.C) ≤
     Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)) ⁻¹ᵁ off A I := by
@@ -35,7 +35,7 @@ theorem offle (A : Type) [CommRing A] (I : Ideal A) : off (Polynomial A) (I.map 
   exact SetLike.coe_subset_coe.2 (Ideal.map_le_iff_le_comap.2 hz)
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eqv_congr {X' X : Scheme.{0}} (p : X' ⟶ X) {R : Type} [CommRing R] (F : Shv R) {U U₁ : X.Opens}
     {U' U₁' : X'.Opens} (e : U = U₁) (e' : U' = U₁') (h : U' ≤ p ⁻¹ᵁ U) (h₁ : U₁' ≤ p ⁻¹ᵁ U₁) :
@@ -43,7 +43,7 @@ theorem eqv_congr {X' X : Scheme.{0}} (p : X' ⟶ X) {R : Type} [CommRing R] (F 
   subst e e'; rfl
 
 /- English proof (translation)
-Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.zeroLocus ((I ⊔ J : Ideal A) : Set A))ᶜ = (PrimeSpectrum.zeroLocus (I : Set A))ᶜ ∪ (PrimeSpectrum.zeroLocus (J : Set A))ᶜ`. Rewrite using `[PrimeSpectrum.zeroLocus_sup, Set.compl_inter]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_sup (A : Type) [CommRing A] (I J : Ideal A) : off A (I ⊔ J) = off A I ⊔ off A J := by
   apply TopologicalSpace.Opens.ext
@@ -52,7 +52,7 @@ theorem off_sup (A : Type) [CommRing A] (I J : Ideal A) : off A (I ⊔ J) = off 
   rw [PrimeSpectrum.zeroLocus_sup, Set.compl_inter]
 
 /- English proof (translation)
-Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.zeroLocus ((I * J : Ideal A) : Set A))ᶜ = (PrimeSpectrum.zeroLocus (I : Set A))ᶜ ∩ (PrimeSpectrum.zeroLocus (J : Set A))ᶜ`. Rewrite using `[PrimeSpectrum.zeroLocus_mul, Set.compl_union]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem off_mul (A : Type) [CommRing A] (I J : Ideal A) : off A (I * J) = off A I ⊓ off A J := by
   apply TopologicalSpace.Opens.ext
@@ -65,33 +65,31 @@ end HtpyPf
 namespace HtpyPf
 
 /- English proof (translation)
-Rewrite using `[← Ideal.span_insert]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_cons {A : Type} [CommRing A] (x : A) (t : List A) :
     Ideal.span {a | a ∈ x :: t} = Ideal.span {x} ⊔ Ideal.span {a | a ∈ t} := by
   rw [← Ideal.span_insert]; congr 1; ext a; simp
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_mul_span']`. Use `congr 1`. Use extensionality with `a`. Simplify using `[Set.singleton_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_mul {A : Type} [CommRing A] (x : A) (t : List A) :
     Ideal.span {x} * Ideal.span {a | a ∈ t} = Ideal.span {a | a ∈ t.map (x * ·)} := by
   rw [Ideal.span_mul_span']; congr 1; ext a; simp [Set.singleton_mul]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `s hs h`. Take `rfl : s = []` from `List.length_eq_zero_iff.1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : Ideal.span {a | a ∈ ([] : List A)} = ⊥` using `by simp`. Establish `e1 : off A (Ideal.span {a | a ∈ ([] : List A)}) = off A ⊥` using `by rw [e]`. Establish `e2 : off (Polynomial A) ((Ideal.span {a | a ∈ ([] : List A)}).map Polynomial.C) = off (Polynomial A) ((⊥ : Ideal A).map Polynomial.C)` using `by rw [e]`. Conclude with `(eqv_congr (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))) (tw q i) e1 e2 h (offle A ⊥)).2 (hZ a1 q A (offle A ⊥) i)`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs h`. Choose the witnesses or unpack the hypotheses as in `⟨x, t, rfl⟩ : ∃ x t, s = x :: t := by`. Consider the cases of `s with`. Consider the case `nil => simp at hs`. Consider the case `cons x t => exact ⟨x, t, rfl⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ht : t.length = n` using `by simpa using hs`. Use `set I := Ideal.span ({x} : Set A)`. Use `set J := Ideal.span {a | a ∈ t}`. Use `set P := Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))`. Establish `hU` using `offle A I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV` using `offle A J`. Establish `hI : off (Polynomial A) (I.map Polynomial.C) ⊓ off (Polynomial A) (J.map Polynomial.C) ≤ P ⁻¹ᵁ (off A I ⊓ off A J)` using `fun p hp => ⟨hU hp.1, hV hp.2⟩`. Establish `hS : off (Polynomial A) (I.map Polynomial.C) ⊔ off (Polynomial A) (J.map Polynomial.C) ≤ P ⁻¹ᵁ (off A I ⊔ off A J)`. Rewrite using `[← off_sup, ← off_sup, ← Ideal.map_sup]`. Conclude with `offle A (I ⊔ J)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : off A (Ideal.span {a | a ∈ x :: t}) = off A I ⊔ off A J` using `by rw [span_cons, off_sup]`. Establish `e2 : off (Polynomial A) ((Ideal.span {a | a ∈ x :: t}).map Polynomial.C) = off (Polynomial A) (I.map Polynomial.C) ⊔ off (Polynomial A) (J.map Polynomial.C)`. Rewrite using `[span_cons, Ideal.map_sup, off_sup]`. Use `(eqv_congr P (tw q i) e1 e2 h hS).2 (hMV a4 _ _ P _ _ _ _ hU hV hI hS (hO a1 c4 q A x hq hU i) (ih t ht hV) ?_)` and prove the remaining obligations. Establish `e3 : off A (Ideal.span {a | a ∈ t.map (x * ·)}) = off A I ⊓ off A J` using `by rw [← span_mul, off_mul]`.
-
-Establish `e4 : off (Polynomial A) ((Ideal.span {a | a ∈ t.map (x * ·)}).map Polynomial.C) = off (Polynomial A) (I.map Polynomial.C) ⊓ off (Polynomial A) (J.map Polynomial.C)`. Rewrite using `[← span_mul, Ideal.map_mul, off_mul]`. Conclude with `(eqv_congr P (tw q i) e3 e4 (offle A _) hI).1 (ih _ (by simpa using ht) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (hZ : LeafHtpyZero) (hO : LeafHtpyOne) (hMV : LeafHtpyMV) (a1 : A1) (a4 : A4) (c4 : C4)
     (q : ℕ) [NeZero q] (A : Type) [CommRing A] (hq : IsUnit (q : A)) (i : ℤ) :
@@ -141,7 +139,7 @@ theorem main (hZ : LeafHtpyZero) (hO : LeafHtpyOne) (hMV : LeafHtpyMV) (a1 : A1)
 end HtpyPf
 
 /- English proof (translation)
-Introduce `a1 a4 c4 q _ A _ I hI hq h i`. Take `⟨S, rfl⟩` from `hI`. Establish `e : ({a | a ∈ S.toList} : Set A) = (S : Set A)` using `by ext a; simp`. Use `HtpyPf.main hZ hO hMV a1 a4 c4 q A hq i _ S.toList rfl (by rw [e]; exact HtpyPf.offle A _)` as an intermediate fact. Conclude with `(HtpyPf.eqv_congr (Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))) (tw q i) (by rw [e]) (by rw [e]) _ h).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafHtpy_of (hZ : LeafHtpyZero) (hO : LeafHtpyOne) (hMV : LeafHtpyMV) : LeafHtpy := by
   intro a1 a4 c4 q _ A _ I hI hq h i

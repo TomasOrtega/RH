@@ -10,17 +10,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 namespace GlobalTheory.HeckeTwo
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨Unit, inferInstance, fun _ _ => 1, fun _ => (2, 0), fun _ => by fun_prop, fun _ => by simp, fun σ _ y _ => ?_⟩` and prove the remaining obligations. Simplify using `[hTransAB_two_zero]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨ι, _, c, ab, hc, hab, h⟩` from `ih`. Use `⟨ι ⊕ ι, inferInstance, Sum.elim (fun i σ => c i σ * (I * (-((ab i).1 : ℂ) - σ))) (fun i σ => c i σ * (I * (((ab i).2 : ℂ) + σ))), Sum.elim (fun i => ((ab i).1 + 1, (ab i).2)) (fun i => ((ab i).1, (ab i).2 + 1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Use `hc i` as an intermediate fact. Simplify using `only [Sum.elim_inl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Use `hc i` as an intermediate fact. Simplify using `only [Sum.elim_inr]`. Use `fun_prop`. Introduce and unpack `(i | i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hab i` as an intermediate fact. Simplify using `only [Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers. Use `hab i` as an intermediate fact. Simplify using `only [Sum.elim_inr]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `σ hσ y hy`. Establish `hev : iteratedDeriv k (hTrans σ n) =ᶠ[nhds y] fun y' => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y'` using `by filter_upwards [isOpen_ne.mem_nhds hy] with y' hy' using h σ hσ y' hy'`. Establish `hd` using `(HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (h1 (ab i).1 (ab i).2 σ n y (hab i) hσ hy).const_mul (c i σ))).congr_of_eventuallyEq hev`. Rewrite using `[iteratedDeriv_succ, hd.deriv, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_hTrans_eq_sum
     (h1 : ∀ (a b : ℕ) (σ : ℂ) (ν y : ℝ), 2 ≤ a + b → σ ∈ halfPlane → y ≠ 0 →
@@ -65,9 +65,9 @@ theorem iteratedDeriv_hTrans_eq_sum
       ring
 
 /- English proof (translation)
-Introduce `h1 h2 n k y hy`. Take `⟨ι, _, c, ab, hc, hab, h⟩` from `iteratedDeriv_hTrans_eq_sum h1 n k`. Use `⟨fun σ hσ => ?_, ?_⟩` and prove the remaining obligations. Establish `hev : iteratedDeriv k (hTrans σ n) =ᶠ[nhds y] fun y' => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y'` using `by filter_upwards [isOpen_ne.mem_nhds hy] with y' hy' using h σ hσ y' hy'`. Establish `hd` using `(HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (h1 (ab i).1 (ab i).2 σ n y (hab i) hσ hy).const_mul (c i σ))).congr_of_eventuallyEq hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_succ]`. Conclude with `hd.differentiableAt.hasDerivAt`. Use `DifferentiableOn.congr (f := fun σ => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y) ?_ (fun σ hσ => h σ hσ y hy)` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum fun i _ => (hc i).differentiableOn.mul (h2 _ _ n y (hab i) hy)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_hTrans_jet :
     (∀ (a b : ℕ) (σ : ℂ) (ν y : ℝ), 2 ≤ a + b → σ ∈ halfPlane → y ≠ 0 →

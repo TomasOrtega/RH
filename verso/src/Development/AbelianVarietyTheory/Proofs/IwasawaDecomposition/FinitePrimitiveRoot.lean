@@ -7,29 +7,27 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.CycLayers
 
 /- English proof (translation)
-Set `_` to `(Subring.inclusion h).toAlgebra`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `f : R →ₗ[A] F` to `{ toFun := Subtype.val, map_add' := fun _ _ => rfl, map_smul' := fun a y => by rw [RingHom.id_apply, Algebra.smul_def, Subring.smul_def]; rfl }`. Set `S : Set R` to `Subtype.val ⁻¹' (T : Set F)`. Establish `hS : S.Finite` using `T.finite_toSet.preimage Subtype.val_injective.injOn`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `himg : f '' S = (T : Set F)`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Establish `hcR : c ∈ R` using `(hT c).2 (Submodule.subset_span hc)`. Conclude with `⟨⟨c, hcR⟩, hc, rfl⟩`. Establish `key : ∀ y : R, y ∈ Submodule.span A S`. Introduce `y`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (y : F) ∈ Submodule.span A (T : Set F)` using `(hT y).1 y.2`. Rewrite `h1` using `[← himg, ← Submodule.map_span]`. Take `⟨y', hy', hyy⟩` from `h1`. Establish `: y' = y` using `Subtype.ext hyy`. Rewrite using `[← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hy'`. Conclude with `⟨⟨hS.toFinset, by rw [Set.Finite.coe_toFinset]; exact eq_top_iff.2 fun y _ => key y⟩⟩`. Establish `hprim : IsPrimitiveRoot (⟨ζ, hzmem⟩ : R) m` using `IsPrimitiveRoot.coe_submonoidClass_iff.1 hζ`. Use `⟨(hprim.isUnit hm.ne').unit, by simpa using hprim, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) x`. Use `set b : R := (s : R) with hbdef`. Establish `hb : b ∈ nonZeroDivisors R` using `s.2`. Establish `hb0 : (b : F) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: b = 0` using `Subtype.ext h0`. Conclude with `nonZeroDivisors.ne_zero hb this`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 hb0) hlnorm`. Establish `hlR : (l : F) ^ N ∈ R` using `pow_mem (natCast_mem R l) N`. Establish `hlNA : (l : F) ^ N ∈ A` using `pow_mem (natCast_mem A l) N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hq : (l : F) ^ N / b ∈ R`. Use `hdiv _ hlR _ b.2 ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `hN.le`. Take `⟨p, d', hd', hpd⟩` from `hlast _ (mul_mem a.2 hq)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨p, ⟨(l : F) ^ N, hlNA⟩ * d', ?_, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero ?_ hd'` and prove the remaining obligations. Introduce `h0`. Establish `h1 : (l : F) ^ N = 0` using `congrArg Subtype.val h0`. Conclude with `pow_ne_zero N hl0 h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ((Polynomial.aeval ((hprim.isUnit hm.ne').unit : R) p : R) : F) = Polynomial.aeval ζ p`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, IsUnit.unit_spec]`. Rewrite using `[show ((Polynomial.eval₂ (algebraMap A R) (⟨ζ, hzmem⟩ : R) p : R) : F) = R.subtype (Polynomial.eval₂ (algebraMap A R) (⟨ζ, hzmem⟩ : R) p) from rfl, Polynomial.hom_eval₂]`. Both sides reduce to the same expression. Establish `hRd : algebraMap A R (⟨(l : F) ^ N, hlNA⟩ * d') = b * ⟨(l : F) ^ N / b, hq⟩ * algebraMap A R d'`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (l : F) ^ N = (b : F) * ((l : F) ^ N / b)`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hfin : a * ⟨(l : F) ^ N / b, hq⟩ * algebraMap A R d' = Polynomial.aeval ((hprim.isUnit hm.ne').unit : R) p`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hev, ← hpd]`. Both sides reduce to the same expression. Rewrite using `[hRd, ← hfin, map_mul, map_mul, map_mul, map_mul, ← mul_assoc, ← mul_assoc, IsLocalization.mk'_spec]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem layer_of_clauses {F : Type*} [NormedField F] (A R : Subring F) (h : A ≤ R) (l m : ℕ)
     (hlnorm : ‖(l : F)‖ < 1) (hl0 : (l : F) ≠ 0) (hm : 0 < m)
@@ -104,9 +102,9 @@ theorem layer_of_clauses {F : Type*} [NormedField F] (A R : Subring F) (h : A �
       rw [hRd, ← hfin, map_mul, map_mul, map_mul, map_mul, ← mul_assoc, ← mul_assoc, IsLocalization.mk'_spec]
 
 /- English proof (translation)
-Introduce `l _ K₀ L k h`. Take `⟨-, -, -, -, hdiv, -, ⟨T, hT⟩, ζ, hzmem, hζ, hlast⟩` from `GlobalTheory.T.exists_cyclotomic_unramified_completed_integers l K₀ L k`. Establish `hlnorm : ‖(l : ℂ_[l])‖ < 1`. Establish `e : ((l : ℚ_[l]) : ℂ_[l]) = (l : ℂ_[l])` using `by simp`. Rewrite using `[← e, PadicComplex.norm_extends' l (l : ℚ_[l]), Padic.norm_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `hl0 : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Conclude with `layer_of_clauses _ _ h l (l ^ k) hlnorm hl0 (pow_pos (Fact.out : l.Prime).pos k) hdiv T hT ζ hzmem hζ hlast`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_primitive_root :
     ∀ (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) (k : ℕ) (h : clC l (Kt l K₀ L) ≤ clC l (Kt l K₀ L ⊔ muK l k)), letI := (Subring.inclusion h).toAlgebra; Module.Finite ↥(clC l (Kt l K₀ L)) ↥(clC l (Kt l K₀ L ⊔ muK l k)) ∧ ∃ z : (↥(clC l (Kt l K₀ L ⊔ muK l k)))ˣ, IsPrimitiveRoot (z : ↥(clC l (Kt l K₀ L ⊔ muK l k))) (l ^ k) ∧ ∀ x : FractionRing ↥(clC l (Kt l K₀ L ⊔ muK l k)), ∃ p : Polynomial ↥(clC l (Kt l K₀ L)), ∃ d : ↥(clC l (Kt l K₀ L)), d ≠ 0 ∧ x * algebraMap _ (FractionRing ↥(clC l (Kt l K₀ L ⊔ muK l k))) (algebraMap _ ↥(clC l (Kt l K₀ L ⊔ muK l k)) d) = algebraMap _ (FractionRing ↥(clC l (Kt l K₀ L ⊔ muK l k))) (Polynomial.aeval (z : ↥(clC l (Kt l K₀ L ⊔ muK l k))) p) := by

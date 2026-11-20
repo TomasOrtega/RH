@@ -26,7 +26,7 @@ section General
 variable {X X' Y Y₀ Y₁ Y₂ Z : Scheme.{0}} {M : LB X} {M' : LB X'} {n : ℕ} {pr : Fin n → (X' ⟶ X)}
 
 /- English proof (translation)
-Establish `c : LB.Gen.Corr M _ _ _ _ (LB.pullGen M φ ε t ρ) (LB.pullGen M φ' ε' t' ρ')` using `corr_of_val hM fun y J hJ => by`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Conclude with `h y J hJ`. Use `val_corr hJ c r` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_pull hJ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_along (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y₁ ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y₂ ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb M φ ε)) (t' : LB.Gen (LB.LinComb M φ' ε'))
@@ -39,9 +39,9 @@ theorem val_along (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K �
   rwa [val_pull hJ, val_pull hJ] at this
 
 /- English proof (translation)
-Introduce `(j : I × K → M.ι) (j' : I × K → M.ι)`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ j : I × K → M.ι, y ∈ LB.wchart M (fun p : I × K => φ p.1 p.2) j → gm (𝟙 Y) y (LB.wchart M (fun p : I × K => φ p.1 p.2) j) ((GeneratorPullback.finProdGen M φ ε t).s j) = ∏ i, gm (𝟙 Y) y (LB.wchart M (φ i) (fun k => j (i, k))) ((t i).s (fun k => j (i, k)))` using `fun j hj => (map_prod _ _ _).trans (Finset.prod_congr rfl fun _ _ => gm_res (𝟙 Y) y _ hj _)`. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb M _ _ (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))`.
+A detailed English derivation is pending.
 -/
 theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb M (φ i) (ε i))) (ht : ∀ i, (t i).IsGen) : (GeneratorPullback.finProdGen M φ ε t).IsGen := by
@@ -58,13 +58,13 @@ theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y 
     (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))
 
 /- English proof (translation)
-Introduce `jN jL`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at hM y`. Take `⟨J', hJ', e⟩` from `exists_good M' hM' y (fun _ : PUnit => 𝟙 Y ≫ p) (fun _ => jL) (fun _ _ _ => rfl) (fun _ => hy.2)`. Establish `e' : J' (𝟙 Y ≫ p) = jL` using `e PUnit.unit`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `H y J J' hJ hJ'`. Rewrite `h` using `[val_of a _ y J' (fun _ => jL) (fun _ => e'), val_of b _ y J (fun i => J ((𝟙 Y ≫ p) ≫ pr i)) (fun i => by rw [Category.assoc]), om, e']`. Establish `m₁ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart M (fun i => p ≫ pr i) jN` using `GeneratorPullback.mapsAt_le_b M M' pr p jN jL hy`. Establish `m₂ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart M (fun i => p ≫ pr i) (fun i => J ((𝟙 Y ≫ p) ≫ pr i))` using `Set.mem_iInter.2 fun i => hJ ((𝟙 Y ≫ p) ≫ pr i)`. Establish `m₃ : (𝟙 Y ≫ p) y ∈ LB.wchart M pr jN` using `hy.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₄ : (𝟙 Y ≫ p) y ∈ LB.wchart M pr (fun i => J ((𝟙 Y ≫ p) ≫ pr i))` using `Set.mem_iInter.2 fun i => hJ ((𝟙 Y ≫ p) ≫ pr i)`. Establish `m₅ : (𝟙 Y ≫ p) y ∈ M'.U jL` using `hy.2`. Establish `g` using `gm_isGen hw (𝟙 Y ≫ p) y jN (fun i => J ((𝟙 Y ≫ p) ≫ pr i)) jL jL m₃ m₄ m₅ m₅`. Rewrite `g` using `[gm_self hM' _ y m₅, inv_one, _root_.mul_one]`. Establish `g'` using `g.trans (congrArg₂ (· * ·) (gm_linComb M pr (fun _ => 1) (𝟙 Y ≫ p) y _ _ m₃ m₄) rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `((gm_res _ y _ hy _).trans (gen_trans hb _ y m₁ m₂)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ q) ((gm_pull (𝟙 Y) p y _ hy _).trans g'))) (gm_res _ y _ hy _))).symm)` and prove the remaining obligations. Rewrite using `[h, mul_zpow, ← _root_.mul_assoc, ← Finset.prod_zpow]`. Simplify using `only [trF, zpow_one, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mapsAt_of_val (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen)
     (p : Y ⟶ X') (q : ℤ) (a : LB.Gen (LB.LinComb M' (K := PUnit) (fun _ => p) (fun _ => q)))
@@ -97,11 +97,11 @@ theorem mapsAt_of_val (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ (j : Fin 1 → M'.ι) (y : Y) (hy : y ∈ LB.wchart M' (fun _ : PUnit.{1} => z ≫ g) (fun _ => j 0)), gs (𝟙 Y) y _ ((Y.presheaf.map (homOfLE (ExpBijectiveUniformisation.wchart_comp_le M' g z j)).op).hom ((z.app _).hom (σ.f j))) = gs z y (LB.wchart M' (fun _ : Fin 1 => g) j) (σ. …` using `fun j y hy => ⟨(gs_res _ y _ hy _).trans ((gs_pull (𝟙 Y) z y _ (ExpBijectiveUniformisation.wchart_comp_le M' g z j hy) _).trans (by rw [Category.id_comp])), (gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y le_top hy _) (gs_unit _ y _ hy _))⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Take `⟨k₁, k₂⟩` from `key (fun _ => J (z ≫ g)) y (Set.mem_iInter.2 fun _ => hJ (z ≫ g))`. Rewrite using `[val_of τ _ y J (fun _ => J (z ≫ g)) (fun _ => by rw [Category.id_comp])]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (gs (𝟙 Y) y _) (H (fun _ => J (z ≫ g)))`. Rewrite using `[sval_of σ z y J (fun _ => J (z ≫ g)) (fun _ => rfl)]`. Conclude with `k₁.symm.trans (e.trans k₂)`. Introduce `H j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, e⟩` from `exists_good M' hM' y (fun _ : PUnit => z ≫ g) (fun _ => j 0) (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 hy k)`. Establish `h` using `H y J hJ`. Rewrite `h` using `[sval_of σ z y J j (fun k => by rw [Fin.fin_one_eq_zero k]; exact e PUnit.unit), val_of τ _ y J (fun _ => j 0) (fun _ => by rw [Category.id_comp]; exact e PUnit.unit)]`. Take `⟨k₁, k₂⟩` from `key j y hy`. Conclude with `k₁.trans (h.trans k₂.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clause_iff (hM' : M'.IsLB) (g : Y₁ ⟶ X') (z : Y ⟶ Y₁) (q : ℤ)
     (σ : LB.Sec (LB.LinComb M' (K := Fin 1) (fun _ => g) (fun _ => q))) (a : Γ(Y, ⊤))
@@ -136,15 +136,15 @@ theorem clause_iff (hM' : M'.IsLB) (g : Y₁ ⟶ X') (z : Y ⟶ Y₁) (q : ℤ)
     exact k₁.trans (h.trans k₂.symm)
 
 /- English proof (translation)
-Establish `hp : ∀ y J J', Good M y J → Good M' y J' → ∏ i, val τ₁ (s ≫ cp i) y J ^ q = om w y J J' (𝟙 Y ≫ z ≫ g) ^ (q : ℤ) * val τ₂ s y J' ^ q` using `fun y J J' hJ hJ' => by`. Rewrite using `[Finset.prod_pow, ← hv _ s y J J' hJ hJ', Category.id_comp, hzg, zpow_natCast, mul_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, b, m, cr, cl⟩ y J' hJ'`. Take `⟨J, hJ⟩` from `exists_good_at hM y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(mapsAt_val w _ _ τ b m (𝟙 Y) y hJ hJ').symm.trans ((val_corr hJ cr (𝟙 Y)).trans ((hc y J hJ).trans (hp y J J' hJ hJ')))`. Rewrite using `[(clause_iff hM' g z q σ a τ).1 cl y J' hJ', mul_left_cancel e]`. Introduce `H`. Take `⟨τ, -, hτ⟩` from `exists_gen hM' (K' := PUnit.{1}) (φ' := fun _ => z ≫ g) (ε' := fun _ => (q : ℤ)) (by`. Introduce `U _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hzg]) _`. Use the proof step `(DVR.powGen_isGen M' _ _ _ (DVR.pullGen_isGen M' _ _ _ h₂ s) q)`. Take `⟨b, hb, hbv⟩` from `exists_gen hM (K' := Fin n) (φ' := fun i => (z ≫ g) ≫ pr i) (ε' := fun _ => (q : ℤ)) (by`. Introduce `U _ h`. Simplify using `[hzg, hz, Fintype.prod_prod_type]) _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(finProd_isGen (I := Fin n) _ _ _ fun i => DVR.powGen_isGen M _ _ _ (DVR.pullGen_isGen M _ _ _ h₁ (s ≫ cp i)) q)`. Establish `τv : ∀ y J', Good M' y J' → val τ (𝟙 Y) y J' = val τ₂ s y J' ^ q` using `fun y J' hJ' => by`. Rewrite using `[hτ _ _ y J' hJ', val_powGen, val_pull hJ', Category.id_comp]`. Establish `bv : ∀ y J, Good M y J → val b (𝟙 Y) y J = ∏ i, val τ₁ (s ≫ cp i) y J ^ q` using `fun y J hJ => by`. Rewrite using `[hbv _ _ y J hJ, val_finProd _ _ _ _ _ hJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_powGen, val_pull hJ, Category.id_comp]`. Use `⟨τ, b, mapsAt_of_val hM hM' w hw _ _ τ b hb fun y J J' hJ hJ' => ?_, corr_of_val hM fun y J hJ => (bv y J hJ).trans (hc y J hJ).symm, (clause_iff hM' g z q σ a τ).2 fun y J' hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[bv y J hJ, τv y J' hJ', hp y J J' hJ hJ']`. Rewrite using `[τv y J' hJ', H y J' hJ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_iff (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen)
     {x : Y₀ ⟶ X} (τ₁ : LB.Gen (LB.LinComb M (K := Fin 1) (fun _ => x) (fun _ => 1))) (h₁ : τ₁.IsGen)
@@ -194,7 +194,7 @@ theorem core_iff (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (
     · rw [τv y J' hJ', H y J' hJ']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem corr_genCast {L L' : LB X} (h : L = L') {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (b : LB.Gen (LB.LinComb L φ ε)) (c : LB.Gen (LB.LinComb L' φ' ε')) :
@@ -212,14 +212,14 @@ abbrev cpy (V : Type) [CommRing V] (n d m : ℕ) (i : Fin n) : Sp (Jet V (Fin n 
     Jet V (Fin 1 × Fin d) m →+* Jet V (Fin n × Fin d) m)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (pG.lim.fac (Fan.mk _ fun i => Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy (S := V) d m i) ≫ xT m) ⟨i⟩)`.
+A detailed English derivation is pending.
 -/
 theorem zV_pr {G' G : Over (Sp V)} [GrpObj G'] [GrpObj G] (pG : IsPowGrp G' G n) (xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G)
     (m : ℕ) (i : Fin n) : (zV pG xT m).left ≫ (pG.pr i).left = cpy V n d m i ≫ (xT m).left :=
   congrArg (fun q => q.left) (pG.lim.fac (Fan.mk _ fun i => Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy (S := V) d m i) ≫ xT m) ⟨i⟩)
 
 /- English proof (translation)
-Rewrite using `[jcN, ← JetTr.jetCoef_copy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_cpy (F : Type) [Field F] [Algebra V F] (m : ℕ) (i : Fin n) :
     spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ cpy V n d m i = jcN V F d n m i := by
@@ -227,9 +227,9 @@ theorem coef_cpy (F : Type) [Field F] [Algebra V F] (m : ℕ) (i : Fin n) :
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `hc : (jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] _)`. Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Establish `e` using `(GermD.homAt_comp (𝟙 (Sp V)) _ _).trans ((congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V))) hc).trans (GermD.homAt_comp (𝟙 (Sp V)) _ _).symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q => q.left) e`.
+A detailed English derivation is pending.
 -/
 theorem trunc_cpy (m : ℕ) (i : Fin n) :
     spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) :
@@ -246,7 +246,7 @@ theorem trunc_cpy (m : ℕ) (i : Fin n) :
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Establish `e : (Over.homMk a rfl : Over.mk (a ≫ G'.hom) ⟶ G') = Over.homMk b h₀.symm` using `pG.lim.hom_ext fun i => Over.OverMorphism.ext (h i.as)`. Conclude with `congrArg (fun q => q.left) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_ext {G' G : Over (Sp V)} [GrpObj G'] [GrpObj G] (pG : IsPowGrp G' G n) {Y : Scheme.{0}}
     (a b : Y ⟶ G'.left) (h₀ : a ≫ G'.hom = b ≫ G'.hom) (h : ∀ i, a ≫ (pG.pr i).left = b ≫ (pG.pr i).left) : a = b := by
@@ -255,7 +255,7 @@ theorem pow_ext {G' G : Over (Sp V)} [GrpObj G'] [GrpObj G] (pG : IsPowGrp G' G 
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `show val (GeneratorPullback.finProdGen t.PP.L (J := Fin n) _ _ fun i => LB.pullGen t.PP.L _ _ (genPowG t _ _ e q) (r i)) (𝟙 Y) y J = ∏ i, val e (r i) y J ^ q`. Rewrite using `[val_finProd _ _ _ _ _ hJ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ, GermD.val_genPowG, Category.id_comp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cast_prod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (t : SAB H (Sp V))
     (L : LB t.G.left) (h : t.PP.L = L) {Y Y₀ : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y₀ ⟶ t.G.left)) (ε : K → ℤ)
@@ -277,27 +277,23 @@ namespace GlobalTheory.PowGerm
 open GlobalTheory.BoxFamily FrameN
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr n D' A' G' _ _ pD pA pG U' PU`. Take `⟨τ₁, g₁, el, tr⟩` from `frame1St_holds E H V t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr`. Establish `hM : P.U.LG.L.IsLB` using `P.U.LG.isLB`. Establish `hM' : U'.LG.L.IsLB` using `U'.LG.isLB`. Establish `ex : ∀ m, ∃ τ : LB.Gen (LB.LinComb U'.LG.L (Y` using `Sp (Jet V (Fin n × Fin d) m)) (K := Fin 1) (fun _ => (zV pG xT m).left) (fun _ => (1 : ℤ))), τ.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet V (Fin n × Fin d) m)) (y : Z) (J J'), Good P.U.LG.L y J → Good U'.LG.L y J' → om PU.wL y J J' (r ≫ (zV pG xT m).left) * val τ r y J' = ∏ i, v …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Take `⟨τ, hτ, hv⟩` from `exists_boxPull_gen (pr := fun i => (pG.pr i).left) PU.wL PU.wL_gen hM hM' (K := Fin 1) (φ' := fun _ => (zV pG xT m).left) (φ := fun _ _ => (xT m).left) (ε := fun _ => 1) (cpy V n d m) (fun i _ => zV_pr pG xT m i) (fun _ => τ₁ m) (fun _ => g₁ m)`. Use `⟨τ, hτ, fun Z r y J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `hv Z r y J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[Fin.prod_univ_one, zpow_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `choose τ hτ hv using ex`. Use `⟨τ, hτ, fun htr m y J' hJ' => ?_, fun F _ _ _ _ q σ' f => forall_congr' fun m => exists_congr fun z => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at hM y`. Establish `c : ∀ i, val (τ₁ (m + 1)) (spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) : Jet V (Fin n × Fin d) (m + 1) →+* Jet V (Fin n × Fin d) m) ≫ cpy V n d (m + 1) i) y J = val (τ₁ m) (𝟙 _ ≫ cpy V n d m i) y J` using `fun i => by`. Rewrite using `[trunc_cpy, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(val_along hM _ _ _ _ (tr htr m) _ y J hJ).trans (by rw [Category.comp_id])`. Establish `ez : spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) : Jet V (Fin n × Fin d) (m + 1) →+* Jet V (Fin n × Fin d) m) ≫ (zV pG xT (m + 1)).left = 𝟙 _ ≫ (zV pG xT m).left`. Use `pow_ext pG _ _ ?_ fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.assoc, Over.w, Over.w]`. Conclude with `Over.w (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.id_comp, Category.assoc, zV_pr, zV_pr, ← Category.assoc, trunc_cpy, Category.assoc]`. Conclude with `congrArg (fun q => cpy V n d m i ≫ q.left) (hch.trunc m)`. Establish `e` using `(hv (m + 1) _ _ y J J' hJ hJ').trans ((Finset.prod_congr rfl fun i _ => c i).trans (hv m _ _ y J J' hJ hJ').symm)`. Rewrite `e` using `[ez]`. Conclude with `mul_left_cancel e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `pts : z ≫ (CartesianMonoidalCategory.fst (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G')).left = spMap (algebraMap F (Jet F (Fin n × Fin d) m)) → ((∀ i, z ≫ UnifPre.gFK (R := V) (G := G') F ≫ (pG.pr i).left = jptN xT F n m i) ↔ z ≫ UnifPre.gFK (R := V) (G := G') F = spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ (zV pG xT m …`. Introduce `h₀`. Establish `hp : ∀ i, (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ (zV pG xT m).left) ≫ (pG.pr i).left = jptN xT F n m i` using `fun i => by`. Rewrite using `[Category.assoc, zV_pr, ← Category.assoc, coef_cpy, jptN]`. Use `⟨fun h => pow_ext pG _ _ ?_ fun i => ?_, fun h i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : UnifPre.gFK (R` using `V) (G := G') F ≫ G'.hom = (CartesianMonoidalCategory.fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G')).left ≫ (TFK (R := V) F).hom ≫ jK V := by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc, Over.w]`. Conclude with `congrArg (· ≫ jK V) (Over.w (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G')))`. Rewrite using `[Category.assoc, hg, ← Category.assoc, h₀, Category.assoc _ (zV pG xT m).left, Over.w (zV pG xT m)]`. Use `show spMap _ ≫ spMap (algebraMap (FractionRing V) F) ≫ spMap (algebraMap V (FractionRing V)) = spMap _ ≫ spMap (algebraMap V (Jet V (Fin n × Fin d) m)) ≫ 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [spMap, Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[JetTr.jetCoef_alg, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[hp, Category.assoc, h]`. Rewrite using `[← Category.assoc, h, hp]`. Establish `core` using `fun hzg => core_iff (pr := fun i => (pG.pr i).left) hM hM' PU.wL PU.wL_gen (τ₁ m) (g₁ m) (cpy V n d m) (zV_pr pG xT m) (τ m) (hτ m) (hv m) (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m)) (UnifPre.gFK (R := V) (G := G') F) z hzg q (genCast (congrArg RigLB.L P.bundle).symm _ _ …`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[coef_cpy]`. Use `val_along hM _ _ _ _ (el m) (jcN V F d n m i) y J hJ` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `congrArg (· ^ q) this.symm)) σ' (toΓ _ (psJet m f))`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨a, b, h₀, h₁, h₂, h₃, h₄⟩`. Establish `hzg` using `(pts h₀).1 h₁`. Conclude with `⟨h₀, hzg, (core hzg).1 ⟨a, b, h₂, (corr_genCast _ _ _).1 h₃, h₄⟩⟩`. Introduce and unpack `⟨h₀, hzg, h⟩`. Take `⟨a, b, h₂, h₃, h₄⟩` from `(core hzg).2 h`.
-
-Conclude with `⟨a, b, h₀, (pts h₀).2 hzg, h₂, (corr_genCast _ _ _).2 h₃, h₄⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frameNSt_holds : FrameNSt := by
   intro E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr n D' A' G' _ _ pD pA pG U' PU

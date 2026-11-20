@@ -3,37 +3,33 @@ import Mathlib
 open Equiv
 
 /- English proof (translation)
-Introduce `α n F h1 h2`. Set `S : Subgroup (Equiv.Perm (Fin (n+2)))` to `{ carrier := {σ | ∀ L : Fin (n+2) → α, F (fun i => L (σ i)) = F L} mul_mem' := by`. Introduce `σ τ hσ hτ`. Establish `hσ' : ∀ L : Fin (n+2) → α, F (fun i => L (σ i)) = F L` using `hσ`. Establish `hτ' : ∀ L : Fin (n+2) → α, F (fun i => L (τ i)) = F L` using `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∀ L : Fin (n+2) → α, F (fun i => L ((σ * τ) i)) = F L`. Introduce `L`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `one_mem' := by show ∀ L : Fin (n+2) → α, F (fun i => L ((1 : Equiv.Perm (Fin (n+2))) i)) = F L`. Introduce `L`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use the proof step `inv_mem' := by`. Introduce `σ hσ`. Establish `hσ' : ∀ L : Fin (n+2) → α, F (fun i => L (σ i)) = F L` using `hσ`. Use `show ∀ L : Fin (n+2) → α, F (fun i => L (σ⁻¹ i)) = F L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L`. Combine the equalities or inequalities in the displayed calculation. Establish `memS : ∀ σ, σ ∈ S ↔ ∀ L : Fin (n+2) → α, F (fun i => L (σ i)) = F L` using `fun σ => Iff.rfl`. Establish `hfix : ∀ e : Equiv.Perm (Fin (n+1)), Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), e) ∈ S`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[memS]`. Introduce `L`. Establish `hc : (fun i => L (Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), e) i)) = Fin.cons (L 0) (fun i => Fin.tail L (e i))`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[Equiv.Perm.decomposeFin_symm_apply_succ, Fin.tail]`. Rewrite using `[hc, h1 (L 0) (Fin.tail L) e, Fin.cons_self_tail]`. Establish `hswap : Equiv.swap (0 : Fin (n+2)) 1 ∈ S`. Rewrite using `[memS]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `L`. Establish `e1 : L = Fin.cons (L 0) (Fin.cons (L 1) (fun i => L i.succ.succ) : Fin (n+1) → α)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish `e2 : (fun i => L (Equiv.swap (0 : Fin (n+2)) 1 i)) = Fin.cons (L 1) (Fin.cons (L 0) (fun i => L i.succ.succ) : Fin (n+1) → α)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `a1 : (k.succ.succ : Fin (n+2)) ≠ 0` using `Fin.succ_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `a2 : (k.succ.succ : Fin (n+2)) ≠ 1`. Introduce `h`. Rewrite `h` using `[← Fin.succ_zero_eq_one]`. Conclude with `Fin.succ_ne_zero _ (Fin.succ_injective _ h)`. Simplify using `[Equiv.swap_apply_of_ne_of_ne a1 a2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, ← h2 (L 0) (L 1)]`. Conclude with `congrArg F e1.symm`. Establish `hp : ∀ p : Fin (n+2), Equiv.swap (0 : Fin (n+2)) p ∈ S`. Introduce `p`. Use `Fin.cases ?_ (fun k => ?_) p` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Equiv.swap_self]`. Conclude with `S.one_mem`. Establish `h0 : Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), Equiv.swap (0 : Fin (n+1)) k) 0 = 0` using `by simp`. Establish `h1' : Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), Equiv.swap (0 : Fin (n+1)) k) 1 = k.succ`. Rewrite using `[← Fin.succ_zero_eq_one, Equiv.Perm.decomposeFin_symm_apply_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hc` using `Equiv.swap_apply_apply (Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), Equiv.swap (0 : Fin (n+1)) k)) 0 1`. Rewrite `hc` using `[h0, h1']`. Rewrite using `[hc]`. Conclude with `S.mul_mem (S.mul_mem (hfix _) hswap) (S.inv_mem (hfix _))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdec : ∀ (p : Fin (n+2)) (e : Equiv.Perm (Fin (n+1))), Equiv.Perm.decomposeFin.symm (p, e) = Equiv.swap 0 p * Equiv.Perm.decomposeFin.symm ((0 : Fin (n+2)), e)`. Introduce `p e`. Use extensionality with `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Simplify using `[Equiv.Perm.decomposeFin_symm_apply_succ]`. Introduce `L e`. Establish `he : e ∈ S`. Rewrite using `[← Equiv.Perm.decomposeFin.symm_apply_apply e]`. Break down `Equiv.Perm.decomposeFin e with ⟨p, e'⟩` into its components or cases.
-
-Rewrite using `[hdec]`. Conclude with `S.mul_mem (hp p) (hfix e')`. Conclude with `(memS e).1 he L`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.perm_invariant_of_cons_swap :
   ∀ (α : Type 1) (n : ℕ) (F : (Fin (n + 2) → α) → ℝ), (∀ (a : α) (L : Fin (n + 1) → α) (e : Equiv.Perm (Fin (n + 1))), F (Fin.cons a fun i => L (e i)) = F (Fin.cons a L)) → (∀ (a b : α) (L : Fin n → α), F (Fin.cons a (Fin.cons b L : Fin (n + 1) → α)) = F (Fin.cons b (Fin.cons a L : Fin (n + 1) → α))) → ∀ (L : Fin (n + 2) → α) (e : Equiv.Perm (Fin (n + 2))), F (fun i => L (e i)) = F L := by

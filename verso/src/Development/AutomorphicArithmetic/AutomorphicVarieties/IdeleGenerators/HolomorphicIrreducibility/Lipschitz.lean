@@ -5,9 +5,9 @@ open Polynomial Filter Topology
 namespace UpperTheory.V.Sd
 
 /- English proof (translation)
-Establish `hx' : (1 : ℂ) - x ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Establish `hN` using `Polynomial.hasDerivAt_aeval (numL (m + 1)) x`. Establish `hD` using `((hasDerivAt_id x).const_sub (1 : ℂ)).pow (m + 1)`. Establish `h` using `hN.div hD (pow_ne_zero (m + 1) hx')`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : numL (m + 2) = X * (derivative (numL (m + 1)) * (1 - X) + C ((m : ℤ) + 1) * numL (m + 1))`. Rewrite using `[numL.eq_3]`. Simplify using `only [Lk, e2, map_mul, map_add, map_sub, map_one, Polynomial.aeval_X, Polynomial.aeval_C, id, Nat.add_sub_cancel, Pi.pow_apply]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -27,35 +27,33 @@ private lemma lk_hasDerivAt (m : ℕ) (x : ℂ) (hx : x ≠ 1) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `x hx`. Establish `h1 : x ≠ 1`. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hx`. Establish `hg` using `(hasSum_geometric_of_norm_lt_one hx).mul_left x`. Establish `e : Lk 1 x = x * (1 - x)⁻¹`. Simplify using `[Lk, numL.eq_2, div_eq_mul_inv]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : (fun e : ℕ => ((e : ℂ) + 1) ^ 0 * x ^ (e + 1)) = fun i => x * x ^ i`. Use function extensionality and compare the values at `e`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Conclude with `hg`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `x hx`. Establish `h1 : x ≠ 1`. Introduce and unpack `rfl`. Simplify using `at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set r : ℝ := (‖x‖ + 1) / 2 with hr`. Establish `hr1 : r < 1` using `by rw [hr]; linarith`. Establish `hr0 : 0 < r` using `by rw [hr]; positivity`. Establish `hxr : ‖x‖ < r` using `by rw [hr]; linarith`. Establish `hrn : ‖r‖ < 1` using `by rw [Real.norm_eq_abs, abs_of_pos hr0]; exact hr1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : Summable (fun n : ℕ => (n : ℝ) ^ (m + 1) * r ^ n)` using `summable_pow_mul_geometric_of_norm_lt_one (m + 1) hrn`. Establish `hu : Summable (fun e : ℕ => ((e : ℝ) + 1) ^ (m + 1) * r ^ e)`. Establish `h2` using `((summable_nat_add_iff 1).mpr hS).mul_left r⁻¹`. Use `h2.congr (fun e => ?_)` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Set `g : ℕ → ℂ → ℂ` to `fun e y => ((e : ℂ) + 1) ^ m * y ^ (e + 1)`. Set `g' : ℕ → ℂ → ℂ` to `fun e y => ((e : ℂ) + 1) ^ m * (((e + 1 : ℕ) : ℂ) * y ^ (e + 1 - 1))`. Establish `hgd : ∀ (e : ℕ), ∀ y ∈ Metric.ball (0 : ℂ) r, HasDerivAt (g e) (g' e y) y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e y _`. Conclude with `(hasDerivAt_pow (e + 1) y).const_mul _`. Establish `hbd : ∀ (e : ℕ), ∀ y ∈ Metric.ball (0 : ℂ) r, ‖g' e y‖ ≤ ((e : ℝ) + 1) ^ (m + 1) * r ^ e`. Introduce `e y hy`. Rewrite `hy` using `[Metric.mem_ball, dist_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [g', Nat.add_sub_cancel, norm_mul, norm_pow]`. Establish `ha : ‖((e : ℂ) + 1)‖ = (e : ℝ) + 1`. Establish `: ((e : ℂ) + 1) = ((e + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_natCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb : ‖(((e + 1 : ℕ) : ℂ))‖ = (e : ℝ) + 1`. Rewrite using `[Complex.norm_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ha, hb]`. Establish `hy' : ‖y‖ ^ e ≤ r ^ e` using `pow_le_pow_left₀ (norm_nonneg _) hy.le e`. Combine the equalities or inequalities in the displayed calculation. Establish `hxb : x ∈ Metric.ball (0 : ℂ) r`. Rewrite using `[Metric.mem_ball, dist_zero_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hxr`. Establish `hD` using `hasDerivAt_tsum_of_isPreconnected hu Metric.isOpen_ball (convex_ball (0 : ℂ) r).isPreconnected hgd hbd hxb (ih x hx).summable hxb`. Establish `heq : (fun z => Lk (m + 1) z) =ᶠ[𝓝 x] (fun z => ∑' e, g e z)` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hxb] with z hz`. Rewrite `hz` using `[Metric.mem_ball, dist_zero_right]`. Conclude with `((ih z (by linarith)).tsum_eq).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD2` using `hD.congr_of_eventuallyEq heq`. Take `⟨d, hd, hxd⟩` from `lk_hasDerivAt m x h1`. Establish `hdd : d = ∑' e, g' e x` using `hd.unique hD2`. Establish `hsum : Summable (fun e => g' e x)` using `Summable.of_norm_bounded hu (fun e => hbd e x hxb)`. Establish `hfin` using `hsum.hasSum.mul_left x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite `hfin` using `[← hdd, hxd]`. Establish `hf : (fun e : ℕ => ((e : ℂ) + 1) ^ (m + 1) * x ^ (e + 1)) = fun i => x * g' i x`. Use function extensionality and compare the values at `e`. Simplify using `only [g', Nat.add_sub_cancel]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Conclude with `hfin`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma lk_hasSum_succ (m : ℕ) : ∀ x : ℂ, ‖x‖ < 1 →
     HasSum (fun e : ℕ => ((e : ℂ) + 1) ^ m * x ^ (e + 1)) (Lk (m + 1) x) := by
@@ -140,9 +138,9 @@ private lemma lk_hasSum_succ (m : ℕ) : ∀ x : ℂ, ‖x‖ < 1 →
     exact hfin
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 2` from `⟨k - 2, by omega⟩`. Establish `hk1 : m + 2 - 1 = m + 1` using `by omega`. Rewrite using `[hk1]`. Apply `(hasSum_nat_add_iff' 1).mp` to reduce the goal to its premises. Establish `h` using `lk_hasSum_succ (m + 1) x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.cast_zero, ne_eq, add_eq_zero, one_ne_zero, and_false, not_false_eq_true, zero_pow, zero_mul, sub_zero, Nat.cast_add, Nat.cast_one]`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma lk_hasSum (k : ℕ) (hk : 2 ≤ k) (x : ℂ) (hx : ‖x‖ < 1) :
     HasSum (fun e : ℕ => (e : ℂ) ^ (k - 1) * x ^ e) (Lk k x) := by
@@ -156,7 +154,7 @@ private lemma lk_hasSum (k : ℕ) (hk : 2 ≤ k) (x : ℂ) (hx : ‖x‖ < 1) :
   exact h
 
 /- English proof (translation)
-Establish `h` using `EisensteinSeries.linear_right_summable t 1 (k := (k : ℤ)) (by exact_mod_cast hk)`. Use `h.congr (fun j => ?_)` and prove the remaining obligations. Simplify using `[zpow_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma lip_summable (k : ℕ) (hk : 2 ≤ k) (t : ℂ) : Summable (fun j : ℤ => (t + j) ^ (-(k : ℤ))) := by
   have h := EisensteinSeries.linear_right_summable t 1 (k := (k : ℤ)) (by exact_mod_cast hk)
@@ -164,11 +162,11 @@ private lemma lip_summable (k : ℕ) (hk : 2 ≤ k) (t : ℂ) : Summable (fun j 
   simp [zpow_neg]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 2` from `⟨k - 2, by omega⟩`. Use `set z : UpperHalfPlane := ⟨t, ht⟩ with hzdef`. Establish `hz : (z : ℂ) = t` using `rfl`. Establish `hq` using `EisensteinSeries.qExpansion_identity (k := m + 1) (by omega) z`. Rewrite `hq` using `[hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `(lk_hasSum (m + 2) hk _ (UpperHalfPlane.norm_exp_two_pi_I_lt_one z)).tsum_eq`. Rewrite `hs` using `[hz]`. Establish `hk1 : m + 2 - 1 = m + 1` using `by omega`. Rewrite `hs` using `[hk1]`. Establish `hj : ∀ j : ℤ, (t + j) ^ (-((m + 2 : ℕ) : ℤ)) = 1 / (t + j) ^ (m + 1 + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[zpow_neg, zpow_natCast, one_div]`. Repeatedly rewrite using `[hj]`. Rewrite using `[hq, lipC, ← hs, hk1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma lip_pos (k : ℕ) (hk : 2 ≤ k) (t : ℂ) (ht : 0 < t.im) :
     ∑' j : ℤ, (t + j) ^ (-(k : ℤ)) = lipC k * Lk k (Complex.exp (2 * Real.pi * Complex.I * t)) := by
@@ -188,25 +186,25 @@ private lemma lip_pos (k : ℕ) (hk : 2 ≤ k) (t : ℂ) (ht : 0 < t.im) :
   rw [hq, lipC, ← hs, hk1]
 
 /- English proof (translation)
-Establish `hne : ∀ j : ℤ, t + j ≠ 0`. Introduce `j h`. Apply `hj (-j)` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Set `L : ℝ → ℂ` to `fun s => ∑' j : ℤ, (t + s * Complex.I + j) ^ (-(k : ℤ))`. Set `R : ℝ → ℂ` to `fun s => lipC k * Lk k (Complex.exp (2 * Real.pi * Complex.I * (t + s * Complex.I)))`. Establish `hbound : Summable (fun j : ℤ => ‖(t + j) ^ (-(k : ℤ))‖)` using `summable_norm_iff.mpr (lip_summable k hk t)`. Establish `hL : Tendsto L (𝓝[>] (0 : ℝ)) (𝓝 (∑' j : ℤ, (t + j) ^ (-(k : ℤ))))`. Apply `tendsto_tsum_of_dominated_convergence hbound` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Establish `hc : ContinuousAt (fun s : ℝ => (t + s * Complex.I + j) ^ (-(k : ℤ))) 0`. Apply `ContinuousAt.zpow₀ (by fun_prop)` to reduce the goal to its premises. Use `left`. Simplify using `using hne j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hc.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify using `using this`. Apply `Filter.Eventually.of_forall` to reduce the goal to its premises. Introduce `s j`. Establish `h0 : 0 < ‖t + j‖` using `norm_pos_iff.mpr (hne j)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖t + j‖ ≤ ‖t + s * Complex.I + j‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_zpow, norm_zpow, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast]`. Conclude with `inv_anti₀ (pow_pos h0 k) (pow_le_pow_left₀ h0.le hle k)`. Establish `hq1 : Complex.exp (2 * Real.pi * Complex.I * t) ≠ 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp h`. Apply `hj n` to reduce the goal to its premises. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Take the linear combination `hn`. Establish `hR : Tendsto R (𝓝[>] (0 : ℝ)) (𝓝 (lipC k * Lk k (Complex.exp (2 * Real.pi * Complex.I * t))))`. Establish `hcL : ContinuousAt (fun w : ℂ => Lk k w) (Complex.exp (2 * Real.pi * Complex.I * t))` using `by show ContinuousAt (fun w : ℂ => Polynomial.aeval w (numL k) / (1 - w) ^ k) _`. Apply `ContinuousAt.div ((Polynomial.continuous_aeval (numL k)).continuousAt) (by fun_prop)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ (sub_ne_zero.mpr (Ne.symm hq1))`. Establish `he : ContinuousAt (fun s : ℝ => Complex.exp (2 * Real.pi * Complex.I * (t + s * Complex.I))) 0` using `by fun_prop`. Establish `hc : ContinuousAt R 0`. Apply `ContinuousAt.mul continuousAt_const` to reduce the goal to its premises. Apply `ContinuousAt.comp (g := fun w : ℂ => Lk k w) _ he` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hcL`. Use `hc.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify `this` using `[R]`. Establish `heq : R =ᶠ[𝓝[>] (0 : ℝ)] L`. Apply `eventually_nhdsWithin_of_forall` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hs' : (0 : ℝ) < s` using `hs`. Establish `him : 0 < (t + s * Complex.I).im` using `by simp [ht, hs']`. Conclude with `(lip_pos k hk (t + s * Complex.I) him).symm`. Conclude with `tendsto_nhds_unique hL (hR.congr' heq)`.
+A detailed English derivation is pending.
 -/
 private lemma lip_real (k : ℕ) (hk : 2 ≤ k) (t : ℂ) (ht : t.im = 0) (hj : ∀ j : ℤ, t ≠ j) :
     ∑' j : ℤ, (t + j) ^ (-(k : ℤ)) = lipC k * Lk k (Complex.exp (2 * Real.pi * Complex.I * t)) := by
@@ -269,9 +267,9 @@ private lemma lip_real (k : ℕ) (hk : 2 ≤ k) (t : ℂ) (ht : t.im = 0) (hj : 
 end UpperTheory.V.Sd
 
 /- English proof (translation)
-Introduce `k hk`. Use `⟨fun x hx => UpperTheory.V.Sd.lk_hasSum k hk x hx, fun t ht hj => ?_⟩` and prove the remaining obligations. Establish `hs` using `(UpperTheory.V.Sd.lip_summable k hk t).hasSum`. Break down `ht.lt_or_eq with h | h` into its components or cases. Rewrite `hs` using `[UpperTheory.V.Sd.lip_pos k hk t h]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hs` using `[UpperTheory.V.Sd.lip_real k hk t h.symm hj]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.Sd.lipschitz :
     UpperTheory.V.Sd.Lipschitz := by

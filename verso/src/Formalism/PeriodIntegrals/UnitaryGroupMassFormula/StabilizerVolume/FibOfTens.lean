@@ -49,13 +49,9 @@ def DensV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
       DensAll μv (gramR (Fv F v) σ J) Subtype.val νv {X | LinearIndependent (Fv F v ⊗[F] E) X}
 
 /- English proof (translation)
-Take `⟨hLC, hT2, hSC, hCl, hCont, hMem, hOpen⟩` from `hT`. Use `haveI := hLC`. Use `haveI := hT2`. Use `haveI := hSC`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) (R ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (R ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin a → Fin a → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (HermR R σ a) := by first`. Consider the case `infer_instance`. Consider the case `exact hCl.isClosedEmbedding_subtypeVal.isInducing.secondCountableTopology`.
-
-Consider the case `exact hCl.isClosedEmbedding_subtypeVal.isEmbedding.isInducing.secondCountableTopology`. Consider the case `exact hCl.isClosedEmbedding_subtypeVal.toIsEmbedding.toIsInducing.secondCountableTopology`. Use `haveI : BorelSpace (HermR R σ a) := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨rfl⟩`.
-
-Use `haveI : LocallyCompactSpace (HermR R σ a) := hCl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `hG _ _ _ μ ν inferInstance inferInstance inferInstance (gramR R σ J) Subtype.val _ hCont hCl.isClosedEmbedding_subtypeVal (fun v => ⟨⟨_, hMem v⟩, rfl⟩) hOpen hD`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {a : ℕ} {R : Type} [CommRing R] [Algebra F R]
@@ -90,7 +86,7 @@ theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →�
     hCl.isClosedEmbedding_subtypeVal (fun v => ⟨⟨_, hMem v⟩, rfl⟩) hOpen hD
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ μ hμ ν hν`. Conclude with `fib_of_tens hG (hT F E σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet).1 μ ν hμ.1 hν.1 (hD F E σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ μ hμ ν hν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibInfEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensInf) : FibInfEx := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ μ hμ ν hν
@@ -98,7 +94,7 @@ theorem fibInfEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensInf) : FibInfEx :=
     (hD F E σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ μ hμ ν hν)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ v μ hμ ν hν`. Conclude with `fib_of_tens hG ((hT F E σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet).2 v) μ ν hμ.1 hν.1 (hD F E σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ v μ hμ ν hν)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibVEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensV) : FibVEx := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hX0 hdet ψ hψ v μ hμ ν hν

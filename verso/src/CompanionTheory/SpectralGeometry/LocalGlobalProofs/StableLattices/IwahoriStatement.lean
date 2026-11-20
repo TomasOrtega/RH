@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Iwahori
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, GlobalTheory.T.congruence_endomorphism_inverse_exists Λ hΛ π hπ⟩` and prove the remaining obligations. Introduce `x hx y hy v hv`. Take `⟨z, hz, e1⟩` from `hy v hv`. Take `⟨w, hw, e2⟩` from `hx z hz`. Use `⟨π • w, lat_smul hΛ hπ.le hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Module.End.mul_apply, e1, e2]`. Introduce `i x hx v hv`. Take `⟨z, hz, e1⟩` from `hx v hv`. Conclude with `⟨P i z, hP i z hz, by simp [Module.End.mul_apply, e1]⟩`. Introduce `i x hx v hv`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx _ (hP i v hv)`.
+A detailed English derivation is pending.
 -/
 theorem isCongIdeal_congJ {L V : Type} [NontriviallyNormedField L] [IsUltrametricDist L]
     [AddCommGroup V] [Module L V] [FiniteDimensional L V] {Λ : AddSubgroup V} (hΛ : IsLat L Λ)
@@ -39,7 +39,7 @@ theorem isCongIdeal_congJ {L V : Type} [NontriviallyNormedField L] [IsUltrametri
     exact hx _ (hP i v hv)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨z, hz, e1⟩` from `hx v hv`. Use `⟨c • z, lat_smul hΛ hc hz, ?_⟩` and prove the remaining obligations. Simplify using `[e1, smul_comm c π z]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem congJ_smul {L V : Type} [NontriviallyNormedField L] [AddCommGroup V] [Module L V]
     {Λ : AddSubgroup V} (hΛ : IsLat L Λ) (π : L) (c : L) (hc : ‖c‖ ≤ 1) (x : Module.End L V)
@@ -50,9 +50,9 @@ theorem congJ_smul {L V : Type} [NontriviallyNormedField L] [AddCommGroup V] [Mo
   simp [e1, smul_comm c π z]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H i j hij`. Conclude with `H i j (by have := wt_le i; have := wt_le j; simp only; omega)`. Introduce `H i j hij`. Use `H i j ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `wt_le i` as an intermediate fact. Use `wt_le j` as an intermediate fact. Simplify using `only at hij`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isUpper_rev_iff {E : Type} [Ring E] {l : ℕ} (P : Idx l → E) (b : E) :
     IsUpper (fun i => 2 * l - wt i) P b ↔ IsLower wt P b := by
@@ -66,27 +66,25 @@ theorem isUpper_rev_iff {E : Type} [Ring E] {l : ℕ} (P : Idx l → E) (b : E) 
     omega
 
 /- English proof (translation)
-Introduce `L _ _ _ _ s hs δ hδ V _ _ _ h hh l e f W Λ hF hΛ hA π hπ k hk hc`. Establish `hδ0 : δ ≠ 0` using `hδ.1`. Use `set P := piece hh δ e f with hPdef`. Establish `hP : IsPieces P` using `isPieces_piece hh hδ0 hF`. Establish `hJ : IsCongIdeal (congJ Λ π) P` using `isCongIdeal_congJ hΛ hπ P fun i x hx => piece_mem hΛ hA hh hδ0 hF i hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨st, hst, st_mul, st_one, st_zero, st_P⟩` from `exists_star (δ := δ) (e := e) (f := f) (l := l) hs hh (GlobalTheory.T.hermitian_adjoint_exists s hs h hh)`. Establish `hk1 : (k.toLinearMap : Module.End L V) - 1 ∈ congJ Λ π` using `fun x hx => by`. Take `⟨y, hy, e1⟩` from `hc x hx`. Conclude with `⟨y, hy, by simpa using e1⟩`. Take `⟨a, b, ha, hb, hup, hlo, hab⟩` from `GlobalTheory.T.iwahori_upper_lower_factorization wt wt_injective P hP _ hJ _ hk1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ya, hya, ia1, ia2⟩` from `hJ.inv _ ha`. Take `⟨yb, hyb, ib1, ib2⟩` from `hJ.inv _ hb`. Rewrite `ia1`, `ia2`, `ib1`, `ib2` using `[add_sub_cancel]`. Establish `hkk : ∀ y, st (k.toLinearMap) (k y) = y` using `fun y => by`. Use `eq_of_pair hh fun x => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hst k.toLinearMap x (k y)` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe] at this`. Rewrite using `[← this, hk x y]`. Establish `hk2 : st (k.toLinearMap) * (k.toLinearMap) = 1`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hkk y`. Establish `hk3 : (k.toLinearMap : Module.End L V) * st (k.toLinearMap) = 1`. Use extensionality with `y`. Take `⟨z, rfl⟩` from `k.surjective y`. Simplify using `[Module.End.mul_apply, hkk z]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hk2`, `hk3` using `[hab]`. Take `⟨ua, ub⟩` from `GlobalTheory.T.unitary_factors_of_unitary_upper_mul_lowerUni wt P hP rev rev_rev (fun i j hij => by have := wt_rev i; have := wt_rev j; omega) wt_injective st st_mul st_one st_zero st_P (fun a a' h1 h2 h3 => GlobalTheory.T.upper_triangular_inverse_is_upper wt P hP a a' h1 h2 h3) …`. Set `A : V ≃ₗ[L] V` to `LinearEquiv.ofLinear a (1 + ya) ia1 ia2`. Set `B : V ≃ₗ[L] V` to `LinearEquiv.ofLinear b (1 + yb) ib1 ib2`. Establish `isoOf : ∀ (g : V ≃ₗ[L] V), st (g.toLinearMap) * g.toLinearMap = 1 → IsIso h g` using `fun g hg x y => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hst g.toLinearMap x (g y)` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe] at this`. Rewrite using `[this]`. Establish `h2 : st g.toLinearMap (g y) = y`. Use `congrArg (fun m : Module.End L V => m y) hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Module.End.mul_apply]`. Rewrite using `[h2]`. Use `⟨A, B, isoOf A ua, isoOf B ub, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `congrArg (fun m : Module.End L V => m x) hab` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[A, B, Module.End.mul_apply]`. Introduce `u t hu0 hm h1 ht`. Establish `hT` using `fun i => tor_piece (δ := δ) hh hδ0 hF ht i`. Establish `key` using `GlobalTheory.T.torus_conjugation_preserves_congruence wt P hP _ hJ (congJ_smul hΛ π) (t.toLinearMap) (t.symm.toLinearMap) (tau s u) (tau_ne hu0) (by ext y; simp [Module.End.mul_apply]) (by ext y; simp [Module.End.mul_apply]) (fun i => (hT i).1) (fun i => (hT i).2) (tau_mono hs hu …`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, hy, e1⟩` from `key.1 x hx`. Conclude with `⟨y, hy, by simpa [A, Module.End.mul_apply] using e1⟩`. Introduce `x hx`. Take `⟨y, hy, e1⟩` from `key.2 x hx`.
-
-Conclude with `⟨y, hy, by simpa [B, Module.End.mul_apply] using e1⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stIwahori : StIwahori := by
   intro L _ _ _ _ s hs δ hδ V _ _ _ h hh l e f W Λ hF hΛ hA π hπ k hk hc

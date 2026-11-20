@@ -12,16 +12,16 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (A : Rep.{u} k G) [IsDiscreteRep A] (N : Subgroup G) [N.Normal]
 
 /- English proof (translation)
-The claim follows from `cohomologyMapAlong_eq_id _ _ (by ext s; simp) (fun a => by change A.ρ 1 a = a; simp) n`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyConj_one (n : ℕ) : cohomologyConj A N n 1 = 𝟙 _ :=
   cohomologyMapAlong_eq_id _ _ (by ext s; simp)
     (fun a => by change A.ρ 1 a = a; simp) n
 
 /- English proof (translation)
-Rewrite using `[cohomologyConj, cohomologyConj, cohomologyConj, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ ?_ (fun a => ?_) n` and prove the remaining obligations. Use extensionality with `s`. Simplify using `only [GroundTheory.GroupCoh.coe_conjHom_apply, MonoidHom.coe_comp, Function.comp_apply]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `A.ρ (g * h) a = A.ρ g (A.ρ h a)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_mul (n : ℕ) (g h : G) :
     cohomologyConj A N n (g * h) = cohomologyConj A N n h ≫ cohomologyConj A N n g := by
@@ -35,7 +35,7 @@ theorem cohomologyConj_mul (n : ℕ) (g h : G) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[cohomologyConj_mul]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_mul_apply (n : ℕ) (g h : G) (x : cohomology (Rep.res N.subtype A) n) :
     (cohomologyConj A N n (g * h)).hom x =
@@ -45,7 +45,7 @@ theorem cohomologyConj_mul_apply (n : ℕ) (g h : G) (x : cohomology (Rep.res N.
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, cohomologyConj, cohomologyConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => ?_) n` and prove the remaining obligations. Conclude with `(Rep.hom_comm_apply f g a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_naturality {B : Rep.{u} k G} [IsDiscreteRep B] (f : A ⟶ B) (n : ℕ) (g : G) :
     cohomologyMap ((Rep.resFunctor N.subtype).map f) n ≫ cohomologyConj B N n g =
@@ -70,7 +70,7 @@ noncomputable def conjShortComplexMor (S : ShortComplex (Rep.{u} k G)) (g : G) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `δ_comp_cohomologyMapAlong (GroundTheory.GroupCoh.conjHom N g) (continuous_conjHom N g) (conjShortComplexMor N S g) _ _ i j hij`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_cohomologyConj {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) (i j : ℕ) (hij : i + 1 = j)
@@ -85,14 +85,14 @@ section CompactSubgroup
 variable [CompactSpace N]
 
 /- English proof (translation)
-Rewrite using `[← cohomologyInnerConj_eq_id (Γ := N) n (Rep.res N.subtype A) ⟨m, hm⟩]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_of_mem (n : ℕ) {m : G} (hm : m ∈ N) : cohomologyConj A N n m = 𝟙 _ := by
   rw [← cohomologyInnerConj_eq_id (Γ := N) n (Rep.res N.subtype A) ⟨m, hm⟩]
   exact cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => rfl) n
 
 /- English proof (translation)
-Establish `hm : g⁻¹ * h ∈ N` using `QuotientGroup.eq.1 hgh`. Establish `: h = g * (g⁻¹ * h)` using `by group`. Rewrite using `[this, cohomologyConj_mul, cohomologyConj_of_mem A N n hm, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyConj_eq_of_mk_eq (n : ℕ) {g h : G} (hgh : (g : G ⧸ N) = h) :
     cohomologyConj A N n g = cohomologyConj A N n h := by
@@ -114,7 +114,7 @@ noncomputable def cohomologyConjRep (n : ℕ) :
     rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(cohomologyConj A N n (g : G ⧸ N).out).hom x = _`. Rewrite using `[cohomologyConj_eq_of_mk_eq A N n (QuotientGroup.out_eq' (g : G ⧸ N))]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyConjRep_mk (n : ℕ) (g : G) (x : cohomology (Rep.res N.subtype A) n) :
     cohomologyConjRep A N n (g : G ⧸ N) x = (cohomologyConj A N n g).hom x := by
@@ -122,9 +122,7 @@ theorem cohomologyConjRep_mk (n : ℕ) (g : G) (x : cohomology (Rep.res N.subtyp
   rw [cohomologyConj_eq_of_mk_eq A N n (QuotientGroup.out_eq' (g : G ⧸ N))]
 
 /- English proof (translation)
-Use `⟨fun hx q => ?_, fun hx g => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => rw [cohomologyConjRep_mk]`. Conclude with `hx g`. Rewrite using `[← cohomologyConjRep_mk]`.
-
-Conclude with `hx _`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cohomologyConjInvariants_iff (n : ℕ) (x : cohomology (Rep.res N.subtype A) n) :
     x ∈ cohomologyConjInvariants A N n ↔ x ∈ (cohomologyConjRep A N n).invariants := by
@@ -142,7 +140,7 @@ variable [CompactSpace G]
 
 @[reassoc]
 /- English proof (translation)
-Use `conv_rhs => rw [← Category.id_comp (cohomologyRes A N n), ← cohomologyInnerConj_eq_id n A g]`. Rewrite using `[cohomologyRes, cohomologyConj, cohomologyInnerConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_comp_cohomologyConj (n : ℕ) (g : G) :
     cohomologyRes A N n ≫ cohomologyConj A N n g = cohomologyRes A N n := by
@@ -152,7 +150,7 @@ theorem cohomologyRes_comp_cohomologyConj (n : ℕ) (g : G) :
   exact cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => rfl) n
 
 /- English proof (translation)
-Introduce `g` and use `by rw [← ModuleCat.comp_apply, cohomologyRes_comp_cohomologyConj]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_apply_mem_cohomologyConjInvariants (n : ℕ) (x : cohomology A n) :
     (cohomologyRes A N n).hom x ∈ cohomologyConjInvariants A N n := fun g => by

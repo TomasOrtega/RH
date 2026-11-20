@@ -30,21 +30,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Introduce `p hp T _ _ _ _ _ hT hpT G _ _ D A U d F x hx hp2 OE _ _ _ _ _ _ _ io oD oA hlin hdisc act hact C _ _ _ v O _ _ hv _ hO _ _ iota hio w _ t _ hfrob r W hW j`. Take `⟨X, hX, hXr⟩` from `GlobalTheory.T.exists_nilChart_reads_of_isChartJ T G U.smooth d F x hx`. Establish `hreadG` using `hXr OE io act hact`. Take `⟨FB, XB, hXB⟩` from `GlobalTheory.T.exists_nilpotentGroupChart_smooth_commGroup T D.toPre.P.A D.toPre.P.g D.toPre.P.smoothDim`. Establish `hB : ∀ a : OE, ∃ φ, Reads XB XB (oD.onB.act a) φ` using `fun a => GlobalTheory.T.exists_powerSeries_reading_groupHom_nilpotentCharts T _ _ _ _ _ _ XB XB hXB hXB _ (oD.onB.hom a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose αB hαB using hB`. Take `⟨rk, J, Q, hext, heq⟩` from `GlobalTheory.T.uniformization_split_formal_group_law_equivariant T _ D A G U d _ F FB X XB hX hXB`. Take `⟨N, hN⟩` from `heq OE io oD oA hlin act.act αB hreadG hαB`. Take `⟨hlaw, hlinmap, hextmap⟩` from `GlobalTheory.T.formalGroupLaw_jacobian_extension_changeCoeff T O iota`. Take `⟨F', hF'⟩` from `hlaw d F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨FB', hFB'⟩` from `hlaw _ FB`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.formalGroupAction_linearPart_ringHom T d F OE act O iota`. Establish `hFH : FH p F'.F`. Introduce `k`. Rewrite using `[hF']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -, h4⟩` from `GlobalTheory.FormalTorsion.fhSt p T hpT G D A U d F x hx C v O hv iota hio k`. Conclude with `⟨h1, h2, h4⟩`. Establish `hext' : ExtSer F'.F FB'.F (fun j => MvPowerSeries.map iota (J j)) (fun j => MvPowerSeries.map iota (Q j))`. Rewrite using `[hF', hFB']`. Conclude with `hextmap _ _ _ F FB J Q hext`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hht` using `GlobalTheory.T.exists_hodgeTateDatum_polarisedAbelian_characters p C v O hv T iota D.toPre.P _ rfl OE oD.onB FB XB hXB αB hαB`. Rewrite `hht` using `[← hFB']`. Take `⟨cp, hset, H, B, m, u, hu, hdat⟩` from `GlobalTheory.T.exists_linearData_of_split_formalGroup_extension p C v O hv OE d _ rk F' FB' _ _ hext' hFH ρ N (fun a j => MvPowerSeries.map iota (αB a j)) (fun a => by`. Rewrite using `[hlinmap, hlinmap, (hρ a).2, ← Matrix.map_mul, ← Matrix.map_mul, (hN a).1])`. Use the proof step `(fun a => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hlinmap, (hρ a).2, ← Matrix.map_mul, (hN a).2, Matrix.map_mul, Matrix.map_map]`. Use `congr 2`. Use extensionality with `z`. Use the proof step `simp)`. Use `hht`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ' : (ρ : OE → Matrix (Fin d) (Fin d) O) = fun a => linPart (actMap iota act a)`. Use function extensionality and compare the values at `fun a => (hρ a).1`. Take `⟨xs, hxs, hle⟩` from `GlobalTheory.T.linearData_unramified_length_bound p C v O hv OE cp hset _ H d rk m _ B ρ N _ hdat hp2 hdisc w t hfrob r W (fun τ => by rw [hρ']; exact (isEigBasis_iff _ _ _).1 (hW τ)) j`. Use `⟨xs, ⟨m, u, ?_, hxs⟩, hle⟩` and prove the remaining obligations. Rewrite using `[← hF']`.
-
-Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem unramified_companion_chart_characters : ∀ (p : ℕ) [Fact p.Prime], UpFSt p := by
   intro p hp T _ _ _ _ _ hT hpT G _ _ D A U d F x hx hp2 OE _ _ _ _ _ _ _ io oD oA hlin hdisc act hact

@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.ExtendLineBundleComponents
 
 /- English proof (translation)
-Establish `: IsNoetherian X` using `{}`. Establish `hfin` using `(TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (α := X))`. Establish `heq : ∀ (x : X) (Z W : Set X), Z ∈ irreducibleComponents X → W ∈ irreducibleComponents X → x ∈ Z → x ∈ W → Z = W`. Introduce `x Z W hZ hW hxZ hxW`. Use `hX x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.IsNormalScheme.eq_of_mem_irreducibleComponents_of_isDomain hZ hW hxZ hxW`. Establish `hopen : ∀ Z ∈ irreducibleComponents X, IsOpen Z` using `fun Z hZ => by`. Establish `e : Zᶜ = ⋃ W ∈ irreducibleComponents X \ {Z}, W`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, exists_prop]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨_, ⟨irreducibleComponent_mem_irreducibleComponents x, fun h ↦ hx ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Conclude with `(show irreducibleComponent x = Z from h) ▸ mem_irreducibleComponent`. Introduce and unpack `⟨W, ⟨hW, hne⟩, hxW⟩ hxZ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne (heq x W Z hW hZ hxW hxZ)`. Rewrite using `[← isClosed_compl_iff, e]`. Conclude with `hfin.sdiff.isClosed_biUnion fun W hW ↦ isClosed_of_mem_irreducibleComponents W hW.1`. Establish `: IsReduced X` using `isReduced_of_isReduced_stalk _`. Set `V : irreducibleComponents X → X.Opens` to `fun Z => ⟨Z.1, hopen Z.1 Z.2⟩`.
-
-Use `⟨irreducibleComponents X, V, fun a b x ha hb => Subtype.ext (heq x a b a.2 b.2 ha hb), fun x => ⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `: IrreducibleSpace (V a).toScheme` using `Subtype.irreducibleSpace a.2.1`. Use `⟨isIntegral_of_irreducibleSpace_of_isReduced _, ?_⟩` and prove the remaining obligations. Conclude with `isCompact_iff_compactSpace.mp (isClosed_of_mem_irreducibleComponents a.1 a.2).isCompact`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_integral_components (X : Scheme.{0}) [IsLocallyNoetherian X] [CompactSpace X]
     (hX : ∀ x : X, IsDomain (X.presheaf.stalk x)) :
@@ -59,7 +57,7 @@ theorem exists_integral_components (X : Scheme.{0}) [IsLocallyNoetherian X] [Com
   exact isCompact_iff_compactSpace.mp (isClosed_of_mem_irreducibleComponents a.1 a.2).isCompact
 
 /- English proof (translation)
-The claim follows from `MulEquiv.uniqueFactorizationMonoid (asIso (U.ι.stalkMap y)).commRingCatIsoToRingEquiv.toMulEquiv (hX _)`.
+A detailed English derivation is pending.
 -/
 theorem uniqueFactorizationMonoid_stalk_toScheme (X : Scheme.{0}) (U : X.Opens)
     (hX : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) (y : U.toScheme) :
@@ -72,11 +70,11 @@ end GlobalTheory.ExtendLineBundleComponents
 open GlobalTheory.ExtendLineBundleComponents GlobalTheory.GenSpread in
 
 /- English proof (translation)
-Introduce `X Y _ _ j hj hdom hufm L hL`. Take `⟨A, V, hd, hc, hV⟩` from `exists_integral_components X hdom`. Establish `key : ∀ a, ∃ M : LB (V a).toScheme, M.IsLB ∧ LBIso (M.pull (j ∣_ V a)) (L.pull (j ⁻¹ᵁ V a).ι)`. Introduce `a`. Use `(hV a).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hV a).2` as an intermediate fact. Take `⟨M, hM, φ, hφ⟩` from `GlobalTheory.exists_lineBundle_extension (V a).toScheme (j ⁻¹ᵁ V a).toScheme (j ∣_ V a) inferInstance (uniqueFactorizationMonoid_stalk_toScheme X (V a) hufm) (L.pull (j ⁻¹ᵁ V a).ι) (pull_isLB hL _)`. Conclude with `⟨M, hM, φ, hφ⟩`. Use `choose M hM hML using key`. Take `⟨N, hN, hNM⟩` from `GlobalTheory.T.exists_lineBundle_glue_disjoint_cover X A V hd hc M hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, hN, GlobalTheory.T.lbIso_of_lbIso_on_disjoint_cover Y A (fun a => j ⁻¹ᵁ V a) (fun a b y ha hb => hd a b _ ha hb) (fun y => hc (j y)) _ _ (pull_isLB hN j) hL fun a => ?_⟩` and prove the remaining obligations. Establish `e1 : LBIso ((N.pull j).pull (j ⁻¹ᵁ V a).ι) ((N.pull (V a).ι).pull (j ∣_ V a))` using `LBIso.trans (pull_isLB (pull_isLB hN j) _) (pull_isLB hN _) (pull_isLB (pull_isLB hN _) _) (lbIso_pull_pull hN _ rfl).symm (lbIso_pull_pull hN _ (morphismRestrict_ι j (V a)).symm)`. Establish `e2 : LBIso ((N.pull (V a).ι).pull (j ∣_ V a)) ((M a).pull (j ∣_ V a))` using `lbIso_pullback (hNM a) _`. Conclude with `LBIso.trans (pull_isLB (pull_isLB hN j) _) (pull_isLB (pull_isLB hN _) _) (pull_isLB hL _) e1 (LBIso.trans (pull_isLB (pull_isLB hN _) _) (pull_isLB (hM a) _) (pull_isLB hL _) e2 (hML a))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_lineBundle_extension_of_isDomain : ∀ (X Y : Scheme.{0}) [IsLocallyNoetherian X]
     [CompactSpace X] (j : Y ⟶ X), IsOpenImmersion j → (∀ x : X, IsDomain (X.presheaf.stalk x)) →

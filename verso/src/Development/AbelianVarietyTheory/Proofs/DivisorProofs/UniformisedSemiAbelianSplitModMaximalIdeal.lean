@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.SplitRed
 
 /- English proof (translation)
-Introduce `V₁ _ _ _ _ D₀ G₀ _ _ A₀ U _`. Take `⟨E, -, -, -, -, hE⟩` from `GlobalTheory.gtCoord_isGt V₁ (IsLocalRing.maximalIdeal V₁) D₀.toPre 0 G₀ ⟨U.gt 0⟩`. Establish `key : ∀ J : Ideal V₁, J = IsLocalRing.maximalIdeal V₁ → ∀ S : SplitExt (Spec (CommRingCat.of (V₁ ⧸ J))), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))).obj G₀) → GlobalTheory.LN.SplitOver G₀ (IsLocalRing.maximalIdeal V₁)`. Introduce and unpack `J rfl S hS`. Conclude with `⟨S, hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `key _ (pow_one _) E hE`.
+A detailed English derivation is pending.
 -/
 theorem splitOver_of_unif : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D₀ : DegData V₁ (maximalIdeal V₁)) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀] (A₀ : PolAV (Sp (FractionRing V₁))), Unif (maximalIdeal V₁) D₀ A₀ G₀ → IsSemiAbelian G₀ → GlobalTheory.LN.SplitOver G₀ (maximalIdeal V₁) := by
   intro V₁ _ _ _ _ D₀ G₀ _ _ A₀ U _

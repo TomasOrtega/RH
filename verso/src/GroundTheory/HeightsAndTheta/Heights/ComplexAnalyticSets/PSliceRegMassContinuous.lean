@@ -25,15 +25,15 @@ def fsSq (h : HermNorm n) (u : Fin n → ℂ) (x : Fin n → ℂ) : ℝ :=
   ‖∑ j, u j * x j‖ ^ 2 / h.dualNorm x ^ 2
 
 /- English proof (translation)
-Unfold `fsSq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem fsSq_nonneg (h : HermNorm n) (u x : Fin n → ℂ) : 0 ≤ fsSq h u x := by
   unfold fsSq; positivity
 
 /- English proof (translation)
-Establish `hs : ∑ j, u j * (t • x) j = t * ∑ j, u j * x j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp only [Pi.smul_apply, smul_eq_mul]; ring`. Establish `ht2 : ‖t‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr ht)`. Unfold `fsSq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, h.dualNorm_smul, norm_mul, mul_pow, mul_pow, mul_div_mul_left _ _ ht2]`.
+A detailed English derivation is pending.
 -/
 theorem fsSq_smul (h : HermNorm n) (u : Fin n → ℂ) (t : ℂ) (x : Fin n → ℂ) (ht : t ≠ 0) :
     fsSq h u (t • x) = fsSq h u x := by
@@ -45,14 +45,14 @@ theorem fsSq_smul (h : HermNorm n) (u : Fin n → ℂ) (t : ℂ) (x : Fin n → 
   rw [hs, h.dualNorm_smul, norm_mul, mul_pow, mul_pow, mul_div_mul_left _ _ ht2]
 
 /- English proof (translation)
-The claim follows from `((contDiff_norm_sq ℝ).comp (ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j))).contDiffOn.div h.contDiff_dualNorm_sq.contDiffOn fun _ hx => (pow_pos (h.dualNorm_pos hx) 2).ne'`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_fsSq (h : HermNorm n) (u : Fin n → ℂ) : ContDiffOn ℝ ∞ (fsSq h u) {x | x ≠ 0} :=
   ((contDiff_norm_sq ℝ).comp (ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j))).contDiffOn.div
     h.contDiff_dualNorm_sq.contDiffOn fun _ hx => (pow_pos (h.dualNorm_pos hx) 2).ne'
 
 /- English proof (translation)
-Establish `hN : h.dualNorm x ^ 2 ≠ 0` using `(pow_pos (h.dualNorm_pos hx) 2).ne'`. Unfold `fsLogReg fsSq`. Rewrite using `[add_div, mul_div_assoc, div_self hN, mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsLogReg_eq (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) {x : Fin n → ℂ} (hx : x ≠ 0) :
     fsLogReg h u ε x = Real.log (fsSq h u x + ε) / 2 := by
@@ -65,7 +65,7 @@ def coefA (t ε : ℝ) : ℝ := ((t + ε)⁻¹ + t * ((t + ε) ^ 2)⁻¹) / 2
 def coefB (t ε : ℝ) : ℝ := ((t + ε) ^ 2)⁻¹ / 2
 
 /- English proof (translation)
-The claim follows from `|coefA t ε| ≤ δ⁻¹ ∧ |coefB t ε| ≤ (δ ^ 2)⁻¹ := by have hp : 0 < t + ε := by linarith have hi : (t + ε)⁻¹ ≤ δ⁻¹ := inv_anti₀ hδ (by linarith) have ha : (t + ε)⁻¹ * (t + ε) = 1 := inv_mul_cancel₀ hp.ne' have ha0 : 0 ≤ (t + ε)⁻¹ := inv_nonneg.mpr hp.le have hsq : ((t + ε) ^ 2)⁻¹ = ( …`.
+A detailed English derivation is pending.
 -/
 theorem coef_bound {t ε δ : ℝ} (ht : 0 ≤ t) (hδ : 0 < δ) (hδε : δ ≤ ε) :
     |coefA t ε| ≤ δ⁻¹ ∧ |coefB t ε| ≤ (δ ^ 2)⁻¹ := by
@@ -82,7 +82,7 @@ theorem coef_bound {t ε δ : ℝ} (ht : 0 ≤ t) (hδ : 0 < δ) (hδε : δ ≤
   · nlinarith [pow_le_pow_left₀ ha0 hi 2]
 
 /- English proof (translation)
-Establish `hp : t + ε₀ ≠ 0` using `by positivity`. Establish `hp2 : (t + ε₀) ^ 2 ≠ 0` using `pow_ne_zero 2 hp`. Unfold `coefA coefB`. Apply the tactic sequence `constructor <;> fun_prop (disch := first | exact hp | exact hp2)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuousAt_coef {t ε₀ : ℝ} (ht : 0 ≤ t) (hε₀ : 0 < ε₀) :
     ContinuousAt (coefA t) ε₀ ∧ ContinuousAt (coefB t) ε₀ := by
@@ -92,15 +92,13 @@ theorem continuousAt_coef {t ε₀ : ℝ} (ht : 0 ≤ t) (hε₀ : 0 < ε₀) :
   constructor <;> fun_prop (disch := first | exact hp | exact hp2)
 
 /- English proof (translation)
-Establish `hsC : ContDiffAt ℂ 2 s y` using `(IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hU hs y hyU).contDiffAt`. Establish `hsc : ContDiffAt ℝ 2 s y` using `hsC.restrict_scalars ℝ`. Establish `hψ : ContDiffAt ℝ 2 (fsSq h u ∘ s) y` using `(((contDiffOn_fsSq h u).contDiffAt (isOpen_ne.mem_nhds hs0)).of_le (WithTop.coe_le_coe.mpr le_top)).comp y hsc`. Establish `ht` using `fsSq_nonneg h u (s y)`. Establish `hρ : ContDiffAt ℝ 2 (fun t : ℝ => Real.log (t + ε) / 2) ((fsSq h u ∘ s) y)` using `((Real.contDiffAt_log.mpr (by simp only [Function.comp]; positivity)).comp _ (contDiffAt_id.add contDiffAt_const)).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fsLogReg h u ε ∘ s) =ᶠ[𝓝 y] fun z => Real.log ((fsSq h u ∘ s) z + ε) / 2` using `by filter_upwards [(hs.continuousOn.continuousAt (hU.mem_nhds hyU)).eventually_ne hs0] with z hz`. Conclude with `fsLogReg_eq h u ε hz`. Establish `hd1 : deriv (fun t : ℝ => Real.log (t + ε) / 2) = fun t => (t + ε)⁻¹ / 2`. Use function extensionality and compare the values at `t`. Simplify using `[deriv_div_const, deriv_comp_add_const, Real.deriv_log]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd2 : deriv (fun t : ℝ => (t + ε)⁻¹ / 2) (fsSq h u (s y)) = -((fsSq h u (s y) + ε) ^ 2)⁻¹ / 2`. Simplify using `[deriv_div_const, deriv_comp_add_const, deriv_inv]`. Establish `hcg : ReciprocityTheory.AnForm.maDens (Fin.cons (fsLogReg h u ε ∘ s) Φ) y = ReciprocityTheory.AnForm.maDens (Fin.cons (fun z => Real.log ((fsSq h u ∘ s) z + ε) / 2) Φ) y`. Use `IndefiniteRowSideFullHecke.ComplexSets.maDens_congr_of_eventuallyEq fun k => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hev`. Conclude with `EventuallyEq.rfl`. Rewrite using `[hcg, SliceCutChain.maDens_cons_comp (fun t : ℝ => Real.log (t + ε) / 2) (fsSq h u ∘ s) Φ y hρ hψ, hd1]`. Simplify using `only [Function.comp, hd2]`. Unfold `coefA coefB`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem maDens_sheet {D : ℕ} (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε)
     (Φ : Fin D → (Fin (D + 1) → ℂ) → ℝ) {s : (Fin (D + 1) → ℂ) → Fin n → ℂ} {U : Set (Fin (D + 1) → ℂ)}
@@ -137,7 +135,7 @@ theorem maDens_sheet {D : ℕ} (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (
   ring
 
 /- English proof (translation)
-The claim follows from `|ReciprocityTheory.AnForm.maDens (Fin.cons (fsSq h u ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y| ≤ K * |ReciprocityTheory.AnForm.maDens (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y| ∧ |ReciprocityTheory.AnForm.maDens (Fin.cons (fun z => fsSq h u (s z) ^ 2 / 2) …`.
+A detailed English derivation is pending.
 -/
 theorem exists_compare (hC : SheetFormCompare.Statement) (h : HermNorm n) (u : Fin n → ℂ) (D : ℕ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ (s : (Fin (D + 1) → ℂ) → Fin n → ℂ) (U : Set (Fin (D + 1) → ℂ)) (y : Fin (D + 1) → ℂ),
@@ -173,7 +171,7 @@ theorem exists_compare (hC : SheetFormCompare.Statement) (h : HermNorm n) (u : F
   · exact (hK₂ s U y hU hyU hs hs0).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (abs_nonneg _))
 
 /- English proof (translation)
-The claim follows from `|a * ReciprocityTheory.AnForm.maDens (Fin.cons (fsLogReg h u ε ∘ s) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y| ≤ C * ((δ⁻¹ + (δ ^ 2)⁻¹) * K) * |1 * ReciprocityTheory.AnForm.maDens (fun _ => (fun x => Real.log (h.dualNorm x)) ∘ s) y| := by rw [maDens_sheet h u (hδ.trans_l …`.
+A detailed English derivation is pending.
 -/
 theorem term_bound {D : ℕ} (h : HermNorm n) (u : Fin n → ℂ) {ε δ K C a : ℝ} (hδ : 0 < δ) (hδε : δ ≤ ε)
     (ha : |a| ≤ C) {s : (Fin (D + 1) → ℂ) → Fin n → ℂ} {U : Set (Fin (D + 1) → ℂ)} {y : Fin (D + 1) → ℂ}
@@ -205,27 +203,23 @@ theorem term_bound {D : ℕ} (h : HermNorm n) (u : Fin n → ℂ) {ε δ K C a :
 end SliceRegMassContinuous
 
 /- English proof (translation)
-Introduce `n e h W F u' ℓ w C hW hF hℓ hw hwC`. Take `⟨hprime, hdim, -⟩` from `SliceIdeal.proof n (e + 1) W F ℓ hW hF hℓ`. Establish `hmem : linForm ℓ - 1 ∈ W ⊔ Ideal.span {linForm ℓ - 1}` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hx0 : ∀ x ∈ zeroSet (W ⊔ Ideal.span {linForm ℓ - 1}), x ≠ 0`. Introduce and unpack `x hx rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hx _ hmem` as an intermediate fact. Simplify using `[linForm] at this`. Unfold `varInt`. Use `split_ifs with hA`. Use `swap`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuousOn_const`. Use `set A := hA.choose with hAdef`. Establish `hAf : IsFiniteProjection (W ⊔ Ideal.span {linForm ℓ - 1}) A` using `hA.choose_spec`. Establish `hint` using `hM n (e + 1) h _ ℓ A hprime hmem hdim hAf`. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hAf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨K, -, hK⟩` from `SliceRegMassContinuous.exists_compare hC h u' e`. Introduce `ε₀ hε₀`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Unfold `chartInt`. Use `continuousAt_of_dominated (bound := fun y => C * (((ε₀ / 2)⁻¹ + ((ε₀ / 2) ^ 2)⁻¹) * K) * chartAbsDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) y) (Eventually.of_forall fun ε => (SheetSumMeasurable.measurable_sheetSum hAf (fun a b => a * …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Ioi_mem_nhds (half_lt_self hε₀)] with ε hε`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens`. Rewrite using `[CutOffDominated.sheetSum_eq_sum _ (hfin y), CutOffDominated.sheetSum_eq_sum _ (hfin y), Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs with hs`. Take `⟨U, hU, hyU, hsd, hsx, -, -⟩` from `hs.choose_spec`. Rewrite `hyU`, `hsx` using `[show A *ᵥ x = y from hx.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hsy : hs.choose y ≠ 0` using `by rw [hsx]; exact hx0 x hx.1`. Rewrite using `[vecCons_comp]`. Conclude with `SliceRegMassContinuous.term_bound h u' (half_pos hε₀) (le_of_lt hε) (hwC x) hU hyU hsd hsy (hK _ U y hU hyU hsd hsy)`. Simplify using the standard rewrite rules. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Unfold `chartDens`. Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `tendsto_finsetSum _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Distinguish the cases in `hs : ∃ s, IsSheetAt (W ⊔ Ideal.span {linForm ℓ - 1}) A x s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dif_pos hs]`. Take `⟨U, hU, hyU, hsd, hsx, -, -⟩` from `hs.choose_spec`. Rewrite `hyU`, `hsx` using `[show A *ᵥ x = y from hx.2]`. Establish `hsy : hs.choose y ≠ 0` using `by rw [hsx]; exact hx0 x hx.1`. Take `⟨ha, hb⟩` from `SliceRegMassContinuous.continuousAt_coef (SliceRegMassContinuous.fsSq_nonneg h u' (hs.choose y)) hε₀`.
-
-Establish `hc : ContinuousAt (fun ε => w x * (SliceRegMassContinuous.coefA (SliceRegMassContinuous.fsSq h u' (hs.choose y)) ε * ReciprocityTheory.AnForm.maDens (Fin.cons (SliceRegMassContinuous.fsSq h u' ∘ hs.choose) fun _ => (fun x => Real.log (h.dualNorm x)) ∘ hs.choose) y - SliceRegMassC …` using `continuousAt_const.mul ((ha.mul continuousAt_const).sub (hb.mul continuousAt_const))`. Use `show ContinuousAt _ ε₀`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [Ioi_mem_nhds hε₀] with ε hε`. Rewrite using `[vecCons_comp, SliceRegMassContinuous.maDens_sheet h u' hε _ hU hyU hsd hsy]`.
-
-Simplify using `only [dif_neg hs]`. Conclude with `tendsto_const_nhds`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SliceRegMassContinuous.proof (hM : SliceMassFinite.Statement) (hC : SheetFormCompare.Statement) :
     SliceRegMassContinuous.Statement := by

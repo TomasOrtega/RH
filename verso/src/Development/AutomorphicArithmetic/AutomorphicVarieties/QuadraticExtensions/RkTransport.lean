@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ N r`. Take `⟨hDI, -, -, -⟩` from `galEmbFam F K Ω l`. Take `⟨hE, -, -⟩` from `galEmbTop F K Ω`. Establish `hD : ∀ (A : ValuationSubring Ω) (σ : G K Ω), galEmb F K Ω σ ∈ Dec (F` using `F) A ↔ σ ∈ Dec (F := K) A := fun A σ => by rw [← (hDI A).1]; rfl`. Establish `hI : ∀ (A : ValuationSubring Ω) (σ : G K Ω), galEmb F K Ω σ ∈ Ine (F` using `F) A ↔ σ ∈ Ine (F := K) A := fun A σ => by rw [← (hDI A).2]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : cycU l (galOf F K Ω) ≤ galOf F K Ω` using `inf_le_left`. Set `e : cycU l (⊤ : Subgroup (G K Ω)) → cycU l (galOf F K Ω)` to `fun u => ⟨galEmb F K Ω u.1, galEmb_mem F K Ω u.1, u.2.2⟩`. Set `e' : cycU l (galOf F K Ω) → cycU l (⊤ : Subgroup (G K Ω))` to `fun u => ⟨toGal K hle u, trivial, u.2.2⟩`. Establish `hee : ∀ u, e (e' u) = u` using `fun u => Subtype.ext (AlgEquiv.ext fun _ => rfl)`. Establish `hee' : ∀ u, e' (e u) = u` using `fun u => Subtype.ext (AlgEquiv.ext fun _ => rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Continuous e` using `(hE.continuous.comp continuous_subtype_val).subtype_mk _`. Establish `he' : Continuous e'`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `hE.continuous_iff.2 continuous_subtype_val`. Establish `hm : ∀ a b, e (a * b) = e a * e b` using `fun a b => Subtype.ext (map_mul (galEmb F K Ω) a.1 b.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : ∀ a b, e' (a * b) = e' a * e' b` using `fun a b => Subtype.ext (map_mul (toGal K hle) a b)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `CardLe.of_injective h (fun φ => ⟨φ.1 ∘ e, φ.2.1.comp_continuous he, fun a b => by simp only [Function.comp, hm]; exact φ.2.2.1 _ _, fun A u hu => φ.2.2.2.1 A (e u) ((hI A u.1).2 hu), fun A hA u hu => φ.2.2.2.2 A hA (e u) ((hD A u.1).2 hu)⟩) fun φ ψ hh => Subtype.ext (funext fun u …` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val hh) (e' u)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Function.comp, hee]`. Introduce `h`. Use `CardLe.of_injective h (fun φ => ⟨φ.1 ∘ e', φ.2.1.comp_continuous he', fun a b => by simp only [Function.comp, hm']; exact φ.2.2.1 _ _, fun A u hu => φ.2.2.2.1 A (e' u) ((hI A (e' u).1).1 hu), fun A hA u hu => φ.2.2.2.2 A hA (e' u) ((hD A (e' u).1).1 hu)⟩) fun φ ψ hh => Subtype.ex …` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val hh) (e u)` as an intermediate fact. Simplify `this` using `only [Function.comp, hee']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.rkTransport :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (N r : ℕ),

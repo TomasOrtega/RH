@@ -7,9 +7,9 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hM : ∀ᶠ v in Filter.cofinite, ∀ p : κ × κ, (M p.1 p.2).1 v ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F` using `Filter.eventually_all.2 fun p => (M p.1 p.2).2`. Establish `hN : ∀ᶠ v in Filter.cofinite, ∀ p : κ × κ, (N p.1 p.2).1 v ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F` using `Filter.eventually_all.2 fun p => (N p.1 p.2).2`. Establish `h` using `hM.and hN`. Rewrite `h` using `[Filter.eventually_cofinite]`. Use `⟨h.toFinset, fun v hv i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `⟨hv.1 (i, j), hv.2 (i, j)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem matrixPair_integral_cofinite (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (M N : Matrix κ κ (Af F)) :

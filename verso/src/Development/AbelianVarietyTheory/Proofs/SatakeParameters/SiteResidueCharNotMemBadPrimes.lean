@@ -11,9 +11,9 @@ namespace GlobalTheory.TwV.SitePrime
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ _ J hmem`. Take `⟨-, -, -, hg'⟩` from `GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg`. Take `⟨-, -, -, -, -, hT'⟩` from `id hg`. Rewrite `hmem` using `[t.O_S u μ]`. Simplify using `only [Finset.mem_insert, Finset.mem_union, Finset.mem_singleton] at hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `hmem with h | (h | h) | h` into its components or cases. Conclude with `hT' (h ▸ dvd_rfl)`. Conclude with `hg' 0 h`. Conclude with `hg' 1 h`. Conclude with `J.away h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem resChar_not_mem_S : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), D.what₂.places.resChar w ∉ (t.O u μ).S := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ _ J hmem

@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.TermSize
 
 /- English proof (translation)
-Establish `e` using `spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow ℚ_[p] (PadicAlgCl p) x`. Rewrite `e` using `[PadicAlgCl.spectralNorm_eq]`. Establish `h0 : (minpoly ℚ_[p] x).coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero (Algebra.IsIntegral.isIntegral x) hx`. Use `⟨-((minpoly ℚ_[p] x).coeff 0).valuation / (minpoly ℚ_[p] x).natDegree, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Real.log_rpow (norm_pos_iff.2 h0), Padic.norm_eq_zpow_neg_valuation h0, Real.log_zpow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_rat_log {p : ℕ} [hp : Fact p.Prime] {x : PadicAlgCl p} (hx : x ≠ 0) :
     ∃ q : ℚ, Real.log ‖x‖ = q * Real.log p := by
@@ -40,25 +40,25 @@ theorem exists_rat_log {p : ℕ} [hp : Fact p.Prime] {x : PadicAlgCl p} (hx : x 
   ring
 
 /- English proof (translation)
-Establish `hc : 0 < -Real.log ‖π‖` using `neg_pos.2 (Real.log_neg (norm_pos_iff.2 h0) h1)`. Establish `ex : ∀ x : PadicAlgCl p, ∃ q : ℚ, x ≠ 0 → ‖x‖ = Real.exp (-(q * -Real.log ‖π‖))` using `fun x => by`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, fun h => absurd hx h⟩`. Take `⟨a, ha⟩` from `exists_rat_log hx`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_rat_log h0`. Establish `hb0 : (b : ℝ) ≠ 0` using `fun h => by rw [hb, h] at hc; simp at hc`. Use `⟨a / b, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.exp_log (norm_pos_iff.2 hx), ha, hb]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Generalize the expression as in `-Real.log ‖π‖ = c at hc ex`. Use `choose r hr using ex`. Establish `mono : ∀ a b : ℚ, Real.exp (-(a * c)) ≤ Real.exp (-(b * c)) ↔ b ≤ a` using `fun a b => by`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.exp_le_exp, neg_le_neg_iff, mul_le_mul_iff_left₀ hc, Rat.cast_le]`. Set `f : PadicAlgCl p → WithTop ℚ` to `fun x => if x = 0 then ⊤ else r x`. Establish `f0 : f 0 = ⊤` using `if_pos rfl`. Establish `fn : ∀ x, x ≠ 0 → f x = r x` using `fun x hx => if_neg hx`. Establish `key : ∀ x (q : ℚ), ((q : WithTop ℚ) ≤ f x ↔ ‖x‖ ≤ Real.exp (-(q * c))) ∧ (f x ≤ (q : WithTop ℚ) ↔ Real.exp (-(q * c)) ≤ ‖x‖)` using `fun x q => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[f0, norm_zero]`. Conclude with `⟨iff_of_true le_top (Real.exp_pos _).le, iff_of_false (by simp) (not_le.2 (Real.exp_pos _))⟩`. Rewrite using `[fn x hx, hr x hx, mono, mono, WithTop.coe_le_coe, WithTop.coe_le_coe]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Iff.rfl, Iff.rfl⟩`. Establish `keq : ∀ x (q : ℚ), ‖x‖ = Real.exp (-(q * c)) → f x = q` using `fun x q h => le_antisymm ((key x q).2.2 h.ge) ((key x q).1.2 h.le)`. Use `⟨AddValuation.of f f0 (keq 1 0 (by simp)) (fun x y => ?_) (fun x y => ?_), key⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Rewrite using `[fn x hx, fn y hy, ← WithTop.coe_min, (key _ _).1]`. Use `(IsUltrametricDist.norm_add_le_max x y).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hr x hx, mono]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `min_le_left _ _`. Rewrite using `[hr y hy, mono]`. Conclude with `min_le_right _ _`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, f0]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy, f0]`. Rewrite using `[fn x hx, fn y hy, ← WithTop.coe_add]`. Use `keq _ _ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hr x hx, hr y hy, ← Real.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_addValuation {p : ℕ} [hp : Fact p.Prime] {π : PadicAlgCl p} (h0 : π ≠ 0) (h1 : ‖π‖ < 1) :
     ∃ v : AddValuation (PadicAlgCl p) (WithTop ℚ), ∀ (x : PadicAlgCl p) (q : ℚ),
@@ -118,7 +118,7 @@ section
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT GlobalTheory.UT.CoefBasic IsLocalRing
 
 /- English proof (translation)
-Simplify using `only [gs_eq f z U h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sum' {Y Z : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : f z ∈ U) {I : Type} (A : Finset I)
     (a : I → Γ(Y, U)) : gs f z U (∑ i ∈ A, a i) = ∑ i ∈ A, gs f z U (a i) := by
@@ -128,14 +128,14 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
 /- English proof (translation)
-The claim follows from `coef_eq fun z J hJ => by rw [h z J hJ, cst_eq, map_zero, zero_mul, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coef_zero_of_sval {g : GtPtF D F} {w : Frm D F k g.b} {s : Fam D F k} {α : D.X}
     (h : ∀ z J, Good D.P.L z J → sval (s.s α) (lift (𝟙 (TF (R := R) F)) g.b).left z J = 0) : coef s g w α = 0 :=
   coef_eq fun z J hJ => by rw [h z J hJ, cst_eq, map_zero, zero_mul, zero_mul, zero_mul]
 
 /- English proof (translation)
-The claim follows from `coef_zero_of_sval fun z J hJ => by rw [← SectionScalarValuation.secScal_sval (hs α) _ z hJ] exact UUA.sval_zero_of h _ z J (hJ.mem _ _)`.
+A detailed English derivation is pending.
 -/
 theorem coef_zero_of_famOf {g : GtPtF D F} {w : Frm D F k g.b} {s : Fam D F k} {f : ∀ α, D.SecB k α}
     (hs : FamOf D F f s) {α : D.X} (h : ∀ j, (f α).f j = 0) : coef s g w α = 0 :=
@@ -144,7 +144,7 @@ theorem coef_zero_of_famOf {g : GtPtF D F} {w : Frm D F k g.b} {s : Fam D F k} {
     exact UUA.sval_zero_of h _ z J (hJ.mem _ _)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `coef_zero_of_sval fun z J hJ => UUA.sval_zero_of (fun _ => rfl) _ z J (hJ.mem _ _)`. Consider the case `insert i A hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ((coef_basic R D F k g).2.2 w hw).2.1, ih]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coef_sum {g : GtPtF D F} {w : Frm D F k g.b} (hw : w.IsGen) {I : Type} (A : Finset I) (b : I → F)
     (s : I → Fam D F k) (α : D.X) : coef (∑ i ∈ A, b i • s i) g w α = ∑ i ∈ A, b i * coef (s i) g w α := by
@@ -155,9 +155,9 @@ theorem coef_sum {g : GtPtF D F} {w : Frm D F k g.b} (hw : w.IsGen) {I : Type} (
   | insert i A hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ((coef_basic R D F k g).2.2 w hw).2.1, ih]
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (DegPre.famφ D F α) r`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `UUA.sval_zero_of (fun _ => rfl) _ z J (hJ.mem _ _)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert i A hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`. Conclude with `(gs_add _ z _ hm _ _).trans (congrArg₂ (· + ·) ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z le_top hm _) rfl)) rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_sum {I : Type} (A : Finset I) (b : I → F) (s : I → Fam D F k) (α : D.X) {Z : Scheme.{0}}
     (r : Z ⟶ (DegPre.BF D F).left) (z : Z) {J} (hJ : Good D.P.L z J) :
@@ -179,7 +179,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v) {k : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => σ, fun _ => s, fun _ => h, fun _ => by rw [AddValuation.map_one]; exact le_rfl, fun j => by rw [Fin.sum_univ_one, DVR.constBF_eq, map_one] simp [resTop]⟩`.
+Supply the required witnesses or components.
 -/
 theorem vge_of_secScal {α : D.toPre.X} {σ : D.toPre.SecB k α} {s}
     (h : GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k) s
@@ -189,9 +189,9 @@ theorem vge_of_secScal {α : D.toPre.X} {σ : D.toPre.SecB k α} {s}
     simp [resTop]⟩
 
 /- English proof (translation)
-Establish `e : (𝟙 _ ≫ (DegPre.prB D.toPre F).left) ≫ D.toPre.P.A.hom = (𝟙 _ ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left) ≫ Spec.map (CommRingCat.ofHom (TWO.algVF (F := F) (V := V))) := by`. Rewrite using `[← TWM.TF_hom, Category.assoc, Category.assoc, Over.w, Over.w]`. Establish `n` using `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (TWO.algVF (F := F) (V := V))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(gs_pull _ _ y ⊤ trivial _).symm.trans (Eq.trans ?_ (gs_pull (𝟙 _) (fst (TF (R := V) F) D.toPre.P.A).left y ⊤ trivial _).symm)` and prove the remaining obligations. Conclude with `congrArg (gs _ y ⊤) n.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cst_prB (y : (DegPre.BF D.toPre F).left) (a : V) :
     Geo.Tor.cst ((𝟙 _ ≫ (DegPre.prB D.toPre F).left) ≫ D.toPre.P.A.hom) y a =
@@ -209,11 +209,11 @@ theorem cst_prB (y : (DegPre.BF D.toPre F).left) (a : V) :
 include hϖ hv in
 
 /- English proof (translation)
-Take `⟨n, a, σ, σF, hσ, ha, hsum⟩` from `ht`. Use `choose c hc _ using fun m => hβ (σ m)`. Use `⟨fun i => ∑ m, a m * TWO.algVF (c m i), fun i => AddValuation.map_le_sum v fun m _ => ?_, SecOps.sec_ext fun j => sec_ext_val D.toPre.P.isLB (fun y J hJ => ?_) j⟩` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Conclude with `(ha m).trans (le_add_of_nonneg_right (TWO.v_of_V v hϖ hv _).1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hJ.mem (D.toPre.famφB α) (𝟙 _ ≫ (DegPre.prB D.toPre F).left)`. Establish `e : ∀ m, sval (σF m) (𝟙 _) y J = ∑ i, gs (𝟙 _) y ⊤ (gF D.toPre F (TWO.algVF (c m i))) * sval ((s i).s α) (𝟙 _) y J` using `fun m => by`. Rewrite using `[← SectionScalarValuation.secScal_sval (hσ m) _ y hJ]`. Use `(congrArg (gs _ y _) (hc m _)).trans ?_` and prove the remaining obligations. Use `(gs_sum' _ y _ hm _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SectionScalarValuation.secScal_sval (hs i) _ y hJ, ← cst_prB]`. Conclude with `(gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) (gs_constFn _ _ _ y hm _) rfl)`. Rewrite using `[sval_sum _ _ _ _ _ _ hJ, SectionScalarValuation.sval_lin (fun i => gF D.toPre F (a i)) σF (fun j => hsum j) _ y hJ]`. Simplify using `only [e, Finset.mul_sum, gs_eq (𝟙 (DegPre.BF D.toPre F).left) y ⊤ trivial, map_sum, map_mul, Finset.sum_mul, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb {α : D.toPre.X} {I : Type} [Fintype I] {β : I → D.toPre.SecB k α} (hβ : IsBasisB D.toPre β)
     (s : I → Fam D.toPre F k)
@@ -243,9 +243,9 @@ theorem exists_comb {α : D.toPre.X} {I : Type} [Fintype I] {β : I → D.toPre.
 variable {Q : D.toPre.X → ℤ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b} {l : D.toPre.X → ℚ} {ω : ℚ}
 
 /- English proof (translation)
-Establish `H` using `SectionScalarValuation.fe_move hϖ hQ hv k m α₀ s hs`. Establish `hk0 : (k : ℚ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `e : 0 + ((k * Q m + QForm.bOf D.toPre Q m α₀ : ℤ) : ℚ) = ((Q (α₀ + k • m) : ℚ) - Q α₀) / k`. Rewrite using `[q_shift hϖ hQ α₀ m k]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `H` using `[e]`. Conclude with `CoefVal.le_v_coef hw H (hl _) hω`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_v_term (hQ : QForm.IsQ D.toPre ϖ Q) (hk : 1 ≤ k) (hw : w.IsGen) (hl : GtV hϖ hv g l)
     (hω : GenV hϖ hv w ω) {s : Fam D.toPre F k} {α₀ : D.toPre.X} (hs : VGe D F v k α₀ (s.s α₀) 0) (m : D.toPre.X) :
@@ -258,11 +258,11 @@ theorem le_v_term (hQ : QForm.IsQ D.toPre ϖ Q) (hk : 1 ≤ k) (hw : w.IsGen) (h
   exact CoefVal.le_v_coef hw H (hl _) hω
 
 /- English proof (translation)
-Establish `hT : TwistBaseChangeStatement` using `GlobalTheory.twistBaseChange_of_finrank_sections_one fun K _ _ P => (hLL.1.globalSectionsRank K P 1 le_rfl).trans (one_pow _)`. Establish `hS` using `twistBCSpan_of hT`. Take `⟨t, ht, -, e⟩` from `CoefUnit.exists_fam_coef_val hLL hS GlobalTheory.RatioVal.main (TWM.tw_of hLL.1.globalFns hS GlobalTheory.RatioVal.main) (GlobalTheory.UnitBallFree.main hLL.1.globalFns hT) V hc ϖ hϖ D Q hQ F v hv k hk g w l ω hw hl hω (α₀ + k • m)`. Take `⟨b, hb, hbt⟩` from `exists_comb hϖ hv hβ s hs (ht α₀)`. Establish `e₁` using `GlobalTheory.FamFree.eq_of_eq_add_nsmul hLL.1.globalFns t (∑ i, b i • s i) ⟨m, rfl⟩ hbt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₂ : coef t g w (α₀ + k • m) = coef (∑ i, b i • s i) g w (α₀ + k • m)`. Unfold `coef`. Rewrite using `[e₁]`. Rewrite `e` using `[e₂, coef_sum hw]`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Use `lt_irrefl _ (lt_of_lt_of_eq (AddValuation.map_lt_sum v WithTop.coe_ne_top fun i _ => ?_) e)` and prove the remaining obligations. Establish `e₃ : (Q (α₀ + k • m) : ℚ) / k + l (α₀ + k • m) + ω = (0 + (Q α₀ : ℚ) / k) + (((Q (α₀ + k • m) : ℚ) - Q α₀) / k + l (α₀ + k • m) + ω)` using `by ring`. Rewrite using `[AddValuation.map_mul, e₃, WithTop.coe_add]`. Conclude with `(WithTop.add_lt_add_left WithTop.coe_ne_top (h i)).trans_le (add_le_add_left (hb i) _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_v_term_le (hLL : LL) [CharZero V] [IsAlgClosed F] (hc : IsAdicComplete (maximalIdeal V) V)
     (hQ : QForm.IsQ D.toPre ϖ Q) (hk : 4 ≤ k) (hw : w.IsGen) (hl : GtV hϖ hv g l) (hω : GenV hϖ hv w ω)
@@ -300,26 +300,26 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `(not_isUnit_OO_iff _).2 (lt_of_le_of_ne ((mem_OO_iff _).1 (u.j a).2) h) (a.isUnit.map u.j)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem norm_j_unit (a : u.Vˣ) : ‖(u.j a : PadicAlgCl p)‖ = 1 := by
   by_contra h
   exact (not_isUnit_OO_iff _).2 (lt_of_le_of_ne ((mem_OO_iff _).1 (u.j a).2) h) (a.isUnit.map u.j)
 
 /- English proof (translation)
-Take `⟨φ₀, h₀, t₀, ht₀, x, hx, e⟩` from `h`. Set `e₁ : TWO.Ov v →+* OO p` to `(TWO.Ov v).subtype.codRestrict (OO p) fun x => (mem_OO_iff _).2 ((hO _).1 x.2)`. Set `e₂ : OO p →+* TWO.Ov v` to `(OO p).subtype.codRestrict (TWO.Ov v) fun x => (hO _).2 ((mem_OO_iff _).1 x.2)`. Establish `c₁ : spMap e₂ ≫ spMap e₁ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `c₂ : gPt p ≫ spMap e₁ = (TWM.ιS hϖ hv).left`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `c₃ : spMap e₁ ≫ (TWM.TO hϖ hv).hom = spMap u.j` using `(Spec.map_comp _ _).symm.trans rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `c₄ : ∀ i, φ₀ i ≫ u.D.toPre.P.A.hom = (TWM.TO hϖ hv).hom` using `fun i => CoefVal.ι_inj hϖ hv (X := Sp u.V) (by show _ ≫ _ ≫ _ = _ ≫ _`. Rewrite using `[← Category.assoc, ← h₀ i, Over.w]`. Apply the tactic sequence `fin_cases i <;> exact Over.w _)`. Establish `le : (⊤ : (TWM.TO hϖ hv).left.Opens) ≤ LB.wchart u.D.toPre.P.L φ₀ fun i => J ((TWM.ιS hϖ hv).left ≫ φ₀ i)` using `fun y _ => Set.mem_iInter.2 fun i => by`. Establish `a` using `hJ (spMap e₁ ≫ φ₀ i) (by rw [Category.assoc, c₄, c₃]) (show spMap e₂ y ∈ ⊤ from trivial)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a` using `[← Category.assoc, c₂]`. Establish `b : (spMap e₁ ≫ φ₀ i) (spMap e₂ y) = φ₀ i y`. Rewrite using `[← Scheme.Hom.comp_apply, ← Category.assoc, c₁, Category.id_comp]`. Establish `a' : (spMap e₁ ≫ φ₀ i) (spMap e₂ y) ∈ u.D.toPre.P.L.U (J ((TWM.ιS hϖ hv).left ≫ φ₀ i))` using `a`. Rewrite `a'` using `[b]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a'`. Take `⟨z⟩` from `exists_pt (R := u.V) (F := PadicAlgCl p)`. Set `a : Γ(Spec (CommRingCat.of (TWO.Ov v)), ⊤)ˣ` to `res le (t₀.s fun i => J ((TWM.ιS hϖ hv).left ≫ φ₀ i))`. Establish `ha : v (TWM.ιr (v` using `v) a.val) = 0 := TWO.v_unit v (Units.map (Scheme.ΓSpecIso (CommRingCat.of (TWO.Ov v))).hom.hom.toMonoidHom a)`. Establish `e'` using `e z J (hG z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : (val t₀ (TWM.ιS hϖ hv).left z J).val = UT.cst (R` using `u.V) (PadicAlgCl p) z (TWM.ιr (v := v) a.val) := by`. Rewrite using `[← CoefVal.gs_ι hϖ hv]`. Conclude with `((gs_unit _ z ⊤ trivial a).trans (congrArg Units.val (gm_res _ z le trivial _))).symm`. Rewrite `e'` using `[e₃, val_of (g.s χ) _ z J (fun k => J (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k)) (fun k => by rw [Category.id_comp]), cst_eq, cst_eq, ← map_mul]`. Establish `e₄` using `(toStk_valF (𝟙 (Sp (PadicAlgCl p))) _ z (Set.mem_iInter.2 fun k => hG z (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k)) _).trans e'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₅` using `cstH_inj (R := u.V) z e₄`. Use `(congrArg v e₅).trans ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, hx, ha, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_valF {ϖ : u.V} (hϖ : Irreducible ϖ) {v : AddValuation (PadicAlgCl p) (WithTop ℚ)}
     (hv : ValOver ϖ (PadicAlgCl p) v) (hO : ∀ x, 0 ≤ v x ↔ ‖x‖ ≤ 1) {g : GtPtF u.D.toPre (PadicAlgCl p)}
@@ -367,21 +367,21 @@ theorem v_valF {ϖ : u.V} (hϖ : Irreducible ϖ) {v : AddValuation (PadicAlgCl p
 end
 
 /- English proof (translation)
-Introduce `hLL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ σ cls f hB s hs g ν w hν hw`. Take `⟨-, hcl, hall, -, -, hzero, hbas⟩` from `hB`. Take `⟨ϖ, Q, hϖ, hQ, h1, hq⟩` from `GlobalTheory.ZH.PsiForm.q_eq_val_mul o Ω S ρ p y₀ u l`. Take `⟨⟨I, hI, hG⟩, -⟩` from `GlobalTheory.ZH.TorusVal.main hLL o Ω S ρ p y₀ u l`. Establish `hinj : Function.Injective (DVR.TWO.algVF (F` using `PadicAlgCl p) (V := u.V)) := (algebraMap (FractionRing u.V) (PadicAlgCl p)).injective.comp (IsFractionRing.injective u.V _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CharZero u.V` using `(RingHom.charZero_iff hinj).2 inferInstance`. Establish `h0 : (u.j ϖ : PadicAlgCl p) ≠ 0` using `fun h => hϖ.ne_zero (hinj (h.trans (map_zero _).symm))`. Take `⟨v, key⟩` from `exists_addValuation h0 h1`. Establish `keq : ∀ x (q : ℚ), v x = q ↔ ‖x‖ = Real.exp (-(q * -Real.log ‖(u.j ϖ : PadicAlgCl p)‖))` using `fun x q => by`. Rewrite using `[le_antisymm_iff, le_antisymm_iff, (key x q).1, (key x q).2, and_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : DVR.ValOver ϖ (PadicAlgCl p) v`. Introduce and unpack `c n ⟨a, rfl⟩`. Rewrite using `[keq, map_mul, map_zpow₀, norm_mul, norm_zpow]`. Use `show ‖(u.j ϖ : PadicAlgCl p)‖ ^ n * ‖(u.j a : PadicAlgCl p)‖ = _`. Rewrite using `[norm_j_unit, _root_.mul_one, mul_neg, neg_neg, Rat.cast_intCast, ← Real.log_zpow, Real.exp_log (zpow_pos (norm_pos_iff.2 h0) n)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hO : ∀ x, 0 ≤ v x ↔ ‖x‖ ≤ 1` using `fun x => by simpa using (key x 0).1`. Take `⟨lv, hl, -⟩` from `UT.CoefVal.exists_gtV (hϖ := hϖ) (hv := hv) g`. Take `⟨ω, hω⟩` from `UT.CoefVal.exists_genV_frm (hϖ := hϖ) (hv := hv) hw`. Establish `hνl : ∀ χ, ν χ = lv χ * -Real.log ‖(u.j ϖ : PadicAlgCl p)‖` using `fun χ => neg_injective (Real.exp_injective ((hν I hI χ).symm.trans ((keq _ _).1 (v_valF u hϖ hv hO (hl χ) hI hG))))`. Establish `hexp : ∀ α β : u.D.toPre.X, Real.exp (-(((((Q α : ℚ) - Q β) / k + lv α + ω : ℚ) : ℝ) * -Real.log ‖(u.j ϖ : PadicAlgCl p)‖)) = Real.exp (-(ω * -Real.log ‖(u.j ϖ : PadicAlgCl p)‖)) * Real.exp (-((l.q α - l.q β) / k + ν α))` using `fun α β => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add, hq, hq, hνl]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsupp : ∀ α i, GlobalTheory.UT.coef (s i) g w α ≠ 0 → ∃ m, α = cls i + k • m` using `fun α i h => by`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `h (coef_zero_of_famOf (hs i) (hzero i α fun m e => hn ⟨m, e⟩))`. Establish `hle : ∀ α i, ‖GlobalTheory.UT.coef (s i) g w α‖ ≤ Real.exp (-(ω * -Real.log ‖(u.j ϖ : PadicAlgCl p)‖)) * Real.exp (-((l.q α - l.q (cls i)) / k + ν α))` using `fun α i => by`. Distinguish the cases in `h : GlobalTheory.UT.coef (s i) g w α = 0`. Rewrite using `[h, norm_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result.
 
-Check the signs of the components of the expression. Take `⟨m, rfl⟩` from `hsupp α i h`. Rewrite using `[← hexp, ← (key _ _).1]`. Conclude with `le_v_term hϖ hv hQ (by omega) hw hl hω (vge_of_secScal (hs i _)) m`. Use `⟨_, Real.exp_pos _, fun α => ⟨hsupp α, hle α, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i₀, m, rfl⟩` from `hall α`. Take `⟨⟨i, hi⟩, h⟩` from `exists_v_term_le hϖ hv hLL u.complete hQ hk hw hl hω (hbas i₀) (fun i => s i) (fun i => hs i _) m`. Use `⟨i, le_antisymm (hle _ i) ?_⟩` and prove the remaining obligations. Rewrite using `[hi, ← hexp, ← (key _ _).2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_sizes : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (k : ℕ), 4 ≤ k → ∀ (J : Type) [Fintype J] (σ : J → (u.H k).Sec) (cls : J → u.D.toPre.X) (f : J → ∀ α, u.D.toPre.SecB k α), u.Basis l k σ cls f → ∀ s : J → Fam u.D.toPre (PadicAlgCl p) k, (∀ i, FamOf u.D.toPre _ (f i) (s i)) → ∀ (g : GtPtF u.D.toPre (PadicAlgCl p)) (ν : u.D.toPre.X → ℝ) (w : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) k g.b), u.GtN g ν → w.IsGen → ∃ κ : ℝ, 0 < κ ∧ ∀ α, (∀ i, GlobalTheory.UT.coef (s i) g w α ≠ 0 → ∃ m, α = cls i + k • m) ∧ (∀ i, ‖GlobalTheory.UT.coef (s i) g w α‖ ≤ κ * Real.exp (-((l.q α - l.q (cls i)) / k + ν α))) ∧ ∃ i, ‖GlobalTheory.UT.coef (s i) g w α‖ = κ * Real.exp (-((l.q α - l.q (cls i)) / k + ν α)) := by
   intro hLL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ σ cls f hB s hs g ν w hν hw

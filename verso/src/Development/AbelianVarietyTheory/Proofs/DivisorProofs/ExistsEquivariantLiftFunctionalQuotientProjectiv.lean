@@ -13,23 +13,23 @@ universe u
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ I A _ H _ _ σ hproj χ l₀ hl₀`. Use `letI mH : Module (C ⊗[ℤ] A) H := GlobalTheory.HTSummand.tensorModOf σ`. Set `χt : C ⊗[ℤ] A →ₐ[ℤ] C` to `Algebra.TensorProduct.productMap (AlgHom.id ℤ C) χ.toIntAlgHom`. Establish `hχt : ∀ (r : C) (a : A), χt (r ⊗ₜ[ℤ] a) = r * χ a` using `fun r a => by`. Simplify using `[χt, Algebra.TensorProduct.productMap_apply_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs⟩` from `Module.projective_def'.mp hproj`. Establish `hsx : ∀ x, (s x).sum (fun y c => c • y) = x`. Introduce `x`. Use `LinearMap.congr_fun hs x` as an intermediate fact. Simplify `this` using `[Finsupp.linearCombination_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `g : H → C` to `fun y => Function.surjInv Ideal.Quotient.mk_surjective (l₀ y)`. Establish `hg : ∀ y, Ideal.Quotient.mk I (g y) = l₀ y` using `fun y => Function.surjInv_eq Ideal.Quotient.mk_surjective (l₀ y)`. Set `F : H → C` to `fun x => (s x).sum (fun y c => χt c * g y)`. Establish `hadd : ∀ x x', F (x + x') = F x + F x'`. Introduce `x x'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [F, map_add]`. Conclude with `Finsupp.sum_add_index' (by simp) (by intros; simp [add_mul])`. Establish `hS : ∀ (t : C ⊗[ℤ] A) x, F (t • x) = χt t * F x`. Introduce `t x`. Simplify using `only [F, map_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum_smul_index (by simp), Finsupp.mul_sum]`. Simplify using `[_root_.mul_assoc]`. Establish `hr : ∀ (r : C) (x : H), r • x = ((r ⊗ₜ[ℤ] (1 : A) : C ⊗[ℤ] A) • x)`. Introduce `r x`. Rewrite using `[GlobalTheory.HTSummand.tensorModOf_tmul, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `ha : ∀ (a : A) (x : H), σ a x = ((1 ⊗ₜ[ℤ] a : C ⊗[ℤ] A) • x)`. Introduce `a x`. Rewrite using `[GlobalTheory.HTSummand.tensorModOf_tmul, one_smul]`. Set `l : H →ₗ[C] C` to `{ toFun := F map_add' := hadd map_smul' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r x`. Use `show F (r • x) = r * F x`. Rewrite using `[hr, hS, hχt, map_one, _root_.mul_one] }`. Establish `hl₀t : ∀ (t : C ⊗[ℤ] A) y, l₀ (t • y) = Ideal.Quotient.mk I (χt t) * l₀ y`. Introduce `t y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a`. Rewrite using `[GlobalTheory.HTSummand.tensorModOf_tmul, l₀.map_smul, hl₀, hχt, map_mul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, _root_.mul_assoc]`. Consider the case `add t t' h h' => rw [add_smul, map_add, h, h', map_add, map_add, add_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨l, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x show F (σ a x) = χ a * F x`. Rewrite using `[ha, hS, hχt, _root_.one_mul]`. Introduce `x show Ideal.Quotient.mk I (F x) = l₀ x conv_rhs => rw [← hsx x]`. Simplify using `only [F, map_finsuppSum, map_mul, hg, hl₀t]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eqLift_tensorModOf : ∀ {C : Type} [CommRing C] (I : Ideal C) {A : Type} [CommRing A] {H : Type u} [AddCommGroup H] [Module C H]
   (σ : A →+* Module.End C H), (letI := GlobalTheory.HTSummand.tensorModOf σ; Module.Projective (C ⊗[ℤ] A) H) →

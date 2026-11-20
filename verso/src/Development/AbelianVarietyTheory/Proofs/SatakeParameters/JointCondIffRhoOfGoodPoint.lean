@@ -18,9 +18,9 @@ open Polynomial NumberField IsDedekindDomain in
 open scoped Pointwise in
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] in
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← B.valuation_le_one_iff, map_inv₀]`. Establish `h0 : 0 < B.valuation y`. Rewrite using `[zero_lt_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.ne_zero_iff _).2 hy`. Simplify using `[hy, inv_le_one₀ h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma valuation_lt_one_iff_eq_zero_or_inv_notMem' (B : ValuationSubring Ω) (y : Ω) :
     B.valuation y < 1 ↔ y = 0 ∨ y⁻¹ ∉ B := by
@@ -35,7 +35,7 @@ open Polynomial NumberField IsDedekindDomain in
 open scoped Pointwise in
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] in
 /- English proof (translation)
-Use `⟨fun hy => ?_, ValuationSubring.smul_mem_pointwise_smul h y B⟩` and prove the remaining obligations. Use `ValuationSubring.smul_mem_pointwise_smul h⁻¹ _ _ hy` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma smul_mem_smul_valuationSubring_iff (h : _root_.Formalism.ConjugateSelfDual.G F Ω) (B : ValuationSubring Ω) (y : Ω) :
     h • y ∈ h • B ↔ y ∈ B := by
@@ -47,7 +47,7 @@ open Polynomial NumberField IsDedekindDomain in
 open scoped Pointwise in
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] in
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff_eq_zero_or_inv_notMem', valuation_lt_one_iff_eq_zero_or_inv_notMem', ← smul_inv'', smul_mem_smul_valuationSubring_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma valuation_smul_smul_lt_one_iff (h : _root_.Formalism.ConjugateSelfDual.G F Ω) (B : ValuationSubring Ω) (y : Ω) :
     (h • B).valuation (h • y) < 1 ↔ B.valuation y < 1 := by
@@ -60,11 +60,11 @@ open scoped Pointwise in
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] in
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨hdec, hval⟩` from `hσ`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hdec`, the goal using `[ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]`. Rewrite using `[mul_smul, mul_smul, hdec, inv_smul_smul]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← valuation_smul_smul_lt_one_iff g]`. Establish `hx' : (g • A).valuation (g • x) ≤ 1`. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul g x A hx`. Use `hval (g • x) hx'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`. Simplify using `[AlgEquiv.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParamRepCompare.conj_mem_Ine_of_smul_eq {A A' : ValuationSubring Ω} {g σ : _root_.Formalism.ConjugateSelfDual.G F Ω}
     (hg : g • A = A') (hσ : σ ∈ _root_.ReciprocityTheory.Gal.Ine (F := F) A') : g⁻¹ * σ * g ∈ _root_.ReciprocityTheory.Gal.Ine (F := F) A := by

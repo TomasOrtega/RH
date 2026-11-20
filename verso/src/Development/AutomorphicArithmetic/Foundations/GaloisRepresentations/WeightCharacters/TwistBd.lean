@@ -11,7 +11,7 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 namespace UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Take `⟨N, hNo, h1N, hNC⟩` from `hC₀.isOpen`. Use `Subgroup.isOpen_of_mem_nhds (g := 1) _ ?_` and prove the remaining obligations. Use `Filter.mem_of_superset ((hNo.preimage continuous_subtype_val).mem_nhds (show ((1 : C) : UA E a) ∈ N from h1N)) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.2 (hNC ⟨hx, hC.fin x.2⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isOpen_subgroupOf {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
     {C C₀ : Subgroup (UA E a)} (hC : IsLevel C) (hC₀ : IsLevel C₀) :
@@ -24,15 +24,15 @@ private theorem isOpen_subgroupOf {E : Type} [Field E] [NumberField E] [IsCMFiel
   exact Subgroup.mem_subgroupOf.2 (hNC ⟨hx, hC.fin x.2⟩)
 
 /- English proof (translation)
-Introduce `hT E _ _ _ l _ ι a C hC ℓ hℓ W f X b hb`. Take `⟨C₀, hC₀, hf⟩` from `UpperTheory.Gal.Gen.levelEx_holds E a W f`. Establish `hHo` using `isOpen_subgroupOf hC hC₀`. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC.compact`. Use `haveI : Finite (C ⧸ C₀.subgroupOf C) := Subgroup.quotient_finite_of_isOpen _ hHo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite (C ⧸ C₀.subgroupOf C)`. Establish `hq : ∀ q : C ⧸ C₀.subgroupOf C, ∃ R : ℝ, ∀ g i, ‖ι.symm (f.1 (b g i) (g * ((ℓ g)⁻¹ * q.out : C)))‖ ≤ R`. Introduce `q`. Take `⟨F, -, hF⟩` from `hT E a C hC ℓ hℓ W f q.out`. Take `⟨R, hR⟩` from `hb F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨R, fun g i => by rw [← hF]; exact hR g i⟩`. Use `choose R hR using hq`. Use `⟨1 + ∑ q, |R q|, by positivity, fun c g i => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (C₀.subgroupOf C) c`. Establish `hhC : ((h : C) : UA E a) ∈ C₀` using `Subgroup.mem_subgroupOf.1 h.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : f.1 (b g i) (g * ((ℓ g)⁻¹ * (QuotientGroup.mk c : C ⧸ C₀.subgroupOf C).out : C)) = f.1 (b g i) (g * ((ℓ g)⁻¹ * c : C))`. Rewrite using `[hh]`. Establish `: (((ℓ g)⁻¹ * (c * (h : C)) : C) : UA E a) = (((ℓ g)⁻¹ * c : C) : UA E a) * ((h : C) : UA E a)`. Simplify using `[mul_assoc]`. Rewrite using `[this, ← mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hf _ hhC _ _`. Rewrite using `[← e]`. Use `(hR _ g i).trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun q => |R q|) (fun q _ => abs_nonneg _) (Finset.mem_univ (QuotientGroup.mk c : C ⧸ C₀.subgroupOf C))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twistBd_of : Twist → TwistBd := by
   intro hT E _ _ _ l _ ι a C hC ℓ hℓ W f X b hb

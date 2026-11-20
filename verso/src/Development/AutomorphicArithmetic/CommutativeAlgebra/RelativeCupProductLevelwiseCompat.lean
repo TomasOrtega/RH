@@ -5,18 +5,18 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.MemPullbackImageIffF
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 
 /- English proof (translation)
-Simplify using `[Units.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem units_map_smul {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) (η : ℤˣ) (x : A) :
     f (η • x) = η • f x := by
   simp [Units.smul_def]
 
 /- English proof (translation)
-Establish `hηη : ∀ {A : Type 1} [AddCommGroup A] (x : A), η • η • x = x` using `fun x => by`. Rewrite using `[smul_smul, Int.units_mul_self, one_smul]`. Introduce `s a y ha hy`. Establish `hΨ : ∀ s x, Ψ 0 s (e s x) = η • e' s (Φ p s x)` using `fun s x => by rw [hΦ, hηη]`. Take `⟨a', y', h1, h2⟩` from `h s (e _ a) (η • e' s y) (by rw [← hd, ha, map_zero]) (by rw [hΨ, hy, hd', units_map_smul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(e s).symm a', η • (e' _).symm y', ?_, ?_⟩` and prove the remaining obligations. Apply `(e _).injective` to reduce the goal to its premises. Rewrite using `[hd, AddEquiv.apply_symm_apply, h1]`. Apply `(e' _).injective` to reduce the goal to its premises. Establish `h3 : e' s y = η • (Ψ 0 s a' + D'.d 0 (s - 1) s y')` using `by rw [← h2, hηη]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h4 : e' (s - 1) (η • (e' (s - 1)).symm y') = η • y'`. Use `units_map_smul (e' (s - 1)).toAddMonoidHom η ((e' (s - 1)).symm y')` as an intermediate fact. Simplify using `using this`. Rewrite using `[h3, map_add, hΦ, hd', AddEquiv.apply_symm_apply, h4, units_map_smul, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem colEx_transfer {C C' D D' : DC} (Φ : C.Hom C') (Ψ : D.Hom D') (p : ℕ) (η : ℤˣ)
     (e : ∀ s, C.A p s ≃+ D.A 0 s) (e' : ∀ s, C'.A p s ≃+ D'.A 0 s)
@@ -51,7 +51,7 @@ private def lvl {R : Type} [CommRing R] {E : Spc} {p : ℕ} (Z : Sub E)
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U z`. Establish `hf : ∀ i, Sx.face (E` using `disc.obj F) z i = z := fun _ => rfl`. Express the relevant statement in the definitionally equal form `m.negOnePow • ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (show Fam Z 0 (L.X (s + m)) from x).1 U (Sx.face (E := disc.obj F) z i) = 0`. Simplify using `[Fin.sum_univ_two, hf]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem disc_δ {R : Type} [CommRing R] {F : PSh} (Z : Sub (disc.obj F)) (L : Cx R) (m s : ℤ)
     (x : (famDC Z L m).A 0 s) : (famDC Z L m).δ 0 s x = 0 := by
@@ -62,18 +62,18 @@ private theorem disc_δ {R : Type} [CommRing R] {F : PSh} (Z : Sub (disc.obj F))
   simp [Fin.sum_univ_two, hf]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or η with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem fam_smul {R : Type} [CommRing R] {E : Spc} (Z : Sub E) (p : ℕ) (M : Shv R) (η : ℤˣ) (a : Fam Z p M)
     (W : Scheme.{0}) (z : Sx E p W) : (η • a).1 W z = η • a.1 W z := by
   rcases Int.units_eq_one_or η with rfl | rfl <;> simp
 
 /- English proof (translation)
-Introduce `R _ I J K μ X U E π m β p Φ Ψ hΦ hΨ hT`. Establish `h0 : Ψ.ColEx 0` using `UpperTheory.columnExact_zero_of_totalExact_of_vertical_zero _ _ Ψ (disc_δ _ _ _) (disc_δ _ _ _) hT`. Establish `hbot : ∀ (W : Scheme.{0}) (z : Sx E p W), (Sub.bot (disc.obj (E.obj (op (SimplexCategory.mk p))))).mem 0 W z ↔ (Sub.bot E).mem p W z` using `fun _ _ => Iff.rfl`. Establish `himg : ∀ (W : Scheme.{0}) (z : Sx E p W), (Sub.img (E` using `disc.obj (E.obj (op (SimplexCategory.mk p)))) (pullback.fst (show disc.obj (E.obj (op (SimplexCategory.mk p))) ⟶ sch.obj X from disc.map (π.app (op (SimplexCategory.mk p)))) (sch.map U.ι))).mem 0 W z ↔ (Sub.img (E := E) (pullback.fst π (sch.map U.ι))).mem p W z := fun W z => ((Up …`. Use `colEx_transfer Φ Ψ p (m * (p : ℤ)).negOnePow (fun s => lvl _ _ hbot _) (fun s => lvl _ _ himg _) (fun _ _ _ => rfl) (fun _ _ _ => rfl) ?_ h0` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `W z`. Establish `h1` using `hΦ p s x W z`. Establish `h2` using `hΨ 0 s (lvl _ _ hbot _ x) W z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans h1 (Eq.trans ?_ (fam_smul _ _ _ (m * (p : ℤ)).negOnePow (Ψ 0 s (lvl _ _ hbot _ x)) W z).symm)` and prove the remaining obligations. Use `congrArg _ (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Establish `h0' : (m * ((0 : ℕ) : ℤ)).negOnePow = 1` using `by simp`. Rewrite using `[h0', one_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.relativeCupProduct_levelwise_compat :
     ∀ (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) (m : ℤ) (β : Sec (J.X m) X) (p : ℕ)

@@ -11,19 +11,17 @@ variable {E : Type} [Field E] [NumberField E] (σ : E →+* E)
 end
 
 /- English proof (translation)
-Establish `hk1 : 0 < a1 ^ 2 - c` using `by linarith`. Establish `hk2 : 0 < b1 ^ 2 - c` using `by linarith`. Establish `hUU : U = U'` using `(pow_left_inj₀ hU0 hU'0 two_ne_zero).mp (hU.trans hU'.symm)`. Substitute `hUU` using the available equality. Establish `hr : 0 < U ^ 2` using `by rw [hU]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hUpos : 0 < U`. Break down `hU0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `hr` using `[← h]`. Evaluate the numerical expressions using `at hr`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hO2 : O * (a1 ^ 2 - c) ≤ a1 + b1`. Establish `e : a1 / (a1 ^ 2 - c) + U * U * b1 / (b1 ^ 2 - c) = (a1 + b1) / (a1 ^ 2 - c)`. Rewrite using `[← sq, hU]`. Clear the denominators using the available nonvanishing facts. Rewrite `hO` using `[e, le_div_iff₀ hk1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hO`. Establish `hαe : α = G * O / U` using `by field_simp; linarith`. Establish `hβe : β = G * O / U` using `by field_simp; linarith`. Establish `hab : α * β = G ^ 2 * O ^ 2 * (a1 ^ 2 - c) / (b1 ^ 2 - c)`. Rewrite using `[hαe, hβe, div_mul_div_comm, ← sq U, hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hab, div_le_div_iff₀ hk2 hc]`. Establish `hkey : c * (a1 + b1) ^ 2 ≤ 4 * a1 ^ 2 * b1 ^ 2` using `by nlinarith [sq_nonneg (a1 - b1)]`. Establish `hOk : (O * (a1 ^ 2 - c)) ^ 2 ≤ (a1 + b1) ^ 2`. Establish `: 0 ≤ O * (a1 ^ 2 - c)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ this hO2 2`. Establish `hG2 : 0 < G ^ 2` using `by positivity`. Establish `rhs : 4 * G ^ 2 * (a1 ^ 2 / (a1 ^ 2 - c)) * (b1 ^ 2 / (b1 ^ 2 - c)) * (b1 ^ 2 - c) = 4 * G ^ 2 * a1 ^ 2 * b1 ^ 2 / (a1 ^ 2 - c)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[rhs, le_div_iff₀ hk1]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma place_bound (a1 b1 c U U' O G α β : ℝ) (hc : 0 < c)
     (ha : c < a1 ^ 2) (hb : c < b1 ^ 2) (hU0 : 0 ≤ U) (hU'0 : 0 ≤ U')

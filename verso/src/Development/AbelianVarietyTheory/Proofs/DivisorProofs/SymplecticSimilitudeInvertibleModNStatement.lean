@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SympModN.symplecticSimilitude_modN` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymplecticSimilitudeInvertibleModN.lean&line=41#L41)
 -/

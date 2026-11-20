@@ -17,23 +17,19 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory.FlagTan
 
 /- English proof (translation)
-Introduce `k₀ _ X s n hs K _ κ ι _ hι Xι hXs hinj x' hx's hred`. Establish `hloc : ∀ (M : Type) [AddCommGroup M] [Module K M] [Module Kᵐᵒᵖ M] [IsCentralScalar K M], IsLocalHom (TrivSqZeroExt.fstHom K K M).toRingHom` using `fun M _ _ _ _ => ⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Establish `cp : ∀ (M : Type) [AddCommGroup M] [Module K M] [Module Kᵐᵒᵖ M] [IsCentralScalar K M], Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K M).toRingHom) (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint (TrivSqZeroExt K M)` using `fun M _ _ _ _ => by haveI := hloc M`. Conclude with `IsLocalRing.comap_closedPoint _`. Take `⟨U, hU, V, hV, hxV, e, hstd⟩` from `hs.exists_isStandardSmoothOfRelativeDimension ((Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K (ι → K)).toRingHom) ≫ Xι) (IsLocalRing.closedPoint K))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Xι (IsLocalRing.closedPoint (TrivSqZeroExt K (ι → K))) ∈ V`. Rewrite using `[← cp]`. Conclude with `hxV`. Establish `h2 : x' (IsLocalRing.closedPoint (DualNumber K)) ∈ V`. Rewrite using `[← cp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hxV` as an intermediate fact. Rewrite `this` using `[← hred]`. Conclude with `this`. Take `⟨R, rfl⟩` from `GlobalTheory.T.exists_ringHom_spec_factor_fromSpec_of_closedPoint_mem X V hV _ Xι h1`. Take `⟨g, rfl⟩` from `GlobalTheory.T.exists_ringHom_spec_factor_fromSpec_of_closedPoint_mem X V hV _ x' h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (s.appLE U V e).hom.toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension n Γ(Spec (CommRingCat.of k₀), U) Γ(X, V) := hstd`. Establish `key` using `IsAffineOpen.SpecMap_appLE_fromSpec s hU hV e`. Establish `mono : ∀ {Y : Scheme.{0}} {W : Y.Opens} (hW : IsAffineOpen W) {A : Type} [CommRing A] (φ ψ : Γ(Y, W) →+* A), Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec = Spec.map (CommRingCat.ofHom ψ) ≫ hW.fromSpec → φ = ψ`. Introduce `Y W hW A _ φ ψ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Spec.map_injective ((cancel_mono hW.fromSpec).1 h)` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `hsp : ∀ {A : Type} [CommRing A] (φ : Γ(X, V) →+* A), (Spec.map (CommRingCat.ofHom φ) ≫ hV.fromSpec) ≫ s = Spec.map (CommRingCat.ofHom (φ.comp (s.appLE U V e).hom)) ≫ hU.fromSpec`. Introduce `A _ φ`. Rewrite using `[Category.assoc, ← key, ← Category.assoc, ← Spec.map_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hc : ∀ (M : Type) [AddCommGroup M] [Module K M] [Module Kᵐᵒᵖ M] [IsCentralScalar K M] (φ : Γ(X, V) →+* TrivSqZeroExt K M), (Spec.map (CommRingCat.ofHom φ) ≫ hV.fromSpec) ≫ s = Spec.map (CommRingCat.ofHom ((TrivSqZeroExt.inlHom K M).comp κ)) → ∀ a, φ (s.appLE U V e a) = TrivSqZero …`. Introduce `M _ _ _ _ φ hφ a`. Establish `e1` using `hsp φ`. Establish `e2 : Spec.map (CommRingCat.ofHom (((TrivSqZeroExt.inlHom K M).comp (TrivSqZeroExt.fstHom K K M).toRingHom).comp (φ.comp (s.appLE U V e).hom))) ≫ hU.fromSpec = Spec.map (CommRingCat.ofHom ((TrivSqZeroExt.inlHom K M).comp κ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, ← e1, hφ, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `mono hU _ _ (e2.trans (hφ.symm.trans e1))` as an intermediate fact. Conclude with `(RingHom.congr_fun this a).symm`. Take `⟨M, hM⟩` from `GlobalTheory.T.square_zero_deformation_factors_through_linear Γ(Spec (CommRingCat.of k₀), U) Γ(X, V) K n hstd ι hι R (hc _ R hXs) (fun M M' h => hinj M M' (by`.
-
-Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, h]))`. Use `g (fun b => by`. Use `mono hV ((TrivSqZeroExt.fstHom K K K).toRingHom.comp g) ((TrivSqZeroExt.fstHom K K (ι → K)).toRingHom.comp R) (by` as an intermediate fact. Rewrite using `[CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc]`. Conclude with `hred)`.
-
-Conclude with `RingHom.congr_fun this b)`. Use the proof step `(hc _ g hx's)`. Use `⟨M, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dir_eq_of_smooth : ∀ (k₀ : Type) [Field k₀] (X : Scheme.{0}) (s : X ⟶ Spec (CommRingCat.of k₀)) (n : ℕ),
     SmoothOfRelativeDimension n s → ∀ (K : Type) [Field K] (κ : k₀ →+* K) (ι : Type) [Fintype ι],
@@ -106,15 +102,15 @@ theorem exists_dir_eq_of_smooth : ∀ (k₀ : Type) [Field k₀] (X : Scheme.{0}
   rw [hM, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]
 
 /- English proof (translation)
-Introduce `hP hG E _ _ _ H Dw l Xo c K _ _ y x' x'' M hpq h' h'' k' k''`. Take `⟨X, hX, hXy, hXM⟩ : ∃ X : Sp (TrivSqZeroExt K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)) ⟶ Xo.X, X ≫ Xo.s = sOf c _ ∧ spMap (TrivSqZeroExt.fstHom c.F K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)).toRingHom ≫ X = y.x ∧ ∀ M : GlobalThe …` from `by first`. Consider the case `exact GlobalTheory.T.universal_first_order_deformation hP hG E H Dw l Xo c K y hpq`. Consider the case `exact GlobalTheory.T.universal_first_order_deformation hP E H Dw l Xo c K y hpq`. Consider the case `exact (GlobalTheory.T.universal_first_order_deformation hP hG E H Dw l Xo c K y hpq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `htan : ∀ N, GlobalTheory.FlagTan.IsTanX y (spMap (GlobalTheory.FlagTan.dir c N).toRingHom ≫ X)` using `fun N => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hX, sOf, sOf, ← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `(GlobalTheory.FlagTan.dir c N).commutes _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← hXy]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `uniq` using `fun x hx => GlobalTheory.T.kodaira_spencer_matrix_unique hP E H Dw l Xo c K y x hpq hx`. Establish `key` using `exists_dir_eq_of_smooth (KA l) Xo.X Xo.s Dw.dim Xo.smooth K ((algebraMap c.F K).comp (IntermediateField.inclusion c.le).toRingHom) (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H)) (GlobalTheory.FlagTan.card_HIx (GlobalTheory.FlagTan.isHalf_psiSet H)) X (by rw [hX, sO …`. Establish `hk : ∀ x, GlobalTheory.FlagTan.IsTanX y x → ∃ N, x = spMap (GlobalTheory.FlagTan.dir c N).toRingHom ≫ X` using `fun x hx => key x (by rw [hx.1, sOf]) (hx.2.trans hXy.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N', rfl⟩` from `hk x' h'`. Take `⟨N'', rfl⟩` from `hk x'' h''`. Rewrite using `[uniq _ (htan N') N' M (hXM N') k', uniq _ (htan N'') N'' M (hXM N'') k'']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isKS_eq : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' x'' : Sp (DualNumber K) ⟶ Xo.X) (M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → GlobalTheory.FlagTan.IsTanX y x'' → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x'' M → x' = x'' := by
   intro hP hG E _ _ _ H Dw l Xo c K _ _ y x' x'' M hpq h' h'' k' k''

@@ -1,17 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `H _ _ G ι _ K σ S E c hS hE`. Use `⟨{ carrier := {x : S | ∃ T : Submodule ℂ H, FiniteDimensional ℂ T ∧ (x : H) ∈ T ∧ ∀ g ∈ K, ∀ v ∈ T, σ g v ∈ T} add_mem' := ?_ zero_mem' := ?_ smul_mem' := ?_ }, fun x => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨T₁, f₁, ha, h₁⟩ ⟨T₂, f₂, hb, h₂⟩`. Use `⟨T₁ ⊔ T₂, inferInstance, Submodule.add_mem_sup ha hb, ?_⟩` and prove the remaining obligations. Introduce `g hg v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h₁ g hg y hy) (h₂ g hg z hz)`. Use `⟨⊥, inferInstance, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Introduce `g _ v hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 hv, map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce and unpack `r x ⟨T, f, hx, h⟩`. Conclude with `⟨T, f, T.smul_mem r hx, h⟩`. Introduce and unpack `i x ⟨T, f, hx, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fU : FiniteDimensional ℂ (T.comap S.subtype)` using `FiniteDimensional.of_injective (S.subtype.submoduleComap T) (by`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun t : T => (t : H)) hab)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ (j : ι) (u : S), (u : H) ∈ T → ((E j u : S) : H) ∈ ⨆ k, (T.comap S.subtype).map (S.subtype ∘ₗ E k)` using `fun j u hu => Submodule.mem_iSup_of_mem j ⟨u, hu, rfl⟩`. Use `⟨⨆ k, (T.comap S.subtype).map (S.subtype ∘ₗ E k), inferInstance, hmem i x hx, ?_⟩` and prove the remaining obligations. Introduce `g hg v hv`. Establish `hle : (⨆ k, (T.comap S.subtype).map (S.subtype ∘ₗ E k)) ≤ (⨆ k, (T.comap S.subtype).map (S.subtype ∘ₗ E k)).comap (σ g)`. Use `iSup_le fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[Submodule.mem_comap, LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[hE g hg j u ⟨σ g u, hS g hg u u.2⟩ rfl]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hmem k _ (h g hg u hu))`. Conclude with `hle hv`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_invariant_subspace :
     ∀ (H : Type) [AddCommGroup H] [Module ℂ H] (G ι : Type) [Fintype ι] (K : Set G)

@@ -22,7 +22,7 @@ variable [FiniteDimensional Qp LL]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Conclude with `coef_step_of (W := W) hcase hP9 hT hgpi0 (fun f hf => gamma_sub_self_mem_pi0_q (W := W) hcase hP9 f hf) hA3 hA4 hinj cc hcc bi s s' hs' hs j hj g hg`.
+A detailed English derivation is pending.
 -/
 theorem coef_step (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ)

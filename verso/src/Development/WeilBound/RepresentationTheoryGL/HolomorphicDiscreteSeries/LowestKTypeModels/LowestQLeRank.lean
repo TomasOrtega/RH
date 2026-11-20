@@ -10,7 +10,7 @@ namespace PositivityTheory.RgHe.LowestKTypeUnitIntegral
 open Formalism.REAL Formalism.MainNotions.S PositivityTheory.UnitaryDecomposition Formalism.MainNotions.BridgeCSchur
 
 /- English proof (translation)
-Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ m` using `(min_le_left _ _).trans (by unfold ReciprocityTheory.ChartRestriction.DS.pOf; exact (Finset.card_filter_le _ _).trans (by simp))`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lowest_q_le_rank {m : ℕ} (ε : Fin m → Bool) : (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) ≤ m := by
   have : ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ m :=
@@ -18,21 +18,19 @@ theorem lowest_q_le_rank {m : ℕ} (ε : Fin m → Bool) : (ReciprocityTheory.Ch
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `n ε lam ε' mu e hG`. Establish `hn2 : (2 : ℝ) ≤ n` using `by exact_mod_cast hG.two`. Establish `hx3 : ((n : ℝ) + 1) ^ 2 ≤ ((n : ℝ) + 1) ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `hx2 : ((n : ℝ) + 1) ≤ ((n : ℝ) + 1) ^ 2` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `hbig : 2 * ((n + 1 : ℕ) : ℝ) < 200 * ((n : ℝ) + 1) ^ 3` using `by push_cast; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbig' : 2 * (n : ℝ) < 200 * ((n : ℝ) + 1) ^ 3` using `by linarith`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨H0, H0', i1, i2, i3, i4, π0, σ0, hπ0, hσ0, j0, hj00, hj0⟩ H H' _ _ _ _ _ _ π σ hπ hσ haveI := hπ0.1 haveI := hσ0.1`. Take `⟨UG, hUG⟩` from `(ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_props_large_gap (n + 1) ε lam hG.hc _ hG.gap hbig H0 π0 hπ0).2.2.2.2 H π hπ`. Take `⟨UH, hUH⟩` from `(ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_props_large_gap n ε' mu hG.hc' _ hG.gap' hbig' H0' σ0 hσ0).2.2.2.2 H' σ hσ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(UG : H0 →L[ℂ] H).comp (j0.comp (UH.symm : H' →L[ℂ] H0')), fun h0 => hj00 ?_, fun h x => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun y => ?_` and prove the remaining obligations. Use `congrArg (fun f => UG.symm (f (UH y))) h0` as an intermediate fact. Simplify using `using this`. Establish `e1 : UH.symm (σ (um h) x) = σ0 (um h) (UH.symm x)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `UH.injective` to reduce the goal to its premises. Rewrite using `[hUH _ (umat_mem h), LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`. Simplify using `only [ContinuousLinearMap.comp_apply, LinearIsometryEquiv.coe_coe'', ContinuousLinearEquiv.coe_coe]`. Use `show UG (j0 (UH.symm (σ (um h) x))) = π (emb e (um h)) (UG (j0 (UH.symm x)))`. Establish `m1 : emb e (um h) ∈ UJset ε` using `umat_mem (embU hG.fits h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hj0, hUG _ m1]`. Introduce `hO`. Take `⟨H, i1, i2, π, hπ⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap (n + 1) ε lam hG.hc _ hG.gap (Or.inr (by`. Use `lowest_q_le_rank ε` as an intermediate fact. Use `max_lt hbig ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this ⊢`. Establish `h1 : 8 * ((n : ℝ) + 1) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) ≤ 8 * ((n : ℝ) + 1) * ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_left this (by positivity)`. Use the proof step `nlinarith))`. Take `⟨H', i1', i2', σ, hσ⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap n ε' mu hG.hc' _ hG.gap' (Or.inr (by`. Use `lowest_q_le_rank ε'` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `max_lt hbig' ?_` and prove the remaining obligations. Establish `h1 : 8 * (n : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε' : ℝ) ≤ 8 * (n : ℝ) * (n : ℝ)` using `mul_le_mul_of_nonneg_left this (by positivity)`. Use the proof step `nlinarith))`. Use `haveI := hπ.1`. Use `haveI := hσ.1`.
-
-Conclude with `⟨H, H', i1, i2, i1', i2', π, σ, hπ, hσ, hO H H' π σ hπ hσ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem models_holds : Models := by
   intro n ε lam ε' mu e hG

@@ -22,15 +22,15 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Use `choose r hr using hd`. Set `K : AddSubgroup D.X` to `(nsmulAddMonoidHom k : D.X →+ D.X).range`. Establish `hK : Nat.card (D.X ⧸ K) = k ^ D.rank` using `AddSubgroup.index_range_nsmul D.X k`. Set `f : (D.X ⧸ K) × {g : GtPtF D F // k • g = 0} → Quot (QkPt.Equiv D F (k` to `k)) := fun x => Quot.mk _ (qkMk hB x.1.out (r x.1.out + x.2.1) (by rw [nsmul_add, hr, x.2.2, add_zero]))`. Rewrite using `[← hK, ← Nat.card_prod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce and unpack `⟨c, t⟩ ⟨c', t'⟩ h`. Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 ((equiv_equivalence hB).eqvGen_iff.1 (Quot.eqvGen_exact h))`. Simplify using `only [qkMk_y, qkMk_g] at hy hg`. Choose the witnesses or unpack the hypotheses as in `rfl : c = c' := by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.out_eq' c, ← QuotientAddGroup.out_eq' c', QuotientAddGroup.eq]`. Conclude with `⟨z, by rw [hy, neg_add_cancel_left]; rfl⟩`. Establish `hz : z = 0`. Establish `h0 : (k : ℤ) • z = 0` using `by rw [natCast_zsmul]; exact left_eq_add.1 hy`. Conclude with `(smul_eq_zero.1 h0).resolve_left (by exact_mod_cast hk)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hg` using `[hz, map_zero, add_zero, add_right_inj]`. Conclude with `Prod.ext rfl (Subtype.ext hg.symm)`. Introduce and unpack `⟨p⟩`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : -p.y + (QuotientAddGroup.mk p.y : D.X ⧸ K).out ∈ K := by`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : (QuotientAddGroup.mk p.y : D.X ⧸ K).out = p.y + k • z`. Rewrite using `[show k • z = _ from hz, add_neg_cancel_left]`. Use `⟨⟨QuotientAddGroup.mk p.y, p.g + iota hB F z - r (QuotientAddGroup.mk p.y : D.X ⧸ K).out, ?_⟩, (Quot.sound ((equiv_iff hB _ _).2 ⟨z, hy, ?_⟩)).symm⟩` and prove the remaining obligations. Rewrite using `[nsmul_sub, hr, hy, nsmul_add, qk_nsmul hB, map_add, map_nsmul, sub_self]`. Conclude with `add_sub_cancel _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_qk_eq_mul {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (hB : D.TauBimult) {k : ℕ} (hk : k ≠ 0)
@@ -65,9 +65,9 @@ theorem card_qk_eq_mul {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : 
     · exact add_sub_cancel _ _
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I hA D F _ _ _ k hk`. Establish `: IsNoetherianRing R` using `hA.1`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`. Establish `h₁` using `(GlobalTheory.GtCount.card_gtTors hL.1 hL.2.1 R D.toPre F k (Nat.cast_ne_zero.2 (by omega))).1`. Simplify using `only [GlobalTheory.GtCount.gtTors_iff] at h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h₂` using `(gt_onto_divisible_kernel hL R I hA D F).2.1 k hk`. Rewrite using `[card_qk_eq_mul D.tau_bimult (by omega) fun y => (h₂ _).imp fun _ e => ((isNsmul_iff_eq _ _ _).1 e).symm, h₁, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_qk : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (k : ℕ), 1 ≤ k → Nat.card (Quot (QkPt.Equiv D.toPre F (k := k))) = k ^ (2 * (D.toPre.rank + D.toPre.P.g)) := by
   intro hL R _ _ _ I hA D F _ _ _ k hk

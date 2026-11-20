@@ -25,12 +25,12 @@ section Values
 abbrev pt (F : Type) [Field F] : Sp F := IsLocalRing.closedPoint F
 
 /- English proof (translation)
-The claim follows from `(top_le_iff_mem x U _).1 h`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_le {x : Sp F ⟶ X} {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : x (pt F) ∈ U := (top_le_iff_mem x U _).1 h
 
 /- English proof (translation)
-The claim follows from `(top_le_iff_mem x U _).2 h`.
+A detailed English derivation is pending.
 -/
 theorem le_of_mem {x : Sp F ⟶ X} {U : X.Opens} (h : x (pt F) ∈ U) : ⊤ ≤ x ⁻¹ᵁ U := (top_le_iff_mem x U _).2 h
 
@@ -40,53 +40,53 @@ def valHom (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+* F :=
   (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.comp (x.appLE U ⊤ h).hom
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valF_eq (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) : valF x U a = valHom h a := dif_pos h
 
 /- English proof (translation)
-Simplify using `only [valF_eq h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_mul (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) : valF x U (a * b) = valF x U a * valF x U b := by
   simp only [valF_eq h, map_mul]
 
 /- English proof (translation)
-Simplify using `only [valF_eq h, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_add (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) : valF x U (a + b) = valF x U a + valF x U b := by
   simp only [valF_eq h, map_add]
 
 /- English proof (translation)
-Simplify using `only [valF_eq h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_sub (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) : valF x U (a - b) = valF x U a - valF x U b := by
   simp only [valF_eq h, map_sub]
 
 /- English proof (translation)
-Simplify using `only [valF_eq h, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_one' (h : ⊤ ≤ x ⁻¹ᵁ U) : valF x U 1 = 1 := by simp only [valF_eq h, map_one]
 
 /- English proof (translation)
-Simplify using `only [valF_eq h, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_zero' (h : ⊤ ≤ x ⁻¹ᵁ U) : valF x U 0 = 0 := by simp only [valF_eq h, map_zero]
 
 /- English proof (translation)
-The claim follows from `toStk_valF_gs x U _ (mem_of_le h) a`.
+A detailed English derivation is pending.
 -/
 theorem stk_valF (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) : toStk (pt F) (valF x U a) = gs x (pt F) U a :=
   toStk_valF_gs x U _ (mem_of_le h) a
 
 /- English proof (translation)
-The claim follows from `(toStk (pt F)).injective ((stk_valF h _).trans ((gs_res x _ e (mem_of_le h) a).trans (stk_valF (le_of_mem (e (mem_of_le h))) a).symm))`.
+A detailed English derivation is pending.
 -/
 theorem valF_res (e : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, U)) : valF x V (resG X e a) = valF x U a :=
   (toStk (pt F)).injective ((stk_valF h _).trans ((gs_res x _ e (mem_of_le h) a).trans
     (stk_valF (le_of_mem (e (mem_of_le h))) a).symm))
 
 /- English proof (translation)
-The claim follows from `(toStk (pt F)).injective ((stk_valF h _).trans ((gs_appLE f W U e x _ (mem_of_le h) a).trans (stk_valF (x := x ≫ f) (le_of_mem (e (mem_of_le h))) a).symm))`.
+A detailed English derivation is pending.
 -/
 theorem valF_appLE (f : X ⟶ Y) (W : Y.Opens) (e : U ≤ f ⁻¹ᵁ W) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(Y, W)) :
     valF x U ((f.appLE W U e).hom a) = valF (x ≫ f) W a :=
@@ -94,14 +94,14 @@ theorem valF_appLE (f : X ⟶ Y) (W : Y.Opens) (e : U ≤ f ⁻¹ᵁ W) (h : ⊤
     (stk_valF (x := x ≫ f) (le_of_mem (e (mem_of_le h))) a).symm))
 
 /- English proof (translation)
-Rewrite using `[top_le_iff_mem x _ (pt F), ← isUnit_gs_iff x _ U (mem_of_le h), ← stk_valF h]`. Conclude with `⟨fun e => (Ne.isUnit e).map _, fun u e => by rw [e, map_zero] at u; exact not_isUnit_zero u⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem valF_ne_zero_iff (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) : valF x U a ≠ 0 ↔ ⊤ ≤ x ⁻¹ᵁ X.basicOpen a := by
   rw [top_le_iff_mem x _ (pt F), ← isUnit_gs_iff x _ U (mem_of_le h), ← stk_valF h]
   exact ⟨fun e => (Ne.isUnit e).map _, fun u e => by rw [e, map_zero] at u; exact not_isUnit_zero u⟩
 
 /- English proof (translation)
-Rewrite using `[valF_ne_zero_iff h, top_le_iff_mem x _ (pt F), top_le_iff_mem x _ (pt F), mem_nonzeroLocus_iff_gs t x _ (mem_of_le h), isUnit_gs_iff x _ _ (mem_of_le h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_sec_ne_zero_iff {H : LB X} (t : H.Sec) {k : H.ι} (h : ⊤ ≤ x ⁻¹ᵁ H.U k) :
     valF x (H.U k) (t.f k) ≠ 0 ↔ ⊤ ≤ x ⁻¹ᵁ nonzeroLocus t := by
@@ -109,7 +109,7 @@ theorem valF_sec_ne_zero_iff {H : LB X} (t : H.Sec) {k : H.ι} (h : ⊤ ≤ x �
     mem_nonzeroLocus_iff_gs t x _ (mem_of_le h), isUnit_gs_iff x _ _ (mem_of_le h)]
 
 /- English proof (translation)
-The claim follows from `(toStk (pt F)).injective (by rw [map_mul, stk_valF h, stk_valF h, stk_valF ht] exact hr.gs x _ (mem_of_le ht) (mem_of_le h))`.
+A detailed English derivation is pending.
 -/
 theorem valF_ratio {H : LB X} {s t : H.Sec} {r : Γ(X, nonzeroLocus t)} (hr : IsRatio s t r) {k : H.ι}
     (ht : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus t) (h : ⊤ ≤ x ⁻¹ᵁ H.U k) :
@@ -127,7 +127,7 @@ def MeetsOpens (x : J → (Sp F ⟶ X)) : Prop := ∀ (U : X.Opens) (y : X), y �
 variable {x : J → (Sp F ⟶ X)} {x' : J → (Sp F ⟶ X')}
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Take `⟨j, hj⟩` from `hx _ y hy`. Establish `hU : ⊤ ≤ x j ⁻¹ᵁ U` using `le_of_mem (X.basicOpen_le _ (mem_of_le hj))`. Conclude with `absurd (by rw [valF_sub hU, h j hU, sub_self]) ((valF_ne_zero_iff hU _).2 hj)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MeetsOpens.fn_ext [IsReduced X] (hx : MeetsOpens x) {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ j, ⊤ ≤ x j ⁻¹ᵁ U → valF (x j) U a = valF (x j) U b) : a = b := by
@@ -138,13 +138,13 @@ theorem MeetsOpens.fn_ext [IsReduced X] (hx : MeetsOpens x) {U : X.Opens} {a b :
   exact absurd (by rw [valF_sub hU, h j hU, sub_self]) ((valF_ne_zero_iff hU _).2 hj)
 
 /- English proof (translation)
-Establish `: IsReduced Y` using `isReduced_of_isOpenImmersion u`. It suffices to establish `IsDominant (equalizer.ι f g) from ext_of_isDominant (equalizer.ι f g) (equalizer.condition _ _)`. Use `⟨dense_iff_inter_open.2 ?_⟩` and prove the remaining obligations. Introduce and unpack `U hU ⟨y₀, hy₀⟩`. Take `⟨j, hj⟩` from `hx (u ''ᵁ ⟨U, hU⟩) (u y₀) ⟨y₀, hy₀, rfl⟩`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁, e⟩` from `mem_of_le hj`. Establish `hr : Set.range (x j) ⊆ Set.range u`. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨b, -, hb⟩` from `hj (Set.mem_univ a)`. Conclude with `⟨b, hb⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e₁` using `IsOpenImmersion.lift_fac u (x j) hr`. Use `⟨y₁, hy₁, equalizer.lift _ (h j _ e₁) (pt F), ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, equalizer.lift_ι]`. Use `u.isOpenEmbedding.injective ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e₁]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 theorem MeetsOpens.hom_ext_of_open [IsReduced X] [X'.IsSeparated] (hx : MeetsOpens x) (u : Y ⟶ X)
     [IsOpenImmersion u] {f g : Y ⟶ X'} (h : ∀ j (y : Sp F ⟶ Y), y ≫ u = x j → y ≫ f = y ≫ g) : f = g := by
@@ -166,16 +166,16 @@ theorem MeetsOpens.hom_ext_of_open [IsReduced X] [X'.IsSeparated] (hx : MeetsOpe
   exact e.symm
 
 /- English proof (translation)
-The claim follows from `hx.hom_ext_of_open (𝟙 X) fun j y e => by rw [Category.comp_id] at e; rw [e, h]`.
+A detailed English derivation is pending.
 -/
 theorem MeetsOpens.hom_ext [IsReduced X] [X'.IsSeparated] (hx : MeetsOpens x) {f g : X ⟶ X'}
     (h : ∀ j, x j ≫ f = x j ≫ g) : f = g :=
   hx.hom_ext_of_open (𝟙 X) fun j y e => by rw [Category.comp_id] at e; rw [e, h]
 
 /- English proof (translation)
-Establish `hu : ∀ k, IsUnit (resG X (X.basicOpen_le (b k)) (b k))` using `fun k => X.toRingedSpace.isUnit_res_basicOpen (b k)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ∀ k, Γ(X, X.basicOpen (b k)), ∀ k j, ⊤ ≤ x j ⁻¹ᵁ X.basicOpen (b k) → valF (x j) _ (u k) = v j := by`. Use `⟨fun k => resG X (X.basicOpen_le (b k)) (a k) * ((hu k).unit⁻¹).val, fun k j hj => ?_⟩` and prove the remaining obligations. Establish `hW : ⊤ ≤ x j ⁻¹ᵁ W` using `le_of_mem (X.basicOpen_le _ (mem_of_le hj))`. Rewrite using `[valF_mul hj, valF_res _ hj, h j k hW, ← valF_res (X.basicOpen_le (b k)) hj (b k), _root_.mul_assoc, ← valF_mul hj, IsUnit.mul_val_inv, valF_one' hj, _root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, -⟩` from `X.sheaf.existsUnique_gluing' (fun k => X.basicOpen (b k)) W (fun k => homOfLE (X.basicOpen_le (b k))) (fun y hy => Opens.mem_iSup.2 (hb y hy)) u (fun k l => hx.fn_ext (U := X.basicOpen (b k) ⊓ X.basicOpen (b l)) fun j hj => ((valF_res inf_le_left hj _).trans (hu k j (le_of_mem (m …`. Use `⟨w, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hb _ (mem_of_le hj)`. Rewrite using `[← hu k j (le_of_mem hk), ← hw k]`. Conclude with `(valF_res (X.basicOpen_le (b k)) (le_of_mem hk) w).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MeetsOpens.exists_fn [IsReduced X] (hx : MeetsOpens x) (W : X.Opens) (v : J → F) {K : Type}
     (a b : K → Γ(X, W)) (hb : ∀ y ∈ W, ∃ k, y ∈ X.basicOpen (b k))
@@ -201,11 +201,11 @@ theorem MeetsOpens.exists_fn [IsReduced X] (hx : MeetsOpens x) (W : X.Opens) (v 
   exact (valF_res (X.basicOpen_le (b k)) (le_of_mem hk) w).symm
 
 /- English proof (translation)
-Establish `e1 : CommRingCat.ofHom r ≫ (y ≫ U.ι).appLE U ⊤ hy = q.appLE D ⊤ hq`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of F)).hom]`. Use extensionality with `φ`. Use `h φ` as an intermediate fact. Rewrite `this` using `[valF_eq hy, valF_eq hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `e2 : (isAffineOpen_top (Sp F)).fromSpec ≫ y ≫ U.toSpecΓ = Spec.map ((y ≫ U.ι).appLE U ⊤ hy)`. Rewrite using `[IsAffineOpen.fromSpec_top, Iso.inv_comp_eq, Scheme.Opens.toSpecΓ, Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp]`. Use `congr 2`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE y U.ι U ⊤ ⊤ (by simp) le_top, Scheme.Opens.ι_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `: IsIso (isAffineOpen_top (Sp F)).fromSpec`. Rewrite using `[IsAffineOpen.fromSpec_top]`. Use `infer_instance`. Rewrite using `[← cancel_epi (isAffineOpen_top (Sp F)).fromSpec, ← hD.SpecMap_appLE_fromSpec q _ hq, ← e1, reassoc_of% e2, Spec.map_comp_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_fromSpec (U : X.Opens) {D : X'.Opens} (hD : IsAffineOpen D) (r : Γ(X', D) →+* Γ(X, U))
     (y : Sp F ⟶ U.toScheme) (q : Sp F ⟶ X') (hy : ⊤ ≤ (y ≫ U.ι) ⁻¹ᵁ U) (hq : ⊤ ≤ q ⁻¹ᵁ D)
@@ -230,17 +230,15 @@ theorem comp_fromSpec (U : X.Opens) {D : X'.Opens} (hD : IsAffineOpen D) (r : Γ
     reassoc_of% e2, Spec.map_comp_assoc]
 
 /- English proof (translation)
-Use `choose r hr using h`. Establish `loc : ∀ k, ∃ m : (U k).toScheme ⟶ X', ∀ j (z : Sp F ⟶ (U k).toScheme), z ≫ (U k).ι = x j → z ≫ m = x' j` using `fun k => by`. Set `ρ : Γ(X', D k) →+* Γ(X, U k)` to `{ toFun := r k map_one' := hx.fn_ext fun j hj => by rw [hr k _ j hj, valF_one' hj, valF_one' (hm k j hj)] map_mul' := fun a b => hx.fn_ext fun j hj => by`. Rewrite using `[hr k _ j hj, valF_mul hj, valF_mul (hm k j hj), hr k _ j hj, hr k _ j hj]`. Use the proof step `map_zero' := hx.fn_ext fun j hj => by rw [hr k _ j hj, valF_zero' hj, valF_zero' (hm k j hj)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_add' := fun a b => hx.fn_ext fun j hj => by`. Rewrite using `[hr k _ j hj, valF_add hj, valF_add (hm k j hj), hr k _ j hj, hr k _ j hj] }`. Use `⟨(U k).toSpecΓ ≫ Spec.map (CommRingCat.ofHom ρ) ≫ (hD k).fromSpec, fun j z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : ⊤ ≤ (z ≫ (U k).ι) ⁻¹ᵁ U k` using `le_of_mem (z (pt F)).2`. Establish `hj : ⊤ ≤ x j ⁻¹ᵁ U k` using `hz ▸ hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `comp_fromSpec (U k) (hD k) ρ z _ hz' (hm k j hj) fun φ => by rw [hz]; exact hr k φ j hj`. Use `choose m hm using loc`. Set `𝒰` to `X.openCoverOfIsOpenCover U hU`. Establish `hc : ∀ k l, pullback.fst (𝒰.f k) (𝒰.f l) ≫ m k = pullback.snd (𝒰.f k) (𝒰.f l) ≫ m l` using `fun k l => hx.hom_ext_of_open (pullback.fst (𝒰.f k) (𝒰.f l) ≫ 𝒰.f k) fun j y e => by`. Use `(Category.assoc _ _ _).symm.trans (Eq.trans ?_ (Category.assoc _ _ _))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hm k j _ ((Category.assoc _ _ _).trans e)).trans (hm l j _ ?_).symm` and prove the remaining obligations. Rewrite `e` using `[pullback.condition]`. Conclude with `(Category.assoc _ _ _).trans e`. Use `⟨𝒰.glueMorphisms m hc, fun j => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hU.ge (Set.mem_univ (x j (pt F))))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : Set.range (x j) ⊆ Set.range (U k).ι`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `le_of_mem hk (Set.mem_univ a)`. Establish `e` using `IsOpenImmersion.lift_fac (U k).ι (x j) hr`.
-
-Establish `e2 : (U k).ι ≫ 𝒰.glueMorphisms m hc = m k` using `𝒰.ι_glueMorphisms m hc k`. Use `Eq.trans ?_ (hm k j _ e)` and prove the remaining obligations. Rewrite using `[← e2, ← Category.assoc, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MeetsOpens.exists_hom [IsReduced X] [X'.IsSeparated] (hx : MeetsOpens x) {K : Type} (U : K → X.Opens)
     (D : K → X'.Opens) (hU : ⨆ k, U k = ⊤) (hD : ∀ k, IsAffineOpen (D k))
@@ -288,17 +286,15 @@ section Embed
 variable {x : J → (Sp F ⟶ X)} {x' : J → (Sp F ⟶ X')}
 
 /- English proof (translation)
-Use `choose k k' hk hk' c c' v hc hc' hv using h`. Use `choose haff r' hr' hsurj using he.2`. Use `choose r hr using fun i l => exists_isRatio (t l) (t i)`. Establish `hm : ∀ i j, ⊤ ≤ x j ⁻¹ᵁ nonzeroLocus (t i) → v j i ≠ 0 ∧ ⊤ ≤ x' j ⁻¹ᵁ nonzeroLocus (t' i)` using `fun i j hj => by`. Establish `e` using `(valF_sec_ne_zero_iff (t i) (hk j)).2 hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[(hv j i).1]`. Use `⟨left_ne_zero_of_mul e, (valF_sec_ne_zero_iff (t' i) (hk' j)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[(hv j i).2]`. Conclude with `mul_ne_zero (left_ne_zero_of_mul e) (hc' j)`. Use `hx.exists_hom (fun i => nonzeroLocus (t i)) (fun i => nonzeroLocus (t' i)) hcov haff (fun i j hj => (hm i j hj).2) fun i φ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Take `⟨p, rfl⟩` from `hsurj i φ`. Use `⟨MvPolynomial.eval₂Hom (f.appLE ⊤ (nonzeroLocus (t i)) le_top).hom (r i) p, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨hv0, hj'⟩` from `hm i j hj`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C b`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C]`. Conclude with `(valF_appLE f ⊤ le_top hj b).trans ((congrArg (valF · ⊤ b) (hf j)).trans (valF_appLE f' ⊤ le_top hj' b).symm)`. Consider the case `add p q hp hq => rw [map_add, map_add, valF_add hj, valF_add hj', hp, hq]`. Consider the case `mul_X p l hp`. Rewrite using `[map_mul, map_mul, valF_mul hj, valF_mul hj', hp, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X']`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Establish `e` using `valF_ratio (hr i l) hj (hk j)`. Establish `e'` using `valF_ratio (hr' i l) hj' (hk' j)`. Rewrite `e` using `[(hv j l).1, (hv j i).1, ← _root_.mul_assoc]`. Rewrite `e'` using `[(hv j l).2, (hv j i).2, ← _root_.mul_assoc]`.
-
-Conclude with `mul_right_cancel₀ hv0 ((mul_right_cancel₀ (hc j) e).symm.trans (mul_right_cancel₀ (hc' j) e'))`.
+A detailed English derivation is pending.
 -/
 theorem MeetsOpens.exists_hom_of_embedsBy [IsReduced X] [X'.IsSeparated] (hx : MeetsOpens x) {S : Scheme.{0}}
     (f : X ⟶ S) (f' : X' ⟶ S) (hf : ∀ j, x j ≫ f = x' j ≫ f') {H : LB X} {H' : LB X'} {I₁ : Type}
@@ -339,12 +335,12 @@ variable {L : LB X} {L' : LB X'}
 abbrev chart (L : LB X) (a : L.ι) : X.Opens := LB.wchart L (fun _ : Fin 1 => 𝟙 X) fun _ => a
 
 /- English proof (translation)
-Introduce `_ h` and use `Set.mem_iInter.2 fun _ => h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_chart {a : L.ι} : L.U a ≤ chart L a := fun _ h => Set.mem_iInter.2 fun _ => h
 
 /- English proof (translation)
-The claim follows from `le_of_mem (le_chart (mem_of_le h))`.
+A detailed English derivation is pending.
 -/
 theorem top_le_chart {y : Sp F ⟶ X} {a : L.ι} (h : ⊤ ≤ y ⁻¹ᵁ L.U a) : ⊤ ≤ y ⁻¹ᵁ chart L a :=
   le_of_mem (le_chart (mem_of_le h))
@@ -354,11 +350,11 @@ def SeparatesSections (L : LB X) (x : J → (Sp F ⟶ X)) : Prop :=
     valF (x j) (LB.wchart L (fun _ : Fin 1 => 𝟙 X) a) (u.f a) = 0) → ∀ a, u.f a = 0
 
 /- English proof (translation)
-Introduce `U y hy`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn, s, hs, hle, -⟩` from `hL.exists_affine_le hy`. Set `a : ChartPull (LB.LinComb L (K` to `Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ))) (lbPow L n) (𝟙 X) := { idx := fun j _ => j 0 le := fun j y hy => mem_powChart.2 (Set.mem_iInter.1 hy 0) g := fun y j j' hj hj' => by`. Use `(gm_linComb L (fun _ : Fin 1 => 𝟙 X) (fun _ => (n : ℤ)) (𝟙 _) y j j' hj hj').trans (Eq.trans ?_ (gm_lbPow_g n (𝟙 X) y _ _ (mem_powChart.2 (Set.mem_iInter.1 hj 0)) (mem_powChart.2 (Set.mem_iInter.1 hj' 0))).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_one, Category.id_comp, zpow_natCast] }`. Establish `e : nonzeroLocus (chartSec a s) = nonzeroLocus s` using `nonzeroLocus_chartSec_id a s fun _ J hJ => ⟨fun _ => J PUnit.unit, Set.mem_iInter.2 fun _ => mem_powChart.1 hJ⟩`. Establish `h0` using `h n hn (chartSec a s) fun j b hb => by`. Assume the negation of the conclusion as `h₁`. Conclude with `hne ⟨j, le_of_mem (hle (e.le (mem_of_le ((valF_sec_ne_zero_iff (chartSec a s) (k := b) hb).1 h₁))))⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Opens.mem_iSup.1 (e.ge hs)`. Rewrite `hb` using `[h0 b]`. Conclude with `(Scheme.basicOpen_zero _ _).le hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SeparatesSections.meetsOpens (hL : IsAmpleLB L) (h : SeparatesSections L x) : MeetsOpens x := by
   intro U y hy
@@ -382,7 +378,7 @@ theorem SeparatesSections.meetsOpens (hL : IsAmpleLB L) (h : SeparatesSections L
   exact (Scheme.basicOpen_zero _ _).le hb
 
 /- English proof (translation)
-Introduce `_ _ _ h a` and use `hx.fn_ext fun j hj => (h j a hj).trans (valF_zero' hj).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MeetsOpens.separatesSections [IsReduced X] (hx : MeetsOpens x) (L : LB X) : SeparatesSections L x :=
   fun _ _ _ h a => hx.fn_ext fun j hj => (h j a hj).trans (valF_zero' hj).symm
@@ -395,16 +391,16 @@ def HasValueAt {N : ℕ} (s : H0 L N) (y : Sp F ⟶ X) (τ : L.ι → F) (c : F)
   ∀ a, ⊤ ≤ y ⁻¹ᵁ L.U a → valF y (chart L a) (s.f fun _ => a) = c * τ a ^ N
 
 /- English proof (translation)
-The claim follows from `toStk_valF y (L.U a ⊓ L.U b) _ ⟨mem_of_le ha, mem_of_le hb⟩ _`.
+A detailed English derivation is pending.
 -/
 theorem stk_valF_g {y : Sp F ⟶ X} {a b : L.ι} (ha : ⊤ ≤ y ⁻¹ᵁ L.U a) (hb : ⊤ ≤ y ⁻¹ᵁ L.U b) :
     toStk (pt F) (valF y (L.U a ⊓ L.U b) (L.g a b).val) = (gm y (pt F) _ (L.g a b)).val :=
   toStk_valF y (L.U a ⊓ L.U b) _ ⟨mem_of_le ha, mem_of_le hb⟩ _
 
 /- English proof (translation)
-Use `⟨fun b => valF y (L.U b ⊓ L.U a) (L.g b a).val * c, ⟨fun b hb => mul_ne_zero (fun e => ?_) hc, fun b b' hb hb' => ?_⟩, ?_⟩` and prove the remaining obligations. Use `stk_valF_g hb ha` as an intermediate fact. Rewrite `this` using `[e, map_zero]`. Conclude with `Units.ne_zero _ this.symm`. Rewrite using `[← _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (· * c) ((toStk (pt F)).injective ?_)` and prove the remaining obligations. Rewrite using `[map_mul, stk_valF_g hb ha, stk_valF_g hb hb', stk_valF_g hb' ha, ← Units.val_mul, gm_cocycle hL y _ (mem_of_le hb) (mem_of_le hb') (mem_of_le ha)]`. Use `(congrArg (· * c) ((toStk (pt F)).injective (a₂ := 1) ?_)).trans (_root_.one_mul c)` and prove the remaining obligations. Rewrite using `[stk_valF_g ha ha, gm_self hL y _ (mem_of_le ha), map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFrameAt (hL : L.IsLB) (y : Sp F ⟶ X) {a : L.ι} (ha : ⊤ ≤ y ⁻¹ᵁ L.U a) {c : F} (hc : c ≠ 0) :
     ∃ τ, IsFrameAt L y τ ∧ τ a = c := by
@@ -421,7 +417,7 @@ theorem exists_isFrameAt (hL : L.IsLB) (y : Sp F ⟶ X) {a : L.ι} (ha : ⊤ ≤
     rw [stk_valF_g ha ha, gm_self hL y _ (mem_of_le ha), map_one, Units.val_one]
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [hτ.2 a b ha hb, mul_pow, mul_left_comm, ← h] refine (toStk (pt F)).injective ?_ rw [map_mul, map_pow, stk_valF_g ha hb] refine (stk_valF (top_le_chart ha) _).trans ((sec_trans s y _ (le_chart (mem_of_le ha)) (le_chart (mem_of_le hb))).trans (congrArg₂ (· * ·) ?_ (stk_valF …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasValueAt.of_chart {N : ℕ} {s : H0 L N} {y : Sp F ⟶ X} {τ : L.ι → F} (hτ : IsFrameAt L y τ) {c : F}
     {b : L.ι} (hb : ⊤ ≤ y ⁻¹ᵁ L.U b) (h : valF y (chart L b) (s.f fun _ => b) = c * τ b ^ N) :
@@ -436,9 +432,9 @@ theorem HasValueAt.of_chart {N : ℕ} {s : H0 L N} {y : Sp F ⟶ X} {τ : L.ι �
 def genCoord {y : Sp F ⟶ X} (τ : LB.Gen (L.pull y)) (a : L.ι) : F := valF (𝟙 (Sp F)) _ (τ.s fun _ => a).val
 
 /- English proof (translation)
-Establish `val : ∀ a, ⊤ ≤ y ⁻¹ᵁ L.U a → toStk (pt F) (genCoord τ a) = (gm (𝟙 _) (pt F) _ (τ.s fun _ => a)).val` using `fun a ha => toStk_valF _ _ _ (mem_pull.2 (mem_of_le ha)) _`. Use `⟨fun a ha e => ?_, fun a b ha hb => (toStk (pt F)).injective ?_⟩` and prove the remaining obligations. Use `val a ha` as an intermediate fact. Rewrite `this` using `[e, map_zero]`. Conclude with `Units.ne_zero _ this.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, val a ha, val b hb, stk_valF_g ha hb, ← Units.val_mul]`. Use `congrArg Units.val ((gen_trans hτ (𝟙 _) (pt F) (mem_pull.2 (mem_of_le ha)) (mem_pull.2 (mem_of_le hb))).trans (congrArg (· * _) ?_))` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_unique, Category.id_comp, zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrameAt_genCoord {y : Sp F ⟶ X} {τ : LB.Gen (L.pull y)} (hτ : τ.IsGen) : IsFrameAt L y (genCoord τ) := by
   have val : ∀ a, ⊤ ≤ y ⁻¹ᵁ L.U a → toStk (pt F) (genCoord τ a) = (gm (𝟙 _) (pt F) _ (τ.s fun _ => a)).val :=
@@ -453,29 +449,27 @@ theorem isFrameAt_genCoord {y : Sp F ⟶ X} {τ : LB.Gen (L.pull y)} (hτ : τ.I
     rw [trF, Fintype.prod_unique, Category.id_comp, zpow_one]
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Use `choose c hc hc' using vs`. Use `choose d hd hd' using vt`. Set `W : L'.ι → L.ι → X.Opens` to `fun a' a => (L'.pull β).U (fun _ => a') ⊓ L.U a`. Establish `mem : ∀ {j a' a}, ⊤ ≤ x j ⁻¹ᵁ W a' a ↔ ⊤ ≤ x j ⁻¹ᵁ L.U a ∧ ⊤ ≤ x' j ⁻¹ᵁ L'.U a'` using `fun {j a' a} => by`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hβ]`. Conclude with `⟨fun h => ⟨le_of_mem (mem_of_le h).2, le_of_mem (mem_pull.1 (mem_of_le h).1)⟩, fun h => le_of_mem ⟨mem_pull.2 (mem_of_le h.2), mem_of_le h.1⟩⟩`. Establish `loc : ∀ a' a, ∃ w : Γ(X, W a' a)ˣ, ∀ j, ⊤ ≤ x j ⁻¹ᵁ W a' a → valF (x j) _ w.val = τ' j a' / τ j a`. Introduce `a' a`. Establish `l : W a' a ≤ chart L a` using `inf_le_right.trans le_chart`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `l' : W a' a ≤ β ⁻¹ᵁ chart L' a'` using `fun _ h => le_chart (mem_pull.1 h.1)`. Set `A : ∀ {n : ℕ}, H0 L n → Γ(X, W a' a)` to `fun u => resG X l (u.f fun _ => a)`. Set `B : ∀ {n : ℕ}, H0 L' n → Γ(X, W a' a)` to `fun u => (β.appLE _ _ l').hom (u.f fun _ => a')`. Establish `vA : ∀ {n : ℕ} {u : H0 L n} {j e}, HasValueAt u (x j) (τ j) e → ⊤ ≤ x j ⁻¹ᵁ W a' a → valF (x j) _ (A u) = e * τ j a ^ n` using `fun h hj => (valF_res l hj _).trans (h a (mem.1 hj).1)`. Establish `vB : ∀ {n : ℕ} {u : H0 L' n} {j e}, HasValueAt u (x' j) (τ' j) e → ⊤ ≤ x j ⁻¹ᵁ W a' a → valF (x j) _ (B u) = e * τ' j a' ^ n` using `fun h hj => (valF_appLE β _ l' hj _).trans (by rw [hβ]; exact h a' (mem.1 hj).2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `cov : ∀ {n n' : ℕ} {I₁ κ : Type} (u : I₁ → H0 L n) (u' : κ → H0 L' n'), ⨆ i, nonzeroLocus (u i) = ⊤ → ⨆ i, nonzeroLocus (u' i) = ⊤ → ∀ y ∈ W a' a, ∃ p : I₁ × κ, y ∈ X.basicOpen (A (u p.1) * B (u' p.2))` using `fun u u' hu hu' y hy => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hu.ge (Set.mem_univ y))`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hu'.ge (Set.mem_univ (β y)))`. Use `⟨(i, k), (isUnit_gs_iff (𝟙 X) y _ hy _).1 ?_⟩` and prove the remaining obligations. Use `(congrArg IsUnit ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y l hy _) ((gs_appLE β _ _ l' (𝟙 X) y hy _).trans (congrArg (gs · y _ _) (Category.id_comp β)))))).mpr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((mem_nonzeroLocus_iff_gs (u i) (𝟙 X) y (k := fun _ => a) (l hy)).1 hi).mul ((mem_nonzeroLocus_iff_gs (u' k) β y (k := fun _ => a') (l' hy)).1 hk)`. Take `⟨w, hw⟩` from `hx.exists_fn (W a' a) (fun j => τ' j a' / τ j a) (fun p : κ × I₁ => A (s p.2) * B (t' p.1)) (fun p => A (t p.1) * B (s' p.2)) (cov t s' ht hs') fun j p hj => by`. Use `(hτ j).1 a (mem.1 hj).1` as an intermediate fact. Rewrite using `[valF_mul hj, valF_mul hj, vA (hc _ j) hj, vA (hd _ j) hj, vB (hc' _ j) hj, vB (hd' _ j) hj]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨w', hw'⟩` from `hx.exists_fn (W a' a) (fun j => τ j a / τ' j a') (fun p : I₁ × κ => A (t p.2) * B (s' p.1)) (fun p => A (s p.1) * B (t' p.2)) (cov s t' hs ht') fun j p hj => by`. Use `(hτ' j).1 a' (mem.1 hj).2` as an intermediate fact. Rewrite using `[valF_mul hj, valF_mul hj, vA (hc _ j) hj, vA (hd _ j) hj, vB (hc' _ j) hj, vB (hd' _ j) hj]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : w * w' = 1` using `hx.fn_ext fun j hj => by`. Use `(hτ j).1 a (mem.1 hj).1` as an intermediate fact. Use `(hτ' j).1 a' (mem.1 hj).2` as an intermediate fact. Rewrite using `[valF_mul hj, hw j hj, hw' j hj, valF_one' hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `⟨⟨w, w', e, (mul_comm _ _).trans e⟩, hw⟩`. Use `choose w hw using loc`. Use `⟨⟨fun p => w (p.1 PUnit.unit) p.2⟩, ?_, fun j a a' ha ha' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨I, a⟩ ⟨I', b⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a', rfl⟩ : ∃ a', I = fun _ => a'` from `⟨I PUnit.unit, rfl⟩`. Take `⟨b', rfl⟩ : ∃ b', I' = fun _ => b'` from `⟨I' PUnit.unit, rfl⟩`. Use `Units.ext (hx.fn_ext (U := W a' a ⊓ W b' b) fun j hj => ?_)` and prove the remaining obligations. Establish `h₁ : ⊤ ≤ x j ⁻¹ᵁ W a' a` using `le_of_mem (mem_of_le hj).1`. Establish `h₂ : ⊤ ≤ x j ⁻¹ᵁ W b' b` using `le_of_mem (mem_of_le hj).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `g : valF (x j) (W a' a ⊓ W b' b) ((LB.div (L'.pull β) L).g (fun _ => a', a) (fun _ => b', b)).val * valF (x j) (L.U a ⊓ L.U b) (L.g a b).val = valF (x' j) (L'.U a' ⊓ L'.U b') (L'.g a' b').val`. Use `(toStk (pt F)).injective ?_` and prove the remaining obligations. Rewrite using `[map_mul, stk_valF_g (mem.1 h₁).1 (mem.1 h₂).1, stk_valF_g (mem.1 h₁).2 (mem.1 h₂).2, ← hβ]`. Use `(congrArg (· * _) (toStk_valF (x j) (W a' a ⊓ W b' b) _ (mem_of_le hj) _)).trans ?_` and prove the remaining obligations. Conclude with `congrArg Units.val (eq_mul_inv_iff_mul_eq.1 (gm_div_g (x j) (pt F) a' b' a b (mem_pull.1 (mem_of_le h₁).1) (mem_pull.1 (mem_of_le h₂).1) (mem_of_le h₁).2 (mem_of_le h₂).2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `((valF_res inf_le_left hj _).trans (hw a' a j h₁)).trans (Eq.trans ?_ ((valF_mul hj _ _).trans (congrArg (_ * ·) ((valF_res inf_le_right hj _).trans (hw b' b j h₂)))).symm)` and prove the remaining obligations. Establish `n₁` using `(hτ j).1 a (mem.1 h₁).1`. Establish `n₂` using `(hτ j).1 b (mem.1 h₂).1`. Rewrite using `[div_eq_iff n₁, (hτ' j).2 a' b' (mem.1 h₁).2 (mem.1 h₂).2, ← g, (hτ j).2 a b (mem.1 h₁).1 (mem.1 h₂).1]`. Clear the denominators using the available nonvanishing facts.
-
-Conclude with `(congrArg (· * _) (hw a' a j (mem.2 ⟨ha, ha'⟩))).trans (div_mul_cancel₀ _ ((hτ j).1 a ha))`.
+A detailed English derivation is pending.
 -/
 theorem MeetsOpens.exists_lbIso [IsReduced X] (hx : MeetsOpens x) (β : X ⟶ X') (hβ : ∀ j, x j ≫ β = x' j)
     {τ : J → L.ι → F} {τ' : J → L'.ι → F} (hτ : ∀ j, IsFrameAt L (x j) (τ j)) (hτ' : ∀ j, IsFrameAt L' (x' j) (τ' j))
@@ -564,20 +558,20 @@ section Abelian
 variable (P P' : PolAV (Spec (CommRingCat.of F)))
 
 /- English proof (translation)
-The claim follows from `have := P.isAb.proper ⟨by rw [← terminal.comp_from P.A.hom]; infer_instance⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSeparated_left : P.A.left.IsSeparated :=
   have := P.isAb.proper
   ⟨by rw [← terminal.comp_from P.A.hom]; infer_instance⟩
 
 /- English proof (translation)
-The claim follows from `h.meetsOpens (isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample)`.
+A detailed English derivation is pending.
 -/
 theorem meetsOpens_of_separatesSections {x : J → (Sp F ⟶ P.A.left)} (h : SeparatesSections P.L x) : MeetsOpens x :=
   h.meetsOpens (isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample)
 
 /- English proof (translation)
-The claim follows from `have := isIntegral_left_of_isAbelianScheme_field P.A P.isAb have := isSeparated_left P' Over.OverMorphism.ext ((meetsOpens_of_separatesSections P h).hom_ext fun j => congrArg CommaMorphism.left (e j))`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_of_separatesSections {x : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P.A)}
     (h : SeparatesSections (F := F) P.L fun j => (x j).left) {f g : P.A ⟶ P'.A} (e : ∀ j, x j ≫ f = x j ≫ g) :
@@ -590,11 +584,11 @@ variable {P P'} {x : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P.A)}
   {x' : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P'.A)} {τ : J → P.L.ι → F} {τ' : J → P'.L.ι → F}
 
 /- English proof (translation)
-Use `isIntegral_left_of_isAbelianScheme_field P.A P.isAb` as an intermediate fact. Use `isSeparated_left P'` as an intermediate fact. Establish `hx` using `meetsOpens_of_separatesSections P dense`. Establish `hf : ∀ j, (x j).left ≫ P.A.hom = (x' j).left ≫ P'.A.hom` using `fun j => (Over.w (x j)).trans (Over.w (x' j)).symm`. Use `choose c hc hc' using vs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `hx.exists_hom_of_embedsBy (x' := fun j => (x' j).left) P.A.hom P'.A.hom hf s s' hs.1 hs' fun j => by`. Take `⟨a, ha⟩` from `exists_chart P.isLB ((show Sp F ⟶ _ from (x j).left) (pt F))`. Take `⟨a', ha'⟩` from `exists_chart P'.isLB ((show Sp F ⟶ _ from (x' j).left) (pt F))`. Establish `hb` using `le_of_mem ha`. Establish `hb'` using `le_of_mem ha'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => a, fun _ => a', top_le_chart hb, top_le_chart hb', τ j a ^ N, τ' j a' ^ N, fun i => c i j, pow_ne_zero _ ((hτ j).1 a hb), pow_ne_zero _ ((hτ' j).1 a' hb'), fun i => ⟨hc i j a hb, hc' i j a' hb'⟩⟩`. Establish `hw : β ≫ P'.A.hom = P.A.hom` using `hx.hom_ext fun j => (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ P'.A.hom) (hβ j)).trans (hf j).symm)`. Conclude with `⟨Over.homMk β hw, fun j => Over.OverMorphism.ext (hβ j)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_over_hom (hτ : ∀ j, IsFrameAt (F := F) P.L (x j).left (τ j))
     (hτ' : ∀ j, IsFrameAt (F := F) P'.L (x' j).left (τ' j)) {N : ℕ} {I : Type} (s : I → H0 P.L N)
@@ -619,11 +613,11 @@ theorem exists_over_hom (hτ : ∀ j, IsFrameAt (F := F) P.L (x j).left (τ j))
   exact ⟨Over.homMk β hw, fun j => Over.OverMorphism.ext (hβ j)⟩
 
 /- English proof (translation)
-Use `isIntegral_left_of_isAbelianScheme_field P.A P.isAb` as an intermediate fact. Establish `es` using `polarized_abelian_embeds_by_sections hA P hN s hs`. Establish `es'` using `polarized_abelian_embeds_by_sections hA P' hN s' hs'`. Take `⟨β, hβ⟩` from `exists_over_hom hτ hτ' s s' es es' vs dense`. Take `⟨δ, hδ⟩` from `exists_over_hom hτ' hτ s' s es' es (fun i j => (vs i j).imp fun _ h => h.symm) dense'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨β, δ, hom_ext_of_separatesSections P P dense fun j => ?_, hom_ext_of_separatesSections P' P' dense' fun j => ?_⟩, rigidity_holds _ _ _ P.isAb P'.isAb β ?_, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hβ, hδ, Category.comp_id]`. Rewrite using `[← Category.assoc, hδ, hβ, Category.comp_id]`. Establish `e` using `hβ j₀`. Rewrite `e` using `[h₀, h₀', Hom.one_def, Hom.one_def, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsIso (toUnit (baseOver (Spec (CommRingCat.of F))))` using `isIso_of_isTerminal Over.mkIdTerminal isTerminalTensorUnit _`. Conclude with `(cancel_epi _).1 e`. Conclude with `(meetsOpens_of_separatesSections P dense).exists_lbIso (x' := fun j => (x' j).left) β.left (fun j => congrArg CommaMorphism.left (hβ j)) hτ hτ' hM s s' t t' es.1 es'.1 (polarized_abelian_embeds_by_sections hA P (by omega) t ht).1 (polarized_abelian_embeds_by_sections hA P' (by om …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_frames (hA : AmpleSt) {j₀ : J} (h₀ : x j₀ = 1) (h₀' : x' j₀ = 1)
     (hτ : ∀ j, IsFrameAt (F := F) P.L (x j).left (τ j)) (hτ' : ∀ j, IsFrameAt (F := F) P'.L (x' j).left (τ' j))
@@ -657,11 +651,11 @@ theorem exists_iso_of_frames (hA : AmpleSt) {j₀ : J} (h₀ : x j₀ = 1) (h₀
       (polarized_abelian_embeds_by_sections hA P (by omega) t ht).1 (polarized_abelian_embeds_by_sections hA P' (by omega) t' ht').1 vs vt
 
 /- English proof (translation)
-Take `⟨β, hm, hβ, w, hw, hv⟩` from `exists_iso_of_frames hA h₀ h₀' (fun j => isFrameAt_genCoord (hτ j)) (fun j => isFrameAt_genCoord (hτ' j)) le_rfl rfl s s' t t' hs hs' ht ht' vs vt dense dense'`. Use `⟨β, hm, hβ, ⟨w, hw, fun j => ⟨fun _ => congrArg CommaMorphism.left (hβ j), fun a a' h => ?_⟩⟩, fun f f' r hf hf' => hom_ext_of_separatesSections P P' dense fun j => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ b, a = fun _ => b` from `⟨a PUnit.unit, rfl⟩`. Take `⟨a', rfl⟩ : ∃ b, a' = fun _ => b` from `⟨a' PUnit.unit, rfl⟩`. Establish `hm` using `mem_of_le (h PUnit.unit)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha' : ⊤ ≤ (x' j).left ⁻¹ᵁ P'.L.U a'`. Rewrite using `[← hβ]`. Conclude with `le_of_mem (x := (x j).left ≫ β.hom.left) (mem_pull.1 hm.1)`. Establish `e` using `hv j a a' (le_of_mem hm.2) ha'`. Establish `n` using `left_ne_zero_of_mul (e.trans_ne ((isFrameAt_genCoord (hτ' j)).1 a' ha'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_unique, _root_.one_mul, zpow_neg, zpow_one]`. Conclude with `(eq_inv_mul_iff_mul_eq₀ n).2 e`. Rewrite using `[← Category.assoc, hf, hβ, ← Category.assoc, hβ, hf']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.polAV_iso_of_matching_values (hA : AmpleSt) (P P' : PolAV (Spec (CommRingCat.of F)))
     (x : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P.A)) (x' : J → (baseOver (Spec (CommRingCat.of F)) ⟶ P'.A))

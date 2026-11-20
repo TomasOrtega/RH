@@ -34,7 +34,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Use `⟨k.symm, fun x => ?_⟩` and prove the remaining obligations. Use `hk x` as an intermediate fact. Simplify using `only [LinearEquiv.coe_one, id_eq] at this ⊢`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eqvBy_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {R R' : RiemLat E g Λ} (h : R.EqvBy R' 1) : R'.EqvBy R 1 := by
@@ -45,9 +45,9 @@ theorem eqvBy_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} 
   rw [this, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `τ`. Establish `: ballMat q 0 τ = 0`. Use extensionality with `a b`. Simplify using `[ballMat]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using Matrix.PosDef.one`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     (0 : Fin n → ℂ) ∈ ballDom q := by
@@ -59,84 +59,78 @@ theorem zero_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin 
   simpa using Matrix.PosDef.one
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star y) cᴴ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mulVec_dot {m k : Type} [Fintype m] [Fintype k] (c : Matrix m k ℂ) (y : k → ℂ) :
     star (c *ᵥ y) ⬝ᵥ (c *ᵥ y) = star y ⬝ᵥ ((cᴴ * c) *ᵥ y) := by
   rw [star_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star y) cᴴ]
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ H F`. Take `⟨C⟩` from `GlobalTheory.T.exists_lattice_embedding E Ψ j j' n g Λ H F`. Establish `h0 : (0 : Fin n → ℂ) ∈ ballDom F.q` using `zero_mem_ballDom F.q`. Establish `hform : ∀ t, (F.R t).form = F.form` using `F.form_eq`. Take `⟨A0, hA0⟩` from `GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R 0) (hform 0) (F.sig 0 h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `fct` using `fun τ => GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A0 τ) (hA0.unit τ)`. Take `⟨hmul, hone, huni, hcont⟩` from `GlobalTheory.T.archimedean_unitary_representation E Ψ j j' n g Λ F C`. Establish `hinv : ∀ (a : C.Arch) τ, C.tm a τ * C.tm a⁻¹ τ = 1`. Introduce `a τ`. Rewrite using `[← hmul, mul_inv_cancel, hone]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv' : ∀ (a : C.Arch) τ, C.tm a⁻¹ τ * C.tm a τ = 1`. Introduce `a τ`. Rewrite using `[← hmul, inv_mul_cancel, hone]`. Set `Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ` to `fun τ => (C.cinv (A0 τ) τ)ᴴ * C.cinv (A0 τ) τ`. Take `⟨M, hMlen, hMstab⟩` from `GlobalTheory.T.exists_majorant_of_positive_frame E Ψ j j' n g Λ F C Pt (fun τ => (fct τ).2.2.1) (fun τ => (fct τ).2.2.2.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hrot : ∀ a : C.Arch, ∃ R' : RiemLat E g Λ, R'.form = (F.R 0).form ∧ R'.B = (F.R 0).B ∧ (∀ x, R'.P x = C.perExt (F.R 0) fun τ => C.tm a⁻¹ τ *ᵥ C.vec x τ) ∧ C.IsAdapted R' (fun τ => C.tm a τ * A0 τ)`. Introduce `a`. Take `⟨R', h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_translated_riemann_lattice E Ψ j j' n g Λ F C (F.R 0) (C.tm a) (C.tm a⁻¹) (hform 0) (hinv a) (huni a)`. Conclude with `⟨R', h1, h2, h3, h4 A0 hA0⟩`. Use `choose rot rform rB rP rad using hrot`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `rform' : ∀ a, (rot a).form = F.form` using `fun a => (rform a).trans (hform 0)`. Establish `rsig : ∀ a, (rot a).HasSig F.σ j j'`. Introduce `a`. Use `F.sig 0 h0` as an intermediate fact. Unfold `RiemLat.HasSig at this ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rB a]`. Conclude with `this`. Establish `hu : ∀ a, ∃! t, t ∈ ballDom F.q ∧ (F.R t).EqvBy (rot a) 1` using `fun a => F.univ (rot a) (rform' a) (rsig a)`. Establish `hex` using `fun a => (hu a).exists`. Use `choose π hπ using hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ a t, t ∈ ballDom F.q → (F.R t).EqvBy (rot a) 1 → π a = t` using `fun a t ht he => (hu a).unique (hπ a) ⟨ht, he⟩`. Establish `radπ : ∀ a, C.IsAdapted (F.R (π a)) (fun τ => C.tm a τ * A0 τ)` using `fun a => GlobalTheory.T.adapted_frame_of_equivalent E Ψ j j' n g Λ F C (rot a) (F.R (π a)) _ (rad a) (eqvBy_symm (hπ a).2)`. Establish `aUnit : ∀ (a : C.Arch) τ, (C.tm a τ * A0 τ)ᴴ * C.sgr τ * (C.tm a τ * A0 τ) = sgI j j'` using `fun a τ => ((fct τ).2.2.2.2.1 _ _ (hinv a τ) (huni a τ)).1`. Establish `aCinv : ∀ (a : C.Arch) τ, C.cinv (C.tm a τ * A0 τ) τ = C.cinv (A0 τ) τ * C.tm a⁻¹ τ` using `fun a τ => ((fct τ).2.2.2.2.1 _ _ (hinv a τ) (huni a τ)).2.1`. Set `u : C.Arch → Ψ → Matrix (Sg j j') (Sg j j') ℂ` to `fun a τ => C.cinv (A0 τ) τ * (C.tm a τ * A0 τ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `uU : ∀ a τ, IsSgU (u a τ)` using `fun a τ => ((fct τ).2.2.2.2.1 _ _ (hinv a τ) (huni a τ)).2.2.1`. Establish `uMul : ∀ a b τ, u (a * b) τ = u a τ * u b τ`. Introduce `a b τ`. Establish `h1 : A0 τ * C.cinv (A0 τ) τ = 1` using `(fct τ).2.1`. Use `show C.cinv (A0 τ) τ * (C.tm (a * b) τ * A0 τ) = C.cinv (A0 τ) τ * (C.tm a τ * A0 τ) * (C.cinv (A0 τ) τ * (C.tm b τ * A0 τ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul]`. Establish `e : C.cinv (A0 τ) τ * (C.tm a τ * A0 τ) * (C.cinv (A0 τ) τ * (C.tm b τ * A0 τ)) = C.cinv (A0 τ) τ * C.tm a τ * ((A0 τ * C.cinv (A0 τ) τ) * (C.tm b τ * A0 τ))`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, h1, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, G₁, hZ, hG₁, hZeq, hpot⟩` from `GlobalTheory.T.holomorphic_adapted_frame_on_ball E Ψ j j' n g Λ F C A0 hA0`. Establish `hZπ : ∀ a, Z (π a) = moebBall F.q (u a) 0` using `fun a => hZeq _ (hπ a).1 _ (radπ a)`. Establish `hsurj : ∀ t ∈ ballDom F.q, ∃ a, π a = t`. Introduce `t ht`. Take `⟨At, hAt⟩` from `GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R t) (hform t) (F.sig t ht)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `GlobalTheory.T.archimedean_unitary_surjective E Ψ j j' n g Λ F C (fun τ => At τ * C.cinv (A0 τ) τ) (fun τ => (fct τ).2.2.2.2.2 _ (hAt.unit τ))`. Establish `hAa : (fun τ => C.tm a τ * A0 τ) = At`. Use function extensionality and compare the values at `τ`. Rewrite using `[ha τ, Matrix.mul_assoc, (fct τ).1, Matrix.mul_one]`. Establish `h1` using `rad a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[hAa]`. Conclude with `⟨a, huniq a t ht (GlobalTheory.T.adapted_frame_determines_lattice E Ψ j j' n g Λ F C (F.R t) (rot a) At (hform t) (rform' a) hAt h1)⟩`. Set `v : C.Arch → C.Arch → Ψ → Matrix (Sg j j') (Sg j j') ℂ` to `fun a b τ => C.cinv (C.tm a τ * A0 τ) τ * (C.tm b τ * A0 τ)`. Establish `vEq : ∀ a b τ, v a b τ = u (a⁻¹ * b) τ`. Introduce `a b τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show C.cinv (C.tm a τ * A0 τ) τ * (C.tm b τ * A0 τ) = C.cinv (A0 τ) τ * (C.tm (a⁻¹ * b) τ * A0 τ)`. Rewrite using `[aCinv, hmul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hfib1 : ∀ a b, π a = π b ↔ ∀ τ, (v a b τ)ᴴ * v a b τ = 1`. Introduce `a b`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `GlobalTheory.T.adapted_frame_change_unitary E Ψ j j' n g Λ F C (F.R (π a)) _ (fun τ => C.tm b τ * A0 τ) (hform _) (radπ a) (aUnit b)`. Rewrite using `[← show (C.IsAdapted (F.R (π a)) (fun τ => C.tm b τ * A0 τ)) ↔ π a = π b from ?_]`. Conclude with `key`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(huniq b (π a) (hπ a).1 (GlobalTheory.T.adapted_frame_determines_lattice E Ψ j j' n g Λ F C (F.R (π a)) (rot b) _ (hform _) (rform' b) h (rad b))).symm`. Introduce `h`. Rewrite using `[h]`. Conclude with `radπ b`. Establish `hfib2 : ∀ a b, π a = π b ↔ a⁻¹ * b ∈ M.stab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[hfib1, hMstab]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[vEq]`. Conclude with `((fct τ).2.2.2.2.1 _ _ (hinv _ τ) (huni _ τ)).2.2.2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib3 : ∀ a b, Z (π a) = Z (π b) → π a = π b`. Introduce `a b h`. Rewrite `h` using `[hZπ, hZπ]`. Rewrite using `[hfib1]`. Establish `hb : (fun τ => u a τ * u (a⁻¹ * b) τ) = u b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[← uMul, mul_inv_cancel_left]`. Use `(GlobalTheory.T.ball_mobius_zero_eq_iff_unitary Ψ j j' n F.q (u a) (u (a⁻¹ * b)) (uU a) (uU _)).1 (by rw [hb]; exact h)` as an intermediate fact. Introduce `τ`. Rewrite using `[vEq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this τ`. Establish `hbij : Set.BijOn Z (ballDom F.q) (ballDom F.q)`. Establish `hmaps : Set.MapsTo Z (ballDom F.q) (ballDom F.q)`. Introduce `t ht`. Take `⟨a, rfl⟩` from `hsurj t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hZπ]`. Conclude with `(GlobalTheory.T.ball_mobius_holomorphic_potential_change Ψ j j' n F.q (u a) (uU a)).2.1 h0`. Use `⟨hmaps, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht t' ht' h`. Take `⟨a, rfl⟩` from `hsurj t ht`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨b, rfl⟩` from `hsurj t' ht'`. Conclude with `hfib3 a b h`. Introduce `s hs`. Take `⟨w, hw, hws⟩` from `GlobalTheory.T.ball_mobius_transitive Ψ j j' n F.q s hs`. Take `⟨a, ha⟩` from `GlobalTheory.T.archimedean_unitary_surjective E Ψ j j' n g Λ F C (fun τ => (A0 τ * w τ) * C.cinv (A0 τ) τ) (fun τ => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(fct τ).2.2.2.2.2 _ ?_` and prove the remaining obligations. Establish `hw'` using `hw τ`. Unfold `IsSgU at hw'`. Rewrite using `[← hw', ← (hA0.unit τ)]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hua : u a = w`. Use function extensionality and compare the values at `τ`. Use `show C.cinv (A0 τ) τ * (C.tm a τ * A0 τ) = w τ`. Rewrite using `[ha τ, Matrix.mul_assoc (A0 τ * w τ), (fct τ).1, Matrix.mul_one, ← Matrix.mul_assoc, (fct τ).1, Matrix.one_mul]`. Use `⟨π a, (hπ a).1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hZπ, hua, hws]`. Take `⟨Y, hY, hYZ⟩` from `GlobalTheory.T.ball_automorphism_inverse_exists Ψ j j' n F.q Z G₁ hZ hbij hG₁ hpot`. Establish `hπY : ∀ a, π a = Y (moebBall F.q (u a) 0)` using `fun a => by`. Rewrite using `[← hZπ, (hYZ _ (hπ a).1).2.2]`. Establish `hucont : Continuous fun a : C.Arch => moebBall F.q (u a) 0`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `GlobalTheory.T.ball_mobius_zero_continuous Ψ j j' n F.q C.Arch u (fun τ => ?_) uU` and prove the remaining obligations. Conclude with `continuous_const.matrix_mul ((hcont τ).matrix_mul continuous_const)`. Establish `hmem : ∀ a, moebBall F.q (u a) 0 ∈ ballDom F.q` using `fun a => (GlobalTheory.T.ball_mobius_holomorphic_potential_change Ψ j j' n F.q (u a) (uU a)).2.1 h0`. Take `⟨α, hα⟩` from `GlobalTheory.T.lattice_stabilizer_equiv_automorphisms E Ψ j j' n g Λ F C`. Use `⟨{ h := C.h, e := C.e, e_inj := C.e_inj, e_smul := C.e_smul, Dn := C.Dn, integral := C.integral, orth := C.orth, M := M, κ := 2 * C.c, κ_pos := by have := C.c_pos; positivity, π := π, π_cont := ?_, π_range := ?_, π_fibre := hfib2, len := ?_, α := α, α_eq := hα, α_act := ?_, act : …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: π = fun a => Y (moebBall F.q (u a) 0)` using `funext hπY`. Rewrite using `[this]`. Conclude with `hY.continuousOn.comp_continuous hucont hmem`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `(hπ a).1`. Introduce `ht`. Conclude with `hsurj t ht`. Introduce `a x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.normSq_eq_adapted_frame_sum E Ψ j j' n g Λ F C _ _ (hform _) (radπ a) x, hMlen a x]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[aCinv, ← Matrix.mulVec_mulVec, star_mulVec_dot]`. Introduce `γ a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨k₁, hk₁⟩` from `(hπ a).2`. Take `⟨k₂, hk₂⟩` from `(hπ (archEmbed C.h (Pi.basisFun E (Fin (j + j'))) γ * a)).2`. Use `⟨k₁.trans k₂.symm, fun x => ?_⟩` and prove the remaining obligations. Establish `e1 : (rot (archEmbed C.h (Pi.basisFun E (Fin (j + j'))) γ * a)).P ((α γ).1 x) = (rot a).P x`. Rewrite using `[rP, rP]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `hv : C.vec ((α γ).1 x) τ = C.tm (archEmbed C.h (Pi.basisFun E (Fin (j + j'))) γ) τ *ᵥ C.vec x τ`. Rewrite using `[GlobalTheory.T.archimedean_action_on_lattice_vectors E Ψ j j' n g Λ F C]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show embOf (F.σ τ) (C.e ((α γ).1 x) i) = _`. Rewrite using `[hα]`. Rewrite using `[hv, Matrix.mulVec_mulVec, ← hmul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Establish `e2` using `hk₂ ((α γ).1 x)`. Establish `e3` using `hk₁ x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.coe_one, id_eq] at e2 e3`. Rewrite `e2` using `[e1, e3]`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[e2, LinearEquiv.symm_apply_apply]`. Introduce `a₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨hm1, hm2, G₂, hG₂, hpot₂⟩` from `GlobalTheory.T.ball_mobius_holomorphic_potential_change Ψ j j' n F.q (u a₀) (uU a₀)`. Establish `hZm : Set.MapsTo Z (ballDom F.q) (ballDom F.q)` using `hbij.mapsTo`. Establish `hYm : Set.MapsTo Y (ballDom F.q) (ballDom F.q)` using `fun t ht => (hYZ t ht).1`. Establish `hAm : Set.MapsTo (fun t => Y (moebBall F.q (u a₀) (Z t))) (ballDom F.q) (ballDom F.q)` using `fun t ht => hYm (hm2 (hZm ht))`. Establish `hAd : DifferentiableOn ℂ (fun t => Y (moebBall F.q (u a₀) (Z t))) (ballDom F.q)` using `hY.comp (hm1.comp hZ hZm) (hm2.comp hZm)`.
-
-Use `⟨fun t => Y (moebBall F.q (u a₀) (Z t)), fun t => G₁ t + G₂ (Z t) - G₁ (Y (moebBall F.q (u a₀) (Z t))), hAd, (hG₁.add (hG₂.comp hZ hZm)).sub (hG₁.comp hAd hAm), ?_, ?_⟩` and prove the remaining obligations. Introduce `a show π (a₀ * a) = Y (moebBall F.q (u a₀) (Z (π a)))`. Rewrite using `[hπY (a₀ * a), hZπ a, ← GlobalTheory.T.ball_mobius_mul Ψ j j' n F.q (u a₀) (u a) (uU a₀) (uU a) 0 h0]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
-
-Conclude with `uMul a₀ a τ`. Introduce `t ht`. Establish `hs` using `hZm ht`. Establish `hA` using `hAm ht`. Establish `e1` using `hpot _ hA`.
-
-Establish `e2 : Z (Y (moebBall F.q (u a₀) (Z t))) = moebBall F.q (u a₀) (Z t)` using `(hYZ _ (hm2 hs)).2.1`. Rewrite `e1` using `[e2, hpot₂ _ hs, hpot t ht]`. Simplify using `only [Complex.add_re, Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ)
     (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (H : Host E) (F : UnivFam E Ψ j j' n g Λ), Nonempty (GroupDict F) := by

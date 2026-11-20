@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NullSingOfIdemE
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.NullFr.nullSing_of_idemEx`.
+A detailed English derivation is pending.
 -/
 theorem nullSing : IdemEx → NullSing := GlobalTheory.CompanionTheory.NullFr.nullSing_of_idemEx
 

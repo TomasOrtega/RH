@@ -12,7 +12,7 @@ def chiOne (P Q R S : ℕ) (x : ℚ) : Submodule ℂ (Formalism.BasicNotions.TH.
   ⨅ X : {X : Mat P Q // IsKC X}, LinearMap.ker (fockAct1 P Q R S X.1 - ((x : ℂ) * X.1.trace) • 1)
 
 /- English proof (translation)
-Simplify using `only [chiOne, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero, Subtype.forall]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_chiOne {P Q R S : ℕ} (x : ℚ) (f : Formalism.BasicNotions.TH.Pol P Q R S) :
     f ∈ chiOne P Q R S x ↔ ∀ X : Mat P Q, IsKC X → fockAct1 P Q R S X f = ((x : ℂ) * X.trace) • f := by
@@ -23,7 +23,7 @@ def lowOne (P Q R S : ℕ) (x : ℚ) (d : ℕ) : Submodule ℂ (Formalism.BasicN
   chiOne P Q R S x ⊓ MvPolynomial.restrictTotalDegree (Ln P Q R S) ℂ d
 
 /- English proof (translation)
-Rewrite using `[lowOne, Submodule.mem_inf, MvPolynomial.mem_restrictTotalDegree]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lowOne {P Q R S : ℕ} (x : ℚ) (d : ℕ) (f : Formalism.BasicNotions.TH.Pol P Q R S) :
     f ∈ lowOne P Q R S x d ↔ f ∈ chiOne P Q R S x ∧ f.totalDegree ≤ d := by
@@ -34,7 +34,7 @@ def tensSpan {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V] (H : ι 
   Submodule.span ℂ {T | ∃ f : ι → V, (∀ w, f w ∈ H w) ∧ T = PiTensorProduct.tprod ℂ f}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, hf, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tprod_mem_tensSpan {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V] (H : ι → Submodule ℂ V)
     (f : ι → V) (hf : ∀ w, f w ∈ H w) : PiTensorProduct.tprod ℂ f ∈ tensSpan H :=

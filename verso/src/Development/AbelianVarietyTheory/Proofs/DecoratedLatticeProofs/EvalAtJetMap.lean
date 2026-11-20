@@ -10,13 +10,13 @@ namespace GlobalTheory.KJInf.ClsVal
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Establish `hm : (monomial m c : MvPolynomial ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) ℂ) = c • monomial m 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Establish `h1 : Formalism.L2.Ker.jetLin (fun m => Λ (monomial m 1)) (monomial m c) = c • monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn) (Λ (monomial (m.comapDomain Sum.inr Sum.inr_injective.injOn) 1))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm, map_smul]`. Use `congr 1`. Unfold `Formalism.L2.Ker.jetLin`. Use `(basisMonomials ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) ℂ).constr_basis ℂ (fun m : ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) →₀ ℕ => (monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn) (Λ (monomial (m.comapDomain Sum.inr Sum.inr_injective.injOn) 1)) : …` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h1, evalAt, smul_eval, eval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Fintype.prod_sum_type]`. Establish `h2 : (∏ i : ι × Fin b × Fin a, (X i : FP ι a b) ^ m (Sum.inr i)) = monomial (m.comapDomain Sum.inr Sum.inr_injective.injOn) 1`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Simplify using `only [Sum.elim_inl, Sum.elim_inr, h2, ← map_pow, ← map_prod, algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ∀ (u v : ℂ) (q : FP ι a b), C u * (C v * q) = (u * v) • q from fun u v q => by rw [smul_eq_C_mul, C_mul, mul_assoc], map_smul, smul_eq_mul]`. Simplify using `only [Finsupp.comapDomain_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => rw [map_add, evalAt, map_add, ← evalAt, ← evalAt, hp, hq, map_add, map_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem evalAt_jetLin (y' : ι → Matrix (Fin b) (Fin b) ℂ) (Λ : FP ι a b →ₗ[ℂ] ℂ)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) ℂ) :
@@ -49,7 +49,7 @@ theorem evalAt_jetLin (y' : ι → Matrix (Fin b) (Fin b) ℂ) (Λ : FP ι a b �
   | add p q hp hq => rw [map_add, evalAt, map_add, ← evalAt, ← evalAt, hp, hq, map_add, map_add]
 
 /- English proof (translation)
-Rewrite using `[subY_eq_subD]`. Conclude with `evalAt_jetLin y' Λ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAt_jetMap (hab : a ≤ b) (y' : ι → Matrix (Fin b) (Fin b) ℂ) (Λ : FP ι a b →ₗ[ℂ] ℂ) (k : ι → ℕ) (P : PY ι a) :
     evalAt y' (Formalism.L2.Ker.jetMap (fun m => Λ (monomial m 1)) k P) =
@@ -58,7 +58,7 @@ theorem evalAt_jetMap (hab : a ≤ b) (y' : ι → Matrix (Fin b) (Fin b) ℂ) (
   exact evalAt_jetLin y' Λ _
 
 /- English proof (translation)
-Unfold `CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_ofPred_eq, Formalism.L2.Col.nablaSq_eq_delSq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cSpan_eq_VV' {m : ℕ} (lam : ι → DomWeight m) : CSpan lam = Formalism.L2.DIV.VV ℂ lam := by
   unfold CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat

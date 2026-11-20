@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     ((vres φ V a : V) : L) = φ a := rfl
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_comap, map_inv₀, map_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_nonunits_comap (φ : K →+* L) (V : ValuationSubring L) (a : K) :
     a ∈ (V.comap φ).nonunits ↔ φ a ∈ V.nonunits := by
@@ -48,13 +48,13 @@ def rnorm (φ : K →+* L) : L →* K :=
   Algebra.norm K
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem vord_eq (V : ValuationSubring L) [h : IsDiscreteValuationRing V] (x : L) :
     vord V x = WithZero.log (Ring.ordFrac V x) := dif_pos h
 
 /- English proof (translation)
-Distinguish the cases in `h : IsDiscreteValuationRing V`. Rewrite using `[vord_eq, vord_eq, vord_eq, map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]`. Simplify using `[vord, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vord_mul (V : ValuationSubring L) {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) :
     vord V (x * y) = vord V x + vord V y := by
@@ -64,7 +64,7 @@ theorem vord_mul (V : ValuationSubring L) {x y : L} (hx : x ≠ 0) (hy : y ≠ 0
   · simp [vord, h]
 
 /- English proof (translation)
-Use `vord_mul V (one_ne_zero (α := L)) one_ne_zero` as an intermediate fact. Rewrite `this` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vord_one (V : ValuationSubring L) : vord V 1 = 0 := by
   have := vord_mul V (one_ne_zero (α := L)) one_ne_zero
@@ -72,7 +72,7 @@ theorem vord_one (V : ValuationSubring L) : vord V 1 = 0 := by
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h : IsDiscreteValuationRing V`. Rewrite using `[vord_eq, vord_eq, map_zpow₀, WithZero.log_zpow, zsmul_eq_mul, Int.cast_id]`. Simplify using `[vord, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vord_zpow (V : ValuationSubring L) (x : L) (n : ℤ) : vord V (x ^ n) = n * vord V x := by
   by_cases h : IsDiscreteValuationRing V
@@ -80,13 +80,13 @@ theorem vord_zpow (V : ValuationSubring L) (x : L) (n : ℤ) : vord V (x ^ n) = 
   · simp [vord, h]
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast, vord_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vord_pow (V : ValuationSubring L) (x : L) (n : ℕ) : vord V (x ^ n) = n * vord V x := by
   rw [← zpow_natCast, vord_zpow]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vord_one V`. Consider the case `insert a s ha ih`. Establish `h : ∀ i ∈ s, x i ≠ 0` using `fun i hi => hx i (Finset.mem_insert_of_mem hi)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, vord_mul V (hx a (Finset.mem_insert_self _ _)) (Finset.prod_ne_zero_iff.2 h), ih h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vord_prod (V : ValuationSubring L) {ι : Type} (s : Finset ι) (x : ι → L) (hx : ∀ i ∈ s, x i ≠ 0) :
     vord V (∏ i ∈ s, x i) = ∑ i ∈ s, vord V (x i) := by
@@ -99,7 +99,7 @@ theorem vord_prod (V : ValuationSubring L) {ι : Type} (s : Finset ι) (x : ι �
       vord_mul V (hx a (Finset.mem_insert_self _ _)) (Finset.prod_ne_zero_iff.2 h), ih h]
 
 /- English proof (translation)
-Distinguish the cases in `h : IsDiscreteValuationRing V`. Rewrite using `[vord_eq]`. Conclude with `(congrArg WithZero.log (Ring.ordFrac_of_isUnit (K := L) ha)).trans WithZero.log_one`. Simplify using `[vord, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vord_of_isUnit (V : ValuationSubring L) {a : V} (ha : IsUnit a) : vord V (a : L) = 0 := by
   by_cases h : IsDiscreteValuationRing V
@@ -108,14 +108,14 @@ theorem vord_of_isUnit (V : ValuationSubring L) {a : V} (ha : IsUnit a) : vord V
   · simp [vord, h]
 
 /- English proof (translation)
-The claim follows from `vord_of_isUnit V (a := ⟨x, hx⟩) (isUnit_iff_exists_inv.2 ⟨⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem vord_eq_zero_of_mem (V : ValuationSubring L) {x : L} (h0 : x ≠ 0) (hx : x ∈ V) (hx' : x⁻¹ ∈ V) :
     vord V x = 0 :=
   vord_of_isUnit V (a := ⟨x, hx⟩) (isUnit_iff_exists_inv.2 ⟨⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩)
 
 /- English proof (translation)
-Rewrite using `[vord_eq]`. Conclude with `(congrArg WithZero.log (Ring.ordFrac_irreducible (K := L) ha)).trans (WithZero.log_exp _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vord_irreducible (V : ValuationSubring L) [IsDiscreteValuationRing V] {a : V} (ha : Irreducible a) :
     vord V (a : L) = 1 := by
@@ -123,9 +123,9 @@ theorem vord_irreducible (V : ValuationSubring L) [IsDiscreteValuationRing V] {a
   exact (congrArg WithZero.log (Ring.ordFrac_irreducible (K := L) ha)).trans (WithZero.log_exp _)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `h1 : ((u : V) : L) ≠ 0` using `by simpa using u.ne_zero`. Establish `h2 : (ϖ : L) ≠ 0` using `by simpa using hϖ.ne_zero`. Rewrite using `[IsDiscreteValuationRing.addVal_def' u hϖ k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[vord_mul V h1 (pow_ne_zero _ h2), vord_of_isUnit V u.isUnit, vord_pow, vord_irreducible V hϖ]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vord_coe (V : ValuationSubring L) [IsDiscreteValuationRing V] {a : V} (ha : a ≠ 0) :
     vord V (a : L) = (IsDiscreteValuationRing.addVal V a).toNat := by
@@ -139,9 +139,9 @@ theorem vord_coe (V : ValuationSubring L) [IsDiscreteValuationRing V] {a : V} (h
   simp
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, rfl⟩ : ∃ a : V, a ∈ maximalIdeal V ∧ (a : L) = x := by`. Establish `h` using `V.nonunits_subset hx`. Conclude with `⟨⟨x, h⟩, V.coe_mem_nonunits_iff.1 hx, rfl⟩`. Establish `ha0 : a ≠ 0` using `by simpa using h0`. Rewrite using `[vord_coe V ha0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `mt IsDiscreteValuationRing.addVal_eq_zero_iff.1 ha`. Establish `h2` using `mt IsDiscreteValuationRing.addVal_eq_top_iff.1 ha0`. Conclude with `Nat.pos_of_ne_zero (by simp [ENat.toNat_eq_zero, h1, h2])` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vord_pos (V : ValuationSubring L) [IsDiscreteValuationRing V] {x : L} (h0 : x ≠ 0) (hx : x ∈ V.nonunits) :
     0 < vord V x := by
@@ -155,7 +155,7 @@ theorem vord_pos (V : ValuationSubring L) [IsDiscreteValuationRing V] {x : L} (h
   exact_mod_cast Nat.pos_of_ne_zero (by simp [ENat.toNat_eq_zero, h1, h2])
 
 /- English proof (translation)
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible hϖ ha`. Use `⟨n, u, u.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, Units.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_eq_unit_mul_zpow (W : ValuationSubring K) [IsDiscreteValuationRing W] {ϖ : W} (hϖ : Irreducible ϖ)
     {a : K} (ha : a ≠ 0) : ∃ (n : ℤ) (u : W), IsUnit u ∧ a = (u : K) * (ϖ : K) ^ n := by
@@ -164,13 +164,13 @@ theorem exists_eq_unit_mul_zpow (W : ValuationSubring K) [IsDiscreteValuationRin
   rw [hu, Units.smul_def, Algebra.smul_def]; rfl
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (V.comap φ)`. Establish `h2 : (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `h2' : φ ϖ ≠ 0` using `(map_ne_zero φ).2 h2`. Establish `h4 : (ϖ : K) ∈ (V.comap φ).nonunits` using `(ValuationSubring.coe_mem_nonunits_iff (a := ϖ)).2 hϖ.not_isUnit`. Use `⟨vord V (φ ϖ), vord_pos V h2' ((mem_nonunits_comap φ V _).1 h4), fun a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, u, hu, hu'⟩` from `exists_eq_unit_mul_zpow (V.comap φ) hϖ ha`. Establish `h1 : (u : K) ≠ 0` using `fun h => hu.ne_zero (Subtype.ext h)`. Establish `h3 : vord V (φ u) = 0`. Use `vord_of_isUnit V (a := vres φ V u) (hu.map (vres φ V))` as an intermediate fact. Rewrite `this` using `[coe_vres]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h5 : vord V (φ a) = n * vord V (φ ϖ)`. Rewrite using `[hu', map_mul, map_zpow₀, vord_mul V ((map_ne_zero φ).2 h1) (zpow_ne_zero _ h2'), h3, vord_zpow, zero_add]`. Establish `h6 : vord (V.comap φ) a = n`. Rewrite using `[hu', vord_mul _ h1 (zpow_ne_zero _ h2), vord_of_isUnit _ hu, vord_zpow, vord_irreducible _ hϖ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h5, h6, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_vord_map (φ : K →+* L) (V : ValuationSubring L) [IsDiscreteValuationRing V]
     [IsDiscreteValuationRing (V.comap φ)] :

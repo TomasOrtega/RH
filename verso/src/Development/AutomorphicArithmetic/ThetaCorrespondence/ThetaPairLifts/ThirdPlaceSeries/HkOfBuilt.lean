@@ -77,14 +77,14 @@ def heckeSeriesOfRealHeight {hH hV hs} (e : _root_.GlobalTheory.HeightCounting.d
     change a ∈ xd.xd0 i j b
     rw [this]; trivial
 /- English proof (translation)
-Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Conclude with `⟨{ A.wdT with }, ⟨{ cg with }⟩, A.lab⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_wdTie_cgTrue_labTrue_of_built {D : D7} (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D) :
     ∃ wd : GlobalTheory.RowTie.WDTie D.nd D.naut, Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL D wd) ∧ LabTrue D wd := by
   obtain ⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩ := b
   exact ⟨{ A.wdT with }, ⟨{ cg with }⟩, A.lab⟩
 /- English proof (translation)
-Take `⟨wd, cg, lab⟩` from `_root_.GlobalTheory.TwInputs.JoinModel.exists_wdTie_cgTrue_labTrue_of_built c.a.nt.toNBuilt`. Conclude with `⟨⟨wd, lab, TC.cf w.I w.l Z, { c.a.chrN with }, h3, e.ser.lam, e.ser.lam_ok, fun i hi => (e.ser.lam_tie i hi).imp id (Exists.imp fun _ h => ⟨h.1, h.2.1⟩), hr, hg⟩, rfl, e.ser.lam_C, cg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_galSide_of_rank_ge_hundred (e : _root_.GlobalTheory.HeightCounting.defaultExtension hL K B f T w Z Wt p0 t nch n xd c) (h3 : _root_.GlobalTheory.Triple.IsGaloisTriple (w.D Z)) (hr : 100 ≤ B.R.r)
     (hg : ∀ k, 2 * B.R.r ≤ B.host.g k) : ∃ g : _root_.GlobalTheory.TwInputs.GalSideAlt (w.st Z).toD7, g.cf = TC.cf w.I w.l Z ∧ g.lam.C = TC.cf w.I w.l Z ∧
@@ -92,7 +92,7 @@ theorem exists_galSide_of_rank_ge_hundred (e : _root_.GlobalTheory.HeightCountin
   obtain ⟨wd, cg, lab⟩ := _root_.GlobalTheory.TwInputs.JoinModel.exists_wdTie_cgTrue_labTrue_of_built c.a.nt.toNBuilt
   exact ⟨⟨wd, lab, TC.cf w.I w.l Z, { c.a.chrN with }, h3, e.ser.lam, e.ser.lam_ok, fun i hi => (e.ser.lam_tie i hi).imp id (Exists.imp fun _ h => ⟨h.1, h.2.1⟩), hr, hg⟩, rfl, e.ser.lam_C, cg⟩
 /- English proof (translation)
-Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Conclude with `⟨fun i j s k P x h1 h2 h => Bs.hk_emb i j s k P x h1 h2 h.2.2.2 h.2.2.1 h.2.1, Bs.hEig_zero⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem embB_hk_commute_and_hEig_zero_of_built {D : D7} (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D) :
     (∀ i j s k P (x : D.ntw.B i j s), 1 ≤ j → j ≤ D.R.m → IntegralHeckeForms.HkIdx i k P →

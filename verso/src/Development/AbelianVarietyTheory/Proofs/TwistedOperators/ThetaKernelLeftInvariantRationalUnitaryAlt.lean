@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.ThetaLeftW
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i χS χT ω hW φ hφ h γ hγ g`. Unfold `Datum.thetaKO`. Establish `e : (h, γ * g) = ((1 : GA D (Vc D i)), γ) * (h, g)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut 1 (one_mem _) γ hγ _ (hW.om_pres _ _ hφ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaKernel_leftInvariant_rationalUnitary : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (χS χT : (AE D)ˣ →* Circle) (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)), Datum.IsWeilDatumO R.ψ (Vc D i) (Wc D i) χS χT ω → ∀ φ : WO (Vc D i) (Wc D i) → ℂ, Datum.IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → ∀ (h : GA D (Vc D i)) (γ : GA D (Wc D i)), γ ∈ GQ (Wc D i) → ∀ g : GA D (Wc D i), Datum.thetaKO ω h (γ * g) φ = Datum.thetaKO ω h g φ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i χS χT ω hW φ hφ h γ hγ g

@@ -28,18 +28,18 @@ def gv (B : LB Y) (i j : B.ι) : CxPts p σ → ℂ := ev p σ (B.U i ⊓ B.U j)
 def pick (hB : B.IsLB) (y : CxPts p σ) : B.ι := (exists_mem_ptsIn hB.cover y).choose
 
 /- English proof (translation)
-The claim follows from `(exists_mem_ptsIn hB.cover y).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_pick (hB : B.IsLB) (y : CxPts p σ) : y ∈ ptsIn p σ (B.U (pick hB y)) := (exists_mem_ptsIn hB.cover y).choose_spec
 
 /- English proof (translation)
-Rewrite using `[ev_eq h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_one (h : y ∈ ptsIn p σ U) : ev p σ U 1 y = 1 := by
   rw [ev_eq h, map_one]
 
 /- English proof (translation)
-Rewrite using `[ev_eq h, ev_eq h]`. Conclude with `map_units_inv (evHom h) u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_inv (h : y ∈ ptsIn p σ U) (u : Γ(Y, U)ˣ) :
     ev p σ U (u⁻¹).val y = (ev p σ U u.val y)⁻¹ := by
@@ -47,20 +47,20 @@ theorem ev_inv (h : y ∈ ptsIn p σ U) (u : Γ(Y, U)ˣ) :
   exact map_units_inv (evHom h) u
 
 /- English proof (translation)
-The claim follows from `ev_ne_zero (mem_ptsIn_inf.2 ⟨hi, hj⟩) (B.g i j).isUnit`.
+A detailed English derivation is pending.
 -/
 theorem gv_ne_zero {i j : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B.U j)) :
     gv p σ B i j y ≠ 0 := ev_ne_zero (mem_ptsIn_inf.2 ⟨hi, hj⟩) (B.g i j).isUnit
 
 /- English proof (translation)
-The claim follows from `ev_res e h u.val`.
+A detailed English derivation is pending.
 -/
 private theorem ev_res_units_val_eq {U₁ W₁ : Y.Opens} (e : W₁ ≤ U₁) (h : y ∈ ptsIn p σ W₁)
     (u : Γ(Y, U₁)ˣ) : ev p σ W₁ (Semi.res e u).val y = ev p σ U₁ u.val y :=
   ev_res e h u.val
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => ev p σ _ (Units.val u) y) (hB.2 i)`. Simplify using `only [Units.val_one] at e`. Rewrite `e` using `[ev_res_units_val_eq, ev_one]`. Conclude with `e`. Apply the tactic sequence `all_goals simp [hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_self (hB : B.IsLB) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) : gv p σ B i i y = 1 := by
   have e := congrArg (fun u => ev p σ _ (Units.val u) y) (hB.2 i)
@@ -70,7 +70,7 @@ theorem gv_self (hB : B.IsLB) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) : gv p 
   all_goals simp [hi]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => ev p σ _ (Units.val u) y) (hB.3 i j l)`. Simplify using `only [Units.val_mul, ev_mul] at e`. Rewrite `e` using `[ev_res_units_val_eq, ev_res_units_val_eq, ev_res_units_val_eq]`. Conclude with `e`. Apply the tactic sequence `all_goals simp [hi, hj, hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_mul (hB : B.IsLB) {i j l : B.ι} (hi : y ∈ ptsIn p σ (B.U i))
     (hj : y ∈ ptsIn p σ (B.U j)) (hl : y ∈ ptsIn p σ (B.U l)) :
@@ -82,7 +82,7 @@ theorem gv_mul (hB : B.IsLB) {i j l : B.ι} (hi : y ∈ ptsIn p σ (B.U i))
   all_goals simp [hi, hj, hl]
 
 /- English proof (translation)
-Establish `e` using `mem_ptsIn_inf.1 h`. Establish `e'` using `mem_ptsIn_inf.1 h'`. Simplify using `only [gv, CechPic.tens, Units.val_mul, ev_mul]`. Rewrite using `[ev_res_units_val_eq, ev_res_units_val_eq]`. Apply the tactic sequence `all_goals simp_all`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_tens {c c' : (tens A B).ι} (h : y ∈ ptsIn p σ ((tens A B).U c))
     (h' : y ∈ ptsIn p σ ((tens A B).U c')) :
@@ -94,15 +94,15 @@ theorem gv_tens {c c' : (tens A B).ι} (h : y ∈ ptsIn p σ ((tens A B).U c))
   all_goals simp_all
 
 /- English proof (translation)
-The claim follows from `ev_inv (mem_ptsIn_inf.2 ⟨hi, hj⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem gv_dual {i j : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B.U j)) :
     gv p σ (dual B) i j y = (gv p σ B i j y)⁻¹ := ev_inv (mem_ptsIn_inf.2 ⟨hi, hj⟩) _
 
 /- English proof (translation)
-Establish `hy : y ∈ ptsIn p σ (B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a'))` using `by simp [ha, ha', hb, hb']`. Establish `hw' : Semi.res (V` using `B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) inf_le_left (w.s (b, a)) = (Semi.res (V := B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (B.g b b') * (Semi.res (V := B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) (le_inf (inf_le_left.trans in …`. Establish `e` using `congrArg (fun u => ev p σ (B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) (Units.val u) y) hw'`. Simplify using `only [Units.val_mul, ev_mul] at e`. Rewrite `e` using `[ev_inv hy, ev_res_units_val_eq _ hy, ev_res_units_val_eq _ hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁ : ev p σ (B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) (Semi.res (V` using `B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) inf_le_left (w.s (b, a))).val y = ev p σ ((B.div A).U (b, a)) (w.s (b, a)).val y := ev_res_units_val_eq _ hy _`. Establish `h₂ : ev p σ (B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) (Semi.res (V` using `B.U b ⊓ A.U a ⊓ (B.U b' ⊓ A.U a')) inf_le_right (w.s (b', a'))).val y = ev p σ ((B.div A).U (b', a')) (w.s (b', a')).val y := ev_res_units_val_eq _ hy _`. Establish `hA : ev p σ (A.U a ⊓ A.U a') (A.g a a').val y ≠ 0` using `gv_ne_zero ha ha'`. Unfold `gv`. Rewrite using `[← h₁, ← h₂, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -134,7 +134,7 @@ theorem ev_iso_rel {w : LB.Iso A B} (hw : w.IsGen) {a a' : A.ι} {b b' : B.ι}
   field_simp
 
 /- English proof (translation)
-The claim follows from `ev_ne_zero (mem_ptsIn_inf.2 ⟨hb, ha⟩) (w.s (b, a)).isUnit`.
+A detailed English derivation is pending.
 -/
 theorem ev_iso_ne_zero (w : LB.Iso A B) {a : A.ι} {b : B.ι} (ha : y ∈ ptsIn p σ (A.U a))
     (hb : y ∈ ptsIn p σ (B.U b)) : ev p σ _ (w.s (b, a)).val y ≠ 0 := ev_ne_zero (mem_ptsIn_inf.2 ⟨hb, ha⟩) (w.s (b, a)).isUnit
@@ -145,7 +145,7 @@ variable {k' : Type} [CommRing k'] {Y' : Scheme.{0}} {p' : Y' ⟶ Sp k'} {σ' : 
   {κ : Type} [Fintype κ] {f : κ → (Y' ⟶ Y)} {z : CxPts p' σ'} {m : κ → CxPts p σ}
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_ptsIn]`. Rewrite using `[hm a]`. Establish `h₁ : z.1 (IsLocalRing.closedPoint ℂ) ∈ ⋂ c, ⇑(f c) ⁻¹' (B.U (j c) : Set Y)` using `h`. Conclude with `Set.mem_iInter.1 h₁ a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_linComb (hm : ∀ a, (m a).1 = z.1 ≫ f a) {ε : κ → ℤ} {j : κ → B.ι}
     (h : z ∈ ptsIn p' σ' ((LB.LinComb B f ε).U j)) (a : κ) : m a ∈ ptsIn p σ (B.U (j a)) := by
@@ -155,7 +155,7 @@ theorem mem_of_mem_linComb (hm : ∀ a, (m a).1 = z.1 ≫ f a) {ε : κ → ℤ}
   exact Set.mem_iInter.1 h₁ a
 
 /- English proof (translation)
-Rewrite using `[ev_eq h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ev_units_val_eq_evHom {V₁ : Y.Opens} {y₁ : CxPts p σ} (h : y₁ ∈ ptsIn p σ V₁)
     (u : Γ(Y, V₁)ˣ) :
@@ -171,9 +171,9 @@ private theorem pullU_val' {Y₁ : Scheme.{0}} (g : Y₁ ⟶ Y) (W₁ : Y.Opens)
   rfl
 
 /- English proof (translation)
-Simplify using `only [ev, valR]`. Rewrite using `[hm]`. Distinguish the cases in `h : ⊤ ≤ (z₁.1 ≫ g) ⁻¹ᵁ W₁`. Establish `h' : ⊤ ≤ z₁.1 ⁻¹ᵁ (g ⁻¹ᵁ W₁)` using `h`. Rewrite using `[dif_pos h, dif_pos h', Scheme.Hom.comp_appLE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h' : ¬ ⊤ ≤ z₁.1 ⁻¹ᵁ (g ⁻¹ᵁ W₁)` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_app_pullback_eq_ev {k₁ : Type} [CommRing k₁] {Y₁ : Scheme.{0}} {p₁ : Y₁ ⟶ Sp k₁}
     {σ₁ : k₁ →+* ℂ} (g : Y₁ ⟶ Y) {W₁ : Y.Opens} {z₁ : CxPts p₁ σ₁} {y₁ : CxPts p σ}
@@ -189,9 +189,9 @@ private theorem ev_app_pullback_eq_ev {k₁ : Type} [CommRing k₁] {Y₁ : Sche
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Establish `hz : z ∈ ptsIn p' σ' (B.wchart f j ⊓ B.wchart f j')` using `mem_ptsIn_inf.2 ⟨h, h'⟩`. Simplify using `only [gv, LB.LinComb]`. Rewrite using `[ev_units_val_eq_evHom hz, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val, ← ev_units_val_eq_evHom hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(ev_res_units_val_eq _ hz _).trans (ev_app_pullback_eq_ev (W₁ := B.U (j a) ⊓ B.U (j' a)) (f a) (hm a) _)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gv_linComb (hm : ∀ a, (m a).1 = z.1 ≫ f a) {ε : κ → ℤ} {j j' : κ → B.ι}
     (h : z ∈ ptsIn p' σ' ((LB.LinComb B f ε).U j)) (h' : z ∈ ptsIn p' σ' ((LB.LinComb B f ε).U j')) :
@@ -207,9 +207,7 @@ theorem gv_linComb (hm : ∀ a, (m a).1 = z.1 ≫ f a) {ε : κ → ℤ} {j j' :
 end Pull
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mem_of_mem_linComb (m := fun _ => y) (fun _ => (Category.comp_id _).symm) h PUnit.unit`. Introduce `h`. Rewrite `h`, the goal using `[mem_ptsIn]`.
-
-Conclude with `Set.mem_iInter.2 fun _ => h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_iff {n : ℤ} {j : PUnit → B.ι} :
     y ∈ ptsIn p σ ((LB.LinComb B (fun _ => 𝟙 Y) fun _ => n).U j) ↔
@@ -222,7 +220,7 @@ theorem mem_pow_iff {n : ℤ} {j : PUnit → B.ι} :
     exact Set.mem_iInter.2 fun _ => h
 
 /- English proof (translation)
-Rewrite using `[gv_linComb (m := fun _ => y) (fun _ => (Category.comp_id _).symm) (mem_pow_iff.2 h) (mem_pow_iff.2 h')]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gv_pow {n : ℤ} {j j' : PUnit → B.ι} (h : y ∈ ptsIn p σ (B.U (j PUnit.unit)))
     (h' : y ∈ ptsIn p σ (B.U (j' PUnit.unit))) :
@@ -242,13 +240,13 @@ variable (σ) in
 def rv (hη : IsFrame η) (hη' : IsFrame η') : CxPts p σ → ℂ := ev p σ (U ⊓ U') (hη.ratio hη').val
 
 /- English proof (translation)
-The claim follows from `ev_ne_zero (mem_ptsIn_inf.2 ⟨h, h'⟩) (Units.isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem rv_ne_zero (hη : IsFrame η) (hη' : IsFrame η') (h : y ∈ ptsIn p σ U)
     (h' : y ∈ ptsIn p σ U') : rv σ hη hη' y ≠ 0 := ev_ne_zero (mem_ptsIn_inf.2 ⟨h, h'⟩) (Units.isUnit _)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => ev p σ (U ⊓ U' ⊓ U'') (Units.val u) y) (hη.res_ratio_mul hη' hη'' (V := U ⊓ U' ⊓ U'') (le_inf (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right)) (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (le_inf (inf_le_left.trans inf_le_left) inf_le …`. Simplify using `only [Units.val_mul, ev_mul] at e`. Rewrite `e` using `[ev_res_units_val_eq, ev_res_units_val_eq, ev_res_units_val_eq]`. Conclude with `e`. Apply the tactic sequence `all_goals simp [h, h', h'']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rv_mul (hη : IsFrame η) (hη' : IsFrame η') (hη'' : IsFrame η'') (h : y ∈ ptsIn p σ U)
     (h' : y ∈ ptsIn p σ U') (h'' : y ∈ ptsIn p σ U'') :
@@ -264,7 +262,7 @@ theorem rv_mul (hη : IsFrame η) (hη' : IsFrame η') (hη'' : IsFrame η'') (h
   all_goals simp [h, h', h'']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `show ev p σ _ (K.bundle.g a b).val y = ev p σ _ ((K.isFrame a).ratio (K.isFrame b)).val y`. Rewrite using `[K.g_eq_ratio a b]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gv_canon [SmoothOfRelativeDimension D p] (K : CanonLB p D) (a b : K.bundle.ι) :
     gv p σ K.bundle a b = rv σ (K.isFrame a) (K.isFrame b) := by
@@ -273,7 +271,7 @@ theorem gv_canon [SmoothOfRelativeDimension D p] (K : CanonLB p D) (a b : K.bund
   rw [K.g_eq_ratio a b]
 
 /- English proof (translation)
-The claim follows from `c.ev_ratio c' hy hy'`.
+A detailed English derivation is pending.
 -/
 theorem rv_chart (c c' : AlgChart p σ D) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     rv σ c.isFrame c'.isFrame y = transDet c.e c'.e y := c.ev_ratio c' hy hy'
@@ -309,9 +307,9 @@ Both sides reduce to the same expression.
 theorem secVal_apply (s : B.Sec) (i : B.ι) : secVal p σ s i = ev p σ (B.U i) (s.f i) := rfl
 
 /- English proof (translation)
-Use `⟨fun i j y hi hj => ?_, fun i y h => ev_of_notMem h _⟩` and prove the remaining obligations. Establish `hij : y ∈ ptsIn p σ (B.U i ⊓ B.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `e` using `congrArg (fun f => ev p σ _ f y) (s.2 i j)`. Simplify using `only [ev_mul] at e`. Rewrite `e` using `[ev_res inf_le_left hij, ev_res inf_le_right hij]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem secVal_mem (s : B.Sec) : secVal p σ s ∈ fibSec p σ B := by
   refine ⟨fun i j y hi hj => ?_, fun i y h => ev_of_notMem h _⟩
@@ -322,9 +320,9 @@ theorem secVal_mem (s : B.Sec) : secVal p σ s ∈ fibSec p σ B := by
   exact e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i y`. Use `show ev p σ (B.U i) ((algX p ⊤ a • s).f i) y = σ a * ev p σ (B.U i) (s.f i) y`. Distinguish the cases in `h : y ∈ ptsIn p σ (B.U i)`. Establish `e : (algX p ⊤ a • s).f i = resG Y le_top (algX p ⊤ a) * s.f i` using `rfl`. Rewrite using `[e, ev_mul, ev_res le_top h, ev_algX mem_ptsIn_top a]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_of_notMem h, ev_of_notMem h, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem secVal_smul (a : k) (s : B.Sec) : secVal p σ (algX p ⊤ a • s) = σ a • secVal p σ s := by
   funext i y
@@ -335,9 +333,9 @@ theorem secVal_smul (a : k) (s : B.Sec) : secVal p σ (algX p ⊤ a • s) = σ 
   · rw [ev_of_notMem h, ev_of_notMem h, mul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ l, y ∈ ptsIn p σ (B.U l) → (secVal p σ s l y ≠ 0 ↔ secVal p σ s i y ≠ 0)` using `fun l hl => by rw [(secVal_mem s).1 i l y hi hl, mul_ne_zero_iff, and_iff_right (gv_ne_zero hi hl)]`. Rewrite using `[nonzeroLocus, mem_ptsIn, Opens.mem_iSup]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨i, mem_ptsIn.1 ((mem_ptsIn_basicOpen hi _).2 h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨l, hl⟩`. Establish `hl' : y ∈ ptsIn p σ (Y.basicOpen (s.f l))` using `mem_ptsIn.2 hl`. Establish `hlU : y ∈ ptsIn p σ (B.U l)` using `ptsIn_mono (Y.basicOpen_le _) hl'`. Conclude with `(key l hlU).1 ((mem_ptsIn_basicOpen hlU _).1 hl')`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secVal_ne_zero_iff (s : B.Sec) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
     secVal p σ s i y ≠ 0 ↔ y ∈ ptsIn p σ (nonzeroLocus s) := by
@@ -356,11 +354,11 @@ def secTens (s : A.ι → CxPts p σ → ℂ) (t : B.ι → CxPts p σ → ℂ) 
     (tens A B).ι → CxPts p σ → ℂ := fun c y => s c.1 y * t c.2 y
 
 /- English proof (translation)
-Use `⟨fun c c' y h h' => ?_, fun c y h => ?_⟩` and prove the remaining obligations. Establish `e` using `mem_ptsIn_inf.1 h`. Establish `e'` using `mem_ptsIn_inf.1 h'`. Simplify using `only [secTens]`. Rewrite using `[gv_tens h h', hs.1 _ _ y e.1 e'.1, ht.1 _ _ y e.2 e'.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [secTens]`. Distinguish the cases in `ha : y ∈ ptsIn p σ (A.U c.1)`. Establish `hb : y ∉ ptsIn p σ (B.U c.2)` using `fun hb => h (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Rewrite using `[ht.2 _ y hb, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.2 _ y ha, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secTens_mem {s : A.ι → CxPts p σ → ℂ} {t : B.ι → CxPts p σ → ℂ} (hs : s ∈ fibSec p σ A)
     (ht : t ∈ fibSec p σ B) : secTens s t ∈ fibSec p σ (tens A B) := by
@@ -409,7 +407,7 @@ def of : B.Sec →+ SecC p σ B :=
   (TensorProduct.mk k ℂ B.Sec 1).toAddMonoidHom
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Use `letI := secModuleBase p B`. Use `show (1 : ℂ) ⊗ₜ[k] (a • s) = σ a • ((1 : ℂ) ⊗ₜ[k] s)`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem of_smul (a : k) (s : B.Sec) : of p σ (algX p ⊤ a • s) = σ a • of p σ s := by
   letI := σ.toAlgebra
@@ -420,11 +418,9 @@ theorem of_smul (a : k) (s : B.Sec) : of p σ (algX p ⊤ a • s) = σ a • of
   rfl
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Use `letI := secModuleBase p B`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Use `TensorProduct.induction_on (motive := fun x : ℂ ⊗[k] B.Sec => @id (SecC p σ B) x ∈ Submodule.span ℂ (range (of p σ : B.Sec → SecC p σ B))) x ?_ ?_ ?_` and prove the remaining obligations. Conclude with `zero_mem _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c s`. Establish `e : @id (SecC p σ B) (c ⊗ₜ[k] s) = c • of p σ s` using `by show c ⊗ₜ[k] s = c • ((1 : ℂ) ⊗ₜ[k] s)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨s, rfl⟩)`.
-
-Introduce `x y hx hy`. Conclude with `add_mem hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_range_of : Submodule.span ℂ (range (of p σ : B.Sec → _)) = ⊤ := by
   letI := σ.toAlgebra
@@ -451,9 +447,9 @@ def lift {E : Type*} [AddCommGroup E] [Module ℂ E] (φ : B.Sec →+ E)
   LinearMap.liftBaseChange ℂ ({ φ with map_smul' := h } : B.Sec →ₗ[k] E)
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Use `letI := secModuleBase p B`. Use `letI : Module k E := Module.compHom E σ`. Use `haveI : IsScalarTower k ℂ E := ⟨fun a c x => mul_smul (σ a) c x⟩`. Use `show LinearMap.liftBaseChange ℂ _ ((1 : ℂ) ⊗ₜ[k] s) = φ s`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_of {E : Type*} [AddCommGroup E] [Module ℂ E] (φ : B.Sec →+ E)
     (h : ∀ a s, φ (algX p ⊤ a • s) = σ a • φ s) (s : B.Sec) : lift φ h (of p σ s) = φ s := by
@@ -468,14 +464,12 @@ Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to 
 def val : SecC p σ B →ₗ[ℂ] (B.ι → CxPts p σ → ℂ) := lift (secVal p σ) secVal_smul
 
 /- English proof (translation)
-The claim follows from `lift_of _ _ s`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem val_of (s : B.Sec) : val (of p σ s) = secVal p σ s := lift_of _ _ s
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ (range (of p σ : B.Sec → SecC p σ B)) ≤ M.comap val` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨s, rfl⟩`. Use `show val (of p σ s) ∈ M`. Rewrite using `[val_of]`. Conclude with `h s)`.
-
-Conclude with `hle (by rw [span_range_of]; exact Submodule.mem_top)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mem_of {M : Submodule ℂ (B.ι → CxPts p σ → ℂ)} (h : ∀ s, secVal p σ s ∈ M)
     (x : SecC p σ B) : val x ∈ M := by
@@ -488,7 +482,7 @@ theorem val_mem_of {M : Submodule ℂ (B.ι → CxPts p σ → ℂ)} (h : ∀ s,
   exact hle (by rw [span_range_of]; exact Submodule.mem_top)
 
 /- English proof (translation)
-The claim follows from `val_mem_of secVal_mem x`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (x : SecC p σ B) : val x ∈ fibSec p σ B := val_mem_of secVal_mem x
 
@@ -504,7 +498,7 @@ structure Weight (p : Y ⟶ Sp k) (σ : k →+* ℂ) (B : LB Y) where
     φ j y = φ i y - Real.log (‖gv p σ B i j y‖ ^ 2)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, mul_pow, Real.log_mul (pow_ne_zero 2 (norm_ne_zero_iff.2 ha)) (pow_ne_zero 2 (norm_ne_zero_iff.2 hb))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_normSq_mul {a b : ℂ} (ha : a ≠ 0) (hb : b ≠ 0) :
     Real.log (‖a * b‖ ^ 2) = Real.log (‖a‖ ^ 2) + Real.log (‖b‖ ^ 2) := by
@@ -512,7 +506,7 @@ theorem log_normSq_mul {a b : ℂ} (ha : a ≠ 0) (hb : b ≠ 0) :
     (pow_ne_zero 2 (norm_ne_zero_iff.2 hb))]
 
 /- English proof (translation)
-Establish `e : ‖a ^ n‖ ^ 2 = (‖a‖ ^ 2) ^ n`. Rewrite using `[norm_zpow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`. Rewrite using `[e, Real.log_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_normSq_zpow (a : ℂ) (n : ℤ) : Real.log (‖a ^ n‖ ^ 2) = n * Real.log (‖a‖ ^ 2) := by
   have e : ‖a ^ n‖ ^ 2 = (‖a‖ ^ 2) ^ n := by
@@ -520,7 +514,7 @@ theorem log_normSq_zpow (a : ℂ) (n : ℤ) : Real.log (‖a ^ n‖ ^ 2) = n * R
   rw [e, Real.log_zpow]
 
 /- English proof (translation)
-Establish `hu' : 0 < ‖u‖ ^ 2` using `pow_pos (norm_pos_iff.2 hu) 2`. Rewrite using `[norm_mul, mul_pow, neg_add, Real.exp_add, Real.exp_neg (Real.log _), Real.exp_log hu']`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem normSq_mul_exp {u : ℂ} (hu : u ≠ 0) (s : ℂ) (φ : ℝ) :
     ‖u * s‖ ^ 2 * Real.exp (-(φ + Real.log (‖u‖ ^ 2))) = ‖s‖ ^ 2 * Real.exp (-φ) := by
@@ -536,9 +530,9 @@ def nsq (s : B.ι → CxPts p σ → ℂ) (y : CxPts p σ) : ℝ :=
   ‖s (pick φ.isLB y) y‖ ^ 2 * Real.exp (-φ.φ (pick φ.isLB y) y)
 
 /- English proof (translation)
-Establish `hp` using `mem_pick φ.isLB y`. Establish `e` using `normSq_mul_exp (gv_ne_zero hp hi) (s i y) (φ.φ (pick φ.isLB y) y - Real.log (‖gv p σ B (pick φ.isLB y) i y‖ ^ 2))`. Rewrite `e` using `[sub_add_cancel]`. Unfold `nsq`. Rewrite using `[hs.1 _ i y hp hi, φ.trans _ i y hp hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem nsq_eq (hs : s ∈ fibSec p σ B) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
     φ.nsq s y = ‖s i y‖ ^ 2 * Real.exp (-φ.φ i y) := by
@@ -551,7 +545,7 @@ theorem nsq_eq (hs : s ∈ fibSec p σ B) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U
   exact e
 
 /- English proof (translation)
-Unfold `nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem nsq_nonneg (s : B.ι → CxPts p σ → ℂ) (y : CxPts p σ) : 0 ≤ φ.nsq s y := by
   unfold nsq
@@ -563,7 +557,7 @@ def addFn (u : CxPts p σ → ℝ) : Weight p σ B where
   trans i j y hi hj := by rw [φ.trans i j y hi hj]; ring
 
 /- English proof (translation)
-Simplify using `only [nsq, addFn, neg_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsq_addFn (u : CxPts p σ → ℝ) (s : B.ι → CxPts p σ → ℂ) (y : CxPts p σ) :
     (φ.addFn u).nsq s y = φ.nsq s y * Real.exp (-u y) := by
@@ -581,7 +575,7 @@ def tens (ψ : Weight p σ A) (φ : Weight p σ B) : Weight p σ (tens A B) wher
     ring
 
 /- English proof (translation)
-Establish `hp` using `mem_pick (ψ.tens φ).isLB y`. Establish `e` using `mem_ptsIn_inf.1 hp`. Rewrite using `[(ψ.tens φ).nsq_eq (secTens_mem ht hs) hp, ψ.nsq_eq ht e.1, φ.nsq_eq hs e.2]`. Simplify using `only [secTens, Weight.tens, norm_mul, mul_pow, neg_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsq_tens (ψ : Weight p σ A) {t : A.ι → CxPts p σ → ℂ} (ht : t ∈ fibSec p σ A)
     (hs : s ∈ fibSec p σ B) (y : CxPts p σ) :
@@ -617,7 +611,7 @@ def zpow (n : ℤ) : Weight p σ (LB.LinComb B (K := PUnit) (fun _ => 𝟙 Y) fu
 abbrev pow (n : ℕ) : Weight p σ (lbPow B n) := φ.zpow n
 
 /- English proof (translation)
-Simplify using `[Weight.zpow, Weight.linComb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zpow_φ (n : ℤ) (j : PUnit → B.ι) (y : CxPts p σ) :
     (φ.zpow n).φ j y = n * φ.φ (j PUnit.unit) y := by
@@ -628,7 +622,7 @@ def pull {Y' : Scheme.{0}} {p' : Y' ⟶ Sp k} (f : Y' ⟶ Y) (hf : f ≫ p = p')
   φ.linComb _ _ (fun _ => PtsOver.map f hf _) fun _ _ => rfl
 
 /- English proof (translation)
-Simplify using `[Weight.pull, Weight.linComb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_φ {Y' : Scheme.{0}} {p' : Y' ⟶ Sp k} (f : Y' ⟶ Y) (hf : f ≫ p = p')
     (j : PUnit → B.ι) (z : CxPts p' σ) :
@@ -643,7 +637,7 @@ def ofPairs (hA : A.IsLB) (hB : B.IsLB) (ψ : A.ι → B.ι → CxPts p σ → �
     h a a' _ _ y ha ha' (mem_pick hB y) (mem_pick hB y)⟩
 
 /- English proof (translation)
-Use `show ψ a (pick hB y) y = ψ a b y`. Establish `e` using `h a a (pick hB y) b y ha ha (mem_pick hB y) hb`. Rewrite `e` using `[gv_self hA ha, norm_one, one_pow, Real.log_one, sub_zero]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofPairs_φ {hA : A.IsLB} {hB : B.IsLB} {ψ : A.ι → B.ι → CxPts p σ → ℝ} {h} {a : A.ι}
     {b : B.ι} (ha : y ∈ ptsIn p σ (A.U a)) (hb : y ∈ ptsIn p σ (B.U b)) :
@@ -682,7 +676,7 @@ def NoCommonZero (e : α → B.ι → CxPts p σ → ℂ) : Prop :=
   ∀ i, ∀ y ∈ ptsIn p σ (B.U i), ∃ a, e a i y ≠ 0
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h i y hi`. Conclude with `Finset.sum_pos' (fun b _ => by positivity) ⟨a, Finset.mem_univ _, pow_pos (norm_pos_iff.2 ha) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NoCommonZero.sum_pos (h : NoCommonZero e) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
     0 < ∑ a, ‖e a i y‖ ^ 2 := by
@@ -701,7 +695,7 @@ def fs (hB : B.IsLB) (e : α → B.ι → CxPts p σ → ℂ) (he : ∀ a, e a �
     ring
 
 /- English proof (translation)
-Rewrite using `[nsq_eq _ hs hi]`. Simplify using `only [fs]`. Rewrite using `[Real.exp_neg, Real.exp_log (h.sum_pos hi), div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsq_fs {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e}
     (hs : s ∈ fibSec p σ B) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
@@ -711,9 +705,9 @@ theorem nsq_fs {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZe
   rw [Real.exp_neg, Real.exp_log (h.sum_pos hi), div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hi` using `mem_pick hB y`. Establish `hpos` using `h.sum_pos hi`. Simplify using `only [nsq, fs]`. Rewrite using `[Real.exp_neg, Real.exp_log hpos, ← div_eq_mul_inv, div_le_iff₀ hpos]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_sum_le _ _).trans_eq (by simp [norm_mul])`. Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nsq_fs_le {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e} (c : α → ℂ)
     (y : CxPts p σ) : (fs hB e he h).nsq (∑ a, c a • e a) y ≤ ∑ a, ‖c a‖ ^ 2 := by
@@ -728,7 +722,7 @@ theorem nsq_fs_le {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommo
     _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
 /- English proof (translation)
-Establish `hpos` using `h.sum_pos (mem_pick hB y)`. Simplify using `only [nsq, fs]`. Rewrite using `[← Finset.sum_mul, Real.exp_neg, Real.exp_log hpos, mul_inv_cancel₀ hpos.ne']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_nsq_fs {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e}
     (y : CxPts p σ) : ∑ a, (fs hB e he h).nsq (e a) y = 1 := by
@@ -746,18 +740,18 @@ def combVal (b : α → B.Sec) (M : Matrix α α ℂ) (a : α) : B.ι → CxPts 
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Simplify using `only [combVal, map_sum, map_smul, SecC.val_of]`.
+Simplify using the standard rewrite rules.
 -/
 theorem combVal_eq (b : α → B.Sec) (M : Matrix α α ℂ) (a : α) :
     combVal p σ b M a = SecC.val (∑ j, M j a • SecC.of p σ (b j)) := by
   simp only [combVal, map_sum, map_smul, SecC.val_of]
 
 /- English proof (translation)
-Introduce `i y hi`. Establish `hy : y ∈ ptsIn p σ (⨆ j, nonzeroLocus (b j))` using `by rw [hb]; exact mem_ptsIn_top`. Rewrite `hy` using `[mem_ptsIn, Opens.mem_iSup]`. Take `⟨j, hj⟩` from `hy`. Establish `hj' : secVal p σ (b j) i y ≠ 0` using `(secVal_ne_zero_iff (b j) hi).2 (mem_ptsIn.2 hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hv : Matrix.vecMul (fun l => secVal p σ (b l) i y) M = 0`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.zero_apply, ← hcon a]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[combVal, Matrix.vecMul, dotProduct, Finset.sum_apply, mul_comm]`. Conclude with `hj' (congrFun (Matrix.eq_zero_of_vecMul_eq_zero hM hv) j)`.
+A detailed English derivation is pending.
 -/
 theorem noCommonZero_combVal {b : α → B.Sec} (hb : ⨆ j, nonzeroLocus (b j) = ⊤)
     {M : Matrix α α ℂ} (hM : M.det ≠ 0) : NoCommonZero (combVal p σ b M) := by
@@ -782,7 +776,7 @@ def fsBasis (hB : B.IsLB) (b : α → B.Sec) (hb : ⨆ j, nonzeroLocus (b j) = �
     (noCommonZero_combVal hb hM)
 
 /- English proof (translation)
-Simplify using `[fsBasis, fs, combVal, Finset.sum_apply, secVal_apply, ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsBasis_φ (hB : B.IsLB) (b : α → B.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤)
     (M : Matrix α α ℂ) (hM : M.det ≠ 0) (i : B.ι) (y : CxPts p σ) :

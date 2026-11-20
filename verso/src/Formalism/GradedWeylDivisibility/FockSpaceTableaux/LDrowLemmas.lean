@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Unfold `rowAct`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `[Matrix.diagonal_apply, apply_ite C, ite_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma ldrow_rowAct_diag_eq {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R) :
     rowAct R (n := n) (Matrix.diagonal t) = aeval fun v : Fin k × Fin n => C (t v.1) * X v := by
@@ -17,7 +17,7 @@ lemma ldrow_rowAct_diag_eq {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R
   simp [Matrix.diagonal_apply, apply_ite C, ite_mul]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun v => pow_zero _), Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `show ∏ y, t a ^ u (a, y) = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma ldrow_prod_rowDeg {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R) (u : Fin k × Fin n →₀ ℕ) :
     (u.prod fun v e => t v.1 ^ e) = ∏ a : Fin k, t a ^ rowDeg u a := by
@@ -29,9 +29,9 @@ lemma ldrow_prod_rowDeg {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R) (
   rfl
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, monomial_eq]`. Simplify using `only [mul_pow, Finsupp.prod_mul]`. Establish `hC : (u.prod fun v e => (C (t v.1) : MvPolynomial (Fin k × Fin n) R) ^ e) = C (∏ a : Fin k, t a ^ rowDeg u a)`. Rewrite using `[← ldrow_prod_rowDeg]`. Simplify using `only [Finsupp.prod, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hC, algebraMap_eq, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ldrow_aeval_monomial {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R)
     (u : Fin k × Fin n →₀ ℕ) (c : R) :
@@ -47,9 +47,9 @@ lemma ldrow_aeval_monomial {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R
   ring
 
 /- English proof (translation)
-Rewrite using `[ldrow_rowAct_diag_eq]`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[ldrow_aeval_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, add_mul]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ldrow_coeff_rowAct_diag {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k → R)
     (f : MvPolynomial (Fin k × Fin n) R) (m : Fin k × Fin n →₀ ℕ) :
@@ -66,11 +66,11 @@ lemma ldrow_coeff_rowAct_diag {R : Type*} [CommRing R] {k n : ℕ} (t : Fin k �
     rw [map_add, coeff_add, coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype m (fun i c => c • rowW k n i) (fun i => zero_smul ℕ _), Finset.sum_apply, Fintype.sum_prod_type]`. Unfold `rowDeg`. Rewrite using `[Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Simplify using `[rowW]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s _`. Simplify using `[rowW, Pi.single_apply, Ne.symm hb]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 lemma ldrow_weight_rowW {k n : ℕ} (m : Fin k × Fin n →₀ ℕ) (a : Fin k) :
     Finsupp.weight (rowW k n) m a = rowDeg m a := by
@@ -90,7 +90,7 @@ lemma ldrow_weight_rowW {k n : ℕ} (m : Fin k × Fin n →₀ ℕ) (a : Fin k) 
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rowAct, Matrix.one_apply, apply_ite C, ite_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma ldrow_rowAct_one {R : Type*} [CommRing R] {k n : ℕ} :
     rowAct R (n := n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by

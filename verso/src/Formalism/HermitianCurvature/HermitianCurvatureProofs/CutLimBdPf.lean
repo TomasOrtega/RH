@@ -10,9 +10,9 @@ noncomputable section
 def LetPt (Y : Finset ℝ) (y : ℝ) : Prop := y ∈ Y ∨ y - 1 ∈ Y
 
 /- English proof (translation)
-Introduce `l hl`. Take `⟨y, hy, h | h⟩` from `hw.2 l hl`. Substitute `h` using the available equality. Conclude with `Or.inl hy`. Substitute `h right` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Prove the first alternative. Substitute using the available equality.
 
-Simplify using `using hy`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem letters_of_admissible_word_are_points {P : M.Par} {l0 : ℕ} {Y : Finset ℝ} {w : List C.Letter} (hw : TBB.AdmW P l0 Y w) :
     ∀ l ∈ w, LetPt Y l.2 := by
@@ -29,17 +29,17 @@ section tools
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (Q.Mx k r) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (Q.Mx k r) := Matrix.normedSpace`. Establish `hz : Q.SmoothLev k r 0 Set.univ (fun _ : B.Mat k r => (0 : E))`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hadd : ∀ (f f₂ : B.Mat k r → E) (a : ℂ), Q.SmoothLev k r 0 Set.univ f → Q.SmoothLev k r 0 Set.univ f₂ → Q.SmoothLev k r 0 Set.univ (fun y => f y + a • f₂ y)`. Introduce `f f₂ a hf hf₂ g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfe⟩` from `hf g₀ hg₀`. Take `⟨U₂, F₂, hU₂, hgU₂, hF₂, hfe₂⟩` from `hf₂ g₀ hg₀`. Use `⟨U ∩ U₂, fun y => F y + a • F₂ y, hU.inter hU₂, ⟨hgU, hgU₂⟩, (hF.mono Set.inter_subset_left).add ((hF₂.mono Set.inter_subset_right).const_smul a), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg hgl`. Simplify using `only [hfe g hg.1 hgl, hfe₂ g hg.2 hgl]`. Establish `hT0 : ∀ x ∈ Q.Glev k r 0 ∩ Set.univ, T (fun _ => (0 : E)) x = 0`. Introduce `x hx`. Establish `h0` using `hT.lin (fun _ => 0) (fun _ => 0) (-1) hz hz x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [smul_zero, add_zero] at h0`. Rewrite `h0` using `[neg_one_smul, add_neg_cancel]`. Conclude with `h0`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_empty]`. Conclude with `⟨hz, hT0⟩`. Consider the case `@insert i s hi ih`. Establish `e : (fun y => ∑ j ∈ insert i s, c j • h j y) = (fun y => (∑ j ∈ s, c j • h j y) + c i • h i y)`. Use function extensionality and compare the values at `y`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hi, add_comm]`. Rewrite using `[e]`. Use `⟨hadd _ _ _ ih.1 (hs i), fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hT.lin _ _ _ ih.1 (hs i) x hx, ih.2 x hx, Finset.sum_insert hi, add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_finsum {T : (B.Mat k r → E) → B.Mat k r → E} (hT : Qx2.Good k r 0 Set.univ T) {ι : Type*}
     (c : ι → ℂ) (h : ι → B.Mat k r → E) (hs : ∀ i, Q.SmoothLev k r 0 Set.univ (h i)) (s : Finset ι) :
@@ -79,7 +79,7 @@ theorem good_finsum {T : (B.Mat k r → E) → B.Mat k r → E} (hT : Qx2.Good k
     rw [hT.lin _ _ _ ih.1 (hs i) x hx, ih.2 x hx, Finset.sum_insert hi, add_comm]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp | a :: L, h => by simp only [List.map_cons, List.prod_cons] rw [norm_mul] have ha := h a (List.mem_cons_self ..) have hL := norm_prod_map_le f g L fun b hb => h b (List.mem_cons_of_mem a hb) exact mul_le_mul ha hL (norm_nonneg _) ((norm_nonneg _).trans ha)`.
+A detailed English derivation is pending.
 -/
 theorem norm_prod_map_le {α : Type*} (f : α → ℂ) (g : α → ℝ) :
     ∀ L : List α, (∀ a ∈ L, ‖f a‖ ≤ g a) → ‖(L.map f).prod‖ ≤ (L.map g).prod
@@ -99,11 +99,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hw : ∀ q : (Fin r → ℂ) × ℂ, 0 ≤ bcWeight k r (Tz k r D.z) (Tz k r D.z') q`. Introduce `q`. Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (sub_nonneg.mpr h) _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `le_refl 0`. Use `⟨∫ q : (Fin r → ℂ) × ℂ, bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (bigCell k r q.1 (D.μsec q.2)))‖ ^ 2, MeasureTheory.integral_nonneg (fun q => mul_nonneg (hw q) (sq_nonneg _)), ?_⟩` and prove the remaining obligations. Unfold `B.beta betaBig`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `q`. Simplify using `[inner_self_eq_norm_sq_to_K]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_self_real (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     ∃ t : ℝ, 0 ≤ t ∧ B.beta D F F = t := by
@@ -123,9 +121,9 @@ theorem beta_self_real (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq �
   simp [inner_self_eq_norm_sq_to_K]
 
 /- English proof (translation)
-Establish `h : ∀ g, B.hsVec (B.JF D 0 g) = 0`. Introduce `g`. Establish `: B.JF D 0 g = 0` using `by simp [B.JF, besselJ]`. Rewrite using `[this]`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[B.hsVec]`. Simplify using `[B.beta, betaBig, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem beta_zero_left' (D : B.RealPlaceData k r Wp Wq) (G : B.Mat k r → (Wq →L[ℂ] Wp)) : B.beta D 0 G = 0 := by
   have h : ∀ g, B.hsVec (B.JF D 0 g) = 0 := by
@@ -137,11 +135,11 @@ theorem beta_zero_left' (D : B.RealPlaceData k r Wp Wq) (G : B.Mat k r → (Wq �
 variable [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `beta_zero_left' D G`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hS : B.InCC A 5 (fun g => ∑ i ∈ s, c i • h i g)` using `JCx2.sq_inCC_sum s _ fun i _ => JCx2.sq_inCC_smul (c i) (hh i)`. Establish `e : (fun g => ∑ i ∈ insert a s, c i • h i g) = (fun g => ∑ i ∈ s, c i • h i g) + c a • h a`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_insert ha, Pi.add_apply, Pi.smul_apply]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, (JCx2.sq_beta_sesq D hA hS (hh a) hG (c a)).1, ih, Finset.sum_insert ha, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem beta_sum_left (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A) {ι : Type*} (c : ι → ℂ)
     (h : ι → B.Mat k r → (Wq →L[ℂ] Wp)) (hh : ∀ i, B.InCC A 5 (h i)) {G : B.Mat k r → (Wq →L[ℂ] Wp)}
@@ -163,11 +161,11 @@ theorem beta_sum_left (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r �
     rw [e, (JCx2.sq_beta_sesq D hA hS (hh a) hG (c a)).1, ih, Finset.sum_insert ha, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `Dx1.LZ.beta_zero_right D G`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hS : B.InCC A 5 (fun g => ∑ i ∈ s, h i g)` using `JCx2.sq_inCC_sum s _ fun i _ => hh i`. Establish `e : (fun g => ∑ i ∈ insert a s, h i g) = (fun g => ∑ i ∈ s, h i g) + (1 : ℂ) • h a`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_insert ha, Pi.add_apply, one_smul]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, (JCx2.sq_beta_sesq D hA hS (hh a) hG 1).2, ih, Finset.sum_insert ha, map_one, one_mul, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem beta_sum_right (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A) {ι : Type*}
     (h : ι → B.Mat k r → (Wq →L[ℂ] Wp)) (hh : ∀ i, B.InCC A 5 (h i)) {G : B.Mat k r → (Wq →L[ℂ] Wp)}
@@ -202,7 +200,7 @@ def EigStr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →
     (∀ i j, i ≠ j → B.beta p.T.base (h i) (h j) = 0)
 
 /- English proof (translation)
-The claim follows from `| [], _, g, hg => by simpa using hF g hg | a :: L, hL, g, hg => by have ih := fold_eig s Y h ev hs he hF L (fun l hl => hL l (List.mem_cons_of_mem a hl)) have hsm : ∀ i, Q.SmoothLev k r 0 Set.univ (h i) := fun i => Dx1.LZ.smooth_of_ck (hs i) have hlin := (good_finsum (Dx1.LZ.good …`.
+A detailed English derivation is pending.
 -/
 theorem fold_eig {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ} (s : ℂ) (Y : Finset ℝ)
     (h : Fin n → B.Mat k r → E) (ev : Fin n → ℝ → ℂ) (hs : ∀ i, B.CkOn ⊤ (B.GV k r) (h i))
@@ -227,21 +225,19 @@ theorem fold_eig {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ 
     ring_nf
 
 /- English proof (translation)
-Take `⟨A, n, h, ev, hA, hs, hcc, hF, he, hev, horth⟩` from `hE`. Introduce `w hw _`. Use `set s : ℂ := M.sgn P p.l0 with hsdef`. Establish `hs1 : ‖s‖ = 1` using `by simp [hsdef, M.sgn]`. Use `set c : Fin n → ℂ := fun i => (w.map fun a => s * ev i a.2).prod with hc`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFck : B.CkOn ⊤ (B.GV P.k P.r) F` using `Qb1.ckOn_congr (fun g hg => (hF g hg).symm) (JCx2.sq_ckOn_sum Finset.univ h fun i _ => hs i)`. Establish `hLet` using `letters_of_admissible_word_are_points hw`. Establish `hRR : p.RR F 0 w [] [] = B.beta p.T.base (fun g => ∑ i, c i • h i g) (fun g => ∑ j, h j g)`. Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hFck (good_positioned_of_cut hw.1)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `C7.principalHermitianLattice`. Rewrite using `[JCx2.sq_beta_congr _ (fold_eig s Y h ev hs he hF w hLet)]`. Conclude with `beta_congr_right _ hF`. Establish `hBF : B.beta p.T.base F F = B.beta p.T.base (fun g => ∑ i, (1 : ℂ) • h i g) (fun g => ∑ j, h j g)`. Rewrite using `[JCx2.sq_beta_congr _ (F₂ := fun g => ∑ i, (1 : ℂ) • h i g) (fun g hg => by simp [hF g hg]), beta_congr_right _ hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSum : B.InCC A 5 (fun g => ∑ j, h j g)` using `JCx2.sq_inCC_sum _ _ fun i _ => hcc i`. Establish `hexp : ∀ d : Fin n → ℂ, B.beta p.T.base (fun g => ∑ i, d i • h i g) (fun g => ∑ j, h j g) = ∑ i, d i * B.beta p.T.base (h i) (h i)`. Introduce `d`. Rewrite using `[beta_sum_left p.T.base hA d h hcc hSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[beta_sum_right p.T.base hA h hcc (hcc i), Finset.sum_eq_single i]`. Introduce `j _ hji`. Conclude with `horth i j (Ne.symm hji)`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hRR, hBF, hexp, hexp]`. Establish `hcn : ∀ i, ‖c i‖ ≤ TBB.normC nn w`. Introduce `i`. Unfold `TBB.normC`. Use `norm_prod_map_le (fun a => s * ev i a.2) (fun l => nn l.2) w fun a ha => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hs1, one_mul]`. Conclude with `hev i a.2 (hLet a ha)`. Simplify using `only [one_mul, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Take `⟨t, ht, hbt⟩` from `beta_self_real p.T.base (h i)`.
-
-Rewrite using `[hbt, Complex.re_mul_ofReal, Complex.ofReal_re]`. Conclude with `mul_le_mul_of_nonneg_right ((Complex.re_le_norm _).trans (hcn i)) ht`.
+A detailed English derivation is pending.
 -/
 theorem limBd_of_eigStr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (N : ℕ) (hE : EigStr p nn F Y) : LimBd p nn F Y N := by
@@ -291,7 +287,7 @@ theorem limBd_of_eigStr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.
 end place
 
 /- English proof (translation)
-Take `⟨C₄, hC⟩` from `thmBpAt_of_leaves_limBd hA C₃ CΛ C₀ Cκ hC₃ hCΛ hC₀`. Use `⟨C₄, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 hEp hEm hLp hLm`. Conclude with `hC Wp Wq P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 (limBd_of_eigStr p nn _ Y N hEp) (limBd_of_eigStr p nn _ Y N hEm) hLp hLm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_of_leaves_eigStr (hA : P5.ThmPActual) (C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Shin.NormFibre
 
 /- English proof (translation)
-Establish `e1 : {g' : G // IsConj g g'} ≃ MulAction.orbit (ConjAct G) g` using `Equiv.subtypeEquivRight (fun g' => by rw [ConjAct.mem_orbit_conjAct, isConj_comm])`. Establish `e2 : {x : G // Commute x g} ≃ MulAction.stabilizer (ConjAct G) g` using `{ toFun := fun x => ⟨ConjAct.toConjAct x.1, by`. Rewrite using `[MulAction.mem_stabilizer_iff, ConjAct.toConjAct_smul, x.2.eq, mul_inv_cancel_right]⟩`. Use `invFun := fun y => ⟨ConjAct.ofConjAct y.1, by`. Establish `h` using `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[MulAction.mem_stabilizer_iff, ConjAct.smul_def, mul_inv_eq_iff_eq_mul]`. Conclude with `h⟩`. Use `left_inv := fun x => rfl`. Use `right_inv := fun y => rfl }`. Rewrite using `[Nat.card_congr e1, Nat.card_congr e2, ← Nat.card_prod, Nat.card_congr (MulAction.orbitProdStabilizerEquivGroup (ConjAct G) g), Nat.card_congr (ConjAct.toConjAct (G := G)).toEquiv.symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_conj_mul_card_commute {G : Type} [Group G] (g : G) :
     Nat.card {g' : G // IsConj g g'} * Nat.card {x : G // Commute x g} = Nat.card G := by
@@ -38,7 +38,7 @@ section Fields
 variable {F F' : Type} [Field F] [Field F'] [Algebra F F']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[galAct_apply, gal, incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem galAct_incl (n : ℕ) (t : F' ≃ₐ[F] F') (γ : GL (Fin n) F) :
     galAct F F' n t (incl F F' n γ) = incl F F' n γ := by
@@ -46,7 +46,7 @@ theorem galAct_incl (n : ℕ) (t : F' ≃ₐ[F] F') (γ : GL (Fin n) F) :
   simp [galAct_apply, gal, incl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[galAct_apply, gal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem galAct_coe (n : ℕ) (t : F' ≃ₐ[F] F') (x : GL (Fin n) F') :
     ((galAct F F' n t x : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') =
@@ -85,9 +85,9 @@ def nrmFibreEquiv (s : F' ≃ₐ[F] F') (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Sub
   nrmFibreEquivOf s hs _ (isConj_iff.1 h).choose_spec
 
 /- English proof (translation)
-Establish `e : {δ : GL (Fin n) F' // IsConj c (nrm s δ)} ≃ Σ g' : {g' : GL (Fin n) F' // IsConj c g'}, {δ : GL (Fin n) F' // nrm s δ = g'.1}` using `{ toFun := fun δ => ⟨⟨nrm s δ.1, δ.2⟩, ⟨δ.1, rfl⟩⟩ invFun := fun p => ⟨p.2.1, by rw [p.2.2]; exact p.1.2⟩ left_inv := fun δ => rfl right_inv := fun p => by`. Break down `p with ⟨⟨g', hg⟩, ⟨δ, hδ⟩⟩` into its components or cases. Simplify using `only at hδ`. Substitute `hδ` using the available equality. Use `rfl }`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr (e.trans ((Equiv.sigmaCongrRight fun g' => nrmFibreEquiv s hs g'.2).trans (Equiv.sigmaEquivProd _ _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_isConj_nrm (s : F' ≃ₐ[F] F') (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) {n : ℕ}
     (c : GL (Fin n) F') :
@@ -114,33 +114,29 @@ section Centraliser
 variable {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F']
 
 /- English proof (translation)
-Take `⟨-, hinj, -, hcomm, hmul⟩` from `GlobalTheory.T.galoisTwistedNormGL_basic_properties F F' s hs n`. Take `⟨δ₀, hδ₀B, hδ₀⟩` from `GlobalTheory.T.norm_map_surjective_finite_field F F' s hs n γ`. Establish `hcfix : ∀ t : F' ≃ₐ[F] F', galAct F F' n t (incl F F' n γ) = incl F F' n γ` using `fun t => galAct_incl n t γ`. Use `set c := incl F F' n γ with hc`. Use `set B := Subalgebra.centralizer F' {(c : Matrix (Fin n) (Fin n) F')} with hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `memB : ∀ x : GL (Fin n) F', (x : Matrix (Fin n) (Fin n) F') ∈ B ↔ Commute x c`. Introduce `x`. Rewrite using `[hB, Subalgebra.mem_centralizer_iff]`. Simplify using `only [Set.mem_singleton_iff, forall_eq]`. Rewrite using `[Commute, SemiconjBy, Units.ext_iff, Units.val_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_comm`. Establish `hcs : (c : Matrix (Fin n) (Fin n) F').map s = c` using `by rw [← galAct_coe, hcfix]`. Establish `hstab : ∀ x ∈ B, x.map s ∈ B`. Introduce `x hx`. Rewrite `hx`, the goal using `[hB, Subalgebra.mem_centralizer_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_singleton_iff, forall_eq] at hx ⊢`. Establish `e1 : ((c : Matrix (Fin n) (Fin n) F') * x).map s = ((c : Matrix (Fin n) (Fin n) F').map s) * x.map s` using `Matrix.map_mul (f := (s : F' →+* F'))`. Establish `e2 : (x * (c : Matrix (Fin n) (Fin n) F')).map s = x.map s * ((c : Matrix (Fin n) (Fin n) F').map s)` using `Matrix.map_mul (f := (s : F' →+* F'))`. Rewrite `e1`, `e2` using `[hcs]`. Rewrite using `[← e1, ← e2, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h90` using `GlobalTheory.T.card_twistedNorm_one_mul_card_fixed_units F F' s hs n B hstab`. Establish `hδ₀comm : ∀ e : GL (Fin n) F', Commute e c → Commute δ₀ e`. Introduce `e he`. Establish `hle : Algebra.adjoin F' {(c : Matrix (Fin n) (Fin n) F')} ≤ Subalgebra.centralizer F' {(e : Matrix (Fin n) (Fin n) F')}`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[hz, SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite `hg` using `[Set.mem_singleton_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hg, ← Units.val_mul, ← Units.val_mul, he.eq]`. Establish `h1` using `hle hδ₀B`. Rewrite `h1` using `[Subalgebra.mem_centralizer_iff]`. Establish `h2` using `h1 _ rfl`. Conclude with `Units.ext (by rw [Units.val_mul, Units.val_mul]; exact h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ₀c : Commute δ₀ c` using `hδ₀comm c (Commute.refl c)`. Establish `key : ∀ ε : GL (Fin n) F', Commute ε c → nrm s (δ₀ * ε) = c * nrm s ε`. Introduce `ε hε`. Rewrite using `[hmul δ₀ ε ?_, hδ₀]`. Introduce `t u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : Commute δ₀ (galAct F F' n (t⁻¹ * u) ε)`. Apply `hδ₀comm` to reduce the goal to its premises. Use `hε.map (galAct F F' n (t⁻¹ * u))` as an intermediate fact. Rewrite `this` using `[hcfix]`. Then use the resulting hypothesis. Establish `h4` using `h3.map (galAct F F' n t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : galAct F F' n t (galAct F F' n (t⁻¹ * u) ε) = galAct F F' n u ε`. Rewrite using `[← MulAut.mul_apply, ← map_mul, mul_inv_cancel_left]`. Rewrite `h4` using `[e]`. Then use the resulting hypothesis. Establish `hYcomm : ∀ δ : GL (Fin n) F', nrm s δ = c → Commute δ c`. Introduce `δ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcomm δ` as an intermediate fact. Rewrite `this` using `[h, hcfix]`. Conclude with `this`. Establish `eY : {δ : GL (Fin n) F' // nrm s δ = c} ≃ {ε : GL (Fin n) F' // (ε : Matrix (Fin n) (Fin n) F') ∈ B ∧ nrm s ε = 1}` using `{ toFun := fun δ => ⟨δ₀⁻¹ * δ.1, (memB _).2 (hδ₀c.inv_left.mul_left (hYcomm _ δ.2)), by`. Use `key (δ₀⁻¹ * δ.1) (hδ₀c.inv_left.mul_left (hYcomm _ δ.2))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[mul_inv_cancel_left, δ.2]`. Simplify using `using this.symm⟩`. Use `invFun := fun ε => ⟨δ₀ * ε.1, by rw [key _ ((memB _).1 ε.2.1), ε.2.2, mul_one]⟩`. Use `left_inv := fun δ => Subtype.ext (mul_inv_cancel_left _ _)`. Use `right_inv := fun ε => Subtype.ext (inv_mul_cancel_left _ _) }`.
-
-Establish `eC' : {x : GL (Fin n) F' // (x : Matrix (Fin n) (Fin n) F') ∈ B} ≃ {x : GL (Fin n) F' // Commute x c}` using `Equiv.subtypeEquivRight memB`. Establish `eC : {x : GL (Fin n) F // ((incl F F' n x : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') ∈ B} ≃ {x : GL (Fin n) F // Commute x γ}` using `Equiv.subtypeEquivRight fun x => by`. Rewrite using `[memB]`. Conclude with `⟨fun h => hinj (by simpa only [map_mul] using h.eq), fun h => h.map _⟩`. Rewrite using `[Nat.card_congr eY, ← Nat.card_congr eC, ← Nat.card_congr eC']`.
-
-Conclude with `h90`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_nrm_eq_mul_card_commute (s : F' ≃ₐ[F] F') (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s)
     (n : ℕ) (γ : GL (Fin n) F) :
@@ -224,9 +220,9 @@ theorem card_nrm_eq_mul_card_commute (s : F' ≃ₐ[F] F') (hs : ∀ t : F' ≃�
 end Centraliser
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs n γ`. Establish `hX : Nat.card {δ : GL (Fin n) F' // IsNorm s δ γ} = Nat.card {g' : GL (Fin n) F' // IsConj (incl F F' n γ) g'} * Nat.card {δ : GL (Fin n) F' // nrm s δ = incl F F' n γ}` using `card_isConj_nrm s hs (incl F F' n γ)`. Establish `hY` using `card_nrm_eq_mul_card_commute s hs n γ`. Establish `h1` using `card_conj_mul_card_commute (incl F F' n γ)`. Establish `h2` using `card_conj_mul_card_commute γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX, ← h2, ← h1, ← hY]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_isNorm_mul_card : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (n : ℕ) (γ : GL (Fin n) F),

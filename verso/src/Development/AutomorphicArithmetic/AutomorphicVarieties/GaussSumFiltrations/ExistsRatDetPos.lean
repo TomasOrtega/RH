@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.WeakApproxGL
 
 /- English proof (translation)
-Establish `hc : Continuous (infEq F).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Conclude with `(infEq F).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap F) hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem denseRange_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     DenseRange ((pInf F).comp (algebraMap F (GlobalTheory.CuspRep.Ad F))) := by
@@ -20,19 +20,17 @@ theorem denseRange_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
   exact (infEq F).symm.surjective.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap F) hc
 
 /- English proof (translation)
-Introduce `F _ _ _ a g`. Use `set φ : F →+* (InfinitePlace F → ℝ) := (pInf F).comp (algebraMap F (GlobalTheory.CuspRep.Ad F)) with hφ`. Establish `hcomp : ∀ h : GL (Fin a) F, (((Matrix.GeneralLinearGroup.map (pInf F)).comp (GlobalTheory.CuspRep.ratGL F a)) h).val = (h.val).map φ` using `fun h => by`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdu : IsUnit g.val.det` using `Matrix.isUnits_det_units g`. Establish `hd : ∀ v, g.val.det v ≠ 0` using `fun v => ((Pi.isUnit_iff.1 hdu) v).ne_zero`. Establish `hopen : IsOpen {y : InfinitePlace F → ℝ | ∀ v, 0 < y v * g.val.det v}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun v => isOpen_lt continuous_const (by fun_prop)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(denseRange_inf F).exists_mem_open hopen ⟨fun v => (g.val.det v)⁻¹, fun v => by simp [hd v]⟩`. Establish `ht' : ∀ v, 0 < φ t v * g.val.det v` using `ht`. Consider the cases of `a with`. Consider the case `zero`. Use `⟨1, fun v => ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_pos`. Consider the case `succ n`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `ht' v` as an intermediate fact. Simplify using `at this`. Set `D : Matrix (Fin (n + 1)) (Fin (n + 1)) F` to `Matrix.diagonal (Function.update 1 0 t)`. Establish `hD : D.det = t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_diagonal, Fin.prod_univ_succ]`. Simplify using the standard rewrite rules. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero D (hD ▸ ht0), fun v => ?_⟩` and prove the remaining obligations. Establish `e : ∀ M : Matrix (Fin (n + 1)) (Fin (n + 1)) F, (M.map φ).det = φ M.det` using `fun M => (RingHom.map_det φ M).symm`. Rewrite using `[Units.val_mul, Matrix.det_mul, hcomp, e, Matrix.GeneralLinearGroup.val_mkOfDetNeZero, hD]`.
-
-Conclude with `ht' v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_det_pos : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ)
     (g : GL (Fin a) (InfinitePlace F → ℝ)), ∃ h : GL (Fin a) F, ∀ v, 0 < ((((Matrix.GeneralLinearGroup.map (pInf F)).comp

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Ex.UnitNorm
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ C _ _ _ hC A ⟨S, hS, hν⟩`. Take `⟨s, hs⟩` from `exists_base hS hC.1`. Establish `hθ` using `norm_θ hS hν hs`. Establish `hσ` using `norm_σ hS hν hs`. Establish `hth` using `norm_th hS hν hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ` using `fun χ => norm_ψ hS hν hs χ (a.gen _)`. Conclude with `⟨hψ, fun m hm p χ => norm_txT A.N hθ hσ hψ hth hm.pos.ne' p χ, twist_int A.N hθ hσ hψ hth A.be⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem norms_of_arc_input : AllA fun {_} _ _ _ {_} {_} {_} {_} {_} {_} _ {O'} _ _ {_} a => ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [Algebra (FractionRing O') C], CExt O' ⊥ C → ∀ A : Lift a C, A.ν.IntN → (∀ χ, ‖(A.N.ψ χ : C)‖ = 1) ∧ (∀ m, Odd m → ∀ (p : A.N.QT (m ^ 2)) χ, ‖A.N.txT m p χ‖ ≤ 1) ∧ ∀ u : Cˣ, ‖(u : C)‖ < 1 → ∃ q : QuadraticMap ℤ A.N.X ℝ, (A.N.twist A.be u).Int q ∧ ∀ y, q y = -Real.log ‖(u : C)‖ * (A.be.be y y / 2) := by
   intro E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ C _ _ _ hC A ⟨S, hS, hν⟩

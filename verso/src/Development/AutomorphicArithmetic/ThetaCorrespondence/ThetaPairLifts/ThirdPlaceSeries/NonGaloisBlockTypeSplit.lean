@@ -21,31 +21,29 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 variable {p : ℕ} [Fact p.Prime] {r t : ℕ}
 /- English proof (translation)
-Establish `hBZ` using `hP.bz`. Establish `hG` using `hP.geo`. Establish `hM` using `hP.mp`. Take `⟨v, hv, hb, ℓ, hℓ, hzv⟩` from `GlobalTheory.T.exists_fixed_parahoricBlockVector_of_idempotent F p r t χ _ π.π _ x hp (GlobalTheory.SerOSys.zIdem_idem_central ρ hρ).1 hx hxρ`. Take `⟨Y, _, _, τ, hτ, hsub, y, hy0, hy, hyρ⟩` from `GlobalTheory.T.tame_character_parahoric_invariant hM F p r t χ _ π.π _ v ℓ hp π.smooth π.irr hχt hv hb hℓ hzv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, d, σ, hsupp, hle⟩` from `GlobalTheory.T.parahoricBlockTypeVector_cuspidalSupport_tame_characters hBZ hG hP.unl hM F r t χ π v hχ hχt hv hb`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. It suffices to derive a contradiction. Take `⟨-, hσ, e₀, hπσ⟩` from `hsupp`. Take `⟨b, fr, gc, S, hrow, hcol⟩` from `exists_cell_of_isSubquotient (hG F).1 (hG F).2 e₀ (two (stdSum (rfl : r + t = r + t))) (fun a => (σ a).smooth) (fun a => hasFiniteLength_of_isIrreducible (σ a).irr) hτ (hsub.trans (isSubquotient_jac_two _ (isSmooth_parInd _ _) hπσ))`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set A := {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (detRep (Fin (d a)) (χ * unrChar F α)))} with hA`. Take `⟨i, hi, hi0⟩ : ∃ i ∈ A, b.1 i true = 0` from `by by_contra! hc`. Establish `h2` using `b.2.2 true`. Establish `h3 : A.ncard ≤ ∑ i, b.1 i true`. Rewrite using `[Set.ncard_eq_toFinset_card' A, Finset.card_eq_sum_ones]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Finset.sum_le_sum fun i hi => Nat.one_le_iff_ne_zero.2 (hc i (Set.mem_toFinset.1 hi))).trans (Finset.sum_le_sum_of_subset (Finset.subset_univ _))`. Simplify using `only [Fintype.card_fin] at h2`. Use linear arithmetic over natural numbers and integers. Take `⟨hd, α, hα⟩` from `hi`. Establish `hi1 : b.1 i false = 1`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `b.2.1 i`. Simplify using `[Fintype.sum_bool] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hact` using `GlobalTheory.T.jacquetSubquotient_detCharacter_factors_integral F _ Bool (b.1 i) (fr i) _ (σ i).π _ (S i) hα (hrow i) false`. Take `⟨w, hw⟩` from `typeVec_first (fun j => multiProd (gc j) fun i => (S i j).ρ) (fun j => isSmooth_parInd _ _) hcol hyρ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ0, hφ⟩` from `GlobalTheory.T.exists_equivariantMap_of_levelTypeVector F p (Fin r) _ _ ρ w hp hw`. Take `⟨v', hv', hpar⟩` from `GlobalTheory.T.exists_parabolicTypeVector_of_equivariantMap F p (Fin s) (Fin r) (fun i => Fin (b.1 i false)) (gc false) _ (fun i => (S i false).ρ) i θ χ _ ρ.ρ φ hp hθχ (fun g hg v => by`. Rewrite using `[hact g hg v, MonoidHom.mul_apply, isUnram_unrChar F α _ (GlobalTheory.StepData.valuation_det_of_mem_KO hg), mul_one]) hφ0 hφ`. Conclude with `hu (isRoot_of_parVec L (gc false) i ρ hρ hf hθ (by rw [Fintype.card_fin, hi1]) hv' hpar)`. Take `⟨π₁, π₂, ⟨φ⟩, hno⟩` from `GlobalTheory.T.irreducible_split_exact_twistCount_product hBZ hG hP.unl F r t χ π s d σ hχ hsupp heq.symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsph` using `GlobalTheory.T.spherical_twist_of_blockTypeVector hBZ hG hM F r t χ π π₁ π₂ v hχ hχt hno ⟨φ⟩ hv hb`. Use `⟨π₁, GlobalTheory.SplitPairLift.twistIrr π₂ hχ.inv, hsph, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.SplitPairLift.twist_twist_inv π₂ χ⁻¹`. Rewrite `h` using `[inv_inv]`. Use `show Nonempty (π.π.Equiv (prod₂ π₁.π (_root_.GlobalTheory.SmGL.twist (_root_.GlobalTheory.SmGL.twist π₂.π (detChar (Fin t) χ⁻¹)) (detChar (Fin t) χ))))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[h]`. Conclude with `⟨φ⟩`. Take `⟨E⟩` from `Exponents.prod₂_equiv_multiProd F r t _ _ π₁.π π₂.π`. Set `Ψ` to `φ.trans E`. Establish `hρs : ∀ i, IsSmooth (Exponents.twoRep π₁.π π₂.π i)` using `fun i => by`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result.
 
-Consider the cases of `i`. Conclude with `π₁.smooth`. Conclude with `π₂.smooth`. Establish `hρl : ∀ i, HasFiniteLength (Exponents.twoRep π₁.π π₂.π i)` using `fun i => by`. Consider the cases of `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hasFiniteLength_of_isIrreducible π₁.irr`. Conclude with `hasFiniteLength_of_isIrreducible π₂.irr`. Take `⟨b, fr, gc, S, hrow, hcol⟩` from `exists_cell_of_isSubquotient (hG F).1 (hG F).2 (two (stdSum (rfl : r + t = r + t))) (two (stdSum (rfl : r + t = r + t))) hρs hρl hτ (hsub.trans (isSubquotient_jac_two _ (isSmooth_parInd _ _) (IsSubquotient.of_injective Ψ.toIntertwiningMap Ψ.toLinearEquiv.injective)))`. Take `⟨z, hz0, hz⟩` from `GlobalTheory.T.levi_rep_parabolic_char F Bool (Two (Fin r) (Fin t)) _ (fun j => multiProd (gc j) fun i => (S i j).ρ) Y τ true χ y (fun j => isSmooth_parInd _ _) hχ hcol hy0 hy`. Take `⟨w, hw0, hw⟩` from `GlobalTheory.T.exists_levi_block_eigenvector_at_identity F Bool (fun i => Fin (b.1 i true)) (Fin t) (gc true) _ (fun i => (S i true).ρ) χ z hz0 hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : b.1 false true = 0`. Assume the negation of the conclusion as `hm`. Take `⟨z', hz'0, hz'⟩` from `GlobalTheory.T.levi_rep_parabolic_char F Bool (fun i => Fin (b.1 i true)) _ (fun i => (S i true).ρ) _ (piTensor fun i => (S i true).ρ) false χ w (fun i => (S i true).smooth) hχ (IsSubquotient.refl _) hw0 (hw false)`. Take `⟨α, hα⟩` from `GlobalTheory.T.inSupport_mul_unramifiedChar_of_integralEigenvector hBZ hG hM F _ _ (S false true).ρ χ z' (S false true).smooth (S false true).irr hχ (Nat.pos_of_ne_zero hm) hz'0 hz'`. Conclude with `hno α (GlobalTheory.T.charInCuspidalSupport_of_jacquet_subquotient_factor hBZ hG F r _ π₁.π Bool (b.1 false) (fr false) (S false) true _ π₁.smooth (hrow false) hα)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm' : b.1 true false = 0`. Establish `h1` using `b.2.1 false`. Establish `h2` using `b.2.2 false`. Simplify using `[Fintype.sum_bool] at h1 h2`. Use linear arithmetic over natural numbers and integers.
-
-Take `⟨w₁, hw₁⟩` from `typeVec_first (fun j => multiProd (gc j) fun i => (S i j).ρ) (fun j => isSmooth_parInd _ _) hcol hyρ`. Take `⟨φ₁, h1⟩` from `GlobalTheory.T.jacquetSubquotient_firstFactor_of_emptySecondBlock F r (b.1 false) (fr false) _ π₁.π (S false) hm (hrow false)`. Take `⟨φ₂, h2⟩` from `GlobalTheory.T.parabolicInduction_emptySecond_isSubquotient_first F r (fun i => b.1 i false) (gc false) (fun i => S i false) hm'`. Take `⟨y₁, hy₁⟩` from `TypeVec.up π₁.smooth (h2.trans ((GlobalTheory.T.isSubquotientRepresentation_two_reindexings F _ _ φ₂ φ₁ _ (S false false).ρ).trans h1)) hw₁`. Conclude with `⟨y₁, typeVec_iff _ _ _ hy₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem block_type_split_local_alt (hP : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hp : resCard F = p) (L : GlobalTheory.GLq.LabelDatum p) {χ : Fˣ →* ℂˣ}
     (hχ : IsSmoothChar χ) (hχt : IsTame χ) {θ : (ZMod p)ˣ →* ℂˣ} (hθχ : CharLift θ χ) {u : ZMod p}
@@ -139,9 +137,9 @@ theorem block_type_split_local_alt (hP : _root_.GlobalTheory.NRows.ThetaLocalInp
 end Local
 open Formalism.BasicNotions GlobalTheory.HeightCounting in
 /- English proof (translation)
-Introduce `hP hL D Γ hΓ k v χ hχ u π ρ f ht hlab hser hu ⟨x, hx, hxρ⟩`. Establish `hchi` using `_root_.UpperTheory.Lit.Dz.localGlobalCompatibility_cmDatum_alt hL D Γ k v χ hχ u ht hlab`. Establish `h0 : idemOf D k ρ ≠ 0` using `fun e => by`. Take `⟨ℓ, -, h⟩` from `hxρ`. Use `h ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules. Take `⟨L, h1, h2, hf⟩` from `@exists_hasLabel _ ⟨D.host.g_prime k⟩ _ (D.ntypes.teichC_inj k) _ (Γ.ζ_gen k) (Γ.O k) (hΓ k) _ ρ hser.1 f h0 (by rw [← Γ.eSer_def]; exact hser.2)`. Use `(And.right hchi L h1 h2).elim fun θ hθ => ?_` and prove the remaining obligations. Conclude with `@_root_.GlobalTheory.BlockTypeSplit.block_type_split_local_alt _ _ _ _ _ _ ⟨D.host.g_prime k⟩ _ _ hP (And.left hchi) L χ hχ ht θ hθ.1 u hθ.2 π ρ hser.1 f hf hu x hx hxρ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (Γ : GrpSide D),
     GreenLab Γ → _root_.GlobalTheory.PendOf.SplitLocalCondition hL D := by
@@ -164,7 +162,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.splitLoc_of_greenLab_depth_zero : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (Γ : GrpSide D), GreenLab Γ → _root_.GlobalTheory.PendOf.SplitLocalCondition hL D := by
   first | exact @_root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.BlockTypeSplit.locComp_of_isRc_classMapD_cenLoc <;> assumption)

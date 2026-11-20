@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.RatSide
 
 /- English proof (translation)
-Introduce `j h1 h2`. Take `⟨hK, hM⟩` from `h j h1 h2`. Use `⟨hK, ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, b, -, -, hsp, -, -⟩` from `hK show FiniteDimensional S.Ks ↥(S.A j).WK`. Rewrite using `[← hsp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FiniteDimensional.span_of_finite S.Ks (Set.finite_range b)`. Take `⟨T, hT⟩` from `hM.1`. Use `⟨T, fun x hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT]`. Conclude with `Submodule.subset_span hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hx.fst, by rw [hT]; exact hx⟩`. Rewrite `hx` using `[← hM.2]`. Use `Submodule.span_le.2 (fun y hy => ?_) hx` and prove the remaining obligations. Establish `hy' : y ∈ Submodule.span (𝓞 S.Ks) (T : Set (S.WL j))` using `by rw [hT]; exact hy`. Conclude with `Submodule.span_le_restrictScalars (𝓞 S.Ks) S.Ks _ hy'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formsC_of_full {D : D7} (S : RatDat D.ntw)
     (h : ∀ j, 1 ≤ j → j ≤ D.R.m → (S.A j).IsKsForm ∧ (S.A j).MKFull) : FormsC S := by
@@ -40,7 +40,7 @@ end GlobalTheory.HeightCounting.RatSide
 namespace GlobalTheory.HeightCounting.RatSide
 
 /- English proof (translation)
-Introduce `hL`. Use `StepW.of_all fun K _ _ _ w _ _ _ P x _ => formsC_of_full _ fun j _ _ => ⟨x.m.z.geo.fw.ks (idxOf _ j), GlobalTheory.GoodLat.Obj.mkFull_of_tie x.m.z.geo.fw (idxOf _ j)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem formsC_at_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w =>
     ∀ (P : Pre2 K w) (x : St P), LA hL x → FormsC (SOf x) := by

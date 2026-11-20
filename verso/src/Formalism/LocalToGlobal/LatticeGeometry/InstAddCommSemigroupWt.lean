@@ -22,9 +22,9 @@ def wtOfN (N : ℕ) (w : WeightFamilies.Wt D j) (τ : D.what₂.Tau) (i : Fin N)
 def wtOf (w : WeightFamilies.Wt D j) : D.what₂.Tau → Fin D.R.r → ℤ := wtOfN D.R.r w
 
 /- English proof (translation)
-Establish `hn : (w.n + w'.n) / 2 = w.n / 2 + w'.n / 2`. Take `⟨a, ha⟩` from `w.n_even`. Take `⟨b, hb⟩` from `w'.n_even`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `τ i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [wtOfN, WeightAlgebra.wadd, Pi.add_apply, hn]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtOfN_wadd (N : ℕ) (w w' : WeightFamilies.Wt D j) :
     wtOfN N (WeightAlgebra.wadd w w') = wtOfN N w + wtOfN N w' := by
@@ -35,7 +35,7 @@ theorem wtOfN_wadd (N : ℕ) (w w' : WeightFamilies.Wt D j) :
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `only [wtOf, wtOfN, DV.kapW, hP, hM, hn, Fin.rev_rev]`. Apply the tactic sequence `split_ifs <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtOf_eq_kapW (w : WeightFamilies.Wt D j) (hP : ∀ τ i, (w.aP τ i : ℤ) = D.what₂.kaBig j τ i)
     (hM : ∀ τ c, (w.aM τ c : ℤ) = -D.what₂.kaSmall j τ (Fin.rev c)) (hn : w.n = D.R.nV) :
@@ -45,7 +45,7 @@ theorem wtOf_eq_kapW (w : WeightFamilies.Wt D j) (hP : ∀ τ i, (w.aP τ i : �
   split_ifs <;> ring
 
 /- English proof (translation)
-Consider the cases of `w`. Consider the cases of `w'`. Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/
@@ -66,13 +66,13 @@ Both sides reduce to the same expression.
 theorem wt_add_def (w w' : WeightFamilies.Wt D j) : w + w' = WeightAlgebra.wadd w w' := rfl
 
 /- English proof (translation)
-Establish `hs` using `sigW_sum D h1 h2`. Use `wt_ext (funext fun τ => funext fun i => ?_) (funext fun τ => funext fun c => ?_) hn` and prove the remaining obligations. Use `congrFun (congrFun h τ) ⟨i.1, by have := i.2; omega⟩` as an intermediate fact. Simplify using `only [wtOf, wtOfN, i.2, dif_pos, Fin.eta] at this`. Rewrite `this` using `[hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (w.aP τ i : ℤ) = (w'.aP τ i : ℤ)` using `by omega`. Conclude with `h3` after adjusting the coercions. Establish `hc` using `(Fin.rev c).2`. Use `congrFun (congrFun h τ) ⟨(D.R.sigW j).1 + (Fin.rev c).1, by omega⟩` as an intermediate fact. Establish `hlt : ¬ ((D.R.sigW j).1 + (Fin.rev c).1 < (D.R.sigW j).1)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt' : (D.R.sigW j).1 + (Fin.rev c).1 - (D.R.sigW j).1 < (D.R.sigW j).2` using `by omega`. Simplify using `only [wtOf, wtOfN, hlt, hlt', dif_pos, dif_neg, not_false_eq_true] at this`. Establish `e : (Fin.rev ⟨(D.R.sigW j).1 + (Fin.rev c).1 - (D.R.sigW j).1, hlt'⟩ : Fin (D.R.sigW j).2) = c`. Establish `: (⟨(D.R.sigW j).1 + (Fin.rev c).1 - (D.R.sigW j).1, hlt'⟩ : Fin (D.R.sigW j).2) = Fin.rev c` using `Fin.ext (by simp)`. Rewrite using `[this, Fin.rev_rev]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e, hn]`. Establish `h3 : (w.aM τ c : ℤ) = (w'.aM τ c : ℤ)` using `by omega`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wt_unique {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {w w' : WeightFamilies.Wt D j} (hn : w.n = w'.n)
     (h : wtOf w = wtOf w') : w = w' := by
@@ -99,7 +99,7 @@ theorem wt_unique {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {w w' : WeightFami
 end Weights
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_prod_of_one_le {ι : Type} (s : Finset ι) (f : ι → ℝ) (h : ∀ i ∈ s, 1 ≤ f i) : 1 ≤ ∏ i ∈ s, f i := by
   calc (1 : ℝ) = ∏ _i ∈ s, (1 : ℝ) := by simp
@@ -111,11 +111,11 @@ def weylDim {n : ℕ} (a : Fin n → ℤ) : ℝ :=
     else 1
 
 /- English proof (translation)
-Unfold `weylDim`. Use `one_le_prod_of_one_le _ _ fun i _ => ?_` and prove the remaining obligations. Use `one_le_prod_of_one_le _ _ fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `h1 : (a k : ℝ) ≤ a i` using `by exact_mod_cast ha h.le`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < ((k : ℕ) : ℝ) - ((i : ℕ) : ℝ)`. Establish `: (i : ℕ) < (k : ℕ)` using `h`. Establish `: ((i : ℕ) : ℝ) < ((k : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem one_le_weylDim {n : ℕ} (a : Fin n → ℤ) (ha : Antitone a) : 1 ≤ weylDim a := by
   unfold weylDim
@@ -134,11 +134,11 @@ def dimKap (D : D7) (j : ℕ) : ℝ :=
   ∏ τ : D.what₂.Tau, weylDim (D.what₂.kaBig j τ) * weylDim (D.what₂.kaSmall j τ)
 
 /- English proof (translation)
-Unfold `dimKap`. Use `one_le_prod_of_one_le _ _ fun τ _ => ?_` and prove the remaining obligations. Establish `hB : Antitone (D.what₂.kaBig j τ)`. Introduce `a b hab`. Rewrite using `[← hP, ← hP]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.aPlus_antitone τ hab` after adjusting the coercions. Establish `hS : Antitone (D.what₂.kaSmall j τ)`. Introduce `a b hab`. Establish `h1` using `hM τ (Fin.rev a)`. Establish `h2` using `hM τ (Fin.rev b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[Fin.rev_rev]`. Establish `h3 : ((w.aM τ (Fin.rev a) : ℕ) : ℤ) ≤ w.aM τ (Fin.rev b)`. Conclude with `w.aM_anti τ (Fin.rev_le_rev.mpr hab)` after adjusting the coercions. Use linear arithmetic over natural numbers and integers. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_weylDim _ hB) (one_le_weylDim _ hS)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_le_dimKap {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (hP : ∀ τ i, (w.aP τ i : ℤ) = D.what₂.kaBig j τ i)
     (hM : ∀ τ c, (w.aM τ c : ℤ) = -D.what₂.kaSmall j τ (Fin.rev c)) : 1 ≤ dimKap D j := by
@@ -164,7 +164,7 @@ def vEK (la : HeightOneSpectrum (𝓞 K)) (a : K) : EReal :=
   open Classical in if a = 0 then ⊤ else (((vAdd la a : ℤ) : ℝ) : EReal)
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).mpr ha) ((Valuation.ne_zero_iff _).mpr hb)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fv_vAdd_mul (la : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     vAdd la (a * b) = vAdd la a + vAdd la b := by
@@ -173,7 +173,7 @@ theorem fv_vAdd_mul (la : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (
   ring
 
 /- English proof (translation)
-Unfold `vAdd`. Establish `h1` using `la.valuation_le_one (K := K) a`. Establish `h2 : (la.valuation K) (a : K) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ha`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr h1`. Rewrite `h3` using `[WithZero.log_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -187,24 +187,24 @@ theorem fv_vAdd_nonneg (la : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K} (ha : (a :
   omega
 
 /- English proof (translation)
-Simplify using `[vEK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vEK_zero (la : HeightOneSpectrum (𝓞 K)) : vEK la (0 : K) = ⊤ := by simp [vEK]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold vEK; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vEK_ne_bot (la : HeightOneSpectrum (𝓞 K)) (a : K) : vEK la a ≠ ⊥ := by
   unfold vEK; split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[vEK, ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vEK_of_ne (la : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) :
     vEK la a = (((vAdd la a : ℤ) : ℝ) : EReal) := by simp [vEK, ha]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Simplify using `[vEK, hb]`. Rewrite using `[vEK_of_ne la (mul_ne_zero ha hb), vEK_of_ne la hb, fv_vAdd_mul la ha hb] push_cast`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vEK_mul (la : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) (b : K) :
     vEK la (a * b) = (((vAdd la a : ℤ) : ℝ) : EReal) + vEK la b := by
@@ -214,13 +214,13 @@ theorem vEK_mul (la : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) (b : K)
     push_cast; rfl
 
 /- English proof (translation)
-Distinguish the cases in `hab : a + b = 0`. Simplify using `[vEK, hab]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[vEK_of_ne la hab, vEK_of_ne la ha, vEK_of_ne la hb]`. Establish `hn` using `fun (x : K) (hx : x ≠ 0) => (Valuation.ne_zero_iff (la.valuation K)).mpr hx`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `le_max_iff.mp (Valuation.map_add (la.valuation K) a b) with h | h` into its components or cases. Use `(WithZero.log_le_log (hn _ hab) (hn _ ha)).mpr h` as an intermediate fact. Establish `h' : vAdd la a ≤ vAdd la (a + b)` using `by unfold vAdd; omega`. Conclude with `min_le_of_left_le (by exact_mod_cast h')`. Use `(WithZero.log_le_log (hn _ hab) (hn _ hb)).mpr h` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : vAdd la b ≤ vAdd la (a + b)` using `by unfold vAdd; omega`. Conclude with `min_le_of_right_le (by exact_mod_cast h')`.
+A detailed English derivation is pending.
 -/
 theorem vEK_add (la : HeightOneSpectrum (𝓞 K)) (a b : K) :
     min (vEK la a) (vEK la b) ≤ vEK la (a + b) := by
@@ -241,13 +241,13 @@ theorem vEK_add (la : HeightOneSpectrum (𝓞 K)) (a b : K) :
     exact min_le_of_right_le (by exact_mod_cast h')
 
 /- English proof (translation)
-Establish `hc : ∀ x : EReal, ((-c : ℝ) : EReal) + ((c : EReal) + x) = x`. Introduce `x`. Proceed by induction on `x using EReal.rec with`. Consider the case `bot => simp`. Consider the case `top => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe x => norm_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc' : ∀ x : EReal, (c : EReal) + (((-c : ℝ) : EReal) + x) = x`. Introduce `x`. Proceed by induction on `x using EReal.rec with`.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `bot => simp`. Consider the case `top => simp`. Consider the case `coe x => norm_cast`. Expand and normalize the polynomial expressions, which then agree. Apply `le_antisymm` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `le_iInf fun i => add_le_add le_rfl (iInf_le f i)`. Establish `h1 : ((-c : ℝ) : EReal) + ⨅ i, ((c : EReal) + f i) ≤ ⨅ i, f i` using `le_iInf fun i => (add_le_add le_rfl (iInf_le (fun i => (c : EReal) + f i) i)).trans (hc (f i)).le`. Establish `h2` using `add_le_add (le_refl (c : EReal)) h1`. Rewrite `h2` using `[hc']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fv_ereal_add_iInf {ι : Type} (c : ℝ) (f : ι → EReal) :
     (c : EReal) + ⨅ i, f i = ⨅ i, ((c : EReal) + f i) := by
@@ -380,7 +380,7 @@ def Mlat (j : ℕ) (w : WeightFamilies.Wt D j) : Submodule (𝓞 P.KO) (P.Cusp j
       exact add_nonneg h1 (hF la y)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Mlat {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
     F ∈ P.Mlat j w ↔ ∀ la (y : P.Pt j la), 0 ≤ P.vAtC j la y w F := Iff.rfl
@@ -397,7 +397,7 @@ instance (j : ℕ) : IsScalarTower (𝓞 P.KO) P.KO (P.FnT j) :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def a f, Algebra.smul_def (P.kL a) (f c)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem FnT_smul_apply {j : ℕ} (a : P.KO) (f : P.FnT j) (c : CompW j) :
     (a • f) c = P.kL a • f c := by
@@ -423,11 +423,11 @@ theorem tup_apply {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
     P.tup j w F = (0, fun c => P.cmp j w c F) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Establish `h1 : LinearIndependent P.KO ![F]`. Rewrite using `[linearIndependent_unique_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hne`. Establish `h2` using `(P.cmp_indep j w ![F] h1).ne_zero 0`. Apply `h2` to reduce the goal to its premises. Use `congrArg Prod.snd hF` as an intermediate fact. Use function extensionality and compare the values at `c`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrFun this c`.
+A detailed English derivation is pending.
 -/
 theorem tup_inj (j : ℕ) (w : WeightFamilies.Wt D j) : Function.Injective (P.tup j w) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -442,7 +442,7 @@ theorem tup_inj (j : ℕ) (w : WeightFamilies.Wt D j) : Function.Injective (P.tu
   exact congrFun this c
 
 /- English proof (translation)
-Use `Prod.ext (zero_mul (0 : P.KO)) (funext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.cmp j w c F * P.cmp j w' c F' = P.cmp j (WeightAlgebra.wadd w w') c (P.mulC j w w' F F')`. Rewrite using `[P.cmp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tup_mul {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : P.Cusp j w') :
     P.tup j w F * P.tup j w' F' = P.tup j (w + w') (P.mulC j w w' F F') := by
@@ -451,7 +451,7 @@ theorem tup_mul {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : 
   rw [P.cmp_mul]
 
 /- English proof (translation)
-Apply `P.tup_inj j (w + w')` to reduce the goal to its premises. Simplify using `only [map_add, ← P.tup_mul, add_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mulC_add_left {j : ℕ} {w w' : WeightFamilies.Wt D j} (F F' : P.Cusp j w) (G' : P.Cusp j w') :
     P.mulC j w w' (F + F') G' = P.mulC j w w' F G' + P.mulC j w w' F' G' := by
@@ -459,7 +459,7 @@ theorem mulC_add_left {j : ℕ} {w w' : WeightFamilies.Wt D j} (F F' : P.Cusp j 
   simp only [map_add, ← P.tup_mul, add_mul]
 
 /- English proof (translation)
-Apply `P.tup_inj j (w + w')` to reduce the goal to its premises. Simplify using `only [map_add, ← P.tup_mul, mul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mulC_add_right {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (G' G'' : P.Cusp j w') :
     P.mulC j w w' F (G' + G'') = P.mulC j w w' F G' + P.mulC j w w' F G'' := by
@@ -467,7 +467,7 @@ theorem mulC_add_right {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w)
   simp only [map_add, ← P.tup_mul, mul_add]
 
 /- English proof (translation)
-Apply `P.tup_inj j (w + w')` to reduce the goal to its premises. Simplify using `only [map_smul, ← P.tup_mul, smul_mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mulC_smul_left {j : ℕ} {w w' : WeightFamilies.Wt D j} (a : P.KO) (F : P.Cusp j w) (G' : P.Cusp j w') :
     P.mulC j w w' (a • F) G' = a • P.mulC j w w' F G' := by
@@ -475,7 +475,7 @@ theorem mulC_smul_left {j : ℕ} {w w' : WeightFamilies.Wt D j} (a : P.KO) (F : 
   simp only [map_smul, ← P.tup_mul, smul_mul_assoc]
 
 /- English proof (translation)
-Apply `P.tup_inj j (w + w')` to reduce the goal to its premises. Simplify using `only [map_smul, ← P.tup_mul, mul_smul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mulC_smul_right {j : ℕ} {w w' : WeightFamilies.Wt D j} (a : P.KO) (F : P.Cusp j w) (G' : P.Cusp j w') :
     P.mulC j w w' F (a • G') = a • P.mulC j w w' F G' := by
@@ -487,25 +487,23 @@ def Vm (j : ℕ) (m : WithZero (WeightFamilies.Wt D j)) : Submodule P.KO (P.Coef
     (LinearMap.range (Algebra.linearMap P.KO (P.Coef j))) (fun w => LinearMap.range (P.tup j w)) m
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Vm_zero {j : ℕ} (r : P.Coef j) : r ∈ P.Vm j 0 ↔ ∃ a : P.KO, algebraMap P.KO (P.Coef j) a = r :=
   Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Vm_coe {j : ℕ} (w : WeightFamilies.Wt D j) (r : P.Coef j) :
     r ∈ P.Vm j (w : WithZero (WeightFamilies.Wt D j)) ↔ ∃ F, P.tup j w F = r := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `m using WithZero.recZeroCoe with`. Consider the case `zero`. Take `⟨a, rfl⟩` from `(P.mem_Vm_zero r).mp hr`. Rewrite using `[zero_add, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ a hs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `coe u`. Take `⟨F, rfl⟩` from `(P.mem_Vm_coe u r).mp hr`. Proceed by induction on `n using WithZero.recZeroCoe with`. Consider the case `zero`. Take `⟨b, rfl⟩` from `(P.mem_Vm_zero s).mp hs`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_zero, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ b hr`. Consider the case `coe v`. Take `⟨F', rfl⟩` from `(P.mem_Vm_coe v s).mp hs`. Rewrite using `[← WithZero.coe_add, P.tup_mul]`.
-
-Conclude with `⟨_, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Vm_mul {j : ℕ} {m n : WithZero (WeightFamilies.Wt D j)} {r s : P.Coef j} (hr : r ∈ P.Vm j m)
     (hs : s ∈ P.Vm j n) : r * s ∈ P.Vm j (m + n) := by
@@ -546,7 +544,7 @@ def FormsS (j : ℕ) : Subalgebra P.KO (P.Amb j) where
     · exact zero_mem _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_FormsS {j : ℕ} (x : P.Amb j) : x ∈ P.FormsS j ↔ ∀ m, x.coeff m ∈ P.Vm j m := Iff.rfl
 
@@ -582,7 +580,7 @@ theorem incS_coe {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[cf_apply, incS_coe, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_incS {j : ℕ} (m : WithZero (WeightFamilies.Wt D j)) {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
     P.cf j m (P.incS j w F) = if (w : WithZero (WeightFamilies.Wt D j)) = m then P.tup j w F else 0 := by
@@ -590,7 +588,7 @@ theorem cf_incS {j : ℕ} (m : WithZero (WeightFamilies.Wt D j)) {w : WeightFami
   rw [cf_apply, incS_coe, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, incS_coe, incS_coe, incS_coe, AddMonoidAlgebra.single_mul_single, ← WithZero.coe_add, P.tup_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incS_mul_eq {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : P.Cusp j w') :
     P.incS j w F * P.incS j w' F' = P.incS j (WeightAlgebra.wadd w w') (P.mulC j w w' F F') := by
@@ -600,14 +598,14 @@ theorem incS_mul_eq {j : ℕ} {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, P.incS_mul_eq F F'⟩`.
+Supply the required witnesses or components.
 -/
 theorem incS_mul {j : ℕ} (w w' : WeightFamilies.Wt D j) (F : P.Cusp j w) (F' : P.Cusp j w') :
     ∃ H : P.Cusp j (WeightAlgebra.wadd w w'), P.incS j w F * P.incS j w' F' = P.incS j (WeightAlgebra.wadd w w') H :=
   ⟨_, P.incS_mul_eq F F'⟩
 
 /- English proof (translation)
-The claim follows from `(P.mem_Vm_coe w _).mp (x.2 (w : WithZero (WeightFamilies.Wt D j)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_Fof {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j) :
     ∃ F, P.tup j w F = (x : P.Amb j).coeff (w : WithZero (WeightFamilies.Wt D j)) :=
@@ -616,51 +614,51 @@ theorem exists_Fof {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j) :
 def Fof {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j) : P.Cusp j w := Classical.choose (P.exists_Fof w x)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (P.exists_Fof w x)`.
+A detailed English derivation is pending.
 -/
 theorem tup_Fof {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j) :
     P.tup j w (P.Fof w x) = (x : P.Amb j).coeff (w : WithZero (WeightFamilies.Wt D j)) :=
   Classical.choose_spec (P.exists_Fof w x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h ▸ P.tup_Fof w x, fun h => P.tup_inj j w ((P.tup_Fof w x).trans h.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Fof_eq_iff {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j) (F : P.Cusp j w) :
     P.Fof w x = F ↔ P.tup j w F = (x : P.Amb j).coeff (w : WithZero (WeightFamilies.Wt D j)) :=
   ⟨fun h => h ▸ P.tup_Fof w x, fun h => P.tup_inj j w ((P.tup_Fof w x).trans h.symm)⟩
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, map_add, tup_Fof, tup_Fof]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Fof_add {j : ℕ} (w : WeightFamilies.Wt D j) (x y : P.FormsS j) : P.Fof w (x + y) = P.Fof w x + P.Fof w y := by
   rw [Fof_eq_iff, map_add, tup_Fof, tup_Fof]; simp
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, map_smul, tup_Fof]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Fof_smul {j : ℕ} (w : WeightFamilies.Wt D j) (a : P.KO) (x : P.FormsS j) : P.Fof w (a • x) = a • P.Fof w x := by
   rw [Fof_eq_iff, map_smul, tup_Fof]; simp
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, map_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Fof_zero {j : ℕ} (w : WeightFamilies.Wt D j) : P.Fof w (0 : P.FormsS j) = 0 := by
   rw [Fof_eq_iff, map_zero]; simp
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, ← cf_apply, cf_incS, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fof_incS_self {j : ℕ} (w : WeightFamilies.Wt D j) (F : P.Cusp j w) : P.Fof w (P.incS j w F) = F := by
   rw [Fof_eq_iff, ← cf_apply, cf_incS, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, map_zero, ← cf_apply, cf_incS, if_neg (fun h' => h (WithZero.coe_injective h').symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fof_incS_ne {j : ℕ} {u w : WeightFamilies.Wt D j} (h : u ≠ w) (F : P.Cusp j w) : P.Fof u (P.incS j w F) = 0 := by
   rw [Fof_eq_iff, map_zero, ← cf_apply, cf_incS, if_neg (fun h' => h (WithZero.coe_injective h').symm)]
 
 /- English proof (translation)
-Rewrite using `[Fof_eq_iff, map_zero, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Fof_eq_zero_of_coeff {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS j)
     (h : (x : P.Amb j).coeff (w : WithZero (WeightFamilies.Wt D j)) = 0) : P.Fof w x = 0 := by
@@ -669,24 +667,24 @@ theorem Fof_eq_zero_of_coeff {j : ℕ} (w : WeightFamilies.Wt D j) (x : P.FormsS
 def scal {j : ℕ} (x : P.FormsS j) : P.KO := ((x : P.Amb j).coeff 0).1
 
 /- English proof (translation)
-Simplify using `[scal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_add {j : ℕ} (x y : P.FormsS j) : P.scal (x + y) = P.scal x + P.scal y := by
   simp [scal]
 
 /- English proof (translation)
-Simplify using `[scal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_smul {j : ℕ} (a : P.KO) (x : P.FormsS j) : P.scal (a • x) = a * P.scal x := by
   simp [scal]
 
 /- English proof (translation)
-Simplify using `[scal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_zero {j : ℕ} : P.scal (0 : P.FormsS j) = 0 := by simp [scal]
 
 /- English proof (translation)
-Establish `h` using `P.cf_incS 0 F`. Rewrite `h` using `[if_neg (WithZero.coe_ne_zero)]`. Rewrite using `[scal, ← cf_apply, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scal_incS {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.scal (P.incS j w F) = 0 := by
   have h := P.cf_incS 0 F
@@ -701,15 +699,15 @@ def vAtS (la : HeightOneSpectrum (𝓞 P.KO)) (y : P.Pt j la) (x : P.FormsS j) :
 variable (la : HeightOneSpectrum (𝓞 P.KO)) (y : P.Pt j la)
 
 /- English proof (translation)
-Simplify using `[vAtS, scal_zero, Fof_zero, vAtC_zero, vEK_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vAtS_zero : P.vAtS la y 0 = ⊤ := by
   simp [vAtS, scal_zero, Fof_zero, vAtC_zero, vEK_zero]
 
 /- English proof (translation)
-Rewrite using `[vAtS, scal_incS, vEK_zero, min_eq_right le_top]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(iInf_le _ w).trans (by rw [Fof_incS_self])`. Use `le_iInf fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = w`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Fof_incS_self]`. Rewrite using `[Fof_incS_ne P h, P.vAtC_zero]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAtS_incS {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.vAtS la y (P.incS j w F) = P.vAtC j la y w F := by
   rw [vAtS, scal_incS, vEK_zero, min_eq_right le_top]
@@ -721,9 +719,9 @@ theorem vAtS_incS {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.vAtS la y (P.
     · rw [Fof_incS_ne P h, P.vAtC_zero]; exact le_top
 
 /- English proof (translation)
-Unfold `vAtS`. Rewrite using `[scal_add]`. Use `le_min ?_ ?_` and prove the remaining obligations. Conclude with `(min_le_min (min_le_left _ _) (min_le_left _ _)).trans (vEK_add la _ _)`. Use `le_iInf fun w => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fof_add]`. Conclude with `(min_le_min ((min_le_right _ _).trans (iInf_le _ w)) ((min_le_right _ _).trans (iInf_le _ w))).trans (P.vAtC_add _ _ _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem vAtS_add (x x' : P.FormsS j) : min (P.vAtS la y x) (P.vAtS la y x') ≤ P.vAtS la y (x + x') := by
   unfold vAtS
@@ -736,7 +734,7 @@ theorem vAtS_add (x x' : P.FormsS j) : min (P.vAtS la y x) (P.vAtS la y x') ≤ 
       ((min_le_right _ _).trans (iInf_le _ w))).trans (P.vAtC_add _ _ _ _ _ _)
 
 /- English proof (translation)
-Unfold `vAtS`. Rewrite using `[scal_smul, vEK_mul la ha]`. Repeatedly rewrite using `[Fof_smul, P.vAtC_smul _ _ _ _ _ _ ha]`. Rewrite using `[← fv_ereal_add_iInf, min_add_add_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vAtS_smul (a : P.KO) (x : P.FormsS j) (ha : a ≠ 0) :
     P.vAtS la y (a • x) = (((vAdd la a : ℤ) : ℝ) : EReal) + P.vAtS la y x := by
@@ -746,13 +744,11 @@ theorem vAtS_smul (a : P.KO) (x : P.FormsS j) (ha : a ≠ 0) :
   rw [← fv_ereal_add_iInf, min_add_add_left]
 
 /- English proof (translation)
-Unfold `vAtS`. Use `set T : Finset (WeightFamilies.Wt D j) := (x : P.Amb j).coeff.support.preimage (fun w => (w : WithZero (WeightFamilies.Wt D j))) WithZero.coe_injective.injOn with hTdef`. Establish `hT : T.inf (fun w => P.vAtC j la y w (P.Fof w x)) ≤ ⨅ w, P.vAtC j la y w (P.Fof w x)`. Use `le_iInf fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ T`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Finset.inf_le hw`. Establish `h0 : (x : P.Amb j).coeff (w : WithZero (WeightFamilies.Wt D j)) = 0`. Simplify `hw` using `[hTdef, Finsupp.mem_support_iff]`. Rewrite using `[P.Fof_eq_zero_of_coeff w x h0, P.vAtC_zero]`. Conclude with `le_top`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hne : T.inf (fun w => P.vAtC j la y w (P.Fof w x)) ≠ ⊥`. Rewrite using `[Ne, Finset.inf_eq_bot_iff]`. Use `push Not`. Conclude with `fun w _ => P.vAtC_ne_bot _ _ _ _ _`. Introduce `h`.
-
-Break down `min_eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩` into its components or cases. Conclude with `vEK_ne_bot la _ h1`. Conclude with `hne (le_bot_iff.mp (h1 ▸ hT))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vAtS_ne_bot (x : P.FormsS j) : P.vAtS la y x ≠ ⊥ := by
   classical
@@ -775,7 +771,7 @@ theorem vAtS_ne_bot (x : P.FormsS j) : P.vAtS la y x ≠ ⊥ := by
   · exact hne (le_bot_iff.mp (h1 ▸ hT))
 
 /- English proof (translation)
-Rewrite using `[incS_mul_eq, vAtS_incS, vAtS_incS, vAtS_incS, P.vAtC_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vAtS_mul {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : P.Cusp j w') :
     P.vAtS la y (P.incS j w F * P.incS j w' F') = P.vAtS la y (P.incS j w F) + P.vAtS la y (P.incS j w' F') := by
@@ -796,7 +792,7 @@ instance instTowForms (j : ℕ) : IsScalarTower (𝓞 P.KO) P.KO (P.Forms j) :=
 def amb (x : P.Forms j) : P.Amb j := (x : P.FormsS j).1
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem amb_injective : Function.Injective (P.amb (j := j)) := fun _ _ h => Subtype.ext h
 
@@ -842,39 +838,39 @@ def cfF (j : ℕ) (m : WithZero (WeightFamilies.Wt D j)) : P.Forms j →ₗ[P.KO
 
 open Classical in
 /- English proof (translation)
-The claim follows from `P.cf_incS m F`.
+A detailed English derivation is pending.
 -/
 theorem cfF_inc (m : WithZero (WeightFamilies.Wt D j)) {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
     P.cfF j m (P.inc j w F) = if (w : WithZero (WeightFamilies.Wt D j)) = m then P.tup j w F else 0 :=
   P.cf_incS m F
 
 /- English proof (translation)
-The claim follows from `P.incS_mul_eq F F'`.
+A detailed English derivation is pending.
 -/
 theorem inc_mul_eq {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : P.Cusp j w') :
     P.inc j w F * P.inc j w' F' = P.inc j (WeightAlgebra.wadd w w') (P.mulC j w w' F F') :=
   P.incS_mul_eq F F'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, P.inc_mul_eq F F'⟩`.
+Supply the required witnesses or components.
 -/
 theorem inc_mul (w w' : WeightFamilies.Wt D j) (F : P.Cusp j w) (F' : P.Cusp j w') :
     ∃ H : P.Cusp j (WeightAlgebra.wadd w w'), P.inc j w F * P.inc j w' F' = P.inc j (WeightAlgebra.wadd w w') H :=
   ⟨_, P.inc_mul_eq F F'⟩
 
 /- English proof (translation)
-Introduce `F F' h` and use `by rw [← P.Fof_incS_self w F, ← P.Fof_incS_self w F'] exact congrArg (P.Fof w) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inc_inj (w : WeightFamilies.Wt D j) : Function.Injective (P.inc j w) := fun F F' h => by
   rw [← P.Fof_incS_self w F, ← P.Fof_incS_self w F']
   exact congrArg (P.Fof w) h
 
 /- English proof (translation)
-Introduce `w`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Take `⟨F, rfl⟩` from `LinearMap.mem_range.mp hx`. Establish `hle : (⨆ (u) (_ : u ≠ w), LinearMap.range (P.inc j u)) ≤ LinearMap.ker (P.cfF j (w : WithZero (WeightFamilies.Wt D j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `iSup₂_le fun u hu => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨G', rfl⟩`. Rewrite using `[LinearMap.mem_ker, cfF_inc, if_neg (fun h => hu (WithZero.coe_injective h))]`. Establish `h0` using `hle hx'`. Rewrite `h0` using `[LinearMap.mem_ker, cfF_inc, if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[P.tup_inj j w (h0.trans (map_zero _).symm), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inc_indep (j : ℕ) : iSupIndep fun w : WeightFamilies.Wt D j => LinearMap.range (P.inc j w) := by
   intro w
@@ -894,43 +890,43 @@ def vAt (la : HeightOneSpectrum (𝓞 P.KO)) (y : P.Pt j la) (x : P.Forms j) : E
   P.vAtS la y (x : P.FormsS j)
 
 /- English proof (translation)
-The claim follows from `P.vAtS_zero la y`.
+A detailed English derivation is pending.
 -/
 theorem vAt_zero : P.vAt la y 0 = ⊤ := P.vAtS_zero la y
 
 /- English proof (translation)
-The claim follows from `P.vAtS_ne_bot la y x`.
+A detailed English derivation is pending.
 -/
 theorem vAt_ne_bot (x : P.Forms j) : P.vAt la y x ≠ ⊥ := P.vAtS_ne_bot la y x
 
 /- English proof (translation)
-The claim follows from `P.vAtS_add la y x x'`.
+A detailed English derivation is pending.
 -/
 theorem vAt_add (x x' : P.Forms j) : min (P.vAt la y x) (P.vAt la y x') ≤ P.vAt la y (x + x') :=
   P.vAtS_add la y x x'
 
 /- English proof (translation)
-The claim follows from `P.vAtS_smul la y a x ha`.
+A detailed English derivation is pending.
 -/
 theorem vAt_smul (a : P.KO) (x : P.Forms j) (ha : a ≠ 0) :
     P.vAt la y (a • x) = (((vAdd la a : ℤ) : ℝ) : EReal) + P.vAt la y x :=
   P.vAtS_smul la y a x ha
 
 /- English proof (translation)
-The claim follows from `P.vAtS_incS la y F`.
+A detailed English derivation is pending.
 -/
 theorem vAt_inc {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.vAt la y (P.inc j w F) = P.vAtC j la y w F :=
   P.vAtS_incS la y F
 
 /- English proof (translation)
-The claim follows from `P.vAtS_mul la y F F'`.
+A detailed English derivation is pending.
 -/
 theorem vAt_mul {w w' : WeightFamilies.Wt D j} (F : P.Cusp j w) (F' : P.Cusp j w') :
     P.vAt la y (P.inc j w F * P.inc j w' F') = P.vAt la y (P.inc j w F) + P.vAt la y (P.inc j w' F') :=
   P.vAtS_mul la y F F'
 
 /- English proof (translation)
-Simplify using `only [vAt_inc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Mlat_eq {w : WeightFamilies.Wt D j} (F : P.Cusp j w) :
     F ∈ P.Mlat j w ↔ ∀ la (y : P.Pt j la), 0 ≤ P.vAt la y (P.inc j w F) := by
@@ -940,7 +936,7 @@ def MlatVal : Prop :=
   ∀ j (w : WeightFamilies.Wt D j) (F : P.Cusp j w), F ∈ P.Mlat j w ↔ ∀ la (y : P.Pt j la), 0 ≤ P.vAt la y (P.inc j w F)
 
 /- English proof (translation)
-Introduce `_ _ F` and use `P.Mlat_eq F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mlatVal : P.MlatVal := fun _ _ F => P.Mlat_eq F
 
@@ -1006,7 +1002,7 @@ def MjSat (j : ℕ) (volRec : ℝ) : Prop :=
     (∀ x : s, ‖φ x‖ = Real.sqrt (volRec * dimKap D j) * P.l2NormAlt j w P.sig0 x)
 
 /- English proof (translation)
-Take `⟨w, hn, hw, rest⟩` from `h`. Take `rfl : w = w'` from `wt_unique h1 h2 (hn.trans hn'.symm) (hw.trans hw'.symm)`. Conclude with `rest`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem MjSat.all {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {volRec : ℝ} (h : P.MjSat j volRec)
     (w' : WeightFamilies.Wt D j) (hn' : w'.n = D.R.nV) (hw' : wtOf w' = DV.kapW D j) :

@@ -19,9 +19,9 @@ section Pull
 variable (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o))
 
 /- English proof (translation)
-Establish `hu : ∀ f : PS C 1 dd, MvPowerSeries.constantCoeff (un1 f) = MvPowerSeries.constantCoeff f` using `fun f => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) f = _`. Rewrite using `[Finsupp.mapDomain_zero]`. Unfold `expAll`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `VP.cc_subst (fun _ => by simp [MvPowerSeries.smul_eq_C_mul]) (by rw [hu]; exact Y.ex_const x)`.
+A detailed English derivation is pending.
 -/
 theorem cc_expAll (x : Fin dd) : MvPowerSeries.constantCoeff (expAll Y p x) = 0 := by
   have hu : ∀ f : PS C 1 dd, MvPowerSeries.constantCoeff (un1 f) = MvPowerSeries.constantCoeff f := fun f => by
@@ -32,12 +32,12 @@ theorem cc_expAll (x : Fin dd) : MvPowerSeries.constantCoeff (expAll Y p x) = 0 
   exact VP.cc_subst (fun _ => by simp [MvPowerSeries.smul_eq_C_mul]) (by rw [hu]; exact Y.ex_const x)
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.constantCoeff_X s`.
+A detailed English derivation is pending.
 -/
 theorem cc_X {σ : Type} (s : σ) : MvPowerSeries.constantCoeff (MvPowerSeries.X s : MvPowerSeries σ C) = 0 := MvPowerSeries.constantCoeff_X s
 
 /- English proof (translation)
-Unfold `rowOf`. Conclude with `VP.cc_subst (fun _ => MvPowerSeries.constantCoeff_X _) hF`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_rowOf {n : ℕ} (b : Fin n) {F : MvPowerSeries (WVO I) C} (hF : MvPowerSeries.constantCoeff F = 0) :
     MvPowerSeries.constantCoeff (rowOf b F) = 0 := by
@@ -45,20 +45,20 @@ theorem cc_rowOf {n : ℕ} (b : Fin n) {F : MvPowerSeries (WVO I) C} (hF : MvPow
   exact VP.cc_subst (fun _ => MvPowerSeries.constantCoeff_X _) hF
 
 /- English proof (translation)
-The claim follows from `cc_rowOf q.1 (cc_expAll Y p q.2)`.
+A detailed English derivation is pending.
 -/
 theorem cc_pullPt {n : ℕ} (q : Fin n × Fin dd) :
     MvPowerSeries.constantCoeff (rowOf q.1 (expAll Y p q.2)) = 0 := cc_rowOf q.1 (cc_expAll Y p q.2)
 
 /- English proof (translation)
-Unfold `pullN`. Conclude with `VP.subst_mul (cc_pullPt Y p) F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullN_mul {n : ℕ} (F G : PS C n dd) : pullN Y p (F * G) = pullN Y p F * pullN Y p G := by
   unfold pullN
   exact VP.subst_mul (cc_pullPt Y p) F G
 
 /- English proof (translation)
-Unfold `pullN`. Conclude with `VP.subst_prod (cc_pullPt Y p) s F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullN_prod {n : ℕ} {ι : Type} (s : Finset ι) (F : ι → PS C n dd) :
     pullN Y p (∏ i ∈ s, F i) = ∏ i ∈ s, pullN Y p (F i) := by
@@ -66,19 +66,19 @@ theorem pullN_prod {n : ℕ} {ι : Type} (s : Finset ι) (F : ι → PS C n dd) 
   exact VP.subst_prod (cc_pullPt Y p) s F
 
 /- English proof (translation)
-The claim follows from `cc_expAll Y p q.2`.
+A detailed English derivation is pending.
 -/
 theorem cc_pull1Pt (q : Fin 1 × Fin dd) : MvPowerSeries.constantCoeff (expAll Y p q.2) = 0 := cc_expAll Y p q.2
 
 /- English proof (translation)
-Unfold `pull1`. Conclude with `VP.subst_mul (cc_pull1Pt Y p) F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullback_one_var_mul (F G : PS C 1 dd) : pull1 Y p (F * G) = pull1 Y p F * pull1 Y p G := by
   unfold pull1
   exact VP.subst_mul (cc_pull1Pt Y p) F G
 
 /- English proof (translation)
-Unfold `pull1`. Conclude with `VP.subst_prod (cc_pull1Pt Y p) s F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullback_one_var_prod {ι : Type} (s : Finset ι) (F : ι → PS C 1 dd) :
     pull1 Y p (∏ i ∈ s, F i) = ∏ i ∈ s, pull1 Y p (F i) := by
@@ -86,23 +86,23 @@ theorem pullback_one_var_prod {ι : Type} (s : Finset ι) (F : ι → PS C 1 dd)
   exact VP.subst_prod (cc_pull1Pt Y p) s F
 
 /- English proof (translation)
-Unfold `pull1`. Conclude with `VP.subst_one (cc_pull1Pt Y p)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullback_one_var_one : pull1 Y p (1 : PS C 1 dd) = 1 := by
   unfold pull1
   exact VP.subst_one (cc_pull1Pt Y p)
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_single_point_zero {n : ℕ} (b : Fin n) (q : Fin 1 × Fin dd) :
     MvPowerSeries.constantCoeff ((![pt C dd b] : Fin 1 → Pt C n dd) q.1 q.2) = 0 := by
   simp [pt]
 
 /- English proof (translation)
-Unfold `pullN ev pull1`. Rewrite using `[VP.subst_subst (constantCoeff_single_point_zero b) (cc_pullPt Y p)]`. Rewrite using `[show rowOf b (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) F) = MvPowerSeries.subst (fun w : WVO I => (MvPowerSeries.X (b, w) : MvPowerSeries (Fin n × WVO I) C)) (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) F) from rfl]`. Rewrite using `[VP.subst_subst (fun q : Fin 1 × Fin dd => cc_expAll Y p q.2) (fun _ => MvPowerSeries.constantCoeff_X _)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[Matrix.cons_val_fin_one, show pt C dd b q.2 = (MvPowerSeries.X (b, q.2) : PS C n dd) from rfl, VP.subst_X (cc_pullPt Y p)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullN_ev {n : ℕ} (b : Fin n) (F : PS C 1 dd) :
     pullN Y p (ev (n := n) ![pt C dd b] F) = rowOf b (pull1 Y p F) := by
@@ -133,7 +133,7 @@ def eAll (n : ℕ) (o : Orb) : Fin n × WV (I o) ↪ Fin n × WVO I :=
     exact Prod.ext h1 (eq_of_heq (Sigma.mk.inj h2).2)⟩
 
 /- English proof (translation)
-Unfold `rowOf`. Rewrite using `[MvPowerSeries.rename_eq_subst]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowOf_eq (b : Fin n) (F : MvPowerSeries (WVO I) C) : rowOf b F = MvPowerSeries.rename (eRow b) F := by
   unfold rowOf
@@ -141,9 +141,9 @@ theorem rowOf_eq (b : Fin n) (F : MvPowerSeries (WVO I) C) : rowOf b F = MvPower
   rfl
 
 /- English proof (translation)
-Establish `e1 : toAllS o F = MvPowerSeries.rename (Function.Embedding.sigmaMk (β` using `fun o => WV (I o)) o) F := by`. Unfold `toAllS`. Rewrite using `[MvPowerSeries.rename_eq_subst]`. Both sides reduce to the same expression. Rewrite using `[rowOf_eq, e1, rtj_rowCopy_eq, MvPowerSeries.rename_rename, MvPowerSeries.rename_rename]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rtj_rename_congr (by funext w; rfl) F`.
+A detailed English derivation is pending.
 -/
 theorem rowOf_toAllS (b : Fin n) (o : Orb) (F : MvPowerSeries (WV (I o)) C) :
     rowOf b (toAllS o F) = MvPowerSeries.rename (eAll n o) (rowCopy b F) := by
@@ -156,14 +156,14 @@ theorem rowOf_toAllS (b : Fin n) (o : Orb) (F : MvPowerSeries (WV (I o)) C) :
   exact rtj_rename_congr (by funext w; rfl) F
 
 /- English proof (translation)
-Unfold `rowOf`. Conclude with `VP.subst_mul (fun _ => MvPowerSeries.constantCoeff_X _) F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowOf_mul (b : Fin n) (F G : MvPowerSeries (WVO I) C) : rowOf b (F * G) = rowOf b F * rowOf b G := by
   unfold rowOf
   exact VP.subst_mul (fun _ => MvPowerSeries.constantCoeff_X _) F G
 
 /- English proof (translation)
-Unfold `rowOf`. Conclude with `VP.subst_prod (fun _ => MvPowerSeries.constantCoeff_X _) s F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowOf_prod (b : Fin n) {ι : Type} (s : Finset ι) (F : ι → MvPowerSeries (WVO I) C) :
     rowOf b (∏ i ∈ s, F i) = ∏ i ∈ s, rowOf b (F i) := by
@@ -171,16 +171,16 @@ theorem rowOf_prod (b : Fin n) {ι : Type} (s : Finset ι) (F : ι → MvPowerSe
   exact VP.subst_prod (fun _ => MvPowerSeries.constantCoeff_X _) s F
 
 /- English proof (translation)
-Unfold `toAllS`. Conclude with `VP.subst_mul (fun _ => MvPowerSeries.constantCoeff_X _) F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem toAllS_mul (o : Orb) (F G : MvPowerSeries (WV (I o)) C) : toAllS o (F * G) = toAllS o F * toAllS o G := by
   unfold toAllS
   exact VP.subst_mul (fun _ => MvPowerSeries.constantCoeff_X _) F G
 
 /- English proof (translation)
-Establish `hA : ∀ o ∈ (Finset.univ : Finset Orb), ∀ o' ∈ (Finset.univ : Finset Orb), o ≠ o' → Disjoint (Set.range (eAll (I` using `I) n o)) (Set.range (eAll (I := I) n o')) := by`. Introduce `o _ o' _ h`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ ⟨y, hy⟩`. Conclude with `h (congrArg (fun z : Fin n × WVO I => z.2.1) hy).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hT : ∀ o, toAll o (Po o) = MvPolynomial.rename (eAll n o) (Po o)` using `fun o => rfl`. Conclude with `(rtj_jet_prod (fun o => Set.range (eAll (I := I) n o)) Finset.univ hA (fun o => toAll o (Po o)) (fun o => MvPowerSeries.rename (eAll n o) (Φ o)) (fun o _ => by rw [hT]; exact rtj_rename_supported _ _) (fun o _ => rtj_serIn_rename _ _)).trans (Finset.prod_congr rfl fun o _ => by r …`.
+A detailed English derivation is pending.
 -/
 theorem jet_orb (Po : ∀ o, MvPolynomial (Fin n × WV (I o)) C) (Φ : ∀ o, MvPowerSeries (Fin n × WV (I o)) C) :
     jetAt0 (∏ o, toAll o (Po o)) (∏ o, MvPowerSeries.rename (eAll n o) (Φ o)) = ∏ o, jetAt0 (Po o) (Φ o) := by

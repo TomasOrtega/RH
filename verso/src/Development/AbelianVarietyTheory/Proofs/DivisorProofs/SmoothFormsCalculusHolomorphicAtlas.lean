@@ -16,25 +16,25 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ n A`. Use `⟨(GlobalTheory.T.isForm_one_add_mul_smul M n A).1, fun c α β hα hβ => ?_, fun w β hw hβ => GlobalTheory.T.del_dbar_leibniz_evenForm_mul M n A w β hw hβ, fun ι w P hw => ?_, fun M' _ n' A' f hf => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.T.isForm_one_add_mul_smul M n A).2 c α β hα hβ`. Take `⟨d1, d2⟩` from `GlobalTheory.T.holAtlas_isForm_del_dbar_smooth M n A α hα`. Take `⟨e1, e2, e3, e4⟩` from `(GlobalTheory.T.del_dbar_additive_complexLinear_one M n A).2 c α β hα hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h3, d1, d2, e1, e2, e3, e4⟩`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `e : evalF A w (C r) = ((r : ℂ) • (1 : A.Fld))`. Use function extensionality and compare the values at `x`.
+Supply the required witnesses or components. Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[evalF, fld, Algebra.algebraMap_eq_smul_one]`. Apply the tactic sequence `first | rfl | exact Subalgebra.coe_smul _ _ _ | (rw [SetLike.val_smul]; simp) | simp [Subalgebra.coe_algebraMap]`. Establish `h1` using `(GlobalTheory.T.isForm_one_add_mul_smul M n A).1`. Establish `hf` using `((GlobalTheory.T.isForm_one_add_mul_smul M n A).2 (r : ℂ) 1 1 h1 h1).2.2`. Take `⟨⟨z1, z2⟩, hl⟩` from `GlobalTheory.T.del_dbar_additive_complexLinear_one M n A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, s1, s2⟩` from `hl (r : ℂ) 1 1 h1 h1`. Rewrite using `[e]`. Conclude with `⟨hf, fun _ => by rw [s1, z1, smul_zero], fun _ => by rw [s2, z2, smul_zero]⟩`. Consider the case `add p q hp hq`. Establish `e : evalF A w (p + q) = evalF A w p + evalF A w q`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`. Take `⟨hp1, hp2, hp3⟩` from `hp`. Take `⟨hq1, hq2, hq3⟩` from `hq`. Take `⟨a1, -, -⟩` from `(GlobalTheory.T.isForm_one_add_mul_smul M n A).2 1 _ _ hp1 hq1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l1, l2, -, -⟩` from `(GlobalTheory.T.del_dbar_additive_complexLinear_one M n A).2 1 _ _ hp1 hq1`. Rewrite using `[e]`. Conclude with `⟨a1, fun h => by rw [l1, hp2 h, hq2 h, add_zero], fun h => by rw [l2, hp3 h, hq3 h, add_zero]⟩`. Consider the case `mul_X p i hp`. Establish `e : evalF A w (p * X i) = evalF A w p * fld A (w i)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`. Take `⟨hp1, hp2, hp3⟩` from `hp`. Take `⟨-, a2, -⟩` from `(GlobalTheory.T.isForm_one_add_mul_smul M n A).2 1 _ _ hp1 (hw i)`. Take `⟨b1, b2⟩` from `GlobalTheory.T.del_dbar_leibniz_evenForm_mul M n A (fun x => aeval (fun i => w i x) (p.map (algebraMap ℝ ℂ))) (fld A (w i)) hp1 (hw i)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `⟨a2, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.del (fld A _ * fld A (w i)) = 0`. Rewrite using `[b1]`. Express the relevant statement in the definitionally equal form `A.del (evalF A w p) * _ + _ = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp2 h, h i, zero_mul, mul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `A.dbar (fld A _ * fld A (w i)) = 0`. Rewrite using `[b2]`. Express the relevant statement in the definitionally equal form `A.dbar (evalF A w p) * _ + _ = 0`. Rewrite using `[hp3 h, h i, zero_mul, mul_zero, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨funext fun x => map_one _, fun c α β => ⟨funext fun x => map_add _ _ _, funext fun x => map_mul _ _ _,` and prove the remaining obligations. Use function extensionality and compare the values at `fun x => map_smul (pull _) c _, fun hα => ?_⟩⟩`. Take `⟨d1, d2⟩` from `GlobalTheory.T.holAtlas_isForm_del_dbar_smooth M n A α hα`. Conclude with `⟨GlobalTheory.T.holAtlas_isForm_pullback_holomorphic M M' n n' A A' f α hf hα, GlobalTheory.T.del_dbar_comm_pullback_of_smooth_del_dbar M M' n n' A A' f α hf hα d1 d2⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem formCalculus : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n),
     A.IsForm 1 ∧ (∀ (c : ℂ) (α β : A.Fld), A.IsForm α → A.IsForm β → A.IsForm (α + β) ∧ A.IsForm (α * β) ∧ A.IsForm (c • α) ∧

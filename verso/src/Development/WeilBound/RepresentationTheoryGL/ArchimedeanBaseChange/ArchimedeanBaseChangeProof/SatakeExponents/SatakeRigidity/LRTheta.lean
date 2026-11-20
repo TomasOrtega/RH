@@ -20,7 +20,7 @@ namespace RealThetaConjugation
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) w u).1 h.1 with rfl | hc` into its components or cases. Establish `hns : ¬ IsSplitAt u` using `h.2.resolve_left fun h' => h' rfl`. Conclude with `((GlobalTheory.ConjAtPlace.conjSrc_eq_iff u).2 hns).symm`. Establish `e : w = conjSrc (PositivityTheory.NCmp.cc E) u` using `eq_conjSrc hc`. Rewrite using `[e, PositivityTheory.NCmp.conjSrc_conjSrc]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPl_eq {w u : HeightOneSpectrum (𝓞 E)} (h : PositivityTheory.Rg.BcB.F.ConjPl w u) :
     u = conjSrc (PositivityTheory.NCmp.cc E) w := by
@@ -32,17 +32,17 @@ theorem conjPl_eq {w u : HeightOneSpectrum (𝓞 E)} (h : PositivityTheory.Rg.Bc
     rw [e, PositivityTheory.NCmp.conjSrc_conjSrc]
 
 /- English proof (translation)
-Take `⟨a, d, P, hu, hn, hcsd, he⟩` from `hc`. Establish `hex : ∀ s : ℝ, ∃ χ : Formalism.L2.Host.HChar E, χ.IsAbsPow s` using `fun s => ⟨_, GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s⟩`. Use `choose χ hχ using hex`. Establish `h1` using `hS E N a d V P σ hN hV hu hn he hloc (fun k => χ (spehExp d k)) (fun k => hχ _)`. Establish `h0 : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ C, (CG.mk P).HasSat w C` using `by filter_upwards [PositivityTheory.Rg.Rs.satakeAscent.eventually_spherical P] with w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CuspRep.UnrSat.exists_hasSatGL_locRep PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E a P w hw`. Establish `hcw : Filter.Tendsto (conjSrc (PositivityTheory.NCmp.cc E)) Filter.cofinite Filter.cofinite` using `(conjSrc_injective _).tendsto_cofinite`. Use `filter_upwards [h1, h0, hcw.eventually h1] with w g1 g2 g3`. Take `⟨bw, hbw, hsw, hσw⟩` from `g1`. Take `⟨C, hC⟩` from `g2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨bc, hbc, hsc, hσc⟩` from `g3`. Use `⟨∑ k, bw k, ⟨hsw, hσw⟩, hsc, ?_⟩` and prove the remaining obligations. Establish `hCc` using `PositivityTheory.Pf1.CLGD.K.ConjugatePlaceNorm.hasSat_conj P hcsd w C hC`. Establish `ew : ∀ k, bw k = C.map (· * (χ (spehExp d k)).val w)` using `fun k => CG.HasSat.unique (hbw k) ((CG.hasSat_mk _ _ _).2 (GlobalTheory.SphGal.hasSatGL_twist E a P _ w C ((hχ _).1 w) ((CG.hasSat_mk _ _ _).1 hC)))`. Establish `ec : ∀ k, bc k = (C.map (·⁻¹)).map (· * (χ (spehExp d k)).val (conjSrc (PositivityTheory.NCmp.cc E) w))` using `fun k => CG.HasSat.unique (hbc k) ((CG.hasSat_mk _ _ _).2 (GlobalTheory.SphGal.hasSatGL_twist E a P _ _ _ ((hχ _).1 _) ((CG.hasSat_mk _ _ _).1 hCc)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hq : Ideal.absNorm (conjSrc (PositivityTheory.NCmp.cc E) w).asIdeal = Ideal.absNorm w.asIdeal` using `GlobalTheory.ThetaSatake.absNorm_cw w`. Establish `hxy : ∀ k : Fin d, ((χ (spehExp d k.rev)).val w)⁻¹ = (χ (spehExp d k)).val (conjSrc (PositivityTheory.NCmp.cc E) w)` using `fun k => by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_inv_eq_inv_val, (hχ (spehExp d k.rev)).2.1 w, (hχ (spehExp d k)).2.1, hq, PositivityTheory.Rg.Rs.satakeAscent.spehExp_rev, ← Complex.cpow_neg]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (∑ k, bw k).map (·⁻¹) = ∑ k, bc k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ew, ec, Multiset.map_map, Multiset.map_map]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, mul_inv, hxy k]`. Rewrite using `[key]`. Conclude with `hσc`.
+A detailed English derivation is pending.
 -/
 theorem part_flip (hS : StrSat) {N : ℕ} (V : Submodule ℂ (Sm E N))
     (σ : ∀ w : HeightOneSpectrum (𝓞 E), SmIrr (GL (Fin N) (w.adicCompletion E))) (hN : 1 ≤ N) (hV : IsDiscrete V)
@@ -98,9 +98,9 @@ end RealThetaConjugation
 
 open RealThetaConjugation in
 /- English proof (translation)
-Introduce `hS E _ _ _ n D hD`. Establish `hall : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ i, ∃ b : Multiset ℂˣ, (GlobalTheory.LGrp.IsSpherical (D.σ i w).ρ (GlobalTheory.LFun.KGL w (D.N i)) ∧ GlobalTheory.LFun.HasSatGL w (D.σ i w).ρ b) ∧ (GlobalTheory.LGrp.IsSpherical (D.σ i (conjSrc (PositivityTheory.NCmp.cc …` using `Filter.eventually_all.2 fun i => part_flip hS (D.V i) (D.σ i) (D.pos i) (D.discrete i) (D.loc i) (hD i)`. Use `filter_upwards [hall] with w hw`. Use `choose b hb using hw`. Use `⟨∑ i, b i, ⟨b, fun i => (hb i).1, rfl⟩, fun u hu => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `conjPl_eq hu`. Use `⟨fun i => (b i).map (·⁻¹), fun i => (hb i).2, ?_⟩` and prove the remaining obligations. Conclude with `(map_sum (Multiset.mapAddMonoidHom fun z : ℂˣ => z⁻¹) b Finset.univ).symm`.
+A detailed English derivation is pending.
 -/
 theorem rThetaN : RThetaN := by
   intro hS E _ _ _ n D hD

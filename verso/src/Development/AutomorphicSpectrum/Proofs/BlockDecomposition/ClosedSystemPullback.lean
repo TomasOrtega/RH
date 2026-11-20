@@ -16,9 +16,9 @@ attribute [local instance] algebraOfOver
 variable {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Use extensionality with `U x`. Rewrite using `[GroundTheory.Arith.SchemeCoh.smulHom_app_apply, GlobalTheory.QCoh.pushforward_smul]`. Use `(GroundTheory.Arith.SchemeCoh.smulHom_app_apply H (φ.appTop r) (φ ⁻¹ᵁ U) x).trans ?_` and prove the remaining obligations. Use `congr 1`. Unfold `GroundTheory.Arith.SchemeCoh.restrictTop`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Establish `h` using `φ.naturality (homOfLE (le_top : U ≤ ⊤)).op`. Establish `h2` using `congrArg (fun g => CommRingCat.Hom.hom g r) h`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pushforward_map_smulHom_appTop (φ : Z ⟶ X) (H : Z.Modules) (r : Γ(X, ⊤)) :
     (Scheme.Modules.pushforward φ).map (GroundTheory.Arith.SchemeCoh.smulHom H (φ.appTop r)) =
@@ -34,7 +34,7 @@ theorem pushforward_map_smulHom_appTop (φ : Z ⟶ X) (H : Z.Modules) (r : Γ(X,
   exact h2.symm
 
 /- English proof (translation)
-Apply `((Scheme.Modules.pullbackPushforwardAdjunction φ).homEquiv E _).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, pushforward_map_smulHom_appTop]`. Conclude with `((Scheme.Modules.pullbackPushforwardAdjunction φ).unit.naturality _).symm.trans (GroundTheory.Arith.SchemeCoh.smulHom_comp _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_map_smulHom_appTop (φ : Z ⟶ X) (E : X.Modules) (a : Γ(X, ⊤)) :
     (Scheme.Modules.pullback φ).map (GroundTheory.Arith.SchemeCoh.smulHom E a) =
@@ -45,9 +45,9 @@ theorem pullback_map_smulHom_appTop (φ : Z ⟶ X) (E : X.Modules) (a : Γ(X, �
     (GroundTheory.Arith.SchemeCoh.smulHom_comp _ _)
 
 /- English proof (translation)
-Rewrite using `[← Adjunction.homEquiv_naturality_left]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Adjunction.homEquiv_unit, Functor.map_zero, Limits.comp_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `((Scheme.Modules.pullbackPushforwardAdjunction φ).homEquiv D Q).injective` to reduce the goal to its premises. Rewrite using `[h, Adjunction.homEquiv_unit, Functor.map_zero, Limits.comp_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_map_comp_eq_zero_iff (φ : Z ⟶ X) {D E : X.Modules} {Q : Z.Modules} (f : D ⟶ E)
     (q : (Scheme.Modules.pullback φ).obj E ⟶ Q) :
@@ -64,7 +64,7 @@ theorem pullback_map_comp_eq_zero_iff (φ : Z ⟶ X) {D E : X.Modules} {Q : Z.Mo
 variable {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
 
 /- English proof (translation)
-Unfold `GroundTheory.Arith.SchemeCoh.algebraOfOver GroundTheory.Arith.SchemeCoh.overAlgebra`. Simplify using `only [RingHom.algebraMap_toAlgebra, RingHom.comp_apply]`. Rewrite using `[← hφ, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_algebraMap [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] (φ : Z ⟶ X)
     (hφ : φ ≫ (X ↘ Spec (.of A)) = (Z ↘ Spec (.of A))) (a : A) :
@@ -75,9 +75,9 @@ theorem appTop_algebraMap [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] (φ : 
   rfl
 
 /- English proof (translation)
-Rewrite `ha` using `[← GroundTheory.Arith.SchemeCoh.span_idealGen J]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 ha`. Use `⟨biproduct.lift fun k => GroundTheory.Arith.SchemeCoh.smulHom F (algebraMap A Γ(X, ⊤) (c k)), ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Arith.SchemeCoh.idealSumMap, biproduct.lift_desc, ← hc, map_sum, GroundTheory.Arith.SchemeCoh.smulHom_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, map_mul, GroundTheory.Arith.SchemeCoh.smulHom_comp_smulHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smulHom_eq_comp_idealSumMap [X.Over (Spec (.of A))] (F : X.Modules) (J : Ideal A) {a : A}
     (ha : a ∈ J) : ∃ L : F ⟶ (⨁ fun _ : Fin (idealGenNum J) => F),
@@ -91,20 +91,20 @@ theorem exists_smulHom_eq_comp_idealSumMap [X.Over (Spec (.of A))] (F : X.Module
   rw [smul_eq_mul, map_mul, GroundTheory.Arith.SchemeCoh.smulHom_comp_smulHom]
 
 /- English proof (translation)
-Rewrite using `[← Subobject.ofLE_arrow h, Category.assoc, cokernel.condition, Limits.comp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem arrow_comp_cokernel_eq_zero {C : X.Modules} {D T : Subobject C} (h : D ≤ T) :
     D.arrow ≫ cokernel.π T.arrow = 0 := by
   rw [← Subobject.ofLE_arrow h, Category.assoc, cokernel.condition, Limits.comp_zero]
 
 /- English proof (translation)
-Establish `h0 : kernel.ι (cokernel.π (GroundTheory.Arith.SchemeCoh.idealSumMap ((Scheme.Modules.pullback φ).obj E) (I ^ n))) ≫ cokernel.π T.arrow = 0`. Express the relevant statement in the definitionally equal form `GroundTheory.Arith.SchemeCoh.idealPowι I ((Scheme.Modules.pullback φ).obj E) n ≫ cokernel.π T.arrow = 0`. Establish `e` using `Subobject.underlyingIso_arrow (GroundTheory.Arith.SchemeCoh.idealPowι I ((Scheme.Modules.pullback φ).obj E) n)`. Establish `e2 : (Subobject.mk (GroundTheory.Arith.SchemeCoh.idealPowι I ((Scheme.Modules.pullback φ).obj E) n)).arrow ≫ cokernel.π T.arrow = 0` using `arrow_comp_cokernel_eq_zero hT`. Rewrite using `[← e, Category.assoc, e2, Limits.comp_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : GroundTheory.Arith.SchemeCoh.idealSumMap ((Scheme.Modules.pullback φ).obj E) (I ^ n) ≫ cokernel.π T.arrow = 0`. Rewrite using `[← kernel.lift_ι (cokernel.π (GroundTheory.Arith.SchemeCoh.idealSumMap _ (I ^ n))) (GroundTheory.Arith.SchemeCoh.idealSumMap _ (I ^ n)) (cokernel.condition _), Category.assoc, h0, Limits.comp_zero]`. Establish `key : GroundTheory.Arith.SchemeCoh.idealSumMap E (I ^ n) ≫ (Scheme.Modules.pullbackPushforwardAdjunction φ).homEquiv E _ (cokernel.π T.arrow) = 0`. Rewrite using `[GroundTheory.Arith.SchemeCoh.idealSumMap]`. Apply `biproduct.hom_ext'` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Rewrite using `[biproduct.ι_desc_assoc, Limits.comp_zero, ← Adjunction.homEquiv_naturality_left, pullback_map_smulHom_appTop, appTop_algebraMap φ hφ]`. Take `⟨L, hL⟩` from `exists_smulHom_eq_comp_idealSumMap ((Scheme.Modules.pullback φ).obj E) (I ^ n) (GroundTheory.Arith.SchemeCoh.idealGen_mem (I ^ n) k)`. Rewrite using `[hL, Category.assoc, hz, Limits.comp_zero, Adjunction.homEquiv_unit, Functor.map_zero, Limits.comp_zero]`. Rewrite using `[pullback_map_comp_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show GroundTheory.Arith.SchemeCoh.idealPowι I E n = kernel.ι (cokernel.π (GroundTheory.Arith.SchemeCoh.idealSumMap E (I ^ n))) from rfl, ← cokernel.π_desc (GroundTheory.Arith.SchemeCoh.idealSumMap E (I ^ n)) _ key, kernel.condition_assoc, Limits.zero_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_idealPowι_comp_eq_zero [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] (φ : Z ⟶ X)
     (hφ : φ ≫ (X ↘ Spec (.of A)) = (Z ↘ Spec (.of A))) (E : X.Modules) (n : ℕ)
@@ -143,7 +143,7 @@ theorem pullback_idealPowι_comp_eq_zero [X.Over (Spec (.of A))] [Z.Over (Spec (
     Limits.zero_comp]
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Establish `e` using `(imageSubobjectIso f).symm`. Introduce `h`. Conclude with `@GlobalTheory.QCoh.isQuasicoherent_of_iso _ _ _ e (@GlobalTheory.QCoh.isQuasicoherent_image _ _ _ f h.1 h.2)`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isQuasicoherent_imageSubobject_of_isQuasicoherent {W : Scheme.{0}} {M N : W.Modules} (f : M ⟶ N)
     (T : Subobject N) (hT : T = imageSubobject f) :
@@ -155,19 +155,17 @@ private theorem isQuasicoherent_imageSubobject_of_isQuasicoherent {W : Scheme.{0
   exact @GlobalTheory.QCoh.isQuasicoherent_of_iso _ _ _ e (@GlobalTheory.QCoh.isQuasicoherent_image _ _ _ f h.1 h.2)
 
 /- English proof (translation)
-Establish `hle : ∀ e, S (e + 1) ≤ S e` using `fun e => by`. Rewrite using `[hS.succ e]`. Conclude with `le_sup_left`. Unfold `GlobalTheory.CompanionTheory.GE.pullSys`. Use `⟨fun e => ?_, fun e => le_sup_right, fun e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpb : SheafOfModules.IsQuasicoherent ((Scheme.Modules.pullback φ).obj E)` using `@GlobalTheory.QCoh.isQuasicoherent_pullback _ _ φ E hE.1`. Conclude with `(GlobalTheory.CompanionTheory.GE.supsecs hpb _ _ (isQuasicoherent_imageSubobject_of_isQuasicoherent ((Scheme.Modules.pullback φ).map (S e).arrow) _ rfl ⟨@GlobalTheory.QCoh.isQuasicoherent_pullback _ _ φ _ (hS.qcoh e), hpb⟩) ((@closedSys_pow A _ _ I _ _ ((Scheme.Modules.pullback φ …`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Generalize the expression as in `hT : (imageSubobject ((Scheme.Modules.pullback φ).map (S (e + 1)).arrow) ⊔ powSub I ((Scheme.Modules.pullback φ).obj E) (e + 1 + 1)) ⊔ powSub I ((Scheme.Modules.pullback φ).obj E) (e + 1) = T`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT1 : imageSubobject ((Scheme.Modules.pullback φ).map (S (e + 1)).arrow) ≤ T`. Rewrite using `[← hT]`. Conclude with `le_sup_left.trans le_sup_left`. Establish `hT2 : powSub I ((Scheme.Modules.pullback φ).obj E) (e + 1) ≤ T`. Rewrite using `[← hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_sup_right`. Establish `hK : S e ≤ kernelSubobject ((Scheme.Modules.pullbackPushforwardAdjunction φ).homEquiv E _ (cokernel.π T.arrow))`. Rewrite using `[hS.succ e]`. Use `sup_le (le_kernelSubobject _ _ ?_) (le_kernelSubobject _ _ ?_)` and prove the remaining obligations. Use `(pullback_map_comp_eq_zero_iff φ _ _).1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `imageSubobject_arrow_comp ((Scheme.Modules.pullback φ).map (S (e + 1)).arrow)`. Use `(congrArg (· ≫ cokernel.π T.arrow) e1).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, arrow_comp_cokernel_eq_zero hT1, Limits.comp_zero]`. Establish `e2` using `(pullback_map_comp_eq_zero_iff φ _ _).1 (pullback_idealPowι_comp_eq_zero I φ hφ E (e + 1) hT2)`. Establish `e3` using `Subobject.underlyingIso_hom_comp_eq_mk (GroundTheory.Arith.SchemeCoh.idealPowι I E (e + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ≫ _) e3.symm).trans ((Category.assoc _ _ _).trans (by rw [e2]; exact Limits.comp_zero))`. Establish `hz : (S e).arrow ≫ (Scheme.Modules.pullbackPushforwardAdjunction φ).homEquiv E _ (cokernel.π T.arrow) = 0`. Rewrite using `[← Subobject.ofLE_arrow hK, Category.assoc, kernelSubobject_arrow_comp, Limits.comp_zero]`. Conclude with `imageSubobject_le _ (Abelian.monoLift _ _ ((pullback_map_comp_eq_zero_iff φ _ _).2 hz)) (Abelian.monoLift_comp _ _ _)`. Establish `him : imageSubobject ((Scheme.Modules.pullback φ).map (S (e + 1)).arrow) ≤ imageSubobject ((Scheme.Modules.pullback φ).map (S e).arrow)`.
-
-Rewrite using `[← Subobject.ofLE_arrow (hle e), Functor.map_comp]`. Conclude with `imageSubobject_comp_le _ _`. Conclude with `sup_le (sup_le (him.trans le_sup_left) ((powSub_succ_le I _ (e + 1)).trans le_sup_right)) le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem closedSys_pullSys {X Z : Scheme.{0}} [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))]
     [IsLocallyNoetherian X] (φ : Z ⟶ X) (hφ : φ ≫ (X ↘ Spec (.of A)) = (Z ↘ Spec (.of A)))

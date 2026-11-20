@@ -19,7 +19,7 @@ def designLevel (P : PiBar D.host) : Level (hostOfRecord D) :=
   IndefiniteRowSideFullHecke.HalfLevelCoefficients.levelAt D (IndefiniteRowSideFullHecke.HalfLevelCoefficients.halfOf D P.pb) ((ParAtCompare.levelPb_iff D P.pb).1 (levelPb_exists D P.pb P.pb_over))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem designLevel_spec (P : PiBar D.host) :
     (designLevel P).M = D.host.g 0 * D.host.g 1 ∧ (designLevel P).A = 1 := ⟨rfl, rfl⟩
@@ -31,7 +31,7 @@ theorem designLevel_Mb (P : PiBar D.host) :
     (designLevel P).Mb = ∏ k, (P.pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) := rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => RingOfIntegers.ext (H.bar_eq a)`.
+A detailed English derivation is pending.
 -/
 theorem bar_eq (H : ModHost D) : (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = bH D :=
   RingHom.ext fun a => RingOfIntegers.ext (H.bar_eq a)

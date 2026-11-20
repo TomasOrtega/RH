@@ -17,34 +17,34 @@ variable {k ρ : ℕ} {z z' : Fin (2 * ρ + k + 1) → ℂ} {Wp Wq : Type} [Norm
   {π' : Q.Mx k ρ → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-The claim follows from `Φ.2.1 x hx`.
+A detailed English derivation is pending.
 -/
 theorem rad_zero (Φ : Q.RadSp k ρ z z' π π') {x : (Fin ρ → ℂ) × Q.Mx k ρ} (hx : x ∉ Q.DomR k ρ z z') :
     (Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) x.1 x.2 = 0 := Φ.2.1 x hx
 
 /- English proof (translation)
-Introduce `_` and use `one_ne_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_OmX : (fun _ => (1 : ℂ)) ∈ OmX ρ := fun _ => one_ne_zero
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Use `set Φf : Par → Mt k ρ → (Wq →L[ℂ] Wp) := fun Z y => if 0 < Q.GGl k ρ z z' (Matrix.of y) then Q.fnVal k ρ z z' j (Matrix.of y) • Ψf Z y else 0 with hΦf`. Establish `key : ∀ (Φ : Q.RadSp k ρ z z' π π') (c : Fin ρ → ℂ) (y : Mt k ρ), Matrix.of y ∈ Q.Glev k ρ (Fin.last ρ) → 0 < Q.GGl k ρ z z' (Matrix.of y) → (X.fn j Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y) = Q.fnVal k ρ z z' j (Matrix.of y) • (Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y)`. Introduce `Φ c y hG hpos`. Distinguish the cases in `hD : ((c, Matrix.of y) : (Fin ρ → ℂ) × Q.Mx k ρ) ∈ Q.DomR k ρ z z'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.fn_apply j Φ (c, Matrix.of y) hD`. Rewrite using `[rad_zero (X.fn j Φ) hD, rad_zero Φ hD, smul_zero]`. Establish `key0 : ∀ (Φ : Q.RadSp k ρ z z' π π') (c : Fin ρ → ℂ) (y : Mt k ρ), ¬ 0 < Q.GGl k ρ z z' (Matrix.of y) → (X.fn j Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y) = 0`. Introduce `Φ c y hpos`. Conclude with `rad_zero (X.fn j Φ) (x := (c, Matrix.of y)) (fun hD => hpos hD.2.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Φf, fun Z c y hG => ?_, ?_, fun K hK q hq hG hqK => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpos : 0 < Q.GGl k ρ z z' (Matrix.of y)`. Rewrite using `[key (Ψ Z) c y hG hpos, hR Z c y hG, hΦf]`. Simplify using `only [if_pos hpos]`. Rewrite using `[key0 (Ψ Z) c y hpos, hΦf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [if_neg hpos]`. Introduce `q₀ hq hG`. Take `⟨U, F, hU, hqU, hFs, hfF⟩` from `hF q₀ hq hG`. Establish `hfn` using `Formalism.FourierDecayAlt.P.Qx5.fnVal_contDiffOn (z := z) (z' := z') (k := k) (r := ρ) hT j`. Establish `hm : ContDiff ℝ ∞ fun q : Par × Mt k ρ => (((fun _ => (1 : ℂ)), (Matrix.of q.2 : Q.Mx k ρ)) : (Fin ρ → ℂ) × Q.Mx k ρ)` using `contDiff_const.prodMk contDiff_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨U ∩ U₀, fun q => Q.fnVal k ρ z z' j (Matrix.of q.2) • F q, hU.inter hU₀, ⟨hqU, hq⟩, ?_, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.smul (hfn.comp hm.contDiffOn (fun q hq' => ?_)) (hFs.mono Set.inter_subset_left)` and prove the remaining obligations. Conclude with `⟨one_mem_OmX, (hUpos hq'.2).2⟩`. Introduce `q hq' hG'`. Establish `hpos : 0 < Q.GGl k ρ z z' (Matrix.of q.2)` using `(hUpos hq'.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show Φf q.1 q.2 = _`. Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]`. Rewrite using `[show Ψf q.1 q.2 = F q from hfF q hq'.1 hG']`. Establish `hpos : 0 < Q.GGl k ρ z z' (Matrix.of q.2)` using `(hUpos hq).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]`. Rewrite using `[hK q hG (fun h => hqK (subset_closure h)), smul_zero]`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi c`. Distinguish the cases in `hpos : 0 < Q.GGl k ρ z z' (Matrix.of y)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key Ψi c y hyG hpos, hi c y hyV hyG, ← integral_smul]`. Use `integral_congr_ae (ae_of_all _ fun Z => ?_)` and prove the remaining obligations. Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]`. Rewrite using `[key0 Ψi c y hpos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (fun Z => Φf Z y) = fun _ => 0`. Use function extensionality and compare the values at `Z`. Rewrite using `[hΦf]`. Simplify using `only [if_neg hpos]`. Rewrite using `[this, integral_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_fn (hT : 0 ≤ Tz k ρ z * Tz k ρ z') (X : Q.ActualOps k ρ z z' π π') (j : Fin 6) :
     Good z z' π π' (X.fn j) := by
@@ -103,25 +103,21 @@ theorem good_fn (hT : 0 ≤ Tz k ρ z * Tz k ρ z') (X : Q.ActualOps k ρ z z' �
       rw [this, integral_zero]
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Use `set c₁ : Fin ρ → ℂ := fun _ => 1 with hc₁`. Use `set f : Par → Q.Mx k ρ → (Wq →L[ℂ] Wp) := fun Z => (Ψ Z : Q.Fn k ρ (Wq →L[ℂ] Wp)) c₁ with hfdef`. Establish `hf : PBI.ParFam k ρ U₀ (fun q => f q.1 (Matrix.of q.2))` using `parFam_congr hF (fun q _ hG => (hR q.1 c₁ q.2 hG).symm) hU₀`. Take `⟨a1, b1, c1⟩` from `parOK_tL (E := Wq →L[ℂ] Wp) z z' Y a b Par U₀ hU₀ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Φf : Par → Mt k ρ → (Wq →L[ℂ] Wp) := fun Z y => if 0 < Q.GGl k ρ z z' (Matrix.of y) then tL k ρ z z' (Fin.last ρ) Y a b (f Z) (Matrix.of y) else 0 with hΦf`. Establish `key : ∀ (Φ : Q.RadSp k ρ z z' π π') (y : Mt k ρ), Matrix.of y ∈ Q.Glev k ρ (Fin.last ρ) → 0 < Q.GGl k ρ z z' (Matrix.of y) → (X.t Y a b Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c₁ (Matrix.of y) = tL k ρ z z' (Fin.last ρ) Y a b ((Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c₁) (Matrix.of y)`. Introduce `Φ y hG hpos`. Conclude with `X.t_apply Y a b Φ (c₁, Matrix.of y) ⟨hOm c₁, hG, hpos⟩`. Establish `key0 : ∀ (Φ : Q.RadSp k ρ z z' π π') (c : Fin ρ → ℂ) (y : Mt k ρ), ¬ 0 < Q.GGl k ρ z z' (Matrix.of y) → (X.t Y a b Φ : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `Φ c y hpos`. Conclude with `rad_zero (X.t Y a b Φ) (x := (c, Matrix.of y)) (fun hD => hpos hD.2.2)`. Use `⟨Φf, fun Z c y hG => ?_, ?_, fun K hK q hq hG hqK => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS c c₁]`. Distinguish the cases in `hpos : 0 < Q.GGl k ρ z z' (Matrix.of y)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key (Ψ Z) y hG hpos, hΦf]`. Simplify using `only [if_pos hpos]`. Both sides reduce to the same expression. Rewrite using `[key0 (Ψ Z) c₁ y hpos, hΦf]`. Simplify using `only [if_neg hpos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `parFam_congr a1 (fun q hq _ => by`. Establish `hpos : 0 < Q.GGl k ρ z z' (Matrix.of q.2)` using `(hUpos hq).2`. Use `show _ = Φf q.1 q.2`. Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]) hU₀`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < Q.GGl k ρ z z' (Matrix.of q.2)` using `(hUpos hq).2`. Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]`. Use `b1 q hq hG (closure K)ᶜ isClosed_closure.isOpen_compl hqK (fun q' hq' hG' => ?_)` and prove the remaining obligations. Use `show (Ψ q'.1 : Q.Fn k ρ (Wq →L[ℂ] Wp)) c₁ (Matrix.of q'.2) = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR q'.1 c₁ q'.2 hG']`. Conclude with `hK q' hG' (fun h => hq' (subset_closure h))`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi c`. Rewrite using `[hS c c₁]`. Distinguish the cases in `hpos : 0 < Q.GGl k ρ z z' (Matrix.of y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key Ψi y hyG hpos]`. Rewrite using `[c1 ν Kp hKp hν ((Ψi : Q.Fn k ρ (Wq →L[ℂ] Wp)) c₁) y V hV hyV hyG hKV (fun y' hy' hG' => by`. Rewrite using `[hi c₁ y' hy' hG']`. Use `integral_congr_ae (ae_of_all _ fun Z => ?_)` and prove the remaining obligations. Conclude with `(hR Z c₁ y' hG').symm)]`.
-
-Use `integral_congr_ae (ae_of_all _ fun Z => ?_)` and prove the remaining obligations. Use `show _ = Φf Z y`. Rewrite using `[hΦf]`. Simplify using `only [if_pos hpos]`. Rewrite using `[key0 Ψi c₁ y hpos]`.
-
-Establish `: (fun Z => Φf Z y) = fun _ => 0`. Use function extensionality and compare the values at `Z`. Rewrite using `[hΦf]`. Simplify using `only [if_neg hpos]`. Rewrite using `[this, integral_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_alt_bis (hOm : ∀ c : Fin ρ → ℂ, c ∈ OmX ρ) (hS : ∀ c c' : Fin ρ → ℂ, c = c')
     (X : Q.ActualOps k ρ z z' π π') (Y : ℂ) (a b : Fin 2) : Good z z' π π' (X.t Y a b) := by

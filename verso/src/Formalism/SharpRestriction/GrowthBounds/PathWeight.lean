@@ -14,7 +14,7 @@ namespace Formalism.MainNotions.G.symbolGeneratorData
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning Formalism.MainNotions.G.WittFrameLocaliserOrders
 
 /- English proof (translation)
-Distinguish the cases in `hE : FieldMultidegreeDivisibility`. Take `⟨C, hC, hD⟩` from `restDivM hE`. Conclude with `⟨C, hC, fun D hA3 hB1 hB2 hB3 hC1 _ => lemma4_of_remaining_statements D C (C + 1) C restModel (hD restGeom) (generator_pair_conditions_of_admitted D hA3 hB1) (generator_path_homogeneous_holds D hB2 hB3 hC1) (restMon D) restPh⟩`. Conclude with `⟨1, le_rfl, fun D _ _ _ _ _ h => absurd h hE⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem classMap_estimate_of_admissible : ∃ C : ℝ, 1 ≤ C ∧ ∀ D : Formalism.BasicNotions.D7, StandardMonomialSpanBis D → PathPairCorrespondence D → admB2 D → admB3 D → CoefficientValuationLemma D → LargePrimeLengthVanishing D →
     Conclusion6 D C (C + 1) C := by
@@ -25,7 +25,7 @@ theorem classMap_estimate_of_admissible : ∃ C : ℝ, 1 ≤ C ∧ ∀ D : Forma
   · exact ⟨1, le_rfl, fun D _ _ _ _ _ h => absurd h hE⟩
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `classMap_estimate_of_admissible`. Use `⟨C, hC, fun D CLa Ck Crk Cdeg hA => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, _, _, _, _, _, _, hA3, hB1, hB2, hB3, _, hC1, hE, _⟩` from `hA`. Conclude with `⟨theta_kernel_expansion D, splitting_package_holds D, segment_statement_holds D, order_lemma_holds D, divisibility_of_field_lemma D hE, H D hA3 hB1 hB2 hB3 hC1 hE⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem export_bound_of_admissible : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ), admitted D CLa Ck Crk Cdeg →
     aux₃ D C (C + 1) C := by
@@ -36,7 +36,7 @@ theorem export_bound_of_admissible : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Formalism
     H D hA3 hB1 hB2 hB3 hC1 hE⟩
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `export_bound_of_admissible`. Introduce `CLa Ck Crk Cdeg hA`. Conclude with `⟨C, C + 1, C, by linarith, by linarith, by linarith, H D CLa Ck Crk Cdeg hA⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stmtE_proved (D : Formalism.BasicNotions.D7) : ClosedFormOfAdmitted D := by
   obtain ⟨C, hC, H⟩ := export_bound_of_admissible
@@ -44,7 +44,7 @@ theorem stmtE_proved (D : Formalism.BasicNotions.D7) : ClosedFormOfAdmitted D :=
   exact ⟨C, C + 1, C, by linarith, by linarith, by linarith, H D CLa Ck Crk Cdeg hA⟩
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `export_bound_of_admissible`. Introduce `CLa Ck Crk Cdeg hA`. Conclude with `⟨C, C + 1, C, by linarith, by linarith, by linarith, 0, fun x _ i => H _ CLa Ck Crk Cdeg (hA x i)⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stmtEF_proved {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilyClosedForm Fm := by
   obtain ⟨C, hC, H⟩ := export_bound_of_admissible
@@ -52,7 +52,7 @@ theorem stmtEF_proved {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Family
   exact ⟨C, C + 1, C, by linarith, by linarith, by linarith, 0, fun x _ i => H _ CLa Ck Crk Cdeg (hA x i)⟩
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `export_bound_of_admissible`. Introduce `CLa Ck Crk Cdeg hA`. Conclude with `⟨C, C + 1, C, by linarith, by linarith, by linarith, fun ε h0 h1 => ⟨0, fun x _ i => H _ CLa Ck Crk Cdeg (hA ε h0 h1 x i)⟩⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stmtEDF_proved (Fm : Formalism.MainNotions.DFamP) : DerivativeStatementClosedDesign Fm := by
   obtain ⟨C, hC, H⟩ := export_bound_of_admissible

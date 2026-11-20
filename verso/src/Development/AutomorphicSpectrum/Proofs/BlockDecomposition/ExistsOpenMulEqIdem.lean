@@ -19,11 +19,11 @@ section Gen
 variable {R A : Type*} [CommRing R] [Nontrivial R] [CommRing A] [Algebra R A] [Module.Free R A] [Module.Finite R A]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R A`. Set `M` to `Algebra.leftMulMatrix b a`. Use `⟨Matrix.toLin b b M.adjugate 1, ?_⟩` and prove the remaining obligations. Establish `h1 : Algebra.norm R a = M.det` using `Algebra.norm_eq_matrix_det b a`. Establish `h2 : Matrix.toLin b b M = LinearMap.mulLeft R a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [M, Algebra.leftMulMatrix_apply, Matrix.toLin_toMatrix]`. Both sides reduce to the same expression. Establish `h3 : Matrix.toLin b b M (Matrix.toLin b b M.adjugate 1) = Matrix.toLin b b (M * M.adjugate) 1`. Rewrite using `[Matrix.toLin_mul b b b]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h4 : a * Matrix.toLin b b M.adjugate 1 = Matrix.toLin b b M (Matrix.toLin b b M.adjugate 1)`. Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[h4, h3, Matrix.mul_adjugate, h1, map_smul, Matrix.toLin_one, LinearMap.smul_apply, LinearMap.id_apply, Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mul_eq_norm (a : A) : ∃ c, a * c = algebraMap R A (Algebra.norm R a) := by
   classical
@@ -41,11 +41,9 @@ theorem exists_mul_eq_norm (a : A) : ∃ c, a * c = algebraMap R A (Algebra.norm
   rw [h4, h3, Matrix.mul_adjugate, h1, map_smul, Matrix.toLin_one, LinearMap.smul_apply, LinearMap.id_apply, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R A`. Establish `h : (fun a : A => Algebra.norm R a) = fun a => (Algebra.leftMulMatrix b a).det`. Use function extensionality and compare the values at `a`. Conclude with `Algebra.norm_eq_matrix_det b a`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_det (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Establish `: (fun a : A => Algebra.leftMulMatrix b a i j) = (b.coord i) ∘ₗ (LinearMap.mulRight R (b j))`. Use function extensionality and compare the values at `a`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[this]`.
-
-Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_norm [TopologicalSpace R] [IsTopologicalRing R] [TopologicalSpace A] [IsModuleTopology R A] :
     Continuous (fun a : A => Algebra.norm R a) := by
@@ -64,11 +62,9 @@ theorem continuous_norm [TopologicalSpace R] [IsTopologicalRing R] [TopologicalS
 end Gen
 
 /- English proof (translation)
-Use `⟨((fun w => (evInf F w n)⁻¹ : Ainf F), ∑ v ∈ S, singleFin v (evFin F v n)⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.eSF_eq]`. Use `Prod.ext ?_ (af_ext fun u => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `mul_inv_cancel₀ (h1 w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `evalV F u (n.2 * ∑ v ∈ S, singleFin v (evFin F v n)⁻¹) = evalV F u (∑ v ∈ S, singleFin v 1)`. Rewrite using `[map_mul, GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.evalV_sum, map_sum]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single_of_mem u h (fun v _ hv => evalV_singleFin_ne (Ne.symm hv) _), evalV_singleFin_self]`. Conclude with `mul_inv_cancel₀ (h2 u h)`.
-
-Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `v hv`. Conclude with `evalV_singleFin_ne (by rintro rfl; exact h hv) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_eSF {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))) (n : AF F)
     (h1 : ∀ w, evInf F w n ≠ 0) (h2 : ∀ v ∈ S, evFin F v n ≠ 0) : ∃ m : AF F, n * m = eSF S := by
@@ -88,7 +84,7 @@ theorem exists_mul_eq_eSF {F : Type} [Field F] [NumberField F] (S : Finset (Heig
       exact evalV_singleFin_ne (by rintro rfl; exact h hv) _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.eSF_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evInf_eSF {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))) (w : InfinitePlace F) :
     evInf F w (eSF S) = 1 := by
@@ -97,7 +93,7 @@ theorem evInf_eSF {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpe
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.eSF_eq]`. Conclude with `GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.evalV_sum S v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evFin_eSF {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (v : HeightOneSpectrum (𝓞 F)) : evFin F v (eSF S) = if v ∈ S then 1 else 0 := by
@@ -105,7 +101,7 @@ theorem evFin_eSF {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpe
   exact GlobalTheory.CompanionTheory.RgEisUnif.EIdemP.evalV_sum S v
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E)) _ = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, show algebraMap (AF F) (AF F) (eSF S) = eSF S from rfl, evInf_eSF]`. Simplify using `[Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem compInf_eSF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (w : InfinitePlace F) :
@@ -117,7 +113,7 @@ theorem compInf_eSF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E)) _ = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, show algebraMap (AF F) (AF F) (eSF S) = eSF S from rfl, evFin_eSF]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compFin_eSF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpectrum (𝓞 F)) :
@@ -128,9 +124,9 @@ theorem compFin_eSF {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F 
   split_ifs <;> simp [Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `hc D _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, he.1 w, compInf_eSF, sub_self]`. Use `(RingHom.map_sub _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[he.2 v]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_zero.2 ?_` and prove the remaining obligations. Conclude with `(compFin_eSF S v).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_algebraMap_eSF
     (hc : ∀ (D : D7) (a : AE D), (∀ w, compInf D.host.F D.host.E w a = 0) → (∀ v, cv D v a = 0) → a = 0)
@@ -146,13 +142,13 @@ theorem eq_algebraMap_eSF
     exact (compFin_eSF S v).symm
 
 /- English proof (translation)
-Introduce `hc D S e he`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `hn` using `continuous_norm (R := AF D.host.F) (A := AE D)`. Establish `cI : ∀ w, Continuous (evInf D.host.F w)` using `fun w => (continuous_apply w).comp continuous_fst`. Establish `cF : ∀ v, Continuous (evFin D.host.F v)` using `fun v => (RestrictedProduct.continuous_eval v).comp continuous_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{a | (∀ w, evInf D.host.F w (Algebra.norm (AF D.host.F) a) ≠ 0) ∧ ∀ v ∈ S, evFin D.host.F v (Algebra.norm (AF D.host.F) a) ≠ 0}, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h : {a : AE D | (∀ w, evInf D.host.F w (Algebra.norm (AF D.host.F) a) ≠ 0) ∧ ∀ v ∈ S, evFin D.host.F v (Algebra.norm (AF D.host.F) a) ≠ 0} = (⋂ w, {a : AE D | evInf D.host.F w (Algebra.norm (AF D.host.F) a) ≠ 0}) ∩ ⋂ v ∈ S, {a : AE D | evFin D.host.F v (Algebra.norm (AF D.host.F) …`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isOpen_iInter_of_finite fun w => ?_).inter (isOpen_biInter_finset fun v _ => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun ((cI w).comp hn) continuous_const`. Conclude with `isOpen_ne_fun ((cF v).comp hn) continuous_const`. Simplify using `only [Set.mem_setOf_eq, map_one]`. Conclude with `⟨fun _ => one_ne_zero, fun _ _ => one_ne_zero⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x ⟨h1, h2⟩`. Take `⟨c, hxc⟩` from `exists_mul_eq_norm (R := AF D.host.F) x`. Take `⟨m, hm⟩` from `exists_mul_eq_eSF S _ h1 h2`. Use `⟨c * algebraMap (AF D.host.F) (AE D) m, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hxc, ← map_mul, hm, eq_algebraMap_eSF hc D S e he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_mul_eq_idem :
     (∀ (D : D7) (a : AE D), (∀ w, compInf D.host.F D.host.E w a = 0) → (∀ v, cv D v a = 0) → a = 0) →

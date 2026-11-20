@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `h : ((Module.length R R : ℕ∞) : WithBot ℕ∞) = (Module.length R' R' : ℕ∞)`. Rewrite using `[Module.coe_length, Module.coe_length]`. Conclude with `Order.krullDim_eq_of_orderIso e.idealComapOrderIso.symm`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma length_self_eq {R R' : Type} [CommRing R] [CommRing R'] (e : R ≃+* R') :
     Module.length R R = Module.length R' R' := by
@@ -13,7 +13,7 @@ private lemma length_self_eq {R R' : Type} [CommRing R] [CommRing R'] (e : R ≃
   exact_mod_cast h
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Conclude with `length_self_eq (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private lemma length_stalk_eq {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (x : X) (y : Y) (hy : f x = y) :
     Module.length (Y.presheaf.stalk y) (Y.presheaf.stalk y) =
@@ -22,11 +22,11 @@ private lemma length_stalk_eq {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (x : X)
   exact length_self_eq (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Introduce `Z' S' Z S v p' p g h`. Use function extensionality and compare the values at `Ω _ _ z`. Establish `hw : (z ≫ p') ≫ g = (z ≫ v) ≫ p`. Simplify using `only [Category.assoc, h.w]`. Establish `hP : IsPullback (pullback.fst p' (z ≫ p') ≫ v) (pullback.snd p' (z ≫ p')) p ((z ≫ v) ≫ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hw]`. Conclude with `(IsPullback.of_hasPullback p' (z ≫ p')).paste_horiz h`. Establish `hl : (pullback.lift z (𝟙 _) (Category.id_comp _).symm : gp Ω ⟶ pullback p' (z ≫ p')) ≫ hP.isoPullback.hom = pullback.lift (z ≫ v) (𝟙 _) (Category.id_comp _).symm`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hP.isoPullback_hom_fst, pullback.lift_fst_assoc, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hP.isoPullback_hom_snd, pullback.lift_snd, pullback.lift_snd]`. Establish `hpt : hP.isoPullback.hom (pt (pullback.lift z (𝟙 _) (Category.id_comp _).symm : gp Ω ⟶ pullback p' (z ≫ p'))) = pt (pullback.lift (z ≫ v) (𝟙 _) (Category.id_comp _).symm : gp Ω ⟶ pullback p ((z ≫ v) ≫ p))`. Rewrite using `[← pt_comp, hl]`. Simplify using `only [Wt.comap, mult]`. Rewrite using `[length_stalk_eq hP.isoPullback.hom _ _ hpt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.multBC_of :
     MultBC := by

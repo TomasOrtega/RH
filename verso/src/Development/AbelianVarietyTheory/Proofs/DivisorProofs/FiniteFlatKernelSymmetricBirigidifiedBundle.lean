@@ -26,15 +26,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KerFlatP
 
 /- English proof (translation)
-Introduce `R _ _ B _ hB N hN hamp M hM H j hj hfin hrep`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Use `GlobalTheory.T.flat_of_isFinite_of_flat_at_maximal R H hfin (fun m _ => ?_)` and prove the remaining obligations. Use `set f := spMap (algebraMap R (Localization.AtPrime m)) with hf`. Establish `hB' : IsAbelianScheme ((Over.pullback f).obj B)` using `GlobalTheory.isAbelianScheme_pullback_obj f B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hB'.comm`. Establish `hpb` using `IsPullback.of_hasPullback B.hom f`. Take `⟨hP, -, -, -⟩` from `GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ B N hB hN hamp (Localization.AtPrime m) f _ _ _ hpb`. Establish `hML : (M.pull (pullback.fst B.hom f)).IsLB` using `pull_isLB hM _`. Establish `hrep'` using `GlobalTheory.T.memKernelOfLineBundle_baseChange_representable _ _ f B M hM H j hrep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth` using `GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy GlobalTheory.T.abelianScheme_laws_unconditional.1 _ ((Over.pullback f).obj B) hB' hP _ hML`. Establish `hcl : IsClosedImmersion ((Over.pullback f).map j).left`. Establish `e : ((Over.pullback f).map j).left = pullback.map H.hom f B.hom f j.left (𝟙 _) (𝟙 _) (by simp [Over.w j]) (by simp)` using `by first`. Consider the case `rfl`. Consider the case `(apply pullback.hom_ext <;> simp [Over.pullback_map_left])`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(simp only [Over.pullback_map_left]; apply pullback.hom_ext <;> simp)`. Rewrite using `[e]`. Use `haveI : MorphismProperty.IsStableUnderComposition @IsClosedImmersion := ⟨fun _ _ hf hg => by haveI := hf; haveI := hg; infer_instance⟩`. Conclude with `MorphismProperty.pullback_map (P := @IsClosedImmersion) hj (inferInstance : IsClosedImmersion (𝟙 _)) (Over.w j).symm (by simp)`. Establish `hfin' : IsFinite ((Over.pullback f).obj H).hom` using `by first`.
-
-Consider the case `exact MorphismProperty.pullback_snd (P := @IsFinite) _ _ hfin`. Consider the case `(haveI := hfin; exact (inferInstance : IsFinite (pullback.snd H.hom f)))`. Conclude with `GlobalTheory.T.lineBundleKernel_flat_of_finite_noetherian_local hG (Localization.AtPrime m) ((Over.pullback f).obj B) hB' hP _ hML hth _ _ hcl hrep' hfin'`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flat_of_finite_rep : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B : Over (Sp R)) [GrpObj B],
     IsAbelianScheme B → ∀ N : LB B.left, N.IsLB → Out.RelAmple B N → ∀ M : LB B.left, M.IsLB →
@@ -70,9 +68,9 @@ theorem flat_of_finite_rep : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B
   exact GlobalTheory.T.lineBundleKernel_flat_of_finite_noetherian_local hG (Localization.AtPrime m) ((Over.pullback f).obj B) hB' hP _ hML hth _ _ hcl hrep' hfin'
 
 /- English proof (translation)
-Introduce `R _ B _ hB N hN hamp M hM`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hP : IsProjBy B.hom` using `GlobalTheory.WtTower.isProjBy_of_relAmple B hN hamp`. Take `⟨h0, -, h2⟩` from `GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ B M hM`. Take `⟨H, j, hj, hrep⟩` from `GlobalTheory.T.exists_closed_subscheme_translation_kernel hG R B hB hP M (AbLaw.pw M 0) hM h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨H, j, hj, fun T x => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.UU.inK_iff_memKL, h2 _ rfl T x]`. Conclude with `hrep T x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_rep : ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpObj B], IsAbelianScheme B →
     ∀ N : LB B.left, N.IsLB → Out.RelAmple B N → ∀ M : LB B.left, M.IsLB →
@@ -88,9 +86,7 @@ theorem exists_closed_rep : ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpOb
   exact hrep T x
 
 /- English proof (translation)
-Use `haveI : IsSeparated (i.left ≫ G.hom) := by rw [Over.w i]; infer_instance`. Use `haveI : IsSeparated i.left := IsSeparated.of_comp i.left G.hom`. Use `haveI : IsClosedImmersion (m.left ≫ i.left) := by rw [← Over.comp_left, hm]; exact hj`. Use `haveI : IsClosedImmersion m.left := IsClosedImmersion.of_comp m.left i.left`. Rewrite using `[← Over.w m]`.
-
-Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFinite_of_closedImmersion_factor_through_finite {S : Scheme.{0}} {H F G : Over S} (j : H ⟶ G) (i : F ⟶ G)
     (m : H ⟶ F) (hm : m ≫ i = j) (hj : IsClosedImmersion j.left) (hF : IsFinite F.hom) : IsFinite H.hom := by
@@ -107,31 +103,27 @@ namespace GlobalTheory
 open GlobalTheory.KerFlatP in
 
 /- English proof (translation)
-Introduce `R _ _ G _ hG P hP h1 h2 hsym hamp`. Establish `hL : (P.pull (lift (𝟙 G) (𝟙 G)).left).IsLB` using `pull_isLB hP _`. Take `⟨HL, _, iL, -, -, hfinL, -, hrepL⟩` from `GlobalTheory.kernel_finiteFlat_subgroup R G hG _ hL hamp`. Establish `hGG : IsAbelianScheme (G ⊗ G)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor G G hG hG`. Use `haveI : IsProper G.hom := hG.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsProper (G ⊗ G).hom := by show IsProper (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `hL1` using `pull_isLB hL (fst G G).left`. Establish `hL2` using `pull_isLB hL (snd G G).left`. Establish `hN` using `GlobalTheory.CechPic.isLB_tens hL1 hL2`. Establish `hNamp : Out.RelAmple (G ⊗ G) (GlobalTheory.CechPic.tens _ _)` using `GlobalTheory.MumProd.SumPol.relAmple_prod G G hL hL hN (by rw [GlobalTheory.CechPic.cls_tens hL1 hL2 hN, GlobalTheory.CechPic.cls_pull hL _ hL1, GlobalTheory.CechPic.cls_pull hL _ hL2]) hamp hamp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, k, hk, hrepK⟩` from `exists_closed_rep R (G ⊗ G) hGG _ hN hNamp P hP`. Establish `hmemK : GlobalTheory.MemKL (G ⊗ G) P (lift (k ≫ fst G G) (k ≫ snd G G))`. Rewrite using `[lift_comp_fst_snd]`. Conclude with `(hrepK K k).2 ⟨𝟙 K, Category.id_comp _⟩`. Take `⟨ha, hb⟩` from `GlobalTheory.T.trivial_evaluations_of_mem_kernel_symmetric_pair R G hG P hP h1 h2 hsym K _ _ hmemK`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨za, hza⟩` from `(hrepL K _).1 (GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym K _ ha)`. Take `⟨zb, hzb⟩` from `(hrepL K _).1 (GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym K _ hb)`. Establish `hfinHL2 : IsFinite (HL ⊗ HL).hom` using `by haveI := hfinL show IsFinite (pullback.fst HL.hom HL.hom ≫ HL.hom) infer_instance`. Establish `hfinK : IsFinite K.hom`. Use `isFinite_of_closedImmersion_factor_through_finite k (lift (fst HL HL ≫ iL) (snd HL HL ≫ iL)) (lift za zb) ?_ hk hfinHL2` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [hza, hzb]`. Establish `hflatK : Flat K.hom` using `flat_of_finite_rep R (G ⊗ G) hGG _ hN hNamp P hP K k hk hfinK hrepK`. Use `set e : G ⟶ G ⊗ G := lift (𝟙 G) (1 : G ⟶ G) with he`. Establish `hxe : ∀ {T : Over (Sp R)} (x : T ⟶ G), x ≫ e = lift x (1 : T ⟶ G)`. Introduce `T x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [e]`. Set `H : Over (Sp R)` to `Over.mk (pullback.snd k.left e.left ≫ G.hom)`. Set `i : H ⟶ G` to `Over.homMk (pullback.snd k.left e.left) rfl`. Use `haveI := hk`. Establish `hi : IsClosedImmersion i.left` using `by show IsClosedImmersion (pullback.snd k.left e.left) infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwK : pullback.fst k.left e.left ≫ K.hom = H.hom` using `by show _ = pullback.snd k.left e.left ≫ G.hom`. Rewrite using `[← Over.w k, pullback.condition_assoc, Over.w e]`. Set `s : H ⟶ K` to `Over.homMk (pullback.fst k.left e.left) hwK`. Establish `hs : s ≫ k = i ≫ e` using `Over.OverMorphism.ext (by rw [Over.comp_left, Over.comp_left]; exact pullback.condition)`. Establish `hmemH : ∀ (T : Over (Sp R)) (x : T ⟶ G), (∃ t : (P.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, t.IsGen) ↔ ∃ y : T ⟶ H, y ≫ i = x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `T x`. Prove the components needed by the constructor for the conclusion. Introduce `htr`. Take `⟨z, hz⟩` from `(hrepK T _).1 (GlobalTheory.T.mem_kernel_lift_one_of_axis_trivial_bundle R G hG P hP h1 h2 hsym T x htr)`. Establish `hz' : z.left ≫ k.left = x.left ≫ e.left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, hz, ← hxe, Over.comp_left]`. Use `⟨Over.homMk (pullback.lift z.left x.left hz') ?_, ?_⟩` and prove the remaining obligations. Use `show pullback.lift z.left x.left hz' ≫ pullback.snd k.left e.left ≫ G.hom = T.hom`. Rewrite using `[pullback.lift_snd_assoc, Over.w x]`. Conclude with `Over.OverMorphism.ext (by rw [Over.comp_left]; exact pullback.lift_snd _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, rfl⟩`. Establish `hm : GlobalTheory.MemKL (G ⊗ G) P (lift (y ≫ i) (1 : T ⟶ G))`. Use `(hrepK T _).2 ⟨y ≫ s, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, ← Category.assoc, hxe]`. Conclude with `(GlobalTheory.T.trivial_evaluations_of_mem_kernel_symmetric_pair R G hG P hP h1 h2 hsym T _ _ hm).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hLi : GlobalTheory.MemKL G (P.pull (lift (𝟙 G) (𝟙 G)).left) i` using `GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym H i ((hmemH H i).2 ⟨𝟙 H, Category.id_comp _⟩)`. Take `⟨zH, hzH⟩` from `(hrepL H i).1 hLi`. Establish `hfinH : IsFinite H.hom` using `isFinite_of_closedImmersion_factor_through_finite i iL zH hzH hi hfinL`. Take `⟨r, hr⟩` from `(hmemH K (k ≫ fst G G)).1 ha`. Establish `hsr : s ≫ r = 𝟙 H` using `by haveI : Mono i.left := by show Mono (pullback.snd k.left e.left) infer_instance`.
-
-Establish `h3 : s ≫ r ≫ i = 𝟙 H ≫ i`. Rewrite using `[hr, ← Category.assoc, hs, Category.assoc]`. Simplify using `[e]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(cancel_mono i.left).1 (by simpa [Over.comp_left] using congrArg CommaMorphism.left h3)`.
-
-Conclude with `⟨H, i, hi, hfinH, GlobalTheory.T.flat_of_finite_retract_of_finite_flat R H K s r hsr hfinH hfinK hflatK, hmemH⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernel_finiteFlat : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ P : LB (G2 G).left, P.IsLB → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → Out.RelAmple G (P.pull (lift (𝟙 G) (𝟙 G)).left) → ∃ (H : Over (Sp R)) (i : H ⟶ G), IsClosedImmersion i.left ∧ IsFinite H.hom ∧ Flat H.hom ∧ ∀ (T : Over (Sp R)) (x : T ⟶ G), (∃ t : (P.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, t.IsGen) ↔ ∃ y : T ⟶ H, y ≫ i = x := by
   intro R _ _ G _ hG P hP h1 h2 hsym hamp

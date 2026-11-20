@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.LeviIso
 
 /- English proof (translation)
-Unfold `detNorm`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Rewrite `h` using `[Finset.prod_eq_zero (Finset.mem_univ w) (by rw [hw]; simp)]`. Conclude with `lt_irrefl _ h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (h w)) 2`.
+A detailed English derivation is pending.
 -/
 theorem detNorm_pos_iff {E : Type} [Field E] [NumberField E] {j : ℕ} (x : MatInf E j) :
     0 < detNorm E j x ↔ ∀ w, (Matrix.of (x w)).det ≠ 0 := by
@@ -37,9 +37,9 @@ theorem detNorm_pos_iff {E : Type} [Field E] [NumberField E] {j : ℕ} (x : MatI
     exact Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (h w)) 2
 
 /- English proof (translation)
-Establish `hP : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`. Establish `hX : (X.map (I.φ v))ᴴ = Xᴴ.map (I.φ v)`. Use extensionality with `r s`. Conclude with `(I.cm.cmUnram.2.1 (I.φ v) (X s r)).symm`. Rewrite using `[← I.P_spec v, Matrix.map_mul, Matrix.map_mul, ← hX]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hP, Matrix.one_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_place (I : AutInst) (v : InfinitePlace I.F) {p q : Type} (X : Matrix (Fin I.n) p I.E)
     (Y : Matrix (Fin I.n) q I.E) :
@@ -54,14 +54,14 @@ theorem gram_place (I : AutInst) (v : InfinitePlace I.F) {p q : Type} (X : Matri
     _ = _ := by rw [hP, Matrix.one_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hτ with rfl | rfl <;> ext r s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conjT_map {τ : ℂ →+* ℂ} (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) {p q : Type} (X : Matrix p q ℂ) :
     (X.map τ)ᴴ = Xᴴ.map τ := by
   rcases hτ with rfl | rfl <;> ext r s <;> simp
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [Jm, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_map {n : ℕ} (ε : Fin n → Bool) (τ : ℂ →+* ℂ) : (Jm ε).map τ = Jm ε := by
   ext r s
@@ -69,7 +69,7 @@ theorem Jm_map {n : ℕ} (ε : Fin n → Bool) (τ : ℂ →+* ℂ) : (Jm ε).ma
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_map {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (τ : ℂ →+* ℂ) :
     P.map τ * P⁻¹.map τ = 1 := by
@@ -77,13 +77,13 @@ theorem inv_map {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (τ :
   simp
 
 /- English proof (translation)
-Establish `hsat` using `GlobalTheory.T.isSaturatedIsotropicFlag_of_adaptedBasis I I₀ e xf a j S Λ x₀ T T' T₀ hj h`. Establish `hsp` using `GlobalTheory.T.columnBlocksSpanFlag_flagAdaptedLatticeBasis I I₀ e xf a j S Λ x₀ T T' T₀ h v`. Take `⟨-, hn, -, h1, h2, h3, -, -⟩` from `h`. Establish `hJ : I.Jᴴ = I.J` using `I.J_herm`. Establish `sw : ∀ i k, (T' i)ᴴ * I.J * T k = ((T k)ᴴ * I.J * T' i)ᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i k`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ, Matrix.mul_assoc]`. Use `GlobalTheory.T.complementary_block_unitary_forms _ _ a j _ _ _ _ (fun i => ((I.P v)⁻¹ * (T' i).map (I.φ v))ᴴ * Jm (I.ε v)) _ τ τ₀ hτ hτ₀ hn (fun i => ?_) (fun i k hik => ?_) (fun i k => ?_) (fun i => ?_) ?_ hsp (GlobalTheory.T.isTotallyIsotropicFlag_complexified_saturatedFlag I _ …` and prove the remaining obligations. Rewrite using `[gram_place, sw, (h2 i).1]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gram_place, sw, (h1 k i).2.2 hik.symm]`. Simplify using the standard rewrite rules. Rewrite using `[gram_place, (h1 i k).1]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.mul_assoc, gram_place, (h2 i).2.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e1 : (I₀.J.map e).map (I.φ v) = (I₀.J.map (I₀.φ v₀)).map τ₀`. Use extensionality with `r s`. Conclude with `hv _`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Jm _), ← Matrix.mul_assoc _ _ ((I₀.P v₀).map τ₀), ← Matrix.mul_assoc _ (Jm _), gram_place, h3, e1, conjT_map hτ₀, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.mul_assoc, I₀.P_spec, Jm_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charts (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ)
     (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (Λ : ∀ i, Submodule (𝓞 I.E) (Fin (j i) → I.E))
@@ -118,9 +118,9 @@ theorem exists_charts (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a :
       conjT_map hτ₀, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.mul_assoc, I₀.P_spec, Jm_map]
 
 /- English proof (translation)
-Establish `hf' : (f : ℝ) ≠ 0` using `by positivity`. Establish `hk' : (k : ℝ) ≠ 0` using `by positivity`. Establish `h1` using `congrArg Real.log h`. Rewrite `h1` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_rpow hD]`. Apply `Real.log_injOn_pos ht (Real.rpow_pos_of_pos (by positivity) _)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Real.log_rpow (by positivity), Real.log_div hD.ne' (by positivity), Real.log_pow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem size_solve {f k : ℕ} (hf : 1 ≤ f) (hk : 1 ≤ k) {s t D : ℝ} (hs : 0 < s) (ht : 0 < t) (hD : 0 < D)
     (h : t ^ f = s ^ f * D ^ (-(1 : ℝ) / (2 * k))) :
@@ -137,11 +137,11 @@ theorem size_solve {f k : ℕ} (hf : 1 ≤ f) (hk : 1 ≤ k) {s t D : ℝ} (hs :
   linarith
 
 /- English proof (translation)
-Establish `hσ : ∀ i, SigmaFinite (haarGL E (j i))` using `fun i => by`. Rewrite using `[GlobalTheory.T.infiniteGLHaarMeasure_eq_pi_local]`. Conclude with `inferInstanceAs (SigmaFinite (Measure.pi fun _ : InfinitePlace E => haarLoc (j i)))`. Establish `h1 : ∀ i, ∀ᵐ x ∂(haarGL E (j i)), 0 < detNorm E (j i) x`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.infiniteGLHaarMeasure_eq_pi_local]`. Establish `h2 : ∀ᵐ x ∂(Measure.pi fun _ : InfinitePlace E => haarLoc (j i)), ∀ w, (Matrix.of (x w)).det ≠ 0`. Use `ae_all_iff.2 fun w => ?_` and prove the remaining obligations. Establish `h3 : ∀ᵐ y ∂(haarLoc (j i)), (Matrix.of y).det ≠ 0`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (GlobalTheory.T.haarComplexGLMatrices_conj_and_singular_null (j i)).2`. Conclude with `(Measure.quasiMeasurePreserving_eval (fun _ : InfinitePlace E => haarLoc (j i)) w).ae h3`. Conclude with `h2.mono fun x hx => (detNorm_pos_iff x).2 hx`. Conclude with `ae_all_iff.2 fun i => (Measure.quasiMeasurePreserving_eval (fun i => haarGL E (j i)) i).ae (h1 i)`.
+A detailed English derivation is pending.
 -/
 theorem ae_detNorm_pos (E : Type) [Field E] [NumberField E] {a : ℕ} (j : Fin a → ℕ) :
     ∀ᵐ z ∂(Measure.pi fun i => haarGL E (j i)), ∀ i, 0 < detNorm E (j i) (z i) := by
@@ -161,41 +161,35 @@ theorem ae_detNorm_pos (E : Type) [Field E] [NumberField E] {a : ℕ} (j : Fin a
   exact ae_all_iff.2 fun i => (Measure.quasiMeasurePreserving_eval (fun i => haarGL E (j i)) i).ae (h1 i)
 
 /- English proof (translation)
-Introduce `I I₀ e xf a j S Λ x₀ T T' T₀ hj h μM _ c₀ hμ hc₀`. Establish `hsat` using `GlobalTheory.T.isSaturatedIsotropicFlag_of_adaptedBasis I I₀ e xf a j S Λ x₀ T T' T₀ hj h`. Take `⟨β, σ, τ, τ₀, hτ, hτ₀, hβ, hσ⟩` from `GlobalTheory.T.realPlaces_match_isomorphic_CM_instances I I₀ e h.1`. Use `choose θ hθ using fun v => exists_charts I I₀ e xf a j S Λ x₀ T T' T₀ hj h v (σ v) (τ v) (τ₀ v) (hτ v) (hτ₀ v) (hσ v)`. Establish `hcard : Fintype.card (InfinitePlace I.F) = I.f` using `GlobalTheory.Count.FrameMajorant.card_places I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : 1 ≤ I.f` using `Module.finrank_pos`. Set `R : (∀ i, MatInf I.E (j i)) × I₀.Ginf → ∀ v : InfinitePlace I.F, (∀ i, Fin (j i) → Fin (j i) → ℂ) × UJ (I₀.ε (σ v))` to `fun z v => (fun i => z.1 i (β v), z.2 (σ v))`. Establish `hR` using `GlobalTheory.T.measurePreserving_rearrange_pi_prod_measures _ _ _ β σ a (fun i => Fin (j i) → Fin (j i) → ℂ) (fun w => UJ (I₀.ε w)) (fun i => haarLoc (j i)) (fun w => muG (I₀.ε w)) (fun i => 2 ^ (j i ^ 2)) c₀ (fun i => by positivity) (fun w => ((GlobalTheory.T.riemannianHaarGauge …`. Establish `hRm : Measurable R` using `hR.measurable`. Establish `hΘ : Measurable fun (z : (∀ i, MatInf I.E (j i)) × I₀.Ginf) v => θ v (R z v)` using `measurable_pi_lambda _ fun v => (hθ v).1.comp ((measurable_pi_apply v).comp hRm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ z : (∀ i, MatInf I.E (j i)) × I₀.Ginf, (∀ i, 0 < detNorm I.E (j i) (z.1 i)) → ∀ v i, (Matrix.of ((R z v).1 i)).det ≠ 0` using `fun z hz v i => (detNorm_pos_iff _).1 (hz i) (β v)`. Establish `hM : ∀ z : (∀ i, MatInf I.E (j i)) × I₀.Ginf, (∀ i, 0 < detNorm I.E (j i) (z.1 i)) → ∀ v, θ v (R z v) ∈ flagM (I.ε v) (flagAt I S v)` using `fun z hz v => ((hθ v).2.1 _).2 ⟨R z v, hdet z hz v, rfl⟩`. Establish `hpos` using `fun g : I.Ginf => GlobalTheory.T.sizeQ_saturatedIsotropicFlag_pos I (g, xf) a j S hsat`. Use `⟨fun z v => θ v (R z v), fun i => sizesAt I xf S 1 i ^ (2 * I.f * j i), hΘ, fun i => pow_pos (hpos 1 i) _, fun m => ⟨fun hm => ?_, ?_⟩, fun z z' hz1 hz2 hz' => ?_, fun z hz i => ?_, fun z z' hz hz' hzz => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `choose y hy1 hy2 using fun v => ((hθ v).2.1 (m v)).1 (hm v)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(fun i w => (y (β.symm w)).1 i, Equiv.piCongrLeft (fun w => UJ (I₀.ε w)) σ fun v => (y v).2), fun i => (detNorm_pos_iff _).2 fun w => hy1 _ i, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy2 v]`. Use `congrArg (θ v) (Prod.ext (funext fun i => ?_) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u => (y u).1 i) (β.symm_apply_apply v)`. Conclude with `Equiv.piCongrLeft_apply_apply (fun w => UJ (I₀.ε w)) σ (fun v => (y v).2) v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hM z hz`. Use `choose γ hγ1 hγ2 using hz1`. Take `⟨g, hg, Γ, γ₀, g1, g2, g3, g4⟩` from `GlobalTheory.T.exists_rational_flag_block_fixing_lattice I I₀ e xf a j S Λ x₀ T T' T₀ h γ hγ1 z.2 hz2`. Establish `hz : ∀ i, 0 < detNorm I.E (j i) (z.1 i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Use `(detNorm_pos_iff _).2 fun w => ?_` and prove the remaining obligations. Establish `: Matrix.of (z.1 i w) = (γ i : Matrix (Fin (j i)) (Fin (j i)) I.E).map w.embedding`. Use extensionality with `r s`. Conclude with `hγ2 i w r s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 ((γ i).isUnit.map w.embedding.mapMatrix)).ne_zero`. Establish `hP : ∀ v, I.P v * (I.P v)⁻¹ = 1` using `fun v => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`. Establish `hact : ∀ (v) {p : Type} (X : Matrix (Fin I.n) p I.E), uMat (g v) * ((I.P v)⁻¹ * X.map (I.φ v)) = (I.P v)⁻¹ * (Γ * X).map (I.φ v)`. Introduce `v p X`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[g1, Matrix.mul_assoc, ← Matrix.mul_assoc (I.P v), hP, Matrix.one_mul, Matrix.map_mul, Matrix.mul_assoc]`. Establish `hA : ∀ v i, uMat (g v) * ((I.P v)⁻¹ * (T i).map (I.φ v)) = (I.P v)⁻¹ * (T i).map (I.φ v) * (Matrix.of ((R z v).1 i)).map (τ v)`. Introduce `v i`. Rewrite using `[hact, g3, Matrix.map_mul, Matrix.mul_assoc]`. Use `congr 2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `r s`. Conclude with `(hβ v _).trans (congrArg (τ v) (hγ2 i (β v) r s).symm)`. Establish `hA₀ : ∀ v, uMat (g v) * ((I.P v)⁻¹ * T₀.map (I.φ v) * (I₀.P (σ v)).map (τ₀ v)) = (I.P v)⁻¹ * T₀.map (I.φ v) * (I₀.P (σ v)).map (τ₀ v) * (uMat (R z v).2).map (τ₀ v)`. Introduce `v`. Establish `e1 : (γ₀.map e).map (I.φ v) = (γ₀.map (I₀.φ (σ v))).map (τ₀ v)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `r s`. Conclude with `hσ v _`. Establish `e2 : uMat (R z v).2 = _` using `g2 (σ v)`. Rewrite using `[← Matrix.mul_assoc, hact, g4, Matrix.map_mul, e1, e2, Matrix.map_mul, Matrix.map_mul, Matrix.mul_assoc _ ((I₀.P (σ v)).map (τ₀ v)), ← Matrix.mul_assoc ((I₀.P (σ v)).map (τ₀ v)), ← Matrix.mul_assoc ((I₀.P (σ v)).map (τ₀ v)), inv_map _ (I₀.P_unit _), Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun v => θ v (R z v), ⟨hM z hz, g, ⟨hg, fun v k y hy => ?_⟩, g * (fun v => θ v (R z v))⁻¹, fun v => ((hθ v).2.2.2.1 (R z v) (hdet z hz v)).2 (g v) (hA v) (hA₀ v), (inv_mul_cancel_right _ _).symm⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun v => ((hθ v).2.2.1 (R z v) (R z' v) (hdet z hz v) (hdet z' hz' v)).1⟩`. Establish `hsp` using `GlobalTheory.T.columnBlocksSpanFlag_flagAdaptedLatticeBasis I I₀ e xf a j S Λ x₀ T T' T₀ h v`. Take `⟨u, hu, rfl⟩` from `(hsp k y).1 hy`. Use `(hsp k _).2 ⟨fun i => (Matrix.of ((R z v).1 i)).map (τ v) *ᵥ u i, fun i hi => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu i hi, Matrix.mulVec_zero]`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_mulVec, hA]`. Establish `h0 : ∀ v, uMat ((1 : I.Ginf) v) = 1` using `fun v => rfl`. Establish `h1` using `GlobalTheory.T.gradedPieceSizes_unipotent_levi_compact_move I xf a j hj S hsat 1 (fun v => θ v (R z v)) 1 (fun v => ⟨fun i y _ => by rw [h0]; simp, fun y _ => by rw [h0]; simp⟩) (hM z hz) (fun v => show (uMat ((1 : I.Ginf) v))ᴴ * uMat ((1 : I.Ginf) v) = 1 by rw [h0]; simp) i`. Rewrite `h1` using `[one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `size_solve hf (hj i) (hpos 1 i) (hpos _ i) (hz i) (h1.trans ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `only [fun v => ((hθ v).2.2.2.1 (R z v) (hdet z hz v)).1 i]`. Establish `hj' : (j i : ℝ) ≠ 0` using `by have := hj i; positivity`. Rewrite using `[detNorm, ← Real.finset_prod_rpow _ _ (fun w _ => by positivity)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Fintype.prod_equiv β _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ v, R z v = R z' v` using `fun v => ((hθ v).2.2.1 (R z v) (R z' v) (hdet z hz v) (hdet z' hz' v)).2 (congrFun hzz v)`. Use `Prod.ext (funext fun i => funext fun w => ?_) (funext fun w => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `β.surjective w`. Conclude with `congrFun (congrArg Prod.fst (h1 v)) i`. Take `⟨v, rfl⟩` from `σ.surjective w`.
-
-Conclude with `congrArg Prod.snd (h1 v)`. Establish `hd : I.n - 2 * ∑ i, j i = I₀.n` using `by rw [h.2.1]; omega`. Rewrite `hμ` using `[hd]`. Establish `h1` using `funext fun v => (hθ v).2.2.2.2 (μM v) (c₀ (σ v)) (hμ v) (hc₀ (σ v))`. Establish `h2` using `measurePreserving_pi _ μM (f := θ) fun v => ⟨(hθ v).1, (congrFun h1 v).symm⟩`.
-
-Establish `h3` using `(h2.comp hR).lintegral_comp hφ`. Establish `h4 : (Measure.pi fun i => haarGL I.E (j i)).restrict {z₁ | ∀ i, 0 < detNorm I.E (j i) (z₁ i)} = Measure.pi fun i => haarGL I.E (j i)` using `Measure.restrict_eq_self_of_ae_mem (ae_detNorm_pos I.E j)`. Rewrite using `[← h3, lintegral_smul_measure, h4, smul_eq_mul, hcard]`. Simplify using `only [GlobalTheory.T.infiniteGLHaarMeasure_eq_pi_local]`. Use `congr 1`.
-
-Simplify using `only [← pow_mul, mul_comm]`. Conclude with `lintegral_prod _ (hφ.comp hΘ).aemeasurable`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_product : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (Λ : ∀ i, Submodule (𝓞 I.E) (Fin (j i) → I.E)) (x₀ : I₀.Gf) (T T' : ∀ i, Matrix (Fin I.n) (Fin (j i)) I.E) (T₀ : Matrix (Fin I.n) (Fin I₀.n) I.E), (∀ i, 1 ≤ j i) → IsAdapted I I₀ e xf j S Λ x₀ T T' T₀ → ∀ (μM : ∀ v, Measure (Formalism.REAL.UJ (I.ε v))) [∀ v, SigmaFinite (μM v)] (c₀ : InfinitePlace I₀.F → ℝ), (∀ v, IsGaugeSub (flagM (I.ε v) (flagAt I S v)) ((I.n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) (μM v)) → IsGaugeAll I₀ c₀ → ∃ (Θ : (∀ i, MatInf I.E (j i)) × I₀.Ginf → I.Ginf) (κ : Fin a → ℝ), Measurable Θ ∧ (∀ i, 0 < κ i) ∧ (∀ m : I.Ginf, (∀ v, m v ∈ flagM (I.ε v) (flagAt I S v)) ↔ ∃ z : ((∀ i, MatInf I.E (j i)) × I₀.Ginf), (∀ i, 0 < detNorm I.E (j i) (z.1 i)) ∧ Θ z = m) ∧ (∀ z z' : ((∀ i, MatInf I.E (j i)) × I₀.Ginf), (∀ i, z.1 i ∈ autGL I.E (j i) (Λ i)) → z.2 ∈ latGroup I₀ x₀ → (∀ i, 0 < detNorm I.E (j i) (z'.1 i)) → ∃ γ ∈ leviGroup I xf S, γ * Θ z' = Θ (fun i => z.1 i * z'.1 i, z.2 * z'.2)) ∧ (∀ z : ((∀ i, MatInf I.E (j i)) × I₀.Ginf), (∀ i, 0 < detNorm I.E (j i) (z.1 i)) → ∀ i, sizesAt I xf S (Θ z) i = (detNorm I.E (j i) (z.1 i) / κ i) ^ (-(1 / (2 * (I.f : ℝ) * j i)))) ∧ (∀ z z' : ((∀ i, MatInf I.E (j i)) × I₀.Ginf), (∀ i, 0 < detNorm I.E (j i) (z.1 i)) → (∀ i, 0 < detNorm I.E (j i) (z'.1 i)) → Θ z = Θ z' → z = z') ∧ ∀ φ : I.Ginf → ENNReal, Measurable φ → ∫⁻ m, φ m ∂(Measure.pi μM) = (∏ i, ENNReal.ofReal (2 ^ (I.f * j i ^ 2))) * ENNReal.ofReal (∏ v, c₀ v) * ∫⁻ z₁ in {z₁ | ∀ i, 0 < detNorm I.E (j i) (z₁ i)}, ∫⁻ z₂, φ (Θ (z₁, z₂)) ∂(Measure.pi fun v => Formalism.REAL.muG (I₀.ε v)) ∂(Measure.pi fun i => haarGL I.E (j i)) := by
   intro I I₀ e xf a j S Λ x₀ T T' T₀ hj h μM _ c₀ hμ hc₀

@@ -9,11 +9,11 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `M hM`. Take `⟨hp, -, hinj, -⟩` from `UpperTheory.heightOneSpectrum_rat_correspond_primes`. Set `f : ℕ → ℕ → ℂ` to `fun p k => if h : ∃ v : H.P ℚ, normV v = p then M h.choose k else 1`. Establish `hf : ∀ (v : H.P ℚ) (k : ℕ), f (normV v) k = M v k`. Introduce `v k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∃ w : H.P ℚ, normV w = normV v` using `⟨v, rfl⟩`. Establish `h2 : h.choose = v` using `hinj _ _ h.choose_spec`. Simplify using `only [f]`. Rewrite using `[dif_pos h, h2]`. Use `⟨fun n => n.factorization.prod f, by simp, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m n hm hn hmn show (m * n).factorization.prod f = m.factorization.prod f * n.factorization.prod f`. Rewrite using `[Nat.factorization_mul hm.ne' hn.ne']`. Conclude with `Finsupp.prod_add_index_of_disjoint (by simpa using hmn.disjoint_primeFactors) f`. Introduce `v k show (normV v ^ k).factorization.prod f = M v k`. Rewrite using `[(hp v).factorization_pow, Finsupp.prod_single_index (by rw [hf, hM]), hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_multiplicative_of_prime_power_values :
     ∀ M : H.P ℚ → ℕ → ℂ, (∀ v, M v 0 = 1) → ∃ μ : ℕ → ℂ, μ 1 = 1 ∧

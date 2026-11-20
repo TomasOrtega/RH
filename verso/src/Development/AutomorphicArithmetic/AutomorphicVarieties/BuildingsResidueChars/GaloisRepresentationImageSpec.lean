@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ _`. Use `haveI : FiniteDimensional K M := Module.Finite.of_restrictScalars_finite ℚ K M`. Set `ρ : Gal(Ω/K) →* Gal(M/K)` to `AlgEquiv.restrictNormalHom M`. Establish `hker : (resG K M Ω).range = ρ.ker`. Use extensionality with `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_range, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Use extensionality with `x`. Apply `(algebraMap M Ω).injective` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (ρ (resG K M Ω τ)) = (resG K M Ω τ).restrictNormal M from rfl, AlgEquiv.restrictNormal_commutes]`. Simplify using `[resG]`. Introduce `h`. Establish `hfix : ∀ x : M, σ (algebraMap M Ω x) = algebraMap M Ω x`. Introduce `x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `AlgEquiv.restrictNormal_commutes σ M x` as an intermediate fact. Rewrite `this` using `[show σ.restrictNormal M = ρ σ from rfl, h]`. Simplify using `using this.symm`. Use `⟨{ σ.toRingEquiv with commutes' := hfix }, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨hker ▸ ρ.normal_ker, ?_⟩` and prove the remaining obligations. Rewrite using `[hker, Subgroup.index_ker, MonoidHom.range_eq_top.mpr (AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) Ω), Subgroup.card_top, IsGalois.card_aut_eq_finrank]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_representation_image_spec :
     UpperTheory.V.Af.Sol.GalRange := by

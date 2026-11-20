@@ -6,29 +6,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ar
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x X _ _ _ D d dv hl hD hC`. Take `⟨hM, hfixc, hQv⟩` from `odHalf l L G G0 h n x X D hl hD`. Take `⟨ktM, ktQ, ktJ⟩` from `odKill l L G G0 h n x X D hD`. Use `set N := Nat.card X ^ (x.a * (n - x.a)) with hN`. Establish `hNpos : 0 < N` using `pow_pos Nat.card_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fM` using `hC.fin x.A D.M ktM`. Establish `fQ : ∀ w, Finite (H1 (D.Q w).ρ) ∧ Finite (H2 (D.Q w).ρ)`. Introduce `w`. Consider the cases of `w with`. Consider the case `inl v => exact hC.finV v x.A (D.Q (inV G v)) (ktQ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `inr u => exact hC.finU u x.A (D.Q (inU G u)) (ktQ _)`. Set `dw : (plOf G).ι → ℕ` to `Sum.elim dv (fun _ => 0)`. Set `e : (plOf G).ι → ℕ` to `Sum.elim (fun v => Nat.card (H0 (D.Q (inV G v)).ρ)) (fun _ => 1)`. Establish `hglob : Nat.card (H2 D.M.ρ) * N ^ ∑ w, dw w ≤ Nat.card (H1 D.M.ρ)`. Take `⟨c, hc, hE⟩` from `hC.ge`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `E` using `hE x.A D.M ktM`. Establish `hfix : ∀ i, Nat.card {m // D.M.ρ (c i) m = m} = N` using `fun i => hfixc (c i) (hc i).1 (hc i).2`. Simplify using `only [hfix, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hM] at E`. Establish `hsum : ∑ w, dw w = d` using `by show ∑ w : L.Vl ⊕ L.St, dw w = d`. Rewrite using `[Fintype.sum_sum_type]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dw, hC.sum]`. Rewrite using `[hsum]`. Establish `h0pos : 0 < Nat.card (H0 D.M.ρ)` using `Nat.card_pos`. Establish `key : Nat.card (H0 D.M.ρ) * Nat.card (H2 D.M.ρ) * N ^ d = Nat.card (H1 D.M.ρ)`. Apply `Nat.eq_of_mul_eq_mul_right (pow_pos hNpos d)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← E]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hloc : ∀ w, Nat.card (H1 (D.Q w).ρ) ≤ Nat.card (H1ur (D.Q w).ρ ((plOf G).J w)) * Nat.card (H2 (D.Q w).ρ) * e w * N ^ dw w`. Introduce `w`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `w with`. Consider the case `inl v`. Establish `E` using `hC.leV v x.A (D.Q (inV G v)) (ktQ _)`. Rewrite `E` using `[hQv v]`. Use `haveI := (fQ (inV G v)).1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hur : 0 < Nat.card (H1ur (D.Q (inV G v)).ρ ((plOf G).J (inV G v)))` using `Nat.card_pos`. Establish `key : Nat.card (H0 (D.Q (inV G v)).ρ) * Nat.card (H2 (D.Q (inV G v)).ρ) * N ^ dv v ≤ Nat.card (H1ur (D.Q (inV G v)).ρ ((plOf G).J (inV G v))) * Nat.card (H2 (D.Q (inV G v)).ρ) * Nat.card (H0 (D.Q (inV G v)).ρ) * N ^ dv v`. Combine the equalities or inequalities in the displayed calculation. Conclude with `E.le.trans key`. Consider the case `inr u`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `E` using `hC.leU u x.A (D.Q (inU G u)) (ktQ _)`. Establish `ur` using `((hC.ur u) x.A (D.Q (inU G u)) (ktQ _) (ktJ u)).1`. Rewrite `E` using `[pow_zero, mul_one]`. Establish `key : Nat.card (H0 (D.Q (inU G u)).ρ) * Nat.card (H2 (D.Q (inU G u)).ρ) ≤ Nat.card (H1ur (D.Q (inU G u)).ρ (L.Ju u)) * Nat.card (H2 (D.Q (inU G u)).ρ) * 1 * N ^ 0`. Rewrite using `[pow_zero, mul_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.mul_le_mul_right _ ur`. Conclude with `E.le.trans key`. Take `⟨hfin, hle⟩` from `count x.A G.Γ (plOf G) D N dw e hNpos fM.1 fM.2 fQ hglob hloc`. Establish `hfin2 : Finite D.Ck2` using `by haveI : Fintype (plOf G).ι := (plOf G).fin haveI : ∀ w, Finite (H2 (D.Q w).ρ) := fun w => (fQ w).2`. Conclude with `Finite.of_surjective _ (Submodule.mkQ_surjective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `⟨hfin, hfin2, ?_⟩` and prove the remaining obligations. Establish `hck` using `hC.ck x.A D ktM`. Establish `hprod : ∏ w, e w = ∏ v, Nat.card (H0 (D.Q (inV G v)).ρ)` using `by show ∏ w : L.Vl ⊕ L.St, e w = _`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `[e]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.odCount :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (X : Type) [CommRing X] [Algebra x.A X] [Finite X] (D : Dat x.A (plOf G)) (d : ℕ) (dv : L.Vl → ℕ), l ≠ 2 → IsOd h x X D → CohAx G d dv → Finite D.H2LocalConditions ∧ Finite D.Ck2 ∧ Nat.card D.H2LocalConditions ≤ Nat.card D.Sel * (∏ v, Nat.card (H0 (D.Q (inV G v)).ρ)) * Nat.card {f : D.M.X →+ ZMod l // ∀ g m, f (D.M.ρ g m) = PadicInt.toZMod ((G.ε g : ℤ_[l]ˣ) : ℤ_[l]) * f m} := by

@@ -8,17 +8,15 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Use `choose G hG using hD`. Establish `hD' : Z * T' - T * Rv = c • Matrix.of G`. Use extensionality with `i j`. Simplify using `[hG i j]`. Establish `h1 : Z * T'.map fr - T.map fr * Rv.map fr = c • (Matrix.of G).map fr`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun M => M.map fr) hD'`. Establish `e1 : (Z * T' - T * Rv).map fr = Z * T'.map fr - T.map fr * Rv.map fr`. Rewrite using `[Matrix.map_sub _ (map_sub fr), Matrix.map_mul, Matrix.map_mul, hZ]`. Establish `e2 : (c • Matrix.of G).map fr = c • (Matrix.of G).map fr`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hc]`. Simplify `h` using `only [e1, e2]`. Establish `h2 : T * (Rv * A' - A * Rv.map fr) = c • (e • (Matrix.of G).map fr - Matrix.of G * A')`. Establish `e3 : T * Rv = Z * T' - c • Matrix.of G` using `by rw [← hD']; abel`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_sub, Matrix.mul_assoc, Matrix.mul_assoc]`. Use `_ = Z * (T' * A') - c • (Matrix.of G * A') - (T * A) * Rv.map fr := by`. Rewrite using `[e3, Matrix.sub_mul, Matrix.mul_assoc, Matrix.smul_mul]`. Use `_ = e • (Z * T'.map fr - T.map fr * Rv.map fr) - c • (Matrix.of G * A') := by`. Rewrite using `[← hφ, ← hφ', Matrix.mul_smul, Matrix.smul_mul, smul_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Use `_ = c • (e • (Matrix.of G).map fr - Matrix.of G * A') := by`. Rewrite using `[h1, smul_sub, smul_comm]`. Take `⟨u, rfl⟩` from `hT`. Establish `h3 : Rv * A' - A * Rv.map fr = c • ((↑u⁻¹ : Matrix (Fin d) (Fin d) W) * (e • (Matrix.of G).map fr - Matrix.of G * A'))`.
-
-Rewrite using `[← Matrix.mul_smul, ← h2, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Introduce `i j`. Rewrite using `[h3, Matrix.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem link_core {W : Type} [CommRing W] (fr : W →+* W) (c e : W) (hc : fr c = c) {d d' : ℕ}
     (Z Rv : Matrix (Fin d) (Fin d') W) (T A : Matrix (Fin d) (Fin d) W) (T' A' : Matrix (Fin d') (Fin d') W)
@@ -58,11 +56,11 @@ private theorem link_core {W : Type} [CommRing W] (fr : W →+* W) (c e : W) (hc
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Take `⟨c, hc⟩` from `h`. Take `⟨x', rfl⟩` from `bk.dvd_of_dvd_ev x ⟨(l : Ainf l) ^ n * c, by rw [hc, pow_succ', mul_assoc]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : bk.ev x' - (l : Ainf l) ^ n * c = 0`. Apply `ainf_torsionFree` to reduce the goal to its premises. Rewrite `hc` using `[map_mul, map_natCast, pow_succ', mul_assoc]`. Rewrite using `[mul_sub, hc, sub_self]`. Establish `h1 : (l : Ainf l) ^ n ∣ bk.ev x'` using `⟨c, sub_eq_zero.1 h0⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih x' h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_dvd_of_ev {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (n : ℕ) (x : bk.S)
     (h : (l : Ainf l) ^ n ∣ bk.ev x) : (l : bk.S) ^ n ∣ x := by
@@ -80,19 +78,17 @@ private theorem pow_dvd_of_ev {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K
     exact mul_dvd_mul_left _ (ih x' h1)
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ N d d' n ρ ρ' F F' Y Y' hY hY' Pi R hlink`. Establish `hev : ∀ s, inclW l (bk.ev s) = bk.evW s` using `fun s => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply `GlobalTheory.HTBound.pow_dvd_of_inclW` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : (Pi.map (Per.zA l)).map (inclW l) = zW Pi`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `(inclWA l).commutes _`. Establish `e2 : (R.map bk.ev).map (inclW l) = R.map bk.evW`. Rewrite using `[Matrix.map_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e : (Pi.map (Per.zA l) * Y' - Y * R.map bk.ev).map (inclW l) = inclW l τ ^ N • (zW Pi * F'.T - F.T * R.map bk.evW)`. Rewrite using `[Matrix.map_sub _ (map_sub (inclW l)), Matrix.map_mul, Matrix.map_mul, hY, hY', e1, e2, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Use `congrFun (congrFun e i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Dvd.dvd.mul_left (hlink i j) _`. Establish `key` using `link_core (frobW l).toRingHom ((l : WCb l) ^ n) (bk.evW bk.E ^ N) (by simp) (zW Pi) (R.map bk.evW) F.T (F.A.map bk.evW) F'.T (F'.A.map bk.evW) (by ext i j; simp [zW]) F.unit F.φ F'.φ hlink`. Establish `hfr : (R.map bk.evW).map (frobW l).toRingHom = (R.map (frobS l bk.a)).map bk.evW`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Use `show frobW l (inclW l (bk.ev (R a b))) = inclW l (bk.ev (frobS l bk.a (R a b)))`. Rewrite using `[frobW_inclW, bk.ev_frob]`. Rewrite `key` using `[hfr]`. Establish `hmap : R.map bk.evW * F'.A.map bk.evW - F.A.map bk.evW * (R.map (frobS l bk.a)).map bk.evW = (R * F'.A - F.A * R.map (frobS l bk.a)).map bk.evW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.map_sub _ (map_sub bk.evW), Matrix.map_mul, Matrix.map_mul]`. Rewrite `key` using `[hmap]`. Introduce `i j`. Apply `pow_dvd_of_ev` to reduce the goal to its premises. Apply `GlobalTheory.HTBound.pow_dvd_of_inclW` to reduce the goal to its premises.
-
-Simplify `key i j` using `only [Matrix.map_apply, hev]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.linkA_holds :
     LinkA := by

@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (levB : ∀ T : LocLat G Qp LL O, ZMod n → LL → ↥(W.N T) →+ (ℤ → T.V ⊗[Qp] B))
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φD_smulA' (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -28,13 +28,13 @@ theorem φD_smulA' (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Simplify using `[lA, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lA_eq (t : ℕ) : lA W ^ t = algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ t) := by
   simp [lA, map_pow, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.UnusedSlot80.LevC.ps_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frobenius_power_zero_eq_q : ps W 0 = Formalism.MainNotions.WachCoordinates.qP W := by
   rw [Formalism.MainNotions.UnusedSlot80.LevC.ps_zero]; rfl
@@ -42,75 +42,69 @@ theorem frobenius_power_zero_eq_q : ps W 0 = Formalism.MainNotions.WachCoordinat
 variable [IsDomain O] [NeZero n]
 
 /- English proof (translation)
-Use `set a : ZMod n := c' + ((e + 1 : ℕ) : ZMod n) with ha`. Use `set H : ℕ := A.Hs a (e + 1) 0 with hH`. Use `set LU := Formalism.MainNotions.UnusedSlot80.LevC.LamUp W A c' e with hLU`. Use `set Λe := abelian₂ W A (c' + (e : ZMod n)) e with hΛe`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, κ', Hh, a', hHh, ha', hP⟩` from `hr`. Take `⟨y, hyP, hyeq⟩` from `hP`. Take `⟨x0, hx0, -, hxx⟩` from `hx`. Establish `hxN : x ∈ W.N T` using `by rw [hxx, one_smul]; exact hx0.1`. Establish `hΛ : abelian₂ W A a (e + 1) = ps W 0 ^ H * LU` using `Formalism.MainNotions.UnusedSlot80.LevC.lam_succ W A c' e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `U : Fin d → LetA O n` to `fun m => letE a * (W.π₀ * LU) * u m`. Establish `ha'U : ∀ m, a' m = LU * U m`. Introduce `m`. Apply `W.EE_inj` to reduce the goal to its premises. Rewrite using `[← (ha' m).2, hΛ, map_mul, map_mul, mul_comm (algebraMap (LetA O n) W.EE (ps W 0 ^ H)), mul_assoc, hf m]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `C.hR.2.2.2.2.1`. Rewrite `hw` using `[Formalism.MainNotions.UnusedSlot80.ToolsR.eat_qP]`. Establish `hq : W.q = (w : LetA O n) * ps W 0` using `by rw [hw, frobenius_power_zero_eq_q]`. Establish `hφ : ∀ z, W.φD T (Λe • ((W.φD T) ^ e) z) = LU • ((W.φD T) ^ (e + 1)) z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[φD_smulA', Formalism.MainNotions.UnusedSlot80.PhiPowers.pow_apply_succ]`. Both sides reduce to the same expression. Establish `hZmem : ∀ z, Formalism.MainNotions.LiftingTheory.InNΔi W T c' z → W.q ^ H • W.φD T (Λe • ((W.φD T) ^ e) z) ∈ W.N T`. Introduce `z hz`. Establish `hin` using `Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W C.hs C.hR C.h5 A hA c' hc' (e + 1) T hT (((W.φD T) ^ (e + 1)) z) (by simpa using Formalism.MainNotions.UnusedSlot80.Relay2.Pp_gen W T c' (e + 1) W.AΔ.one_mem hz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨y1, hy1, -, hy1e⟩` from `hin`. Establish `e1 : W.q ^ H • W.φD T (Λe • ((W.φD T) ^ e) z) = ((w : LetA O n) ^ H) • (abelian₂ W A a (e + 1) • ((W.φD T) ^ (e + 1)) z)`. Rewrite using `[hφ, hq, hΛ, smul_smul, smul_smul, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hy1e, one_smul]`. Conclude with `(W.N T).smul_mem _ hy1.1`. Use `set μ : LetA O n := W.q ^ H * LU with hμ`. Establish `hμφ : ∀ z, μ • ((W.φD T) ^ (e + 1)) z = W.q ^ H • W.φD T (Λe • ((W.φD T) ^ e) z)`. Introduce `z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, hμ, smul_smul]`. Establish `hPy : ∀ z ∈ Pp W T c' (e + 1), ∃ hN : μ • z ∈ W.N T, ∀ r : ℤ, r < H → levB T a ζ ⟨μ • z, hN⟩ r = 0`. Use `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_ind W T c' (e + 1) _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨by rw [smul_zero]; exact (W.N T).zero_mem, fun r _ => ?_⟩` and prove the remaining obligations. Establish `: (⟨μ • (0 : W.DD T), by rw [smul_zero]; exact (W.N T).zero_mem⟩ : ↥(W.N T)) = 0` using `Subtype.ext (by simp)`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Introduce and unpack `x1 y1 ⟨h1, v1⟩ ⟨h2, v2⟩`. Use `⟨by rw [smul_add]; exact (W.N T).add_mem h1 h2, fun r hr => ?_⟩` and prove the remaining obligations. Establish `: (⟨μ • (x1 + y1), by rw [smul_add]; exact (W.N T).add_mem h1 h2⟩ : ↥(W.N T)) = ⟨μ • x1, h1⟩ + ⟨μ • y1, h2⟩` using `Subtype.ext (by simp [smul_add])`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, map_add, Pi.add_apply, v1 r hr, v2 r hr, add_zero]`. Introduce and unpack `x1 ⟨h1, v1⟩`. Use `⟨by rw [smul_neg]; exact (W.N T).neg_mem h1, fun r hr => ?_⟩` and prove the remaining obligations. Establish `: (⟨μ • (-x1), by rw [smul_neg]; exact (W.N T).neg_mem h1⟩ : ↥(W.N T)) = -⟨μ • x1, h1⟩` using `Subtype.ext (by simp [smul_neg])`. Rewrite using `[this, map_neg, Pi.neg_apply, v1 r hr, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a0 ha0 z hz`. Establish `hZ` using `hZmem z hz`. Establish `e1 : μ • (a0 • ((W.φD T) ^ (e + 1)) z) = a0 • (W.q ^ H • W.φD T (Λe • ((W.φD T) ^ e) z))`. Rewrite using `[← hμφ, smul_comm]`. Establish `hN : μ • (a0 • ((W.φD T) ^ (e + 1)) z) ∈ W.N T` using `by rw [e1]; exact (W.N T).smul_mem _ hZ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hN, fun r hr => ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨μ • (a0 • ((W.φD T) ^ (e + 1)) z), hN⟩ : ↥(W.N T)) = a0 • ⟨_, hZ⟩` using `Subtype.ext e1`. Rewrite using `[e2, Formalism.MainNotions.UnusedSlot80.LevE.levB_smul W levB Ti.hEq Ti.hsupp]`. Establish `hLB : LB (H : ℤ) (levB T a ζ ⟨_, hZ⟩)` using `fun r' hr' => E2 A hA c' hc' T hT e ζ hζ z hz H hZ r' hr'`. Conclude with `LB_smulS hLB _ r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hHhN : ∀ m, Formalism.MainNotions.LiftingTheory.InNΔi W T c' (Hh m)` using `fun m => Formalism.MainNotions.UnusedSlot80.LevE.hor_mem (W := W) T c' b hb.1 sol C.hR.1 (A.M PD.p) κ m (hHh m)`. Establish `hZ : ∀ m, W.q ^ H • W.φD T (Λe • ((W.φD T) ^ e) (Hh m)) ∈ W.N T` using `fun m => hZmem _ (hHhN m)`. Take `⟨hYN, hYv⟩` from `hPy y hyP`. Establish `key : (μ * LU * (lA W ^ (κ' + κ + k) * ps W 0 ^ H)) • (⟨x, hxN⟩ : ↥(W.N T)) = ∑ m, (lA W ^ κ' * LU * U m) • (⟨_, hZ m⟩ : ↥(W.N T)) + (W.π₀ * abelian₂ W A a (e + 1) ^ 2) • (⟨μ • y, hYN⟩ : ↥(W.N T))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Submodule.coe_sum]`. Repeatedly rewrite using `[← hμφ]`. Establish `hsum : ∑ m, (lA W ^ κ' * LU * U m) • (μ • ((W.φD T) ^ (e + 1)) (Hh m)) = (lA W ^ κ' * μ) • ∑ m, a' m • ((W.φD T) ^ (e + 1)) (Hh m)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha'U m, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Rewrite `hyeq`, the goal using `[hΛ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1 : lA W ^ κ' • ∑ m, a' m • ((W.φD T) ^ (e + 1)) (Hh m) = lA W ^ κ' • (lA W ^ κ • (ps W 0 ^ H * LU) • (lA W ^ k • x)) - (W.π₀ * (ps W 0 ^ H * LU) ^ 2) • y`. Rewrite using `[← hyeq, smul_sub, sub_sub_cancel]`. Rewrite using `[mul_smul (lA W ^ κ') μ, smul_comm (lA W ^ κ') μ, h1, smul_sub, smul_comm (W.π₀ * (ps W 0 ^ H * LU) ^ 2) μ y, sub_add_cancel]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hL` using `congrArg (levB T a ζ) key`. Rewrite `hL` using `[map_add, map_sum]`. Simplify using `only [Formalism.MainNotions.UnusedSlot80.LevE.levB_smul W levB Ti.hEq Ti.hsupp] at hL`. Take `⟨mx, hmx⟩` from `Ti.hsupp T a ζ ⟨x, hxN⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `F' : Fin d → ℤ → T.V ⊗[Qp] B` to `fun m r => if r = 0 then ((PD.p : LL) ^ κ) • ((φVB PD (LL := LL) (V := T.V)) ^ (e + 1)) (cmpD W T (b m)) else 0`. Establish `hF'LB : ∀ m, LB 0 (F' m)` using `fun m => LB_delta _`. Establish `hHh' : H ≤ A.h`. Simplify using `only [hH, ArcP.Hs]`. Use `split_ifs`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hA.2.2.2.2.2.1`. Conclude with `le_rfl`. Establish `hM : 3 * (H : ℤ) ≤ (((PD.p - 1) * A.M PD.p : ℕ) : ℤ) + H`. Establish `h2 : 2 * A.h < (PD.p - 1) * A.M PD.p`. Unfold `ArcP.M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Nat.lt_mul_div_succ _ (by have := PD.hp.two_le; omega)`. Establish `h3 : 2 * H < (PD.p - 1) * A.M PD.p` using `by omega`. Use linear arithmetic over natural numbers and integers. Establish `hfr : ∀ m, ∀ r < 3 * (H : ℤ), levB T a ζ ⟨_, hZ m⟩ r = smulS (W.lev a ζ (W.q ^ H * LU)) (F' m) r`. Introduce `m r hr`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `E1 A hA c' hc' T hT b sol hb e ζ hζ (A.M PD.p) κ m (Hh m) (hHh m) H (hZ m) r (by omega)`. Establish `hterm : ∀ m, ∀ r < 3 * (H : ℤ), smulS (W.lev a ζ (lA W ^ κ' * LU * U m)) (levB T a ζ ⟨_, hZ m⟩) r = smulS (W.lev a ζ (W.q ^ H * LU * LU)) (smulS (W.lev a ζ (lA W ^ κ' * U m)) (F' m)) r`. Introduce `m r hr`. Take `⟨mm, hmm⟩` from `Ti.hsupp T a ζ ⟨_, hZ m⟩`. Establish `hA1 : LB (min mm 0) (levB T a ζ ⟨_, hZ m⟩)` using `LB_mono hmm (min_le_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hA2 : LB (min mm 0) (smulS (W.lev a ζ (W.q ^ H * LU)) (F' m))` using `LB_mono (LB_smulS (hF'LB m) _) (min_le_right _ _)`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.LevE.smulS_congr_lt hA1 hA2 _ (3 * H) (hfr m) r hr]`. Rewrite using `[← smulS_mul (hF'LB m), ← smulS_mul (hF'LB m), ← map_mul, ← map_mul, show lA W ^ κ' * LU * U m * (W.q ^ H * LU) = W.q ^ H * LU * LU * (lA W ^ κ' * U m) by ring]`. Take `⟨S, hS0, hSq⟩` from `Formalism.MainNotions.UnusedSlot80.DivLevR.lev_qP_X (W := W) C.hR a ζ hζ`. Establish `hps0 : W.lev a ζ (ps W 0) = X * S` using `by rw [frobenius_power_zero_eq_q]; exact hSq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcorr : ∀ r < 3 * (H : ℤ), smulS (W.lev a ζ (W.π₀ * abelian₂ W A a (e + 1) ^ 2)) (levB T a ζ ⟨μ • y, hYN⟩) r = 0`. Introduce `r hr`. Establish `hYLB : LB (H : ℤ) (levB T a ζ ⟨μ • y, hYN⟩)` using `fun r' hr' => hYv r' hr'`. Establish `e1 : W.lev a ζ (W.π₀ * abelian₂ W A a (e + 1) ^ 2) = X ^ (2 * H) * (W.lev a ζ W.π₀ * S ^ (2 * H) * W.lev a ζ LU ^ 2)`. Rewrite using `[hΛ, map_mul, map_pow, map_mul, map_pow, hps0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, smulS_shift _ hYLB]`. Conclude with `LB_smulS hYLB _ _ (by omega)`. Take `⟨u0, hu0, hu0c⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.lev_q_simple W a ζ hζ`. Establish `hLUc : constantCoeff (W.lev a ζ LU) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Formalism.MainNotions.UnusedSlot80.CrD.cc_lev_piLamUp W C.hR A c' e a ζ hζ` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `right_ne_zero_of_mul this`. Use `set Dd : ℤ → T.V ⊗[Qp] B := smulS (W.lev a ζ (lA W ^ (κ' + κ + k) * ps W 0 ^ H)) (levB T a ζ ⟨x, hxN⟩) - ∑ m, smulS (W.lev a ζ (lA W ^ κ' * U m)) (F' m) with hDd`. Establish `hGLB : ∀ m, LB (min mx 0) (smulS (W.lev a ζ (lA W ^ κ' * U m)) (F' m))` using `fun m => LB_mono (LB_smulS (hF'LB m) _) (min_le_right _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hXLB : LB (min mx 0) (smulS (W.lev a ζ (lA W ^ (κ' + κ + k) * ps W 0 ^ H)) (levB T a ζ ⟨x, hxN⟩))` using `LB_smulS (LB_mono hmx (min_le_left _ _)) _`. Establish `hDLB : LB (min mx 0) Dd` using `LB_sub hXLB (LB_fsum _ _ hGLB)`. Establish `hDv : LB (2 * (H : ℤ)) Dd`. Establish `hU : constantCoeff (u0 ^ H * W.lev a ζ LU * W.lev a ζ LU) ≠ 0`. Rewrite using `[map_mul, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hu0c) hLUc) hLUc`. Apply `vanish_of_XU hU hDLB H (2 * H)` to reduce the goal to its premises. Introduce `r hr`. Establish `e1 : X ^ H * (u0 ^ H * W.lev a ζ LU * W.lev a ζ LU) = W.lev a ζ (W.q ^ H * LU * LU)`. Rewrite using `[map_mul, map_mul, map_pow, hu0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hDd, smulS_sub hXLB (LB_fsum _ _ hGLB), smulS_fsum _ _ _ hGLB, Pi.sub_apply, Finset.sum_apply]`. Establish `hl` using `congrFun hL r`. Simplify using `only [Pi.add_apply, Finset.sum_apply] at hl`. Rewrite `hl` using `[hcorr r (by omega), add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : smulS (W.lev a ζ (W.q ^ H * LU * LU)) (smulS (W.lev a ζ (lA W ^ (κ' + κ + k) * ps W 0 ^ H)) (levB T a ζ ⟨x, hxN⟩)) r = smulS (W.lev a ζ (μ * LU * (lA W ^ (κ' + κ + k) * ps W 0 ^ H))) (levB T a ζ ⟨x, hxN⟩) r`. Rewrite using `[← smulS_mul hmx, ← map_mul]`. Rewrite using `[e2, hl, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun m _ => hterm m r (by omega)`. Introduce `j hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLv : ∀ i : ℤ, levB T a ζ ⟨x, hxN⟩ i ∈ FilS W T a 0 (0 - i)`. Introduce `i`. Establish `h` using `(h4 T hT.1 a 0 ζ (by simpa using hζ)).1 ⟨x, hxN⟩ i`. Rewrite `h` using `[Ti.hEq]`. Rewrite using `[zero_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.mem_of_map_ιV (PD := PD) (S := FilS W T a 0 (-i)) h`. Establish `hDj` using `hDv j hj`. Rewrite `hDj` using `[hDd, Pi.sub_apply, sub_eq_zero, Finset.sum_apply]`. Establish `e1 : W.lev a ζ (lA W ^ (κ' + κ + k) * ps W 0 ^ H) = X ^ H * (W.lev a ζ (lA W ^ (κ' + κ + k)) * S ^ H)`. Simplify using `only [map_mul, map_pow, hps0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmemL : smulS (W.lev a ζ (lA W ^ (κ' + κ + k) * ps W 0 ^ H)) (levB T a ζ ⟨x, hxN⟩) j ∈ FilS W T a 0 ((H : ℤ) - j)`. Rewrite using `[e1, smulS_shift _ hmx]`. Use `Dg_smulS (Formalism.MainNotions.UnusedSlot80.CrD.crystalline_filtration_antitone W T a) hmx hLv (W.lev a ζ (lA W ^ (κ' + κ + k)) * S ^ H) ((j : ℤ) - H)` as an intermediate fact. Rewrite `this` using `[show (0 : ℤ) - ((j : ℤ) - H) = (H : ℤ) - j by ring]`. Then use the resulting hypothesis.
-
-Rewrite `hmemL` using `[hDj]`. Establish `e2 : ∀ m, smulS (W.lev a ζ (lA W ^ κ' * U m)) (F' m) j = ((PD.p : LL) ^ κ' * (PD.p : LL) ^ κ) • (coeff j (W.lev a ζ (W.π₀ * LU * u m)) • ((φVB PD (LL` using `LL) (V := T.V)) ^ (e + 1)) (cmpD W T (b m))) := by`. Introduce `m`. Use `show smulS _ (fun r : ℤ => if r = 0 then _ else 0) (j : ℤ) = _`. Rewrite using `[smulS_delta, lA_eq, map_mul, AlgHom.commutes, Formalism.MainNotions.UnusedSlot80.CrD.coeff_alg_mul, map_pow, map_natCast]`.
-
-Establish `hU : W.lev a ζ (U m) = W.lev a ζ (W.π₀ * LU * u m)` using `by show W.lev a ζ (letE a * (W.π₀ * LU) * u m) = _`. Rewrite using `[mul_assoc, Formalism.MainNotions.UnusedSlot80.DivLevR.lev_letE_mul]`. Rewrite using `[hU, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hmemL` using `[e2]`. Rewrite `hmemL` using `[← Finset.smul_sum]`. Establish `hne : ((PD.p : LL) ^ κ' * (PD.p : LL) ^ κ) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hp) (pow_ne_zero _ hp)`. Use `(Submodule.smul_mem_iff _ hne).mp hmemL` as an intermediate fact. Simplify `this` using `[dv]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fil_of_rep (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (Ti : Formalism.MainNotions.UnusedSlot80.LevE.Comparison₂ W levB)
     (E1 : Formalism.MainNotions.UnusedSlot80.LevE.ExpFrame0 W levB) (E2 : Formalism.MainNotions.UnusedSlot80.LevE.ExpNoNeg0 W levB)

@@ -17,9 +17,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Use `choose y hy using h`. Use `⟨Matrix.of fun i j => y (i, j), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hx i) j`. Establish `e2 : x i j = _` using `hy (i, j)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, e2, map_mul, map_pow, map_natCast] at e`. Conclude with `((isUnit_l_disc l _ _).pow k).mul_left_cancel e`.
+A detailed English derivation is pending.
 -/
 theorem map_toDisc_eq_of_dvd {l : ℕ} {A : Type} [CommRing A] (u : A) (r : ℝ≥0) {n : Type} (k : ℕ)
     (x : Matrix n n A) (ε : Matrix n n (Disc l u r)) (hx : x.map (toDisc l u r) = ((l : ℕ) : Disc l u r) ^ k • ε)
@@ -33,7 +33,7 @@ theorem map_toDisc_eq_of_dvd {l : ℕ} {A : Type} [CommRing A] (u : A) (r : ℝ�
   exact ((isUnit_l_disc l _ _).pow k).mul_left_cancel e
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e` using `congrArg F (congrFun (congrFun hx i) j)`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast] at e ⊢`. Rewrite using `[← e, hF.ext]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsDiscMap.map_eq_smul {l : ℕ} {A A' : Type} [CommRing A] [CommRing A'] {u : A} {u' : A'} {r r' : ℝ≥0}
     {f : A →+* A'} {F : Disc l u r →+* Disc l u' r'} (hF : IsDiscMap f F) {n : Type} (k : ℕ)
@@ -45,7 +45,7 @@ theorem IsDiscMap.map_eq_smul {l : ℕ} {A A' : Type} [CommRing A] [CommRing A']
   rw [← e, hF.ext]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, h]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite f]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_map_eq_smul_one {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
     (A A' : Matrix (Fin d) (Fin d) R) (e : R) (b : ℕ) (h : A * A' = e ^ b • (1 : Matrix (Fin d) (Fin d) R)) :
@@ -55,7 +55,7 @@ theorem map_mul_map_eq_smul_one {R S : Type} [CommRing R] [CommRing S] (f : R �
   simp [Matrix.one_apply, apply_ite f]
 
 /- English proof (translation)
-Take `⟨⟨F, hF⟩, hrel⟩` from `GlobalTheory.T.discPeriod_comparison_relation_map_prismHom l K bk d ρ τ s ht B (ainfObj K) f f f' bk.ι σ ε hε`. Establish `hr` using `hrel F hF`. Rewrite `hr` using `[h1, h2]`. Conclude with `GlobalTheory.T.pow_dvd_galoisComparison_matrix l K bk d ρ τ s ht hτ hρ g (ε.map F) hr k (x.map σ.f) (hF.map_eq_smul k x ε hx) j.1 j.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Height.dvd_at_section (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s)
@@ -71,7 +71,7 @@ theorem Height.dvd_at_section (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K
   exact GlobalTheory.T.pow_dvd_galoisComparison_matrix l K bk d ρ τ s ht hτ hρ g (ε.map F) hr k (x.map σ.f) (hF.map_eq_smul k x ε hx) j.1 j.2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.matrix_phi_equation_to_family_equation R R (RingHom.id R) φ e e' he d d a a b P Q Q' hQ x hx`.
+A detailed English derivation is pending.
 -/
 theorem matrix_phi_eq_entries {R : Type} [CommRing R] (φ : R →+* R) (e e' : R) (he : Associated e e') (d a b : ℕ)
     (P Q Q' : Matrix (Fin d) (Fin d) R) (hQ : Q * Q' = e' ^ b • (1 : Matrix (Fin d) (Fin d) R))
@@ -81,11 +81,11 @@ theorem matrix_phi_eq_entries {R : Type} [CommRing R] (φ : R →+* R) (e e' : R
   GlobalTheory.T.matrix_phi_equation_to_family_equation R R (RingHom.id R) φ e e' he d d a a b P Q Q' hQ x hx
 
 /- English proof (translation)
-Establish `tb : TopBasis (BK.hf En.inl) bk.J (Digits l)` using `En.tb`. Establish `h₁` using `GlobalTheory.T.comparisonMatrix_exists_on_disc l K bk d ρ τ s ht En.Q (BK.hf En.inl X) En.inl En.inr`. Take `⟨εD, hεD⟩` from `h₁`. Establish `h₂` using `GlobalTheory.T.prism_comparisonMatrix_pow_smul_bounded_on_disc l K bk d ρ τ s ht hτ En.Q En.inl En.inr _ tb εD hεD`. Take `⟨k, x, hx⟩` from `h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ` using `GlobalTheory.T.frobenius_eq_of_pow_smul_comparisonMatrix l K bk d ρ τ s ht hτ En.Q En.inl En.inr _ tb k x εD hεD hx`. Establish `h₃` using `matrix_phi_eq_entries En.Q.D.φ (BK.hf En.inl bk.E) (BK.hf En.inr bk.E) (GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk En.Q En.inl En.inr).2.1 d (ht.a + s.N) ht.b (ht.A.map (BK.hf En.inl)) (ht.A.map (BK.hf En.inr)) (ht.A'.map (BK.hf En.inr)) (map_mul_map_eq_smul_ …`. Take `⟨h, c, hc⟩` from `h₃`. Establish `hdiv` using `GlobalTheory.T.breuilKisin_envelope_frobenius_solutions_pow_dvd l K bk En (Fin d × Fin d) c h k (fun j => x j.1 j.2) hc (Height.dvd_at_section l K bk d ρ τ s ht hτ hρ En.Q En.inl En.inr εD hεD k x hx)`. Establish `h₄` using `map_toDisc_eq_of_dvd (BK.hf En.inl X) bk.ρ₀ k x εD hx hdiv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `h₄`. Substitute `hy` using the available equality. Conclude with `⟨y, hεD⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem Height.exists_rel_env (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s)

@@ -8,17 +8,15 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Use `set m := p.natDegree with hm_def`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `h1 : 1 < ‖z‖` using `lt_of_le_of_lt (le_max_left _ _) hcon`. Establish `hS : (∑ j ∈ Finset.range m, M j) < ‖z‖` using `lt_of_le_of_lt (le_max_right _ _) hcon`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, ← hm_def, hp.coeff_natDegree, map_one, one_mul]`. Establish `hzm : z ^ m = -∑ j ∈ Finset.range m, f (p.coeff j) * z ^ j`. Take the linear combination `hz`. Establish `hm : m ≠ 0`. Introduce `hm0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzm` using `[hm0, Finset.sum_range_zero, pow_zero, neg_zero]`. Conclude with `one_ne_zero hzm`. Establish `hle : ‖z‖ ^ m ≤ (∑ j ∈ Finset.range m, M j) * ‖z‖ ^ (m - 1)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjm : j < m` using `Finset.mem_range.mp hj`. Rewrite using `[norm_mul, norm_pow]`. Establish `hj' : j ≤ m - 1` using `by omega`. Conclude with `mul_le_mul (hM j hjm) (pow_le_pow_right₀ h1.le hj') (by positivity) ((norm_nonneg _).trans (hM j hjm))`. Use `_ = _ := by rw [Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsplit : ‖z‖ ^ m = ‖z‖ * ‖z‖ ^ (m - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hle` using `[hsplit]`.
-
-Establish `hpos : 0 < ‖z‖ ^ (m - 1)` using `by positivity`. Use `le_of_mul_le_mul_right hle hpos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_of_monic_root {A : Type*} [CommRing A] (p : Polynomial A) (hp : p.Monic)
     (f : A →+* ℂ) (z : ℂ) (hz : p.eval₂ f z = 0) (M : ℕ → ℝ)
@@ -59,7 +57,7 @@ theorem norm_le_of_monic_root {A : Type*} [CommRing A] (p : Polynomial A) (hp : 
   linarith
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun μ _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Establish `h1 : ∏ i ∈ μ.support, ‖z i ^ μ i‖ = 1` using `Finset.prod_eq_one fun i _ ↦ by rw [norm_pow, hz, one_pow]`. Rewrite using `[h1, mul_one, eq_ratCast, Complex.norm_ratCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eval₂_le_of_norm_eq_one {s : ℕ} (q : MvPolynomial (Fin s) ℚ) (z : Fin s → ℂ)
     (hz : ∀ j, ‖z j‖ = 1) :
@@ -75,9 +73,9 @@ def ClearsDen {s : ℕ} (d : ℕ) (q : MvPolynomial (Fin s) ℚ) : Prop :=
   ∀ μ, ∃ k : ℤ, (d : ℚ) * q.coeff μ = k
 
 /- English proof (translation)
-Introduce `μ`. Distinguish the cases in `hμ : μ ∈ q.support`. Rewrite using `[← Finset.mul_prod_erase _ _ hμ]`. Use `⟨(q.coeff μ).num * ∏ ν ∈ q.support.erase μ, ((q.coeff ν).den : ℤ), ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Rat.mul_den_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MvPolynomial.notMem_support_iff.mp hμ, mul_zero]`. Conclude with `⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem clearsDen_prod_den {s : ℕ} (q : MvPolynomial (Fin s) ℚ) :
     ClearsDen (∏ μ ∈ q.support, (q.coeff μ).den) q := by
@@ -92,7 +90,7 @@ theorem clearsDen_prod_den {s : ℕ} (q : MvPolynomial (Fin s) ℚ) :
     exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Introduce `μ`. Take `⟨k, hk⟩` from `h μ`. Conclude with `⟨e * k, by push_cast; rw [mul_assoc, hk]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ClearsDen.mul_left {s : ℕ} {d : ℕ} {q : MvPolynomial (Fin s) ℚ} (h : ClearsDen d q) (e : ℕ) :
     ClearsDen (e * d) q := by
@@ -101,9 +99,9 @@ theorem ClearsDen.mul_left {s : ℕ} {d : ℕ} {q : MvPolynomial (Fin s) ℚ} (h
   exact ⟨e * k, by push_cast; rw [mul_assoc, hk]⟩
 
 /- English proof (translation)
-Rewrite using `[← mem_integralClosure_iff, MvPolynomial.aeval_def, eval₂_eq, Finset.mul_sum]`. Use `Subalgebra.sum_mem _ fun μ _ ↦ ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hq μ`. Establish `h1 : (d : AlgebraicClosure ℚ) * (algebraMap ℚ (AlgebraicClosure ℚ) (q.coeff μ) * ∏ i ∈ μ.support, y i ^ μ i) = (k : AlgebraicClosure ℚ) * ∏ i ∈ μ.support, y i ^ μ i`. Rewrite using `[← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h2 : (d : AlgebraicClosure ℚ) = algebraMap ℚ (AlgebraicClosure ℚ) (d : ℚ)` using `by simp`. Rewrite using `[h2, ← map_mul, hk, map_intCast]`. Rewrite using `[h1]`. Conclude with `Subalgebra.mul_mem _ (intCast_mem _ k) (Subalgebra.prod_mem _ fun i _ ↦ Subalgebra.pow_mem _ (by rw [mem_integralClosure_iff]; exact hy i) _)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_mul_aeval {s : ℕ} {y : Fin s → AlgebraicClosure ℚ}
     (hy : ∀ j, IsIntegral ℤ (y j)) {d : ℕ} {q : MvPolynomial (Fin s) ℚ} (hq : ClearsDen d q) :
@@ -122,7 +120,7 @@ theorem isIntegral_mul_aeval {s : ℕ} {y : Fin s → AlgebraicClosure ℚ}
     (Subalgebra.prod_mem _ fun i _ ↦ Subalgebra.pow_mem _ (by rw [mem_integralClosure_iff]; exact hy i) _)
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ N - 1, Polynomial.monic_X_pow_sub_C 1 hN.ne', ?_⟩` and prove the remaining obligations. Simplify using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isIntegral_of_pow_eq_one {x : AlgebraicClosure ℚ} {N : ℕ} (hN : 0 < N) (hx : x ^ N = 1) :
     IsIntegral ℤ x := by
@@ -130,31 +128,25 @@ theorem isIntegral_of_pow_eq_one {x : AlgebraicClosure ℚ} {N : ℕ} (hN : 0 < 
   simp [hx]
 
 /- English proof (translation)
-Take `⟨p, hpm, hpb⟩` from `hint b`. Use `set m := p.natDegree with hm_def`. Use `set δ : ℕ := ∏ j ∈ Finset.range m, ∏ μ ∈ (p.coeff j).support, ((p.coeff j).coeff μ).den with hδ_def`. Establish `hδpos : 0 < δ` using `Finset.prod_pos fun j _ ↦ Finset.prod_pos fun μ _ ↦ Rat.den_pos _`. Establish `hδ : ∀ j < m, ClearsDen δ (p.coeff j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Rewrite using `[hδ_def, ← Finset.prod_erase_mul _ _ (Finset.mem_range.mpr hj)]`. Conclude with `(clearsDen_prod_den (p.coeff j)).mul_left _`. Use `set M : ℕ → ℝ := fun j ↦ ∑ μ ∈ (p.coeff j).support, |(((p.coeff j).coeff μ : ℚ) : ℝ)|`. Use `⟨δ, max 1 (∑ j ∈ Finset.range m, M j), hδpos, le_max_left _ _, fun ψ hψ ↦ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set φ : MvPolynomial (Fin s) ℚ →ₐ[ℚ] AlgebraicClosure ℚ := ψ.comp g0 with hφ_def`. Use `set y : Fin s → AlgebraicClosure ℚ := fun j ↦ φ (X j) with hy_def`. Establish `hφ : ∀ q, φ q = aeval y q` using `fun q ↦ by conv_lhs => rw [MvPolynomial.aeval_unique φ]`. Both sides reduce to the same expression. Establish `hy : ∀ j, IsIntegral ℤ (y j)` using `fun j ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Take `⟨N, hN, h⟩` from `hψ j`. Conclude with `isIntegral_of_pow_eq_one hN h`. Establish `hw : p.eval₂ (φ : MvPolynomial (Fin s) ℚ →+* AlgebraicClosure ℚ) (ψ b) = 0`. Establish `h` using `congrArg (ψ : B →+* AlgebraicClosure ℚ) hpb`. Rewrite `h` using `[map_zero, Polynomial.hom_eval₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Prove the components needed by the constructor for the conclusion. Use `set O := integralClosure ℤ (AlgebraicClosure ℚ)`. Use `set q : Polynomial (AlgebraicClosure ℚ) := (p.map (φ : MvPolynomial (Fin s) ℚ →+* AlgebraicClosure ℚ)).scaleRoots (δ : AlgebraicClosure ℚ)`. Establish `hqm : q.Monic` using `(Polynomial.monic_scaleRoots_iff _).mpr (hpm.map _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq0 : q.eval ((δ : AlgebraicClosure ℚ) * ψ b) = 0`. Establish `h` using `Polynomial.scaleRoots_eval₂_eq_zero (RingHom.id (AlgebraicClosure ℚ)) (s := (δ : AlgebraicClosure ℚ)) (r := ψ b) (p := p.map (φ : MvPolynomial (Fin s) ℚ →+* _)) (by rw [Polynomial.eval₂_map]; exact hw)`. Conclude with `h`. Establish `hnat : (p.map (φ : MvPolynomial (Fin s) ℚ →+* AlgebraicClosure ℚ)).natDegree = m` using `hpm.natDegree_map _`. Establish `hcoeff : ∀ i, q.coeff i ∈ O`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Polynomial.coeff_scaleRoots, hnat, Polynomial.coeff_map]`. Break down `lt_trichotomy i m with hi | hi | hi` into its components or cases. Take `⟨e, he⟩ : ∃ e, m - i = e + 1` from `⟨m - i - 1, by omega⟩`. Rewrite using `[he, pow_succ, show ∀ a b c : AlgebraicClosure ℚ, a * (b * c) = (c * a) * b from fun a b c ↦ by ring]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `Subalgebra.mul_mem _ ?_ (Subalgebra.pow_mem _ (natCast_mem _ δ) _)` and prove the remaining obligations. Rewrite using `[mem_integralClosure_iff]`. Simplify `isIntegral_mul_aeval hy (hδ i hi)` using `[hφ]`. Establish `hc : p.coeff m = 1` using `hpm.coeff_natDegree`. Rewrite using `[hi, hc, map_one, Nat.sub_self, pow_zero, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subalgebra.one_mem _`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero, zero_mul]`. Conclude with `Subalgebra.zero_mem _`. Establish `hlifts : q ∈ Polynomial.lifts (algebraMap O (AlgebraicClosure ℚ))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Conclude with `⟨⟨q.coeff i, hcoeff i⟩, rfl⟩`. Take `⟨q', hq'map, -, hq'm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlifts hqm`. Establish `hO : IsIntegral O ((δ : AlgebraicClosure ℚ) * ψ b)` using `⟨q', hq'm, by rw [← Polynomial.eval_map, hq'map]; exact hq0⟩`. Conclude with `isIntegral_trans _ hO`.
-
-Introduce `σ`. Use `norm_le_of_monic_root p hpm (σ.comp (φ : MvPolynomial (Fin s) ℚ →+* AlgebraicClosure ℚ)) (σ (ψ b)) ?_ M ?_` and prove the remaining obligations. Rewrite using `[← Polynomial.hom_eval₂, hw, map_zero]`. Introduce `j _`. Establish `hz : ∀ i, ‖σ (y i)‖ = 1` using `fun i ↦ by`.
-
-Take `⟨N, hN, h⟩` from `hψ i`. Establish `h' : y i ^ N = 1` using `h`. Conclude with `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, h', map_one]) hN.ne'`. Establish `h1 : (σ.comp (φ : MvPolynomial (Fin s) ℚ →+* AlgebraicClosure ℚ)) (p.coeff j) = eval₂ (algebraMap ℚ ℂ) (fun i ↦ σ (y i)) (p.coeff j)` using `by show σ (φ (p.coeff j)) = _`. Rewrite using `[hφ, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left]`.
-
-Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[h1]`. Conclude with `norm_eval₂_le_of_norm_eq_one _ _ hz`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_bound {B : Type*} [CommRing B] [Algebra ℚ B] {s : ℕ}
     (g0 : MvPolynomial (Fin s) ℚ →ₐ[ℚ] B) (hint : g0.IsIntegral) (b : B) :

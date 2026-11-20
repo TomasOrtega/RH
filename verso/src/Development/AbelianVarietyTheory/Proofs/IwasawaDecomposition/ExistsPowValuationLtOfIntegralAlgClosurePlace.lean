@@ -10,9 +10,9 @@ namespace GlobalTheory.MaxIdealPow
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `X_dvd_sub_C (p := g)`. Establish `hg : g = C (g.coeff 0) + X * r` using `by rw [← hr]; ring`. Use `⟨((aeval (⟨y, hy⟩ : A) r : A) : Ω), SetLike.coe_mem _, ?_⟩` and prove the remaining obligations. Establish `h1 : aeval y r = ((aeval (⟨y, hy⟩ : A) r : A) : Ω)` using `aeval_algebraMap_apply Ω (⟨y, hy⟩ : A) r`. Use `conv_lhs => rw [hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, aeval_C, aeval_X, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_eq_coeff_zero_add (A : ValuationSubring Ω) (g : ℤ[X]) {y : Ω} (hy : y ∈ A) :
     ∃ w ∈ A, aeval y g = ((g.coeff 0 : ℤ) : Ω) + y * w := by
@@ -26,17 +26,17 @@ theorem aeval_eq_coeff_zero_add (A : ValuationSubring Ω) (g : ℤ[X]) {y : Ω} 
   simp
 
 /- English proof (translation)
-Set `I : Ideal ℤ` to `P.asIdeal.comap (Int.castRingHom (𝓞 E))`. Take `⟨a, ha⟩` from `Submodule.IsPrincipal.principal I`. Establish `hmem : ∀ n : ℤ, A.valuation (n : Ω) < 1 ↔ a ∣ n`. Introduce `n`. Establish `h1` using `hP (n : 𝓞 E)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (algebraMap E Ω) (((n : 𝓞 E)) : E) = (n : Ω)` using `by simp`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Establish `h3 : (n : 𝓞 E) ∈ P.asIdeal ↔ n ∈ I` using `by simp [I]`. Rewrite using `[h3, ha, Submodule.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `Dvd.intro_left k rfl`. Introduce and unpack `⟨k, rfl⟩; exact ⟨k, by rw [smul_eq_mul, mul_comm]⟩`. Use `⟨a.natAbs, ?_, ?_, fun n => by rw [hmem n, Int.natAbs_dvd]⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `ha0 : a = 0` using `Int.natAbs_eq_zero.mp h0`. Establish `hN` using `Ideal.absNorm_mem P.asIdeal`. Establish `hNv : A.valuation (((Ideal.absNorm P.asIdeal : ℕ) : ℤ) : Ω) < 1`. Establish `h1` using `(hP ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)).mpr hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Rewrite `hNv` using `[hmem, ha0, zero_dvd_iff]`. Establish `: Ideal.absNorm P.asIdeal = 0` using `by exact_mod_cast hNv`. Conclude with `P.ne_bot (Ideal.absNorm_eq_zero_iff.mp this)`. Introduce `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: A.valuation ((1 : ℤ) : Ω) < 1`. Rewrite using `[hmem, ← Int.natAbs_dvd, h1]`. Simplify using the standard rewrite rules. Simplify using `at this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_nat_of_isPlaceOver (E : Type) [Field E] [NumberField E] [Algebra E Ω]
     (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)) (hP : IsPlaceOver (F := E) A P) :
@@ -74,41 +74,39 @@ end GlobalTheory.MaxIdealPow
 namespace GlobalTheory.MaxIdealPow
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A P hP x c hx hc hc0 hvx`. Take `⟨p, hp0, hp1, hpv⟩` from `exists_nat_of_isPlaceOver E A P hP`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hvp : A.valuation (p : Ω) < 1`. Use `(hpv p).2 dvd_rfl` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hvp0 : A.valuation (p : Ω) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hp0` after adjusting the coercions. Establish `hunit : ∀ n : ℤ, ¬ (p : ℤ) ∣ n → A.valuation (n : Ω) = 1` using `fun n hn => le_antisymm ((A.valuation_le_one_iff _).2 (intCast_mem A n)) (not_lt.1 (fun h => hn ((hpv n).1 h)))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxA : x ∈ A` using `ReciprocityTheory.Gal.mem_of_isIntegral_int A hx`. Establish `hcA : c ∈ A` using `ReciprocityTheory.Gal.mem_of_isIntegral_int A hc`. Establish `hstep2 : ∃ s : ℕ, A.valuation x ^ s ≤ A.valuation (p : Ω)` using `by haveI : Fact (1 < p) := ⟨by omega⟩`. Set `f` to `minpoly ℤ x`. Establish `hfm : f.Monic` using `minpoly.monic hx`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `fb` to `f.map (Int.castRingHom (ZMod p))`. Establish `hfb0 : fb ≠ 0` using `(hfm.map _).ne_zero`. Take `⟨q, hq, hqX⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd fb hfb0 0`. Simplify using `only [map_zero, sub_zero] at hq hqX`. Use `set s := rootMultiplicity 0 fb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq0 : q.coeff 0 ≠ 0` using `fun h => hqX (X_dvd_iff.mpr h)`. Take `⟨g, hg⟩` from `map_surjective (Int.castRingHom (ZMod p)) ZMod.intCast_surjective q`. Establish `hker : f - X ^ s * g ∈ RingHom.ker (mapRingHom (Int.castRingHom (ZMod p)))`. Rewrite using `[RingHom.mem_ker, coe_mapRingHom, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, map_X, hg]`. Conclude with `sub_eq_zero.mpr hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hker` using `[ker_mapRingHom, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨h, hh⟩` from `hker`. Establish `hev` using `congrArg (aeval x) hh`. Rewrite `hev` using `[map_sub, map_mul, map_pow, aeval_X, minpoly.aeval, map_mul, aeval_C]`. Establish `hg0 : ¬ (p : ℤ) ∣ g.coeff 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Introduce `h0`. Apply `hq0` to reduce the goal to its premises. Rewrite using `[← hg, coeff_map]`. Simplify using `using h0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwA, hw⟩` from `aeval_eq_coeff_zero_add A g hxA`. Establish `hvg : A.valuation (aeval x g) = 1`. Rewrite using `[hw, Valuation.map_add_eq_of_lt_left, hunit _ hg0]`. Rewrite using `[hunit _ hg0, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hhA : aeval x h ∈ A`. Take `⟨w', hw'A, hw'⟩` from `aeval_eq_coeff_zero_add A h hxA`. Rewrite using `[hw']`. Conclude with `add_mem (intCast_mem A _) (mul_mem hxA hw'A)`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hev2 : x ^ s * aeval x g = -((algebraMap ℤ Ω p) * aeval x h)`. Rewrite using `[← hev]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg A.valuation hev2` as an intermediate fact. Rewrite `this` using `[Valuation.map_neg, Valuation.map_mul, Valuation.map_mul, Valuation.map_pow, hvg, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this]`. Establish `hp' : (algebraMap ℤ Ω (p : ℤ)) = (p : Ω)` using `by simp`. Rewrite using `[hp']`. Combine the equalities or inequalities in the displayed calculation. Establish `hstep3 : ∃ t : ℕ, A.valuation (p : Ω) ^ t ≤ A.valuation c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Set `f` to `minpoly ℤ c`. Establish `hf0 : f ≠ 0` using `(minpoly.monic hc).ne_zero`. Take `⟨f₁, hf, hfX⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd f hf0 0`. Simplify using `only [map_zero, sub_zero] at hf hfX`. Establish `ha0 : f₁.coeff 0 ≠ 0` using `fun h => hfX (X_dvd_iff.mpr h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev : aeval c f₁ = 0`. Establish `h1` using `minpoly.aeval ℤ c`. Express the relevant statement in the definitionally equal form `aeval c f = 0 at h1`. Rewrite `h1` using `[hf, map_mul, map_pow, aeval_X]`. Conclude with `(mul_eq_zero.mp h1).resolve_left (pow_ne_zero _ hc0)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwA, hw⟩` from `aeval_eq_coeff_zero_add A f₁ hcA`. Rewrite `hw` using `[hev]`. Establish `hle : A.valuation ((f₁.coeff 0 : ℤ) : Ω) ≤ A.valuation c`. Establish `he : ((f₁.coeff 0 : ℤ) : Ω) = -(c * w)` using `by linear_combination -hw`. Rewrite using `[he, Valuation.map_neg, Valuation.map_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : (f₁.coeff 0).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr ha0`. Take `⟨t, u, hu, hfac⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn0 p hp1`. Use `⟨t, le_trans (le_of_eq ?_) hle⟩` and prove the remaining obligations. Establish `habs : A.valuation ((f₁.coeff 0 : ℤ) : Ω) = A.valuation (((f₁.coeff 0).natAbs : ℤ) : Ω)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Int.natAbs_eq (f₁.coeff 0) with h | h` into its components or cases. Rewrite using `[← h]`. Use `conv_lhs => rw [h]`. Rewrite using `[Int.cast_neg, Valuation.map_neg]`. Rewrite using `[habs, hfac]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu1 : A.valuation ((u : ℤ) : Ω) = 1` using `hunit u (by exact_mod_cast hu)`. Use `push_cast`. Rewrite using `[Valuation.map_mul, Valuation.map_pow]`. Move the coercions through the operations in `at hu1`. Rewrite using `[hu1, mul_one]`.
-
-Take `⟨s, hs⟩` from `hstep2`. Take `⟨t, ht⟩` from `hstep3`. Use `⟨s * (t + 1), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_pow_lt_valuation : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)), IsPlaceOver (F := E) A P → ∀ x c : Ω, IsIntegral ℤ x → IsIntegral ℤ c → c ≠ 0 → A.valuation x < 1 → ∃ k : ℕ, A.valuation x ^ k < A.valuation c := by
   intro E Ω _ _ _ _ _ A P hP x c hx hc hc0 hvx

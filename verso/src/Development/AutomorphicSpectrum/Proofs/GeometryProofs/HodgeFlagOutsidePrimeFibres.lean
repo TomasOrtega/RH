@@ -15,23 +15,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.HodgeModel.HtDr0
 open HodgeChar0
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 p hp s q hq`. Establish `hcst : Function.Injective 𝔐.cst` using `𝔐.cst.injective`. Use `haveI hchar : CharZero Ω := charZero_of_injective_ringHom hcst`. Establish `hinj : Function.Injective 𝔐.emb`. Introduce `s s' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `HodgeBasic.labelEmb_injective c (RingHom.ext fun a => hcst ?_)` and prove the remaining obligations. Conclude with `congrArg (fun m : 𝓞 E →+* Ω => m a) h`. Use `letI : Fintype (CMType H) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E`. Rewrite using `[Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `GlobalTheory.T.eigenspace_decomposition_internal Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard`. Establish `htop : (⨆ s, 𝔐.Vgen s) = ⊤` using `hint.submodule_iSup_eq_top`. Establish `hind : iSupIndep 𝔐.Vgen` using `hint.submodule_iSupIndep`. Establish `hreg : ∀ s a (q : Cpt 𝔐.ξ), 𝔐.emb s a ∈ regAt 𝔐.ξ q` using `fun s a q => HodgeBasic.mem_regAt_of_isIntegral 𝔐.tie.gen 𝔐.all 𝔐.normal q ((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.emb s).toIntAlgHom)`. Establish `hnat` using `unitAt_natCast (q := q) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : ∀ s, 𝔐.V s q = 𝔐.dR s q` using `fun s => Lat.patch_of_not S _ _ fun p hp => hq p (𝔐.S_prime p hp)`. Establish `hint' : ∀ (s : CMType H ⊕ CMType H) a, IsIntegral ℤ (𝔐.emb s a)` using `fun s a => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.emb s).toIntAlgHom`. Establish `hsep : ∀ s t, s ≠ t → ∃ a, 𝔐.emb s a ≠ 𝔐.emb t a ∧ (𝔐.emb s a - 𝔐.emb t a)⁻¹ ∈ regAt 𝔐.ξ q`. Introduce `s t hst`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 (fun e => hst (hinj e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, ha, inv_mem_regAt hnat (sub_mem (hreg s a q) (hreg t a q)) ((hint' s a).sub (hint' t a))⟩`. Establish `hlat : 𝔐.M.lat q = ⨆ s, 𝔐.dR s q`. Use `le_antisymm (fun e he => ?_) (iSup_le fun s => inf_le_left)` and prove the remaining obligations. Establish `he' : e ∈ ⨆ s, 𝔐.Vgen s` using `by rw [htop]; trivial`. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 he'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `he`, the goal using `[Finsupp.sum_fintype _ _ fun _ => rfl]`. Establish `h1` using `mem_of_sum_mem (𝔐.M.lat q) 𝔐.ρ 𝔐.emb (fun a e he => lat_stable 𝔐.M 𝔐.t.act 𝔐.ρ 𝔐.act q a he) (fun s a => hreg s a q) hsep Finset.univ f (fun s _ => hf s) he`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ⟨h1 s (Finset.mem_univ s), hf s⟩`. Establish `hbi : ∀ x, (∀ w ∈ 𝔐.M.omLat q, w x ∈ regAt 𝔐.ξ q) → x ∈ 𝔐.M.lat q`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose U hU b hb hfr using fun s => 𝔐.vb s q trivial`. Rewrite using `[hlat]`. Use `mem_iSup_of_dual 𝔐.Vgen hind htop (labelRk D) b (fun s => (hfr s q trivial (hU s)).1) hb (fun s => 𝔐.dR s q) (fun s => (hV s).symm.trans (hfr s q trivial (hU s)).2) x fun w hw => hx w (show ∀ e ∈ 𝔐.M.lat q, w e ∈ regAt 𝔐.ξ q from fun e he => by` and prove the remaining obligations. Rewrite `he` using `[hlat]`. Conclude with `Submodule.iSup_induction _ (motive := fun e => w e ∈ regAt 𝔐.ξ q) he hw (by simpa using zero_mem _) (fun a b ha hb => by simpa using add_mem ha hb))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hpp : p.Prime` using `𝔐.S_prime p hp`. Establish `hn : unitAt 𝔐.ξ q ((p ^ 𝔐.R p : ℕ) : Ω)` using `hnat _ (pow_ne_zero _ hpp.ne_zero)`. Establish `hd : ∀ s, 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s) q = 𝔐.dR s q` using `fun s => htDual_eq_eigLat 𝔐.M 𝔐.ρ _ 𝔐.t.PP.isLB hn hbi`. Consider the cases of `s with`. Consider the case `inl τ`.
-
-Establish `hbot : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Conclude with `htW_eq_eigLat 𝔐.M 𝔐.ρ _ (hd _) (fun d => hreg _ d q) _ (Ideal.absNorm (differentIdeal ℤ (𝓞 E))) (Ideal.absNorm_mem _) (hnat _ (by simpa [Ideal.absNorm_eq_zero_iff] using hbot))`. Consider the case `inr τ => exact hd _`.
+Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ht_eq_dR_of_not_inFibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ)

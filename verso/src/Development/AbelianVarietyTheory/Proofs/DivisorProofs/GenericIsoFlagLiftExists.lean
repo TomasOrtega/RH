@@ -15,9 +15,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
   [CharZero O] {Z : GlobalTheory.Vert.Model O}
 
 /- English proof (translation)
-Rewrite using `[VB.pullback_map_smulHom]`. Establish `hp : IsUnit ((Scheme.Hom.appTop Z.gen.ι).hom (Z.const (p : O)))` using `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x _ => (Scheme.mem_basicOpen_top _ _ x).1 ((Scheme.preimage_basicOpen_top Z.gen.ι _).le (Z.gen_le_basicOpen (natCast_ne_zero O p) x.2))`. Take `⟨u, hu⟩` from `h`. Establish `hc : Z.const (p : O) = (p : Γ(Z.X, ⊤))` using `map_natCast _ p`. Rewrite `hp` using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow : IsUnit (((Scheme.Hom.appTop Z.gen.ι).hom g) ^ a)`. Rewrite using `[← map_pow, hu, map_mul]`. Conclude with `(u.isUnit.map _).mul hp`. Establish `hg` using `(isUnit_pow_iff ha.ne').1 hpow`. Conclude with `(isUnit_iff_isIso _).1 (hg.map (smulEnd _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_genRes_smulHom {g : Γ(Z.X, ⊤)} {a : ℕ} (ha : 0 < a) (h : IsRootOfP p g a)
     (F : Z.X.Modules) : IsIso (Z.genRes.map (smulHom F g)) := by
@@ -55,11 +55,9 @@ end GlobalTheory.FlagRoot
 open GlobalTheory.FlagRoot in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ Z E E' r φ e g a ha hg hφ fl`. Establish `hiso` using `isIso_genRes_smulHom ha hg`. Use `⟨pair φ e g hiso hφ fl, rfl, fun i => ⟨Iso.refl _, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(pair φ e g hiso hφ fl).π_grIso_hom i`. Rewrite `h` using `[← Iso.inv_comp_eq, ← Category.assoc, ← Iso.eq_comp_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Z.genRes.map (smulHom (fl.F i.succ) g) ≫ Z.genRes.map (fl.π i) = Z.genRes.map (fl.π i) ≫ _ at h`. Establish `key : ∀ ψ : Z.genRes.obj (fl.gr i) ⟶ Z.genRes.obj (fl.gr i), Z.genRes.map (smulHom (fl.F i.succ) g) ≫ Z.genRes.map (fl.π i) = Z.genRes.map (fl.π i) ≫ ψ → ψ = Z.genRes.map (𝟙 (fl.gr i) ≫ smulHom (fl.gr i) g)`. Introduce `ψ hψ`. Rewrite using `[Category.id_comp, ← cancel_epi (Z.genRes.map (fl.π i)), ← Functor.map_comp, ← smulHom_comp, Functor.map_comp]`. Conclude with `hψ.symm`.
-
-Conclude with `key _ h`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixedLocalChains.exists_flagPair_of_root : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (Z : GlobalTheory.Vert.Model O) (E E' : Z.X.Modules) (r : ℕ) (φ : Z.GenIso E E') (e : E' ≅ E) (g : Γ(Z.X, ⊤)) (a : ℕ), 0 < a → IsRootOfP p g a → φ.inv = Z.genRes.map (e.hom ≫ smulHom E g) → ∀ fl : GlobalTheory.Vert.Flag E r, ∃ P : GlobalTheory.Vert.Model.FlagPair φ r, P.fl = fl ∧ ∀ i, ∃ ei : P.fl'.gr i ≅ P.fl.gr i, (P.grIso i).inv = Z.genRes.map (ei.hom ≫ smulHom (P.fl.gr i) g) := by
   intro O _ _ _ p _ _ _ Z E E' r φ e g a ha hg hφ fl

@@ -9,7 +9,7 @@ open Finset
 variable {𝒰 : Type} [Ring 𝒰] {I S : Type} [DecidableEq I] [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Unfold `xw`. Rewrite using `[List.ofFn_succ, List.prod_cons]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xw_succ (x : I → S → 𝒰) {k : ℕ} (r : Fin (k + 1) → I) (s : Fin (k + 1) → S) :
     xw x r s = x (r 0) (s 0) * xw x (fun i => r i.succ) (fun i => s i.succ) := by
@@ -17,7 +17,7 @@ theorem xw_succ (x : I → S → 𝒰) {k : ℕ} (r : Fin (k + 1) → I) (s : Fi
   rw [List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Unfold `dw`. Rewrite using `[List.ofFn_succ, List.prod_cons]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dw_succ (d : I → S → 𝒰) {k : ℕ} (g : Fin (k + 1) → I) (s : Fin (k + 1) → S) :
     dw d g s = d (g 0) (s 0) * dw d (fun i => g i.succ) (fun i => s i.succ) := by
@@ -25,21 +25,21 @@ theorem dw_succ (d : I → S → 𝒰) {k : ℕ} (g : Fin (k + 1) → I) (s : Fi
   rw [List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Unfold `xw`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem xw_zero (x : I → S → 𝒰) (r : Fin 0 → I) (s : Fin 0 → S) : xw x r s = 1 := by
   unfold xw
   simp
 
 /- English proof (translation)
-Unfold `dw`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dw_zero (d : I → S → 𝒰) (g : Fin 0 → I) (s : Fin 0 → S) : dw d g s = 1 := by
   unfold dw
   simp
 
 /- English proof (translation)
-Rewrite using `[← (Fin.consEquiv fun _ => S).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_fun_succ {M : Type} [AddCommMonoid M] {k : ℕ} (f : (Fin (k + 1) → S) → M) :
     ∑ s, f s = ∑ t : S, ∑ s : Fin k → S, f (Fin.cons t s) := by
@@ -47,7 +47,7 @@ theorem sum_fun_succ {M : Type} [AddCommMonoid M] {k : ℕ} (f : (Fin (k + 1) �
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [xw_zero, mul_one, one_mul]`. Consider the case `succ k ih`. Rewrite using `[xw_succ, ← mul_assoc, hxx a t (r 0) (s 0), mul_assoc (x (r 0) (s 0)) (x a t), ih, ← mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem x_comm_xw (x : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b t * x a s)
     {k : ℕ} (a : I) (t : S) (r : Fin k → I) (s : Fin k → S) :
@@ -59,17 +59,17 @@ theorem x_comm_xw (x : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b
       ← mul_assoc]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `r s a b t`. Simplify using `[xw_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `r s a b t`. Establish `h1 : xw x (Function.update r 0 a) s = x a (s 0) * xw x (fun i => r i.succ) (fun i => s i.succ)`. Establish `hf : (fun i : Fin k => Function.update r 0 a i.succ) = fun i => r i.succ`. Use function extensionality and compare the values at `fun i => by rw [Function.update_apply, if_neg (Fin.succ_ne_zero i)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[xw_succ, hf, Function.update_apply, if_pos rfl]`. Establish `h2 : ∀ j : Fin k, xw x (Function.update r j.succ a) s = x (r 0) (s 0) * xw x (Function.update (fun i => r i.succ) j a) (fun i => s i.succ)`. Introduce `j`. Establish `hf : (fun i : Fin k => Function.update r j.succ a i.succ) = Function.update (fun i => r i.succ) j a` using `Function.update_comp_eq_of_injective r (Fin.succ_injective k) j a`. Rewrite using `[xw_succ, hf, Function.update_apply, if_neg (Fin.succ_ne_zero j).symm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : x a t * (x (r 0) (s 0) * (d b t * xw x (fun i => r i.succ) (fun i => s i.succ))) = x (r 0) (s 0) * (x a t * xw x (fun i => r i.succ) (fun i => s i.succ) * d b t) + ∑ j : Fin k, if r j.succ = b ∧ s j.succ = t then xw x (Function.update r j.succ a) s else 0`. Rewrite using `[← mul_assoc, hxx a t (r 0) (s 0), mul_assoc (x (r 0) (s 0)) (x a t), ih, mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h2 j, mul_ite, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `c0 : x a t * ((if r 0 = b ∧ s 0 = t then (1 : 𝒰) else 0) * xw x (fun i => r i.succ) (fun i => s i.succ)) = if r 0 = b ∧ s 0 = t then xw x (Function.update r 0 a) s else 0` using `by split_ifs with h`. Rewrite using `[h1, h.2, one_mul]`. Rewrite using `[zero_mul, mul_zero]`. Establish `m : x (r 0) (s 0) * (x a t * xw x (fun i => r i.succ) (fun i => s i.succ) * d b t) = x a t * (x (r 0) (s 0) * xw x (fun i => r i.succ) (fun i => s i.succ)) * d b t`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, hxx (r 0) (s 0) a t, mul_assoc]`. Rewrite using `[xw_succ x r s, Fin.sum_univ_succ, ← c0, ← mul_assoc (d b t), hdx (r 0) (s 0) b t, add_mul, mul_add, mul_assoc (x (r 0) (s 0)) (d b t), key, m]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dx_key (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b t * x a s)
     (hdx : ∀ a s b t, d b t * x a s = x a s * d b t + if a = b ∧ s = t then 1 else 0) :
@@ -119,15 +119,15 @@ theorem dx_key (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b 
     abel
 
 /- English proof (translation)
-Establish `first : Pn x d (Fin.cons a r) (Fin.cons b g) = ∑ t, ∑ s : Fin k → S, x a t * xw x r s * (d b t * dw d g s)`. Unfold `Pn`. Rewrite using `[sum_fun_succ]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[xw_succ, dw_succ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ, mul_assoc]`. Establish `second : ∀ j : Fin k, (if r j = b then Pn x d (Function.update r j a) g else 0) = ∑ t, ∑ s : Fin k → S, (if r j = b ∧ s j = t then xw x (Function.update r j a) s else 0) * dw d g s`. Introduce `j`. Rewrite using `[Finset.sum_comm]`. Unfold `Pn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[h]`. Simplify using `[h]`. Establish `term : ∀ (t : S) (s : Fin k → S), x a t * d b t * (xw x r s * dw d g s) = x a t * xw x r s * (d b t * dw d g s) + ∑ j, (if r j = b ∧ s j = t then xw x (Function.update r j a) s else 0) * dw d g s`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t s`. Rewrite using `[mul_assoc (x a t), ← mul_assoc (d b t), ← mul_assoc (x a t), dx_key x d hxx hdx k r s a b t, add_mul, Finset.sum_mul, mul_assoc (x a t * xw x r s)]`. Rewrite using `[first]`. Repeatedly rewrite using `[second]`. Unfold `Eop Pn`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[Finset.mul_sum, term, Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `(Finset.sum_congr rfl fun t _ => Finset.sum_comm).trans Finset.sum_comm`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem E_Pn (x d : I → S → 𝒰) (hxx : ∀ a s b t, x a s * x b t = x b t * x a s)
     (hdx : ∀ a s b t, d b t * x a s = x a s * d b t + if a = b ∧ s = t then 1 else 0)

@@ -9,17 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E Λ := hΛ.1`. Take `⟨U, hUo, hUK⟩` from `hU`. Establish `hGf : IsClosed ((GfC V : Subgroup (GA D V)) : Set (GA D V))`. Rewrite using `[GlobalTheory.AdelicU.GfC_eq]`. Conclude with `GlobalTheory.AdelicU.isClosed_finPts _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpen ((K.subgroupOf (GfC V)) : Set (GfC V))`. Use `Subgroup.isOpen_mono (H₁ := U.subgroupOf (GfC V)) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.2 (hUK _ (Subgroup.mem_subgroupOf.1 hx) x.2)`. Conclude with `hUo.preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hcl : IsClosed ((K.subgroupOf (GfC V)) : Set (GfC V))` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `hKcl : IsClosed (K : Set (GA D V))`. Establish `h` using `hcl.trans hGf`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨⟨g, hKf hg⟩, Subgroup.mem_subgroupOf.2 hg, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(GlobalTheory.AdelicU.isCompact_levelFin D.sp.cm.sig V.gram Λ).of_isClosed_subset hKcl ?_` and prove the remaining obligations. Introduce `k hk`. Use `GlobalTheory.AdelicU.mem_levelFin.2 ⟨?_, hKi k hk⟩` and prove the remaining obligations. Use `hKf hk` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AdelicU.GfC_eq]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_of_integral_open (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : IsSelfDualC V Λ) (K : Subgroup (GA D V)) (hKf : K ≤ GfC V)

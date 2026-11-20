@@ -14,11 +14,11 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `hd`. Establish `h1 : ‖((c.den : ℕ) : ℚ_[p])‖ < 1` using `Padic.norm_natCast_lt_one_iff.2 hd`. Establish `hn : ¬ p ∣ c.num.natAbs` using `fun hn => (Fact.out : p.Prime).one_lt.ne' (Nat.eq_one_of_dvd_coprimes c.reduced hn hd)`. Establish `hn1 : ‖((c.num.natAbs : ℕ) : ℚ_[p])‖ = 1`. Establish `h0 : ‖((c.num.natAbs : ℕ) : ℤ_[p])‖ = 1` using `PadicInt.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← PadicInt.coe_natCast]`. Conclude with `h0`. Establish `h2 : ‖(c.num : ℚ_[p])‖ = 1`. Apply the tactic sequence `rcases Int.natAbs_eq c.num with e | e <;> rw [e] <;> simpa using hn1`. Establish `h3 : (c : ℚ_[p]) * (c.den : ℚ_[p]) = c.num` using `by exact_mod_cast Rat.mul_den_eq_num c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `congrArg norm h3`. Rewrite `h4` using `[norm_mul, h2]`. Use polynomial arithmetic with `[norm_nonneg (c : ℚ_[p]), norm_nonneg ((c.den : ℕ) : ℚ_[p])]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem den_of_norm {p : ℕ} [Fact p.Prime] {c : ℚ} (h : ‖(c : ℚ_[p])‖ ≤ 1) : ¬ p ∣ c.den := by
   intro hd
@@ -38,13 +38,11 @@ private theorem den_of_norm {p : ℕ} [Fact p.Prime] {c : ℚ} (h : ‖(c : ℚ_
   nlinarith [norm_nonneg (c : ℚ_[p]), norm_nonneg ((c.den : ℕ) : ℚ_[p])]
 
 /- English proof (translation)
-Establish `hd` using `den_of_norm h`. Establish `hc : algebraMap ℚ E c = algebraMap (𝓞 E) E (c.num : 𝓞 E) / algebraMap (𝓞 E) E (c.den : 𝓞 E)`. Simplify using `only [eq_ratCast, map_intCast, map_natCast]`. Conclude with `Rat.cast_def c`. Establish `hden : (c.den : 𝓞 E) ∉ w.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `hcop : Nat.Coprime p c.den` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hd)`. Take `⟨a, b, hab⟩ : IsCoprime (p : ℤ) (c.den : ℤ)` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `: (1 : 𝓞 E) ∈ w.asIdeal`. Establish `e : (1 : 𝓞 E) = (a : 𝓞 E) * p + (b : 𝓞 E) * c.den` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) hab.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hw) (Ideal.mul_mem_left _ _ hm)`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Establish `h1 : w.valuation E (algebraMap (𝓞 E) E (c.den : 𝓞 E)) = 1` using `le_antisymm (w.valuation_le_one _) (not_lt.1 fun hlt => hden ((w.valuation_lt_one_iff_mem _).1 hlt))`. Rewrite using `[hc, map_div₀, h1, div_one]`.
-
-Conclude with `w.valuation_le_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_rat_le {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] (w : Plc E)
     (hw : (p : 𝓞 E) ∈ w.asIdeal) {c : ℚ} (h : ‖(c : ℚ_[p])‖ ≤ 1) : w.valuation E (algebraMap ℚ E c) ≤ 1 := by
@@ -67,7 +65,7 @@ private theorem val_rat_le {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [Number
   exact w.valuation_le_one _
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_valuationSubring_iff]`. Use `show ‖x‖₊ ≤ 1 ↔ _`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 private theorem mem_v_iff {p : ℕ} [Fact p.Prime] (x : PadicAlgCl p) :
     x ∈ (PadicAlgCl.valued p).v.valuationSubring ↔ ‖x‖ ≤ 1 := by
@@ -76,21 +74,21 @@ private theorem mem_v_iff {p : ℕ} [Fact p.Prime] (x : PadicAlgCl p) :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hroots : ∀ r ∈ ((minpoly ℚ x).map (algebraMap ℚ (PadicAlgCl p))).roots, ‖r‖ ≤ 1`. Introduce `r hr`. Establish `h0 : Polynomial.aeval r (minpoly ℚ x) = 0`. Use `(Polynomial.mem_roots'.1 hr).2` as an intermediate fact. Simplify `this` using `[Polynomial.IsRoot, Polynomial.eval_map_algebraMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨φ, hφ⟩` from `IntermediateField.exists_algHom_of_splits_of_aeval (fun s => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) h0`. Rewrite using `[← hφ]`. Conclude with `h φ.toRingHom`. Establish `hlift : (minpoly ℚ x).map (algebraMap ℚ (PadicAlgCl p)) ∈ Polynomial.lifts ((PadicAlgCl.valued p).v.valuationSubring.subtype)`. Establish `hm : ((minpoly ℚ x).map (algebraMap ℚ (PadicAlgCl p))).Monic` using `(minpoly.monic (Algebra.IsIntegral.isIntegral x)).map _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(IsAlgClosed.splits _).eq_prod_roots_of_monic hm]`. Use `Subsemiring.multiset_prod_mem _ _ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hf`. Conclude with `Polynomial.mem_lifts _ |>.2 ⟨Polynomial.X - Polynomial.C ⟨r, (mem_v_iff r).2 (hroots r hr)⟩, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hco : ∀ n, ‖(((minpoly ℚ x).coeff n : ℚ) : ℚ_[p])‖ ≤ 1`. Introduce `n`. Take `⟨a, ha⟩` from `(Polynomial.lifts_iff_coeff_lifts _).1 hlift n`. Establish `h1` using `(mem_v_iff _).1 a.2`. Establish `h2 : (a : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (((minpoly ℚ x).coeff n : ℚ) : ℚ_[p])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (a : PadicAlgCl p) = _` using `ha`. Rewrite using `[this, Polynomial.coeff_map]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, PadicAlgCl.norm_extends]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlift2 : (minpoly ℚ x).map (algebraMap ℚ E) ∈ Polynomial.lifts ((w.valuation E).valuationSubring.subtype)`. Use `(Polynomial.lifts_iff_coeff_lifts _).2 fun n => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Conclude with `⟨⟨_, (Valuation.mem_valuationSubring_iff _ _).2 (val_rat_le w hw (hco n))⟩, rfl⟩`. Take `⟨q, hq, -, hmon⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift2 ((minpoly.monic (Algebra.IsIntegral.isIntegral x)).map _)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : IsIntegral (w.valuation E).valuationSubring x`. Use `⟨q, hmon, ?_⟩` and prove the remaining obligations. Establish `: Polynomial.eval₂ (algebraMap (w.valuation E).valuationSubring E) x q = Polynomial.eval x (q.map ((w.valuation E).valuationSubring.subtype))`. Rewrite using `[Polynomial.eval_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hq, Polynomial.eval_map_algebraMap, minpoly.aeval]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Rewrite using `[← hy]`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 y.2`.
+A detailed English derivation is pending.
 -/
 private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] (w : Plc E)
     (hw : (p : 𝓞 E) ∈ w.asIdeal) {x : E} (h : ∀ τ : E →+* PadicAlgCl p, ‖τ x‖ ≤ 1) : w.valuation E x ≤ 1 := by
@@ -140,9 +138,9 @@ private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field 
   exact (Valuation.mem_valuationSubring_iff _ _).1 y.2
 
 /- English proof (translation)
-Establish `h1 : (A.ω : E) + IsCMField.complexConj E (A.ω : E) = (A.tr : E)`. Establish `h` using `congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq`. Simplify `h` using `[A.bar_eq]`. Establish `h2 : (A.ω : E) * IsCMField.complexConj E (A.ω : E) = (A.nm : E)`. Establish `h` using `congrArg (fun z : 𝓞 E => (z : E)) A.nm_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[A.bar_eq]`. Take the linear combination `(A.ω : E) * h1 - h2`.
+Simplify to obtain the desired conclusion from the available facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem omega_root {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) :
     (A.ω : E) ^ 2 - (A.tr : E) * (A.ω : E) + (A.nm : E) = 0 := by
@@ -155,9 +153,9 @@ private theorem omega_root {E : Type} [Field E] [NumberField E] [IsCMField E] (A
   linear_combination (A.ω : E) * h1 - h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `omega_root A`. Rewrite `h0` using `[h]`. Establish `h1 : q ^ 2 - (A.tr : ℚ) * q + (A.nm : ℚ) = 0`. Apply `(algebraMap ℚ E).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h0`. Establish `hd : ((A.tr : ℚ)) ^ 2 - 4 * (A.nm : ℚ) < 0` using `by exact_mod_cast A.disc_neg`. Use polynomial arithmetic with `[sq_nonneg (2 * q - (A.tr : ℚ))]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem omega_not_rat {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (q : ℚ) :
     (A.ω : E) ≠ algebraMap ℚ E q := by
@@ -171,15 +169,15 @@ private theorem omega_not_rat {E : Type} [Field E] [NumberField E] [IsCMField E]
   nlinarith [sq_nonneg (2 * q - (A.tr : ℚ))]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℚ ![(1 : K), ⟨A.ω, h⟩]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Establish `hE : algebraMap ℚ E a + algebraMap ℚ E b * (A.ω : E) = 0`. Use `congrArg (fun z : K => (z : E)) hab` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Algebra.smul_def]`. Establish `hb : b = 0`. Assume the negation of the conclusion as `hb`. Apply `omega_not_rat A (-a / b)` to reduce the goal to its premises. Establish `hb' : algebraMap ℚ E b ≠ 0` using `by simpa using hb`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_neg]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hE`. Substitute `hb` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: algebraMap ℚ E a = 0` using `by simpa using hE`. Simplify using `using this`. Establish `hspan : Submodule.span ℚ (Set.range ![(1 : K), ⟨A.ω, h⟩]) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by simp [hK])`. Establish `hx : x ∈ Submodule.span ℚ (Set.range ![(1 : K), ⟨A.ω, h⟩])` using `hspan ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).1 hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨c 0, c 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Simplify using `[Fin.sum_univ_two, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem span_omega {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (K : Subfield E)
     (hK : Module.finrank ℚ K = 2) (h : (A.ω : E) ∈ K) (x : K) :
@@ -210,17 +208,17 @@ private theorem span_omega {E : Type} [Field E] [NumberField E] [IsCMField E] (A
   simp [Fin.sum_univ_two, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨h, -⟩` from `P.ρp_eq`. Establish `key : ∀ f : E →+* PadicAlgCl p, f (A.ω : E) = algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩) → LiesOver P.Kq P.u f`. Introduce `f hf x`. Take `⟨a, b, rfl⟩` from `span_omega A P.Kq P.hKq.1 h x`. Simplify using `only [map_add, map_mul, Subfield.coe_add, Subfield.coe_mul, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hr : (algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩)) ^ 2 - (A.tr : PadicAlgCl p) * algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩) + (A.nm : PadicAlgCl p) = 0`. Establish `h0 : (⟨A.ω, h⟩ : P.Kq) ^ 2 - (A.tr : P.Kq) * ⟨A.ω, h⟩ + (A.nm : P.Kq) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using omega_root A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `congrArg ((algebraMap ℚ_[p] (PadicAlgCl p)).comp P.u) h0`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_intCast, map_zero] at h1`. Conclude with `h1`. Establish `ht : (τ (A.ω : E)) ^ 2 - (A.tr : PadicAlgCl p) * τ (A.ω : E) + (A.nm : PadicAlgCl p) = 0`. Establish `h1` using `congrArg τ (omega_root A)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Establish `hfac : (τ (A.ω : E) - algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩)) * (τ (A.ω : E) + algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩) - (A.tr : PadicAlgCl p)) = 0`. Take the linear combination `ht - hr`. Break down `mul_eq_zero.1 hfac with e | e` into its components or cases. Conclude with `Or.inl (key τ (sub_eq_zero.1 e))`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr (key _ ?_)` and prove the remaining obligations. Establish `h1 : (A.ω : E) + cj E (A.ω : E) = (A.tr : E)`. Establish `h` using `congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq`. Simplify `h` using `[A.bar_eq]`. Establish `h2` using `congrArg τ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_intCast] at h2`. Simplify using `only [RingHom.comp_apply]`. Take the linear combination `h2 - e`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem lies_or {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) {p : ℕ} [Fact p.Prime]
     (P : A.AtP p) (τ : E →+* PadicAlgCl p) :
@@ -258,7 +256,7 @@ private theorem lies_or {E : Type} [Field E] [NumberField E] [IsCMField E] (A : 
     linear_combination h2 - e
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.lift K.val (Qr p 1).val _ (a ⊗ₜ[ℚ_[p]] (1 : Qr p 1)) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mulKQ_inclK {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (a : K) :
     (mulKQ K 1) (inclK p K 1 a) = (a : PadicAlgCl p) := by
@@ -267,13 +265,11 @@ private theorem mulKQ_inclK {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_
   simp
 
 /- English proof (translation)
-Establish `hle : intKQ p K 1 ≤ ((PadicAlgCl.valued p).v.valuationSubring.toSubring).comap (mulKQ K 1).toRingHom`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Establish `h : (mulKQ K 1) (inclK p K 1 a) = ((a : K) : PadicAlgCl p)` using `by show Algebra.TensorProduct.lift K.val (Qr p 1).val _ ((a : K) ⊗ₜ[ℚ_[p]] (1 : Qr p 1)) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show (mulKQ K 1) (inclK p K 1 a) ∈ (PadicAlgCl.valued p).v.valuationSubring`. Rewrite using `[h]`. Conclude with `a.2`. Establish `h : (mulKQ K 1) (inclQ p K 1 b) = ((b : Qr p 1) : PadicAlgCl p)` using `by show Algebra.TensorProduct.lift K.val (Qr p 1).val _ ((1 : K) ⊗ₜ[ℚ_[p]] (b : Qr p 1)) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Simplify using the standard rewrite rules. Use `show (mulKQ K 1) (inclQ p K 1 b) ∈ (PadicAlgCl.valued p).v.valuationSubring`. Rewrite using `[h]`. Conclude with `b.2`.
-
-Conclude with `(mem_v_iff _).1 (hle hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_of_mem_intKQ {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     {z : KQ p K 1} (hz : z ∈ intKQ p K 1) : ‖mulKQ K 1 z‖ ≤ 1 := by
@@ -297,16 +293,16 @@ private theorem norm_of_mem_intKQ {p : ℕ} [Fact p.Prime] (K : IntermediateFiel
   exact (mem_v_iff _).1 (hle hz)
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, minpoly.algEquiv_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_galois {p : ℕ} [Fact p.Prime] (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (z : PadicAlgCl p) :
     ‖σ z‖ = ‖z‖ := by
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, minpoly.algEquiv_eq]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Establish `e : (((k.val 0 0 : GlobalTheory.LKLoc.intR p (Q0 p) 1) : Qr p 1)) = algebraMap ℚ_[p] (Qr p 1) (t : ℚ_[p])`. Use `congrArg (fun g : GL (Fin 1) (Qr p 1) => g.val 0 0) hk` as an intermediate fact. Simplify using `using this`. Establish `h1 : ((((k.val 0 0 : GlobalTheory.LKLoc.intR p (Q0 p) 1) : Qr p 1)) : PadicAlgCl p) ∈ (PadicAlgCl.valued p).v.valuationSubring` using `(k.val 0 0).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, mem_v_iff]`. Establish `h2 : (((algebraMap ℚ_[p] (Qr p 1) (t : ℚ_[p])) : Qr p 1) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (t : ℚ_[p])` using `rfl`. Rewrite `h1` using `[h2, PadicAlgCl.norm_extends]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_of_Kint {p : ℕ} [Fact p.Prime] (t : ℚ_[p]ˣ)
     (h : (GeneralLinearGroup.scalar (Fin 1)) (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom t) ∈
@@ -326,7 +322,7 @@ private theorem norm_of_Kint {p : ℕ} [Fact p.Prime] (t : ℚ_[p]ˣ)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `e : locC S.G ((y⁻¹ : Gam0 E n) : GL (Fin n) E × ℚˣ) = (locC S.G (y : GL (Fin n) E × ℚˣ))⁻¹` using `map_inv (locC S.G) (y.1 : S.G.Cˣ × ℚˣ)`. Rewrite using `[e, map_inv]`. Conclude with `(LocalSmoothExtension.Kp S.G).inv_mem hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_hyp (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) :
@@ -337,7 +333,7 @@ private theorem inv_hyp (S : Setup A n p) (y : Gam0 E n)
   exact (LocalSmoothExtension.Kp S.G).inv_mem hy
 
 /- English proof (translation)
-Establish `a1` using `norm_of_Kint (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom y.1.2) hy.1`. Simplify using `using a1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sim_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) :
@@ -346,9 +342,9 @@ private theorem sim_norm (S : Setup A n p) (y : Gam0 E n)
   simpa using a1
 
 /- English proof (translation)
-Set `i' : Fin S.G.m` to `i`. Take `⟨k, hk⟩` from `hy.2 i' (Set.mem_univ i')`. Set `j' : Fin S.G.n` to `j`. Set `l' : Fin S.G.n` to `l`. Establish `e` using `congrArg (fun g : GL (Fin S.G.n) (KQ p (S.G.Fw i') 1) => g.val j' l') hk`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `norm_of_mem_intKQ (S.G.Fw i') (k.val j' l').2`. Set `a : S.G.Fw i'` to `embOf (S.P.emb i) (y.1.1.val j l)`. Establish `e' : ((k.val j' l' : intKQ p (S.G.Fw i') 1) : KQ p (S.G.Fw i') 1) = inclK p (S.G.Fw i') 1 a` using `e`. Rewrite `h1` using `[e', mulKQ_inclK]`. Conclude with `h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem entry_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) (i : Fin S.P.m) (j l : Fin n) :
@@ -365,9 +361,9 @@ private theorem entry_norm (S : Setup A n p) (y : Gam0 E n)
   exact h1
 
 /- English proof (translation)
-Establish `h : (y.1.1.val.map (conjE E).toRingHom)ᵀ * y.1.1.val = algebraMap ℚ E (y.1.2 : ℚ) • (1 : Matrix (Fin n) (Fin n) E)` using `y.2.1`. Establish `h3 : (y.1.1.val.map (conjE E).toRingHom)ᵀ = algebraMap ℚ E (y.1.2 : ℚ) • (y.1.1)⁻¹.val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h, smul_mul_assoc, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun h3 l) j` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem conj_entry (y : Gam0 E n) (j l : Fin n) :
     cj E (y.1.1.val j l) = algebraMap ℚ E (y.1.2 : ℚ) * (y.1.1)⁻¹.val l j := by
@@ -382,7 +378,7 @@ private theorem conj_entry (y : Gam0 E n) (j l : Fin n) :
   simpa using this
 
 /- English proof (translation)
-Take `⟨i, σ, rfl⟩` from `S.P.emb_all τ hτ`. Use `show ‖σ (S.P.emb i (y.1.1.val j l))‖ ≤ 1`. Rewrite using `[norm_galois]`. Conclude with `entry_norm S y hy i j l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem over_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) (τ : E →+* PadicAlgCl p)
@@ -393,7 +389,7 @@ private theorem over_norm (S : Setup A n p) (y : Gam0 E n)
   exact entry_norm S y hy i j l
 
 /- English proof (translation)
-Establish `: τ (algebraMap ℚ E c) = algebraMap ℚ_[p] (PadicAlgCl p) (c : ℚ_[p])` using `by simp`. Rewrite using `[this, PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rat_norm {E : Type} [Field E] {p : ℕ} [Fact p.Prime] (τ : E →+* PadicAlgCl p) [Algebra ℚ E] (c : ℚ) :
     ‖τ (algebraMap ℚ E c)‖ = ‖(c : ℚ_[p])‖ := by
@@ -401,11 +397,11 @@ private theorem rat_norm {E : Type} [Field E] {p : ℕ} [Fact p.Prime] (τ : E �
   rw [this, PadicAlgCl.norm_extends]
 
 /- English proof (translation)
-Break down `lies_or A S.P τ with h | h` into its components or cases. Conclude with `over_norm S y hy τ h j l`. Establish `hy'` using `inv_hyp S y hy`. Establish `e : y.1.1.val j l = cj E (cj E (y.1.1.val j l))`. Simplify using `[IsCMField.complexConj_apply_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `over_norm S _ hy' _ h l j`. Establish `h2 : τ (y.1.1.val j l) = τ (algebraMap ℚ E (y.1.2 : ℚ)) * (τ.comp (cj E)) ((y⁻¹ : Gam0 E n).1.1.val l j)`. Apply the tactic sequence `rw [e, conj_entry y j l, map_mul, map_mul]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[show cj E (algebraMap ℚ E (y.1.2 : ℚ)) = algebraMap ℚ E (y.1.2 : ℚ) by simp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2, norm_mul, rat_norm]`. Conclude with `mul_le_one₀ (sim_norm S y hy) (norm_nonneg _) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem all_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) (τ : E →+* PadicAlgCl p) (j l : Fin n) :
@@ -426,7 +422,7 @@ private theorem all_norm (S : Setup A n p) (y : Gam0 E n)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 /- English proof (translation)
-The claim follows from `GlobalTheory.StabInt.mem_KGL_of_mem_integralGL ((GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff _ _).2 ⟨fun i j => (GlobalTheory.StabInt.mem_O_iff _).2 (h1 i j), fun i j => (GlobalTheory.StabInt.mem_O_iff _).2 (h2 i j)⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_KGL_of_entries {w : Plc E} {g : GL (Fin n) (w.adicCompletion E)}
     (h1 : ∀ i j, Valued.v (g.val i j) ≤ 1) (h2 : ∀ i j, Valued.v (g⁻¹.val i j) ≤ 1) : g ∈ KGL w n :=
@@ -434,7 +430,7 @@ private theorem mem_KGL_of_entries {w : Plc E} {g : GL (Fin n) (w.adicCompletion
     ⟨fun i j => (GlobalTheory.StabInt.mem_O_iff _).2 (h1 i j), fun i j => (GlobalTheory.StabInt.mem_O_iff _).2 (h2 i j)⟩)
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+A detailed English derivation is pending.
 -/
 private theorem val_coe {K : Type} [Field K] [NumberField K] (w : Plc K) (x : K) :
     Valued.v (algebraMap K (w.adicCompletion K) x) = w.valuation K x :=
@@ -444,21 +440,21 @@ private def toC {K : Type} [Field K] [NumberField K] (w : Plc K) : K →+* w.adi
   algebraMap K (w.adicCompletion K)
 
 /- English proof (translation)
-The claim follows from `val_coe w x`.
+A detailed English derivation is pending.
 -/
 private theorem val_toC {K : Type} [Field K] [NumberField K] (w : Plc K) (x : K) :
     Valued.v (toC w x) = w.valuation K x := val_coe w x
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S y hy`. Use `⟨fun w hw => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `mem_KGL_of_entries (fun j l => ?_) (fun j l => ?_)` and prove the remaining obligations. Establish `e : (comp w (rat y)).val j l = algebraMap E (w.adicCompletion E) (y.1.1.val j l)` using `rfl`. Rewrite using `[e, val_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `val_le_one_of_forall w hw fun τ => all_norm S y hy τ j l`. Establish `e : (comp w (rat y))⁻¹.val j l = algebraMap E (w.adicCompletion E) ((y⁻¹ : Gam0 E n).1.1.val j l)`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[e, val_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `val_le_one_of_forall w hw fun τ => all_norm S _ (inv_hyp S y hy) τ j l`. Establish `e0 : ((sim (rat y) : AfQˣ) : AfQ) = algebraMap ℚ AfQ (y.1.2 : ℚ)` using `rfl`. Establish `e : ((sim (rat y) : AfQˣ) : AfQ) v = toC v (y.1.2 : ℚ)`. Rewrite using `[e0]`. Conclude with `RingHom.congr_fun (Subsingleton.elim ((pLoc ℚ v).comp (algebraMap ℚ AfQ)) (toC v)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e, val_toC]`. Establish `a1 : v.valuation ℚ (y.1.2 : ℚ) ≤ 1`. Simplify using `using val_rat_le v hv (sim_norm S y hy)`. Establish `a2 : v.valuation ℚ ((y.1.2 : ℚ))⁻¹ ≤ 1`. Use `val_rat_le v hv (sim_norm S _ (inv_hyp S y hy))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Rewrite `a2` using `[map_inv₀]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Conclude with `(inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)))).1 a2`.
+A detailed English derivation is pending.
 -/
 theorem pPInt : PInt := by
   intro E _ _ _ A n p _ S y hy

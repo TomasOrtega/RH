@@ -21,14 +21,14 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rk_mem_Dcris {x : V ⊗[Qp] B} : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
     sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [DcrisL, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rk_mem_DcrisL (τ : K₀ →ₐ[Qp] LL) {x : V ⊗[Qp] B} :
     x ∈ DcrisL PD ρ τ ↔ x ∈ Dcris PD ρ ∧
@@ -37,7 +37,7 @@ theorem rk_mem_DcrisL (τ : K₀ →ₐ[Qp] LL) {x : V ⊗[Qp] B} :
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b => simp [actVB, mulVB, map_mul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rk_act_mulVB (g : G) (c : K₀) (x : V ⊗[Qp] B) :
     actVB PD ρ g (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c x) =
@@ -48,7 +48,7 @@ theorem rk_act_mulVB (g : G) (c : K₀) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[rk_mem_Dcris]`. Introduce `g`. Rewrite using `[rk_act_mulVB, hx g]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rk_mulVB_Dcris (c : K₀) {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c x ∈ Dcris PD ρ := by
@@ -57,9 +57,9 @@ theorem rk_mulVB_Dcris (c : K₀) {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
   rw [rk_act_mulVB, hx g]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b`. Simplify using `only [ιV, mulVB, mulVdR, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.coe_restrictScalars, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, map_mul, AlgHom.commutes]`. Rewrite using `[← IsScalarTower.algebraMap_apply K₀ K BdR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem rk_ιV_mul (c : K₀) (y : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c y) =
@@ -75,11 +75,9 @@ theorem rk_ιV_mul (c : K₀) (y : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hy`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w f`. Use `⟨w ⊗ₜ[Qp] (⟨algebraMap K BdR c * (f : BdR), ?_⟩ : ↥((PD.Fil a).restrictScalars Qp)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Algebra.smul_def]`. Conclude with `(PD.Fil a).smul_mem c f.2`. Simplify using `[mulVdR, AlgebraTensorModule.map_tmul]`. Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_mulVdR_FilV (c : K) (a : ℤ) {y : V ⊗[Qp] BdR} (hy : y ∈ FilV PD (LL := LL) (V := V) a) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c y ∈ FilV PD (LL := LL) (V := V) a := by
@@ -96,7 +94,7 @@ theorem rk_mulVdR_FilV (c : K) (a : ℤ) {y : V ⊗[Qp] BdR} (hy : y ∈ FilV PD
     exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hx`. Use `Submodule.mem_inf.2 ⟨rk_mulVB_Dcris PD ρ c h1, ?_⟩` and prove the remaining obligations. Rewrite `h2`, the goal using `[Submodule.mem_comap]`. Rewrite using `[rk_ιV_mul]`. Conclude with `rk_mulVdR_FilV PD _ a h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_mulVB_FilCris (c : K₀) (a : ℤ) {x : V ⊗[Qp] B} (hx : x ∈ FilCris PD ρ a) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c x ∈ FilCris PD ρ a := by
@@ -107,7 +105,7 @@ theorem rk_mulVB_FilCris (c : K₀) (a : ℤ) {x : V ⊗[Qp] B} (hx : x ∈ FilC
   exact rk_mulVdR_FilV PD _ a h2
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b => simp [Formalism.MainNotions.RamifiedCoefficientChains.mapVB, mulVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rk_mapVB_mulVB {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
     (f : V →ₗ[LL] V') (c : K₀) (x : V ⊗[Qp] B) :
@@ -119,9 +117,9 @@ theorem rk_mapVB_mulVB {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h : ∀ y, ιV PD (LL` using `LL) (V := V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_ιV_inj : Function.Injective (ιV PD (LL := LL) (V := V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := V) y =

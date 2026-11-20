@@ -333,9 +333,9 @@ def ShortNe0 (nab : NabV Xo c) (bad nV : ℕ) (dδ : ∀ n, DeltaDat Xo c n)
       ∃ f ∈ shortGen Xo c nab bad nV a n (dδ n), f ≠ 0
 
 /- English proof (translation)
-Introduce `a n hd hl hn hc`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `hc` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `hsp : Submodule.span c.F (shortGen Xo c nab bad nV a n (dδ n)) = ⊥` using `(Submodule.span_eq_bot).2 hno`. Use `h a n hd hl hn hg` as an intermediate fact. Rewrite `this` using `[hsp]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortNe0_of_t4Span (nab : NabV Xo c) (bad nV : ℕ) (dδ : ∀ n, DeltaDat Xo c n)
     (cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))

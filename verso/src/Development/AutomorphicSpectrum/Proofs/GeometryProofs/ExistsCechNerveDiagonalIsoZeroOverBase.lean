@@ -8,27 +8,27 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar.FlagDet
 
 /- English proof (translation)
-Establish `key : ∀ j : ℕ, f v = f (fun i => if (i : ℕ) < j then c i • w i else v i)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ih]`. Distinguish the cases in `hj : j < s`. Take `⟨i, rfl⟩ : ∃ i : Fin s, (i : ℕ) = j` from `⟨⟨j, hj⟩, rfl⟩`. Establish `hnew : (fun k : Fin s => if (k : ℕ) < i + 1 then c k • w k else v k) = Function.update (fun k : Fin s => if (k : ℕ) < i then c k • w k else v k) i (c i • w i)`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = i`. Rewrite using `[hk, Function.update_self, if_pos (Nat.lt_succ_self _)]`. Rewrite using `[Function.update_of_ne hk]`. Establish `hk' : (k : ℕ) ≠ i` using `fun h => hk (Fin.ext h)`. Distinguish the cases in `hki : (k : ℕ) < i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hki, if_pos (show (k : ℕ) < i + 1 by omega)]`. Rewrite using `[if_neg hki, if_neg (show ¬ ((k : ℕ) < i + 1) by omega)]`. Rewrite using `[hnew]`. Generalize the expression as in `hm : (fun k : Fin s => if (k : ℕ) < i then c k • w k else v k) = m`. Establish `hmi : m i = v i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[← hm]`. Simplify using the standard rewrite rules. Establish `hmk : ∀ k : Fin s, k < i → m k = c k • w k`. Introduce `k hk`. Rewrite using `[← hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.lt_def.1 hk]`. Establish `hzero : ∀ u ∈ Submodule.span Ω (w '' {k | k < i}), f (Function.update m i u) = 0`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨k, hk, rfl⟩` from `hx`. Establish `hki : k ≠ i` using `ne_of_lt hk`. Establish `hmk' : Function.update m i (w k) k = c k • w k`. Rewrite using `[Function.update_of_ne hki]`. Conclude with `hmk k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Function.update_eq_self k (Function.update m i (w k)), hmk', f.map_update_smul]`. Rewrite using `[f.map_eq_zero_of_eq _ (i := k) (j := i) (by rw [Function.update_self, Function.update_of_ne hki.symm, Function.update_self]) hki, smul_zero]`. Consider the case `zero => exact f.map_coord_zero i (by simp)`. Consider the case `add x y _ _ hx hy => rw [f.map_update_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [f.map_update_smul, hx, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hv : v i = c i • w i + (v i - c i • w i)` using `by abel`. Use `conv_lhs => rw [← Function.update_eq_self i m, hmi, hv, f.map_update_add]`. Rewrite using `[hzero _ (h i), add_zero]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `k.2` as an intermediate fact. Simplify using `[show (k : ℕ) < j by omega, show (k : ℕ) < j + 1 by omega]`. Rewrite using `[key s]`. Establish `hfun : (fun i : Fin s => if (i : ℕ) < s then c i • w i else v i) = fun i => c i • w i`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos i.2]`. Rewrite using `[hfun]`. Conclude with `f.toMultilinearMap.map_smul_univ c w`.
+A detailed English derivation is pending.
 -/
 theorem alt_triangular {Ω E W : Type} [Field Ω] [AddCommGroup E] [Module Ω E] [AddCommGroup W] [Module Ω W] {s : ℕ}
     (f : E [⋀^Fin s]→ₗ[Ω] W) (v w : Fin s → E) (c : Fin s → Ω)
@@ -93,15 +93,15 @@ theorem alt_triangular {Ω E W : Type} [Field Ω] [AddCommGroup E] [Module Ω E]
   exact f.toMultilinearMap.map_smul_univ c w
 
 /- English proof (translation)
-Establish `hb : b i ∈ flagStep Ω b₀ ((i : ℕ) + 1)`. Rewrite using `[← hF]`. Conclude with `Submodule.subset_span ⟨i, show (i : ℕ) < (i : ℕ) + 1 by omega, rfl⟩`. Establish `hset : b₀ '' {k : Fin r | (k : ℕ) < (i : ℕ) + 1} = b₀ '' {k | (k : ℕ) < i} ∪ {b₀ i}`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Distinguish the cases in `h : (k : ℕ) < i`. Conclude with `Or.inl ⟨k, h, rfl⟩`. Use `right`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : (k : ℕ) < (i : ℕ) + 1` using `hk`. Establish `: k = i` using `Fin.ext (by omega)`. Rewrite using `[this, Set.mem_singleton_iff]`. Introduce and unpack `(⟨k, hk, rfl⟩ | hx)`. Conclude with `⟨k, show (k : ℕ) < (i : ℕ) + 1 by have : (k : ℕ) < i := hk; omega, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Conclude with `⟨i, show (i : ℕ) < (i : ℕ) + 1 by omega, hx.symm⟩`. Unfold `flagStep at hb ⊢`. Rewrite `hb` using `[hset, Submodule.span_union, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, hyz⟩` from `hb`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Conclude with `⟨c, by rw [← hyz, add_sub_cancel_right]; exact hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] {r : ℕ} {b b₀ : Fin r → E}
     (hF : ∀ i, flagStep Ω b i = flagStep Ω b₀ i) (i : Fin r) :

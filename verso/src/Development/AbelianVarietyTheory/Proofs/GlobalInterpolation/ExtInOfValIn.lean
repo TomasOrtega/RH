@@ -16,7 +16,7 @@ namespace GlobalTheory.LvT.UKS
 variable {D : D7} {u : D.what₂.Word} {X : Ch D u}
 
 /- English proof (translation)
-Rewrite using `[← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_Fi (X : Ch D u) (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
   rw [← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]
@@ -25,17 +25,15 @@ theorem emb_mem_Fi (X : Ch D u) (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.F
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Use `set p := D.what₂.places.resChar w with hp`. Establish `hpr : p.Prime` using `D.what₂.places.resChar_prime w`. Establish `hcop : Nat.Coprime p n` using `(Nat.Prime.coprime_iff_not_dvd hpr).2 hn`. Establish `hint : ∀ z : ℤ, 0 ≤ D.what₂.places.val w (z : D.what₂.LL)` using `fun z => intCast_mem (Ow D w) z`. Establish `hbez : ((p : ℤ) * Nat.gcdA p n + (n : ℤ) * Nat.gcdB p n) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.gcd_eq_gcd_ab p n` as an intermediate fact. Rewrite `this` using `[hcop.gcd_eq_one]`. Conclude with `this.symm` after adjusting the coercions. Establish `hbez' : (p : D.what₂.LL) * ((Nat.gcdA p n : ℤ) : D.what₂.LL) + (n : D.what₂.LL) * ((Nat.gcdB p n : ℤ) : D.what₂.LL) = 1`. Conclude with `congrArg (fun z : ℤ => (z : D.what₂.LL)) hbez` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvp : 0 < D.what₂.places.val w (p : D.what₂.LL)`. Rewrite using `[hp, D.what₂.places.val_resChar w]`. Use `D.what₂.places.ramIdx_pos w` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hvn : D.what₂.places.val w (n : D.what₂.LL) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ D.what₂.places.val w (n : D.what₂.LL)` using `by exact_mod_cast hint n`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < D.what₂.places.val w (n : D.what₂.LL)` using `lt_of_le_of_ne h0 (Ne.symm hne)`. Establish `h1 : 0 < D.what₂.places.val w ((p : D.what₂.LL) * ((Nat.gcdA p n : ℤ) : D.what₂.LL))`. Rewrite using `[AddValuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_pos_of_pos_of_nonneg hvp (hint _)`. Establish `h2 : 0 < D.what₂.places.val w ((n : D.what₂.LL) * ((Nat.gcdB p n : ℤ) : D.what₂.LL))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `add_pos_of_pos_of_nonneg hpos (hint _)`. Establish `h3` using `(D.what₂.places.val w).map_lt_add h1 h2`.
-
-Rewrite `h3` using `[hbez', AddValuation.map_one]`. Conclude with `lt_irrefl _ h3`. Use `show 0 ≤ D.what₂.places.val w ((n : D.what₂.LL))⁻¹`. Rewrite using `[AddValuation.map_inv, hvn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_natCast_mem (w : D.what₂.places.Pl) (n : ℕ) (hn : ¬ D.what₂.places.resChar w ∣ n) :
     ((n : D.what₂.LL))⁻¹ ∈ Ow D w := by
@@ -77,9 +75,9 @@ def ExtIn (w : D.what₂.places.Pl) (V : Finset X.A.vT) (φ : Fn X i) : Prop :=
 variable {Co}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `(GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).1 hφ`. Use `⟨Φ, hΦ, fun p => ?_⟩` and prove the remaining obligations. Take `⟨c, g, rfl⟩` from `M.rep_surj p`. Take `⟨y, hy, hyc⟩` from `h c`. Establish `: Φ (M.rep c) = y` using `Subtype.ext ((hΦ.1 c).symm.trans hyc)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hΦ.2, this]`. Conclude with `(GlobalTheory.T.valueLattice_addSubgroup_smul_move_laws D u X i M Co hC w hw V _).2.2.2 g y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extIn_of_valIn (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (hφ : φ ∈ X.fm.Fi i)
     (h : M.ValIn (Co.valB w V) φ) : ExtIn Co w V φ := by
@@ -92,21 +90,21 @@ theorem extIn_of_valIn (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (hφ 
   exact (GlobalTheory.T.valueLattice_addSubgroup_smul_move_laws D u X i M Co hC w hw V _).2.2.2 g y hy
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, -⟩` from `h`. Conclude with `(GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).2 ⟨Φ, hΦ⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ExtIn.mem_Fi {w V} {φ : Fn X i} (h : ExtIn Co w V φ) : φ ∈ X.fm.Fi i := by
   obtain ⟨Φ, hΦ, -⟩ := h
   exact (GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).2 ⟨Φ, hΦ⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, h⟩` from `h`. Conclude with `fun c => ⟨_, h _, hΦ.1 c⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtIn.valIn {w V} {φ : Fn X i} (h : ExtIn Co w V φ) : M.ValIn (Co.valB w V) φ := by
   obtain ⟨Φ, hΦ, h⟩ := h
   exact fun c => ⟨_, h _, hΦ.1 c⟩
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun g p => ?_⟩` and prove the remaining obligations. Use `show a • φ c = _`. Rewrite using `[h.1 c]`. Both sides reduce to the same expression. Simplify using `only [h.2, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isExt_smul {φ : Fn X i} {Φ} (h : M.IsExt φ Φ) (a : ℂ) : M.IsExt (a • φ) (fun p => a • Φ p) := by
   refine ⟨fun c => ?_, fun g p => ?_⟩
@@ -115,7 +113,7 @@ theorem isExt_smul {φ : Fn X i} {Φ} (h : M.IsExt φ Φ) (a : ℂ) : M.IsExt (a
   · simp only [h.2, map_smul]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.valueLattice_addSubgroup_smul_move_laws D u X i M Co hC w hw V p).2.2.1 ((X.A.T : D.what₂.LL) ^ n) (pow_mem (natCast_mem _ _) n) y hy` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_smul_mem (hC : Co.Ok) {w} (hw : OverT X w) {V p y} (hy : y ∈ Co.valB w V p) (n : ℕ) :
     ((X.A.T : ℂ) ^ n) • y ∈ Co.valB w V p := by
@@ -124,7 +122,7 @@ theorem pow_smul_mem (hC : Co.Ok) {w} (hw : OverT X w) {V p y} (hy : y ∈ Co.va
   simpa using this
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, h⟩` from `h`. Conclude with `⟨_, isExt_smul hΦ _, fun p => pow_smul_mem hC hw (h p) n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ExtIn.pow_smul (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (h : ExtIn Co w V φ) (n : ℕ) :
     ExtIn Co w V (((X.A.T : ℂ) ^ n) • φ) := by
@@ -132,9 +130,9 @@ theorem ExtIn.pow_smul (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (h : 
   exact ⟨_, isExt_smul hΦ _, fun p => pow_smul_mem hC hw (h p) n⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, h⟩` from `h`. Use `⟨_, GlobalTheory.T.isExt_Uop_finsum_inc_of_isExt D u X i M v φ Φ hΦ, fun p => ?_⟩` and prove the remaining obligations. Establish `hv'` using `GlobalTheory.T.valueLattice_addSubgroup_smul_move_laws D u X i M Co hC w hw (V.erase v) p`. Use `finsum_mem_induction (fun y => y ∈ Co.valB w (V.erase v) p) hv'.1 (fun y y' hy hy' => hv'.2.1 y hy y' hy') fun p₁ hp₁ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.LvT.valB_of_inc D u X i M Co w V v p p₁ hs hv hp₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h p₁`.
+A detailed English derivation is pending.
 -/
 theorem ExtIn.uop (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) {V v} (hv : v ∈ V)
     {φ : Fn X i} (h : ExtIn Co w V φ) : ExtIn Co w (V.erase v) (Uop X i v φ) := by
@@ -147,11 +145,11 @@ theorem ExtIn.uop (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) {
   exact h p₁
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h`. Consider the case `cons v l ih`. Rewrite `hl` using `[List.nodup_cons]`. Establish `h1` using `ih hl.2 (fun v' hv' => hV v' (List.mem_cons_of_mem _ hv'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h1.uop hC hw hs (v := v) (by simp [hl.1, hV v List.mem_cons_self])`. Establish `e : (V \ l.toFinset).erase v = V \ (v :: l).toFinset`. Use extensionality with `x`. Simplify using the standard rewrite rules. The claim follows by propositional logic.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Rewrite `h2` using `[e]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ExtIn.uops (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) {V}
     {φ : Fn X i} (h : ExtIn Co w V φ) (l : List X.A.vT) (hl : l.Nodup) (hV : ∀ v ∈ l, v ∈ V) :
@@ -168,11 +166,11 @@ theorem ExtIn.uops (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) 
     exact h2
 
 /- English proof (translation)
-Establish `hT : (X.A.T : ℂ) ≠ 0` using `by exact_mod_cast X.A.T_prime.ne_zero`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert v A hv ih`. Take `⟨Φ, hΦ, h1⟩` from `ih ((Finset.subset_insert _ _).trans hA)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `e : (V \ A).erase v = V \ insert v A`. Use extensionality with `x`. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite using `[Finset.sum_insert hv, zpow_add₀ hT, mul_smul, ← e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, isExt_smul hΦ _, fun p => GlobalTheory.T.levelPrime_pow_smul_mem_valueLattice_erase D u X i M Co hC w hw hs _ v (by simp [hv, hA (Finset.mem_insert_self _ _)]) p _ (h1 p)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ExtIn.drop (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) {V}
     {φ : Fn X i} (h : ExtIn Co w V φ) (A : Finset X.A.vT) (hA : A ⊆ V) :
@@ -192,9 +190,9 @@ theorem ExtIn.drop (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) 
 end
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, h⟩` from `h`. Use `⟨_, isExt_smul (GlobalTheory.LvT.isExt_KT D u X i M M' K φ Φ hK hΦ) a, fun p' => ?_⟩` and prove the remaining obligations. Establish `hv` using `GlobalTheory.T.valueLattice_addSubgroup_smul_move_laws D u X (i + 1) M' Co' hC' w hw V p'`. Simplify using `only [Finset.smul_sum]`. Use `Finset.sum_induction _ (fun y => y ∈ Co'.valB w V p') (fun y y' hy hy' => hv.2.1 y hy y' hy') hv.1 fun c _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_comm]`. Use `hv.2.2.1 _ (inv_natCast_mem w (Nat.card (X.C.stab i c)) (by rw [show _ = _ from hw]; exact hst c)) _ (ha _ p' _ (h (M.rep c)))` as an intermediate fact. Simplify `this` using `[ColumnChain.wt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem extIn_K {i : ℕ} {M : PtModel X i} {M' : PtModel X (i + 1)} {Co : M.Coord} {Co' : M'.Coord}
     (hC' : Co'.Ok) (K : KerPt M M') (hK : K.TgtEq) {w} (hw : OverT X w)
@@ -213,19 +211,19 @@ theorem extIn_K {i : ℕ} {M : PtModel X i} {M' : PtModel X (i + 1)} {Co : M.Coo
   simpa [ColumnChain.wt] using this
 
 /- English proof (translation)
-Introduce `w hw i hi x hx`. Establish `hT : (X.A.T : ℂ) ≠ 0` using `by exact_mod_cast X.A.T_prime.ne_zero`. Establish `hC` using `(Vt i hi.le).2`. Establish `hC'` using `(Vt (i + 1) hi).2`. Establish `h0 : ExtIn (Vt i hi.le).1 w ∅ (X.fm.emb i x)` using `extIn_of_valIn hC hw (emb_mem_Fi X i x) ((hC.S_on w hw _ (emb_mem_Fi X i x)).1 ⟨x, hx, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to establish `h : ExtIn (Vt (i + 1) hi).1 w ∅ (tpow X (if X.fm.seenP w then 2 * ∑ τ, Wt X τ + D.R.f * D.R.N D.R.m else 0) • Uprod X (i + 1) w (KT X i (X.fm.emb i x))) from (hC'.S_on w hw _ h.mem_Fi).2 h.valIn`. Distinguish the cases in `hs : X.fm.seenP w = true`. Establish `h1` using `extIn_K hC' (Kt i hi) (hK.tgt i hi) hw (hst i hi.le) _ (hK.intP i hi w hw hs) h0`. Establish `h2` using `h1.uops hC' hw hs (VVT X w).toList (Finset.nodup_toList _) (fun v _ => Finset.mem_univ v)`. Establish `h3` using `h2.drop hC' hw hs _ (Finset.Subset.refl _)`.
+Reduce the argument to an intermediate assertion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Finset.sdiff_self, Finset.toList_toFinset, map_smul, smul_smul, ← zpow_add₀ hT]`. Use `set e : ℤ := ∑ v ∈ Finset.univ \ VVT X w, (PtModel.lamT X (i + 1) (X.fm.tauOf w v)).w ⟨0, D.R.N_pos _⟩ + (((D.R.f * D.R.N i : ℕ) : ℤ) + ∑ τ, X.C.sDiv i τ) with he`. Establish `hle : e ≤ ((2 * ∑ τ, Wt X τ + D.R.f * D.R.N D.R.m : ℕ) : ℤ)`. Establish `a1 : ∑ v ∈ Finset.univ \ VVT X w, (PtModel.lamT X (i + 1) (X.fm.tauOf w v)).w ⟨0, D.R.N_pos _⟩ ≤ ∑ τ, (Wt X τ : ℤ)`. Rewrite using `[← Equiv.sum_comp (X.fm.tauOf w)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (Finset.sum_le_sum fun v hv => (hW.2 i hi _).2.2.2 ?_) (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => Int.natCast_nonneg _)` and prove the remaining obligations. Simplify `hv` using `[VVT, hs]`. Establish `a2 : ∑ τ, X.C.sDiv i τ ≤ ∑ τ, (Wt X τ : ℤ)` using `Finset.sum_le_sum fun τ _ => (hW.2 i hi τ).2.1`. Establish `a3 : D.R.f * D.R.N i ≤ D.R.f * D.R.N D.R.m` using `Nat.mul_le_mul_left _ (Nat.add_le_add_left (Nat.mul_le_mul_right _ hi.le) _)`. Establish `a3' : ((D.R.f * D.R.N i : ℕ) : ℤ) ≤ ((D.R.f * D.R.N D.R.m : ℕ) : ℤ)` using `by exact_mod_cast a3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, Nat.cast_add, Nat.cast_mul 2, Nat.cast_sum]`. Simplify using `only [Nat.cast_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn⟩` from `Int.le.dest hle`. Establish `h4` using `h3.pow_smul hC' hw n`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[smul_smul, ← zpow_natCast, ← zpow_add₀ hT, add_comm (n : ℤ), hn, zpow_natCast]`. Rewrite using `[if_pos hs]`. Conclude with `h4`. Establish `hs' : X.fm.seenP w = false` using `by simpa using hs`. Establish `h1` using `extIn_K (V := ∅) hC' (Kt i hi) (hK.tgt i hi) hw (hst i hi.le) 1 (fun p p' y hy => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y', hy', e⟩` from `hK.bar i hi w hw hs' p p' y hy`. Rewrite using `[one_smul, e]`. Conclude with `pow_smul_mem hC' hw hy' _) h0`. Rewrite using `[if_neg hs]`. Simplify `h1` using `[tpow, Uprod, VVT, hs']`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ukSharp (D : D7) (u : D.what₂.Word) (X : Ch D u) (Lv : LevTie X) (Vt : ValTie Lv) (Kt : KerTie Lv)
     (hK : KerLaws Vt Kt) (hst : StabUnit X) (hW : WtBounds X) : UKSharp X := by

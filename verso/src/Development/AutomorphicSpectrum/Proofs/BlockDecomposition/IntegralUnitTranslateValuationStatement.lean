@@ -13,7 +13,7 @@ open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.torusAverage_shift | exact GlobalTheory.CompanionTheory.FexTheta.torusAverage_shift | (intros; apply GlobalTheory.CompanionTheory.FexTheta.torusAverage_shift <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integral_unit_translate_valuation : ∀ (Sv : Finset Pl) (f : ∀ v : Pl, (Qv v)ˣ → ℂ), (∀ v ∉ Sv, ∀ x, ∀ e ∈ unQ v, f v (x * e) = f v x) →
   ∀ (k : ∀ v : Pl, (Qv v)ˣ) (m' : Pl →₀ ℤ), (∀ v, ord ((k v : (Qv v)ˣ) : Qv v) = m' v) → ∀ m : Pl →₀ ℤ,

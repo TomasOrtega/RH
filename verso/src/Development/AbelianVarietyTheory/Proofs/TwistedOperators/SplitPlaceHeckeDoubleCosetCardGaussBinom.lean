@@ -21,9 +21,9 @@ open Classical
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `f : ∀ a ∈ A, ∃ b, b ∈ B ∧ b⁻¹ * a ∈ J` using `fun a ha => (hB.2 a (hA.1 a ha)).exists`. Use `choose! φ hφB hφJ using f`. Use `Finset.card_le_card_of_injOn φ (fun a ha => hφB a ha) ?_` and prove the remaining obligations. Introduce `a₁ ha₁ a₂ ha₂ he`. Establish `h1 : a₁⁻¹ * a₂ ∈ J`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `J.mul_mem (J.inv_mem (hφJ a₁ ha₁)) (hφJ a₂ ha₂)`. Establish `e : ((φ a₁)⁻¹ * a₁)⁻¹ * ((φ a₂)⁻¹ * a₂) = a₁⁻¹ * a₂` using `by rw [he]; group`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Conclude with `(hA.2 a₂ (hA.1 a₂ ha₂)).unique ⟨ha₁, h1⟩ ⟨ha₂, by simp⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem card_le_of_isDC {J : Subgroup G} {x : G} {A B : Finset G} (hA : Bridge.IsDC J x A)
     (hB : Bridge.IsDC J x B) : A.card ≤ B.card := by
@@ -39,7 +39,7 @@ theorem card_le_of_isDC {J : Subgroup G} {x : G} {A B : Finset G} (hA : Bridge.I
   exact (hA.2 a₂ (hA.1 a₂ ha₂)).unique ⟨ha₁, h1⟩ ⟨ha₂, by simp⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (card_le_of_isDC hA hB) (card_le_of_isDC hB hA)`.
+A detailed English derivation is pending.
 -/
 theorem card_eq_of_isDC {J : Subgroup G} {x : G} {A B : Finset G} (hA : Bridge.IsDC J x A)
     (hB : Bridge.IsDC J x B) : A.card = B.card :=
@@ -48,13 +48,13 @@ theorem card_eq_of_isDC {J : Subgroup G} {x : G} {A B : Finset G} (hA : Bridge.I
 variable {H : Type} [Group H] {ρ : G →* H} {S : G → Prop} {K : Set G} {K' : Subgroup H}
 
 /- English proof (translation)
-Establish `hex : ∀ a, ∃ g, S g ∧ ρ g = a` using `fun a => ⟨ψ a, hψs a, hψ a⟩`. Use `⟨fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `GlobalTheory.SplitPlace.lift_dc hm hex hinj hK hg (hψs a) (by rw [hψ]; exact hR.1 a ha)`. Introduce and unpack `x ⟨k₁, hk₁, k₂, hk₂, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hx` using `hm _ _ (hm _ _ hk₁.2 hg) hk₂.2`. Establish `key : ∀ a, (ψ a)⁻¹ * (k₁ * g * k₂) ∈ {k | k ∈ K ∧ S k} ↔ a⁻¹ * ρ (k₁ * g * k₂) ∈ K'`. Introduce `a`. Establish `hs` using `hm _ _ (hi _ (hψs a)) hx`. Use `hK _ hs` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_inv, hψ]`. Conclude with `⟨fun h => this.1 h.1, fun h => ⟨this.2 h, hs⟩⟩`. Take `⟨a, ⟨ha, ha'⟩, hu⟩` from `hR.2 (ρ (k₁ * g * k₂)) ⟨_, (hK _ hk₁.2).1 hk₁.1, _, (hK _ hk₂.2).1 hk₂.1, by rw [map_mul, map_mul]⟩`. Use `⟨ψ a, ⟨Finset.mem_image_of_mem _ ha, (key a).2 ha'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, h⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hγ`. Rewrite using `[hu b ⟨hb, (key b).1 h⟩]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_isReps (hm : ∀ x y, S x → S y → S (x * y)) (hi : ∀ x, S x → S x⁻¹)
     (hinj : ∀ x y, S x → S y → ρ x = ρ y → x = y) (hK : ∀ g, S g → (g ∈ K ↔ ρ g ∈ K'))
@@ -84,7 +84,7 @@ theorem lift_isReps (hm : ∀ x y, S x → S y → S (x * y)) (hi : ∀ x, S x �
     rw [hu b ⟨hb, (key b).1 h⟩]
 
 /- English proof (translation)
-Use `Finset.card_image_of_injective _ fun a b h => ?_` and prove the remaining obligations. Rewrite using `[← hψ a, ← hψ b, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_image_section {R₀ : Finset H} (ψ : H → G) (hψ : ∀ a, ρ (ψ a) = a) :
     (R₀.image ψ).card = R₀.card := by
@@ -95,9 +95,9 @@ theorem card_image_section {R₀ : Finset H} (ψ : H → G) (hψ : ∀ a, ρ (ψ
 end Grp
 
 /- English proof (translation)
-Establish `h1` using `Formalism.G0.Top.subspaceCount (F := κ) (W := Fin n → κ) k`. Establish `h2` using `GlobalTheory.GaussCount.subspaceCount κ (Fin n → κ) k`. Rewrite `h1`, `h2` using `[Module.finrank_fin_fun]`. Rewrite `h2` using `[Nat.card_eq_fintype_card (α := κ)]`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.G0.countBelow`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `Equiv.subtypeEquivRight fun U => by simp`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gaussBinom_eq (κ : Type) [Field κ] [Fintype κ] (n k : ℕ) :
     Formalism.G0.gaussBinom (Fintype.card κ) n k = GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom (Fintype.card κ) n k := by
@@ -120,33 +120,31 @@ open Formalism.IndefR.Lev GlobalTheory.HeckeParts Formalism.L2.NTheta
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL hF i P k α Rc hso hk hα hRc`. Take `⟨c, hβ⟩` from `hL.βW i`. Establish `hN : ((1 ^ c : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hoff : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ P ∧ ¬ Lev.IsConjPl PP P`. Introduce `PP hPP`. Establish `hPP' : PP ∈ R.Pg` using `hPP.elim id fun h => absurd h (Finset.notMem_empty _)`. Establish `hS : PP ∈ (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E))` using `hF.Sb hPP'`. Use `⟨fun h => hso.2.1 (h ▸ hS), fun h => hso.2.2 PP hS ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal]`. Use `PP.isMaximal.eq_of_le (Formalism.L2.Col.conjPrime₂ P).isPrime.ne_top fun a ha => ?_` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `h a ha`. Rewrite using `[Formalism.L2.Col.mem_conjP]`. Establish `: Formalism.L2.Col.cO D.host.E a = a'` using `RingOfIntegers.ext e.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨e, ϖ, he, h1, h2, hαe⟩` from `hα`. Take `⟨Lp, hLp, -, hs, hK⟩` from `loc_package hβ (L := R.datWp i R.triv) ⟨hso.1, hN, hoff⟩ he`. Take `⟨v, π, s, c1, c2, c3, c4, c5⟩` from `GlobalTheory.SplitCoord.exists_coord e he.1`. Take `⟨B, hB⟩` from `GlobalTheory.SplitLatBasis.exists_basis (Wc D i) e v π s he.1.1 c2 c3 c4 (GlobalTheory.LatDual.lamHat_selfDual_and_module (Wc D i)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hex, hinj⟩` from `GlobalTheory.SplitPlace.comp_bij (V := Wc D i) (B := B) he.1 c1 c2`. Establish `hKc` using `fun g => GlobalTheory.SplitPlace.K_iff (V := Wc D i) (g := g) he.1 c2 c3 hB`. Establish `hu` using `GlobalTheory.SplitPlace.isUnif he c4 c5 ϖ h1 h2`. Take `⟨hu0, hu1⟩` from `GlobalTheory.SplitPlace.unif_facts hu`. Establish `hH` using `(GlobalTheory.SplitPlace.hecke_iff he.1 c1 c2 c3 c4 hB hu0 k α).1 hαe`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩ : ∃ w, π (finPart D (incA D (ϖ : D.host.E))) = w` from `⟨_, rfl⟩`. Rewrite `hu`, `hu0`, `hu1`, `hH` using `[hw]`. Establish `hirr : Irreducible (⟨w, hu1⟩ : Formalism.UG.Ov D.host.F v)` using `Formalism.IndefR.Fin.HCount.irreducible_of_unif D.host.F v ⟨w, hu1⟩ hu`. Establish `hv0 : Valued.v w ≠ 0` using `(Valuation.ne_zero_iff _).2 hu0`. Establish `htype : Formalism.IndefR.Fin.HCount.IsType (Formalism.UG.Ov D.host.F v) ⟨w, hu1⟩ k (GlobalTheory.SplitPlace.comp (Wc D i) π B α)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b => hH.2.1 a b, fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hH.2.2.1 a b`. Take `⟨d, hd⟩ : ∃ d, (GlobalTheory.SplitPlace.comp (Wc D i) π B α).1.det = d` from `⟨_, rfl⟩`. Establish `hdv'` using `hH.2.2.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdv'` using `[hd]`. Establish `hdv : Valued.v (d / w ^ k) = 1`. Rewrite using `[map_div₀, map_pow, hdv', div_self (pow_ne_zero _ hv0)]`. Establish `hne : d / w ^ k ≠ 0` using `fun h => by rw [h, map_zero] at hdv; exact zero_ne_one hdv`. Establish `hm : d / w ^ k ∈ Formalism.UG.Ov D.host.F v` using `by show Valued.v ((d / w ^ k : v.adicCompletion D.host.F)) ≤ 1; exact le_of_eq hdv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmi : (d / w ^ k)⁻¹ ∈ Formalism.UG.Ov D.host.F v` using `by show Valued.v ((d / w ^ k : v.adicCompletion D.host.F)⁻¹) ≤ 1; rw [map_inv₀, hdv, inv_one]`. Use `⟨⟨d / w ^ k, hm⟩, isUnit_iff_exists_inv.2 ⟨⟨_, hmi⟩, Subtype.ext (mul_inv_cancel₀ hne)⟩, ?_⟩` and prove the remaining obligations. Use `show _ = w ^ k * (d / w ^ k)`. Rewrite using `[hd, mul_div_cancel₀ _ (pow_ne_zero _ hu0)]`. Take `⟨R₀, hR₀⟩` from `GlobalTheory.SplitPlace.exists_reps (Formalism.UG.Final.GLintComm D.host.F v (Wc D i).rank) (GlobalTheory.SplitPlace.comp (Wc D i) π B α)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `Formalism.IndefR.Fin.HCount.card_reps (Formalism.UG.Ov D.host.F v) hirr htype (R := R₀) hR₀`. Use `choose ψ hψs hψ using hex`. Establish `hl` using `lift_isReps (ρ := GlobalTheory.SplitPlace.comp (Wc D i) π B) (S := SuppAt e (Wc D i)) (K := (KsphC (Wc D i) ∅ : Set (GA D (Wc D i)))) (fun _ _ => GlobalTheory.SplitPlace.suppAt_mul) (fun _ => GlobalTheory.SplitPlace.suppAt_inv) hinj hKc hH.1 hR₀ ψ hψs hψ`. Establish `hdc : Bridge.IsDC (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) α (R₀.image ψ)`. Use `isDC_of_splits hs levG_le_flag ((hLp α).2 hH.1) (fun a ha => ?_) hK hl.1 hl.2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, -, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `(hLp _).2 (hψs b)`. Set `φ : D.host.E →+* v.adicCompletion D.host.F` to `(π.comp (finPart D)).comp (incA D)`. Establish `hP : ∀ x : 𝓞 D.host.E, x ∈ P.asIdeal ↔ Valued.v (φ x) < 1`. Introduce `x`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `hx0 : Valued.v (φ x) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff, map_ne_zero]`. Conclude with `fun h => hx (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he.2 x hx, map_mul, c4]`. Use `show ¬ Valued.v (φ (x : D.host.E)⁻¹) ≤ 1 ↔ _`. Rewrite using `[map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 hx0)]`. Establish `hq : Fintype.card (IsLocalRing.ResidueField (Formalism.UG.Ov D.host.F v)) = Ideal.absNorm P.asIdeal`. Rewrite using `[← Nat.card_eq_fintype_card]`.
-
-Conclude with `GlobalTheory.SplitUnif.card_residueField v φ P c5 hP`. Rewrite using `[card_eq_of_isDC hRc hdc, card_image_section ψ hψ, hc0, gaussBinom_eq, hq, rank_Wc]`.
+A detailed English derivation is pending.
 -/
 theorem card_cosets : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),

@@ -21,7 +21,7 @@ def ball (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K where
   neg_mem' := fun {a} ha => by simpa using ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball {K : Type} [NormedField K] [IsUltrametricDist K] {a : K} :
     a ∈ ball K ↔ ‖a‖ ≤ 1 := Iff.rfl
@@ -37,7 +37,7 @@ section Pts
 variable {K : Type} [Field K] [DecidableEq K] (W : WeierstrassCurve K)
 
 /- English proof (translation)
-Apply the tactic sequence `cases Q <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem px_neg (Q : W.toAffine.Point) : px W (-Q) = px W Q := by
   cases Q <;> rfl
@@ -55,30 +55,28 @@ end Shape
 open Shape
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Reformulated.B.SeriesSubgroup.XTShape_holds`.
+A detailed English derivation is pending.
 -/
 theorem XTShape_holds : XTShape := UpperTheory.Reformulated.B.SeriesSubgroup.XTShape_holds
 
 /- English proof (translation)
-Introduce `K _ _ _ W hW P Q hP0 hQ0 hPx hPy hQx hQy hs hd`. Take `⟨hI, hc0, hc1, hc2⟩` from `hX K W hW P hP0 hPx hPy`. Take `⟨rC, -, rAdd, rNeg, -⟩` from `hR K`. Take `⟨-, -, rU, -⟩` from `hA K`. Establish `hf : IntS (C (px W Q) - xT W P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg]`. Conclude with `rAdd _ _ (rC _ hQx) (rNeg _ hI)`. Establish `e0 : coeff 0 (C (px W Q) - xT W P) = px W Q - px W P`. Rewrite using `[map_sub, hc0, coeff_zero_C]`. Establish `e1 : coeff 1 (C (px W Q) - xT W P) = -psi2 W P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hc1, coeff_C]`. Simplify using the standard rewrite rules. Establish `hxeq : (P + Q = 0 ∨ P - Q = 0) → px W Q = px W P`. Introduce and unpack `(h | h)`. Rewrite using `[eq_neg_of_add_eq_zero_left h, px_neg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero.mp h]`. Use `⟨fun h1 h2 => ?_, fun h1 h2 => ?_, fun h1 h2 => ?_⟩` and prove the remaining obligations. Use `rU 0 _ hf (fun i hi => absurd hi (Nat.not_lt_zero i)) ?_` and prove the remaining obligations. Rewrite using `[e0, norm_sub_rev]`. Conclude with `hD K W hW P Q hP0 hQ0 h1 h2 hPx hPy hQx hQy (hs h1) (hd h2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `rU 1 _ hf (fun i hi => ?_) ?_` and prove the remaining obligations. Take `rfl : i = 0` from `by omega`. Rewrite using `[e0, hxeq h1, sub_self]`. Rewrite using `[e1, norm_neg]`. Break down `h1 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPQ : P = -Q` using `eq_neg_of_add_eq_zero_left h`. Establish `hPP : P + P = P - Q` using `by rw [hPQ, sub_eq_add_neg]`. Establish `hne : P + P ≠ 0`. Rewrite using `[hPQ, ← neg_add]`. Conclude with `neg_ne_zero.mpr h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hP K W hW P hP0 hne hPx hPy ?_` and prove the remaining obligations. Rewrite using `[hPP]`. Conclude with `hd (hPP ▸ hne)`. Establish `hPQ : P = Q` using `sub_eq_zero.mp h`. Establish `hne : P + Q ≠ 0` using `by rw [hPQ]; exact h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hne' : P + P ≠ 0` using `by rw [hPQ]; exact h2`. Use `hP K W hW P hP0 hne' hPx hPy ?_` and prove the remaining obligations. Use `hs hne` as an intermediate fact. Rewrite `this` using `[← hPQ]`. Then use the resulting hypothesis. Establish `hPQ : P = Q` using `sub_eq_zero.mp h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨k0, k1⟩` from `hK K W hW P hP0 (by rw [hPQ]; exact h2) hPx hPy`. Use `rU 2 _ hf (fun i hi => ?_) ?_` and prove the remaining obligations. Establish `: i = 0 ∨ i = 1` using `by omega`. Break down `this with rfl | rfl` into its components or cases. Rewrite using `[e0, hPQ, sub_self]`.
-
-Rewrite using `[e1, k0, neg_zero]`. Rewrite using `[map_sub, hc2 k0, coeff_C]`. Simplify using `using k1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem FacShape_of (hR : IntRules) (hA : UnitAtRules) (hK : UnitKap) (hP : UnitPsi2)
     (hD : UnitDiff) (hX : XTShape) : FacShape := by

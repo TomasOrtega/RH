@@ -4,21 +4,21 @@ open scoped ENNReal Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `α Θ S xf yf Φ Tr f B₁ B₂ R₁ R₂ hf hR hB`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg hf]`. Establish `h1 : ∑ a ∈ S, ENNReal.ofReal (f a) = ∑ x ∈ R₁, ∑ y ∈ R₂, ∑ a ∈ (S.filter (fun a => xf a = x)).filter (fun a => yf a = y), ENNReal.ofReal (f a)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := xf) (t := R₁) (fun a ha => (hR a ha).1)]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := yf) (t := R₂) (fun a ha => (hR a (Finset.mem_filter.1 ha).1).2.1)]`. Rewrite using `[h1]`. Use `Finset.sum_le_sum (fun x _ => Finset.sum_le_sum (fun y _ => ?_))` and prove the remaining obligations. Establish `hmem : ∀ a ∈ (S.filter (fun a => xf a = x)).filter (fun a => yf a = y), a ∈ S ∧ xf a = x ∧ yf a = y`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter] at ha`. Conclude with `⟨ha.1.1, ha.1.2, ha.2⟩`. Generalize the expression as in `hS' : (S.filter (fun a => xf a = x)).filter (fun a => yf a = y) = S' at hmem ⊢`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := Φ) (t := S'.image Φ) (fun a ha => Finset.mem_image_of_mem Φ ha)]`. Establish `hfib : ∀ t ∈ S'.image Φ, ∑ a ∈ S'.filter (fun a => Φ a = t), ENNReal.ofReal (f a) ≤ ENNReal.ofReal (B₁ x * B₂ y)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨a₀, ha₀, rfl⟩` from `Finset.mem_image.1 ht`. Take `⟨ha₀S, hx₀, hy₀⟩` from `hmem a₀ ha₀`. Establish `hsub : S'.filter (fun a => Φ a = Φ a₀) = S.filter (fun b => Φ b = Φ a₀ ∧ xf b = xf a₀ ∧ yf b = yf a₀)`. Substitute `hS'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use extensionality with `b`. Simplify using `only [Finset.mem_filter]`. Rewrite using `[hx₀, hy₀]`. The claim follows by propositional logic. Rewrite using `[hsub, ← ENNReal.ofReal_sum_of_nonneg (fun b hb => hf b (Finset.mem_filter.1 hb).1)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.ofReal_le_ofReal (hB a₀ ha₀S)).trans_eq (by rw [hx₀, hy₀])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (((Tr x y).encard : ℕ∞) : ℝ≥0∞) * ENNReal.ofReal (B₁ x * B₂ y) := by gcongr`. Establish `hsubT : ((S'.image Φ : Finset Θ) : Set Θ) ⊆ Tr x y`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 ht)`. Take `⟨haS, hxa, hya⟩` from `hmem a ha`. Establish `h` using `(hR a haS).2.2`. Rewrite `h` using `[hxa, hya]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hc` using `Set.encard_le_encard hsubT`. Rewrite `hc` using `[Set.encard_coe_eq_coe_finsetCard]`. Rewrite using `[← ENat.toENNReal_coe]`. Conclude with `ENat.toENNReal_le.2 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fibre_two_index_bound : ∀ (α Θ : Type) (S : Finset α) (xf yf : α → ℕ) (Φ : α → Θ) (Tr : ℕ → ℕ → Set Θ) (f : α → ℝ) (B₁ B₂ : ℕ → ℝ) (R₁ R₂ : Finset ℕ), (∀ a ∈ S, 0 ≤ f a) → (∀ a ∈ S, xf a ∈ R₁ ∧ yf a ∈ R₂ ∧ Φ a ∈ Tr (xf a) (yf a)) → (∀ a ∈ S, ∑ b ∈ S.filter (fun b => Φ b = Φ a ∧ xf b = xf a ∧ yf b = yf a), f b ≤ B₁ (xf a) * B₂ (yf a)) → ENNReal.ofReal (∑ a ∈ S, f a) ≤ ∑ x ∈ R₁, ∑ y ∈ R₂, (((Tr x y).encard : ℕ∞) : ℝ≥0∞) * ENNReal.ofReal (B₁ x * B₂ y) := by
   intro α Θ S xf yf Φ Tr f B₁ B₂ R₁ R₂ hf hR hB

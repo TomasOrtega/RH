@@ -12,29 +12,29 @@ def chr {V : Type} [Fintype V] (μ x : V → ℝ) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ))
 
 /- English proof (translation)
-Simplify using `only [chr, Pi.add_apply, Complex.ofReal_add, mul_add, Finset.sum_add_distrib, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chr_add {V : Type} [Fintype V] (μ x y : V → ℝ) : chr μ (x + y) = chr μ x * chr μ y := by
   simp only [chr, Pi.add_apply, Complex.ofReal_add, mul_add, Finset.sum_add_distrib, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `only [chr, Pi.add_apply, Complex.ofReal_add, mul_add, add_mul, Finset.sum_add_distrib, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chr_add' {V : Type} [Fintype V] (μ ν x : V → ℝ) : chr (μ + ν) x = chr μ x * chr ν x := by
   simp only [chr, Pi.add_apply, Complex.ofReal_add, mul_add, add_mul, Finset.sum_add_distrib, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `[chr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chr_zero {V : Type} [Fintype V] (μ : V → ℝ) : chr μ 0 = 1 := by simp [chr]
 
 /- English proof (translation)
-Simplify using `[chr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chr_zero' {V : Type} [Fintype V] (x : V → ℝ) : chr 0 x = 1 := by simp [chr]
 
 /- English proof (translation)
-Establish `: (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ)) = ((2 * Real.pi * ∑ v, μ v * x v : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[chr, this, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_chr {V : Type} [Fintype V] (μ x : V → ℝ) : ‖chr μ x‖ = 1 := by
   have : (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ)) = ((2 * Real.pi * ∑ v, μ v * x v : ℝ) : ℂ) * Complex.I := by
@@ -42,11 +42,11 @@ theorem norm_chr {V : Type} [Fintype V] (μ x : V → ℝ) : ‖chr μ x‖ = 1 
   rw [chr, this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `Function.ne_iff.1 h`. Establish `hv' : (μ v : ℂ) ≠ 0` using `by exact_mod_cast hv`. Use `⟨Pi.single v (1 / (2 * μ v)), ?_⟩` and prove the remaining obligations. Establish `: ∑ w, (μ w : ℂ) * ((Pi.single v (1 / (2 * μ v)) : V → ℝ) w : ℂ) = 1 / 2`. Rewrite using `[Finset.sum_eq_single v]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.single_eq_same]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[chr, this, ← Complex.exp_pi_mul_I]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_chr {V : Type} [Fintype V] (μ : V → ℝ) (h : μ ≠ 0) : ∃ g, chr μ g = -1 := by
   classical
@@ -62,13 +62,13 @@ theorem exists_chr {V : Type} [Fintype V] (μ : V → ℝ) (h : μ ≠ 0) : ∃ 
   congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[show g = f from funext e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hasSum_congr' {ι : Type} {f g : ι → ℂ} {d : ℂ} (h : HasSum f d) (e : ∀ i, g i = f i) : HasSum g d := by
   rwa [show g = f from funext e]
 
 /- English proof (translation)
-Establish `h2` using `((h x).add (h (x + g))).div_const 2`. Establish `hd : (d + d) / 2 = d` using `by ring`. Rewrite `h2` using `[hd]`. Use `hasSum_congr' h2 (fun i => ?_)` and prove the remaining obligations. Rewrite using `[chr_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,7 +83,7 @@ private theorem hasSum_average_chr_of_hasSum {V ι : Type} [Fintype V] (μ : ι 
   ring
 
 /- English proof (translation)
-Rewrite using `[norm_div]`. Establish `h1` using `norm_add_le (1 : ℂ) (chr μ x)`. Rewrite `h1` using `[norm_one, norm_chr]`. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -96,15 +96,15 @@ private theorem norm_one_add_chr_div_two_le_one {V : Type} [Fintype V] (μ x : V
   linarith
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Conclude with `⟨B, fun i => le_rfl, by simp, h⟩`. Introduce `j S _ ih`. Take `⟨C, hCn, hCS, hC⟩` from `ih`. Distinguish the cases in `hj : C j = 0`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨C, hCn, fun i hi => ?_, hC⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `hj`. Conclude with `hCS i hi`. Establish `hB : B j ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hB0`. Apply `hj` to reduce the goal to its premises. Establish `h3` using `hCn j`. Rewrite `h3` using `[hB0, norm_zero]`. Conclude with `norm_le_zero_iff.mp h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_chr (μ j) (hμ j hB)`. Use `⟨fun i => C i * ((1 + chr (μ i) g) / 2), fun i => ?_, fun i hi => ?_, fun x => hasSum_average_chr_of_hasSum μ C d hC g x⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hCn i`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Simplify using `[hg]`. Simplify using `[hCS i hi]`.
+A detailed English derivation is pending.
 -/
 theorem kill_freq {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (d : ℂ) (hμ : ∀ i, B i ≠ 0 → μ i ≠ 0)
     (h : ∀ x, HasSum (fun i => B i * chr (μ i) x) d) (S : Finset ι) :
@@ -139,13 +139,13 @@ theorem kill_freq {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → 
         · simp [hCS i hi]
 
 /- English proof (translation)
-Establish `hB : Summable B`. Establish `h0` using `(h 0).summable`. Simplify `h0` using `[chr_zero]`. Establish `hnB : Summable (fun i => ‖B i‖)` using `summable_norm_iff.mpr hB`. Establish `key : ∀ ε > 0, ‖d‖ ≤ ε`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε hε`. Take `⟨S, hS⟩` from `(summable_iff_vanishing_norm.mp hnB) ε hε`. Take `⟨C, hCn, hCS, hC⟩` from `kill_freq μ B d hμ h S`. Establish `hC0` using `Filter.Tendsto.norm (hC 0)`. Use `le_of_tendsto' hC0 (fun t => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [chr_zero, mul_one]`. Establish `e1 : ∑ i ∈ t \ S, C i = ∑ i ∈ t, C i` using `Finset.sum_subset Finset.sdiff_subset (fun i hi hni => hCS i (by`. Rewrite `hni` using `[Finset.mem_sdiff]`. Use the proof step `tauto))`. Rewrite using `[← e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hd`. Establish `hpos : 0 < ‖d‖` using `norm_pos_iff.mpr hd`. Establish `h3` using `key (‖d‖ / 2) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem const_eq_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (d : ℂ) (hμ : ∀ i, B i ≠ 0 → μ i ≠ 0)
     (h : ∀ x, HasSum (fun i => B i * chr (μ i) x) d) : d = 0 := by
@@ -176,13 +176,13 @@ theorem const_eq_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι 
   linarith
 
 /- English proof (translation)
-Apply `neg_eq_zero.mp` to reduce the goal to its premises. Apply `const_eq_zero (fun i => μ i + -μ j) (Function.update B j 0) (-B j)` to reduce the goal to its premises. Introduce `i hi h0`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hi`. Conclude with `hij (hμ (add_neg_eq_zero.mp h0))`. Introduce `x`. Establish `h1` using `((h x).mul_left (chr (-μ j) x)).update j 0`. Establish `hc : chr (-μ j) x * chr (μ j) x = 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← chr_add', neg_add_cancel, chr_zero']`. Establish `hval : (0 - chr (-μ j) x * (B j * chr (μ j) x) + chr (-μ j) x * 0) = -B j`. Take the linear combination `(-B j) * hc`. Rewrite `h1` using `[hval]`. Use `hasSum_congr' h1 (fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hij, Function.update_of_ne hij, chr_add']`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coef_eq_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (hμ : Function.Injective μ)
     (h : ∀ x, HasSum (fun i => B i * chr (μ i) x) 0) (j : ι) : B j = 0 := by
@@ -211,7 +211,7 @@ theorem coef_eq_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι �
 end GlobalTheory.HilbertThetaSeries.QUniq
 
 /- English proof (translation)
-Simplify using `only [ez, GlobalTheory.HilbertThetaSeries.QUniq.chr, UpperHalfPlane.coe_mk]`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem ez_at_imaginary_unit_shift_eq {F : Type} [Field F] [NumberField F] (ζ : F) (x : InfinitePlace F → ℝ) :
     ez ζ (fun v => UpperHalfPlane.mk ((x v : ℂ) + Complex.I) (by simp)) =
@@ -225,13 +225,13 @@ private theorem ez_at_imaginary_unit_shift_eq {F : Type} [Field F] [NumberField 
 open GlobalTheory.HilbertThetaSeries.QUniq in
 
 /- English proof (translation)
-Introduce `F _ _ _ f a b ha hb`. Use function extensionality and compare the values at `ξ`. Establish `hinj : Function.Injective (fun ζ : F => fun v : InfinitePlace F => reAt v ζ)`. Introduce `ζ η hζη`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hv` using `IsTotallyReal.isReal v`. Establish `h1` using `congrFun hζη v`. Simplify using `only [reAt] at h1`. Apply `(InfinitePlace.embedding_of_isReal hv).injective` to reduce the goal to its premises. Rewrite `h1` using `[← InfinitePlace.embedding_of_isReal_apply hv ζ, ← InfinitePlace.embedding_of_isReal_apply hv η, Complex.ofReal_re, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hsum : ∀ x : InfinitePlace F → ℝ, HasSum (fun ζ => ((a ζ - b ζ) * Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v ζ : ℂ) * Complex.I)) * chr (fun v => reAt v ζ) x) 0`. Introduce `x`. Establish `h2` using `(ha.2 (fun v => UpperHalfPlane.mk ((x v : ℂ) + Complex.I) (by simp))).sub (hb.2 (fun v => UpperHalfPlane.mk ((x v : ℂ) + Complex.I) (by simp)))`. Rewrite `h2` using `[sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasSum_congr' h2 (fun ζ => ?_)` and prove the remaining obligations. Simplify using `only [ez_at_imaginary_unit_shift_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `coef_eq_zero (fun ζ : F => fun v => reAt v ζ) _ hinj hsum ξ`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_right (Complex.exp_ne_zero _))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.hasQ_unique : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (f : Hn F → ℂ) (a b : F → ℂ),
     HasQ f a → HasQ f b → a = b := by

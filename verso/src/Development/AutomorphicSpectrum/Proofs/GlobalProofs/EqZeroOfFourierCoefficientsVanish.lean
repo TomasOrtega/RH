@@ -19,9 +19,9 @@ section Gen
 variable {V : Type*} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
 
 /- English proof (translation)
-Set `p : C(V, V ⧸ Λ)` to `⟨QuotientAddGroup.mk, continuous_quotient_mk'⟩`. Establish `hq : Topology.IsQuotientMap p` using `QuotientAddGroup.isQuotientMap_mk Λ`. Establish `hfac : Function.FactorsThrough (⟨f, hf⟩ : C(V, ℂ)) p`. Introduce `a b hab`. Establish `h1 : -a + b ∈ Λ` using `QuotientAddGroup.eq.1 hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hp a _ h1`. Simplify using `using h2.symm`. Use `⟨hq.lift ⟨f, hf⟩ hfac, fun x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (hq.lift_comp ⟨f, hf⟩ hfac) x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_descent (Λ : AddSubgroup V) (f : V → ℂ) (hf : Continuous f)
     (hp : ∀ x, ∀ l ∈ Λ, f (x + l) = f x) :
@@ -37,11 +37,11 @@ theorem exists_descent (Λ : AddSubgroup V) (f : V → ℂ) (hf : Continuous f)
   exact DFunLike.congr_fun (hq.lift_comp ⟨f, hf⟩ hfac) x
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `himg : (QuotientAddGroup.mk '' K : Set (V ⧸ Λ)) = Set.univ`. Use `Set.eq_univ_of_forall fun q => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨l, hl, hx⟩` from `hc x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x - l, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq]`. Establish `h1 : -(x - l) + x = l` using `by abel`. Rewrite using `[h1]` and apply the resulting hypothesis. Rewrite using `[← himg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK.image continuous_quotient_mk'`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_quotient (Λ : AddSubgroup V) {K : Set V} (hK : IsCompact K)
     (hc : ∀ x, ∃ l ∈ Λ, x - l ∈ K) : CompactSpace (V ⧸ Λ) := by
@@ -58,19 +58,17 @@ theorem compactSpace_quotient (Λ : AddSubgroup V) {K : Set V} (hK : IsCompact K
   exact hK.image continuous_quotient_mk'
 
 /- English proof (translation)
-Use `set S : Submodule ℂ C(X, ℂ) := Submodule.span ℂ (Set.range c) with hS`. Establish `hcS : ∀ t, c t ∈ S` using `fun t => Submodule.subset_span ⟨t, rfl⟩`. Establish `h1 : (1 : C(X, ℂ)) ∈ S` using `h0 ▸ hcS 0`. Establish `hmul : ∀ x y, x ∈ S → y ∈ S → x * y ∈ S`. Introduce `x y hx hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : S * S ≤ S`. Rewrite using `[hS, Submodule.span_mul_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, _, ⟨t, rfl⟩, rfl⟩`. Use `show c s * c t ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hadd]`. Conclude with `hcS _`. Conclude with `hle (Submodule.mul_mem_mul hx hy)`. Establish `hst : ∀ x ∈ S, star x ∈ S`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => obtain ⟨t, rfl⟩ := h`. Rewrite using `[hstar]`. Conclude with `hcS _`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `S.add_mem hx hy`. Consider the case `smul a x _ hx => rw [star_smul]`. Conclude with `S.smul_mem _ hx`. Set `A : StarSubalgebra ℂ C(X, ℂ)` to `{ toSubalgebra := S.toSubalgebra h1 hmul, star_mem' := fun {a} ha => hst a ha }`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : A.SeparatesPoints`. Introduce `x y hxy`. Take `⟨t, ht⟩` from `hsep x y hxy`. Conclude with `⟨c t, ⟨c t, hcS t, rfl⟩, ht⟩`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints A hA`.
-
-Establish `hf : f ∈ (A.topologicalClosure : Set C(X, ℂ))`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hf` using `[StarSubalgebra.topologicalClosure_coe]`. Then use the resulting hypothesis.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_closure_span {X : Type*} [TopologicalSpace X] [CompactSpace X] {T : Type*} [AddCommGroup T]
     (c : T → C(X, ℂ)) (h0 : c 0 = 1) (hadd : ∀ s t, c (s + t) = c s * c t)
@@ -109,51 +107,45 @@ theorem mem_closure_span {X : Type*} [TopologicalSpace X] [CompactSpace X] {T : 
   rwa [StarSubalgebra.topologicalClosure_coe] at hf
 
 /- English proof (translation)
-Use `haveI : CompactSpace (V ⧸ Λ) := compactSpace_quotient Λ hK hc`. Use `choose c hcχ using fun t => exists_descent Λ (χ t) (hχc t) (hχp t)`. Take `⟨gb, hgb⟩` from `exists_descent Λ g hg hgp`. Establish `hext : ∀ a b : C(V ⧸ Λ, ℂ), (∀ x : V, a (QuotientAddGroup.mk x) = b (QuotientAddGroup.mk x)) → a = b`. Introduce `a b h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Conclude with `h x`. Establish `hc0 : c 0 = 1` using `hext _ _ fun x => by`. Rewrite using `[hcχ, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcadd : ∀ s t, c (s + t) = c s * c t` using `fun s t => hext _ _ fun x => by`. Rewrite using `[hcχ, hadd, ContinuousMap.mul_apply, hcχ, hcχ]`. Establish `hcstar : ∀ t, star (c t) = c (-t)` using `fun t => hext _ _ fun x => by`. Rewrite using `[ContinuousMap.star_apply, hcχ, hcχ, hconj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsepc : ∀ p q : V ⧸ Λ, p ≠ q → ∃ t, c t p ≠ c t q`. Introduce `p q hpq`. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push Not at hcon`. Apply `hpq` to reduce the goal to its premises. Rewrite using `[QuotientAddGroup.eq]`. Conclude with `hsep a b fun t => by simpa [hcχ] using hcon t`. Establish `hfin : μ D < ⊤` using `Formalism.IndefR.Tow.fd_measure_lt_top hD hK (fun y => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Take `⟨l, hl, hy⟩` from `hc y`. Use `⟨-l, Λ.neg_mem hl, ?_⟩` and prove the remaining obligations. Establish `h1 : -l + y = y - l` using `by abel`. Rewrite using `[h1])` and apply the resulting hypothesis. Use `haveI : IsFiniteMeasure (μ.restrict D) := ⟨by simpa using hfin⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `L : C(V ⧸ Λ, ℂ) → ℂ` to `fun s => ∫ b in D, g b * s (QuotientAddGroup.mk b) ∂μ`. Establish `hbd : ∀ (s : C(V ⧸ Λ, ℂ)) (b : V), ‖g b * s (QuotientAddGroup.mk b)‖ ≤ ‖gb‖ * ‖s‖`. Introduce `s b`. Rewrite using `[norm_mul, ← hgb b]`. Conclude with `mul_le_mul (gb.norm_coe_le_norm _) (s.norm_coe_le_norm _) (norm_nonneg _) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ s : C(V ⧸ Λ, ℂ), Integrable (fun b => g b * s (QuotientAddGroup.mk b)) (μ.restrict D)`. Introduce `s`. Establish `hcont : Continuous fun b => g b * s (QuotientAddGroup.mk b)` using `hg.mul (s.continuous.comp continuous_quotient_mk')`. Conclude with `Integrable.of_bound hcont.aestronglyMeasurable (‖gb‖ * ‖s‖) (ae_of_all _ (hbd s))`. Establish `hLc : Continuous L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : LipschitzWith (Real.toNNReal (‖gb‖ * (μ.restrict D).real Set.univ)) L`. Use `LipschitzWith.of_dist_le' fun s s' => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm]`. Establish `h1 : L s - L s' = ∫ b in D, g b * (s - s') (QuotientAddGroup.mk b) ∂μ` using `by show (∫ b in D, _ ∂μ) - (∫ b in D, _ ∂μ) = _`. Rewrite using `[← integral_sub (hint s) (hint s')]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Simplify using `[mul_sub]`. Rewrite using `[h1]`. Establish `h2` using `norm_integral_le_of_norm_le_const (μ := μ.restrict D) (ae_of_all _ (hbd (s - s')))`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hl.continuous`. Establish `hz : ∀ s ∈ Submodule.span ℂ (Set.range c), L s = 0`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s h`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, rfl⟩` from `h`. Establish `h1` using `hF (-t)`. Rewrite `h1` using `[neg_neg]`. Use `show ∫ b in D, g b * c t (QuotientAddGroup.mk b) ∂μ = 0`. Simplify `h1` using `only [hcχ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp [L]`. Consider the case `add s s' _ _ hs hs'`. Establish `h1 : L (s + s') = L s + L s'` using `by show _ = (∫ b in D, _ ∂μ) + (∫ b in D, _ ∂μ)`. Rewrite using `[← integral_add (hint s) (hint s')]`. Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[mul_add]`. Rewrite using `[h1, hs, hs', add_zero]`. Consider the case `smul a s _ hs`. Establish `h1 : L (a • s) = a * L s` using `by show _ = a * ∫ b in D, _ ∂μ`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hs, mul_zero]`. Establish `hL0 : L (star gb) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ((Submodule.span ℂ (Set.range c) : Submodule ℂ C(V ⧸ Λ, ℂ)) : Set C(V ⧸ Λ, ℂ)) ⊆ {s | L s = 0}` using `fun s hs => hz s hs`. Conclude with `closure_minimal hsub (isClosed_eq hLc continuous_const) (mem_closure_span c hc0 hcadd hcstar hsepc (star gb))`. Establish `hpt : ∀ b, g b * (star gb) (QuotientAddGroup.mk b) = ((‖g b‖ ^ 2 : ℝ) : ℂ)`. Introduce `b`. Rewrite using `[ContinuousMap.star_apply, hgb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using Complex.mul_conj' (g b)`. Establish `hR : ∫ b in D, ‖g b‖ ^ 2 ∂μ = 0`. Establish `h1 : ((∫ b in D, ‖g b‖ ^ 2 ∂μ : ℝ) : ℂ) = 0`. Rewrite using `[← integral_complex_ofReal, ← hL0]`. Conclude with `integral_congr_ae (ae_of_all _ fun b => (hpt b).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h1` after adjusting the coercions. Establish `hRint : Integrable (fun b => ‖g b‖ ^ 2) (μ.restrict D)`. Establish `hcont : Continuous fun b => ‖g b‖ ^ 2` using `hg.norm.pow 2`. Use `Integrable.of_bound hcont.aestronglyMeasurable (‖gb‖ ^ 2) (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity), ← hgb b]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) (gb.norm_coe_le_norm _) 2`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun b => by positivity) hRint).1 hR`. Set `Z : Set V` to `{y | g y ≠ 0}`. Establish `hZo : IsOpen Z` using `isOpen_ne_fun hg continuous_const`. Establish `hZD : μ (Z ∩ D) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Measure.restrict_apply hZo.measurableSet]`. Use `measure_mono_null (fun y hy => ?_) (ae_iff.1 hae)` and prove the remaining obligations. Establish `hy' : g y ≠ 0` using `hy`. Simplify using `using hy'`. Establish `hZinv : ∀ l : Λ, l +ᵥ Z = Z`.
-
-Introduce `l`. Use extensionality with `y`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Establish `h1 : g (-l +ᵥ y) = g y`. Establish `h2` using `hgp y (-(l : V)) (Λ.neg_mem l.2)`.
-
-Rewrite using `[← h2, add_comm]`. Both sides reduce to the same expression. Use `show g (-l +ᵥ y) ≠ 0 ↔ g y ≠ 0`. Rewrite using `[h1]`. Establish `hZ0` using `hD.measure_zero_of_invariant Z hZinv hZD`.
-
-Establish `hZe : Z = ∅` using `(hZo.measure_eq_zero_iff μ).1 hZ0`. Assume the negation of the conclusion as `hx`. Establish `hxZ : x ∈ Z` using `hx`. Rewrite `hxZ` using `[hZe]`. Conclude with `hxZ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_coeffs_vanish [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
     (Λ : AddSubgroup V) [Countable Λ] (μ : Measure V) [μ.IsAddHaarMeasure] {D : Set V}
@@ -293,7 +285,7 @@ theorem eq_zero_of_coeffs_vanish [SecondCountableTopology V] [MeasurableSpace V]
 end Gen
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ F).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField (F : Type) [Field F] [NumberField F] : Countable F :=
   (Module.finBasis ℚ F).equivFun.injective.countable

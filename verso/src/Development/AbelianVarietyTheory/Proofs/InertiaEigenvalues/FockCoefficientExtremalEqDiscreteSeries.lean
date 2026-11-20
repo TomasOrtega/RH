@@ -30,7 +30,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {θ : InfFam D} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
 /- English proof (translation)
-Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, hc.2.2]; exact ENNReal.one_lt_top⟩`. Establish `h` using `GlobalTheory.WeilInner.integrable_mul_conj (μ.restrict 𝓕) hb.cont.measurable ha.cont.measurable (GlobalTheory.OrientedHeis.theta_bounded hom.std hb) (GlobalTheory.OrientedHeis.theta_bounded hom.std ha)`. Conclude with `h.congr (Filter.Eventually.of_forall fun w => mul_comm _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_pair (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) {a b : WO S T → ℂ}
     (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) : Integrable (fun w => star (a w) * b w) (μ.restrict 𝓕) := by
@@ -41,7 +41,7 @@ theorem integrable_pair (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne 
   exact h.congr (Filter.Eventually.of_forall fun w => mul_comm _ _)
 
 /- English proof (translation)
-Unfold `thetaIP`. Rewrite using `[← integral_add (integrable_pair hom hc ha hb) (integrable_pair hom hc ha hb')]`. Simplify using `only [Pi.add_apply, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaInner_add_right (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) {a b b' : WO S T → ℂ}
     (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) (hb' : IsThetaFunO ψ S T b') :
@@ -51,11 +51,9 @@ theorem thetaInner_add_right (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovo
   simp only [Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Take `⟨_, _, _, _⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable T`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, hc.2.2]; exact ENNReal.one_lt_top⟩`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Take `⟨N, hN, hN₀⟩` from `exists_compact_mem_nhds g₀`. Take `⟨c, hc'⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ S T χS χT om hom b hb _ (hN.image (Continuous.prodMk_right (1 : GA D S)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `GlobalTheory.OrientedHeis.theta_bounded hom.std ha`. Use `continuousAt_of_dominated (bound := fun _ => A * c) (Filter.Eventually.of_forall fun g => (integrable_pair hom hc ha (hom.om_pres _ _ hb)).aestronglyMeasurable) ?_ (integrable_const _) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Use `filter_upwards [hN₀] with g hg`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`.
-
-Conclude with `mul_le_mul (hA w) (hc' _ ⟨g, hg, rfl⟩ w) (norm_nonneg _) ((norm_nonneg _).trans (hA w))`. Conclude with `(continuous_const.mul ((hom.om_cont b hb w).comp (Continuous.prodMk_right (1 : GA D S)))).continuousAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) {a b : WO S T → ℂ}
     (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) :
@@ -77,11 +75,9 @@ theorem continuous_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne 
   · exact (continuous_const.mul ((hom.om_cont b hb w).comp (Continuous.prodMk_right (1 : GA D S)))).continuousAt
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (GA D T)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, hc.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨N, hN, hN₀⟩` from `exists_compact_mem_nhds (0 : ℝ)`. Establish `hp : Continuous fun t : ℝ => ((1 : GA D S), g * oneP θ T τ X t)` using `continuous_const.prodMk (continuous_const.mul (GlobalTheory.Mem.Lift.continuous_oneP hθ hX))`. Take `⟨c, hc'⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ S T χS χT om hom b' hb' _ (hN.image hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `GlobalTheory.OrientedHeis.theta_bounded hom.std ha`. Establish `key` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (bound := fun _ => A * c) (F := fun t w => star (a w) * om (1, g * oneP θ T τ X t) b w) (F' := fun t w => star (a w) * om (1, g * oneP θ T τ X t) b' w) hN₀ (Filter.Eventually.of_forall fun t => (integrable_pair …`. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hA w) (hc' _ ⟨t, ht, rfl⟩ w) (norm_nonneg _) ((norm_nonneg _).trans (hA w)))`. Use the proof step `(integrable_const _)`.
-
-Use the proof step `(Filter.Eventually.of_forall fun w t _ => (GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (φ := fun g => om (1, g) b w) (φ' := fun g => om (1, g) b' w) (fun g => hd g w) g t).const_mul _)).2`. Simplify using `only [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at key`. Conclude with `key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) (hθ : IsInfFam θ)
     {τ : D.what₂.Tau} {X : Matrix (Fin T.rank) (Fin T.rank) ℂ} (hX : X ∈ lieAt T τ) {a b b' : WO S T → ℂ}
@@ -112,7 +108,7 @@ theorem hasDerivAt_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne 
   exact key
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ S T χS χT om hom θ hθ τ X hX`. Use `⟨L, fun f hf => ⟨(hL f hf).1, fun h g w => ?_⟩⟩` and prove the remaining obligations. Use `(hL f hf).2.2.2 (h, g) w` as an intermediate fact. Simplify `this` using `only [Prod.mk_mul_mk, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_gen (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
     {X : Matrix (Fin T.rank) (Fin T.rank) ℂ} (hX : X ∈ lieAt T τ) : ∃ L : Module.End ℂ (WO S T → ℂ),
@@ -124,9 +120,9 @@ theorem exists_gen (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (�
   simpa only [Prod.mk_mul_mk, mul_one] using this
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ T {φ | ∃ b, IsThetaFunO ψ S T b ∧ φ = fun g => thetaIP μ 𝓕 a (om (1, g) b)} ?_ ?_ _ ⟨b, hb, rfl⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨b, hb, rfl⟩`. Conclude with `continuous_coef hom hc ha hb`. Introduce and unpack `φ ⟨b, hb, rfl⟩ τ X hX`. Take `⟨L, hL⟩` from `exists_gen hom hθ τ hX`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨L b, (hL b hb).1, rfl⟩, hasDerivAt_coef hom hc hθ hX ha hb (hL b hb).1 ((hL b hb).2 1)⟩`.
+A detailed English derivation is pending.
 -/
 theorem smooth_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) (hθ : IsInfFam θ)
     {a b : WO S T → ℂ} (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) :
@@ -140,11 +136,11 @@ theorem smooth_coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (rat
     exact ⟨_, ⟨L b, (hL b hb).1, rfl⟩, hasDerivAt_coef hom hc hθ hX ha hb (hL b hb).1 ((hL b hb).2 1)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem T τ Z`. Take `⟨L₁, e1⟩` from `exists_gen hom hθ τ h1`. Take `⟨L₂, e2⟩` from `exists_gen hom hθ τ h2`. Use `⟨L₁ + Complex.I • L₂, fun f hf => ⟨fun h w => ?_, fun μ 𝓕 hc a ha => ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [RderC, Rder, Pi.add_apply, Pi.smul_apply]`. Rewrite using `[((e1 f hf).2 h g w).deriv, ((e2 f hf).2 h g w).deriv]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `g`. Simplify using `only [RderC, Rder, Pi.add_apply, Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hasDerivAt_coef hom hc hθ h1 ha hf (e1 f hf).1 ((e1 f hf).2 1) g).deriv, (hasDerivAt_coef hom hc hθ h2 ha hf (e2 f hf).1 ((e2 f hf).2 1) g).deriv, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, thetaInner_add_right hom hc ha (hom.om_pres _ _ (e1 f hf).1) (GlobalT …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_op (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
     (Z : Matrix (Fin T.rank) (Fin T.rank) ℂ) : ∃ L : Module.End ℂ (WO S T → ℂ), ∀ f, IsThetaFunO ψ S T f →
@@ -173,7 +169,7 @@ def Killed (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (θ : In
   ∀ τ, ∀ Z ∈ GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.pMinus M τ, ∀ h w, RderC θ T τ Z (fun g => om (h, g) f w) = 0
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_op hom hθ τ Z`. Rewrite using `[(hL f hf).2 μ 𝓕 hc a ha]`. Use function extensionality and compare the values at `g`. Establish `e : om (1, g) (L f) = 0` using `funext fun w => congrFun (((hL f hf).1 1 w).symm.trans (hk τ Z hZ 1 w)) g`. Simplify using `[e, thetaIP]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Killed.coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (ratL T S) μ 𝓕) (hθ : IsInfFam θ)
     {M : DSModel T Sp} {a f : WO S T → ℂ} (ha : IsThetaFunO ψ S T a) (hf : IsThetaFunO ψ S T f) (hk : Killed om θ M f)
@@ -188,19 +184,19 @@ theorem Killed.coef (hom : IsWeilDatumO ψ S T χS χT om) (hc : IsCovolOne (rat
 open GlobalTheory.FockKill GlobalTheory.FockIndep GlobalTheory.OrientedHeis in
 
 /- English proof (translation)
-Introduce `τ Z hZ h w`. Establish `hψ` using `hom.std`. Establish `hT` using `GlobalTheory.Chain.VacVec.cart_isCartanInv M`. Establish `hB : ∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1` using `fun τ => by`. Take `⟨ε, h1, h2, -⟩` from `hBS τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Break down `h1 a with h | h` into its components or cases. Rewrite using `[h.1, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd a.2 (not_lt.2 h.2)`. Establish `hS` using `fun τ => isCartanInv_one (hB τ)`. Take `⟨h1, h2⟩` from `pMinus_laws hZ`. Take `⟨ha, eY⟩` from `parts (GlobalTheory.SmoothAutCheck.gramAt_unit T τ) (hT τ) h1 h2`. Take `⟨lX, lY⟩` from `GlobalTheory.SmoothAutCheck.parts_mem T τ Z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `RderC`. Unfold `conjAt at lX lY ⊢`. Rewrite `lY`, the goal using `[eY]`. Generalize the expression as in `(1 / 2 : ℂ) • (Z + -((gramAt D T τ)⁻¹ * Zᴴ * gramAt D T τ)) = X at ha lX lY`. Take `⟨GX, hX⟩ : ∃ G, IsGen ψ om θ τ X G` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ S T χS χT om hom θ hθ τ _ lX`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨GY, hY⟩ : ∃ G, IsGen ψ om θ τ (Complex.I • (cart M τ * X)) G` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ S T χS χT om hom θ hθ τ _ lY`. Establish `hφ : IsThetaFunO ψ S T (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f P)` using `pure_mem (P := IsThetaFunO ψ S T) (fun _ _ => theta_add) (fun a _ => theta_smul a) (fun _ _ h => aPlus_theta hψ hθ _ _ _ h) hf _`. Establish `key` using `gen_kill hψ hθ hB (hp τ) hX hY lX lY ha hf (hv τ) (gen_kill_vac hom hθ kS kT hS hT hX hY lX lY ha hf hv) (hP τ)`. Generalize the expression as in `pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f P = φ at key hφ`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `a1` using `((hX φ hφ).2.2.2 (h, g) w).deriv`. Establish `a2` using `((hY φ hφ).2.2.2 (h, g) w).deriv`. Simplify using `only [Prod.mk_mul_mk, mul_one] at a1 a2`. Establish `a3` using `congrFun (congrArg (om (h, g)) key) w`. Rewrite `a3` using `[LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, Rder]`. Rewrite using `[a1, a2]`. Conclude with `a3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_of_harmonic (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (kS : S.SigOK) (kT : T.SigOK)
     (BS : D.what₂.Tau → Mt S.rank) (hBS : ∀ τ, IsONBasis (gramAt D S τ) 1 (BS τ) S.rank) (M : DSModel T Sp)
@@ -280,21 +276,19 @@ def killedSub (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (M : DS
 open GlobalTheory.DefLift.LowerKill GlobalTheory.PointAtPlaceHom GlobalTheory.Mem.RealTranslate in
 
 /- English proof (translation)
-Take `⟨hS, hK, v₀, w₀, hv₀, hw₀, e₀⟩` from `hio`. Use `beta_reduce at hS hK`. Set `N` to `killedSub hom hθ M pt hpt`. Establish `step1 : ∀ w, io (PiTensorProduct.tprod ℂ v₀) w ∈ N`. Take `⟨-, -, -, -, -, -, -, hd, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ S hθ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `hst : ∀ g, (N.comap (io (PiTensorProduct.tprod ℂ v₀))).map (c.ρ g) ≤ N.comap (io (PiTensorProduct.tprod ℂ v₀)) by`. Introduce `w`. Use `(((hc.2.2.2.2 _ hst).resolve_left fun h0 => ?_).ge Submodule.mem_top : w ∈ N.comap (io (PiTensorProduct.tprod ℂ v₀)))` and prove the remaining obligations. Establish `hm : w₀ ∈ N.comap (io (PiTensorProduct.tprod ℂ v₀))` using `by show io (PiTensorProduct.tprod ℂ v₀) w₀ ∈ N`. Rewrite using `[e₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hΔ`. Rewrite `hm` using `[h0, Submodule.mem_bot]`. Rewrite `hw₀` using `[hm, norm_zero]`. Conclude with `zero_ne_one hw₀`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, ha, u, hu, rfl⟩` from `hd g`. Introduce `τ Z hZ h y`. Establish `e : (fun g => om (h, g) (pt (io (PiTensorProduct.tprod ℂ v₀) (c.ρ (a * u) x))) y) = fun g => om (h * u, g) (pt (io (PiTensorProduct.tprod ℂ v₀) x)) y`. Use function extensionality and compare the values at `g`. Rewrite using `[map_mul, hc.1 a ha, one_mul, ← hS u hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e]`. Conclude with `hx τ Z hZ (h * u) y`. Set `B : MultilinearMap ℂ (fun τ => lowT M τ) (PolF D T.rank S.rank)` to `(io.flip w).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Use `mem_of_translates h1 h2 B N v₀ (fun ρ h0 => ?_) (step1 w) ?_ v` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hv₀ ρ` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Introduce `ρ k hk v u hu hv τ Z hZ h y`. Establish `e : (fun g => om (h, g) (pt (B (Function.update v ρ u))) y) = rTr T (atTau θ T ρ ((M.fr ρ)⁻¹ * k * M.fr ρ)) fun g => om (h, g) (pt (B v)) y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Use `hK ρ k hk v u hu w` as an intermediate fact. Use `show om (h, g) (pt (io (PiTensorProduct.tprod ℂ (Function.update v ρ u)) w)) y = om (h, g * atTau θ T ρ ((M.fr ρ)⁻¹ * k * M.fr ρ)) (pt (io (PiTensorProduct.tprod ℂ v) w)) y`. Rewrite using `[← this, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, RderC_rTr hθ (isRealPt_atTau hθ ρ (frame_mem_UH M ρ hk)), hv τ _ (adAt_mem_pMinus hθ M ρ τ hk hZ) h y]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem values_killed (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (M : DSModel T Sp) (h1 : LowSm M)
     (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) (c : CoefA S) (hc : c.Is) (pt : PolF D T.rank S.rank →ₗ[ℂ] (WO S T → ℂ))
@@ -348,7 +342,7 @@ theorem values_killed (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     rfl
 
 /- English proof (translation)
-Unfold `thetaIP`. Rewrite using `[Complex.star_def, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaInner_star (a b : WO S T → ℂ) : star (thetaIP μ 𝓕 a b) = thetaIP μ 𝓕 b a := by
   unfold thetaIP
@@ -358,13 +352,11 @@ theorem thetaInner_star (a b : WO S T → ℂ) : star (thetaIP μ 𝓕 a b) = th
   simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D T Sp M hM`. Set `U₀ : LowT M →ₗ[ℂ] (GA D T → ℂ)` to `{ toFun := fun e g => thetaIP μ 𝓕 a (om (1, g) (pt (io e w))) map_add' := fun e e' => by`. Use function extensionality and compare the values at `g`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply]`. Conclude with `thetaInner_add_right hom hcv ha (hom.om_pres _ _ (hpt _)) (hom.om_pres _ _ (hpt _))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `map_smul' := fun r e => by`. Use function extensionality and compare the values at `g`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, RingHom.id_apply, smul_eq_mul]`. Conclude with `thetaInner_smul_right _ _ _ _ _ }`. Set `U : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.KMap M` to `U₀.compMultilinearMap (PiTensorProduct.tprod ℂ)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hU : ∀ e, U e = fun g => thetaIP μ 𝓕 a (om (1, g) (pt (io (PiTensorProduct.tprod ℂ e) w)))` using `fun _ => rfl`. Use `GlobalTheory.KMapHol.holAd_of_kEquiv D θ T Sp M wt hθ hM hw h1 h2 U (fun e => smooth_coef hom hcv hθ ha (hpt _)) (fun τ k hk e u hu => ?_) (fun τ Z hZ e => (values_killed hom hθ M h1 h2 c hc pt hpt Δ io hio hΔ e w).coef hom hcv hθ ha (hpt _) τ Z hZ) v hv` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `hio.2.1 τ k hk e u hu w` as an intermediate fact. Use `beta_reduce at this`.
-
-Simplify using `only [hU, rTr]`. Rewrite using `[← this, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holAd_coef (hom : IsWeilDatumO ψ S T χS χT om) (hcv : IsCovolOne (ratL T S) μ 𝓕) (hθ : IsInfFam θ)
     (M : DSModel T Sp) (hM : HolShape M) {wt : D.what₂.Tau → Fin T.rank → ℤ} (hw : WtIs M wt)
@@ -400,29 +392,25 @@ theorem holAd_coef (hom : IsWeilDatumO ψ S T χS χT om) (hcv : IsCovolOne (rat
 open GlobalTheory.HolDict.InterpolationCoefficientsInL2 in
 
 /- English proof (translation)
-Use `(GlobalTheory.RealLift.exists_real_lift D θ T hθ).elim fun L hL => ?_` and prove the remaining obligations. Establish `hL1` using `hL.1`. Establish `hLmul` using `hL.2.1`. Establish `hUG` using `hL.2.2.2.1`. Establish `hLinv` using `hL.2.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(GlobalTheory.HolDict.holFn_coef_extVec D θ T Sp M w v hθ hS hW hv).1`. Establish `hBt` using `(GlobalTheory.HolDict.holFn_coef_extVec D θ T Sp M w v hθ hS hW hv).2`. Establish `hO : ∀ τ, OrthFr (gramAt D T τ) (nNeg (M.ε τ)) (x0Mat M τ)` using `fun τ => ((GlobalTheory.HolDict.ModelRep.model_rep D T Sp M τ).2.2.2 hS).1`. Establish `hU : ∀ τ, IsURepOn (Formalism.QuantumDeterminants.UH (gramAt D T τ)) (M.rep τ)` using `fun τ => (GlobalTheory.HolDict.ModelRep.model_rep D T Sp M τ).2.1`. Establish `htm : ∀ s, torEl (x0Mat M) s ∈ UG (gramAt D T)` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using TorusLaw.mul_torEl_mem hO s (one_mem_UG (Hm := gramAt D T))`. Establish `hL0 : L 1 = 1`. Establish `h` using `hLmul 1 one_mem_UG 1 one_mem_UG`. Rewrite `h` using `[mul_one]`. Conclude with `mul_left_cancel (a := L 1) (by rw [← h, mul_one])`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h11 : om (1, 1) J = J`. Rewrite using `[show ((1, 1) : GA D S × GA D T) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `horb : ∀ a, IsThetaFunO ψ S T a → HolFn (gramAt D T) (fun τ => nNeg (M.ε τ)) (x0Mat M) w fun u => thetaIP μ 𝓕 a (om (1, L u) J)`. Introduce `a ha`. Take `⟨f, hf, hfx⟩` from `hφ a ha 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `holFn_congr hf fun u hu => ?_` and prove the remaining obligations. Use `hfx _ (hL1 u hu).1` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[one_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(hL1 u hu).2 τ`. Establish `htor : ∀ s a, IsThetaFunO ψ S T a → thetaIP μ 𝓕 a (om (1, L (torEl (x0Mat M) s)) J) = torCh w s * thetaIP μ 𝓕 a J`. Introduce `s a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.HolDict.smFn_and_killedFn_of_holFn _ _ _ _ _ _ hO _ (horb a ha)`. Use `GlobalTheory.HolDict.torus_law_of_killed _ _ _ _ _ _ hO _ h1 h2 1 one_mem_UG s` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[one_mul, hL0, h11]`. Then use the resulting hypothesis. Establish `key` using `eq_const_mul hO (thetaIP μ 𝓕 J J) (horb J hJ) hB (fun u hu s => by beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : om (1, L (torEl (x0Mat M) s * u)) J = om (1, L (torEl (x0Mat M) s)) (om (1, L u) J)`. Rewrite using `[hLmul _ (htm s) _ hu, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `a1` using `htor s _ (hom.om_pres (1, L (torEl (x0Mat M) s)) _ (hom.om_pres (1, L u) _ hJ))`. Rewrite `a1` using `[GlobalTheory.WeilPairing.thetaInner_weilRep D ψ S T χS χT om μ 𝓕 hom hcv _ _ _ (hom.om_pres _ _ hJ) hJ]`. Establish `a2` using `congrArg star a1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `a2` using `[star_mul', thetaInner_star, thetaInner_star]`. Establish `a3 : torCh w s * star (torCh w s) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_torCh]`. Simplify using the standard rewrite rules. Rewrite using `[e, a2, ← mul_assoc, a3, one_mul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun u hu s => by`. Establish `a2 : ∀ τ, ⟪(v τ : M.H τ), M.rep τ ((torEl (x0Mat M) s * u) τ) (v τ : M.H τ)⟫_ℂ = (∏ a, Complex.exp ((s τ a : ℂ) * Complex.I) ^ w τ a) * ⟪(v τ : M.H τ), M.rep τ (u τ) (v τ : M.H τ)⟫_ℂ`. Introduce `τ`. Use `(congrArg (fun T : M.H τ →L[ℂ] M.H τ => ⟪(v τ : M.H τ), T (v τ : M.H τ)⟫_ℂ) ((hU τ).1.2 _ (htm s τ) _ (hu τ))).trans ?_` and prove the remaining obligations. Conclude with `inner_iso_eigen _ ((hU τ).2.1 _ (htm s τ)) (norm_prod_exp _ _) (hBt s τ) _`.
-
-Conclude with `(Finset.prod_congr rfl fun τ _ => a2 τ).trans Finset.prod_mul_distrib)`. Use the proof step `(by beta_reduce; rw [hL0, h11])`. Use the proof step `(Finset.prod_eq_one fun τ _ => by`. Use `(congrArg (fun T : M.H τ →L[ℂ] M.H τ => ⟪(v τ : M.H τ), T (v τ : M.H τ)⟫_ℂ) (hU τ).1.1).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ = 1`.
-
-Rewrite using `[inner_self_eq_norm_sq_to_K, (hv τ).1]`. Use the proof step `simp)`. Use `_ (hUG u₀)`. Use `beta_reduce at key`. Rewrite `key` using `[hLinv u₀ hu₀]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coef_eq (hom : IsWeilDatumO ψ S T χS χT om) (hcv : IsCovolOne (ratL T S) μ 𝓕) (hθ : IsInfFam θ)
     (M : DSModel T Sp) (hS : HolShape M) {w : D.what₂.Tau → Fin T.rank → ℤ} (hW : WtIs M w) {v : M.Vec}
@@ -502,13 +490,13 @@ theorem coef_eq (hom : IsWeilDatumO ψ S T χS χT om) (hcv : IsCovolOne (ratL T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hR _ i t μ 𝓕 hcv v hext w u hu`. Establish `hm` using `hR.models`. Establish `hω` using `hR.thP.ωP`. Establish `hv` using `hR.thP.vP`. Establish `hp` using `hR.thP.pt_theta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hio` using `hR.thP.ioP`. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hp i t 1` as an intermediate fact. Rewrite `this` using `[RealDat.ptP, GlobalTheory.DefLift.ThetaMap.pureTensorO_one]`. Then use the resulting hypothesis. Take `⟨hM, wt, hw⟩` from `GlobalTheory.DefLift.holShape_fixed D G Pl0 T A Ks R hm.order i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hpq : ∀ τ, ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 ≤ (Vc D i).rank` using `fun τ => by`. Establish `e` using `GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW i τ`. Establish `e'` using `rank_Wc i`. Use `r_le_V i` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW, GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.qW] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hΔ` using `killed_of_harmonic (hω i t) hm.inf (D.sp.V_sig _) (D.sp.W_sig _) (R.BV i) (hm.BV i) (R.MW i (sg0 D A)) (fun τ => ((Wc D i).sig (tauE D τ)).1) (hm.order i) (R.vP i t) hth (GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (hv i t) hth) (RealDat.Delta i) (fun …`. Conclude with `coef_eq (hω i t) hcv hm.inf _ hM hw hext (hp i t _) (fun a ha => holAd_coef (hω i t) hcv hm.inf _ hM hw _ (hm.cV i) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t)) (hp i t) _ _ (hio i t) hΔ v hext w ha) u …`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_extremal : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) μ 𝓕, IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ v : (∀ ρ, lowT (R.MW i (sg0 D A)) ρ), Formalism.IndefR.FWT.IsExtVec (R.MW i (sg0 D A)) (fun ρ => ((v ρ : (R.MW i (sg0 D A)).sm ρ))) → ∀ w, ∀ u ∈ GinfC (Wc D i),
     thetaIP μ 𝓕 (jointVec R i t v w) (R.ωP i t (1, u) (jointVec R i t v w)) =

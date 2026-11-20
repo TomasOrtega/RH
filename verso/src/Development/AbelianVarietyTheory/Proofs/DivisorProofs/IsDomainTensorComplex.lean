@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.TensorFields
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `TensorProduct.exists_finset x`. Use `⟨P.image Prod.snd, fun T hT => ?_⟩` and prove the remaining obligations. Use `⟨∑ i ∈ P.attach, i.1.1 ⊗ₜ[k] (⟨i.1.2, Algebra.subset_adjoin (hT (Finset.mem_image_of_mem Prod.snd i.2))⟩ : Algebra.adjoin k (T : Set K)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, Subalgebra.coe_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_attach P (fun i => i.1 ⊗ₜ[k] i.2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_lift {k κ K : Type} [Field k] [Field κ] [Field K] [Algebra k κ] [Algebra k K]
     (x : κ ⊗[k] K) : ∃ S : Finset K, ∀ T : Finset K, S ⊆ T →
@@ -30,13 +30,11 @@ theorem exists_finset_lift {k κ K : Type} [Field k] [Field κ] [Field K] [Algeb
   exact Finset.sum_attach P (fun i => i.1 ⊗ₜ[k] i.2)
 
 /- English proof (translation)
-Introduce `K κ _ _ _ _`. It suffices to establish `h : IsDomain (κ ⊗[ℂ] K) from (Algebra.TensorProduct.comm ℂ K κ).toMulEquiv.isDomain`. Use `haveI : Nontrivial (κ ⊗[ℂ] K) := inferInstance`. Use `@NoZeroDivisors.to_isDomain _ _ _ ⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Take `⟨S₁, h₁⟩` from `exists_finset_lift (k := ℂ) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S₂, h₂⟩` from `exists_finset_lift (k := ℂ) y`. Set `A` to `Algebra.adjoin ℂ ((S₁ ∪ S₂ : Finset K) : Set K)`. Take `⟨x', hx'⟩` from `h₁ (S₁ ∪ S₂) Finset.subset_union_left`. Take `⟨y', hy'⟩` from `h₂ (S₁ ∪ S₂) Finset.subset_union_right`. Use `haveI : Algebra.FiniteType ℂ A := ⟨(Subalgebra.fg_top _).mpr (Subalgebra.fg_adjoin_finset _)⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsDomain A := inferInstance`. Use `haveI : IsDomain (κ ⊗[ℂ] A) := GlobalTheory.GeomComp.isDomain_tensor_of_isAlgClosed ℂ A κ`. Set `φ` to `Algebra.TensorProduct.map (AlgHom.id ℂ κ) A.val`. Establish `hφ : Function.Injective φ` using `Module.Flat.lTensor_preserves_injective_linearMap (M := κ) A.val.toLinearMap Subtype.val_injective`. Establish `h0 : x' * y' = 0` using `hφ (by rw [map_mul, hx', hy', hxy, map_zero])`.
-
-Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Use `left`. Rewrite using `[← hx', h, map_zero]`. Use `right`. Rewrite using `[← hy', h, map_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDomain_tensor_complex : ∀ (K κ : Type) [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ],
     IsDomain (K ⊗[ℂ] κ) := by

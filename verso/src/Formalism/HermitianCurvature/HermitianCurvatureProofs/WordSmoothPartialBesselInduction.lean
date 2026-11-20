@@ -22,9 +22,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hck, ⟨R, hR⟩, -⟩` from `hF`. Establish `hCs : IsCompact {g : B.Mat P.k P.r | B.gN g ≤ R}` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R`. Establish `hz : ∀ g ∈ B.GV P.k P.r, g ∉ {g : B.Mat P.k P.r | B.gN g ≤ R} → F g = 0` using `fun g hg hgC => by`. Assume the negation of the conclusion as `h`. Conclude with `hgC (hR g hg h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hzl : p.T.base.z = D.castV (by omega : j + (P.r - j) = P.r) (liftVec P.k j (P.r - j) (p.T.bs j).z)` using `(p.T.z_lev j hj).symm`. Use `Formalism.FourierDecayAlt.P.PBG.smoothLev_of_loc fun x hx => ?_` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.partial_bessel_smooth_compact_support P.k j (P.r - j) P.r Wp Wq (p.T.bs j) p.T.base (by omega) hzl F _ hck hCs hz _ (isOpen_domP P.k P.r j p.T.base.z p.T.base.z') (hP Wp Wq P p j hj _ hCs) x hx.2 hx.1.1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smooth_pbT (hP : ProperDomPH) (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (j : ℕ) (hj : j ≤ P.r) (hF : KB.CptCoef p.T.base F) :
@@ -40,7 +40,7 @@ theorem smooth_pbT (hP : ProperDomPH) (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat
     _ (isOpen_domP P.k P.r j p.T.base.z p.T.base.z') (hP Wp Wq P p j hj _ hCs) x hx.2 hx.1.1
 
 /- English proof (translation)
-The claim follows from `| [], _ => smooth_pbT hP P p F j (by omega) hF | l :: w, e => by show Q.SmoothLev P.k P.r 0 _ (D.vLet P.k P.r p.T.base.z p.T.base.z' j (by omega) l (e 0) (D.uwG P.k P.r p.T.base.z p.T.base.z' (pbT p j (by omega) F) j (by omega) w fun a => e a.succ)) exact Formalism.FourierDecayAl …`.
+A detailed English derivation is pending.
 -/
 theorem word_smooth_partial_bessel_induction (hP : ProperDomPH) (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (j : ℕ) (hj : j + 1 ≤ P.r) (hF : KB.CptCoef p.T.base F) :
@@ -57,7 +57,7 @@ theorem word_smooth_partial_bessel_induction (hP : ProperDomPH) (P : M.Par) (p :
 end
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w hF _ e`. Conclude with `word_smooth_partial_bessel_induction hP P p F j hj hF w e`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wordSmooth_of (hP : ProperDomPH) : CutHB.WordSmooth := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w hF _ e

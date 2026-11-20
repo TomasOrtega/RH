@@ -22,13 +22,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hXu : ¬ IsUnit (PowerSeries.X : PowerSeries k)`. Introduce `hu`. Use `first`. Consider the case `(have h1 := hu.map (PowerSeries.constantCoeff k); simp at h1)`. Consider the case `(have h1 := hu.map (PowerSeries.constantCoeff (R := k)); simp at h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hbot : x.asIdeal = ⊥`. Assume the negation of the conclusion as `hne`. Establish `hmax : x.asIdeal.IsMaximal` using `x.isPrime.isMaximal hne`. Apply `hx` to reduce the goal to its premises. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hXu`. Establish `hx' : x ∈ Set.range (PrimeSpectrum.comap (algebraMap (PowerSeries k) (FractionRing (PowerSeries k))))`. Rewrite using `[PrimeSpectrum.localization_comap_range (FractionRing (PowerSeries k)) (nonZeroDivisors (PowerSeries k))]`. Use `show Disjoint _ _`. Rewrite using `[hbot, Set.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `a ha ha'`. Conclude with `nonZeroDivisors.ne_zero ha ((Submodule.mem_bot _).1 ha')`. Take `⟨y, hy⟩` from `hx'`. Conclude with `⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_jK {k : Type} [Field k] (x : Sp (PowerSeries k)) (hx : PowerSeries.X ∉ x.asIdeal) :
     x ∈ Set.range (Out.jK (PowerSeries k)) := by
@@ -55,7 +55,7 @@ theorem mem_range_jK {k : Type} [Field k] (x : Sp (PowerSeries k)) (hx : PowerSe
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `h : Epi (CommRingCat.ofHom (algebraMap V F))` using `IsLocalization.epi (nonZeroDivisors V) F`. Use `show Mono (Spec.map (CommRingCat.ofHom (algebraMap V F)))`. Conclude with `Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap V F)).op`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_spMap_subtype {F : Type} [Field F] (V : ValuationSubring F) : Mono (spMap V.subtype) := by
   have h : Epi (CommRingCat.ofHom (algebraMap V F)) := IsLocalization.epi (nonZeroDivisors V) F

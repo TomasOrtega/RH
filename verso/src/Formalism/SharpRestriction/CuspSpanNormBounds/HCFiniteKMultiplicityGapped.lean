@@ -7,35 +7,35 @@ namespace Formalism.MainNotions.BridgeDS3
 open Formalism.MainNotions Formalism.MainNotions.S
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_exists_gapped [Fact Formalism.MainNotions.DiscreteSeriesWeylDimension.DiscreteSeriesExistsG] : DiscreteSeriesWeylDimension.DiscreteSeriesExistsG := Fact.out
 
 variable [Fact Formalism.MainNotions.DiscreteSeriesWeylDimension.DiscreteSeriesExistsG] in
 
 /- English proof (translation)
-The claim follows from `DiscreteSeriesWeylDimension.exists_fallback_of_exists_gapped discrete_series_exists_gapped`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_exists_fallback : DiscreteSeriesWeylDimension.DiscreteSeriesExistsFallback :=
   DiscreteSeriesWeylDimension.exists_fallback_of_exists_gapped discrete_series_exists_gapped
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem lowest_K_type_mult_one_gapped [Fact Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOneG] : DiscreteSeriesWeylDimension.LowKMultOneG := Fact.out
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_unique_gapped [Fact Formalism.MainNotions.BridgeLemma₂.deg_DSUniqG] : BridgeLemma₂.deg_DSUniqG := Fact.out
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem discrete_series_unique_bessel [Fact Formalism.MainNotions.LeviCoordinates.DiscreteSeriesUniqueBesselGapped] : LeviCoordinates.DiscreteSeriesUniqueBesselGapped := Fact.out
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem HC_finite_K_multiplicity_gapped [Fact Formalism.MainNotions.BridgeCPX.HCMultDSG] : BridgeCPX.HCMultDSG := Fact.out
 

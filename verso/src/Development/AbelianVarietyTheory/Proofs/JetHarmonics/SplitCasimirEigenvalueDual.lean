@@ -8,19 +8,17 @@ open Formalism.REAL
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ n E Et Om m hrel hunit hdet hEt hOm lam x hx hxe`. Take `⟨-, -, -, hcomm⟩` from `tensor_dual_standard_rel V n E Et Om hrel hunit hEt hOm`. Take `⟨K, hK, -⟩` from `lastComatrixRow_inverts_dual V n E Om m hrel hdet hOm`. Establish `key : ∀ z : PiLp 2 (fun _ : Fin (n + 1) => V), Om z = lam • z → z (Fin.last n) ≠ 0 → ∃ j, lam = m j + (n : ℂ)`. Introduce `z hz hzl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `hK ((n : ℂ) - lam) z`. Establish `hzero : ((n : ℂ) - lam - (n : ℂ)) • z + Om z = 0`. Rewrite using `[hz, ← add_smul]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[hzero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hprod : (∏ j, ((n : ℂ) - lam + m j)) = 0`. Break down `(smul_eq_zero.mp h0.symm) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hzl`. Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.mp hprod`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨j, by linear_combination -hj⟩`. Distinguish the cases in `hl : x (Fin.last n) = 0`. Establish `hc : ∃ c, x c ≠ 0`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hx` to reduce the goal to its premises. Use extensionality with `c`. Simplify using `[hne c]`. Take `⟨c, hc⟩` from `hc`. Apply `key (Et c (Fin.last n) x)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun f => f x) (hcomm c (Fin.last n))`. Simplify using `only [Module.End.mul_apply] at h1`. Rewrite using `[h1, hxe, map_smul]`. Rewrite using `[hEt, hl, map_zero]`. Simplify using `using hc`.
-
-Conclude with `key x hxe hl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem splitCasimir_eigenvalue_dual : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (Om : Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (m : Fin (n + 1) → ℂ), GlRel E → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ w v, qdet E w v = (∏ j, (w + m j)) • v) → (∀ a b y c, Et a b y c = E a b (y c) - if c = b then y a else 0) → (∀ y a, Om y a = ∑ c, E a c (y c)) → ∀ (lam : ℂ) (x : (PiLp 2 (fun _ : Fin (n + 1) => V))), x ≠ 0 → Om x = lam • x → ∃ j, lam = m j + (n : ℂ) := by
   intro V _ _ _ n E Et Om m hrel hunit hdet hEt hOm lam x hx hxe

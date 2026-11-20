@@ -23,19 +23,19 @@ open PositivityTheory.Rg.Sw.Glob (aC ptZ jC gC actZ jF IsSiegel gZf)
 open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨pp, k, hpp, hk, rfl⟩` from `PositivityTheory.Rg.Sw.AbsSt.iwa d.n y`. Establish `hk' : InK (mR k)` using `hk`. Take `⟨nb, ma, b, a, hb, ha, hnb, hma, hpe, hZ⟩` from `up_decomp_closed pp hpp`. Take `⟨c, -, hcf⟩` from `R.locOp_mM hT hG hL`. Establish `hsw1 : IsSw (fP (1 : PX d.m d.n))` using `hFP d.m d.n 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk1 : L k (fP 1) = fun u => F0 p q e k * fP 1 u`. Rewrite using `[hρ k 1 hk', hLD.kvac k hk', fP_smul_one]`. Establish `hma21 : (mR ma).toBlocks₂₁ = 0` using `by rw [hma, mLoc, Matrix.toBlocks_fromBlocks₂₁]`. Establish `hnb21 : (mR nb).toBlocks₂₁ = 0` using `by rw [hnb, nU, Matrix.toBlocks_fromBlocks₂₁]`. Establish `hca : c a = F0 p q e ma`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hLD.law 1 ma 1 hma21`. Establish `h0 : fP (1 : PX d.m d.n) (Matrix.of (0 : Fin d.m → Fin d.n → ℂ) * a) = 1`. Establish `e0 : (Matrix.of (0 : Fin d.m → Fin d.n → ℂ) * a : Matrix (Fin d.m) (Fin d.n) ℂ) = 0`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e0]`. Conclude with `fP_one_zero`. Rewrite `h1` using `[mul_one, hsL, hsL, hcf ma a ha hma _ hsw1, R.locOp_one hT hG hL _ hsw1]`. Use `beta_reduce at h1`. Rewrite `h1` using `[fP_one_of _ (fun i j => by show ∑ k, (Matrix.of (0 : Fin d.m → Fin d.n → ℂ)) i k * a k j = 0 simp), fP_one_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h1`. Establish `hF0 : F0 p q e (pp * k) = c a * F0 p q e k`. Establish `m1` using `((PositivityTheory.Rg.Sw.AbsSt.mult d.n p q e).2 pp k hpp).1`. Establish `m2` using `((PositivityTheory.Rg.Sw.AbsSt.mult d.n p q e).2 nb ma hnb21).1`. Rewrite using `[m1, hpe, m2, weight_factor_unipotent_one p q e nb b hnb, one_mul, hca]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ' : actZ (pp * k) (Complex.I • 1) = b + Complex.I • (a * aᴴ)` using `by rw [actZ_mul_K pp k hk', hZ]`. Establish `hswk : IsSw (L k (fP 1))` using `(hL k _ hsw1).1`. Establish `hswm : IsSw (L ma (L k (fP 1)))` using `(hL ma _ hswk).1`. Rewrite using `[R.locOp_mul hT hG hL pp k _ hsw1, hpe, R.locOp_mul hT hG hL nb ma _ hswk, R.locOp_nU hT hG hL nb b hb hnb _ hswm, hcf ma a ha hma _ hswk, ← hpe, hF0, hZ', hk1]`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[gzf_eval (R.sg w) b a hb u]`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vac_law_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -80,7 +80,7 @@ theorem vac_law_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _
   ring_nf
   rfl
 /- English proof (translation)
-Rewrite using `[gf_real e p q _ X a ha y s, _root_.PositivityTheory.SiegelWeilFormula.Kdil.vac_law_k R hT hG hFP hL hLD hsL hρ (y * a s)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem gf_L_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -92,7 +92,7 @@ theorem gf_L_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _roo
     Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) (m := d.m) X y s = L (y * a s) (fP 1) := by
   rw [gf_real e p q _ X a ha y s, _root_.PositivityTheory.SiegelWeilFormula.Kdil.vac_law_k R hT hG hFP hL hLD hsL hρ (y * a s)]
 /- English proof (translation)
-Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_closed_k R hT hG hFP hL X a ha s]`. Conclude with `(hL (a s) (fP 1) (hFP _ _ 1)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fam_sw_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -102,7 +102,7 @@ theorem fam_sw_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _r
   rw [← _root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_closed_k R hT hG hFP hL X a ha s]
   exact (hL (a s) (fP 1) (hFP _ _ 1)).1
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_k R hT hG hFP hL hLD hsL hρ X a ha y s, R.locOp_mul hT hG hL y (a s) (fP 1) (hFP _ _ 1), _root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_closed_k R hT hG hFP hL X a ha s]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gf_L_fam_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -115,27 +115,25 @@ theorem gf_L_fam_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : 
   rw [_root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_k R hT hG hFP hL hLD hsL hρ X a ha y s, R.locOp_mul hT hG hL y (a s) (fP 1) (hFP _ _ 1),
     _root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_eq_L_closed_k R hT hG hFP hL X a ha s]
 /- English proof (translation)
-Take `⟨C, s', κ, ε, hs', hκ, h4, -, hconj, -, -⟩` from `R.locOp_nbar hT hA hG hL`. Take `⟨hhol, hcont, hbd⟩` from `hB d.m d.n e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X (_root_.PositivityTheory.SiegelWeilFormula.Kdil.abs_tw_k R w)`. Establish `h0s : (0 : ℂ) ∈ strip X` using `fun j => by simp [Real.pi_pos]`. Take `⟨N, δ, Cb, hN, hδ, hNb⟩` from `hbd nbb 0 h0s`. Take `⟨ρs, hρs, hss⟩` from `strip_ball X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hev : (fun z : ℂ => (nbb, z)) ⁻¹' N ∈ 𝓝 (0 : ℂ)` using `(continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds hN`. Take `⟨ρ0, hρ0, hball⟩` from `Metric.mem_nhds_iff.1 hev`. Use `set rr := min ρ0 ρs with hrrdef`. Establish `hrr : 0 < rr` using `lt_min hρ0 hρs`. Establish `hsub : Metric.ball (0 : ℂ) rr ⊆ strip X` using `(Metric.ball_subset_ball (min_le_right _ _)).trans hss`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsubN : ∀ z ∈ Metric.ball (0 : ℂ) rr, (nbb, z) ∈ N` using `fun z hz => hball (Metric.ball_subset_ball (min_le_left _ _) hz)`. Use `set Φ : ℂ → (Fin d.m → Fin d.n → ℂ) → ℂ := fun z v => Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X nbb z v with hΦ`. Establish `hΦd : ∀ v, DifferentiableOn ℂ (fun z => Φ z v) (Metric.ball 0 rr)` using `fun v => (hhol nbb v).mono hsub`. Establish `hΦc : ContinuousOn (fun zv : ℂ × (Fin d.m → Fin d.n → ℂ) => Φ zv.1 zv.2) (Metric.ball 0 rr ×ˢ Set.univ)` using `cont_slice _ _ hcont nbb _ fun zv hzv => ⟨Set.mem_univ _, hsub hzv.1, Set.mem_univ _⟩`. Establish `hΦb : ∀ z ∈ Metric.ball (0 : ℂ) rr, ∀ v, ‖Φ z v‖ ≤ Cb * Real.exp (-δ * sq v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz v`. Establish `h` using `hNb (nbb, z) (hsubN z hz) (hsub hz) v`. Simplify `h` using `[sq, neg_mul]`. Establish `hC : C ≠ 0`. Introduce `hC0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrFun (h4 _ (hFP d.m d.n 1)) 0`. Simplify using `only [locFT, hC0, zero_mul, Pi.smul_apply, smul_eq_mul, fP_one_zero, mul_one] at h`. Conclude with `hκ h.symm`. Use `set P : PX d.m d.n := (dil (2 * Real.pi) X ^ r) 1 with hP`. Establish `hGsw : IsSw (L nbb (fP P))` using `(hL nbb _ (hFP _ _ P)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hGc, hGi⟩` from `sw_cont_int hGsw`. Take `⟨ρ9, hρ9, -, hr9⟩` from `hol_int_closed Φ rr Cb δ hrr hδ hΦd hΦc hΦb (kerFT s' 0) (kerFT_cont s' 0) (kerFT_norm s' 0)`. Take `⟨-, hDc, C', hDb⟩` from `hr9 r`. Establish `hDi : Integrable (fun v => iteratedDeriv r (fun z => Φ z v) 0)`. Use `Integrable.mono' ((gauss_int_closed δ hδ).const_mul C') hDc.aestronglyMeasurable (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hDb v`. Establish `key : ∀ ξ : Fin d.m → Fin d.n → ℂ, ∫ v, kerFT s' ξ v * iteratedDeriv r (fun z => Φ z v) 0 = ∫ v, kerFT s' ξ v * L nbb (fP P) v`. Introduce `ξ`. Take `⟨ρ1, hρ1, hd1, hr1⟩` from `hol_int_closed Φ rr Cb δ hrr hδ hΦd hΦc hΦb (kerFT s' ξ) (kerFT_cont s' ξ) (kerFT_norm s' ξ)`. Take `⟨ρ2, hρ2, hd2, hr2⟩` from `fam_int_hol_closed d.m X (kerFT s' ξ) (kerFT_cont s' ξ) (kerFT_norm s' ξ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set ch : ℂ := Complex.exp (2 * Real.pi * Complex.I * ((R.sg w : ℤ) : ℂ) * Matrix.trace (((((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) • c) * ((Matrix.of ξ)ᴴ * Matrix.of ξ))) with hch`. Establish `hreal : ∀ s : ℝ, |s| < min ρ1 ρ2 → C * (∫ v, kerFT s' ξ v * Φ s v) = ch * (C * ∫ v, kerFT s' ξ v * fam d.m X s v)`. Introduce `s _`. Establish `e1 : ∀ v, Φ s v = L nbb (fun v => fam d.m X s v) v` using `fun v => congrFun (_root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_fam_k R hT hG hFP hL hLD hsL hρ X a ha nbb s) v`. Simplify using `only [e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrFun (hconj nbb c hc hnbb _ (_root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_sw_k R hT hG hFP hL X a ha s)) ξ`. Establish `hid` using `iteratedDeriv_eq_of_real_closed (f := fun z => C * ∫ v, kerFT s' ξ v * Φ z v) (g := fun z => ch * (C * ∫ v, kerFT s' ξ v * fam d.m X z v)) (ρ := min ρ1 ρ2) (lt_min hρ1 hρ2) ((hd1.mono (Metric.ball_subset_ball (min_le_left _ _))).const_mul C) (((hd2.mono (Metric.ball_subset_ball ( …`. Rewrite `hid` using `[iteratedDeriv_const_mul', iteratedDeriv_const_mul', iteratedDeriv_const_mul']`. Use `beta_reduce at hid`. Rewrite `hid` using `[(hr1 r).1, hr2 r]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [fam_deriv_closed] at hid`. Establish `h2 : C * ∫ v, kerFT s' ξ v * L nbb (fP P) v = ch * (C * ∫ v, kerFT s' ξ v * fP P v)` using `congrFun (hconj nbb c hc hnbb _ (hFP _ _ P)) ξ`. Conclude with `mul_left_cancel₀ hC (hid.trans h2.symm)`. Establish `hint : ∀ ξ : Fin d.m → Fin d.n → ℂ, ∀ g : (Fin d.m → Fin d.n → ℂ) → ℂ, Integrable g → Integrable (fun v => kerFT s' ξ v * g v)` using `fun ξ g hg => MeasureTheory.Integrable.bdd_mul hg (kerFT_cont s' ξ).aestronglyMeasurable (Filter.Eventually.of_forall fun v => kerFT_norm s' ξ v)`. Establish `hfin` using `ft_uniq_closed s' hs' (fun v => iteratedDeriv r (fun z => Φ z v) 0 - L nbb (fP P) v) (hDc.sub hGc) (hDi.sub hGi) (fun ξ => by`.
-
-Establish `h` using `key ξ`. Rewrite `h` using `[← sub_eq_zero, ← integral_sub (hint ξ _ hDi) (hint ξ _ hGi)]`. Simplify `h)` using `[kerFT, mul_sub]`. Use function extensionality and compare the values at `v`. Conclude with `sub_eq_zero.1 (congrFun hfin v)`.
+A detailed English derivation is pending.
 -/
 theorem der_nbar_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -217,15 +215,13 @@ theorem der_nbar_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : 
   funext v
   exact sub_eq_zero.1 (congrFun hfin v)
 /- English proof (translation)
-Take `⟨pp, nbb, c, hpp, hc, hnbb, rfl⟩` from `dcell_closed y hy`. Take `⟨nb', ma', b', a', hb', ha', hnb', hma', hpe', -⟩` from `up_decomp_closed pp hpp`. Take `⟨cm, -, hcf⟩` from `R.locOp_mM hT hG hL`. Take `⟨hhol, -, -⟩` from `hB d.m d.n e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X (_root_.PositivityTheory.SiegelWeilFormula.Kdil.abs_tw_k R w)`. Take `⟨ρs, hρs, hss⟩` from `strip_ball X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set eb : ℂ := Complex.exp (2 * Real.pi * Complex.I * ((R.sg w : ℤ) : ℂ) * Matrix.trace (b' * ((Matrix.of u)ᴴ * Matrix.of u))) with heb`. Use `set w' : Fin d.m → Fin d.n → ℂ := fun i j => (Matrix.of u * a') i j with hw'`. Establish `hform : ∀ f, IsSw f → L (pp * nbb) f u = eb * (cm a' * L nbb f w')`. Introduce `f hf`. Establish `h1 : IsSw (L nbb f)` using `(hL nbb f hf).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : IsSw (L ma' (L nbb f))` using `(hL ma' _ h1).1`. Rewrite using `[R.locOp_mul hT hG hL pp nbb f hf, hpe', R.locOp_mul hT hG hL nb' ma' _ h1, R.locOp_nU hT hG hL nb' b' hb' hnb' _ h2, hcf ma' a' ha' hma' _ h1]`. Both sides reduce to the same expression. Establish `hreal : ∀ s : ℝ, |s| < ρs → Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X (pp * nbb) s u = eb * (cm a' * Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X nbb s w')`. Introduce `s _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_fam_k R hT hG hFP hL hLD hsL hρ X a ha (pp * nbb) s, _root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_fam_k R hT hG hFP hL hLD hsL hρ X a ha nbb s]`. Conclude with `hform _ (_root_.PositivityTheory.SiegelWeilFormula.Kdil.fam_sw_k R hT hG hFP hL X a ha s)`. Establish `hid` using `iteratedDeriv_eq_of_real_closed (f := fun z => Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X (pp * nbb) z u) (g := fun z => eb * (cm a' * Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X nbb z w')) (ρ := ρs) hρs ((hhol _ u).mono hss) ((((hhol nbb w').mono hss).const_mul _).const_mul …`. Rewrite using `[hid, iteratedDeriv_const_mul', iteratedDeriv_const_mul']`. Use `beta_reduce`.
-
-Establish `hdn` using `congrFun (_root_.PositivityTheory.SiegelWeilFormula.Kdil.der_nbar_k R hT hA hG hFP hL hB hLD hsL hρ X a ha nbb c hc hnbb r) w'`. Use `beta_reduce at hdn`. Rewrite using `[hdn, hform _ (hFP _ _ _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gf_der_big_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
@@ -267,9 +263,9 @@ theorem gf_der_big_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R 
   beta_reduce at hdn
   rw [hdn, hform _ (hFP _ _ _)]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w L hL X a ha`. Take `⟨sL, ρ, p, q, e, -, hLD, hsL, hρ⟩` from `hLI F E σ d R w L hL`. Take `⟨hhol, hcont, hbd⟩` from `hB d.m d.n e p q _ X (_root_.PositivityTheory.SiegelWeilFormula.Kdil.abs_tw_k R w)`. Use `⟨Gf e p q (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) X, fun y t => _root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_L_k R hT hG hFP hL hLD hsL hρ X a ha y t, hhol, fun u => ?_, fun q' hq' => ?_, fun y hy r u => _root_.PositivityTheory.SiegelWeilFormula.Kdil.gf_der_big_k R hT hA hG hFP h …` and prove the remaining obligations. Conclude with `cont_slice2 _ _ hcont u _ fun q' hq' => ⟨Set.mem_univ _, hq'.2, Set.mem_univ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, δ, C, hN, hδ, hNb⟩` from `hbd q'.1 q'.2 hq'.2`. Use `⟨N, hN, C, δ, hδ, fun q'' hq'' hs u => ?_⟩` and prove the remaining obligations. Establish `h` using `hNb q'' hq'' hs u`. Simplify `h` using `[sq, neg_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locFamG_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k) (hFP : FPSw) (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) (hB : GfBound) : _root_.PositivityTheory.SiegelWeilFormula.Kdil.LocFamG_k := by
   intro F E _ _ _ _ _ σ d R w L hL X a ha
@@ -283,7 +279,7 @@ theorem locFamG_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA
     have h := hNb q'' hq'' hs u
     simpa [sq, neg_mul] using h
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of_k hT hA hG hFP hLI gfBound`.
+A detailed English derivation is pending.
 -/
 theorem locFamG_of'_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k) (hFP : FPSw) (hLI : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k) : _root_.PositivityTheory.SiegelWeilFormula.Kdil.LocFamG_k :=
   _root_.PositivityTheory.SiegelWeilFormula.Kdil.locFamG_of_k hT hA hG hFP hLI gfBound

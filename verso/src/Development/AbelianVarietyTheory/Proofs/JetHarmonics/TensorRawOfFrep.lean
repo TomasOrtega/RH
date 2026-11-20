@@ -13,18 +13,18 @@ namespace GlobalTheory.TensorKFinite
 variable {k r : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h` using `hT.smul 0 0 R.smSub.zero_mem`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smMap_zero {R R' : Rep k r} {T : R.H → R'.H} (hT : SmMap R R' T) : T 0 = 0 := by
   have h := hT.smul 0 0 R.smSub.zero_mem
   simpa using h
 
 /- English proof (translation)
-Take `⟨S, hfd, hyS, hst⟩` from `hy`. Establish `hsm : ∀ x ∈ S, x ∈ R.sm` using `fun x hx => hK x ⟨S, hfd, hx, hst⟩`. Set `L : ι → (S →ₗ[ℂ] R'.H)` to `fun i => { toFun := fun x => T i x map_add' := fun x x' => (hT i).add _ (hsm _ x.2) _ (hsm _ x'.2) map_smul' := fun a x => (hT i).smul a _ (hsm _ x.2) }`. Establish `hmem : ∀ i, ∀ x ∈ S, T i x ∈ ⨆ i, LinearMap.range (L i)` using `fun i x hx => Submodule.mem_iSup_of_mem i ⟨⟨x, hx⟩, rfl⟩`. Use `⟨⨆ i, LinearMap.range (L i), inferInstance, hmem c y hyS, fun g hg x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (⨆ i, LinearMap.range (L i)) ≤ (⨆ i, LinearMap.range (L i)).comap (R'.σ g : R'.H →ₗ[ℂ] R'.H)`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨a, ha⟩` from `hA g hg.1 i z (hsm _ z.2)`. Establish `: R'.σ g (T i z) ∈ ⨆ i, LinearMap.range (L i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hmem j _ (hst g hg _ z.2))`. Conclude with `this`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin_of_family {R R' : Rep k r} (T : ι → R.H → R'.H) (hT : ∀ c, SmMap R R' (T c))
     (hK : ∀ v, R.KFin v → v ∈ R.sm)
@@ -51,11 +51,11 @@ theorem kfin_of_family {R R' : Rep k r} (T : ι → R.H → R'.H) (hT : ∀ c, S
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, v, hv, rfl⟩` from `hx`. Take `⟨a, ha⟩` from `hB g hg c v (hK v hv)`. Rewrite using `[ha]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, hg, _, hF j v hv, rfl⟩)`. Consider the case `zero => rw [smMap_zero (hT c)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x x' hx hx' h1 h2`. Rewrite using `[(hT c).add _ (hTK _ hx) _ (hTK _ hx')]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a x hx h1`. Rewrite using `[(hT c).smul a _ (hTK _ hx)]`. Conclude with `Submodule.smul_mem _ _ h1`.
+A detailed English derivation is pending.
 -/
 theorem tk_of_family {R R' : Rep k r} (T : ι → R.H → R'.H) (hT : ∀ c, SmMap R R' (T c))
     (hK : ∀ v, R.KFin v → v ∈ R.sm) (hTK : ∀ v ∈ R.TK, v ∈ R.sm)
@@ -76,7 +76,7 @@ theorem tk_of_family {R R' : Rep k r} (T : ι → R.H → R'.H) (hT : ∀ c, SmM
     rw [(hT c).smul a _ (hTK _ hx)]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Repeatedly rewrite using `[huv, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, h, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_rows [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V] (A B : Matrix ι ι ℂ) (h : A * B = 1)
     (u v : ι → V) (huv : ∀ i, u i = ∑ j, B i j • v j) (c : ι) : v c = ∑ i, A c i • u i := by
@@ -90,21 +90,21 @@ end GlobalTheory.TensorKFinite
 open GlobalTheory.TensorKFinite in
 
 /- English proof (translation)
-Introduce `hKS k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI hR hRI hF hT`. Take `⟨-, -, -, hRσ, hRT, -, hRK, -, -⟩` from `GlobalTheory.T.discreteSeries_unitary_smooth_basic hKS k r ε mu R hR`. Establish `hIT : ∀ I, ∀ v ∈ (RI I).TK, v ∈ (RI I).sm` using `fun I => (GlobalTheory.T.discreteSeries_unitary_smooth_basic hKS k r ε (muI I) (RI I) (hRI I)).2.2.2.2.1`. Establish `hIK : ∀ I, ∀ v, (RI I).KFin v → v ∈ (RI I).sm` using `fun I v hv => hIT I v ((GlobalTheory.T.discreteSeries_unitary_smooth_basic hKS k r ε (muI I) (RI I) (hRI I)).2.2.2.2.2.2.1 v hv)`. Establish `hRK' : ∀ v, R.KFin v → v ∈ R.sm` using `fun v hv => hRT v (hRK v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, h1, hmul, -⟩` from `hF`. Establish `hinv : ∀ g ∈ GG k r, ρ g⁻¹ * ρ g = 1 ∧ ρ g * ρ g⁻¹ = 1` using `fun g hg => by`. Take `⟨a, b, c⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hg`. Conclude with `⟨by rw [← hmul _ a _ hg, c, h1], by rw [← hmul _ hg _ a, b, h1]⟩`. Establish `ioB : ∀ I, ∀ g ∈ GG k r, ∀ c, ∀ y ∈ (RI I).sm, io I c ((RI I).σ g y) = ∑ i, ρ g c i • R.σ g (io I i y)` using `fun I g hg c y hy => congrFun (hT.io_eq I g hg y hy) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ioA : ∀ I, ∀ g ∈ GG k r, ∀ c, ∀ y ∈ (RI I).sm, R.σ g (io I c y) = ∑ i, ρ g⁻¹ c i • io I i ((RI I).σ g y)` using `fun I g hg c y hy => inv_rows _ _ (hinv g hg).1 (fun i => io I i ((RI I).σ g y)) (fun i => R.σ g (io I i y)) (fun i => ioB I g hg i y hy) c`. Establish `prA : ∀ I, ∀ g ∈ GG k r, ∀ c, ∀ x ∈ R.sm, (RI I).σ g (pr I c x) = ∑ i, (ρ g)ᵀ c i • pr I i (R.σ g x)` using `fun I g hg c x hx => by`. Establish `hs : ∀ e, (Pi.single c x : ι → R.H) e ∈ R.sm` using `fun e => by`. Distinguish the cases in `he : e = c`. Substitute `he` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hx`. Rewrite using `[Pi.single_eq_of_ne he]`. Conclude with `R.smSub.zero_mem`. Establish `h` using `hT.pr_eq I g hg (Pi.single c x) hs`. Establish `e1 : ∑ e, pr I e ((Pi.single c x : ι → R.H) e) = pr I c x`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `e _ he`. Rewrite using `[Pi.single_eq_of_ne he, smMap_zero (hT.pr_sm I e)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∀ i, act ρ R g (Pi.single c x) i = ρ g i c • R.σ g x` using `fun i => by`. Unfold `act`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `e _ he`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne he]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e1]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, (hT.pr_sm I i).smul _ _ (hRσ g hg x hx), Matrix.transpose_apply]`. Establish `prB : ∀ I, ∀ g ∈ GG k r, ∀ c, ∀ x ∈ R.sm, pr I c (R.σ g x) = ∑ i, (ρ g⁻¹)ᵀ c i • (RI I).σ g (pr I i x)` using `fun I g hg c x hx => inv_rows _ _ (by rw [← Matrix.transpose_mul, (hinv g hg).2, Matrix.transpose_one]) (fun i => (RI I).σ g (pr I i x)) (fun i => pr I i (R.σ g x)) (fun i => prA I g hg i x hx) c`. Establish `K1 : ∀ I c y, (RI I).KFin y → R.KFin (io I c y)` using `fun I => kfin_of_family (io I) (hT.io_sm I) (hIK I) fun g hg c y hy => ⟨_, ioA I g hg c y hy⟩`. Establish `K2 : ∀ I c x, R.KFin x → (RI I).KFin (pr I c x)` using `fun I => kfin_of_family (pr I) (hT.pr_sm I) hRK' fun g hg c y hy => ⟨_, prA I g hg c y hy⟩`. Conclude with `⟨K1, K2, fun I => tk_of_family (io I) (hT.io_sm I) (hIK I) (hIT I) (K1 I) fun g hg c y hy => ⟨_, ioB I g hg c y hy⟩, fun I => tk_of_family (pr I) (hT.pr_sm I) hRK' hRT (K2 I) fun g hg c y hy => ⟨_, prB I g hg c y hy⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.tensor_decomposition_kfinite : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ), R.IsDS ε mu → (∀ I, (RI I).IsDS ε (muI I)) → IsFRep ρ Γ d → TensRaw ρ R RI io pr → (∀ I c y, (RI I).KFin y → R.KFin (io I c y)) ∧ (∀ I c x, R.KFin x → (RI I).KFin (pr I c x)) ∧ (∀ I c, ∀ y ∈ (RI I).TK, io I c y ∈ R.TK) ∧ (∀ I c, ∀ x ∈ R.TK, pr I c x ∈ (RI I).TK) := by
   intro hKS k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI hR hRI hF hT

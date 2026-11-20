@@ -12,22 +12,20 @@ noncomputable section
 namespace GlobalTheory.AdelicTraceNondeg
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [CommRing R]
     [Algebra F R] (e : E) : Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Set `d` to `(Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b`. Set `bA` to `Algebra.TensorProduct.basis R b`. Establish `key : ∀ j, bA.repr m j = 0`. Introduce `j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj` using `h ((1 : R) ⊗ₜ[F] d j)`. Rewrite `hj` using `[← bA.sum_repr m, Finset.sum_mul, map_sum]`. Rewrite using `[← hj, Finset.sum_eq_single j]`. Rewrite using `[Algebra.TensorProduct.basis_apply, smul_mul_assoc, map_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, smul_eq_mul]`. Use `(Algebra.traceForm F E).apply_dualBasis_left (traceForm_nondegenerate F E) b j j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `i _ hij`. Rewrite using `[Algebra.TensorProduct.basis_apply, smul_mul_assoc, map_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(Algebra.traceForm F E).apply_dualBasis_left (traceForm_nondegenerate F E) b j i` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`. Rewrite using `[this, if_neg hij, map_zero, mul_zero]`. Introduce `hj'`. Conclude with `absurd (Finset.mem_univ j) hj'`.
-
-Conclude with `bA.repr.injective (by ext j; simp [key j])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace_mul {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [CommRing R]
     [Algebra F R] (m : R ⊗[F] E) (h : ∀ z : R ⊗[F] E, Algebra.trace R (R ⊗[F] E) (m * z) = 0) : m = 0 := by
@@ -54,11 +52,9 @@ theorem eq_zero_of_trace_mul {F E R : Type} [Field F] [Field E] [Algebra F E] [F
   exact bA.repr.injective (by ext j; simp [key j])
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ψ hψ m hm`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : Algebra.IsSeparable F E := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hm` to reduce the goal to its premises. Use `eq_zero_of_trace_mul m fun z => ?_` and prove the remaining obligations. Use `GlobalTheory.DiagNonvan.eq_zero_of_psi_mul hψ _ fun y => ?_` and prove the remaining obligations. Establish `e1 : Algebra.trace (AF F) (AEF F E) (m * z) * y = Algebra.trace (AF F) (AEF F E) (m * (y • z))`. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`.
-
-Rewrite using `[e1]`. Conclude with `hne _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_pairing_nondeg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ψ : AddChar (AF F) ℂ),
     IsStd ψ → ∀ m : AEF F E, m ≠ 0 → ∃ z : AEF F E, ψ (Algebra.trace (AF F) (AEF F E) (m * z)) ≠ 1 := by
@@ -76,7 +72,7 @@ theorem trace_pairing_nondeg : ∀ (F E : Type) [Field F] [NumberField F] [Field
   exact hne _
 
 /- English proof (translation)
-The claim follows from `trace_pairing_nondeg`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ψ : AddChar (AF F) ℂ),
     IsStd ψ → ∀ m : AEF F E, m ≠ 0 → ∃ z : AEF F E, ψ (Algebra.trace (AF F) (AEF F E) (m * z)) ≠ 1 :=

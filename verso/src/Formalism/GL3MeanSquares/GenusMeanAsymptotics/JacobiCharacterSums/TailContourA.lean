@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.BoxTail
 
 /- English proof (translation)
-Establish `hpi : (2 * Real.pi : ℂ) ≠ 0`. Establish `: (2 * Real.pi : ℝ) ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions. Rewrite using `[hS, mul_sub, ← mul_assoc, mul_one_div_cancel hpi, one_mul]`. Take the linear combination `(-I) * hrect + (V0 - V1 - 2 * Real.pi * R) * Complex.I_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tail_shift_alg (S R V0 V1 E a b : ℂ) (hS : S = (1 / (2 * Real.pi) : ℂ) * (V0 + E))
     (hrect : a - b + I * V0 - I * V1 = 2 * Real.pi * I * R) :
@@ -21,9 +21,9 @@ theorem tail_shift_alg (S R V0 V1 E a b : ℂ) (hS : S = (1 / (2 * Real.pi) : �
   linear_combination (-I) * hrect + (V0 - V1 - 2 * Real.pi * R) * Complex.I_sq
 
 /- English proof (translation)
-Take `⟨hint, hS⟩` from `Formalism.ZeroFreeDirichlet.perron_formula_character N χ y hy 2 (by norm_num)`. Establish `hrect` using `Formalism.ZeroFreeDirichlet.rectangle_contour_shift_character N χ hχ y (by linarith) σ₁ 2 T ∅ hσ₁ hσ₁' (by norm_num) hT (by simp) (fun w h1 h2 h3 hL => absurd hL (hzf w h1 h2 h3)) (by simp)`. Simplify using `only [Finset.sum_empty, sub_zero] at hrect`. Unfold `Formalism.ZF.rectInt at hrect`. Rewrite `hS` using `[← integral_add_compl (s := Set.Ioc (-T) T) measurableSet_Ioc hint, ← intervalIntegral.integral_of_le (a := -T) (b := T) (by linarith)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `tail_shift_alg _ _ _ _ _ _ _ hS hrect`.
+A detailed English derivation is pending.
 -/
 theorem tail_shift_identity {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (y σ₁ T : ℝ)
     (hy : 1 ≤ y) (hσ₁ : 0 < σ₁) (hσ₁' : σ₁ < 1) (hT : 0 < T)

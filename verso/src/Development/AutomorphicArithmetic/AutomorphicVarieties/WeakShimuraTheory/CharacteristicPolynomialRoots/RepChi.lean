@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Simplify using `only [W.GDet.chi, W.GDet.ofRep, W.GDet.repAlg, MonoidHom.coe_comp, Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, MonoidAlgebra.lift_single, Matrix.coe_detMonoidHom, map_one]`. Rewrite using `[Matrix.charpoly, Matrix.charmatrix]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply, Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.sub_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem chi_ofRep' {n : ℕ} {A Γ : Type} [CommRing A] [Group Γ] (ρ : Γ →* Matrix (Fin n) (Fin n) A) (g : Γ) :
     (W.GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
@@ -17,7 +17,7 @@ private theorem chi_ofRep' {n : ℕ} {A Γ : Type} [CommRing A] [Group Γ] (ρ :
   simp [Matrix.one_apply, Matrix.diagonal_apply, Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.sub_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _`. Use `congr 1`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem chi_comap' {n : ℕ} {A Γ H : Type} [CommRing A] [Group Γ] [Group H] (D : W.GDet n A Γ) (φ : H →* Γ) (g : H) :
     (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1) := by
@@ -27,9 +27,9 @@ private theorem chi_comap' {n : ℕ} {A Γ H : Type} [CommRing A] [Group Γ] [Gr
   simp
 
 /- English proof (translation)
-Use `letI : Algebra A A'[X] := ((algebraMap A' A'[X]).comp f).toAlgebra`. Set `φ : A[X] →ₐ[A] A'[X]` to `{ Polynomial.mapRingHom f with commutes' := fun a => by simp [RingHom.algebraMap_toAlgebra] }`. Establish `h` using `D.nat A[X] A'[X] φ (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C (MonoidAlgebra.single g 1))`. Establish `e : (MonoidAlgebra.mapRingHom Γ (φ : A[X] →+* A'[X])) (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C (MonoidAlgebra.single g 1)) = MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C (MonoidAlgebra.single g 1)`. Simplify using `[φ, MonoidAlgebra.mapRingHom_single]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chi_map' {n : ℕ} {A A' Γ : Type} [CommRing A] [CommRing A'] [Group Γ] (D : W.GDet n A Γ) (f : A →+* A') (g : Γ) :
     (D.map f).chi (MonoidAlgebra.single g 1) = (D.chi (MonoidAlgebra.single g 1)).map f := by
@@ -47,7 +47,7 @@ private theorem chi_map' {n : ℕ} {A A' Γ : Type} [CommRing A] [CommRing A'] [
   exact h
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B x ρ hx g`. Use `(chi_ofRep' (W.mat ρ) g).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun D => W.GDet.chi D (MonoidAlgebra.single g 1)) hx.symm).trans ?_` and prove the remaining obligations. Conclude with `(chi_comap' x.D V.pr g).trans (chi_map' B.u.D _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pu.repChi :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x : B.Pt) (ρ : G L Ω →* GL (Fin n) (PadicAlgCl l)), x.IsRep ρ → ∀ g, (W.mat ρ g).charpoly = (B.u.D.chi (MonoidAlgebra.single (V.pr g) 1)).map (x : B.B →+* PadicAlgCl l) := by

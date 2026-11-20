@@ -7,17 +7,17 @@ open NumberField IntermediateField Ideal Formalism.FrobeniusOrbits Formalism.HC
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `ha`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Establish `e1 : (2 * t + 1) ^ 2 - 1 = 2 ^ 2 * (t * (t + 1))` using `by ring`. Establish `e2 : (2:ℤ) ^ (k + 1 + 1) = 2 ^ 2 * 2 ^ k` using `by ring`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e1, e2]`. Establish `h' : (2:ℤ) ^ k ∣ t * (t + 1)` using `(mul_dvd_mul_iff_left (by norm_num)).1 h`. Break down `Int.even_or_odd t with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Establish `hc : IsCoprime ((2:ℤ) ^ k) (t + 1)`. Apply `IsCoprime.pow_left` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨-r, 1, by rw [hr]; ring⟩`. Take `⟨c, hc'⟩` from `hc.dvd_of_dvd_mul_right h'`. Conclude with `Or.inl ⟨c, by rw [hc']; ring⟩`. Establish `hc : IsCoprime ((2:ℤ) ^ k) t`. Apply `IsCoprime.pow_left` to reduce the goal to its premises.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Prove the first alternative. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨-r, 1, by rw [hr]; ring⟩`. Rewrite `h'` using `[mul_comm]`. Take `⟨c, hc'⟩` from `hc.dvd_of_dvd_mul_right h'`. Conclude with `Or.inr ⟨c, by linear_combination 2 * hc'⟩`. It suffices to derive a contradiction.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative. It suffices to derive a contradiction.
 
-Establish `h4 : (4:ℤ) ∣ (2:ℤ) ^ (k + 1 + 1)` using `⟨2 ^ k, by ring⟩`. Establish `h5` using `dvd_trans h4 h`. Establish `e1 : (2 * t + 1) ^ 2 + 1 = 4 * (t ^ 2 + t) + 2` using `by ring`. Rewrite `h5` using `[e1]`. Generalize the expression as in `t ^ 2 + t = s at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `(⟨c, hc⟩ | ⟨c, hc⟩)`. Conclude with `Or.inl ⟨c * (2 ^ k * c + 1), by linear_combination (2 * t + 2 ^ (k + 1) * c + 2) * hc⟩`. Conclude with `Or.inl ⟨c * (2 ^ k * c - 1), by linear_combination (2 * t + 2 ^ (k + 1) * c) * hc⟩`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the first alternative.
 -/
 private theorem two_pow_dvd_sq_pm_one_iff_of_odd (a : ℤ) (ha : Odd a) (k : ℕ) :
     ((2:ℤ) ^ (k + 1 + 1) ∣ a ^ 2 - 1 ∨ (2:ℤ) ^ (k + 1 + 1) ∣ a ^ 2 + 1) ↔
@@ -53,9 +53,9 @@ private theorem two_pow_dvd_sq_pm_one_iff_of_odd (a : ℤ) (ha : Odd a) (k : ℕ
     · exact Or.inl ⟨c * (2 ^ k * c - 1), by linear_combination (2 * t + 2 ^ (k + 1) * c) * hc⟩
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro a _ k`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `a ha k`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (a ^ 2) ^ (2 ^ j) = a ^ (2 ^ (j + 1))` using `by rw [← pow_mul, ← pow_succ']`. Establish `h2 : k + 1 + (j + 1) = (k + 1) + 1 + j` using `by omega`. Rewrite using `[← h1, h2, ih (a ^ 2) ha.pow (k + 1)]`. Conclude with `two_pow_dvd_sq_pm_one_iff_of_odd a ha k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_pow_dvd_pow_two_pow_sub_or_add_iff (j : ℕ) : ∀ (a : ℤ), Odd a → ∀ k : ℕ,
     ((2:ℤ) ^ (k + 1 + j) ∣ a ^ (2 ^ j) - 1 ∨ (2:ℤ) ^ (k + 1 + j) ∣ a ^ (2 ^ j) + 1) ↔
@@ -70,7 +70,7 @@ private theorem two_pow_dvd_pow_two_pow_sub_or_add_iff (j : ℕ) : ∀ (a : ℤ)
     exact two_pow_dvd_sq_pm_one_iff_of_odd a ha k
 
 /- English proof (translation)
-Establish `e1 : ((a : ZMod n) = 1) ↔ (((a - 1 : ℤ) : ZMod n) = 0)` using `by push_cast; exact sub_eq_zero.symm`. Establish `e2 : ((a : ZMod n) = -1) ↔ (((a + 1 : ℤ) : ZMod n) = 0)` using `by push_cast; exact eq_neg_iff_add_eq_zero`. Rewrite using `[e1, e2, ZMod.intCast_zmod_eq_zero_iff_dvd, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cast_eq_one_or_neg_one_iff_dvd (n : ℕ) (a : ℤ) :
     ((a : ZMod n) = 1 ∨ (a : ZMod n) = -1) ↔ ((n : ℤ) ∣ a - 1 ∨ (n : ℤ) ∣ a + 1) := by
@@ -81,33 +81,29 @@ private theorem cast_eq_one_or_neg_one_iff_dvd (n : ℕ) (a : ℤ) :
   rw [e1, e2, ZMod.intCast_zmod_eq_zero_iff_dvd, ZMod.intCast_zmod_eq_zero_iff_dvd]
 
 /- English proof (translation)
-Introduce `φ H p hp hpN`. Use `haveI := Fact.mk hp`. Take `⟨-, -, -, -, -, v, hv, hx⟩` from `frobG_spec φ H p hpN`. Rewrite using `[hx]`. Use `set x := hcl φ.e v with hxdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`. Conclude with `hpN (HostRaw.two_dvd_condN _)`. Establish `hodd : Odd (p : ℤ)` using `(Int.odd_coe_nat p).2 (hp.odd_of_ne_two hp2)`. Establish `key : ∀ k : ℕ, x ^ k = 1 ↔ ((2:ℤ) ^ (φ.e + 2) ∣ (p : ℤ) ^ k - 1 ∨ (2:ℤ) ^ (φ.e + 2) ∣ (p : ℤ) ^ k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Rewrite using `[hxdef, Group.hcl_pow_eq_one]`. Simplify using `only [Units.ext_iff, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, hv]`. Establish `hc` using `cast_eq_one_or_neg_one_iff_dvd (2 ^ (φ.e + 2)) ((p : ℤ) ^ k)`. Move the coercions through the operations in `at hc`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc`. Establish `hx4 : x ^ (2 ^ φ.e) = 1`. Rewrite using `[key]`. Establish `h` using `(two_pow_dvd_pow_two_pow_sub_or_add_iff φ.e (p : ℤ) hodd 1).2 (by`. Take `⟨t, ht⟩` from `hodd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ht]`. Establish `: (2:ℤ) ^ (1 + 1) = 4` using `by norm_num`. Rewrite using `[this]`. Use the proof step `omega)`. Rewrite `h` using `[show 1 + 1 + φ.e = φ.e + 2 by omega]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hord⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 (orderOf_dvd_of_pow_eq_one hx4)`. Establish `cl1 : ∀ j : ℕ, orderOf x ≤ 2 ^ j ↔ ((p : ZMod (2 ^ (φ.e + 2 - j))) = 1 ∨ (p : ZMod (2 ^ (φ.e + 2 - j))) = -1)`. Introduce `j`. Distinguish the cases in `hj : j ≤ φ.e + 1`. Take `⟨m, hm⟩ : ∃ m, φ.e + 2 - j = m + 1` from `⟨φ.e + 1 - j, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Establish `hc` using `cast_eq_one_or_neg_one_iff_dvd (2 ^ (m + 1)) (p : ℤ)`. Move the coercions through the operations in `at hc`. Rewrite using `[hc, ← two_pow_dvd_pow_two_pow_sub_or_add_iff j (p : ℤ) hodd m, show m + 1 + j = φ.e + 2 by omega, ← key, ← orderOf_dvd_iff_pow_eq_one, hord, Nat.pow_dvd_pow_iff_le_right (by norm_num), Nat.pow_le_pow_iff_right (by norm_num)]`. Establish `h0 : φ.e + 2 - j = 0` using `by omega`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, hord]`. Use `haveI : Subsingleton (ZMod (2 ^ 0)) := ZMod.subsingleton_iff.2 (by norm_num)`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Conclude with `Or.inl (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Introduce `_`. Conclude with `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use `⟨cl1, ⟨i, hi, hord⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(cl1 i).1 (le_of_eq hord)`. Establish `hc` using `cast_eq_one_or_neg_one_iff_dvd (2 ^ (φ.e + 2 - i)) (p : ℤ)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at hc`. Establish `h2p` using `hp.two_le`. Establish `hb : ((2 ^ (φ.e + 2 - i) : ℕ) : ℤ) ≤ (p : ℤ) + 1`. Use `push_cast`. Break down `hc.1 h with hd | hd` into its components or cases.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `Int.le_of_dvd (by omega) hd` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Int.le_of_dvd (by omega) hd`. Establish `hb' : 2 ^ (φ.e + 2 - i) ≤ p + 1` using `by exact_mod_cast hb`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `_ ≤ (p + 1) * 2 ^ i := Nat.mul_le_mul_right _ hb'`. Use `_ = (p + 1) * orderOf x := by rw [hord]`.
-
-Establish `h` using `key 1`. Simplify using `only [pow_one] at h`. Rewrite using `[h]`. Establish `hc` using `cast_eq_one_or_neg_one_iff_dvd (2 ^ (φ.e + 2)) (p : ℤ)`. Move the coercions through the operations in `at hc`.
-
-Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.frob_h_order :
     ∀ (φ : Frame) (H : HostAx φ) (p : ℕ), p.Prime → ¬ p ∣ H.condN →

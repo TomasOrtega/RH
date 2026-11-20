@@ -11,7 +11,7 @@ def intPts (A : Set ℚ) : Finset ℤ :=
   if h : ((fun z : ℤ => (z : ℚ)) ⁻¹' A).Finite then h.toFinset else ∅
 
 /- English proof (translation)
-Establish `h : ((fun z : ℤ => (z : ℚ)) ⁻¹' A).Finite` using `hA.preimage (Set.injOn_of_injective Int.cast_injective)`. Unfold `intPts`. Rewrite using `[dif_pos h, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_intPts {A : Set ℚ} (hA : A.Finite) (z : ℤ) : z ∈ intPts A ↔ (z : ℚ) ∈ A := by
   have h : ((fun z : ℤ => (z : ℚ)) ⁻¹' A).Finite :=
@@ -41,7 +41,7 @@ def US (up : Bool) (Fl Fc : Finset ℤ) : Multiset ℤ :=
   (Fl ∪ Fc).val.map (fun z => z + (wS up Fl Fc : ℤ))
 
 /- English proof (translation)
-Unfold `US`. Rewrite using `[Multiset.count_map_eq_count' _ _ (add_left_injective _)]`. Use `split_ifs with h`. Conclude with `Multiset.count_eq_one_of_mem (Fl ∪ Fc).nodup h`. Conclude with `Multiset.count_eq_zero.mpr h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_US (up : Bool) (Fl Fc : Finset ℤ) (b : ℤ) :
     (US up Fl Fc).count (b + wS up Fl Fc) = if b ∈ Fl ∪ Fc then 1 else 0 := by

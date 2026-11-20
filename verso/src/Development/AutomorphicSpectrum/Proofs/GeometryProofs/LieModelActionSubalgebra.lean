@@ -18,13 +18,13 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace GlobalTheory.CompanionTheory.Ar.Num.FamEx.PackLie
 
 /- English proof (translation)
-Introduce `X G _ _ _ Ω _ ξ Li _ _ M₀ B _ act ρ₀ h₀ O _ _ R x hx`. Substitute `hx` using the available equality. Take `⟨L, iL, mL, ⟨M⟩⟩` from `lieModel_exists X G R x`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act X G R x L M B act.act act.hom act.one act.mul act.add`. Establish `hsm : ∀ (a : R) (t : Li), a • t = algebraMap R Ω a • t` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : Spec.map (CommRingCat.ofHom (algebraMap R Ω)) ≫ x = spMap (algebraMap R Ω) ≫ x` using `rfl`. Establish `ex : ∀ e, ∃ t, M₀.pt t = LieTangent.epsBase (algebraMap R Ω) hφ ≫ M.pt e` using `fun e => M₀.onto _ (LieTangent.isTanAt_base _ hφ (M.tan e))`. Use `choose f hf using ex`. Set `j : L →ₗ[R] Li` to `{ toFun := f map_add' := fun a b => M₀.inj (by rw [M₀.add, hf, hf, hf, M.add, comp_mul]) map_smul' := fun c e => M₀.inj (by`. Rewrite using `[RingHom.id_apply, hsm, LieModel.pt_smul, hf, hf, LieModel.pt_smul, ← Category.assoc, LieTangent.base_scale, Category.assoc]) }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ v, (M₀.pt (j v)).left = spMap (dualMap (algebraMap R Ω)) ≫ (M.pt v).left` using `fun v => by`. Express the relevant statement in the definitionally equal form `(M₀.pt (f v)).left = _`. Rewrite using `[hf]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.lie_model_finite_base_change X G R x L M`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, iL, mL, M, ρ, j, h1, h2, hρ, h3 Ω Li M₀ j hl, hl, fun a v => M₀.inj ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M₀.pt (f (ρ a v)) = M₀.pt (ρ₀ a (f v))`. Rewrite using `[h₀ a, hf, hf, hρ a, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieModel_along_generic : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M₀ : LieModel G ξ Li) (B : Type) [CommRing B] (act : OAct B G) (ρ₀ : B →+* Module.End Ω Li), M₀.IsActOf act.act ρ₀ → ∀ (O : Type) [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω) (x : Spec (CommRingCat.of R) ⟶ X), spMap (algebraMap R Ω) ≫ x = ξ → ∃ (L : Type) (_ : AddCommGroup L) (_ : Module R L) (M : LieModel G x L) (ρ : B →+* Module.End R L) (toLi : L →ₗ[R] Li), Module.Finite R L ∧ Module.Projective R L ∧ M.IsActOf act.act ρ ∧ IsBaseChange Ω toLi ∧ (∀ v, (M₀.pt (toLi v)).left = spMap (dualMap (algebraMap R Ω)) ≫ (M.pt v).left) ∧ ∀ a v, toLi (ρ a v) = ρ₀ a (toLi v) := by
   intro X G _ _ _ Ω _ ξ Li _ _ M₀ B _ act ρ₀ h₀ O _ _ R x hx

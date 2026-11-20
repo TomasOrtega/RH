@@ -15,16 +15,16 @@ section DerLemmas
 variable {A S M : Type*} [CommRing A] [CommRing S] [Algebra A S] [AddCommGroup M] [Module S M]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx y hy => h.add x (hBC hx) y (hBC hy), fun x hx y hy => h.mul x (hBC hx) y (hBC hy), h.alg⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDerOn.mono' {B C : Subalgebra A S} {D : S → M} (h : IsDerOn C D) (hBC : B ≤ C) :
     IsDerOn B D :=
   ⟨fun x hx y hy => h.add x (hBC hx) y (hBC hy), fun x hx y hy => h.mul x (hBC hx) y (hBC hy), h.alg⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[_root_.pow_succ' x (k + 1), h.mul x hx _ (pow_mem hx _), ih, smul_smul, ← add_smul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsDerOn.pow_succ_der {B : Subalgebra A S} {D : S → M} (h : IsDerOn B D) {x : S} (hx : x ∈ B)
     (k : ℕ) : D (x ^ (k + 1)) = (((k + 1 : ℕ) : S) * x ^ k) • D x := by
@@ -37,9 +37,9 @@ theorem IsDerOn.pow_succ_der {B : Subalgebra A S} {D : S → M} (h : IsDerOn B D
     ring
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `algebraMap a => rw [h₁.alg, h₂.alg]`. Consider the case `add x y hx hy ihx ihy => rw [h₁.add x hx y hy, h₂.add x hx y hy, ihx, ihy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y hx hy ihx ihy => rw [h₁.mul x hx y hy, h₂.mul x hx y hy, ihx, ihy]`.
+Treat this case separately.
 -/
 theorem IsDerOn.eq_on_adjoin {s : Set S} {D₁ D₂ : S → M} (h₁ : IsDerOn (Algebra.adjoin A s) D₁)
     (h₂ : IsDerOn (Algebra.adjoin A s) D₂) (hs : ∀ x ∈ s, D₁ x = D₂ x) :
@@ -60,57 +60,57 @@ open GlobalTheory.K5 Polynomial
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact T.ζpow m)`.
+A detailed English derivation is pending.
 -/
 theorem zS_succ_pow_p (T : Tower p Ω) (m : ℕ) : zS T (m + 1) ^ p = zS T m :=
   Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact T.ζpow m)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact T.qpow m)`.
+A detailed English derivation is pending.
 -/
 theorem qS_succ_pow_p (T : Tower p Ω) (m : ℕ) : qS T (m + 1) ^ p = qS T m :=
   Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact T.qpow m)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Set.mem_insert (zS T m) {qS T m})`.
+A detailed English derivation is pending.
 -/
 theorem zS_mem_levelAlg (T : Tower p Ω) (m : ℕ) : zS T m ∈ levelAlg T m :=
   Algebra.subset_adjoin (Set.mem_insert (zS T m) {qS T m})
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Set.mem_insert_of_mem _ (Set.mem_singleton (qS T m)))`.
+A detailed English derivation is pending.
 -/
 theorem qS_mem_levelAlg (T : Tower p Ω) (m : ℕ) : qS T m ∈ levelAlg T m :=
   Algebra.subset_adjoin (Set.mem_insert_of_mem _ (Set.mem_singleton (qS T m)))
 
 /- English proof (translation)
-Rewrite using `[← zS_succ_pow_p]`. Conclude with `pow_mem (zS_mem_levelAlg T (m + 1)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zS_mem_levelAlg_succ (T : Tower p Ω) (m : ℕ) : zS T m ∈ levelAlg T (m + 1) := by
   rw [← zS_succ_pow_p]; exact pow_mem (zS_mem_levelAlg T (m + 1)) _
 
 /- English proof (translation)
-Rewrite using `[← qS_succ_pow_p]`. Conclude with `pow_mem (qS_mem_levelAlg T (m + 1)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qS_mem_levelAlg_succ (T : Tower p Ω) (m : ℕ) : qS T m ∈ levelAlg T (m + 1) := by
   rw [← qS_succ_pow_p]; exact pow_mem (qS_mem_levelAlg T (m + 1)) _
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_le (Set.insert_subset_iff.2 ⟨zS_mem_levelAlg_succ T m, Set.singleton_subset_iff.2 (qS_mem_levelAlg_succ T m)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem levelAlg_le_succ (T : Tower p Ω) (m : ℕ) : levelAlg T m ≤ levelAlg T (m + 1) :=
   Algebra.adjoin_le (Set.insert_subset_iff.2 ⟨zS_mem_levelAlg_succ T m,
     Set.singleton_subset_iff.2 (qS_mem_levelAlg_succ T m)⟩)
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frac_smul_mk (s : integralClosure (O0 p) Ω) (x : Ω) :
     s • (Submodule.Quotient.mk x : Frac p Ω) = Submodule.Quotient.mk ((s : Ω) * x) := by
   rw [← Submodule.Quotient.mk_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨s, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem frac_mk_eq_zero (s : integralClosure (O0 p) Ω) :
     (Submodule.Quotient.mk (s : Ω) : Frac p Ω) = 0 := by
@@ -118,21 +118,19 @@ theorem frac_mk_eq_zero (s : integralClosure (O0 p) Ω) :
   exact ⟨s, rfl⟩
 
 /- English proof (translation)
-Use `set z := zS T (m + 1)`. Use `set ζ := T.ζ (m + 1)`. Establish `hp1 : 1 < p` using `hp.out.one_lt`. Establish `hpos : 0 < p ^ (m + 1)` using `pow_pos hp.out.pos _`. Establish `hp0 : (p : Ω) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ : IsPrimitiveRoot (ζ ^ p ^ m) p`. Use `(T.prim (m + 1)).pow_of_dvd (pow_ne_zero m hp.out.ne_zero) (pow_dvd_pow p (Nat.le_succ m))` as an intermediate fact. Simplify `this` using `[pow_succ, Nat.mul_div_cancel_left _ (pow_pos hp.out.pos m)]`. Use `set gS : integralClosure (O0 p) Ω := ∑ i ∈ Finset.range p, ∑ j ∈ Finset.range i, (z ^ p ^ m) ^ j`. Establish `hgval : (gS : Ω) = ∑ i ∈ Finset.range p, ∑ j ∈ Finset.range i, (ζ ^ p ^ m) ^ j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gS, z, ζ, zS]`. Establish `hg : (gS : Ω) * (ζ ^ p ^ m - 1) = - p`. Rewrite using `[hgval, Finset.sum_mul]`. Repeatedly rewrite using `[geom_sum_mul]`. Rewrite using `[Finset.sum_sub_distrib, hξ.geom_sum_eq_zero hp1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hroot : Polynomial.aeval ζ (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p)) = 0`. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `(T.prim (m + 1)).isRoot_cyclotomic hpos`. Establish `hid` using `congrArg (fun f => Polynomial.aeval ζ (Polynomial.derivative f)) (cyclotomic_prime_pow_mul_X_pow_sub_one (O0 p) p m)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [derivative_mul, derivative_sub, derivative_X_pow, derivative_one, map_add, map_mul, map_sub, hroot, zero_mul, add_zero, sub_zero] at hid`. Establish `hzval : (Polynomial.aeval z (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p))) : Ω) = Polynomial.aeval ζ (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p)))`. Conclude with `(Polynomial.aeval_algHom_apply (integralClosure (O0 p) Ω).val z _).symm`. Rewrite using `[frac_smul_mk, hzval]`. Use `set F := Polynomial.aeval ζ (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hζ1 : ζ ^ p ^ (m + 1) = 1` using `(T.prim (m + 1)).pow_eq_one`. Establish `hF : F * (ζ ^ p ^ m - 1) * ζ = (p : Ω) ^ (m + 1)`. Establish `h2 : F * (ζ ^ p ^ m - 1) = (p : Ω) ^ (m + 1) * ζ ^ (p ^ (m + 1) - 1)`. Simplify `hid` using `[map_natCast]`. Rewrite using `[h2, mul_assoc, pow_sub_one_mul (pow_ne_zero _ hp.out.ne_zero), hζ1, mul_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hξ1 : ζ ^ p ^ m - 1 ≠ 0` using `sub_ne_zero.2 (hξ.ne_one hp1)`. Establish `key : F * (ζ * p / (p : Ω) ^ (m + 1)) = ((-gS : integralClosure (O0 p) Ω) : Ω)`. Apply `mul_right_cancel₀ hξ1` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[neg_mul, hg, neg_neg]`.
-
-Establish `hpm : (p : Ω) ^ (m + 1) ≠ 0` using `pow_ne_zero _ hp0`. Rewrite using `[div_eq_mul_inv]`. Take the linear combination `((p : Ω) * ((p : Ω) ^ (m + 1))⁻¹) * hF + (p : Ω) * mul_inv_cancel₀ hpm`. Rewrite using `[key, frac_mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_relation (hc : CharZero Ω) (T : Tower p Ω) (m : ℕ) :
     (Polynomial.aeval (zS T (m + 1)) (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p)))) •
@@ -192,7 +190,7 @@ namespace GlobalTheory.AlmostEt
 open GlobalTheory.K5
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn.ne'`. Simplify using `using h.pow_succ_der hx k`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsDerOn.pow_der {A S M : Type*} [CommRing A] [CommRing S] [Algebra A S] [AddCommGroup M]
     [Module S M] {B : Subalgebra A S} {D : S → M} (h : IsDerOn B D) {x : S} (hx : x ∈ B) {n : ℕ}
@@ -201,19 +199,17 @@ theorem IsDerOn.pow_der {A S M : Type*} [CommRing A] [CommRing S] [Algebra A S] 
   simpa using h.pow_succ_der hx k
 
 /- English proof (translation)
-Introduce `p hp Ω _ _ hc T`. Use `haveI : CharZero Ω := GlobalTheory.K5.Basic.charZero_of_isClo hc`. Establish `hp0 : (p : Ω) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hlev : ∀ m : ℕ, ∃ D : (integralClosure (O0 p) Ω) → Frac p Ω, IsDerOn (levelAlg T (m + 1)) D ∧ D (zS T (m + 1)) = Submodule.Quotient.mk (T.ζ (m + 1) * p / (p : Ω) ^ (m + 1)) ∧ D (qS T (m + 1)) = 0` using `fun m => GlobalTheory.T.exists_derivation_towerLevelAlgebra_prescribed p Ω hc T (m + 1) (Nat.succ_pos m) (Frac p Ω) _ 0 (cyc_relation inferInstance T m) (smul_zero _)`. Use `choose D hD hDz hDq using hlev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ m, D m (zS T m) = Submodule.Quotient.mk (T.ζ m * p / (p : Ω) ^ m) ∧ D m (qS T m) = 0`. Introduce `m`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← zS_succ_pow_p, (hD m).pow_der (zS_mem_levelAlg T (m + 1)) hp.out.pos, hDz m, frac_smul_mk]`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hc1 : ((zS T (m + 1) : integralClosure (O0 p) Ω) : Ω) = T.ζ (m + 1)` using `rfl`. Use `push_cast`. Rewrite using `[hc1, ← T.ζpow m, ← pow_sub_one_mul hp.out.ne_zero (T.ζ (m + 1))]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← qS_succ_pow_p, (hD m).pow_der (qS_mem_levelAlg T (m + 1)) hp.out.pos, hDq m, smul_zero]`. Establish `hcompat : ∀ m, ∀ x ∈ levelAlg T (m + 1), D (m + 1) x = D m x`. Introduce `m`. Use `IsDerOn.eq_on_adjoin (s := {zS T (m + 1), qS T (m + 1)}) ((hD (m + 1)).mono' (levelAlg_le_succ T (m + 1))) (hD m) ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hval (m + 1)).1, hDz m]`. Rewrite using `[Set.mem_singleton_iff.1 hx, (hval (m + 1)).2, hDq m]`. Establish `hmono : Monotone (fun m => levelAlg T (m + 1))` using `monotone_nat_of_le_succ fun m => levelAlg_le_succ T (m + 1)`. Take `⟨D', hD', hD'eq⟩` from `isDerOn_iSup_glue (O0 p) (integralClosure (O0 p) Ω) (Frac p Ω) (fun m => levelAlg T (m + 1)) hmono D hD hcompat`. Establish `hle : towerAlg T ≤ ⨆ m, levelAlg T (m + 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (⟨m, rfl⟩ | ⟨m, rfl⟩)`. Conclude with `(le_iSup (fun m => levelAlg T (m + 1)) m) (zS_mem_levelAlg_succ T m)`. Conclude with `(le_iSup (fun m => levelAlg T (m + 1)) m) (qS_mem_levelAlg_succ T m)`. Use `⟨D', hD'.mono' hle, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hD'eq m _ (zS_mem_levelAlg_succ T m), (hval m).1]`. Rewrite using `[hD'eq m _ (qS_mem_levelAlg_succ T m), (hval m).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_derivation : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     IsClo p Ω → ∀ (T : Tower p Ω), ∃ D : (integralClosure (O0 p) Ω) → Frac p Ω,

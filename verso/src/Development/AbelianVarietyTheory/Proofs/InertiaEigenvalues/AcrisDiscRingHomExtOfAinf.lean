@@ -9,9 +9,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.AcrisDiscExt
 
 /- English proof (translation)
-Take `⟨v, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn l hl.out.ne_one`. Establish `h : IsUnit (m : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hm`. Establish `h'` using `h.map f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[map_natCast]`. Rewrite using `[Nat.cast_mul, Nat.cast_pow]`. Conclude with `(hu.pow v).mul h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R] (f : ℤ_[l] →+* R)
     (hu : IsUnit (l : R)) (n : ℕ) (hn : n ≠ 0) : IsUnit (n : R) := by
@@ -25,9 +25,9 @@ theorem isUnit_natCast_of {l : ℕ} [hl : Fact l.Prime] {R : Type} [CommRing R] 
   exact (hu.pow v).mul h'
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `e : ((l : ℕ) : Disc l u ρ) = ofPre l u ρ (algebraMap A (PreDisc l u ρ) ((l : A) ^ 1 * u ^ 0) * IsLocalization.Away.invSelf (l : A) ^ 0)`. Simplify using the standard rewrite rules. Rewrite using `[e, norm_ofPre]`. Use `gauge_le l u ρ (inv_pos.2 hl0) (Submodule.subset_span ⟨1, 0, 0, ?_, rfl⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, pow_zero, pow_one, one_mul, inv_mul_cancel₀ hl0.ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_l_disc_le (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) :
     ‖((l : ℕ) : Disc l u ρ)‖ ≤ (l : ℝ)⁻¹ := by
@@ -40,7 +40,7 @@ theorem norm_l_disc_le (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u 
   rw [pow_zero, pow_zero, pow_one, one_mul, inv_mul_cancel₀ hl0.ne']
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[pow_succ', mul_assoc, pow_succ', mul_assoc]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (norm_l_disc_le l _ _) ih (norm_nonneg _) (by positivity))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_mul_le (l : ℕ) [Fact l.Prime] {K : FinExt l} (bk : BK K) (w : bk.DA bk.ρ₀) (r : ℕ) :
     ‖((l : ℕ) : bk.DA bk.ρ₀) ^ r * w‖ ≤ (l : ℝ)⁻¹ ^ r * ‖w‖ := by
@@ -51,17 +51,15 @@ theorem norm_pow_mul_le (l : ℕ) [Fact l.Prime] {K : FinExt l} (bk : BK K) (w :
     exact (norm_mul_le _ _).trans (mul_le_mul (norm_l_disc_le l _ _) ih (norm_nonneg _) (by positivity))
 
 /- English proof (translation)
-Introduce `l hl K bk γ γ' h hγ hγ'`. Establish `h0 : ∀ s : Per.Acris0 l, γ (algebraMap (Per.Acris0 l) (Per.Acris l) s) = γ' (algebraMap (Per.Acris0 l) (Per.Acris l) s)`. Introduce `s`. Take `⟨n, a, hn⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) (s : Per.AinfP l)`. Establish `e : s * ((l : ℕ) : Per.Acris0 l) ^ n = algebraMap (Per.Ainf l) (Per.Acris0 l) a` using `Subtype.ext (by simpa using hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (algebraMap (Per.Acris0 l) (Per.Acris l)) e`. Rewrite `e'` using `[map_mul, map_pow, map_natCast, ← GlobalTheory.RingIface.tower l]`. Establish `e1` using `congrArg γ e'`. Establish `e2` using `congrArg γ' e'`. Rewrite `e1`, `e2` using `[map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((isUnit_l_disc l (bk.ev X) bk.ρ₀).pow n).mul_right_cancel ?_` and prove the remaining obligations. Conclude with `e1.trans ((h a).trans e2.symm)`. Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `hl1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hb : ∀ r : ℕ, ‖γ x - γ' x‖ ≤ 2 * (l : ℝ)⁻¹ ^ r`. Introduce `r`. Take `⟨s, z, rfl⟩` from `(acris_basic l).2.2.1 x r`. Establish `hs` using `h0 s`. Rewrite using `[map_add, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, hs, add_sub_add_left_eq_sub, ← mul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ‖γ z - γ' z‖ ≤ 2` using `(norm_sub_le _ _).trans (by linarith [hγ z, hγ' z])`. Use `(norm_pow_mul_le l bk (γ z - γ' z) r).trans ?_` and prove the remaining obligations. Conclude with `mul_comm ((l : ℝ)⁻¹ ^ r) _ ▸ mul_le_mul_of_nonneg_left hw (by positivity)`. Establish `ht : Filter.Tendsto (fun r : ℕ => 2 * (l : ℝ)⁻¹ ^ r) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) hl1).const_mul 2`.
-
-Establish `hz : ‖γ x - γ' x‖ ≤ 0` using `ge_of_tendsto' ht hb`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem acris_disc_ext : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (γ γ' : Per.Acris l →+* bk.DA bk.ρ₀), (∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = γ' (algebraMap (Ainf l) (Per.Acris l) a)) → (∀ x, ‖γ x‖ ≤ 1) → (∀ x, ‖γ' x‖ ≤ 1) → γ = γ' := by
   intro l hl K bk γ γ' h hγ hγ'

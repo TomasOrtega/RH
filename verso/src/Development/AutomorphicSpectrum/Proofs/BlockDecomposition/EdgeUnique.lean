@@ -10,14 +10,14 @@ section Sections
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {G : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec G U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
   simp [Sec.res]
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `congrArg (fun m => m.hom x) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
@@ -29,7 +29,7 @@ end Sections
 variable {q : ℕ} {C : Type 1} [Category.{0} C] {P : Probe C q} {X : Scheme.{0}}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sec.res (P.S.map φ).unop (Sec.res (Y.y c) a) = _`. Rewrite using `[← res_comp, Y.nat]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X)
     {c c' : C} (φ : c ⟶ c') :
@@ -38,7 +38,7 @@ theorem map_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.r
   rw [← res_comp, Y.nat]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `h : ∀ k : Fin 2, (((P.res i).K j).map (GlobalTheory.CatH.toLast k s)).hom (Y.glob i j a (GlobalTheory.CatH.face k s)) = Sec.res (Y.y (s.obj (Fin.last 1))) a` using `fun k => map_glob Y i j a _`. Express the relevant statement in the definitionally equal form `∑ k : Fin 2, (-1 : ℤ) ^ (k : ℕ) • (((P.res i).K j).map (GlobalTheory.CatH.toLast k s)).hom (Y.glob i j a (GlobalTheory.CatH.face k s)) = 0`. Rewrite using `[Fin.sum_univ_two, h 0, h 1]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) :
     d ((P.res i).K j) 0 (Y.glob i j a) = 0 := by
@@ -51,7 +51,7 @@ theorem d_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.res
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Conclude with `map_res _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dvC_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) :
     (P.res i).dvC j 0 (Y.glob i j a) =
@@ -60,7 +60,7 @@ theorem dvC_glob (Y : P.Pts X) (i : ℤ) (j : ℕ) (a : Sec ((GlobalTheory.EtC.r
   exact map_res _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Conclude with `map_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem glob_add (Y : P.Pts X) (i : ℤ) (j : ℕ) (a b : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) :
     Y.glob i j (a + b) = Y.glob i j a + Y.glob i j b := by
@@ -68,7 +68,7 @@ theorem glob_add (Y : P.Pts X) (i : ℤ) (j : ℕ) (a b : Sec ((GlobalTheory.EtC
   exact map_add _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Conclude with `map_sub _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem glob_sub (Y : P.Pts X) (i : ℤ) (j : ℕ) (a b : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) :
     Y.glob i j (a - b) = Y.glob i j a - Y.glob i j b := by
@@ -76,9 +76,9 @@ theorem glob_sub (Y : P.Pts X) (i : ℤ) (j : ℕ) (a b : Sec ((GlobalTheory.EtC
   exact map_sub _ _ _
 
 /- English proof (translation)
-Establish `hcl` using `(hRB (ZMod q) (GlobalTheory.EtC.res _ (tw q i)) X (j : ℤ)).2.1 x a hx ((j + 1 : ℕ) : ℤ)`. Establish `hdv : (P.res i).dvC j 0 (Y.glob i j a) = 0`. Rewrite using `[dvC_glob, hcl]`. Use function extensionality and compare the values at `s`. Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hst⟩` from `hSE ℤ C P.L (P.res i) hT j 0 j (add_zero j) (Y.glob i j a) hdv (d_glob Y i j a)`. Conclude with `⟨(cx P.L).cls z hz, z, hz, hst, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem edge_exists {i : ℤ} {j : ℕ} (hT : (P.res i).Good) (hSE : StEx) (hRB : RepBasic) (Y : P.Pts X)
     {x : Ht q (sch.obj X) j i} {a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X} (hx : Rep x a) :
@@ -92,15 +92,15 @@ theorem edge_exists {i : ℤ} {j : ℕ} (hT : (P.res i).Good) (hSE : StEx) (hRB 
   exact ⟨(cx P.L).cls z hz, z, hz, hst, rfl⟩
 
 /- English proof (translation)
-Establish `hB` using `hRB (ZMod q) (GlobalTheory.EtC.res _ (tw q i)) X (j : ℤ)`. Establish `h0 : Rep (0 : Ht q (sch.obj X) j i) (a - a')`. Use `(hB.2.2.1 x x a a' hx hx').2` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Establish `hz` using `hB.2.2.2.1 (a - a') h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hVB : (P.res i).VB j (Y.glob i j a - Y.glob i j a')`. Consider the cases of `j with`. Consider the case `zero`. Take `⟨b, hb⟩` from `hz (-1) (by norm_num)`. Use `(hRZ (ZMod q) (tw q i) X).2.2 (-1) (by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b = 0` using `Subsingleton.elim _ _`. Establish `hz0 : a - a' = 0`. Rewrite using `[← hb, hb0]`. Conclude with `map_zero _`. Express the relevant statement in the definitionally equal form `Y.glob i 0 a - Y.glob i 0 a' = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← glob_sub, hz0]`. Use function extensionality and compare the values at `s`. Conclude with `map_zero _`. Consider the case `succ s`. Take `⟨b, hb⟩` from `hz (s : ℤ) (by push_cast; rfl)`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Y.glob i s b, d_glob Y i s b, ?_⟩` and prove the remaining obligations. Rewrite using `[dvC_glob, hb, glob_sub]`. Conclude with `(hEU ℤ C P.L (P.res i) hT j _ _ h h' he he').2 hVB`.
+A detailed English derivation is pending.
 -/
 theorem edge_unique {i : ℤ} {j : ℕ} (hT : (P.res i).Good) (hEU : EdgeUniq) (hRB : RepBasic) (hRZ : ResZero)
     (Y : P.Pts X) {x : Ht q (sch.obj X) j i} {a a' : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X}
@@ -131,15 +131,15 @@ theorem edge_unique {i : ℤ} {j : ℕ} (hT : (P.res i).Good) (hEU : EdgeUniq) (
   exact (hEU ℤ C P.L (P.res i) hT j _ _ h h' he he').2 hVB
 
 /- English proof (translation)
-Introduce `hRG hSE hEU hRB hRZ hGen q _ C _ P X Y i j x`. Establish `hT` using `hRG hGen q C P i`. Establish `hB` using `hRB (ZMod q) (GlobalTheory.EtC.res _ (tw q i)) X (j : ℤ)`. Establish `hex : ∀ x, ∃ h, Y.IsEt i j x h` using `fun x => by`. Take `⟨a, ha⟩` from `hB.1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `edge_exists hT hSE hRB Y ha`. Conclude with `⟨h, a, ha, hh⟩`. Establish `huniq : ∀ {x h h'}, Y.IsEt i j x h → Y.IsEt i j x h' → h = h'`. Introduce and unpack `x h h' ⟨a, ha, he⟩ ⟨a', ha', he'⟩`. Conclude with `edge_unique hT hEU hRB hRZ Y ha ha' he he'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hall : ∀ x, Y.IsEt i j x (Y.et i j x)`. Use `pick_spec (P := fun e : Ht q (sch.obj X) j i →+ H P.L j => ∀ x, Y.IsEt i j x (e x)) ?_` and prove the remaining obligations. Use `choose f hf using hex`. Use `⟨AddMonoidHom.mk' f fun u v => huniq (hf _) ?_, hf⟩` and prove the remaining obligations. Take `⟨a, ha, he⟩` from `hf u`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, he'⟩` from `hf v`. Use `⟨a + b, (hB.2.2.1 u v a b ha hb).1, ?_⟩` and prove the remaining obligations. Rewrite using `[glob_add]`. Conclude with `(hEU ℤ C P.L (P.res i) hT j _ _ _ _ he he').1`. Use `⟨fun a ha => ?_, fun h hh => huniq hh (hall x)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨h, hh⟩` from `edge_exists hT hSE hRB Y ha`. Establish `e : h = Y.et i j x` using `huniq ⟨a, ha, hh⟩ (hall x)`. Rewrite using `[← e]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem etSpec : ResGood → StEx → EdgeUniq → RepBasic → ResZero → EtSpec := by
   intro hRG hSE hEU hRB hRZ hGen q _ C _ P X Y i j x

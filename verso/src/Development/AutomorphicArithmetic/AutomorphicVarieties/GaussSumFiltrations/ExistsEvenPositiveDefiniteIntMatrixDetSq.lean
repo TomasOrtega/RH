@@ -17,36 +17,36 @@ def Gm (R : Type) [CommRing R] (n : ℕ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ F
   Matrix.fromBlocks (Am R n) ((n : R) • 1) ((n : R) • 1) ((n : R) • Cm R n)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Jm, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JJ (R : Type) [CommRing R] (n : ℕ) : Jm R n * Jm R n = (n : R) • Jm R n := by
   ext i j; simp [Jm, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [Cm, Am, add_mul, one_mul, Matrix.mul_sub, Matrix.mul_smul, mul_one, JJ]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CA (R : Type) [CommRing R] (n : ℕ) : Cm R n * Am R n = ((n : R) + 1) • 1 := by
   simp only [Cm, Am, add_mul, one_mul, Matrix.mul_sub, Matrix.mul_smul, mul_one, JJ]
   module
 
 /- English proof (translation)
-Simplify using `only [Cm, Am, mul_add, one_mul, sub_mul, Matrix.smul_mul, mul_one, JJ]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AC (R : Type) [CommRing R] (n : ℕ) : Am R n * Cm R n = ((n : R) + 1) • 1 := by
   simp only [Cm, Am, mul_add, one_mul, sub_mul, Matrix.smul_mul, mul_one, JJ]
   module
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases h : i = j <;>`. Simplify using `[Gm, Am, Cm, Jm, Matrix.one_apply, Matrix.natCast_apply, Matrix.diagonal_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem Gmap (n : ℕ) : (Gm ℤ n).map (Int.cast : ℤ → ℝ) = Gm ℝ n := by
   ext (i | i) (j | j) <;> by_cases h : i = j <;>
     simp [Gm, Am, Cm, Jm, Matrix.one_apply, Matrix.natCast_apply, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Establish `h : Jm ℝ n = (Matrix.of fun (_ : Fin 1) (_ : Fin n) => (1 : ℝ))ᴴ * Matrix.of fun (_ : Fin 1) (_ : Fin n) => (1 : ℝ)`. Use extensionality with `i j`. Simplify using `[Jm, Matrix.mul_apply]`. Unfold `Cm`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.PosDef.one.add_posSemidef (Matrix.posSemidef_conjTranspose_mul_self _)`.
+A detailed English derivation is pending.
 -/
 theorem Cpos (n : ℕ) : (Cm ℝ n).PosDef := by
   have h : Jm ℝ n = (Matrix.of fun (_ : Fin 1) (_ : Fin n) => (1 : ℝ))ᴴ * Matrix.of fun (_ : Fin 1) (_ : Fin n) => (1 : ℝ) := by
@@ -56,7 +56,7 @@ theorem Cpos (n : ℕ) : (Cm ℝ n).PosDef := by
   exact Matrix.PosDef.one.add_posSemidef (Matrix.posSemidef_conjTranspose_mul_self _)
 
 /- English proof (translation)
-Establish `hn : ((n : ℝ) + 1) ≠ 0` using `by positivity`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_smul, CA, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cinv (n : ℕ) : (Cm ℝ n)⁻¹ = ((n : ℝ) + 1)⁻¹ • Am ℝ n := by
   have hn : ((n : ℝ) + 1) ≠ 0 := by positivity
@@ -64,14 +64,14 @@ theorem Cinv (n : ℕ) : (Cm ℝ n)⁻¹ = ((n : ℝ) + 1)⁻¹ • Am ℝ n := 
   rw [Matrix.mul_smul, CA, smul_smul, inv_mul_cancel₀ hn, one_smul]
 
 /- English proof (translation)
-The claim follows from `(Cpos n).1`.
+A detailed English derivation is pending.
 -/
 theorem Csymm (n : ℕ) : (Cm ℝ n)ᴴ = Cm ℝ n := (Cpos n).1
 
 /- English proof (translation)
-Establish `hC : IsUnit (Cm ℝ n).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Cpos n).isUnit`. Establish `hXH : ((Cm ℝ n)⁻¹)ᴴ = (Cm ℝ n)⁻¹`. Rewrite using `[Matrix.conjTranspose_nonsing_inv, Csymm]`. Establish `h1 : (Cm ℝ n)⁻¹ * Cm ℝ n = 1` using `Matrix.nonsing_inv_mul _ hC`. Establish `h2 : Cm ℝ n * (Cm ℝ n)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_conjTranspose, hXH, Matrix.conjTranspose_one, Matrix.conjTranspose_zero, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [one_mul, mul_one, zero_mul, mul_zero, add_zero, zero_add, Matrix.mul_smul, Matrix.smul_mul, h1, h2, Matrix.mul_assoc]`. Rewrite using `[Gm]`. Use `congr 1`. Rewrite using `[Cinv, smul_smul, ← add_smul, ← one_add_mul, add_comm (1 : ℝ), mul_inv_cancel₀ (by positivity), one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gfac (n : ℕ) : Gm ℝ n =
     (Matrix.fromBlocks 1 0 (Cm ℝ n)⁻¹ 1)ᴴ * Matrix.fromBlocks (Cm ℝ n)⁻¹ 0 0 ((n : ℝ) • Cm ℝ n) *
@@ -91,7 +91,7 @@ theorem Gfac (n : ℕ) : Gm ℝ n =
     one_smul]
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Int.cast_det, Gmap, Gfac]`. Establish `hC : (Cm ℝ n).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (Cpos n).isUnit).ne_zero`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, Matrix.det_smul, Matrix.det_nonsing_inv, Fintype.card_fin, star_one, one_mul, mul_one, Ring.inverse_eq_inv']`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -106,15 +106,13 @@ theorem Gdet (n : ℕ) : (Gm ℤ n).det = (n : ℤ) ^ n := by
   field_simp
 
 /- English proof (translation)
-Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hn.ne'`. Establish `hC : IsUnit (Cm ℝ n).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Cpos n).isUnit`. Establish `hD : ((n : ℝ) • Cm ℝ n).PosDef` using `(Cpos n).smul (by positivity)`. Use `haveI : Invertible ((n : ℝ) • Cm ℝ n) := hD.isUnit.invertible`. Establish `hG : Gm ℝ n = Matrix.fromBlocks (Am ℝ n) ((n : ℝ) • (1 : Matrix (Fin n) (Fin n) ℝ)) ((n : ℝ) • (1 : Matrix (Fin n) (Fin n) ℝ))ᴴ ((n : ℝ) • Cm ℝ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Gm, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_trivial]`. Establish `hinv : ((n : ℝ) • Cm ℝ n)⁻¹ = (n : ℝ)⁻¹ • (Cm ℝ n)⁻¹`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hn', one_smul, Matrix.mul_nonsing_inv _ hC]`. Establish `hA : Am ℝ n = ((n : ℝ) + 1) • (Cm ℝ n)⁻¹`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cinv, smul_smul, mul_inv_cancel₀ (by positivity), one_smul]`. Establish `hS : Am ℝ n - (n : ℝ) • (1 : Matrix (Fin n) (Fin n) ℝ) * ((n : ℝ) • Cm ℝ n)⁻¹ * ((n : ℝ) • (1 : Matrix (Fin n) (Fin n) ℝ))ᴴ = (Cm ℝ n)⁻¹`. Rewrite using `[hinv, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_trivial, hA]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, smul_smul]`. Rewrite using `[inv_mul_cancel₀ hn', mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `module`. Establish `hPSD : (Gm ℝ n).PosSemidef`. Rewrite using `[hG, Matrix.PosDef.fromBlocks₂₂ _ _ hD, hS]`. Conclude with `(Cpos n).inv.posSemidef`. Establish `hU : IsUnit (Gm ℝ n)`.
-
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← Gmap, ← Int.cast_det, Gdet]`. Conclude with `isUnit_iff_ne_zero.mpr (by push_cast; exact pow_ne_zero _ hn')`. Conclude with `hPSD.posDef_iff_isUnit.mpr hU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gpos (n : ℕ) (hn : 0 < n) : (Gm ℝ n).PosDef := by
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
@@ -145,7 +143,7 @@ theorem Gpos (n : ℕ) (hn : 0 < n) : (Gm ℝ n).PosDef := by
   exact hPSD.posDef_iff_isUnit.mpr hU
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ, ih, Matrix.fromBlocks_multiply]`. Simplify using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem blockPow {n : ℕ} (T S : Matrix (Fin n) (Fin n) ℤ) (i : ℕ) :
     (Matrix.fromBlocks T 0 0 S) ^ i = Matrix.fromBlocks (T ^ i) 0 0 (S ^ i) := by
@@ -154,7 +152,7 @@ theorem blockPow {n : ℕ} (T S : Matrix (Fin n) (Fin n) ℤ) (i : ℕ) :
   | succ i ih => rw [pow_succ, ih, Matrix.fromBlocks_multiply]; simp [pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Finset.sum_range_succ, ih, blockPow]`. Simplify using `only [Finset.sum_range_succ, Matrix.fromBlocks_add, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem blockSum {n : ℕ} (T S : Matrix (Fin n) (Fin n) ℤ) (m : ℕ) :
     ∑ i ∈ Finset.range m, (Matrix.fromBlocks T 0 0 S) ^ i =
@@ -164,11 +162,11 @@ theorem blockSum {n : ℕ} (T S : Matrix (Fin n) (Fin n) ℤ) (m : ℕ) :
   | succ m ih => rw [Finset.sum_range_succ, ih, blockPow]; simp only [Finset.sum_range_succ, Matrix.fromBlocks_add, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use extensionality with `a b`. Establish `h0 : Fin.ofNat (n + 1) 0 = 0` using `Fin.ext (by simp)`. Simplify using `[Matrix.one_apply, h0]`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, ih]`. Use extensionality with `a b`. Establish `hs : Fin.ofNat (n + 1) (k + 1) = 1 + Fin.ofNat (n + 1) k`. Apply `Fin.ext` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Fin.val_add, Nat.add_mod, add_comm]`. Rewrite using `[Matrix.of_apply, hs, Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, add_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' (n k : ℕ) :
     (Matrix.of fun a b : Fin (n + 1) => if a = b + 1 then (1 : ℤ) else 0) ^ k =
@@ -189,9 +187,9 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' (n k : ℕ) :
       if_true, add_assoc]
 
 /- English proof (translation)
-Repeatedly rewrite using `[exists_ne_zero_smul_mem_of_mem_span']`. Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun k => if a = b + Fin.ofNat (n + 1) k then (1 : ℤ) else 0) (n + 1)]`.
+Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ i : Fin (n + 1), Fin.ofNat (n + 1) (i : ℕ) = i` using `fun i => Fin.ext (by simp [Nat.mod_eq_of_lt i.isLt])`. Simplify using `only [hv]`. Establish `hiff : ∀ i : Fin (n + 1), (a = b + i) ↔ (i = a - b)` using `fun i => by`. Apply the tactic sequence `constructor <;> intro h <;> subst h <;> simp`. Simplify using `only [hiff, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem main_lemma_2 (n : ℕ) :
     ∑ k ∈ Finset.range (n + 1),
@@ -211,27 +209,25 @@ private theorem main_lemma_2 (n : ℕ) :
   simp only [hiff, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Take `⟨P, hP⟩ : ∃ P : Matrix (Fin (n + 1)) (Fin (n + 1)) ℤ, P = Matrix.of fun a b => if a = b + 1 then 1 else 0` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin (n + 1)) (Fin n) ℤ, B = Matrix.of fun a c => (if a = c.succ then 1 else 0) - (if a = 0 then 1 else 0)` from `⟨_, rfl⟩`. Take `⟨L, hL⟩ : ∃ L : Matrix (Fin n) (Fin (n + 1)) ℤ, L = Matrix.of fun r a => if a = r.succ then 1 else 0` from `⟨_, rfl⟩`. Take `⟨X, hX⟩ : ∃ X : Matrix (Fin (n + 1)) (Fin 1) ℤ, X = Matrix.of fun a _ => if a = 0 then 1 else 0` from `⟨_, rfl⟩`. Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin 1) (Fin (n + 1)) ℤ, Y = Matrix.of fun _ _ => 1` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin (n + 1)) (Fin 1) ℤ, Z = Matrix.of fun _ _ => 1` from `⟨_, rfl⟩`. Establish `hLB : L * B = 1`. Use extensionality with `r c`. Simplify using `[hL, hB, Matrix.mul_apply, Matrix.one_apply, Fin.succ_ne_zero]`. Establish `hBL : B * L = 1 - X * Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun b' => ?_) b <;>`. Simplify using `[hL, hB, hX, hY, Matrix.mul_apply, Matrix.one_apply, sub_mul, Finset.sum_sub_distrib, Fin.succ_ne_zero, eq_comm]`. Establish `hYP : Y * P = Y`. Use extensionality with `j b`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hY, hP, Matrix.mul_apply]`. Establish `hYB : Y * B = 0`. Use extensionality with `j c`. Simplify using `[hY, hB, Matrix.mul_apply, Finset.sum_sub_distrib]`. Establish `hPP : Pᵀ * P = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[hP, Matrix.mul_apply, Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`. Establish `hC : Cm ℤ n = Bᵀ * B`. Use extensionality with `r c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Cm, Jm, hB, Matrix.mul_apply, Matrix.one_apply, mul_sub, sub_mul, Finset.sum_sub_distrib, Fin.succ_ne_zero]`. Conclude with `if_congr eq_comm rfl rfl`. Establish `hsumP : ∑ k ∈ Finset.range (n + 1), P ^ k = Z * Y`. Rewrite using `[hP, main_lemma_2]`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hZ, hY, Matrix.mul_apply]`. Establish `hBU : B * (L * P * B) = P * B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hBL, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc X Y P, hYP, Matrix.mul_assoc X Y B, hYB, Matrix.mul_zero, sub_zero]`. Establish `hpow : ∀ k : ℕ, B * (L * P * B) ^ k = P ^ k * B`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, hBU, ← Matrix.mul_assoc, ← pow_succ]`. Use `⟨L * P * B, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hC]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul B]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (P * B)ᵀ * (P * B) := by rw [hBU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `_ = Bᵀ * (Pᵀ * P) * B := by`. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Bᵀ * B := by rw [hPP, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_sum]`. Use `_ = L * ∑ k ∈ Finset.range (n + 1), P ^ k * B := by simp only [hpow]`. Use `_ = L * ((∑ k ∈ Finset.range (n + 1), P ^ k) * B) := by rw [Matrix.sum_mul]`. Use `_ = 0 := by rw [hsumP, Matrix.mul_assoc Z Y B, hYB, Matrix.mul_zero, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main_lemma_3 (n : ℕ) : ∃ U : Matrix (Fin n) (Fin n) ℤ,
     Uᵀ * Cm ℤ n * U = Cm ℤ n ∧ ∑ k ∈ Finset.range (n + 1), U ^ k = 0 := by
@@ -301,31 +297,29 @@ private theorem main_lemma_3 (n : ℕ) : ∃ U : Matrix (Fin n) (Fin n) ℤ,
       _ = 0 := by rw [hsumP, Matrix.mul_assoc Z Y B, hYB, Matrix.mul_zero, Matrix.mul_zero]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `he`. Take `⟨U, hUC, hUsum⟩` from `main_lemma_3 n`. Establish `hU1 : U ^ (n + 1) = 1`. Establish `h` using `geom_sum_mul U (n + 1)`. Rewrite `h` using `[hUsum, zero_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(sub_eq_zero.mp h.symm)`. Take `⟨V, hV⟩ : ∃ V : Matrix (Fin n) (Fin n) ℤ, V = U ^ n` from `⟨_, rfl⟩`. Establish `hUV : U * V = 1` using `by rw [hV, ← pow_succ', hU1]`. Establish `hVU : V * U = 1` using `by rw [hV, ← pow_succ, hU1]`. Establish `hcomm : Commute V U` using `by show V * U = U * V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hVU, hUV]`. Establish `hVsum : ∑ k ∈ Finset.range (n + 1), V ^ k = 0`. Establish `h1 : ∀ i ∈ Finset.range (n + 1), V ^ n * U ^ i = V ^ (n - i)`. Introduce `i hi`. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show V ^ n = V ^ (n - i) * V ^ i by rw [← pow_add, Nat.sub_add_cancel hi'], mul_assoc, ← hcomm.mul_pow, hVU, one_pow, mul_one]`. Rewrite using `[← Finset.sum_range_reflect]`. Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[← Finset.sum_congr rfl h1, ← Finset.mul_sum, hUsum, mul_zero]`. Establish `hW : V * Am ℤ n * Vᵀ = Am ℤ n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWC : V * Am ℤ n * Vᵀ * Cm ℤ n = ((n : ℤ) + 1) • 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = V * (Am ℤ n * Cm ℤ n) * U := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hUV, Matrix.transpose_one]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = ((n : ℤ) + 1) • 1 := by`. Rewrite using `[AC, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hVU]`. Establish `h2 : ((n : ℤ) + 1) • (V * Am ℤ n * Vᵀ) = ((n : ℤ) + 1) • Am ℤ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[CA, Matrix.mul_smul, Matrix.mul_one]`. Use `_ = (V * Am ℤ n * Vᵀ * Cm ℤ n) * Am ℤ n := by simp only [Matrix.mul_assoc]`. Use `_ = ((n : ℤ) + 1) • Am ℤ n := by rw [hWC, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `smul_right_injective _ (by positivity : ((n : ℤ) + 1) ≠ 0) h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUtVt : Uᵀ * Vᵀ = 1` using `by rw [← Matrix.transpose_mul, hVU, Matrix.transpose_one]`. Use `⟨Gm ℤ n, Matrix.fromBlocks Vᵀ 0 0 U, n ^ m, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Use `⟨by rw [Gmap]; exact Gpos n hn, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `i`. Break down `i with i | i` into its components or cases. Simplify using `[Gm, Am, Jm, Matrix.natCast_apply] first`. Consider the case `exact ⟨m, hm⟩`. Consider the case `exact ⟨(m : ℤ), by rw [hm]; push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Gm, Cm, Jm, Matrix.natCast_apply]`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.transpose_transpose, Matrix.transpose_zero, Gm, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, smul_zero, hW, hVU, hUtVt, hUC]`. Establish `hT : ∑ i ∈ Finset.range (n + 1), Vᵀ ^ i = 0`. Repeatedly rewrite using `[← Matrix.transpose_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Matrix.transpose_sum, hVsum, Matrix.transpose_zero]`. Rewrite using `[blockSum, hT, hUsum, Matrix.fromBlocks_zero]`. Rewrite using `[Gdet]`. Substitute `hm` using the available equality. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq : (n + 1 - 1) / 2 = m` using `by omega`. Rewrite using `[hq]`. Establish `h1 : (-(n : ℤ)) ≡ 1 [ZMOD ((n + 1 : ℕ) : ℤ)]` using `Int.modEq_iff_dvd.mpr ⟨1, by push_cast; ring⟩`. Establish `h2` using `h1.pow m`.
-
-Rewrite `h2` using `[neg_pow, one_pow]`. Move the coercions through the operations in `at h2 ⊢`. Conclude with `h2`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem main (n : ℕ) (hn : 0 < n) (he : Even n) :
     ∃ (G S : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℤ) (t : ℕ), LatD (n + 1) G S t := by
@@ -401,9 +395,9 @@ theorem main (n : ℕ) (hn : 0 < n) (he : Even n) :
     exact h2
 
 /- English proof (translation)
-Introduce `p hp hp2`. Establish `hpos : 0 < p - 1`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨G, S, t, h⟩` from `main (p - 1) hpos (hp.even_sub_one hp2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[Nat.sub_add_cancel hp.one_le]`. Conclude with `⟨G, S, t, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_latD : ∀ p : ℕ, p.Prime → p ≠ 2 → ∃ (G S : Matrix (Fin (p - 1) ⊕ Fin (p - 1)) (Fin (p - 1) ⊕ Fin (p - 1)) ℤ) (t : ℕ), LatD p G S t := by
   intro p hp hp2
@@ -420,7 +414,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD | exact GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD | (intros; apply GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_evenPositiveDefinite_intMatrix_det_sq : ∀ p : ℕ, p.Prime → p ≠ 2 → ∃ (G S : Matrix (Fin (p - 1) ⊕ Fin (p - 1)) (Fin (p - 1) ⊕ Fin (p - 1)) ℤ) (t : ℕ), LatD p G S t := by
   first | exact @GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD | exact GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD | (intros; apply GlobalTheory.HilbertThetaSeries.EvenLat.exists_latD <;> assumption)

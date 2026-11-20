@@ -9,9 +9,9 @@ open MeasureTheory Filter Topology
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
 /- English proof (translation)
-Establish `h2 : ∀ j, fderiv ℝ (fderiv ℝ (φ j)) y = fderiv ℝ (fderiv ℝ (ψ j)) y` using `fun j => Filter.EventuallyEq.fderiv_eq (show fderiv ℝ (φ j) =ᶠ[𝓝 y] fderiv ℝ (ψ j) from (h j).eventuallyEq_nhds.mono fun _ h' => h'.fderiv_eq)`. Establish `hH : ∀ k, cxHessian (φ k) y = cxHessian (ψ k) y`. Introduce `k`. Unfold `cxHessian`. Rewrite using `[h2 k]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [maDensity, hH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maDensity_congr_of_eventuallyEq {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : ∀ j, φ j =ᶠ[𝓝 y] ψ j) : maDensity φ y = maDensity ψ y := by
@@ -30,7 +30,7 @@ def affL (b : E) : (Fin 1 → ℂ) →L[ℝ] E :=
   (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0).smulRight b
 
 /- English proof (translation)
-Unfold `mixedDisc`. Rewrite using `[← Finset.powerset_univ, Finset.univ_unique, ← Finset.insert_empty, Finset.sum_powerset_insert (by simp)]`. Simplify using `[Matrix.det_unique]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mixedDisc_one (A : Fin 1 → Matrix (Fin 1) (Fin 1) ℂ) : mixedDisc A = A 0 0 0 := by
   unfold mixedDisc
@@ -39,9 +39,9 @@ theorem mixedDisc_one (A : Fin 1 → Matrix (Fin 1) (Fin 1) ℂ) : mixedDisc A =
   simp [Matrix.det_unique]
 
 /- English proof (translation)
-Establish `hre : ∀ u v : ℝ, ((((u : ℂ) + Complex.I * (v : ℂ)) / 4).re) = u / 4`. Introduce `u v`. Simplify using `[Complex.div_ofNat_re]`. Rewrite using `[maDensity, mixedDisc_one]`. Simplify using `only [cxHessian, hre]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Real.pi_pos` as an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maDensity_one (f : (Fin 1 → ℂ) → ℝ) (y : Fin 1 → ℂ) :
     maDensity (fun _ => f) y = (fderiv ℝ (fderiv ℝ f) y (Pi.single 0 1) (Pi.single 0 1) +

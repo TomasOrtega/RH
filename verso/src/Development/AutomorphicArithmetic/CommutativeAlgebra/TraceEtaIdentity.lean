@@ -11,11 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `key : ∀ q : X, ∃ V : X.Opens, q ∈ V ∧ V.ι ≫ σ.left = V.ι ≫ σ'.left`. Introduce `q`. Take `⟨k, hk, y, ⟨z, hz⟩, he⟩` from `hpt q`. Take `⟨V, hV, hVe⟩` from `GlobalTheory.UPel.LocSim.exists_open_eq_of_torsion_point X A hA n hn σ σ' h₁ h₂ k y he`. Conclude with `⟨V, hV ⟨z, hz⟩, hVe⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose V hV hVe using key`. Establish `hcov : TopologicalSpace.IsOpenCover V`. Use `TopologicalSpace.IsOpenCover.mk (eq_top_iff.mpr fun q _ => ?_)` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨q, hV q⟩`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Conclude with `Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover V hcov) _ _ fun q => hVe q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem sec_eq_of_points {X : Scheme.{0}} (A : Over X) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     (n : ℕ) (hn : IsUnit (n : Γ(X, ⊤))) (σ σ' : 𝟙_ (Over X) ⟶ A) (h₁ : σ ^ n = 1) (h₂ : σ' ^ n = 1)
@@ -34,9 +32,9 @@ private theorem sec_eq_of_points {X : Scheme.{0}} (A : Over X) [GrpObj A] [IsCom
   exact Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover V hcov) _ _ fun q => hVe q
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Establish `h` using `hf 0 0`. Rewrite `h` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel (a := f 0) (by rw [_root_.mul_one]; exact h.symm)`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul, hf, ih, pow_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_nsmul_pow {M Q : Type} [AddCommGroup M] [Group Q] (f : M → Q) (hf : ∀ a b, f (a + b) = f a * f b)
     (m : ℕ) (a : M) : f (m • a) = f a ^ m := by
@@ -50,13 +48,13 @@ private theorem map_nsmul_pow {M Q : Type} [AddCommGroup M] [Group Q] (f : M →
     rw [succ_nsmul, hf, ih, pow_succ]
 
 /- English proof (translation)
-The claim follows from `(map_pow (IsMonHom.monoidHom ψ T) a m).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pow_comp_hom {C : Type*} [Category C] [CartesianMonoidalCategory C] {T A B : C} [GrpObj A] [GrpObj B]
     (a : T ⟶ A) (ψ : A ⟶ B) [IsMonHom ψ] (m : ℕ) : (a ≫ ψ) ^ m = (a ^ m) ≫ ψ := (map_pow (IsMonHom.monoidHom ψ T) a m).symm
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Rewrite using `[map_nsmul_pow (I.ev _) (I.add _)]`. Conclude with `I.tower n c hn hc z`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_tower {G : GDatum} {k Q : Type} [Field k] [Group Q] {act : G.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : GTateIso G k Q act e) {M n c : ℕ} (hM : M = n * c) (hn : 0 < n) (hc : 0 < c) (z : G.La) :
@@ -66,17 +64,17 @@ private theorem ev_tower {G : GDatum} {k Q : Type} [Field k] [Group Q] {act : G.
   exact I.tower n c hn hc z
 
 /- English proof (translation)
-Introduce `p _ D G L R _ _ gb h X s N' N o' o ψ hT n c' c hN' hN x y hxy`. Use `haveI : IsMonHom ψ := hT.1`. Establish `h3'` using `N'.2.1`. Establish `h3` using `N.2.1`. Establish `hn : 0 < n` using `Nat.pos_of_ne_zero (by rintro rfl; rw [zero_mul] at hN'; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : 0 < c'` using `Nat.pos_of_ne_zero (by rintro rfl; rw [mul_zero] at hN'; omega)`. Establish `hc : 0 < c` using `Nat.pos_of_ne_zero (by rintro rfl; rw [mul_zero] at hN; omega)`. Establish `hcop : n.Coprime p` using `Nat.Coprime.coprime_dvd_left ⟨c', hN'⟩ N'.2.2`. Establish `hunit : IsUnit (n : Γ(X, ⊤))`. Establish `hR : IsUnit (n : R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsUnit (n : ℚ)` using `(Nat.cast_ne_zero.mpr hn.ne').isUnit`. Simplify using `using hq.map (algebraMap ℚ R)`. Use `hR.map ((s.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` as an intermediate fact. Simplify using `using this`. Establish `ex' : (n • c' • x : D.La) = (↑N' : ℕ) • x` using `by rw [smul_smul, ← hN']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : (n • c • y : D.La) = (↑N : ℕ) • y` using `by rw [smul_smul, ← hN]`. Establish `e1 : (o'.eta (c' • x)) ^ n = 1` using `(map_nsmul_pow o'.eta o'.eta_add n (c' • x)).symm.trans ((congrArg o'.eta ex').trans (o'.eta_ker x))`. Establish `hpow1 : (o'.eta (c' • x) ≫ ψ) ^ n = 1` using `(pow_comp_hom _ _ _).trans ((congrArg (· ≫ ψ) e1).trans (map_one (IsMonHom.monoidHom ψ _)))`. Establish `hpow2 : (o.eta (c • y)) ^ n = 1` using `(map_nsmul_pow o.eta o.eta_add n (c • y)).symm.trans ((congrArg o.eta ex).trans (o.eta_ker y))`. Use `sec_eq_of_points o.A o.ab n hunit _ _ hpow1 hpow2 (fun q => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `κ` to `X.residueField q`. Set `k` to `AlgebraicClosure κ`. Set `y0 : Sp k ⟶ X` to `spMap (algebraMap κ k) ≫ X.fromSpecResidueField q`. Set `β : R →+* k` to `(Spec.preimage (y0 ≫ s)).hom`. Establish `hβ : y0 ≫ s = spMap β` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (y0 ≫ s)).hom)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨I', I'', hI', hI'', hiff⟩` from `hT.2.2.2.2 k y0 β hβ`. Use `⟨k, inferInstance, y0, ⟨IsLocalRing.closedPoint k, Scheme.fromSpecResidueField_apply q _⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_eta_identity : UpperTheory.Gal.Int.Geo.TrEta := by
   intro p _ D G L R _ _ gb h X s N' N o' o ψ hT n c' c hN' hN x y hxy

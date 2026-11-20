@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.RelabDR
 
 /- English proof (translation)
-Establish `h` using `LieGen.rootIdx_bijective O.S`. Unfold `LieGen.rootIdx at h`. Conclude with `(Function.Bijective.of_comp_iff' (Equiv.bijective ((((GlobalTheory.Proof.LetterConjugation.nodup_letters O.S.Dw).getEquivOfForallMemList _ (GlobalTheory.Proof.LetterConjugation.mem_letters O.S.Dw)).symm).trans (finCongr (length_letters O.S)))) _).1 h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rootL_bijective_lam {D : D7} (O : Setup D) : Function.Bijective (rootL O) := by
   classical
@@ -20,9 +20,9 @@ theorem rootL_bijective_lam {D : D7} (O : Setup D) : Function.Bijective (rootL O
     (GlobalTheory.Proof.LetterConjugation.mem_letters O.S.Dw)).symm).trans (finCongr (length_letters O.S)))) _).1 h
 
 /- English proof (translation)
-Introduce `D O`. Rewrite using `[← (rootL_bijective_lam O).sum_comp (fun z => (X z : MvPolynomial _ ℝ)), Fintype.sum_prod_type, ← Finset.sum_neg_distrib, lamA, map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [pHigh, pLow, pow_one, map_sub, map_sum, aeval_X, Finset.sum_filter]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < O.j`. Simplify using `[hi, not_le.2 hi, rootSub, rootSg]`. Simplify using `[hi, not_lt.1 hi, rootSub, rootSg]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem aeval_rootSub_lamA : ∀ (D : D7) (O : Setup D),
     aeval (GlobalTheory.RelabDR.rootSub O) (lamA D.what₂.Tau O.N O.j) = -∑ z, X z := by

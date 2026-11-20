@@ -13,13 +13,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := MRing ι' ⧸ P') x`. Establish `h : ∀ f : MRing ι', algebraMap (MRing ι' ⧸ P') (FractionRing (MRing ι' ⧸ P')) (Ideal.Quotient.mk P' f) ∈ Subfield.closure ((Finset.univ.image fun q : Σ k, ι' k => algebraMap (MRing ι' ⧸ P') (FractionRing (MRing ι' ⧸ P')) (Ideal.Quotient.mk P' (X q)) : Finset (FractionRing (MRing …`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => rw [eq_intCast C r, map_intCast, map_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add f g hf hg => rw [map_add, map_add]`. Conclude with `add_mem hf hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X f q hf`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_mem hf (Subfield.subset_closure (by simp))`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
-
-Conclude with `div_mem (h f) (h g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subfield_closure_coords_eq_top {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
     (P' : Ideal (MRing ι')) [P'.IsPrime] :
@@ -45,9 +43,9 @@ theorem subfield_closure_coords_eq_top {K' : Type} [Fintype K'] {ι' : K' → Ty
   exact div_mem (h f) (h g)
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W _hv hP' _hQ _hs _hsQ hW`. Use `hP'.2.1.1` as an intermediate fact. Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Take `⟨T, hTA, hloc⟩` from `h₁ K ι (imageZ v P') W hW.1.1.1 (le_sup_left.trans hW.1.1.2) hW.2`. Take `⟨t, ht⟩` from `h₂ _ _ (fracMapZ v P') _ (subfield_closure_coords_eq_top P') _ T hTA hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, fun x _ hx => ht x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocRingIntClosureFinite.proof (h₁ : LocRingChartLoc.Statement) (h₂ : IntClosureLocFinite.Statement) :
     LocRingIntClosureFinite.Statement := by

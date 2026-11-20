@@ -17,9 +17,9 @@ namespace GlobalTheory.ThetaAdelicInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
@@ -35,7 +35,7 @@ theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : 
     rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, ⟨h.chars.heckeα.1.div' h.chars.heckeβ.1, fun x => by simp only [MonoidHom.div_apply, h.chars.heckeα.2 x, h.chars.heckeβ.2 x, div_self']⟩, h.chars.resα, resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
@@ -46,7 +46,7 @@ theorem isPair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F 
     resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun w hw => hw.1.trans hw.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} (hM : M.IsGood ψ)
     {v : Pl F} (t : E →ₐ[F] Fv F v) : M.So ψ t ≤ schA F _ := by
@@ -55,17 +55,13 @@ theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W
   exact GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun w hw => hw.1.trans hw.2)
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X.J)))`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : Countable (ratU σ X.J) := GlobalTheory.ThetaKInv.countable_ratU σ X.J`. Use `haveI hH : M.μ.IsHaarMeasure := hP.good.haar`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI hR : M.μ.IsMulRightInvariant := GlobalTheory.ThetaKInv.isMulRightInvariant σ hP.base.cm X.J hP.herm.herm (GlobalTheory.ThetaKInv.det_ne_zero_of_isHerm hP.herm) M.μ`. Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun γ => measurable_const_mul (γ.1 : UA σ X.J)⟩`. Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun γ A _ => measure_preimage_mul M.μ γ.1 A⟩`. Set `f : UA σ X.J → ℂ` to `fun g => theta om Φ g h`. Establish `hf : ∀ (γ : ratU σ X.J) (x : UA σ X.J), f (γ • x) = f x` using `fun γ x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : om (γ.1 * x, h) Φ = om (γ.1, 1) (om (x, h) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Express the relevant statement in the definitionally equal form `thetaSum F (om (γ.1 * x, h) Φ) = thetaSum F (om (x, h) Φ)`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.thetaSum_invariant_rational_unitary hKP F E σ B n d X W M χX χW om r s r' s' hP γ.1 γ.2 1 (one_mem _) _ (hP.weil.isUSplitting.pres _ _ hΦ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcomp : ∀ g, theta om (om (k, 1) Φ) g h = f (g * k)`. Introduce `g`. Simplify using `only [theta, f]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hmp : MeasurePreserving (fun x : UA σ X.J => x * k) M.μ M.μ` using `measurePreserving_mul_right M.μ k`.
-
-Establish `hemb : MeasurableEmbedding (fun x : UA σ X.J => x * k)` using `(MeasurableEquiv.mulRight k).measurableEmbedding`. Establish `hdom : IsFundamentalDomain (ratU σ X.J) ((fun x : UA σ X.J => x * k) '' M.dom) M.μ`. Use `hP.good.dom.image_of_equiv (Equiv.mulRight k) (measurePreserving_mul_right M.μ k⁻¹).quasiMeasurePreserving (Equiv.refl _) (fun γ x => by simp [Subgroup.smul_def, mul_assoc])` as an intermediate fact. Simplify using `using this`. Unfold `Model.I`.
-
-Repeatedly rewrite using `[hcomp]`. Rewrite using `[← hmp.setIntegral_image_emb hemb f M.dom]`. Conclude with `hdom.setIntegral_eq hP.good.dom hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_invariant (hKP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
     {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s')
@@ -107,7 +103,7 @@ theorem integral_invariant (hKP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F 
   exact hdom.setIntegral_eq hP.good.dom hf
 
 /- English proof (translation)
-Introduce `hKP _ _ _ _ _ _ _ _ B _ _ _ _ _ _ hT _ hΦ g h` and use `integral_invariant hKP.base (isPair_small hT) g (so_le_schA hT.geo.hM' B.τ₁ hΦ) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem small_integral_invariant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

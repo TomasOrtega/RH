@@ -19,7 +19,7 @@ open GlobalTheory.TauTwist ReciprocityTheory.ChartRestriction.G.DVR
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 /- English proof (translation)
-Set `f : Multiplicative D.X →* (T ⟶ D.P.A)` to `{ toFun := fun x => cP D T x.toAdd map_one' := by simpa using cPoint_nsmul D T 0 0 map_mul' := fun x y => cPoint_add D T _ _ }`. Use `map_zpow f (Multiplicative.ofAdd b) n` as an intermediate fact. Simplify `this` using `[f]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degenerationPointOfLattice_zsmul (T : Over (Spec (CommRingCat.of R))) (n : ℤ) (b : D.X) : cP D T (n • b) = cP D T b ^ n := by
   let f : Multiplicative D.X →* (T ⟶ D.P.A) :=
@@ -30,7 +30,7 @@ theorem degenerationPointOfLattice_zsmul (T : Over (Spec (CommRingCat.of R))) (n
   simpa [f] using this
 
 /- English proof (translation)
-Set `f : (T ⟶ D.P.A) →* (T' ⟶ D.P.A)` to `{ toFun := fun x => ρ ≫ x map_one' := MonObj.comp_one _ map_mul' := fun x y => MonObj.comp_mul _ _ _ }`. Conclude with `map_zpow f y n`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem overSpec_comp_zpow_grpObj {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T) (y : T ⟶ D.P.A) (n : ℤ) :
     ρ ≫ y ^ n = (ρ ≫ y) ^ n := by
@@ -41,11 +41,11 @@ theorem overSpec_comp_zpow_grpObj {T T' : Over (Spec (CommRingCat.of R))} (ρ : 
   exact map_zpow f y n
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, add_zero]`. Simplify using `[cubN]`. Consider the case `succ k ih`. Establish `e` using `val_tau_add (𝟙 (TK R)) hJ hB (a₀ + k • m) m v`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `e` using `[cPoint_add, cPoint_nsmul]`. Simplify using `only [Over.id_left] at e`. Rewrite using `[succ_nsmul, ← add_assoc, cubN, Finset.prod_range_succ]`. Simplify using `only [cubN] at ih`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e'` using `congrArg Additive.ofMul e`. Establish `ih'` using `congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul, ofMul_pow] at e' ih' ⊢`. Rewrite using `[succ_nsmul]`. Take the linear combination `(norm := abel) e' + ih'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem value_tau_add_nsmul_mul_iteratedCube (hB : D.TauBimult) {z : (TK R).left} {J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι}
     (hJ : Good D.P.L z J) (a₀ m v : D.X) (k : ℕ) :
@@ -68,25 +68,25 @@ theorem value_tau_add_nsmul_mul_iteratedCube (hB : D.TauBimult) {z : (TK R).left
     linear_combination (norm := abel) e' + ih'
 
 /- English proof (translation)
-Introduce `R _ _ D hB n`. Establish `hL` using `D.P.isLB`. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Take `⟨t, ht, hv⟩` from `exists_cubN D.cub (1 : D.P.A ⊗ D.P.A ⟶ D.P.A) (snd D.P.A D.P.A) (fst D.P.A D.P.A) k`. Establish `hF : FormEq ![(1 * snd D.P.A D.P.A ^ k * fst D.P.A D.P.A).left, (1 * snd D.P.A D.P.A ^ k).left, (1 * fst D.P.A D.P.A).left, (1 : D.P.A ⊗ D.P.A ⟶ D.P.A).left, (snd D.P.A D.P.A * fst D.P.A D.P.A).left, (snd D.P.A D.P.A).left, (fst D.P.A D.P.A).left, (1 : D.P.A ⊗ D.P.A ⟶ D.P.A).left …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `U _ h`. Establish `e1 : (1 * snd D.P.A D.P.A ^ k * fst D.P.A D.P.A : D.P.A ⊗ D.P.A ⟶ D.P.A) = fst D.P.A D.P.A * snd D.P.A D.P.A ^ (k : ℤ)` using `by rw [_root_.one_mul, zpow_natCast, mul_comm]`. Establish `e2 : (1 * snd D.P.A D.P.A ^ k : D.P.A ⊗ D.P.A ⟶ D.P.A) = snd D.P.A D.P.A ^ (k : ℤ)`. Rewrite using `[_root_.one_mul, zpow_natCast]`. Establish `e3 : (1 * fst D.P.A D.P.A : D.P.A ⊗ D.P.A ⟶ D.P.A) = fst D.P.A D.P.A` using `_root_.one_mul _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : (snd D.P.A D.P.A * fst D.P.A D.P.A : D.P.A ⊗ D.P.A ⟶ D.P.A) = fst D.P.A D.P.A * snd D.P.A D.P.A` using `mul_comm _ _`. Rewrite using `[e1, e2, e3, e4, Fintype.prod_sum_type]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, GlobalTheory.PolDeg.lamPts, Oε, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Take `⟨g, hg, hgv⟩` from `exists_gen hL hF t ht`. Use `⟨g, hg, fun a b z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hgv _ _ z J hJ, hv (TK R) _ z J hJ, MonObj.comp_one, lift_fst, lift_snd]`. Establish `e` using `val_tau_nsmul (𝟙 (TK R)) hJ hB k b a`. Rewrite `e` using `[val_tau_symm _ hJ (k • b) a, val_tau_symm _ hJ b a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Over.id_left] at e`. Rewrite using `[natCast_zsmul, zpow_natCast]`. Conclude with `e`. Take `⟨t, ht, hv⟩` from `exists_cubN D.cub (snd D.P.A D.P.A ^ (-(k : ℤ))) (snd D.P.A D.P.A) (fst D.P.A D.P.A) k`. Establish `hF : FormEq ![(snd D.P.A D.P.A ^ (-(k : ℤ)) * snd D.P.A D.P.A ^ k * fst D.P.A D.P.A).left, (snd D.P.A D.P.A ^ (-(k : ℤ)) * snd D.P.A D.P.A ^ k).left, (snd D.P.A D.P.A ^ (-(k : ℤ)) * fst D.P.A D.P.A).left, (snd D.P.A D.P.A ^ (-(k : ℤ))).left, (snd D.P.A D.P.A * fst D.P.A D.P.A).le …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U _ h`. Establish `e0 : (snd D.P.A D.P.A ^ (-(k : ℤ)) * snd D.P.A D.P.A ^ k : D.P.A ⊗ D.P.A ⟶ D.P.A) = 1`. Rewrite using `[zpow_neg, zpow_natCast, inv_mul_cancel]`. Establish `e4 : (snd D.P.A D.P.A * fst D.P.A D.P.A : D.P.A ⊗ D.P.A ⟶ D.P.A) = fst D.P.A D.P.A * snd D.P.A D.P.A` using `mul_comm _ _`. Establish `e5 : (snd D.P.A D.P.A ^ (-(k : ℤ)) * fst D.P.A D.P.A : D.P.A ⊗ D.P.A ⟶ D.P.A) = fst D.P.A D.P.A * snd D.P.A D.P.A ^ (-(k : ℤ))` using `mul_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, _root_.one_mul, e4, e5, Fintype.prod_sum_type]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, GlobalTheory.PolDeg.lamPts, Oε, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Normalize the expressions using the abelian group laws. Take `⟨g, hg, hgv⟩` from `exists_gen hL hF (LB.invGen _ _ _ t) (DVR.invGen_isGen _ _ _ _ ht)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, hg, fun a b z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hgv _ _ z J hJ, val_inv, hv (TK R) _ z J hJ, overSpec_comp_zpow_grpObj, lift_fst, lift_snd]`. Establish `c1 : (toUnit (TK R) ≫ D.c b) ^ (-(k : ℤ)) = cP D (TK R) ((-(k : ℤ)) • b)` using `(degenerationPointOfLattice_zsmul _ _ _).symm`. Rewrite using `[c1]`. Establish `e` using `value_tau_add_nsmul_mul_iteratedCube hB hJ ((-(k : ℤ)) • b) b a k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z0` using `val_tau_nsmul (𝟙 (TK R)) hJ hB 0 b a`. Rewrite `z0` using `[zero_nsmul]`. Simplify using `only [Over.id_left, pow_zero, cubN, Finset.range_zero, Finset.prod_empty, _root_.mul_one] at z0`. Establish `s0 : (-(k : ℤ)) • b + k • b = 0` using `by rw [← natCast_zsmul, ← add_smul, neg_add_cancel, zero_smul]`. Rewrite `e` using `[s0, z0, _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `s1` using `val_tau_symm (𝟙 (TK R)) hJ a ((-(k : ℤ)) • b)`. Establish `s2` using `val_tau_symm (𝟙 (TK R)) hJ a b`. Simplify using `only [Over.id_left] at s1 s2`. Rewrite using `[s1, s2]`. Rewrite using `[show cubN (th D z J) k (cP D (TK R) ((-(k : ℤ)) • b)) (toUnit (TK R) ≫ D.c b) (toUnit (TK R) ≫ D.c a) = cubN (th D z J) k (cP D (TK R) ((-(k : ℤ)) • b)) (cP D (TK R) b) (cP D (TK R) a) from rfl, e, mul_inv_rev, zpow_neg, zpow_natCast, mul_comm (_ ^ k)⁻¹, ← _root_.mul_assoc, mul_ …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lamGen_zpow : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (n : ℤ),
     ∃ g : LB.Gen (LB.LinComb D.P.L (Sum.elim (GlobalTheory.PolDeg.lamPts (fst D.P.A D.P.A) (snd D.P.A D.P.A ^ n))

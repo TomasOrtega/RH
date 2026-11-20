@@ -11,9 +11,9 @@ open scoped ENNReal
 namespace PositivityTheory.Rg.Rs.SmoothingSquareIntegrable
 
 /- English proof (translation)
-Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq ρ Real.HolderConjugate.two_two (f := fun _ => (1 : ℝ≥0∞)) aemeasurable_const hg`. Simplify using `only [ENNReal.one_rpow, lintegral_const] at h`. Combine the equalities or inequalities in the displayed calculation. Simplify `h` using `[Pi.mul_apply]`. Use `_ = ρ Set.univ * ∫⁻ y, g y ^ 2 ∂ρ := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast (_ ^ (1 / 2 : ℝ)), ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sq_lintegral_le {Y : Type*} [MeasurableSpace Y] (ρ : Measure Y) {g : Y → ℝ≥0∞} (hg : AEMeasurable g ρ) :
     (∫⁻ y, g y ∂ρ) ^ 2 ≤ ρ Set.univ * ∫⁻ y, g y ^ 2 ∂ρ := by
@@ -31,7 +31,7 @@ theorem sq_lintegral_le {Y : Type*} [MeasurableSpace Y] (ρ : Measure Y) {g : Y 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
 /- English proof (translation)
-Establish `hm` using `((memL2_iff_fundamental_domain (isFundamentalDomain_stdDom (latticeGL E N) μ)).1 h).2`. Use `hm.2` as an intermediate fact. Rewrite `this` using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lintegral_sq_lt_top {μ : Measure (GA E N)} [μ.IsHaarMeasure] {φ : GA E N → ℂ}
     (h : MemL2Quotient (latticeGL E N) μ φ) : ∫⁻ x in stdDom (latticeGL E N), ‖φ x‖ₑ ^ 2 ∂μ < ⊤ := by
@@ -41,9 +41,9 @@ theorem lintegral_sq_lt_top {μ : Measure (GA E N)} [μ.IsHaarMeasure] {φ : GA 
   simpa using this
 
 /- English proof (translation)
-Establish `hd` using `isFundamentalDomain_stdDom (latticeGL E N) μ`. Establish `hm : AEMeasurable (fun q => ‖descend (latticeGL E N) φ q‖ₑ ^ 2) (quotMeasure (latticeGL E N) μ)` using `h.2.1.enorm.pow_const 2`. Establish `e1` using `lintegral_quotMeasure hd (fun q => ‖descend (latticeGL E N) φ q‖ₑ ^ 2)`. Establish `e2` using `lintegral_quotMeasure hd (fun q => ‖descend (latticeGL E N) φ (rmul (latticeGL E N) g q)‖ₑ ^ 2)`. Simplify using `only [rmul_mk, h.1.descend_mk] at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e1, ← e2]`. Establish `hp` using `measurePreserving_rmul (Γ := latticeGL E N) (μ := μ) g`. Use `conv_rhs => rw [← hp.map_eq]`. Rewrite using `[lintegral_map' (by rwa [hp.map_eq]) (measurable_rmul g).aemeasurable]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_right {μ : Measure (GA E N)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {φ : GA E N → ℂ}
     (h : MemL2Quotient (latticeGL E N) μ φ) (g : GA E N) :
@@ -60,25 +60,23 @@ theorem lintegral_mul_right {μ : Measure (GA E N)} [μ.IsHaarMeasure] [μ.IsMul
   rw [lintegral_map' (by rwa [hp.map_eq]) (measurable_rmul g).aemeasurable]
 
 /- English proof (translation)
-Establish `hd` using `isFundamentalDomain_stdDom (latticeGL E N) μ`. Establish `: ProperSpace (Lie E N)` using `FiniteDimensional.proper ℝ _`. Establish `: SigmaFinite ν` using `Measure.IsAddHaarMeasure.sigmaFinite ν`. Establish `hl : LeftInv (latticeGL E N) φ` using `h.1`. Establish `hlS : LeftInv (latticeGL E N) (GlobalTheory.CuspQuot.smoothing ν α φ)` using `fun γ hγ g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.CuspQuot.smoothing, chart, mul_assoc, hl γ hγ]`. Establish `hH : Continuous fun p : GA E N × Lie E N => α p.2 * chart φ p.1 p.2` using `GlobalTheory.CuspQuot.continuous_integrand hα hc`. Establish `hmS : AEStronglyMeasurable (GlobalTheory.CuspQuot.smoothing ν α φ) (μ.restrict (stdDom (latticeGL E N)))` using `(hH.stronglyMeasurable.integral_prod_right' (ν := ν)).aestronglyMeasurable`. Use `set K := tsupport α with hKdef`. Establish `hKν : ν K < ⊤` using `hα.2.1.isCompact.measure_lt_top`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, ‖GlobalTheory.CuspQuot.smoothing ν α φ x‖ₑ ^ 2 ≤ ν K * ∫⁻ y, ‖α y * chart φ x y‖ₑ ^ 2 ∂ν`. Introduce `x`. Establish `h1 : ‖GlobalTheory.CuspQuot.smoothing ν α φ x‖ₑ ≤ ∫⁻ y in K, ‖α y * chart φ x y‖ₑ ∂ν`. Rewrite using `[setLIntegral_eq_of_support_subset]`. Conclude with `enorm_integral_le_lintegral_enorm _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hyK`. Apply `hy` to reduce the goal to its premises. Simplify using `[image_eq_zero_of_notMem_tsupport hyK]`. Establish `hx : Continuous fun y => α y * chart φ x y` using `hH.comp (continuous_const.prodMk continuous_id)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `sq_lintegral_le (ν.restrict K) (g := fun y => ‖α y * chart φ x y‖ₑ) hx.enorm.aemeasurable`. Rewrite `h2` using `[Measure.restrict_apply_univ]`. Combine the equalities or inequalities in the displayed calculation. Use `set I := ∫⁻ x in stdDom (latticeGL E N), ‖φ x‖ₑ ^ 2 ∂μ with hIdef`. Establish `hI : I < ⊤` using `lintegral_sq_lt_top h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hin : ∀ y, ∫⁻ x in stdDom (latticeGL E N), ‖α y * chart φ x y‖ₑ ^ 2 ∂μ = ‖α y‖ₑ ^ 2 * I`. Introduce `y`. Distinguish the cases in `hy : IsUnit (Matrix.of y)`. Repeatedly rewrite using `[chart, dif_pos hy, enorm_mul, mul_pow]`. Rewrite using `[lintegral_const_mul' _ _ (by simp), lintegral_mul_right h]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: α y = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hy (hα.2.2 h')`. Simplify using `[this]`. Establish `hα2 : ∫⁻ y, ‖α y‖ₑ ^ 2 ∂ν < ⊤`. Establish `hmα` using `hα.1.continuous.memLp_of_hasCompactSupport (p := 2) (μ := ν) hα.2.1`. Use `hmα.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using this`. Establish `hmeas : AEMeasurable (Function.uncurry fun x y => ‖α y * chart φ x y‖ₑ ^ 2) ((μ.restrict (stdDom (latticeGL E N))).prod ν)` using `((ENNReal.continuous_pow 2).comp hH.enorm).measurable.aemeasurable`. Use `(memL2_iff_fundamental_domain hd).2 ⟨hlS, hmS, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_lintegral_swap hmeas]`. Use `_ = ν K * ((∫⁻ y, ‖α y‖ₑ ^ 2 ∂ν) * I) := by`. Repeatedly rewrite using `[hin]`.
-
-Rewrite using `[lintegral_mul_const' _ _ hI.ne]`. Use `_ < ⊤ := ENNReal.mul_lt_top hKν (ENNReal.mul_lt_top hα2 hI)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memL2_of_smoothing (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (ν : Measure (Lie E N))
     [ν.IsAddHaarMeasure] {α : Lie E N → ℂ} (hα : GlobalTheory.CuspQuot.IsTest (invSet E N) α) {φ : GA E N → ℂ}

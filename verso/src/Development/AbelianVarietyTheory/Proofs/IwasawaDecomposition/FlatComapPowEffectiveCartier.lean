@@ -9,7 +9,7 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y D g hg n`. Rewrite using `[← D.idealSheaf_nsmul n]`. Conclude with `GlobalTheory.TorRef.effCartier_comap_of_flat _ g (D.nsmul n).effCartier_idealSheaf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_pow_idealSheaf_of_flat :
     ∀ (X Y : Scheme.{0}) (D : GlobalTheory.EffCartierData X) (g : Y ⟶ X), Flat g → ∀ n : ℕ,

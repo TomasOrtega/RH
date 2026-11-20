@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.TorsionForm.Pullback
 
 /- English proof (translation)
-Establish `hψ : HasFDerivAt (fun Q : Pt E' g => (φ Q.1, Q.2)) ((((fderiv ℂ φ P.1).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E' (Fin g → ℂ))).prod (ContinuousLinearMap.snd ℝ E' (Fin g → ℂ))) P`. Use `HasFDerivAt.prodMk ?_ hasFDerivAt_snd` and prove the remaining obligations. Conclude with `(hφ.hasFDerivAt.restrictScalars ℝ).comp P hasFDerivAt_fst`. Establish `h` using `(hF.hasFDerivAt.comp P hψ).fderiv`. Rewrite using `[show (fun Q : Pt E' g => F (φ Q.1, Q.2)) = F ∘ (fun Q : Pt E' g => (φ Q.1, Q.2)) from rfl, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fderiv_baseChange_apply {E E' W : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedAddCommGroup W] [NormedSpace ℝ W] {g : ℕ}
@@ -31,9 +31,9 @@ theorem fderiv_baseChange_apply {E E' W : Type} [NormedAddCommGroup E] [NormedSp
   rfl
 
 /- English proof (translation)
-Introduce `E E' _ _ _ _ g m φ F G P w hφ hF hG`. Establish `hI : (Complex.I • w).1 = Complex.I • w.1` using `rfl`. Establish `key : ∀ {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (H : Pt E g → W), DifferentiableAt ℝ H (φ P.1, P.2) → ∀ v : Pt E' g, fderiv ℝ (fun Q : Pt E' g => H (φ Q.1, Q.2)) P v = fderiv ℝ H (φ P.1, P.2) (fderiv ℂ φ P.1 v.1, v.2)` using `fun H hH v => fderiv_baseChange_apply φ H P v hφ hH`. Establish `hw : ((fderiv ℂ φ P.1 (Complex.I • w).1, (Complex.I • w).2) : Pt E g) = Complex.I • ((fderiv ℂ φ P.1 w.1, w.2) : Pt E g)`. Simplify using `[Prod.smul_mk, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [d10, key F hF, hw]`. Simplify using `only [d01, key F hF, hw]`. Simplify using `only [d10, key G hG, hw]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem d10_d01_comp_fst_eq_fderiv_of_baseChange : ∀ {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E'] {g m : ℕ} (φ : E' → E) (F : Pt E g → Ext m) (G : Pt E g → ℂ) (P w : Pt E' g), DifferentiableAt ℂ φ P.1 → DifferentiableAt ℝ F (φ P.1, P.2) → DifferentiableAt ℝ G (φ P.1, P.2) → d10 (fun Q : Pt E' g => F (φ Q.1, Q.2)) P w = d10 F (φ P.1, P.2) (fderiv ℂ φ P.1 w.1, w.2) ∧ d01 (fun Q : Pt E' g => F (φ Q.1, Q.2)) P w = d01 F (φ P.1, P.2) (fderiv ℂ φ P.1 w.1, w.2) ∧ d10 (fun Q : Pt E' g => G (φ Q.1, Q.2)) P w = d10 G (φ P.1, P.2) (fderiv ℂ φ P.1 w.1, w.2) := by
   intro E E' _ _ _ _ g m φ F G P w hφ hF hG

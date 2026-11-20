@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.RegGood
 
 /- English proof (translation)
-The claim follows from `{ h with base := { h.base with } geo := { h.geo with hV := { h.geo.hV with }, hV' := { h.geo.hV' with }, hW := { h.geo.hW with } } chars := { h.chars with good := hv } }`.
+A detailed English derivation is pending.
 -/
 theorem isTriple_atPlace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E} {a a' : ℕ} {G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a'}
@@ -42,13 +42,13 @@ theorem isTriple_atPlace {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     chars := { h.chars with good := hv } }
 
 /- English proof (translation)
-Introduce `hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hωB n Ψ u hΨ hu`. Establish `hstd : IsStdChar D ψ (-1)` using `hωB.std`. Take `⟨ωA, -, hωA, -⟩` from `GlobalTheory.T.weil_representations_for_triple hP D ψ hstd W W₁ X α β hT`. Take `⟨A⟩` from `GlobalTheory.ChainFr.Model.nonempty_fr W`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Ker.HypModel.exists_haar_fundDom D W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hωA hωB`. Take `⟨Pa, hPa⟩` from `GlobalTheory.T.seesaw_doubling_integral_identity hP D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hO hTD n Ψ hΨ`. Take `⟨Pb, hPb⟩` from `GlobalTheory.T.weilRep_commute_at_good_places_algebraic_vectors D ψ θ hθ W₁ X A₁ B α β ωB hωB n Ψ u hΨ hu`. Take `⟨v, hv, hsp, ⟨t⟩⟩` from `GlobalTheory.T.exists_place_splitsCompletely_not_mem_embedding D.host.F D.host.E (Pa ∪ Pb ∪ Xc.T)`. Establish `hvg : Xc.Good v` using `⟨fun h => hv (Finset.mem_union_right _ h), hsp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hzs, hzd, hzi⟩` from `hPa v (fun h => hv (Finset.mem_union_left _ (Finset.mem_union_left _ h))) hvg t`. Use `⟨z, fun k hk => (hzs k hk).1, hzd, fun i => ⟨?_, hPb v (fun h => hv (Finset.mem_union_left _ (Finset.mem_union_right _ h))) z (fun k hk => (hzs k hk).2) i⟩⟩` and prove the remaining obligations. Take `⟨Φ₀D, hD, hSo⟩` from `hzi i`. Establish `hTD'` using `isTriple_atPlace hTD v t hvg`. Take `⟨hDec, -⟩` from `hK.1 D.host.F D.host.E D.sp.cm.sig _ W.rank W₁.rank Γ Xc om om' hTD'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hbd, hconv, -⟩` from `hDec.2 Φ₀D hSo`. Conclude with `GlobalTheory.T.theta_integral_moderate_growth_of_bounded_kernel D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e { Bs with v₁ := v, τ₁ := t } Γ Xc om om' cA cB hθ { hO with } hν₁ hTD' _ Φ₀D hD hconv (by`. Take `⟨C, k, hC⟩` from `hbd 0`. Conclude with `⟨C, k, fun g h => by simpa using hC g h⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regulariser : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (W W₁ X : HSp D) (A₁ : Fr W₁) (B : Fr X)

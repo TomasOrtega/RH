@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.LocM.FJ.MultiData
 
 /- English proof (translation)
-Take `⟨x, ⟨j, h, hj, rfl⟩, e⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D χ r).1 hr`. Use `(GlobalTheory.PeriodFormCompare.psiCoord_iff (GlobalTheory.TauTwist.rescale D q) χ (s * r)).2 ⟨q χ * GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal (D.psi χ) j h, ⟨j, h, hj, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal, GlobalTheory.TauTwist.rescale, GlobalTheory.TauTwist.withPsi, ReciprocityTheory.ChartRestriction.G.DVR.scaleGen]`. Rewrite using `[map_mul, map_mul, GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.res_res]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Use `show (q χ : FractionRing R) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom (((Sp (FractionRing R)).presheaf.map (𝟙 _)).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (q χ : FractionRing R)))`. Rewrite using `[CategoryTheory.Functor.map_id]`. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv_hom_id_apply _).symm`. Rewrite using `[Units.val_mul, hq, e, map_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiCoord_rescale {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R) (q : D.X → (FractionRing R)ˣ)
     {χ : D.X} {r s : R} (hr : PsiCoord D χ r)
@@ -45,9 +45,9 @@ theorem psiCoord_rescale {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R)
   · rw [Units.val_mul, hq, e, map_mul]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `GlobalTheory.PsiCoordLocal.exists_chart_top D χ`. Establish `hh` using `GlobalTheory.PsiCoordLocal.generic_le D χ j hj`. Take `⟨s, hs, e⟩` from `h j ⊤ (isAffineOpen_top _) (Set.subset_univ _) hj hh`. Take `⟨r, rfl⟩` from `GlobalTheory.PsiCoordLocal.toOpen_top_bijective.2 s`. Establish `hu : IsUnit r` using `(MulEquiv.isUnit_map (RingEquiv.ofBijective (Out.DegPre.toOpen (R := R) ⊤) GlobalTheory.PsiCoordLocal.toOpen_top_bijective).toMulEquiv).1 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hu.unit, j, hj, hh, e⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unit_psiCoord {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : Out.DegPre R) (χ : D.X)
     (h : PsiUnitOn D χ Set.univ) : ∃ v : Rˣ, PsiCoord D χ v := by

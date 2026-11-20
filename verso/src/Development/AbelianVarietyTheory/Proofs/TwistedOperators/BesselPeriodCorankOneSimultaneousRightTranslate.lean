@@ -16,7 +16,7 @@ namespace GlobalTheory.BplusShift
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨s, -, hs, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D _ _ _ (G.rowDec 0 (by have := D.R.two_le_m; omega)).isom`. Establish `e : ∀ h, embTop G h = s h` using `fun h => ((embRel_iff _ h _).1 ((hs h _).2 rfl)).symm`. Rewrite using `[e, e, e, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem embTop_mul (a b : GA D (G.V (.top 0))) : embTop G (a * b) = embTop G a * embTop G b := by
   obtain ⟨s, -, hs, -⟩ := GlobalTheory.Mem.UnitaryEmb.exists_embHom D _ _ _
@@ -25,13 +25,13 @@ theorem embTop_mul (a b : GA D (G.V (.top 0))) : embTop G (a * b) = embTop G a *
   rw [e, e, e, map_mul]
 
 /- English proof (translation)
-Take `⟨_, _, _, _⟩` from `GlobalTheory.Per.Inhab.flag_topology _ G.besTop.e_iso`. Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.grid D.R.m 0))`. Take `⟨s, -, hs, hq⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D _ _ _ (G.rowDec 0 (by have := D.R.two_le_m; omega)).isom`. Establish `e : ∀ h, embTop G h = s h` using `fun h => ((embRel_iff _ h _).1 ((hs h _).2 rfl)).symm`. Establish `r1` using `(hs γ (s γ)).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2` using `(hs γ⁻¹ (s γ)⁻¹).2 (map_inv s _).symm`. Establish `hδ : s γ ∈ GQ (G.V (.grid D.R.m 0))` using `hq _ hγ`. Set `c : NFlag (G.V (.grid D.R.m 0)) G.besTop.e ≃ₜ* NFlag (G.V (.grid D.R.m 0)) G.besTop.e` to `{ toFun := fun n => ⟨s γ * n * (s γ)⁻¹, (GlobalTheory.BesselChar.besChar_conj W.ψ G.besTop _ _ r1 n n.2).1⟩ invFun := fun n => ⟨(s γ)⁻¹ * n * (s γ)⁻¹⁻¹, (GlobalTheory.BesselChar.besChar_conj W.ψ G.besTop _ _ r2 n n.2).1⟩ left_inv := fun n => Subtype.ext (by simp [mul_assoc]) righ …`. Establish `hc : ∀ n, c n ∈ NFlagQ (G.V (.grid D.R.m 0)) G.besTop.e ↔ n ∈ NFlagQ (G.V (.grid D.R.m 0)) G.besTop.e` using `fun n => by`. Express the relevant statement in the definitionally equal form `s γ * n.1 * (s γ)⁻¹ ∈ GQ (G.V (.grid D.R.m 0)) ↔ n.1 ∈ GQ (G.V (.grid D.R.m 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Subgroup.mul_mem_cancel_right _ (inv_mem hδ), Subgroup.mul_mem_cancel_left _ hδ]`. Establish `hl : ∀ γ' ∈ NFlagQ (G.V (.grid D.R.m 0)) G.besTop.e, ∀ n : NFlag (G.V (.grid D.R.m 0)) G.besTop.e, besInt W φ F (γ * h) (γ' * n) = besInt W φ F (γ * h) n` using `fun γ' hγ' n => by`. Establish `hq'` using `Subgroup.mem_subgroupOf.1 hγ'`. Simplify using `only [besInt, Subgroup.coe_mul]`. Rewrite using `[GlobalTheory.BesselChar.besChar_mul W.ψ G.besTop _ _ γ'.2 n.2, GlobalTheory.BesselChar.besChar_rat W.ψ W.ψ_std.1 G.besTop _ γ'.2 hq', one_mul, mul_assoc γ'.1, hF.2 _ hq']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.Mem.TrueRecord.integral_aut _ hM.unip.1 hM.unip.2.1 hM.unip.2.2 c hc _ hl).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `n`. Express the relevant statement in the definitionally equal form `φ (γ * h) * F ((s γ * n * (s γ)⁻¹) * embTop G (γ * h)) * star (besChar W.ψ G.besTop (s γ * n * (s γ)⁻¹)) = φ h * F (n * embTop G h) * star (besChar W.ψ G.besTop n)`. Rewrite using `[(GlobalTheory.BesselChar.besChar_conj W.ψ G.besTop _ _ r1 n n.2).2, hφ.2 γ hγ h, e, e, map_mul, show s γ * n * (s γ)⁻¹ * (s γ * s h) = s γ * (n * s h) by group, hF.2 _ hδ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem inner_left (W : G.Weil) (M : Vol G) (hM : M.IsRow) {φ : Fn G (.top 0)} {F : Fn G (.grid D.R.m 0)}
     (hφ : φ ∈ contLeft (G.V (.top 0))) (hF : F ∈ contLeft (G.V (.grid D.R.m 0))) {γ : GA D (G.V (.top 0))}
@@ -75,11 +75,11 @@ end GlobalTheory.BplusShift
 open GlobalTheory.BplusShift in
 
 /- English proof (translation)
-Introduce `D T L sc G W M hM φ hφ F hF a`. Establish `hshift : ∀ h n, besInt W (rTr _ a φ) (rTr _ (embTop G a) F) h n = besInt W φ F (h * a) n` using `fun h n => by`. Simplify using `only [besInt, rTr]`. Rewrite using `[embTop_mul, mul_assoc (n : GA D (G.V (.grid D.R.m 0)))]`. Simplify using `only [Bplus, hshift]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hμ, h𝓕⟩` from `hM.top.haar_fund`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top 0))`. Use `haveI := hμ`. Use `haveI : (M.ν (.top 0)).IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D _ _ hμ`. Establish `hmp : MeasurePreserving (· * a) (M.ν (.top 0)) (M.ν (.top 0))` using `measurePreserving_mul_right _ a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmp' : MeasurePreserving (· * a⁻¹) (M.ν (.top 0)) (M.ν (.top 0))` using `measurePreserving_mul_right _ a⁻¹`. Rewrite using `[← hmp.setIntegral_image_emb (measurableEmbedding_mulRight a) (fun h => ∫ n in M.fdN, besInt W φ F h n ∂M.νN) (M.fd (.top 0)), Set.image_mul_right]`. Establish `hF' : IsFundamentalDomain (GQ (G.V (.top 0))) ((· * a⁻¹) ⁻¹' M.fd (.top 0)) (M.ν (.top 0))` using `h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving (e := id) Function.bijective_id fun g x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Conclude with `(h𝓕.setIntegral_eq hF' fun γ x => inner_left W M hM hφ hF γ.2 x).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BplusShift.bplus_rTr : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G), M.IsRow →
     ∀ φ ∈ contLeft (G.V (.top 0)), ∀ F ∈ contLeft (G.V (.grid D.R.m 0)), ∀ a : GA D (G.V (.top 0)),

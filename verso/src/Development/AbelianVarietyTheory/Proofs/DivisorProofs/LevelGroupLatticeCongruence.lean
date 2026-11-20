@@ -9,23 +9,21 @@ open NumberField
 namespace GlobalTheory.LevDet
 
 /- English proof (translation)
-Set `q` to `(I • (⊤ : Submodule R M)).mkQ`. Establish `hsm : ∀ (r : R) (m : M), Ideal.Quotient.mk I r • q m = q (r • m)` using `fun r m => rfl`. Establish `hexp : ∀ v, q v = ∑ i, Ideal.Quotient.mk I (φ v i) • q (a i)`. Introduce `v`. Simplify using `only [hsm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_sum]`. Conclude with `((Submodule.Quotient.eq _).2 (h2 v)).symm`. Establish `hφ : ∀ v ∈ I • (⊤ : Submodule R M), ∀ i, φ v i ∈ I`. Introduce `v hv i`. Use `Submodule.smul_induction_on hv (fun r hr m _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `I.mul_mem_right _ hr`. Rewrite using `[map_add]`. Conclude with `I.add_mem hx hy`. Establish `hli : LinearIndependent (R ⧸ I) (fun j => q (a j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `choose r hr using fun j => Ideal.Quotient.mk_surjective (g j)`. Establish `h3 : q (∑ j, r j • a j) = 0`. Rewrite using `[map_sum, ← hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [← hr j, hsm]`. Establish `h4` using `hφ _ ((Submodule.Quotient.mk_eq_zero _).1 h3) i`. Rewrite using `[← hr i, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h5 : ∑ j, r j * (φ (a j) i - (if i = j then 1 else 0)) ∈ I` using `I.sum_mem fun j _ => I.mul_mem_left _ (h1 i j)`. Establish `h6` using `I.sub_mem h4 h5`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `h6 using 1` and compare the differences between its conclusion and the goal. Simplify using `[mul_sub, Finset.sum_sub_distrib]`. Establish `hsp : ⊤ ≤ Submodule.span (R ⧸ I) (Set.range fun j => q (a j))`. Introduce `x _`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `q v ∈ _`. Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b` to `Module.Basis.mk hli hsp`. Establish `hb : ∀ j, b j = q (a j)` using `fun j => Module.Basis.mk_apply hli hsp j`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix b, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Establish `: (γ.extendScalarsOfSurjective (S` using `R ⧸ I) Ideal.Quotient.mk_surjective : _ →ₗ[R ⧸ I] _) (b j) = ∑ i, Ideal.Quotient.mk I (φ (f (a j)) i) • b i := by`.
-
-Simplify using `only [hb]`. Rewrite using `[← hexp]`. Conclude with `(hf _).symm`. Rewrite using `[this, b.repr_sum_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_quot_eq {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (I : Ideal R) {n : ℕ}
     (a : Fin n → M) (φ : M →ₗ[R] (Fin n → R))
@@ -83,11 +81,11 @@ theorem det_quot_eq {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (I :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ (x y : Fin n → K), (∀ i, x i ∈ S) → (∀ i, y i ∈ S) → (∀ i, x i - y i ∈ J) → ∀ s : Finset (Fin n), ∏ i ∈ s, x i ∈ S ∧ ∏ i ∈ s, x i - ∏ i ∈ s, y i ∈ J`. Introduce `x y hx hy hxy s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h1`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Use `⟨hS _ (hx a) _ ih.1, ?_⟩` and prove the remaining obligations. Use `J.add_mem (hJ _ ih.1 _ (hxy a)) (hJ _ (hy a) _ ih.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.det_apply, Matrix.det_apply, ← Finset.sum_sub_distrib]`. Use `J.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub, Units.smul_def]`. Conclude with `J.zsmul_mem (key _ _ (fun i => hA _ _) (fun i => hB _ _) (fun i => h _ _) _).2 _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sub_det_mem {K : Type} [CommRing K] (S J : AddSubgroup K) (h1 : (1 : K) ∈ S)
     (hS : ∀ x ∈ S, ∀ y ∈ S, x * y ∈ S) (hJ : ∀ x ∈ S, ∀ y ∈ J, x * y ∈ J) {n : ℕ}
@@ -115,13 +113,11 @@ open IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Matrix nonZeroDivisors
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `IsDedekindDomain.exists_add_spanSingleton_mul_eq (a := (I : FractionalIdeal (𝓞 E)⁰ E)) (b := c⁻¹) (c := 1) FractionalIdeal.coeIdeal_le_one (FractionalIdeal.coeIdeal_ne_zero.2 hI) (inv_ne_zero hc)`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 E)⁰ x * c⁻¹ ≤ 1` using `hx ▸ le_add_self`. Establish `h2 : x ∈ c`. Rewrite using `[← FractionalIdeal.spanSingleton_le_iff_mem]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Use `_ ≤ 1 * c := by gcongr`. Use `_ = c := one_mul c`. Establish `h3 : (1 : E) ∈ (I : FractionalIdeal (𝓞 E)⁰ E) + FractionalIdeal.spanSingleton (𝓞 E)⁰ x * c⁻¹`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `FractionalIdeal.one_mem_one _`. Take `⟨m', hm', y, hy, hmy⟩` from `(FractionalIdeal.mem_add _ _ _).1 h3`. Take `⟨m, hm, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hm'`. Take `⟨t, ht, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hy`. Use `⟨x, h2, t, ht, m, hm, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hmy]`. Simplify using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_mod {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E)) (hI : I ≠ ⊥)
     (c : FractionalIdeal (𝓞 E)⁰ E) (hc : c ≠ 0) :
@@ -147,75 +143,69 @@ theorem exists_gen_mod {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E))
   simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨-, e, cI, hc, hL, -⟩` from `GlobalTheory.exists_pseudoBasis_adapted E n L ⊤ hfg hsp`. Use `choose x hx t ht m hm htx using fun i => exists_gen_mod I hI (cI i) (hc i)`. Establish `hmul` using `(adelicCompletion_fractionalIdeal_properties F E).1`. Establish `hιL : ∀ v, ι v ∈ L` using `fun v => hr ▸ LinearMap.mem_range_self ι v`. Establish `hsingle : ∀ j, ∀ y ∈ cI j, ∃ v, ι v = y • e j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j y hy`. Establish `: y • e j ∈ L`. Use `(hL _).2 fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hcj : j = c`. Substitute `hcj` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`. Simplify `FractionalIdeal.zero_mem (cI c)` using `[hcj]`. Rewrite `this` using `[← hr]`. Then use the resulting hypothesis. Use `choose a ha using fun j => hsingle j (x j) (hx j)`. Establish `hint : ∀ v i, ∃ r : 𝓞 E, (r : E) = t i * e.repr (ι v) i`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v i`. Use `FractionalIdeal.mul_mem_mul (ht i) ((hL _).1 (hιL v) i)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ (hc i)]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 this`. Use `choose φ0 hφ0 using hint`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Set `φ : M →ₗ[𝓞 E] (Fin n → 𝓞 E)` to `{ toFun := φ0 map_add' := fun v w => by`. Use function extensionality and compare the values at `i`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `hφ0 (v + w) i` as an intermediate fact. Rewrite `this` using `[map_add, map_add, Finsupp.add_apply, mul_add, ← hφ0, ← hφ0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Use the proof step `map_smul' := fun r v => by`. Use function extensionality and compare the values at `i`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `hφ0 (r • v) i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_smul, ← algebraMap_smul E r (ι v), map_smul, Finsupp.smul_apply, smul_eq_mul, mul_left_comm, ← hφ0]`. Simplify using `using this }`. Establish `hφ : ∀ v i, ((φ v i : 𝓞 E) : E) = t i * e.repr (ι v) i` using `hφ0`. Establish `h1 : ∀ i j, φ (a j) i - (if i = j then 1 else 0) ∈ I`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `hφ (a j) i`. Rewrite `h3` using `[ha]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `: φ (a i) i - 1 = - m i`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one, htx] at h3`. Simplify using `only [map_sub, map_neg, map_one]`. Rewrite using `[show algebraMap (𝓞 E) E (φ (a i) i) = _ from h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos rfl, this]`. Conclude with `I.neg_mem (hm i)`. Establish `: φ (a j) i = 0`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[show algebraMap (𝓞 E) E (φ (a j) i) = _ from h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hij]`. Simplify using `[hij, this]`. Establish `h2 : ∀ v, (∑ i, φ v i • a i) - v ∈ I • (⊤ : Submodule (𝓞 E) M)`. Introduce `v`. Use `choose w hw using fun j => hsingle j _ ((hL _).1 (hιL v) j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (∑ i, φ v i • a i) - v = - ∑ i, m i • w i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sub, map_neg, map_sum, map_sum]`. Use `conv_lhs => rw [← e.sum_repr (ι v)]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ha, hw, ← algebraMap_smul E (φ v i), ← algebraMap_smul E (m i), smul_smul, smul_smul, ← sub_smul, ← neg_smul]`. Use `congr 1`. Rewrite using `[show algebraMap (𝓞 E) E (φ v i) = _ from hφ v i]`. Use `htx i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = 1 - algebraMap (𝓞 E) E (m i) at this`. Take the linear combination `(e.repr (ι v) i) * this`. Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hm i) trivial)`. Establish `hdet` using `det_quot_eq I a φ h1 h2 γ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hdet` using `[← hu, Ideal.Quotient.eq]`. Use `set C : Matrix (Fin n) (Fin n) (𝓞 E) := Matrix.of fun i j => φ (f (a j)) i with hC`. Set `P : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun i a => fv F (e a) i`. Set `Q : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun b i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ e.repr (Pi.single i 1) b`. Establish `hP : ∀ w : Fin n → RA F E, P *ᵥ w = ∑ a, w a • fv F (e a)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use function extensionality and compare the values at `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hQ : ∀ w b, (Q *ᵥ w) b = adCoord F e b w`. Introduce `w b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin n, _ = ∑ i : Fin n, _`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hQP : Q * P = 1`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hQ, hP, adCoord_sum, Matrix.one_mulVec]`. Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Establish `key : ∀ z ∈ hat F (L : Set (Fin n → E)), ∀ i, adCoord F e i z ∈ hat1 F (cI i : Set E)`. Introduce `z hz i`. Rewrite using `[← hQ]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_hat_pseudoBasis_iff F E n L e cI hL _).1 ?_ i` and prove the remaining obligations. Rewrite using `[← hP, Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]` and apply the resulting hypothesis. Set `k : Matrix (Fin n) (Fin n) (RA F E)` to `Q * G * P`. Establish `hkdet : k.det = G.det`. Establish `: Q.det * P.det = 1` using `by rw [← Matrix.det_mul, hQP, Matrix.det_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [k, Matrix.det_mul]`. Take the linear combination `G.det * this`. Establish `hk1 : ∀ i j (y : E), k i j * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y) = adCoord F e i (G *ᵥ fv F (y • e j))`. Introduce `i j y`. Establish `h5 : fv F (y • e j) = P *ᵥ (Pi.single j ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[Matrix.mulVec_single]`. Use function extensionality and compare the values at `b`. Simplify using `[P, fv, Algebra.TensorProduct.tmul_mul_tmul, mul_comm]`. Rewrite using `[← hQ, h5, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcong : ∀ v i, adCoord F e i (G *ᵥ fv F (ι v)) - (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (e.repr (ι (f v)) i) ∈ hat1 F (((I : FractionalIdeal (𝓞 E)⁰ E) * cI i : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `v i`. Rewrite using `[← adCoord_tmul, ← map_sub]`. Establish `h5` using `h v`. Express the relevant statement in the definitionally equal form `adCoord F e i (G *ᵥ fv F (ι v) - fv F (ι (f v))) ∈ _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `G *ᵥ fv F (ι v) - fv F (ι (f v)) = w at h5`. Proceed by induction on `h5 using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, z, hz, rfl⟩` from `hw`. Express the relevant statement in the definitionally equal form `adCoord F e i (((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (b : E) : RA F E) • z) ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[adCoord_smul]`. Conclude with `hmul _ _ _ (one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.mem_coeIdeal_of_mem _ hb)) _ (key z hz i)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Establish `hmono : ∀ {A B : FractionalIdeal (𝓞 E)⁰ E}, A ≤ B → ∀ {z : RA F E}, z ∈ hat1 F (A : Set E) → z ∈ hat1 F (B : Set E)`. Introduce `A B hAB z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `AddSubgroup.closure_mono ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, y, hy, rfl⟩`. Conclude with `⟨a, ha, y, hAB hy, rfl⟩`. Establish `hk : ∀ i j, k i j ∈ hat1 F ((cI i * (cI j)⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mem_adelicCompletion_mul_inv_fractionalIdeal F _ _ _ (hc j) fun y hy => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hsingle j y hy`. Rewrite using `[hk1, ← hv]`. Establish `hle : (I : FractionalIdeal (𝓞 E)⁰ E) * cI i ≤ cI i`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (hmono hle (hcong v i)) (one_tmul_mem_adelicCompletionOfElementSet F ((hL _).1 (hιL (f v)) i))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hd : G.det ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Use `det_mem_adelicCompletionOfElementSet F cI (fun j => (cI j)⁻¹) k hk` as an intermediate fact. Rewrite `this` using `[← Finset.prod_mul_distrib, Finset.prod_eq_one fun i _ => mul_inv_cancel₀ (hc i), hkdet]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `ρ : E →+* RA F E` to `(Algebra.TensorProduct.includeRight (R := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E)).toRingHom`. Establish `hρ : ∀ y, ρ y = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] y` using `fun _ => rfl`. Set `ρ' : 𝓞 E →+* RA F E` to `ρ.comp (algebraMap (𝓞 E) E)`. Establish `hρI : ∀ b ∈ I, ρ' b ∈ hat1 F ((I : FractionalIdeal (𝓞 E)⁰ E) : Set E)` using `fun b hb => one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.mem_coeIdeal_of_mem _ hb)`. Establish `hρ1 : ∀ b, ρ' b ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E)` using `fun b => one_tmul_mem_adelicCompletionOfElementSet F ((FractionalIdeal.mem_one_iff _).2 ⟨b, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `k' : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun i j => ρ (t i) * (Matrix.of fun i j => ρ (x j) * k i j) i j`. Establish `hk'det : k'.det = ρ' (∏ i, (1 - m i)) * G.det`. Rewrite using `[Matrix.det_mul_column, Matrix.det_mul_row, hkdet, ← mul_assoc, ← Finset.prod_mul_distrib, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, htx]`. Simplify using `[ρ']`. Establish `hk'C : ∀ i j, k' i j - (ρ'.mapMatrix C) i j ∈ hat1 F ((I : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `i j`. Establish `h5` using `hmul _ _ _ (one_tmul_mem_adelicCompletionOfElementSet F (ht i)) _ (hcong (a j) i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h5` using `[mul_left_comm, inv_mul_cancel₀ (hc i), mul_one, ha, ← hk1, ← hρ, ← hρ, ← hρ, mul_sub, ← map_mul, ← hφ, mul_comm (k i j)]`. Conclude with `h5`. Establish `hS1 : ∀ x ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E), ∀ y ∈ hat1 F ((I : FractionalIdeal (𝓞 E)⁰ E) : Set E), x * y ∈ hat1 F ((I : FractionalIdeal (𝓞 E)⁰ E) : Set E)` using `fun x hx y hy => by`. Simplify using `using hmul _ _ x hx y hy`. Establish `h6` using `det_sub_det_mem _ _ (by simpa using hρ1 1) (fun x hx y hy => by simpa using hmul _ _ x hx y hy) hS1 k' (ρ'.mapMatrix C) (fun i j => by`.
-
-Use `add_mem (hmono FractionalIdeal.coeIdeal_le_one (hk'C i j)) (hρ1 (C i j))` as an intermediate fact. Rewrite using `[show (ρ'.mapMatrix C) i j = ρ' (C i j) from rfl, sub_add_cancel] at this)` and apply the resulting hypothesis. Use the proof step `(fun i j => hρ1 (C i j)) hk'C`. Rewrite `h6` using `[hk'det, ← RingHom.map_det]`. Establish `h7 : (∏ i, (1 - m i)) - 1 ∈ I`.
-
-Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, Ideal.Quotient.eq_zero_iff_mem.2 (hm i), sub_zero]`. Establish `h8` using `sub_mem (sub_mem h6 (hS1 _ hd _ (hρI _ h7))) (hρI _ hdet)`. Use `h8 using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[map_sub, map_sub, map_one, show (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (u : E) = ρ' u from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem det_sub_mem_completedIdeal_of_level (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤)

@@ -12,41 +12,35 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.DescendingRaysPullback
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb X₀ _ _ _ m₀ δ₀ hm hpos hli hprim v t ht hv X _ _ _ β τ f hτ hf hsm hβ`. Generalize the expression as in `hK : (CarDim.orad v : Submodule (O) X₀) = K at *`. Establish `hvan : ∀ i, 0 < t i → ∀ x ∈ K, ∀ y, δ₀ i x y = 0`. Introduce `i hi x hx y`. Establish `hxx : v x x = 0` using `by rw [← hK] at hx; simpa using (CarDim.mem_orad.1 hx) 1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum` using `LinearMap.congr_fun₂ hv x x`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hxx, Int.cast_zero] at hsum`. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_nonneg (ht j) (Int.cast_nonneg (hpos j x))).1 hsum.symm i (Finset.mem_univ _)`. Establish `h0 : δ₀ i x x = 0`. Break down `mul_eq_zero.1 hall with h | h` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hi.ne'`. Conclude with `h` after adjusting the coercions. Conclude with `ConeSub.eq_zero_of_self_eq_zero (δ₀ i) (hm i).1 (hpos i) h0 y`. Establish `hex : ∀ i, ∃ u : LinearMap.BilinForm ℤ (X₀ ⧸ K), 0 < t i → pull K.mkQ u = δ₀ i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hi : 0 < t i`. Take `⟨u, hu⟩` from `CarDim.exists_pull_mkQ_eq_of_vanish K (δ₀ i) (hvan i hi) (fun x y hy => by rw [(hm i).1]; exact hvan i hi y hy x)`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose u hu using hex`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU : ∀ i, 0 < t i → ∀ y₀ z₀ : X₀, u i (Submodule.Quotient.mk y₀) (Submodule.Quotient.mk z₀) = δ₀ i y₀ z₀` using `fun i hi y₀ z₀ => LinearMap.congr_fun₂ (hu i hi) y₀ z₀`. Establish `hq : ∀ z : X₀ ⧸ K, ∃ z₀ : X₀, Submodule.Quotient.mk z₀ = z` using `Submodule.Quotient.mk_surjective K`. Set `P : LinearMap.BilinForm ℤ (X₀ ⧸ K) →ₗ[ℤ] LinearMap.BilinForm ℤ X₀` to `{ toFun := pull K.mkQ, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `⟨u, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨x₀, hx₀⟩` from `hq (f x)`. Take `⟨y₀, hy₀⟩` from `hq (f y)`. Establish `h1` using `LinearMap.congr_fun₂ hv x₀ y₀`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, pullAdd_apply] at h1 ⊢`. Rewrite using `[hβ x y x₀ y₀ hx₀ hy₀, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `(ht i).lt_or_eq with hi | hi` into its components or cases. Rewrite using `[← hx₀, ← hy₀, hU i hi]`. Rewrite using `[← hi, zero_mul, zero_mul]`. Establish `hδ : LinearIndependent ℤ (fun i : {i // 0 < t i} => δ₀ i)` using `hli.comp _ Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu' : LinearIndependent ℤ (fun i : {i // 0 < t i} => u i)`. Use `LinearIndependent.of_comp P ?_` and prove the remaining obligations. Use `hδ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `hu i i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `hu'.map' (pullAddLin f) (LinearMap.ker_eq_bot.2 (pullAdd_injective hf))`. Introduce `i hi`. Use `⟨hu i hi, ⟨fun y z => ?_, fun a y z => ?_⟩, fun y => ?_, fun k β' hk => ?_, fun lab hlab => ?_⟩` and prove the remaining obligations. Take `⟨y₀, hy₀⟩` from `hq (f y)`. Take `⟨z₀, hz₀⟩` from `hq (f z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [pullAdd_apply, ← hy₀, ← hz₀, hU i hi]`. Conclude with `(hm i).1 y₀ z₀`. Take `⟨y₀, hy₀⟩` from `hq (f y)`. Take `⟨z₀, hz₀⟩` from `hq (f z)`. Simplify using `only [pullAdd_apply, hsm, ← hy₀, ← hz₀, ← Submodule.Quotient.mk_smul, hU i hi]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(hm i).2, hb.comm τ a]`. Take `⟨y₀, hy₀⟩` from `hq (f y)`. Simplify using `only [pullAdd_apply, ← hy₀, hU i hi]`. Conclude with `hpos i y₀`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : ∃ ζ : LinearMap.BilinForm ℤ (X₀ ⧸ K), (k : ℤ) • ζ = u i := by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: pullAdd f (u i) = pullAdd f 0`. Rewrite using `[← hk]`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[pullAdd_injective hf this]`. Simplify using the standard rewrite rules. Establish `hk0' : (k : ℤ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hval : ∀ x y, (k : ℤ) * β' x y = u i (f x) (f y)` using `fun x y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pullAdd_apply, ← hk]`. Simplify using the standard rewrite rules. Take `⟨ζ, hζ⟩` from `GlobalTheory.T.exists_intBilinForm_descend_along_surjective f hf β' (fun x hx y => by`. Use `hval x y` as an intermediate fact. Rewrite `this` using `[hx, map_zero, LinearMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_left hk0')`. Use the proof step `(fun x hx y => by`. Use `hval y x` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hk0')`.
-
-Use `⟨ζ, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hf a`. Take `⟨y, rfl⟩` from `hf b`. Simplify using `[hζ, hval]`. Use `isPrim_eq_one_of_smul_eq bar (δ₀ i) (hm i) (hprim i) k (pull K.mkQ ζ) ?_` and prove the remaining obligations.
-
-Rewrite using `[← hu i hi, ← hζ]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.Fan.SemilinearPullbackEval.eval_pull_semilinear_of_isTwG O bar w0 hb lab hlab τ hτ f hf hsm (fun a b => (u i a b : ℝ))`. Rewrite using `[← hu i hi, evalZ_pull lab K.mkQ_surjective]`.
-
-Conclude with `h1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_desc_rays_pullAdd : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ {X₀ : Type} [AddCommGroup X₀] [Module O X₀]
   [Module.Finite O X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (hm : ∀ i, δ₀ i ∈ balForms bar X₀),

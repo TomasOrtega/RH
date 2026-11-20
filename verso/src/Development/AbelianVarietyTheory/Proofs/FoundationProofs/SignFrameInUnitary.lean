@@ -8,15 +8,13 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.Core.SignFrame
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc n J w τ ε b hb g`. Use `set ρ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ`. Use `set φ := infEmb τ`. Use `set G : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E) := (matHom w.Completion σ J g).1`. Establish `hG : cT ρ G * JR w.Completion J * G = JR w.Completion J` using `g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ x, φ (ρ x) = star (φ x)` using `fun x => (infEmb_sigR hc τ x).symm`. Establish `hinv' : b.1 * (b⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `set D : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E) := Matrix.diagonal fun i => if ε i then 1 else -1`. Establish `hD : cT ρ b.1 * JR w.Completion J * b.1 = D` using `hb`. Establish `hS : D.map φ = signMat ε`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [D, signMat, Matrix.diagonal_map (map_zero φ)]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp`. Establish `key : cT ρ ((b⁻¹).1 * G * b.1) * D * ((b⁻¹).1 * G * b.1) = D`. Establish `hcb : cT ρ (b⁻¹).1 * cT ρ b.1 = 1` using `by rw [← cT_mul, hinv', cT_one]`. Rewrite using `[← hD]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = cT ρ b.1 * (cT ρ G * JR w.Completion J * G) * b.1 := by`. Rewrite using `[hcb, hinv']`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`.
-
-Use `_ = cT ρ b.1 * JR w.Completion J * b.1 := by rw [hG]`. Establish `hval : inFrame σ J τ b g = ((b⁻¹).1 * G * b.1).map φ` using `rfl`. Unfold `IsInU`. Rewrite using `[hval, ← hS, ← GlobalTheory.Core.Rk.IwArch.map_cT ρ φ hφ, ← Matrix.map_mul, ← Matrix.map_mul, key]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInU_inFrame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)

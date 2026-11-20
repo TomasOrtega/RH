@@ -20,9 +20,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex)
 
 /- English proof (translation)
-Establish `hω` using `W.Q.charW.base.chain.ωX W.P.A3.A.μ0`. Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (pk W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).1 (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).2 (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) := by`. Introduce `n e`. Substitute `e` using the available equality. Conclude with `hω`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨_, _, key _ (GlobalTheory.Fam.idx_top h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isWeil_top (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDatumO (pk W).ψ (Yc D (j + 1)) D.sp.X' χS χT
     (omT (pk W) W.P.A3.A.μ0 j h) := by
@@ -39,9 +39,9 @@ theorem isWeil_top (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDa
 end Fam
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT j h d₀ hd₀`. Establish `hLev` using `hPk.bot.hyp.2.2.2.1.lev`. Establish `sdY : IsSelfDualC (Yc D (j + 1)) ((pk W).ΛY (j + 1))` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hLev.βY (j + 1) (by omega))`. Establish `sdX : IsSelfDualC D.sp.X' (pk W).ΛX` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hLev.βX`. Take `⟨M, hM, hmov⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D _ _ sdY).1 (f.g.b (j + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨χS, χT, hWe⟩` from `isWeil_top W j h`. Establish `sdT : IsSelfDualC D.sp.X' f.g.LT` using `hVT.bT.2 ▸ hv.sdT`. Use `⟨sdY, sdX, M, hM, hmov, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.VacMove.vac_of_moves D (pk W).ψ _ _ χS χT _ hWe _ _ sdY sdX _ _ ⟨hd₀.2.1.2.theta, hd₀.2.1.2.lat⟩ _ _ M f.g.LT hM sdT (hmov _) (hVT.movesT _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem moved_vacuum : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ j (h : j + 2 * 0 + 2 = D.R.m) d₀, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) d₀ → IsSelfDualC (Yc D (j + 1)) ((pk W).ΛY (j + 1)) ∧ IsSelfDualC D.sp.X' (pk W).ΛX ∧ ∃ M : GlobalTheory.FinPl.Lat (Yc D (j + 1)), IsSelfDualC (Yc D (j + 1)) M ∧ (∀ P, GlobalTheory.FinPl.Moves (Yc D (j + 1)) (f.g.b (j + 1)) ((pk W).ΛY (j + 1)) M P) ∧ GlobalTheory.FinPl.Vac f.c.ψ (Yc D (j + 1)) D.sp.X' M f.g.LT (fun _ => True) (omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (pk W) j h)) := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT j h d₀ hd₀

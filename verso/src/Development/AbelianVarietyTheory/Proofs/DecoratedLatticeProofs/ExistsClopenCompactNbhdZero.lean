@@ -16,7 +16,7 @@ def intAf : Set (FiniteAdeleRing (𝓞 F) F) :=
   {a | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers F v}
 
 /- English proof (translation)
-Unfold `intAf`. Conclude with `RestrictedProduct.isOpen_forall_mem (fun v => by`. Conclude with `Valued.isOpen_integer _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isOpen_intAf : IsOpen (intAf F) := by
   unfold intAf
@@ -24,20 +24,20 @@ theorem isOpen_intAf : IsOpen (intAf F) := by
     exact Valued.isOpen_integer _)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_intAf : IsCompact (intAf F) :=
   (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.IntegralFinAdele.t2Space_finiteAdeleRing' F`. Conclude with `(isCompact_intAf F).isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_intAf : IsClosed (intAf F) := by
   haveI := GlobalTheory.IntegralFinAdele.t2Space_finiteAdeleRing' F
   exact (isCompact_intAf F).isClosed
 
 /- English proof (translation)
-Introduce `v` and use `by exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem_intAf : (0 : FiniteAdeleRing (𝓞 F) F) ∈ intAf F := fun v => by
   exact zero_mem _
@@ -58,13 +58,13 @@ noncomputable def coordEquiv : (A ⊗[F] E) ≃ₗ[A] (Module.Free.ChooseBasisIn
 local instance : IsModuleTopology A (A ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (coordEquiv F E).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordEquiv : Continuous (coordEquiv F E) :=
   IsModuleTopology.continuous_of_linearMap (coordEquiv F E).toLinearMap
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd (A ⊗[F] E) := IsModuleTopology.toContinuousAdd A _`. Use `haveI : ContinuousSMul A (A ⊗[F] E) := IsModuleTopology.toContinuousSMul A _`. Conclude with `IsModuleTopology.continuous_of_linearMap (coordEquiv F E).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordEquiv_symm : Continuous (coordEquiv F E).symm := by
   haveI : ContinuousAdd (A ⊗[F] E) := IsModuleTopology.toContinuousAdd A _
@@ -74,16 +74,16 @@ theorem continuous_coordEquiv_symm : Continuous (coordEquiv F E).symm := by
 def intTens : Set (A ⊗[F] E) := coordEquiv F E ⁻¹' Set.univ.pi (fun _ => intAf F)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isClosed_set_pi fun _ _ => isClosed_intAf F).preimage (continuous_coordEquiv F E), (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_intAf F).preimage (continuous_coordEquiv F E)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_intTens : IsClopen (intTens F E) :=
   ⟨(isClosed_set_pi fun _ _ => isClosed_intAf F).preimage (continuous_coordEquiv F E),
    (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_intAf F).preimage (continuous_coordEquiv F E)⟩
 
 /- English proof (translation)
-Establish `h` using `(isCompact_univ_pi fun _ => isCompact_intAf F).image (continuous_coordEquiv_symm F E)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨coordEquiv F E x, hx, (coordEquiv F E).symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `coordEquiv F E ((coordEquiv F E).symm y) ∈ Set.univ.pi (fun _ => intAf F)`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hy`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intTens : IsCompact (intTens F E) := by
   have h := (isCompact_univ_pi fun _ => isCompact_intAf F).image (continuous_coordEquiv_symm F E)
@@ -98,7 +98,7 @@ theorem isCompact_intTens : IsCompact (intTens F E) := by
     exact hy
 
 /- English proof (translation)
-Introduce `i _`. Rewrite using `[map_zero]`. Conclude with `zero_mem_intAf F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_intTens : (0 : A ⊗[F] E) ∈ intTens F E := by
   intro i _
@@ -112,9 +112,7 @@ end GlobalTheory.AfTensNbhd
 namespace GlobalTheory.AfTensNbhd
 
 /- English proof (translation)
-Introduce `D m n`. Use `⟨Set.univ.pi (fun _ => Set.univ.pi (fun _ => intTens D.host.F D.host.E)), ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isClosed_set_pi fun _ _ => isClosed_set_pi fun _ _ => (isClopen_intTens D.host.F D.host.E).1`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => (isClopen_intTens D.host.F D.host.E).2`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_intTens D.host.F D.host.E`.
-
-Introduce `i _ j _`. Conclude with `zero_mem_intTens D.host.F D.host.E`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_clopen_compact_nbhd_zero : ∀ (D : D7) (m n : ℕ), ∃ U : Set (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E), IsClopen U ∧ IsCompact U ∧ (0 : Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ∈ U := by
   intro D m n

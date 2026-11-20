@@ -8,13 +8,13 @@ namespace PositivityTheory.HtPt.Htat
 open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-Set `K : Submodule ℤ M` to `LinearMap.range (q • (LinearMap.id : M →ₗ[ℤ] M))`. Establish `hK : ∀ a, a ∈ K ↔ ∃ b, a = q • b` using `fun a => ⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`. Establish `hle : K ≤ K.comap f`. Introduce `a ha`. Take `⟨b, rfl⟩` from `(hK a).1 ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hK _).2 ⟨f b, map_nsmul f q b⟩`. Set `g` to `K.mapQ K f hle`. Establish `hg : Function.Surjective g`. Introduce `a`. Take `⟨a, rfl⟩` from `K.mkQ_surjective a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, b, rfl⟩` from `hs a`. Use `⟨K.mkQ z, ?_⟩` and prove the remaining obligations. Use `show K.mkQ (f z) = _`. Rewrite using `[map_add, show K.mkQ (q • b) = 0 from (Submodule.Quotient.mk_eq_zero K).2 ((hK _).2 ⟨b, rfl⟩), add_zero]`. Establish `hi` using `OrzechProperty.injective_of_surjective_endomorphism g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : g (K.mkQ z) = g 0`. Rewrite using `[map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero K).2 ((hK _).2 ⟨b, h⟩)`. Conclude with `(hK z).1 ((Submodule.Quotient.mk_eq_zero K).1 (hi h0))`.
+A detailed English derivation is pending.
 -/
 theorem inj_mod_of_surj_mod {M : Type} [AddCommGroup M] [Module.Finite ℤ M] (f : M →ₗ[ℤ] M) (q : ℕ)
     (hs : ∀ a, ∃ z b, a = f z + q • b) (z b : M) (h : f z = q • b) : ∃ z', z = q • z' := by
@@ -40,9 +40,9 @@ theorem inj_mod_of_surj_mod {M : Type} [AddCommGroup M] [Module.Finite ℤ M] (f
   exact (hK z).1 ((Submodule.Quotient.mk_eq_zero K).1 (hi h0))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, a, by simp⟩`. Consider the case `succ n ih`. Take `⟨z, b, rfl⟩` from `ih`. Take `⟨z', b', rfl⟩` from `h b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z + (p ^ n) • z', b', by rw [map_add, map_nsmul, smul_add, pow_succ, mul_smul, add_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem surj_mod_pow {M L : Type} [AddCommGroup M] [AddCommGroup L] (σ : M →+ L) (p : ℕ)
     (h : ∀ a, ∃ z b, a = σ z + p • b) (n : ℕ) (a : L) : ∃ z b, a = σ z + (p ^ n) • b := by
@@ -54,21 +54,21 @@ theorem surj_mod_pow {M L : Type} [AddCommGroup M] [AddCommGroup L] (σ : M →+
     exact ⟨z + (p ^ n) • z', b', by rw [map_add, map_nsmul, smul_add, pow_succ, mul_smul, add_assoc]⟩
 
 /- English proof (translation)
-Set `B` to `Module.Free.chooseBasis ℤ L`. Prove the components needed by the constructor for the conclusion. Introduce `φ choose zz cc hzc using hs`. Set `s : L →ₗ[ℤ] M` to `B.constr ℤ fun i => zz (B i)`. Set `t : L →ₗ[ℤ] L` to `B.constr ℤ fun i => cc (B i)`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hst : ∀ a, a = σ (s a) + q • t a`. Establish `: (LinearMap.id : L →ₗ[ℤ] L) = σ ∘ₗ s + q • t` using `B.ext fun i => by`. Simplify `hzc (B i)` using `[s, t]`. Introduce `a`. Simplify using `using LinearMap.congr_fun this a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Set `ψ : L →ₗ[ℤ] ℤ` to `B.constr ℤ fun i => ((φ (zz (B i))).cast : ℤ)`. Establish `hψ : ∀ a, ((ψ a : ℤ) : ZMod q) = φ (s a)`. Establish `: (Int.castAddHom (ZMod q)).toIntLinearMap ∘ₗ ψ = φ.toIntLinearMap ∘ₗ s` using `B.ext fun i => by`. Simplify using `[ψ, s]`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using LinearMap.congr_fun this a`. Take `⟨a₀, ha₀⟩` from `hE.2 ψ`. Use `⟨zz a₀, fun z => ?_⟩` and prove the remaining obligations. Take `⟨z', hz'⟩` from `hk (z - s (σ z)) (t (σ z)) (by`. Rewrite using `[map_sub, sub_eq_iff_eq_add']`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst (σ z))`. Establish `h1 : φ z = φ (s (σ z))`. Rewrite using `[sub_eq_iff_eq_add.1 hz', map_add, map_nsmul]`. Simplify using `[← sub_eq_iff_eq_add.1 hz']`. Establish `h2 : σ (zz a₀) = a₀ - q • cc a₀` using `eq_sub_iff_add_eq.2 (hzc a₀).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hψ, ← ha₀, h2]`. Simplify using the standard rewrite rules. Introduce `y hy`. Establish `hd : ∀ a, (q : ℤ) ∣ EF (σ y) a`. Introduce `a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, b, rfl⟩` from `hs a`. Rewrite using `[map_add, map_nsmul, nsmul_eq_mul]`. Conclude with `dvd_add ((ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (hy z)) (dvd_mul_right _ _)`. Use `choose d hd using hd`. Set `ψ : L →ₗ[ℤ] ℤ` to `B.constr ℤ fun i => d (B i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₀, ha₀⟩` from `hE.2 ψ`. Use `hk y a₀ (hE.1 (B.ext fun i => ?_))` and prove the remaining obligations. Rewrite using `[map_nsmul, ha₀, hd]`. Simplify using `[ψ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perfect_mod {M L : Type} [AddCommGroup M] [AddCommGroup L] [Module.Free ℤ L] (σ : M →ₗ[ℤ] L) (q : ℕ)
     (EF : L →ₗ[ℤ] L →ₗ[ℤ] ℤ) (hE : Function.Bijective EF) (hs : ∀ a, ∃ z b, a = σ z + q • b)
@@ -117,23 +117,23 @@ theorem perfect_mod {M L : Type} [AddCommGroup M] [AddCommGroup L] [Module.Free 
     simp [ψ]
 
 /- English proof (translation)
-Use `hu.free` as an intermediate fact. Use `hu.finite` as an intermediate fact. Set `σ₀ : (Fin N → 𝓞 E) →ₗ[𝓞 E] La` to `Fintype.linearCombination (𝓞 E) u`. Set `σ : (Fin N → 𝓞 E) →ₗ[ℤ] La` to `σ₀.toAddMonoidHom.toIntLinearMap`. Establish `hσ : ∀ z, σ z = ∑ k, z k • u k` using `fun z => Fintype.linearCombination_apply _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσa : ∀ (a : 𝓞 E) z, σ (a • z) = a • σ z` using `fun a z => map_smul σ₀ a z`. Establish `hs : ∀ a, ∃ z b, a = σ z + (p ^ n) • b` using `surj_mod_pow σ.toAddMonoidHom p (fun a => by`. Take `⟨z, b, h⟩` from `hu.span a`. Conclude with `⟨z, b, h.trans (by rw [← hσ]; rfl)⟩) n`. Establish `hrk : Module.finrank ℤ La = Module.finrank ℤ (Fin N → 𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hu.rank, Module.finrank_pi_fintype]`. Simplify using `[RingOfIntegers.rank]`. Set `φ` to `LinearEquiv.ofFinrankEq La (Fin N → 𝓞 E) hrk`. Establish `hk : ∀ z b, σ z = (p ^ n) • b → ∃ z', z = (p ^ n) • z'` using `fun z b h => inj_mod_of_surj_mod (φ.toLinearMap ∘ₗ σ) (p ^ n) (fun a => by`. Take `⟨z, b, h⟩` from `hs (φ.symm a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, φ b, ?_⟩` and prove the remaining obligations. Use `congrArg φ h` as an intermediate fact. Rewrite using `[φ.apply_symm_apply, map_add, map_nsmul] at this) z (φ b) (by` and apply the resulting hypothesis. Use `show φ (σ z) = _`. Rewrite using `[h, map_nsmul])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hsu, hin⟩` from `perfect_mod σ (p ^ n) EF hu.unimod hs hk`. Set `K : Submodule ℤ La` to `LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La))`. Set `π : Multiplicative (Fin N → 𝓞 E) →* LevGrp La p n` to `AddMonoidHom.toMultiplicative (K.mkQ ∘ₗ σ).toAddMonoidHom`. Establish `hπ : ∀ z, π (Multiplicative.ofAdd z) = lev p n (σ z)` using `fun z => rfl`. Set `e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod (p ^ n)` to `{ toFun := fun y => (Int.castAddHom (ZMod (p ^ n))).comp (EF (σ y) ∘ₗ σ).toAddMonoidHom map_zero' := by ext z; simp map_add' := fun y y' => by ext z; simp }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ y z, e y z = ((EF (σ y) (σ z) : ℤ) : ZMod (p ^ n))` using `fun y z => rfl`. Establish `hone : ∀ a : La, lev p n a = 1 ↔ ∃ b, a = (p ^ n) • b` using `fun a => by show (Submodule.Quotient.mk a : La ⧸ K) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`. Use `⟨π, e, fun z => by rw [hπ, hσ], fun z z' => by rw [he, hσ, hσ], fun a => ?_, fun t => ?_, fun y => ?_, fun y => ?_, fun a y z => ?_, fun ψ => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hs a` using `only [hσ]`. Take `⟨a, ha⟩` from `K.mkQ_surjective (Multiplicative.toAdd t)`. Take `⟨z, b, rfl⟩` from `hs a`. Use `⟨Multiplicative.ofAdd z, ?_⟩` and prove the remaining obligations. Establish `h0 : K.mkQ ((p ^ n) • b) = 0` using `(hone _).2 ⟨b, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[map_add, h0, add_zero]`. Conclude with `ha`. Rewrite using `[hπ, hone]`. Conclude with `⟨fun ⟨b, hb⟩ => hk y b hb, fun ⟨y', hy'⟩ => ⟨σ y', by rw [hy', map_nsmul]⟩⟩`. Rewrite using `[he, hu.alt, Int.cast_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he, he, hσa, hσa, hu.adj]`. Take `⟨y, hy⟩` from `hsu ψ`. Conclude with `⟨y, AddMonoidHom.ext hy⟩`. Conclude with `hin y fun z => (he y z).symm.trans (by rw [hy]; rfl)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levPairing {E : Type} [Field E] [NumberField E] (c : E ≃+* E) (p : ℕ) [Fact p.Prime] (n : ℕ)
     {La : Type} [AddCommGroup La] [Module (𝓞 E) La] (EF : La →ₗ[ℤ] La →ₗ[ℤ] ℤ) {N : ℕ} (u : Fin N → La)

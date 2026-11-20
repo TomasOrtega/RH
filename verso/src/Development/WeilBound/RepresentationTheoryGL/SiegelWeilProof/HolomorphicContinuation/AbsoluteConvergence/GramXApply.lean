@@ -12,7 +12,7 @@ open PositivityTheory.Rg.Sw
 variable {m n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [gramX, Qp, Qb, evX, map_sub, map_sum, map_mul, eval_X, Finset.sum_filter, if_true]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases h : ε a <;> simp [sgn, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramX_apply (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fin n) :
     gramX ε x i j = ∑ a, sgn ε a * (star (x a i) * x a j) := by
@@ -22,7 +22,7 @@ theorem gramX_apply (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : F
   cases h : ε a <;> simp [sgn, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramX_apply, mul_diagonal, diagonal_mul, scal, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramX_scal (ε : Fin m → Bool) (α : Fin n → ℝ) (x : Fin m → Fin n → ℂ) :
     gramX ε (scal α x) = diagonal (fun j => (α j : ℂ)) * gramX ε x * diagonal (fun j => (α j : ℂ)) := by
@@ -33,7 +33,7 @@ theorem gramX_scal (ε : Fin m → Bool) (α : Fin n → ℝ) (x : Fin m → Fin
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, gramX_apply, star_sum, star_mul', star_star]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases h : ε a <;> simp [sgn, h, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramX_herm (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) : (gramX ε x)ᴴ = gramX ε x := by
   ext i j
@@ -42,7 +42,7 @@ theorem gramX_herm (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) : (gramX 
   cases h : ε a <;> simp [sgn, h, mul_comm]
 
 /- English proof (translation)
-Establish `hG` using `gramX_herm ε x`. Establish `h1 : star ((b * gramX ε x).trace) = (b * gramX ε x).trace`. Rewrite using `[← trace_conjTranspose, conjTranspose_mul, hG, hb.eq, trace_mul_comm]`. Establish `h2` using `congrArg Complex.im h1`. Simplify using `only [Complex.star_def, Complex.conj_im] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -56,22 +56,20 @@ theorem trace_im (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) {b : Matrix
   linarith
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Simplify using `[Complex.mul_re, Complex.mul_im, hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_phase (t : ℝ) (z : ℂ) (hz : z.im = 0) : ‖Complex.exp (Complex.I * t * z)‖ = 1 := by
   rw [Complex.norm_exp]
   simp [Complex.mul_re, Complex.mul_im, hz]
 
 /- English proof (translation)
-Rewrite using `[gramX_scal]`. Simplify using `only [bS]`. Use `set A : Matrix (Fin n) (Fin n) ℂ := diagonal fun j => ((Real.exp (-(h * X j)) : ℝ) : ℂ)`. Use `set B : Matrix (Fin n) (Fin n) ℂ := diagonal fun j => ((aH X h j : ℝ) : ℂ)`. Establish `hAB : A * B = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [A, B, diagonal_mul_diagonal, aH]`. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hBA : B * A = 1`. Simplify using `only [A, B, diagonal_mul_diagonal, aH]`. Rewrite using `[← diagonal_one]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[show A * b * A * (B * gramX ε y * B) = A * (b * ((A * B) * gramX ε y * B)) by`. Simplify using `only [mul_assoc], hAB, one_mul, trace_mul_comm,`.
-
-Use `show b * (gramX ε y * B) * A = b * gramX ε y * (B * A) by simp only [mul_assoc], hBA, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_scal (ε : Fin m → Bool) (X : Fin n → ℝ) (h : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (y : Fin m → Fin n → ℂ) :
     (bS X h b * gramX ε (scal (aH X h) y)).trace = (b * gramX ε y).trace := by
@@ -107,13 +105,11 @@ Both sides reduce to the same expression.
 theorem ept_false (v : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n) : ept v (a, j, false) = v a j := rfl
 
 /- English proof (translation)
-Establish `hn : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = star z * z`. Introduce `z`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ a b c d a' b' c' d' : ℂ, a = a' → b = c' → c = b' → d = d' → a + (b + c - d) = a' + (b' + c') - d'`. Use `intros`. Use `subst_vars`. Expand and normalize the polynomial expressions, which then agree. Use `show eval (ept v) (dil c X Q) = ((m : ℂ) * ∑ j, (X j : ℂ)) * eval (ept v) Q + ∑ k, eval (ept v) (pderiv k Q) * ((X k.2.1 : ℂ) * ept v k) - (c : ℂ) * (∑ a, ∑ j, 2 * (X j : ℂ) * ((‖v a j‖ ^ 2 : ℝ) : ℂ)) * eval (ept v) Q`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dil, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, MvPolynomial.smul_eq_C_mul, nsmul_eq_mul, map_sum, map_add, map_sub, map_mul, eval_X, eval_C, map_ …`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, ept_true, ept_false]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin m))), Finset.sum_comm (s := (Finset.univ : Finset (Fin m)))]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_add, add_mul, mul_sub, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
-
-Apply `key` to reduce the goal to its premises. Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem evX_dil (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (v : Fin m → Fin n → ℂ) :
     evX (dil c X Q) v = ((m : ℂ) * ∑ j, (X j : ℂ)) * evX Q v +

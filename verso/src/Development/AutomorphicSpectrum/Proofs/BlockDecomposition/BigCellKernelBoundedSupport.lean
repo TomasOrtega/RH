@@ -32,7 +32,7 @@ def entHomeo : (Fin 2 × Fin 2 → F) ≃ₜ Matrix (Fin 2) (Fin 2) F where
     exact (continuous_apply ij.2).comp (continuous_apply ij.1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp_continuous entHomeo.continuous, h.2.comp_homeomorph entHomeo⟩`.
+Supply the required witnesses or components.
 -/
 theorem flat_mem {Φ : Matrix (Fin 2) (Fin 2) F → ℂ} (h : SB2 Φ) :
     flat Φ ∈ schwartzBruhatPi F (Fin 2 × Fin 2) :=

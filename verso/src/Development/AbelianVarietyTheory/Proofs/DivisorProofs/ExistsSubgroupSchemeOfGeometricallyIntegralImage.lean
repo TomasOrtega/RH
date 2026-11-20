@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.lift_of_reduced_of_support i.left g.left (fun t => by`. Take `⟨t', rfl⟩` from `hq.surj t`. Apply `i.left.range_subset_ker_support` to reduce the goal to its premises. Use `⟨r.left t', ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, ← h, Over.comp_left, Scheme.Hom.comp_apply])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Over.homMk e (by rw [← Over.w i, ← Category.assoc, he, Over.w g]), Over.OverMorphism.ext he⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_of_surjective_of_isReduced {K : Type} [Field K] {T T' Z Y : Over (Sp K)}
     (i : Z ⟶ Y) [IsClosedImmersion i.left] [IsReduced T.left] (q : T' ⟶ T) (g : T ⟶ Y) (r : T' ⟶ Z)
@@ -25,23 +25,19 @@ theorem exists_lift_of_surjective_of_isReduced {K : Type} [Field K] {T T' Z Y : 
   exact ⟨Over.homMk e (by rw [← Over.w i, ← Category.assoc, he, Over.w g]), Over.OverMorphism.ext he⟩
 
 /- English proof (translation)
-Introduce `K _ A B f Z p i hf hp hi hZ`. Establish `hmono : Mono i` using `Over.mono_of_mono_left i`. Use `haveI : IsIntegral Z.left := GeometricallyIntegral.isIntegral_of_subsingleton Z.hom`. Use `haveI := B.smooth`. Use `haveI : Smooth B.X.hom := SmoothOfRelativeDimension.smooth B.dim _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : LocallyOfFiniteType Z.hom := by rw [← Over.w i]; infer_instance`. Use `haveI : IsLocallyNoetherian Z.left := LocallyOfFiniteType.isLocallyNoetherian Z.hom`. Use `haveI : IsReduced (Z ⊗ Z).left := (inferInstance : IsReduced (pullback Z.hom Z.hom))`. Use `haveI : MorphismProperty.IsStableUnderComposition @Surjective := ⟨fun f g hf hg => by haveI := hf; haveI := hg; infer_instance⟩`. Establish `hpp : Surjective (p ⊗ₘ p).left` using `MorphismProperty.pullbackMap (P := @Surjective) hp hp (Over.w p).symm (Over.w p).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ι[A.X] ≫ f.hom = f.hom ≫ ι[B.X]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩` from `exists_lift_of_surjective_of_isReduced i (p ⊗ₘ p) ((i ⊗ₘ i) ≫ μ[B.X]) (μ[A.X] ≫ p) hpp (by`. Rewrite using `[← Category.assoc, tensorHom_comp_tensorHom, hf, ← IsMonHom.mul_hom, Category.assoc, hf])`. Take `⟨v, hv⟩` from `exists_lift_of_surjective_of_isReduced i p (i ≫ ι[B.X]) (ι[A.X] ≫ p) hp (by`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hf, Category.assoc, hf, hinv])`. Establish `h1 : (η[A.X] ≫ p) ≫ i = η[B.X]` using `by rw [Category.assoc, hf, IsMonHom.one_hom]`. Establish `h1a : η[A.X] ≫ p ≫ i = η[B.X]` using `by rw [← Category.assoc, h1]`. Use `letI M : MonObj Z := { one := η[A.X] ≫ p mul := m one_mul := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm, ← tensorHom_id, tensorHom_comp_tensorHom_assoc, h1, Category.id_comp, tensorHom_def', Category.assoc, MonObj.one_mul, leftUnitor_naturality]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `mul_one := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm, ← id_tensorHom, tensorHom_comp_tensorHom_assoc, h1, Category.id_comp, MonoidalCategory.tensorHom_def, Category.assoc, MonObj.mul_one, rightUnitor_naturality]`. Use `mul_assoc := by`. Rewrite using `[← cancel_mono i]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, hm, ← tensorHom_id, tensorHom_comp_tensorHom_assoc, Category.id_comp, Category.comp_id]`. Use `_ = ((i ⊗ₘ i) ⊗ₘ i) ≫ (α_ _ _ _).hom ≫ B.X ◁ μ[B.X] ≫ μ[B.X] := by rw [MonObj.mul_assoc]`. Use `_ = (α_ Z Z Z).hom ≫ (i ⊗ₘ (i ⊗ₘ i)) ≫ B.X ◁ μ[B.X] ≫ μ[B.X] := by`. Rewrite using `[associator_naturality_assoc]`. Use `_ = ((α_ Z Z Z).hom ≫ Z ◁ m ≫ m) ≫ i := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Category.assoc, hm, ← id_tensorHom, tensorHom_comp_tensorHom_assoc, Category.id_comp, Category.comp_id] }`. Use `letI G : GrpObj Z := { inv := v left_inv := by`. Rewrite using `[← cancel_mono i, Category.assoc]`. Express the relevant statement in the definitionally equal form `lift v (𝟙 Z) ≫ m ≫ i = (toUnit Z ≫ η[A.X] ≫ p) ≫ i`. Rewrite using `[hm, lift_map_assoc, hv, Category.id_comp, show lift (i ≫ ι[B.X]) i = i ≫ lift ι[B.X] (𝟙 B.X) by rw [comp_lift, Category.comp_id], Category.assoc, GrpObj.left_inv, ← Category.assoc, comp_toUnit]`.
-
-Simplify using `only [Category.assoc, h1a]`. Use `right_inv := by`. Rewrite using `[← cancel_mono i, Category.assoc]`. Express the relevant statement in the definitionally equal form `lift (𝟙 Z) v ≫ m ≫ i = (toUnit Z ≫ η[A.X] ≫ p) ≫ i`. Rewrite using `[hm, lift_map_assoc, hv, Category.id_comp, show lift i (i ≫ ι[B.X]) = i ≫ lift (𝟙 B.X) ι[B.X] by rw [comp_lift, Category.comp_id], Category.assoc, GrpObj.right_inv, ← Category.assoc, comp_toUnit]`.
-
-Simplify using `only [Category.assoc, h1a] }`. Use `⟨G, ⟨rfl, ?_⟩, ⟨h1, hm⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μ[A.X] ≫ p = (p ⊗ₘ p) ≫ m`. Rewrite using `[← cancel_mono i, Category.assoc, Category.assoc, hm, hf, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grpObj_of_image :
     ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (Z : Over (Sp K)) (p : A.X ⟶ Z) (i : Z ⟶ B.X), p ≫ i = f.hom → Surjective p.left → IsClosedImmersion i.left → GeometricallyIntegral Z.hom → ∃ _ : GrpObj Z, IsMonHom p ∧ IsMonHom i := by

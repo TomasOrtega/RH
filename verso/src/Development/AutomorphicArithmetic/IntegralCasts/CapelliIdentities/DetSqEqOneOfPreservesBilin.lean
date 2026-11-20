@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `V _ _ _ B hB f hf`. Set `b` to `Module.finBasis ℝ V`. Establish `hcomp : B.comp f f = B`. Use extensionality with `x y`. Simplify using `using hf x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmat` using `LinearMap.BilinForm.toMatrix_comp b b B f f`. Rewrite `hmat` using `[hcomp]`. Establish `hne : (LinearMap.BilinForm.toMatrix b B).det ≠ 0` using `(LinearMap.BilinForm.nondegenerate_iff_det_ne_zero b).mp hB`. Establish `hdet` using `congrArg Matrix.det hmat`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `-hdet`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.Reformulated.B.Qm9.det_sq_eq_one_of_preserves_bilin.{u_1} :
     ∀ {V : Type u_1} [inst : AddCommGroup V]

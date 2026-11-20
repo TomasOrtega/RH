@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (t : SAB H X) (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ H.w0 = H.w0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h n c g hg => h n ⟨c.χ, c.mul, c.nat⟩ g hg, fun h n c g hg => h n ⟨c.χ, c.mul, c.nat⟩ g hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem dlogDvd_twist {O : Type} [CommRing O] (x : Sp O ⟶ X) (p m : ℕ) (v : Sp (DualNumber O) ⟶ t.G.left) :
     DlogDvd (GlobalTheory.FiniteStable.twist σ hσ t) x p m v ↔ DlogDvd t x p m v :=
@@ -28,7 +28,7 @@ theorem dlogDvd_twist {O : Type} [CommRing O] (x : Sp O ⟶ X) (p m : ℕ) (v : 
 variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-Consider the cases of `b`. Both sides reduce to the same expression. Use extensionality with `v`. Conclude with `exists_congr fun xO => and_congr_right fun _ => exists_congr fun m => exists_congr fun vO => and_congr_right fun _ => and_congr_right fun _ => dlogDvd_twist t σ hσ xO p m vO`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lat_twist (p : ℕ) (x : Sp C ⟶ X) (b : Bool) :
     lat (GlobalTheory.FiniteStable.twist σ hσ t) p x b = lat t p x b := by
@@ -46,7 +46,7 @@ theorem grNorm_twist (x : Sp C ⟶ X) (Λ : Set (Sp (DualNumber C) ⟶ t.G.left)
     grNorm (GlobalTheory.FiniteStable.twist σ hσ t) x Λ u i = grNorm t x Λ u i := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem grNorm_cast (x : Sp C ⟶ X) (Λ : Set (Sp (DualNumber C) ⟶ t.G.left)) {m n : ℕ} (h : m = n)
     (v : Fin n → (Sp (DualNumber C) ⟶ t.G.left)) (k : ℕ) (hk : k < n) (hk' : k < m) :
@@ -57,13 +57,13 @@ theorem grNorm_cast (x : Sp C ⟶ X) (Λ : Set (Sp (DualNumber C) ⟶ t.G.left))
 end Twist
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z T p _ b x u u' hu hu' τ k`. Take `⟨xO, hxO, -⟩` from `GlobalTheory.ShFam.Pad.Guard.existsUnique_ext Z x`. Establish `huniq : ∀ y : Sp ↥(intO ℂ_[p]) ⟶ Z.X, spMap (intO ℂ_[p]).subtype ≫ y = spMap (intO ℂ_[p]).subtype ≫ xO ≫ T.ρ.hom → y = xO ≫ T.ρ.hom` using `fun y hy => (GlobalTheory.ShFam.Pad.Guard.existsUnique_ext Z (x ≫ T.ρ.hom)).unique (hy.trans (by rw [← Category.assoc, hxO])) (by rw [← Category.assoc, hxO])`. Establish `hΛ : ∀ v, IsTanAtG Z.t x v → (v ∈ lat Z.t p x b ↔ v ≫ T.sab.φ ∈ lat (GlobalTheory.FiniteStable.twist T.σ T.w0 Z.t) p (x ≫ T.ρ.hom) b)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hxO` using the available equality. Rewrite using `[Category.assoc]`. Conclude with `GlobalTheory.ShFam.LatPush.lat_push E H Z.X Z.X _ Z.t T.ρ.hom T.sab ℂ_[p] p b xO huniq v hv`. Establish `key : ∀ (h : k < Dw.mult τ) (h' : k < Dw.mult (T.emb τ)), grNorm Z.t x (lat Z.t p x b) (u (T.emb τ)) ⟨k, h'⟩ = grNorm Z.t (x ≫ T.ρ.hom) (lat Z.t p (x ≫ T.ρ.hom) b) (u' τ) ⟨k, h⟩`. Introduce `h h'`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ShFam.Pad.Pull.grNorm_push T.sab rfl hΛ (fun i => hu _ i), lat_twist, grNorm_twist,`. Use function extensionality and compare the values at `(hu' τ)]`. Conclude with `(grNorm_cast Z.t _ _ (T.mult_emb τ) (fun i => u (T.emb τ) i ≫ T.mu.cm.F) k h' h).symm`. Simplify using `only [lnStep]`. Rewrite using `[T.emb_rt τ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k < Dw.mult τ`. Establish `hk' : k < Dw.mult (T.emb τ)` using `T.mult_emb τ ▸ hk`. Rewrite using `[dif_pos hk', dif_pos hk, key hk hk']`. Establish `hk' : ¬ k < Dw.mult (T.emb τ)` using `T.mult_emb τ ▸ hk`. Rewrite using `[dif_neg hk', dif_neg hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lnPush : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))

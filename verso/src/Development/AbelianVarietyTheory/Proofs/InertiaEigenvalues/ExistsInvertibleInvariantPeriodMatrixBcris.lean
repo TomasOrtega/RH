@@ -9,33 +9,31 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.Per.PerMat
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. It suffices to establish `H : ∀ n : ℕ, ∀ c : ι → B, (Finset.univ.filter (fun i => c i ≠ 0)).card ≤ n → ∑ i, c i • v i = 0 → c = 0 by`. Introduce `c hc i`. Conclude with `congrFun (H _ c le_rfl hc) i`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `c hcard _`. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.zero_apply] at h`. Establish `hi : i ∈ Finset.univ.filter (fun i => c i ≠ 0)` using `by simp [h]`. Rewrite `hcard` using `[Nat.le_zero, Finset.card_eq_zero]`. Simplify using `[hcard] at hi`. Consider the case `succ n ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hcard hc`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, c i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (funext h)`. Establish `hσ : ∀ g, ∑ i, σ g (c i) • v i = 0`. Introduce `g`. Establish `e1 : (fun r => σ g ((∑ i, c i • v i) r)) = ∑ i, σ g (c i) • (fun r => σ g (v i r))`. Use function extensionality and compare the values at `r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_apply, map_sum, map_mul]`. Establish `h1 : (M g).mulVec (fun r => σ g ((∑ i, c i • v i) r)) = ∑ i, σ g (c i) • v i`. Rewrite using `[e1, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1, hc]`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `Matrix.mulVec_zero (M g)`. Establish `hrel : ∀ g i, σ g (c i) * c i0 = c i * σ g (c i0)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `ih (fun i => c i0 * σ g (c i) - σ g (c i0) * c i) ?_ ?_`. Introduce `i`. Use `congrFun key i` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Finset.univ.filter (fun i => c i0 * σ g (c i) - σ g (c i0) * c i ≠ 0) ⊆ (Finset.univ.filter (fun i => c i ≠ 0)).erase i0`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase] at hi ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using the standard rewrite rules. Establish `h2` using `Finset.card_le_card hsub`. Rewrite `h2` using `[Finset.card_erase_of_mem (by simp [hi0])]`. Use linear arithmetic over natural numbers and integers. Establish `e : ∑ i, (c i0 * σ g (c i) - σ g (c i0) * c i) • v i = c i0 • ∑ i, σ g (c i) • v i - σ g (c i0) • ∑ i, c i • v i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, Finset.smul_sum, mul_smul]`. Rewrite using `[e, hσ g, hc, smul_zero, smul_zero, sub_zero]`. Use `choose k hk using fun i => hfrac (c i) (c i0) hi0 (fun g => hrel g i)`. Establish `hk0 : ∑ i, κ (k i) • v i = 0`. Establish `h3 : c i0 • ∑ i, κ (k i) • v i = 0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hk i, mul_comm]`. Use `_ = 0 := hc`.
-
-Conclude with `(smul_eq_zero.1 h3).resolve_left hi0`. Establish `h4` using `congrFun (hind k hk0) i0`. Establish `h1` using `hk i0`. Rewrite `h1` using `[h4, Pi.zero_apply, map_zero, zero_mul]`. Conclude with `hi0 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem li_of_frac {B : Type} [CommRing B] [IsDomain B] {d : ℕ} {ι G F : Type} [Fintype ι] [Field F]
     (κ : F →+* B) (σ : G → B →+* B) (M : G → Matrix (Fin d) (Fin d) B) (v : ι → Fin d → B)
@@ -114,25 +112,23 @@ end GlobalTheory.Per.PerMat
 namespace GlobalTheory.Per.PerMat
 
 /- English proof (translation)
-Introduce `l _ K P AI T d ρ hspan`. Take `⟨-, hdom, -⟩` from `GlobalTheory.Per.TiedField.tied_field l P AI T`. Use `haveI : IsDomain (Per.Bcris l) := Function.Injective.isDomain (T.eB.symm : Per.Bcris l →+* P.R.B) T.eB.symm.injective`. Use `choose m c v hv hsum using hspan`. Set `κ : ↥(K0 K) →+* Per.Bcris l` to `T.eB.toRingHom.comp (algebraMap ↥(K0 K) P.R.B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Algebra ↥(K0 K) (Per.Bcris l) := κ.toAlgebra`. Set `S : Set (Fin d → Per.Bcris l)` to `Set.range (fun q : (Σ j, Fin (m j)) => v q.1 q.2)`. Take `⟨b, hbS, hspanb, hli⟩` from `exists_linearIndependent (↥(K0 K)) S`. Establish `hfin : b.Finite` using `(Set.finite_range _).subset hbS`. Use `haveI : Fintype b := hfin.fintype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hvb : ∀ (x : b) (g : ↥(GK K)), ((ρ g).map (Per.zB l)).mulVec (fun r => Per.σB (g : GQ l) ((x : Fin d → Per.Bcris l) r)) = x`. Introduce and unpack `⟨x, hx⟩ g`. Take `⟨⟨j, i⟩, rfl⟩` from `hbS hx`. Conclude with `hv j i g`. Establish `hliB : LinearIndependent (Per.Bcris l) (Subtype.val : b → Fin d → Per.Bcris l)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `li_of_frac κ (fun g : ↥(GK K) => Per.σB (g : GQ l)) (fun g => (ρ g).map (Per.zB l)) _ hvb ?_ ?_` and prove the remaining obligations. Introduce `a a' ha' h`. Take `⟨k, hk⟩` from `GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K (T.eB.symm a) (T.eB.symm a') (by simpa using ha') (fun g hg => by`. Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, T.actB, T.actB]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h ⟨g, hg⟩)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `congrArg T.eB hk` as an intermediate fact. Simplify `this` using `[κ]`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `x`. Use `hli k ?_ x` and prove the remaining obligations. Rewrite using `[← hk]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul (Per.Bcris l) (k y) (y : Fin d → Per.Bcris l)]`. Both sides reduce to the same expression. Establish `hsp : ⊤ ≤ Submodule.span (Per.Bcris l) (Set.range (Subtype.val : b → Fin d → Per.Bcris l))`. Rewrite using `[Subtype.range_coe, ← (Pi.basisFun (Per.Bcris l) (Fin d)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.basisFun_apply, hsum j]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h1 : v j i ∈ Submodule.span (↥(K0 K)) b`. Rewrite using `[hspanb]`. Conclude with `Submodule.subset_span ⟨⟨j, i⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Submodule.span_le_restrictScalars (↥(K0 K)) (Per.Bcris l) b h1`. Set `bb` to `Module.Basis.mk hliB hsp`. Establish `hcard : Fintype.card b = d`. Rewrite using `[← Module.finrank_eq_card_basis bb, Module.finrank_fin_fun]`. Set `e : b ≃ Fin d` to `Fintype.equivFinOfCardEq hcard`.
-
-Set `bd` to `bb.reindex e`. Use `⟨(Pi.basisFun (Per.Bcris l) (Fin d)).toMatrix bd, bd.toMatrix (Pi.basisFun (Per.Bcris l) (Fin d)), Module.Basis.toMatrix_mul_toMatrix_flip _ _, fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hx` using `congrFun (hvb (e.symm j) g) i`. Simplify `hx` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, bd, bb]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_invertible_invariant : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])), (∀ j : Fin d, ∃ (m : ℕ) (c : Fin m → Per.Bcris l) (v : Fin m → Fin d → Per.Bcris l), (∀ i (g : ↥(GK K)), ((ρ g).map (Per.zB l)).mulVec (fun r => Per.σB (g : GQ l) (v i r)) = v i) ∧ (Pi.single j 1 : Fin d → Per.Bcris l) = ∑ i, c i • v i) → ∃ U U' : Matrix (Fin d) (Fin d) (Per.Bcris l), U * U' = 1 ∧ (∀ g : ↥(GK K), (ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U) := by
   intro l _ K P AI T d ρ hspan

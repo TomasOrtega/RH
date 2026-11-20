@@ -22,11 +22,11 @@ variable {T : Over (Spec (CommRingCat.of R))} (σ : T ⟶ TF (R := R) F) {z : T.
 include hJ
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, add_zero]`. Simplify using `[cubN]`. Consider the case `succ k ih`. Establish `e` using `tau_mul σ hJ hB (ρ + k • mu) mu nu`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `e` using `[cPoint_add, cPoint_nsmul]`. Rewrite using `[succ_nsmul, ← add_assoc, cubN, Finset.prod_range_succ, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a1` using `congrArg Additive.ofMul e`. Establish `a2` using `congrArg Additive.ofMul ih`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ofMul_mul, ofMul_pow, cubN] at a1 a2 ⊢`. Take the linear combination `(norm := abel) a1 + a2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tau_nsmul (hB : D.TauBimult) (ρ mu nu : D.X) (k : ℕ) :
     val (D.tau (ρ + k • mu) nu) (σ.left ≫ jFK (R := R) F) z J * cubN (th D z J) k (cP D T ρ) (cP D T mu) (cP D T nu) =
@@ -44,7 +44,7 @@ theorem tau_nsmul (hB : D.TauBimult) (ρ mu nu : D.X) (k : ℕ) :
     linear_combination (norm := abel) a1 + a2
 
 /- English proof (translation)
-Establish `e : val (D.tau a b) (σ.left ≫ jFK (R` using `R) F) z J = val (D.psi (a + b)) (σ.left ≫ jFK (R := R) F) z J * (val (D.psi a) (σ.left ≫ jFK (R := R) F) z J)⁻¹ * (val (D.psi b) (σ.left ≫ jFK (R := R) F) z J)⁻¹ * (val D.rigK (σ.left ≫ jFK (R := R) F) z J)⁻¹ := (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).tran …`. Rewrite using `[e]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem psi_add (a b : D.X) : val (D.psi (a + b)) (σ.left ≫ jFK (R := R) F) z J =
     val (D.tau a b) (σ.left ≫ jFK (R := R) F) z J * val (D.psi a) (σ.left ≫ jFK (R := R) F) z J *
@@ -62,7 +62,7 @@ theorem psi_add (a b : D.X) : val (D.psi (a + b)) (σ.left ≫ jFK (R := R) F) z
 end Values
 
 /- English proof (translation)
-The claim follows from `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_powGen' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (n : ℕ) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -70,21 +70,21 @@ theorem val_powGen' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ :
   map_pow _ _ _
 
 /- English proof (translation)
-Establish `C : IsCub (th D z J)` using `isCub_cubV D.cub hJ`. Establish `hf : (ρ' ≫ DegPre.trF D F nu) ≫ fst (TF (R` using `R) F) D.P.A = ρ' ≫ fst _ _ := by`. Rewrite using `[Category.assoc, trF_eq, tr_fst]`. Establish `hp : (ρ' ≫ DegPre.trF D F nu) ≫ DegPre.prB D F = (ρ' ≫ DegPre.prB D F) * cP D T nu`. Rewrite using `[Category.assoc, trF_eq, tr_pr, MonObj.comp_mul, ← Category.assoc, comp_cP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ χ, ρ' ≫ fst (TF (R` using `R) F) D.P.A ≫ cP D _ χ = cP D T χ := fun χ => by`. Rewrite using `[← Category.assoc, comp_cP]`. Establish `u1 : uVal D F k ρ (cP D _ mu) (ρ' ≫ DegPre.trF D F nu) z J = hv (th D z J) k (cP D T ρ) (cP D T mu) ((ρ' ≫ DegPre.prB D F) * cP D T nu)`. Rewrite using `[uVal, hp, ← Category.assoc (ρ' ≫ DegPre.trF D F nu), hf, Category.assoc, hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `u2 : uVal D F k (ρ + k • mu) (cP D _ nu) ρ' z J = hv (th D z J) k (cP D T ρ * cP D T mu ^ k) (cP D T nu) (ρ' ≫ DegPre.prB D F)`. Rewrite using `[uVal, hc, cPoint_add, cPoint_nsmul]`. Both sides reduce to the same expression. Establish `u3 : uVal D F k ρ (cP D _ (mu + nu)) ρ' z J = hv (th D z J) k (cP D T ρ) (cP D T mu * cP D T nu) (ρ' ≫ DegPre.prB D F)`. Rewrite using `[uVal, hc, cPoint_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hvc` using `hv_comp C k (cP D T ρ) (cP D T mu) (cP D T nu) (ρ' ≫ DegPre.prB D F)`. Establish `σσ` using `ρ' ≫ fst (TF (R := R) F) D.P.A`. Establish `fM : ∀ ν α, val (DegPre.famMult D F k ν α) (ρ' ≫ fst _ _).left z J = val (D.tau ν α) ((ρ' ≫ fst _ _).left ≫ jFK (R` using `R) F) z J * (val (D.psi ν) ((ρ' ≫ fst _ _).left ≫ jFK (R := R) F) z J ^ k * val D.rigK ((ρ' ≫ fst _ _).left ≫ jFK (R := R) F) z J ^ k) := fun ν α => by`. Rewrite using `[val_famMult (ρ' ≫ fst _ _) hJ k ν α, val_powGen', val_powGen']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t1` using `tau_mul (ρ' ≫ fst _ _) hJ hB mu nu ρ`. Establish `t2` using `tau_nsmul (ρ' ≫ fst _ _) hJ hB ρ mu nu k`. Establish `t3` using `tau_symm (ρ' ≫ fst _ _) hJ nu (ρ + k • mu)`. Establish `t4` using `tau_symm (ρ' ≫ fst _ _) hJ ρ nu`. Establish `p1` using `psi_add (ρ' ≫ fst _ _) hJ mu nu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sy : th D z J (cP D T ρ) (cP D T nu) (cP D T mu) = th D z J (cP D T mu) (cP D T nu) (cP D T ρ)`. Rewrite using `[C.s01, C.s12, C.s01]`. Establish `h8 : hv (th D z J) k (cP D T ρ) (cP D T mu) (cP D T nu) = cubN (th D z J) k (cP D T ρ) (cP D T mu) (cP D T nu) * (th D z J (cP D T ρ) (cP D T nu) (cP D T mu))⁻¹` using `rfl`. Rewrite using `[u1, u2, u3, fM, fM, fM]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `a1` using `congrArg Additive.ofMul hvc`. Establish `a2` using `congrArg (fun q => (k : ℕ) • Additive.ofMul q) p1`. Establish `a3` using `congrArg Additive.ofMul t1`. Establish `a4` using `congrArg Additive.ofMul t2`. Establish `a5` using `congrArg Additive.ofMul t3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a6` using `congrArg Additive.ofMul t4`. Establish `a7` using `congrArg Additive.ofMul sy`. Establish `a8` using `congrArg Additive.ofMul h8`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, smul_add] at a1 a2 a3 a4 a5 a6 a7 a8 ⊢`. Take the linear combination `(norm := abel) a1 - a2 - a3 + a4 + a5 + a6 - a7 + a8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fe_cocycle (hB : D.TauBimult) {T : Over (Spec (CommRingCat.of R))} (ρ' : T ⟶ DegPre.BF D F) {z : T.left}
     {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) (k : ℕ) (ρ mu nu : D.X) :

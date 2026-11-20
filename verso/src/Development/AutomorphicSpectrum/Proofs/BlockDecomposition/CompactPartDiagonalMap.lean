@@ -6,9 +6,9 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.CptDiag
 
 /- English proof (translation)
-Establish `hK : IsCompact (φ '' closure (Subgroup.zpowers t : Set G))` using `ht.image hφ`. Use `hK.of_isClosed_subset isClosed_closure ?_` and prove the remaining obligations. Use `closure_minimal ?_ hK.isClosed` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t ^ k, subset_closure (Subgroup.zpow_mem_zpowers t k), map_zpow φ t k⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCompact_closure_zpowers_image {G G' : Type} [Group G] [Group G'] [TopologicalSpace G] [TopologicalSpace G']
     [T2Space G'] (φ : G →* G') (hφ : Continuous φ) (t : G)
@@ -22,11 +22,11 @@ theorem isCompact_closure_zpowers_image {G G' : Type} [Group G] [Group G'] [Topo
   exact ⟨t ^ k, subset_closure (Subgroup.zpow_mem_zpowers t k), map_zpow φ t k⟩
 
 /- English proof (translation)
-Introduce `H _ _ _ _ Z`. Unfold `cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hc⟩`. Take `⟨t, ht, rfl⟩` from `Subgroup.mem_map.mp hu`. Use `⟨t, ⟨ht, ?_⟩, rfl⟩` and prove the remaining obligations. Use `isCompact_closure_zpowers_image (MonoidHom.fst H H) continuous_fst _ hc` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce and unpack `⟨t, ⟨ht, hc⟩, rfl⟩`. Establish `hcont : Continuous ((MonoidHom.id H).prod (MonoidHom.id H))` using `by show Continuous fun x : H => (x, x)`. Conclude with `continuous_id.prodMk continuous_id`. Conclude with `⟨Subgroup.mem_map_of_mem _ ht, isCompact_closure_zpowers_image _ hcont t hc⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cptPart_diag : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (Z : Subgroup H), cptPart (Z.map ((MonoidHom.id H).prod (MonoidHom.id H))) = (cptPart Z).map ((MonoidHom.id H).prod (MonoidHom.id H)) := by
   intro H _ _ _ _ Z

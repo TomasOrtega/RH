@@ -18,7 +18,7 @@ section Generic
 variable {A R : Type} [CommRing A] [CommRing R] {ι : A →+* R} {p : ℕ} {t : R}
 
 /- English proof (translation)
-Take `⟨a, r, rfl⟩` from `hx`. Take `⟨b, hb⟩` from `hg a`. Conclude with `⟨b, g r, by rw [map_add, map_mul, map_mul, map_pow, map_natCast, ht, hb]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.map_of_fixed (g : R →+* R) (hg : ∀ a, ∃ b, ι b = g (ι a)) (ht : g t = t) {m : ℕ}
     {x : R} (hx : Near ι p t m x) : Near ι p t m (g x) := by
@@ -27,9 +27,9 @@ theorem Near.map_of_fixed (g : R →+* R) (hg : ∀ a, ∃ b, ι b = g (ι a)) (
   exact ⟨b, g r, by rw [map_add, map_mul, map_mul, map_pow, map_natCast, ht, hb]⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hcomp k f hn`. Take `⟨y, hy, r, hr⟩` from `hlift x fun g hgH => hsep _ fun m => by`. Establish `h1 : act g (∑ i ∈ Finset.range m, f i) = ∑ i ∈ Finset.range m, f i` using `(hS _).1 (S.sum_mem fun i _ => hf i) g hgH`. Establish `h2` using `(Near.map_of_fixed (act g) (hg g) ((hS _).1 ht g hgH) (hx m)).sub (hx m)`. Rewrite `h2` using `[map_sub, h1, sub_sub_sub_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.mono hτ (Nat.le_add_right m k)`. Use `⟨y, hy, fun m => ?_⟩` and prove the remaining obligations. Establish `h3` using `(Near.of_mul (ι := ι) (p := p) (t := t) (m + k) r).add (hx m)`. Rewrite `h3` using `[← hr, sub_add_sub_cancel]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_complete_generic {G : Type} (H : Set G) (act : G → (R →+* R)) (S : Subring R)
     (hS : ∀ x, x ∈ S ↔ ∀ g ∈ H, act g x = x) {τ : A} (hτ : ι τ = t)
@@ -56,7 +56,7 @@ theorem fixed_complete_generic {G : Type} (H : Set G) (act : G → (R →+* R)) 
 end Generic
 
 /- English proof (translation)
-Introduce `l _ P AI LL s H`. Conclude with `fixed_complete_generic H (fun g => (AI.gRW LL g : RW LL →+* RW LL)) (fixSub AI LL H) (fun _ => mem_fixSub) (τ := (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piW AI s) rfl (fun g a => ⟨GlobalTheory.Cyc.Decomp.gRA AI LL g a, GlobalTheory.Cyc.Decomp.inclR_gRA AI LL g a⟩) (GlobalTheory.T.nearPi_sep_com …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixSub_nearPi_complete : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) (H : Set (GQ l)), piR AI LL s ∈ fixSub AI LL H → ∀ (k : ℕ) (f : ℕ → RW LL), (∀ i, f i ∈ fixSub AI LL H) → (∀ i, NearPi AI LL s (i + k) (f i)) → ∃ x ∈ fixSub AI LL H, ∀ m, NearPi AI LL s (m + k) (x - ∑ i ∈ Finset.range m, f i) := by
   intro l _ P AI LL s H

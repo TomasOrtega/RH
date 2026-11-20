@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DiagonalHyperbolic
 
 /- English proof (translation)
-Establish `hG : S.gramᴴ = S.gram` using `Matrix.ext fun a b => GlobalTheory.LatVac.gram_star S b a`. Establish `h` using `congrArg Matrix.conjTranspose d.e'e`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, Matrix.conjTranspose_one]`. Establish `h2` using `congrFun (congrFun h i) i`. Rewrite `h2` using `[Matrix.one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hyp_diag (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (i : Fin ρ) :
     ∑ r, ∑ r', star (d.e r i) * S.gram r r' * d.e' r' i = 1 := by

@@ -38,14 +38,14 @@ instance grpObj_pullG (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ 
   inferInstance
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_pullback _ _`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_pullψ (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) :
     IsGrpPullback (pullG TF Z φ) TF.Y.t.G (φ ≫ (barComp TF.Y Z).ι) (pullψ TF Z φ) :=
   isGrpPullback_pullback _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullAct_pullψ (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (a : 𝓞 E) :
     ((pullAct TF Z φ).act a).left ≫ pullψ TF Z φ = pullψ TF Z φ ≫ (TF.Y.t.act.act a).left :=

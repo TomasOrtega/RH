@@ -10,9 +10,9 @@ namespace GlobalTheory.SmoothForms
 open Module Submodule
 
 /- English proof (translation)
-Establish `hneg : house (-(h x v)) = house (h x v)` using `by simp [house]`. Establish `h0 : 0 ≤ T` using `by linarith`. Establish `h1 : house (h v v) ≤ T * T` using `(H.form_le v v).trans (mul_le_mul hv hv (H.nonneg _) h0)`. Establish `h2 : house (h x v) ≤ T * T` using `(H.form_le x v).trans (mul_le_mul hx hv (H.nonneg _) h0)`. Establish `h3 : ν (h v v • x) ≤ T * T * T` using `(H.smul_le _ _).trans (mul_le_mul h1 hx (H.nonneg _) (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ν ((-(h x v)) • v) ≤ T * T * T` using `(H.smul_le _ _).trans (by rw [hneg]; exact mul_le_mul h2 hv (H.nonneg _) (by positivity))`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Establish `h5 : 2 * (T * T * T) ≤ T * (T * T * T)` using `mul_le_mul_of_nonneg_right hT (by positivity)`. Use `(H.add_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sized.proj_le {E : Type} [Field E] [NumberField E] [IsCMField E] {V : Type} [AddCommGroup V] [Module E V]
     {h : V →ₗ[E] V →ₗ⋆[E] E} {Λ : Submodule ℤ V} {N : ℤ} {ν : V → ℝ} {B : ℝ} (H : Sized h Λ N ν B)
@@ -34,47 +34,41 @@ theorem Sized.proj_le {E : Type} [Field E] [NumberField E] [IsCMField E] {V : Ty
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `N _`. Conclude with `⟨∅, 0, Set.finite_empty, by simp, fun V _ _ _ _ _ _ _ _ _ => ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `N hN`. Take `⟨S₁, k₁, hS₁, h0₁, H₁⟩` from `HA (n + 1) n.succ_ne_zero N hN`. Take `⟨M, hM, hMS⟩` from `GlobalTheory.HermClass.exists_int_mul_isIntegral E (hS₁.image fun a => a⁻¹)`. Take `⟨S₂, k₂, hS₂, h0₂, H₂⟩` from `ih _ (mul_ne_zero hM hN)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S₁ ∪ S₂, k₁ + (k₁ + 1) * 4 * k₂, hS₁.union hS₂, by simp [h0₁, h0₂], ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ h Λ ν B hV H`. Take `⟨v, hv, hvS, hvν⟩` from `H₁ V h Λ ν B hV H`. Establish `hs` using `H.symm`. Establish `hO` using `H.stable`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `H.int`. Establish `hB1 : 1 ≤ B` using `by linarith [H.two_le]`. Establish `hBT : B ≤ B ^ (k₁ + 1)` using `le_self_pow₀ hB1 (Nat.succ_ne_zero _)`. Establish `hT2 : 2 ≤ B ^ (k₁ + 1)` using `H.two_le.trans hBT`. Establish `hvT : ν v ≤ B ^ (k₁ + 1)` using `hvν.trans (pow_le_pow_right₀ hB1 (Nat.le_succ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj : ∀ x, ν x ≤ B → ν (h v v • x - h x v • v) ≤ (B ^ (k₁ + 1)) ^ 4` using `fun x hx => H.proj_le hT2 hvT (hx.trans hBT)`. Use `set a := h v v with ha`. Establish `ha0 : a ≠ 0` using `fun h0 => h0₁ (h0 ▸ hvS)`. Establish `hai : IsIntegral ℤ a` using `hint v hv v hv`. Establish `has : star a = a` using `(hs v v).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : Submodule E V` to `LinearMap.ker (h.flip v)`. Establish `hW : ∀ x, x ∈ W ↔ h x v = 0` using `fun x => Iff.rfl`. Establish `hWr : finrank E W = n`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (h.flip v)`. Establish `h2 : LinearMap.range (h.flip v) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `c _`. Conclude with `⟨(c / a) • v, by simp [← ha, ha0]⟩`. Rewrite `h1` using `[h2, finrank_top, finrank_self, hV]`. Express the relevant statement in the definitionally equal form `1 + finrank E W = _ at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Set `p : V →ₗ[E] W` to `LinearMap.codRestrict W (a • LinearMap.id - (h.flip v).smulRight v) fun x => by`. Rewrite using `[hW]`. Simplify using `[← ha, mul_comm]`. Establish `hp : ∀ x, (p x : V) = a • x - h x v • v` using `fun x => rfl`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Λ' : Submodule ℤ W` to `Λ.comap (W.subtype.restrictScalars ℤ)`. Establish `hΛ' : ∀ x : W, x ∈ Λ' ↔ (x : V) ∈ Λ` using `fun x => Iff.rfl`. Establish `hpΛ : ∀ x ∈ Λ, p x ∈ Λ'` using `fun x hx => by`. Rewrite using `[hΛ', hp]`. Conclude with `sub_mem (hO _ hai _ hx) (hO _ (hint x hx v hv) _ hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyp : ∀ (y : W) (x : V), h y (p x) = a * h y x` using `fun y x => by`. Establish `: h y v = 0` using `y.2`. Simplify using `[hp, starRingEnd_apply, has, this]`. Establish `H' : Sized (h.domRestrict₁₂ W W) Λ' (M * N) (fun w : W => ν w) ((B ^ (k₁ + 1)) ^ 4)` using `{ symm := fun x y => hs x y nondeg := fun y hy => Subtype.ext (H.nondeg y fun x => by`. Establish `h1 : h y (p x) = 0` using `hy (p x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[hyp]`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha0)`. Use `fg := by`. Apply `Submodule.fg_of_fg_map_injective (W.subtype.restrictScalars ℤ) W.subtype_injective` to reduce the goal to its premises. Conclude with `H.fg.of_le (map_comap_le _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `stable := fun c hc x hx => hO c hc x hx`. Use `int := fun x hx y hy => hint x hx y hy`. Use `dual := fun y hy => by`. Establish `h1 : (N : E) • a • (y : V) ∈ Λ` using `H.dual _ fun x hx => by`. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, ← hyp]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy _ (hpΛ x hx)`. Establish `h2` using `hO _ (hMS _ ⟨a, hvS, rfl⟩) _ h1`. Rewrite `h2` using `[smul_smul, smul_smul]`. Rewrite using `[hΛ', Submodule.coe_smul]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `two_le := hT2.trans (le_self_pow₀ (by linarith) (by norm_num))`. Use `nonneg := fun x => H.nonneg x`. Use `add_le := fun x y => H.add_le x y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `smul_le := fun c x => H.smul_le c x`. Use `form_le := fun x y => H.form_le x y`. Use `span := by`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `h1 : span E {x | x ∈ Λ ∧ ν x ≤ B} ≤ (span E {x : W | x ∈ Λ' ∧ ν x ≤ (B ^ (k₁ + 1)) ^ 4}).comap p` using `span_le.2 fun x hx => subset_span ⟨hpΛ x hx.1, hproj x hx.2⟩`. Establish `h2 : p w ∈ span E {x : W | x ∈ Λ' ∧ ν x ≤ (B ^ (k₁ + 1)) ^ 4}` using `h1 (H.span ▸ mem_top)`. Establish `h3 : w = a⁻¹ • p w` using `Subtype.ext (by`. Establish `: h w v = 0` using `w.2`. Simplify using `[hp, this, ha0])`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[h3]`. Conclude with `smul_mem _ _ h2 }`. Take `⟨u, huΛ, huo, huS⟩` from `H₂ W (h.domRestrict₁₂ W W) Λ' _ _ hWr H'`. Use `⟨Fin.cons v fun i => u i, fun i => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => exact hv`. Consider the case `succ i => exact huΛ i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`.
-
-Consider the case `zero => exact (hij rfl).elim`. Consider the case `succ j`. Establish `: h (u j) v = 0` using `(u j).2`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[hs, this, star_zero]`.
-
-Consider the case `succ i`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact (u i).2`. Consider the case `succ j => exact huo i j fun h0 => hij (congrArg _ h0)`. Consider the cases of `i using Fin.cases with`.
-
-Consider the case `zero => exact ⟨Or.inl hvS, hvν.trans (pow_le_pow_right₀ hB1 (Nat.le_add_right _ _))⟩`. Consider the case `succ i`. Use `⟨Or.inr (huS i).1, (huS i).2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_mul, ← mul_assoc]`. Conclude with `pow_le_pow_right₀ hB1 (Nat.le_add_left _ _)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthoSmall_of_anisoSmall (E : Type) [Field E] [NumberField E] [IsCMField E] (HA : AnisoSmall E) :
     OrthoSmall E := by

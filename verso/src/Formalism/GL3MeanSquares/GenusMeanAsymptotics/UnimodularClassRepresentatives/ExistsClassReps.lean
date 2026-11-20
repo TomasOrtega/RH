@@ -15,7 +15,7 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 omit [FiniteDimensional K V] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g.1, g.2, hg⟩`. Introduce and unpack `⟨g, hg, e⟩`. Conclude with `⟨⟨g, hg⟩, e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_smul_iff (N M : Submodule (𝓞 K) V) :
     (∃ g : Formalism.HermitianLatticesTheory.isom h, g • N = M) ↔ ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, Formalism.HermitianLatticesTheory.gmap g N = M := by
@@ -26,7 +26,7 @@ theorem exists_smul_iff (N M : Submodule (𝓞 K) V) :
     exact ⟨⟨g, hg⟩, e⟩
 
 /- English proof (translation)
-Use `hM` as an intermediate fact. Use `(Formalism.HermitianLatticesTheory.autFinite_short h (trace_pos hd) M (Algebra.trace ℚ K n)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, rfl⟩`. Conclude with `⟨hx, le_rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_rep (hd : IsTotPosDef h) {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M)
     (n : K) : {x : V | x ∈ M ∧ h x x = n}.Finite := by
@@ -36,7 +36,7 @@ theorem finite_rep (hd : IsTotPosDef h) {M : Submodule (𝓞 K) V} (hM : Submodu
   exact ⟨hx, le_rfl⟩
 
 /- English proof (translation)
-Establish `: Finite (Formalism.ThetaLiftIndependence.autL h M)` using `(Formalism.HermitianLatticesTheory.autFinite K V h hs (trace_pos hd) M hM).to_subtype`. Establish `: Finite (MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom h) M)` using `Finite.of_equiv _ (stabLatEquiv M).symm`. Conclude with `Set.toFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_stab_lat (hs : h.IsSymm) (hd : IsTotPosDef h) {M : Submodule (𝓞 K) V}
     (hM : Submodule.IsLattice K M) :
@@ -46,18 +46,18 @@ theorem finite_stab_lat (hs : h.IsSymm) (hd : IsTotPosDef h) {M : Submodule (�
   exact Set.toFinite _
 
 /- English proof (translation)
-The claim follows from `(Formalism.ThetaLiftIndependence.classRepsDefinite K V h hs (trace_pos hd) L hL).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_classReps (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s :=
   (Formalism.ThetaLiftIndependence.classRepsDefinite K V h hs (trace_pos hd) L hL).1
 
 /- English proof (translation)
-Take `⟨s, hs1, hs2⟩` from `exists_classReps hs hd hL`. Use `OrbSum.exists_reps_of_cover (pairs h L n) (pairs_stable hs L n) (⋃ M ∈ s, (fun x => (M, x)) '' {x : V | x ∈ M ∧ h x x = n}) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Set.Finite.biUnion s.finite_toSet fun M hM => (finite_rep hd (hs1 M hM).1 n).image _`. Introduce `c hc`. Take `⟨M, hM, x, hx, rfl⟩` from `Set.mem_iUnion₂.mp hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hs1 M hM, hx.1, hx.2⟩`. Introduce `p hp`. Take `⟨M, ⟨hM, g, hg, hgM⟩, -⟩` from `hs2 p.1 hp.1`. Use `⟨(M, g.symm p.2), Set.mem_iUnion₂.mpr ⟨M, hM, g.symm p.2, ⟨?_, ?_⟩, rfl⟩, ⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.HermitianLatticesTheory.isomAct_mem_gmap, hgM]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp.2.1`. Rewrite using `[SplitBAux.symm_mem_isom hg]`. Conclude with `hp.2.2`. Conclude with `Prod.ext hgM (LinearEquiv.apply_symm_apply g p.2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pairReps (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (n : K) :
@@ -80,7 +80,7 @@ theorem exists_pairReps (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (�
     · exact Prod.ext hgM (LinearEquiv.apply_symm_apply g p.2)
 
 /- English proof (translation)
-Establish `key` using `OrbSum.sum_orbits_on (G := Formalism.HermitianLatticesTheory.isom h) (Prod.fst : Submodule (𝓞 K) V × V → _) (fun _ _ => rfl) (pairs h L n) (Formalism.HermitianLatticesTheory.genus h L) (pairs_stable hs L n) (fun p hp => hp.1) sX s hsX hsr.1 hX (fun M hM => by simp_rw [exists_smul …`. Rewrite using `[key]`. Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations. Establish `e1 : Nat.card {p : Submodule (𝓞 K) V × V // p ∈ pairs h L n ∧ p.1 = M} = repCount h M n` using `Nat.card_congr { toFun := fun p => ⟨p.1.2, (congrArg (fun N : Submodule (𝓞 K) V => p.1.2 ∈ N) p.2.2).mp p.2.1.2.1, p.2.1.2.2⟩ invFun := fun x => ⟨(M, x.1), ⟨hsr.1 M hM, x.2.1, x.2.2⟩, rfl⟩ left_inv := fun p => Subtype.ext (Prod.ext p.2.2.symm rfl) right_inv := fun _ => rfl }`. Rewrite using `[e1, Nat.card_congr (stabLatEquiv M)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pairs_eq_rep (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V} (n : K)
     {s : Finset (Submodule (𝓞 K) V)} (hsr : Formalism.ThetaLiftIndependence.IsClassReps h L s)

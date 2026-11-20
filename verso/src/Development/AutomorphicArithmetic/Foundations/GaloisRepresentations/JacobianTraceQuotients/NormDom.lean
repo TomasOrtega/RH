@@ -8,17 +8,17 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ ι σ l N hN`. Use `⟨fun x => ?_, fun n t => ⟨fun ht i j hij => ?_, ?_, fun s ht hs i j hij => ?_⟩⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[hN.prod, hN.prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩ : ∃ m, l = m + 1` from `⟨l - 1, by have := hN.cyc.pos; omega⟩`. Substitute `hm` using the available equality. Establish `hord : σ^[m + 1] (x : k') = x` using `hN.cyc.ord x`. Establish `hl : ∀ i, σ^[i] ((Units.map (σ : k' →* k') x : k'ˣ) : k') = σ^[i + 1] (x : k')` using `fun i => by`. Rewrite using `[Function.iterate_succ_apply]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [hl]`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ' (fun i => σ^[i] (x : k')), hord]`. Both sides reduce to the same expression. Use `lt_of_not_ge fun h => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(GlobalTheory.SplitWeil.nabs_le_iff (N (t j)) (N (t i))).2 h`. Rewrite `h1` using `[hN.abs, hN.abs]`. Conclude with `absurd h1 (not_le.2 (GlobalTheory.SplitWeil.nabs_lt_of_valuation_lt (ht i j hij)))`. Unfold `deltaB`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : nT n N t i / nT n N t j = N (t i / t j)`. Rewrite using `[map_div]`. Both sides reduce to the same expression. Rewrite using `[e, hN.abs]`. Establish `hj : valuation k' (s j : k') ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ a, valuation k' (((t * s) a : k'ˣ) : k') = valuation k' (t a : k') * valuation k' (s a : k')` using `fun a => by`. Simplify using the standard rewrite rules. Rewrite using `[e, e]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.normDom :
     UpperTheory.Gal.Join.NormDom := by

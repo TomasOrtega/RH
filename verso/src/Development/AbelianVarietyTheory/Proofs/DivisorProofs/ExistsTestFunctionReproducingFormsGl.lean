@@ -15,7 +15,7 @@ namespace GlobalTheory.HCSmoothGL
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use `haveI : SigmaFinite (volume : Measure (InfinitePlace E → ℂ)) := inferInstance`. Use `haveI : (volume : Measure (Fin a → InfinitePlace E → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : SigmaFinite (volume : Measure (Fin a → InfinitePlace E → ℂ)) := inferInstance`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_volume_Lie : (volume : Measure (Lie E a)).IsAddHaarMeasure := by
   haveI : SigmaFinite (volume : Measure (InfinitePlace E → ℂ)) := inferInstance
@@ -26,14 +26,14 @@ theorem isAddHaarMeasure_volume_Lie : (volume : Measure (Lie E a)).IsAddHaarMeas
 def conjCL (k : Kinf E a) : Lie E a →L[ℝ] Lie E a := (lmul (toL k.1)).comp (rmul (toL (star k.1)))
 
 /- English proof (translation)
-Use `show toL (k.1 * (Matrix.of x * star k.1)) = _`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjCL_apply (k : Kinf E a) (x : Lie E a) : conjCL k x = toL (k.1 * Matrix.of x * star k.1) := by
   show toL (k.1 * (Matrix.of x * star k.1)) = _
   rw [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[conjCL_apply, conjCL_apply, conjCL_apply]`. Use `show toL _ = toL (k.1 * (k'.1 * Matrix.of x * star k'.1) * star k.1)`. Simplify using `[mul_assoc, star_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjCL_mul (k k' : Kinf E a) (x : Lie E a) : conjCL (k * k') x = conjCL k (conjCL k' x) := by
   rw [conjCL_apply, conjCL_apply, conjCL_apply]
@@ -41,7 +41,7 @@ theorem conjCL_mul (k k' : Kinf E a) (x : Lie E a) : conjCL (k * k') x = conjCL 
   simp [mul_assoc, star_mul]
 
 /- English proof (translation)
-Simplify using `[conjCL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjCL_one (x : Lie E a) : conjCL 1 x = x := by
   simp [conjCL_apply]
@@ -69,15 +69,15 @@ def extL : (GL (Fin a) (Cinf E) → ℂ) →ₗ[ℂ] (Lie E a → ℂ) where
   map_smul' c F := by funext x; by_cases h : IsUnit (Matrix.of x) <;> simp [h]
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W hW X hX N`. Establish `hν` using `isAddHaarMeasure_volume_Lie (E := E) (a := a)`. Take `⟨p, hp0, hp⟩` from `GlobalTheory.T.exists_laplacianPolynomial_kills_harishChandraFinite E a L W hW X hX N`. Take `⟨α, hα, h⟩` from `GlobalTheory.T.exists_testFunction_reproducing_laplacianPoly_solutions E a volume hν p hp0`. Use `⟨α, hα.1, hα.2.1, hα.2.2, fun φ hφm x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ` using `hp φ hφm`. Establish `h1` using `h (chart φ.1 x) (φ.2 x) (fun y hy => by`. Rewrite `hφ` using `[Polynomial.aeval_eq_sum_range]`. Establish `e` using `congrArg (fun ψ : Sm E a => chart ψ.1 x y) hφ`. Rewrite `e` using `[LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply] at e`. Rewrite `e` using `[GlobalTheory.HCFiniteSm.chart_sum' _ _ (fun k => (GlobalTheory.HCAlpha.lapOp E a ^ k) φ) _ hy]`. Establish `e0 : chart (0 : Sm E a).1 x y = 0` using `by simp [chart]`. Rewrite `e` using `[e0]`. Rewrite using `[← e, GlobalTheory.HCAlpha.polyF, Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, GlobalTheory.HCAlpha.chart_lapOp_pow E a φ x k y hy])`. Simplify using `only [mul_comm (chart φ.1 x _)]`. Rewrite using `[h1]`. Use `chart_val φ.1 x 1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_smooth_beta : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)), FiniteDimensional ℂ W → ∀ X : Set (Module.End ℂ (Sm E a) → ℂ), X.Finite → ∀ N : ℕ, ∃ β : Lie E a → ℂ, ContDiff ℝ ∞ β ∧ HasCompactSupport β ∧ tsupport β ⊆ invSet E a ∧ ∀ φ ∈ formsGL E a L W X N, ∀ g : GA E a, ∫ x, chart φ.1 g x * β x = φ.1 g := by
   intro E _ _ _ a L W hW X hX N

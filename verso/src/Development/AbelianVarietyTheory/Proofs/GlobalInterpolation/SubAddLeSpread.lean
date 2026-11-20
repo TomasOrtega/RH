@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.KerT
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `a.pos`. Establish `h1 : lam.w a ≤ lam.w ⟨0, hN⟩` using `lam.anti (Fin.le_def.2 (Nat.zero_le _))`. Establish `h2 : lam.w ⟨N - 1, by omega⟩ ≤ lam.w b` using `lam.anti (Fin.le_def.2 (by have := b.2; simp only; omega))`. Unfold `DomWeight.spread`. Rewrite using `[dif_pos hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -22,7 +22,7 @@ theorem sub_add_le_spread {N : ℕ} (lam : DomWeight N) (a b : Fin N) :
   linarith
 
 /- English proof (translation)
-Introduce `Z hZ u j hj τ a b`. Establish `h1` using `hZ.sizes.two_spread_lt u j hj τ`. Establish `h2` using `sub_add_le_spread (Z.W.lamTrue u j τ) a b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem alcoveAt_of_ok : ∀ (Z : Dat), Z.Ok → ∀ (u : Z.Pr.Word) (j : ℕ), j ≤ Z.R.m → AlcoveAt Z.W u j := by
   intro Z hZ u j hj τ a b

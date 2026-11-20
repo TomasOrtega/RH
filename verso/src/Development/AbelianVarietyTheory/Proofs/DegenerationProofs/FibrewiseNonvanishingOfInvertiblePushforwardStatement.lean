@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 /- English proof (citation)
-Apply `GlobalTheory.ThetaLocal.thetaNZ_of_pushInvertible` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FFibrewiseNonvanishingOfInvertiblePushforward.lean&line=71#L71)
 -/

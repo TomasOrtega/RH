@@ -26,7 +26,7 @@ def form (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (epsZero 
   baseMap (sec_hom (epsZero k)) w we ≫ (epsIso k).hom
 
 /- English proof (translation)
-Establish `hV : U ≤ sec (epsZero k) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ U` using `(le_preimage_of_comp (sec_hom (epsZero k))).2 le_rfl`. Use `(congrArg ((epsIso k).hom.app U) (baseMap_d he (sec_hom (epsZero k)) w we h hU hV q f)).trans ?_` and prove the remaining obligations. Rewrite using `[H, map_add, d_base, zero_add, d_mul, d_base, smul_zero, add_zero, appLE_base (sec_hom _) _ _ le_rfl, resG_self, d_resG, ← resM_d _ (le_preimage_top _ ⊤) le_top, Scheme.Modules.Hom.app_smul, app_resM, epsIso_d]`. Conclude with `(congrArg (b * ·) (map_one (resG (Sp k) (le_top : U ≤ ⊤)))).trans (_root_.mul_one b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_d (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (epsZero k) ≫ v = x ≫ e)
     {V : X.Opens} {W : Y.Opens} (h : V ≤ e ⁻¹ᵁ W) (f : Γ(Y, W)) {U : (Sp k).Opens} (hU : U ≤ x ⁻¹ᵁ V)
@@ -43,9 +43,9 @@ theorem form_d (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (ep
   exact (congrArg (b * ·) (map_one (resG (Sp k) (le_top : U ≤ ⊤)))).trans (_root_.mul_one b)
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨s, rfl⟩` from `surjective_sec_epsZero t`. Establish `h₁ : s ∈ (sec (epsZero k) ≫ (specO k (DualNumber k)).hom) ⁻¹ᵁ U` using `ht`. Rewrite `h₁` using `[sec_hom]`. Establish `h₂ : s ∈ (x ≫ e) ⁻¹ᵁ W` using `h h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₂` using `[← we]`. Conclude with `h₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_le (we : sec (epsZero k) ≫ v = x ≫ e) {U : (Sp k).Opens} {W : Y.Opens}
     (h : U ≤ x ⁻¹ᵁ e ⁻¹ᵁ W) : (specO k (DualNumber k)).hom ⁻¹ᵁ U ≤ v ⁻¹ᵁ W := by
@@ -58,9 +58,9 @@ theorem preimage_le (we : sec (epsZero k) ≫ v = x ≫ e) {U : (Sp k).Opens} {W
   exact h₂
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, E⟩` from `(bijective_add_mul_epsFn k U hU).2 (v.appLE W _ (preimage_le we h) f)`. Establish `hV : U ≤ sec (epsZero k) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ U` using `(le_preimage_of_comp (sec_hom (epsZero k))).2 le_rfl`. Establish `hb` using `form_d he w we le_rfl f h (preimage_le we h) a b E.symm`. Establish `ha : (x ≫ e).appLE W U h f = a`. Establish `e'` using `congrArg ((sec (epsZero k)).appLE _ U hV) E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul] at e'`. Rewrite `e'` using `[appLE_sec_epsZero_epsFn, mul_zero, add_zero, appLE_base (sec_hom _) _ _ le_rfl, resG_self, appLE_appLE we _ _ h]`. Conclude with `e'.symm`. Rewrite using `[ha, hb]`. Conclude with `E.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_eq (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (epsZero k) ≫ v = x ≫ e)
     {U : (Sp k).Opens} (hU : IsAffineOpen U) {W : Y.Opens} (h : U ≤ x ⁻¹ᵁ e ⁻¹ᵁ W) (f : Γ(Y, W)) :
@@ -84,9 +84,9 @@ theorem appLE_eq (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (
 include he in
 
 /- English proof (translation)
-Use `Scheme.hom_ext_of_forall _ _ fun t => ?_` and prove the remaining obligations. Take `⟨W, hW, hW', -⟩` from `QCoh.exists_affine_mem_le (U := ⊤) (e (x ((specO k (DualNumber k)).hom t))) trivial`. Take `⟨U, hU, hU', h⟩` from `QCoh.exists_affine_mem_le (U := x ⁻¹ᵁ e ⁻¹ᵁ W) ((specO k (DualNumber k)).hom t) hW'`. Establish `hT : IsAffineOpen ((specO k (DualNumber k)).hom ⁻¹ᵁ U)` using `hU.preimage _`. Establish `E : v.appLE W _ (preimage_le we h) = v'.appLE W _ (preimage_le we' h)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `f`. Conclude with `(appLE_eq he w we hU h f).trans (H ▸ (appLE_eq he w' we' hU h f).symm)`. Use `⟨(specO k (DualNumber k)).hom ⁻¹ᵁ U, hU', ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi hT.isoSpec.inv, ← Category.assoc, ← Category.assoc, hT.isoSpec_inv_ι, ← hW.SpecMap_appLE_fromSpec _ hT (preimage_le we h), ← hW.SpecMap_appLE_fromSpec _ hT (preimage_le we' h), E]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_form_eq (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : sec (epsZero k) ≫ v = x ≫ e)
     (w' : v' ≫ π = (specO k (DualNumber k)).hom ≫ x) (we' : sec (epsZero k) ≫ v' = x ≫ e)
@@ -108,19 +108,17 @@ theorem eq_of_form_eq (w : v ≫ π = (specO k (DualNumber k)).hom ≫ x) (we : 
 include he in
 
 /- English proof (translation)
-Set `e' : Sp k ⟶ pullback π x` to `pullback.lift (x ≫ e) (𝟙 _) (by simp [he])`. Establish `he' : e' ≫ pullback.snd π x = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `we' : e' ≫ pullback.fst π x = x ≫ e` using `pullback.lift_fst _ _ _`. Establish `: QuasiCompact e`. Establish `: QuasiCompact (e ≫ π)` using `he ▸ inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `.of_comp _ π`. Establish `: QuasiCompact e'`. Establish `: QuasiCompact (e' ≫ pullback.snd π x)` using `he' ▸ inferInstance`. Use the proof step `.of_comp _ (pullback.snd π x)`. Use `isIso_baseMap he he' (IsPullback.of_hasPullback π x) we'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `β` to `baseMap he' (IsPullback.of_hasPullback π x).w we'`. Set `D` to `homEquivDer _ he' (inv β ≫ L)`. Set `u` to `deform (specO k (DualNumber k)).hom (epsFn k) (epsFn_sq k) D`. Establish `w : (u ≫ pullback.fst π x) ≫ π = (specO k (DualNumber k)).hom ≫ x`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, deform_comp _ _ _ D he']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `we : sec (epsZero k) ≫ u ≫ pullback.fst π x = x ≫ e`. Rewrite using `[← Category.assoc, comp_deform _ _ (epsFn_sq k) D (sec_hom (epsZero k)) (epsZero_epsFn k), we']`. Use `⟨_, w, we, pullback_hom_ext he fun W f => ?_⟩` and prove the remaining obligations. Establish `k₁ : x ⁻¹ᵁ e ⁻¹ᵁ W ≤ e' ⁻¹ᵁ pullback.fst π x ⁻¹ᵁ W` using `le_of_sq we' le_rfl le_rfl`. Establish `k₂` using `(specO k (DualNumber k)).hom.preimage_mono k₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g` to `(pullback.fst π x).appLE W _ le_rfl f`. Use `(form_d he w we le_rfl f le_rfl (preimage_le we le_rfl) (e'.appLE _ _ k₁ g) (val D k₁ g) ?_).trans ?_` and prove the remaining obligations. Establish `k₃ : (specO k (DualNumber k)).hom ⁻¹ᵁ x ⁻¹ᵁ e ⁻¹ᵁ W ≤ u ⁻¹ᵁ pullback.fst π x ⁻¹ᵁ W` using `k₂`. Establish `e₁ : u.appLE _ _ k₃ g = resG _ k₂ (psi _ _ (epsFn_sq k) D _ g)` using `deform_appLE _ _ (epsFn_sq k) D _ k₂ g`. Rewrite using `[← appLE_appLE (f := u) (g := pullback.fst π x) rfl le_rfl k₃, e₁, psi_apply, map_add, map_mul, LB.resG_resG, DualPull.resG_appLE, DualPull.resG_appLE, ← DualPull.resG_appLE e' k₁ le_rfl, DualPull.appLE_resG, show val D k₁ g = resG _ k₁ (val D le_rfl g) from (D.res_app le_rfl k₁ …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `baseMap_d he he' (IsPullback.of_hasPullback π x).w we' le_rfl le_rfl k₁ le_rfl f`. Establish `c : val D k₁ g = (inv β ≫ L).app _ (d he' k₁ g)` using `homEquivDer_app he' (inv β ≫ L) k₁ g`. Rewrite using `[c, ← b]`. Generalize the expression as in `pullbackSections x (conormal e) _ (d he _ f) = s`. Establish `i : β ≫ inv β ≫ L = L` using `IsIso.hom_inv_id_assoc β L`.
-
-Use `conv_rhs => rw [← i]`. Rewrite using `[Scheme.Modules.Hom.comp_app β, AddCommGrpCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_eq [QuasiSeparated π]
     (L : (Scheme.Modules.pullback x).obj (conormal e) ⟶ structureModule (Sp k)) :
@@ -163,13 +161,13 @@ theorem exists_form_eq [QuasiSeparated π]
     rw [Scheme.Modules.Hom.comp_app β, AddCommGrpCat.comp_apply]
 
 /- English proof (translation)
-Use `⟨homGlobalEquiv _ _ (∑ i, c i • hs.coord i), fun l => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dualApp (∑ i, c i • hs.coord i) le_rfl (s l) = c l`. Establish `hsum (T : Finset (Fin n)) : dualApp (∑ i ∈ T, c i • hs.coord i) le_rfl (s l) = if l ∈ T then c l else 0`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `dualApp_smul (0 : Γ(X, ⊤)) (hs.coord l) le_rfl` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_smul]`. Rewrite using `[Finset.sum_empty, this]`. Simplify using the standard rewrite rules. Consider the case `insert i T hi ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `hs.dualApp_coord_frame i l le_rfl` as an intermediate fact. Rewrite `this` using `[Twist.resM_self]`. Rewrite using `[Finset.sum_insert hi, dualApp_add, LinearMap.add_apply, ih, dualApp_smul, LinearMap.smul_apply, this, resG_self]`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hi]`. Simplify using `[hl]`. Simplify using `using hsum Finset.univ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_hom_of_isFrame {F : X.Modules} {n : ℕ} {s : Fin n → Γ(F, ⊤)} (hs : IsFrame s) (c : Fin n → Γ(X, ⊤)) :
     ∃ L : F ⟶ structureModule X, ∀ l, L.app ⊤ (s l) = c l := by
@@ -194,11 +192,11 @@ theorem exists_hom_of_isFrame {F : X.Modules} {n : ℕ} {s : Fin n → Γ(F, ⊤
   simpa using hsum Finset.univ
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t k _ x V h n m hm c`. Use `t.semi` as an intermediate fact. Establish `hf : IsFrame fun l => pullbackSections x (omega t.G) h (m l)`. Use `(hm.pullback x).res h` as an intermediate fact. Conclude with `(funext fun l => QCoh.res_pullbackSections x (omega t.G) le_rfl h (m l)) ▸ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `exists_hom_of_isFrame hf fun l => cst k (c l)`. Take `⟨v, w, we, hv⟩` from `exists_form_eq (sec_hom η[t.G]) L`. Establish `hv' : IsTanAtG t x v` using `⟨w, we.trans (by`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Use the proof step `rfl)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval (l) : tanEv t hv' h (m l) = c l` using `(congrArg (fun (a : Γ(Sp k, ⊤)) => (Scheme.ΓSpecIso (.of k)).hom a) ((congr(($hv).app ⊤ _)).trans (hL l))).trans (Iso.inv_hom_id_apply _ _)`. Use `⟨v, ⟨hv', hval⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hu'⟩`. Use `eq_of_form_eq (sec_hom η[t.G]) hu.1 (epsZero_comp_of_isTanAtG t hu) w we (hom_ext_of_isFrame hf fun l => ?_)` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv.injective ((hu' l).trans (hval l).symm)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_tanEv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [CommRing k] (x : Sp k ⟶ X) (V : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V), ∀ (n : ℕ) (m : Fin n → Γ(GlobalTheory.LieVB.omega t.G, V)), GlobalTheory.VB.IsFrame m → ∀ c : Fin n → k, ∃! v : Sp (DualNumber k) ⟶ t.G.left, ∃ hv : IsTanAtG t x v, ∀ l, tanEv t hv h (m l) = c l := by
   intro E _ _ _ H X t k _ x V h n m hm c

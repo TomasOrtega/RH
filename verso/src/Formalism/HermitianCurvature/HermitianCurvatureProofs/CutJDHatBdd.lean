@@ -8,19 +8,17 @@ namespace Formalism.FourierDecayAlt.P.CutMP
 noncomputable section
 
 /- English proof (translation)
-Introduce `P L hTT hL X hX b hb`. Establish `hLaw : (MA.DQ P).Laws P.TT` using `Formalism.FourierDecayAlt.P.analytic_laws P.r P.TT hTT`. Establish `hS` using `Formalism.FourierDecayAlt.P.MAx3.H.hyp_model hL hLaw`. Establish `hV` using `Formalism.FourierDecayAlt.P.MAx3.K.hypV_model hL hLaw`. Establish `gen : ∀ b' ∈ Submonoid.closure (MA.bddSet P L), ∀ X' ∈ MA.hatSet P L, b' * X' ∈ Submodule.span ℂ (bddHat P L)` using `fun b' hb' X' hX' => Submodule.subset_span ⟨b', hb', X', hX', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mA : ∀ y, L.Ahat y ∈ MA.hatSet P L` using `fun y => Or.inl (Or.inl (Or.inl ⟨y, rfl⟩))`. Establish `mR : ∀ y, L.R0 y ∈ MA.hatSet P L` using `fun y => Or.inl (Or.inl (Or.inr ⟨y, rfl⟩))`. Establish `mAv : ∀ y, L.Ahatv y ∈ MA.hatSet P L` using `fun y => Or.inl (Or.inr ⟨y, rfl⟩)`. Establish `mRv : ∀ y, L.R0v y ∈ MA.hatSet P L` using `fun y => Or.inr ⟨y, rfl⟩`. Establish `sumA : ∀ ts : List (ℂ × MA.A P (MA.DQ P) × ℂ), (∀ x ∈ ts, x.2.1 ∈ Submonoid.closure (MA.bddSet P L)) → (ts.map fun x => x.1 • (x.2.1 * L.Ahat x.2.2)).sum ∈ Submodule.span ℂ (bddHat P L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ts hts`. Use `list_sum_mem fun u hu => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hu`. Conclude with `Submodule.smul_mem _ _ (gen _ (hts x hx) _ (mA _))`. Establish `sumAv : ∀ ts : List (ℂ × MA.A P (MA.DQ P) × ℂ), (∀ x ∈ ts, x.2.1 ∈ Submonoid.closure (MA.bddSet P L)) → (ts.map fun x => x.1 • (x.2.1 * L.Ahatv x.2.2)).sum ∈ Submodule.span ℂ (bddHat P L)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ts hts`. Use `list_sum_mem fun u hu => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hu`. Conclude with `Submodule.smul_mem _ _ (gen _ (hts x hx) _ (mAv _))`. Break down `hX with (((⟨y, rfl⟩ | ⟨y, rfl⟩) | ⟨y, rfl⟩) | ⟨y, rfl⟩)` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `hS.ahat b hb`. Rewrite using `[ht y]`. Conclude with `gen _ hb _ (mA _)`. Take `⟨t, ts, hts, he⟩` from `hS.r0 b hb y`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ (gen _ hb _ (mR _)) (sumA ts hts)`. Take `⟨t, ht⟩` from `hV.ahatv b hb`. Rewrite using `[ht y]`. Conclude with `gen _ hb _ (mAv _)`. Take `⟨t, ts, hts, he⟩` from `hV.r0v b hb y`.
-
-Rewrite using `[he]`. Conclude with `Submodule.add_mem _ (gen _ hb _ (mRv _)) (sumAv ts hts)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hat_bounded_decay_holds : JDHatBdd := by
   intro P L hTT hL X hX b hb

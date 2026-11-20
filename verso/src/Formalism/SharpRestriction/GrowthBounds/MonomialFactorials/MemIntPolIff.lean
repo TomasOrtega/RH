@@ -13,7 +13,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
   {ι : ℚ_[p] →+* KK O} {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.BlockData.Ehat Formalism.MainNotions.G.BlockData.Ehat`. Simplify using `only [map_add, map_mul, map_X, map_sum]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_Ehat (D : BlockData N) (i : Fin (gmB D).T.t) :
     map ι ((gmB D).Ehat p (r := r) i) = D.Ehat O (r := r) i := by
@@ -22,7 +22,7 @@ theorem map_Ehat (D : BlockData N) (i : Fin (gmB D).T.t) :
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.BlockData.Eplus Formalism.MainNotions.G.BlockData.Eplus`. Simplify using `only [map_add, map_mul, map_X, map_sum]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_Eplus (D : BlockData N) :
     map ι ((gmB D).Eplus p (r := r)) = D.Eplus O (r := r) := by
@@ -31,7 +31,7 @@ theorem map_Eplus (D : BlockData N) :
   rfl
 
 /- English proof (translation)
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Use `⟨map ι y, map_YZ hint (D.lettersAt j jp) D.T.J D.T.thr y hy, map ι g, map_XiPolZ hint g hg, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_prod, map_pow, map_X, map_Ehat, map_Eplus, map_rename]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_gens (hint : ∀ x : ℤ_[p], ∃ y : O, ι (x : ℚ_[p]) = algebraMap O (KK O) y) (D : BlockData N)
     (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (Formalism.GM.M.BVar N r (gmB D).T.t) ℚ_[p])
@@ -42,19 +42,17 @@ theorem map_gens (hint : ∀ x : ℤ_[p], ∃ y : O, ι (x : ℚ_[p]) = algebraM
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_mul, map_C, smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_Q {σ : Type} (c : ℚ_[p]) (x : MvPolynomial σ ℚ_[p]) : map ι (c • x) = ι c • map ι x := by
   rw [smul_eq_C_mul, map_mul, map_C, smul_eq_C_mul]
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.BlockData.SSZ at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨j, jp, hok, hx⟩` from `hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hm : MvPolynomial.map ι x ∈ D.gens O (r` using `r) j jp := map_gens hint D j jp x hx`. Conclude with `Submodule.subset_span (Submodule.subset_span (Set.mem_iUnion.2 ⟨j, Set.mem_iUnion.2 ⟨jp, Set.mem_iUnion.2 ⟨hok, hm⟩⟩⟩))`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul ℚ_[p] a x, map_smul_Q]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_SSZ (hint : ∀ x : ℤ_[p], ∃ y : O, ι (x : ℚ_[p]) = algebraMap O (KK O) y) (D : BlockData N)
     (x : MvPolynomial (Formalism.GM.M.BVar N r (gmB D).T.t) ℚ_[p]) (hx : x ∈ (gmB D).SSZ p (r := r)) :
@@ -81,26 +79,26 @@ abbrev intMap (σ : Type) : MvPolynomial σ ℤ_[p] →ₐ[ℤ_[p]] MvPolynomial
   MvPolynomial.mapAlgHom (Algebra.ofId ℤ_[p] ℚ_[p])
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intPol_iff {σ : Type} (F : MvPolynomial σ ℚ_[p]) :
     F ∈ Formalism.GM.M.IntPol p σ ↔ F ∈ (intMap (p := p) σ).range := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X v, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem X_mem_intMap {σ : Type} (v : σ) :
     (X v : MvPolynomial σ ℚ_[p]) ∈ (intMap (p := p) σ).range :=
   ⟨X v, by simp⟩
 
 /- English proof (translation)
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Rewrite using `[mem_intPol_iff]`. Rewrite `hy` using `[Formalism.GM.M.YZ]`. Rewrite `hg` using `[Formalism.GM.M.XiPolZ]`. Establish `h1 : y ∈ Formalism.GM.M.PolZ p r (D.lettersAt j jp)` using `(Submodule.mem_inf.1 hy).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Formalism.GM.M.PolZ]`. Establish `h2 : y ∈ Formalism.GM.M.IntPol p (Fin N × Fin r)` using `(Submodule.mem_inf.1 h1).2`. Establish `hE : ∀ i, D.Ehat p (r` using `r) i ∈ (intMap (p := p) (Formalism.GM.M.BVar N r D.T.t)).range := by`. Introduce `i`. Unfold `Formalism.GM.M.BlockData.Ehat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `add_mem (mul_mem (X_mem_intMap _) (X_mem_intMap _)) (sum_mem fun c _ => mul_mem (X_mem_intMap _) (X_mem_intMap _))`. Establish `hP : D.Eplus p (r` using `r) ∈ (intMap (p := p) (Formalism.GM.M.BVar N r D.T.t)).range := by`. Unfold `Formalism.GM.M.BlockData.Eplus`. Conclude with `add_mem (mul_mem (X_mem_intMap _) (X_mem_intMap _)) (sum_mem fun c _ => mul_mem (X_mem_intMap _) (X_mem_intMap _))`. Establish `hy' : rename (Formalism.GM.M.chainEmb N r D.T.t) y ∈ (intMap (p` using `p) (Formalism.GM.M.BVar N r D.T.t)).range := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨G, rfl⟩` from `(mem_intPol_iff y).1 h2`. Conclude with `⟨rename (Formalism.GM.M.chainEmb N r D.T.t) G, by simp [map_rename]⟩`. Establish `hg' : g ∈ (intMap (p` using `p) (Formalism.GM.M.BVar N r D.T.t)).range := (mem_intPol_iff g).1 (Submodule.mem_inf.1 hg).2`. Use `mul_mem (mul_mem (mul_mem ?_ (pow_mem (X_mem_intMap _) _)) hy') hg'` and prove the remaining obligations. Conclude with `mul_mem (mul_mem (prod_mem fun i _ => pow_mem (hE i) _) (pow_mem hP _)) (prod_mem fun i _ => pow_mem (X_mem_intMap _) _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gens_int (D : Formalism.GM.M.BlockData N) (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (Formalism.GM.M.BVar N r D.T.t) ℚ_[p])
     (hx : x ∈ D.gens p (r := r) j jp) : x ∈ Formalism.GM.M.IntPol p (Formalism.GM.M.BVar N r D.T.t) := by
@@ -130,9 +128,9 @@ theorem gens_int (D : Formalism.GM.M.BlockData N) (j : Fin D.T.t → ℕ) (jp : 
     (prod_mem fun i _ => pow_mem (X_mem_intMap _) _)
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.BlockData.SSZ at hx`. Use `(Submodule.span_le.2 ?_) hx` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨j, jp, -, hz⟩` from `hz`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `gens_int D j jp z hz`.
+A detailed English derivation is pending.
 -/
 theorem SSZ_int (D : Formalism.GM.M.BlockData N) (x : MvPolynomial (Formalism.GM.M.BVar N r D.T.t) ℚ_[p])
     (hx : x ∈ D.SSZ p (r := r)) : x ∈ Formalism.GM.M.IntPol p (Formalism.GM.M.BVar N r D.T.t) := by

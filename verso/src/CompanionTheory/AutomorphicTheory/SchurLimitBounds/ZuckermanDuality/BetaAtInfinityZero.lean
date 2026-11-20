@@ -11,13 +11,13 @@ open Formalism.FourierDecayAlt PI.UpqRep Matrix CompanionTheory.LimBd.SchurHpk M
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D F F' h`. Unfold `B.betaInf B.betaInfTau`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [P.B5.ae_inSS D] with p hp`. Establish `hχ : ∀ t, D.χ t ≠ 0 → t ≠ 0` using `fun t ht h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(D.χ_supp (subset_tsupport _ ht)).1` as an intermediate fact. Rewrite `this` using `[h0]`. Evaluate the numerical expressions using `at this`. Establish `h0 : B.regBracket D F F' p = fun _ _ => 0`. Use function extensionality and compare the values at `t₁ t₂`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `B.regBracket`. Distinguish the cases in `h1 : D.χ t₁ = 0`. Simplify using `[h1]`. Distinguish the cases in `h2 : D.χ t₂ = 0`. Simplify using `[h2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h (B.dilation₂ (t₁, t₂) p) ⟨hp.1, P.B5.dil_mem_N t₁ (hχ _ h1) hp.2.1, hp.2.2.1, P.B5.dil_mem_N t₂ (hχ _ h2) hp.2.2.2⟩, mul_zero]`. Simplify using `[h0, B.oneMinusDD]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_at_infinity_zero : BetaInfZero := by
   intro k r Wp Wq _ _ _ _ _ _ D F F' h
@@ -40,9 +40,9 @@ theorem beta_at_infinity_zero : BetaInfZero := by
   simp [h0, B.oneMinusDD]
 
 /- English proof (translation)
-Take `⟨hu, hai, hm⟩` from `PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r a ha`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ a : H →ₗ[ℂ] H), hσ.2.1 a ha⟩`. Establish `e : σ a (σ a⁻¹ w) = w`. Use `hσ.1.2 a ha _ hai` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hu), hσ.1.1]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg (fun T : H →L[ℂ] H => T w) this).symm`. Rewrite using `[hσ.1.2 _ (hm g hg) b hb, hσ.1.2 a ha g hg, ← L.inner_map_map (σ a⁻¹ w)]`. Use `show _ = ⟪σ a (σ a⁻¹ w), _⟫_ℂ`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inner_translate {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : B.Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (UH (Hpk k r)) σ) {a g b : B.Mat k r} (ha : a ∈ UH (Hpk k r))
@@ -60,15 +60,15 @@ theorem inner_translate {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProd
   rfl
 
 /- English proof (translation)
-Introduce `hE k r Wp Wq _ _ _ _ _ _ D ε μ μ' φ φ' T T' hφ hφ' hne p hp`. Take `⟨H, i1, i2, i3, σ, v, w, hμ, hσ, -, -, hφG⟩` from `hφ`. Take `⟨H', j1, j2, j3, σ', v', w', hμ', hσ', -, -, hφG'⟩` from `hφ'`. Establish `hR` using `isURepOn_of_ds hσ`. Establish `grp` using `PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : B.Mat k r := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ with ha'`. Use `set b : B.Mat k r := Matrix.of p.2.2 * Matrix.of p.2.1 with hb'`. Establish `ha : a ∈ UH (Hpk k r)` using `(grp _ (grp _ hp.1.1).2.1).2.2 _ (grp _ hp.2.1.1).2.1`. Establish `hb : b ∈ UH (Hpk k r)` using `(grp _ hp.2.2.2.1).2.2 _ hp.2.2.1.1`. Establish `hμG : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) D.μG` using `⟨P.B5.haar_sigmaFinite D.haarG, D.haarG.ne_zero, D.haarG.conc, D.haarG.left⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hz` using `(schur_inequiv hσ hσ' (capelli_inequivalence hE k r ε ε μ μ' H H' σ σ' hμ hμ' hσ hσ' hne) hμG (σ b v) (σ a⁻¹ w) v' w').2`. Use `set S : Wq →L[ℂ] Wp := (D.π (Matrix.of p.1.1)).comp (T.comp (D.π' (Matrix.of p.2.1)⁻¹))`. Unfold `B.Ph`. Rewrite using `[← zero_mul (B.hsInner S T'), ← hz, ← integral_mul_const]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hae : ∀ᵐ g ∂D.μG, Matrix.of g ∈ B.GV k r` using `D.haarG.conc`. Use `filter_upwards [hae] with g hg`. Establish `e1 : B.sgs p (Matrix.of g) = a * Matrix.of g * b`. Simplify using `only [B.sgs, ha', hb', Matrix.mul_assoc]`. Establish `hm : a * Matrix.of g * b ∈ UH (Hpk k r)` using `(grp _ ((grp _ ha).2.2 _ hg)).2.2 _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : B.rho D p (fun g => φ g • T) (Matrix.of g) = φ (a * Matrix.of g * b) • S`. Simplify using `only [B.rho, e1, S, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Rewrite using `[e2, P.B6.hsInner_smul_left, P.B6.hsInner_smul_right, hφG _ hm, hφG' _ hg, inner_translate hR ha hg hb, ← mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem phase_zero_alt : PhZero := by
   intro hE k r Wp Wq _ _ _ _ _ _ D ε μ μ' φ φ' T T' hφ hφ' hne p hp

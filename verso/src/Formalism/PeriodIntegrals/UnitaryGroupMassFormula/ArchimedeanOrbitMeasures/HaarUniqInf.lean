@@ -17,7 +17,7 @@ def sect {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (y : TupI X) : GI X 
   exact if h : ∃ g : GI X, orbM X u' g = y then h.choose else 1
 
 /- English proof (translation)
-Simplify using `only [sect, dif_pos hy]`. Conclude with `hy.choose_spec`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sect_spec {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (y : TupI X) (hy : ∃ g : GI X, orbM X u' g = y) :
     orbM X u' (sect X u' y) = y := by

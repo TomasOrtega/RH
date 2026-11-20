@@ -9,7 +9,7 @@ open scoped Classical
 namespace PositivityTheory.ThKF0
 
 /- English proof (translation)
-The claim follows from `thetaBasic_of weil_rep_rapid_decay_height`.
+A detailed English derivation is pending.
 -/
 theorem thetaBasic : GlobalTheory.ThK.ThetaBasic := thetaBasic_of weil_rep_rapid_decay_height
 

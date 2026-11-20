@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TargetStatementBis.target`. Consider the case `exact _root_.GlobalTheory.TargetStatementBis.target`. Consider the case `(apply _root_.GlobalTheory.TargetStatementBis.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TargetStatementBis.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TargetStatementBis.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TargetStatementBis.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem_of_span_eq_top {K V : Type} [Field K] [NumberField K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
@@ -30,9 +30,9 @@ theorem exists_ne_zero_smul_mem_of_span_eq_top {K V : Type} [Field K] [NumberFie
   | (intros; exact _root_.GlobalTheory.TargetStatementBis.target ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype`. Consider the case `exact _root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype`. Consider the case `(apply _root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmulMemComapLattice.isLattice_comap_subtype ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLattice_comap_subtype_ringOfIntegers {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]

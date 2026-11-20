@@ -10,7 +10,7 @@ namespace PI.PoleLengthCount
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Simplify using `only [PoleLengthBounds.wfr, coe_weightZeroFraction, frac_apply, pow_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_wfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (col : Fin G.N) :
     (PoleLengthBounds.wfr G la col : Lw X la G.w) =
@@ -18,16 +18,16 @@ theorem coe_wfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 
   simp only [PoleLengthBounds.wfr, coe_weightZeroFraction, frac_apply, pow_one]
 
 /- English proof (translation)
-Introduce `col` and use `⟨PoleLengthBounds.wfr G la col, coe_wfr G la col, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem uSpec_wfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) :
     uSpec G la (fun col => toOsK X la G.w (PoleLengthBounds.wfr G la col)) :=
   fun col => ⟨PoleLengthBounds.wfr G la col, coe_wfr G la col, rfl⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : ∀ col, ((algebraMap (Kp X la G.N) ↥(Frac0 X la G.w) (algebraMap (Op X la G.N) (Kp X la G.N) (Tv X la G.N ((0 : Fin (WeightFamilies.dimY D j + 1)), col))) * PoleLengthBounds.wfr G la col : ↥(Frac0 X la G.w)) : Lw X la G.w) = frac X la G.w 1 ((algebraMap (Op X la G.N) (Kp X la …`. Introduce `col`. Rewrite using `[LinearMap.map_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AddSubmonoidClass.coe_finsetSum, Finset.sum_congr rfl fun col _ => h col, ← map_sum]`. Use `show frac X la G.w 1 (sec X la G.w 0) = _`. Rewrite using `[frac_apply, pow_one, section_mul_inverse_eq_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_T_wfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) :
     ∑ col, algebraMap (Kp X la G.N) ↥(Frac0 X la G.w)
@@ -48,7 +48,7 @@ theorem sum_T_wfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-Use `congrArg (toOsK X la G.w) (sum_T_wfr G la)` as an intermediate fact. Rewrite `this` using `[map_one, map_sum]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -63,7 +63,7 @@ theorem sum_T_u (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun col => toOsK X la G.w (PoleLengthBounds.wfr G la col), uSpec_wfr G la, sum_T_u G la, hOrd⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitCols_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
     (hOrd : ∀ (ζ : PtsG G la) (col : Fin G.N), 0 ≤ ord (unifO X la G.N) ζ (toOsK X la G.w (PoleLengthBounds.wfr G la col))) :
@@ -71,7 +71,7 @@ theorem unitCols_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (�
   ⟨fun col => toOsK X la G.w (PoleLengthBounds.wfr G la col), uSpec_wfr G la, sum_T_u G la, hOrd⟩
 
 /- English proof (translation)
-The claim follows from `unitCols_of G la fun ζ col => (hCol G la Q S CRm T c hOk hw ζ).1 col`.
+A detailed English derivation is pending.
 -/
 theorem unitCols_of_column (hCol : PoleLengthBounds.Column) (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (Q : LocalPointData G la)
     (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ) (hOk : Q.Ok S CRm T c) (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) :

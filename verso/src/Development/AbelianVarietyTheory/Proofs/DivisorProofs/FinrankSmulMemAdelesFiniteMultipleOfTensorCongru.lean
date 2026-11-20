@@ -15,14 +15,14 @@ def trAF : AF F ⊗[F] E →ₗ[AF F] AF F :=
   (Algebra.TensorProduct.rid F (AF F) (AF F)).toLinearMap ∘ₗ (Algebra.trace F E).baseChange (AF F)
 
 /- English proof (translation)
-Simplify using `[trAF, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trAF_tmul (s : AF F) (e : E) :
     trAF (s ⊗ₜ[F] e) = algebraMap F (AF F) (Algebra.trace F E e) * s := by
   simp [trAF, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Use `show (s ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] (o : E)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_eq (s : AF F) (o : 𝓞 E) :
     algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o = s ⊗ₜ[F] (o : E) := by
@@ -30,14 +30,14 @@ theorem gen_eq (s : AF F) (o : 𝓞 E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ => zero_mem _, by rw [one_smul]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem intF_zero : (0 : AF F) ∈ intF F 1 := ⟨0, fun _ => zero_mem _, by rw [one_smul]; rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hx`. Take `⟨d, hd, e'⟩` from `hy`. Use `⟨c + d, fun v => add_mem (hc v) (hd v), ?_⟩` and prove the remaining obligations. Rewrite `e`, `e'`, the goal using `[one_smul]`. Use `show x.2 + y.2 = c + d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e']`.
+A detailed English derivation is pending.
 -/
 theorem intF_add {x y : AF F} (hx : x ∈ intF F 1) (hy : y ∈ intF F 1) : x + y ∈ intF F 1 := by
   obtain ⟨c, hc, e⟩ := hx
@@ -48,7 +48,7 @@ theorem intF_add {x y : AF F} (hx : x ∈ intF F 1) (hy : y ∈ intF F 1) : x + 
   rw [e, e']
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hx`. Use `⟨-c, fun v => neg_mem (hc v), ?_⟩` and prove the remaining obligations. Rewrite `e`, the goal using `[one_smul]`. Use `show -x.2 = -c`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intF_neg {x : AF F} (hx : x ∈ intF F 1) : -x ∈ intF F 1 := by
   obtain ⟨c, hc, e⟩ := hx
@@ -58,18 +58,16 @@ theorem intF_neg {x : AF F} (hx : x ∈ intF F 1) : -x ∈ intF F 1 := by
   rw [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨algebraMap F (Af F) (t : F), fun v => HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v t, by rw [one_smul]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem intF_algebraMap (t : 𝓞 F) : algebraMap F (AF F) (t : F) ∈ intF F 1 :=
   ⟨algebraMap F (Af F) (t : F), fun v => HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v t,
     by rw [one_smul]; rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨s, hs, o, rfl⟩` from `hg`. Rewrite using `[gen_eq, trAF_tmul]`. Establish `hi : IsIntegral ℤ (Algebra.trace F E (o : E))` using `Algebra.isIntegral_trace o.2`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `intF_one_mul (intF_algebraMap (⟨_, hi⟩ : 𝓞 F)) hs`. Consider the case `zero => rw [map_zero]`. Conclude with `intF_zero`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `intF_add ha hb`.
-
-Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `intF_neg ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trAF_mem_of_mem_SE {z : AF F ⊗[F] E} (hz : z ∈ SE F E) : trAF z ∈ intF F 1 := by
   induction hz using AddSubgroup.closure_induction with
@@ -83,7 +81,7 @@ theorem trAF_mem_of_mem_SE {z : AF F ⊗[F] E} (hz : z ∈ SE F E) : trAF z ∈ 
   | neg a _ ha => rw [map_neg]; exact intF_neg ha
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, trAF_tmul]`. Establish `h : Algebra.trace F E 1 = (Module.finrank F E : F)`. Simplify using `using Algebra.trace_algebraMap (R := F) (S := E) (1 : F)`. Rewrite using `[h, map_natCast, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem trAF_algebraMap (x : AF F) :
     trAF (algebraMap (AF F) (AF F ⊗[F] E) x) = Module.finrank F E • x := by
@@ -93,9 +91,9 @@ theorem trAF_algebraMap (x : AF F) :
   rw [h, map_natCast, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ N x h`. Take `⟨s, hs, e⟩` from `mem_CE.1 h`. Establish `h1` using `trAF_algebraMap (E := E) x`. Rewrite `h1` using `[← e, map_nsmul]`. Take `⟨c, hc, ec⟩` from `trAF_mem_of_mem_SE hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Rewrite `ec` using `[one_smul]`. Rewrite using `[← ec]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_smul_mem_intF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N : ℕ) (x : AF F),
     algebraMap (AF F) (AF F ⊗[F] E) x ∈ CE F E N → Module.finrank F E • x ∈ intF F N := by

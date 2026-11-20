@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HasComplement
 namespace GlobalTheory.UnitPerpObj
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.UnitVectorPerpCompare.unitVectorPerp_iff D).1 (GlobalTheory.UnitPerp.unitVectorPerp D)`.
+A detailed English derivation is pending.
 -/
 theorem unitVectorPerp (D : Formalism.BasicNotions.D7) : GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeComplements.UnitVectorPerp D :=
   (GlobalTheory.UnitVectorPerpCompare.unitVectorPerp_iff D).1 (GlobalTheory.UnitPerp.unitVectorPerp D)

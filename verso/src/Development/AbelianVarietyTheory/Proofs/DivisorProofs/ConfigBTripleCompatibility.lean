@@ -23,23 +23,21 @@ namespace GlobalTheory.ThK.StepBAn
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hs, A, hA⟩` from `h`. Set `e : (Fin r ⊕ Fin 0) ≃ Fin n` to `(Equiv.sumEmpty (Fin r) (Fin 0)).trans (finCongr (by omega))`. Use `set D : Matrix (Fin r ⊕ Fin 0) (Fin r ⊕ Fin 0) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hD`. Establish `hDD : D * D = 1`. Rewrite using `[hD, Matrix.fromBlocks_multiply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.fromBlocks_one]`. Establish `h1 : Aᵀ * (M * A.map star * D) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, hDD]`. Establish `h2 : (M * A.map star * D) * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).mp h1`. Establish `h3 : A * (M * A.map star * D)ᵀ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.transpose h2` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Use `set w := (M * A.map star * D)ᵀ *ᵥ y`. Establish `hyw : y = A *ᵥ w` using `by rw [Matrix.mulVec_mulVec, h3, Matrix.one_mulVec]`. Establish `hst : star (A *ᵥ w) = A.map star *ᵥ star w`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`. Establish `key : y ⬝ᵥ M *ᵥ star y = w ⬝ᵥ D *ᵥ star w`. Rewrite using `[← hA, hyw, hst, Matrix.dotProduct_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul]`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : w ⬝ᵥ D *ᵥ star w = 0` using `key.symm.trans hy`. Establish `hsum : ∑ i : Fin r, w (Sum.inl i) * star (w (Sum.inl i)) = 0`. Simplify using `[hD, dotProduct, Matrix.mulVec, Matrix.fromBlocks, Fintype.sum_sum_type] at h0`. Simplify `h0` using `[Matrix.one_apply]`. Establish `hz : ∀ i, w (Sum.inl i) = 0`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∑ i : Fin r, Complex.normSq (w (Sum.inl i)) = 0`. Establish `: ((∑ i : Fin r, Complex.normSq (w (Sum.inl i)) : ℝ) : ℂ) = 0`. Rewrite using `[← hsum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj]`. Conclude with `this` after adjusting the coercions. Introduce `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (w (Sum.inl j)))).mp hr i (Finset.mem_univ _)` as an intermediate fact. Conclude with `Complex.normSq_eq_zero.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w = 0`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `hz i`. Conclude with `i.elim0`.
-
-Rewrite using `[hyw, hw, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hasSig_pos_aniso {n r : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r 0) (y : Fin n → ℂ)
     (hy : y ⬝ᵥ M *ᵥ star y = 0) : y = 0 := by
@@ -83,13 +81,13 @@ theorem hasSig_pos_aniso {n r : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSi
   rw [hyw, hw, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Establish `hy : (fun i => τ (x i)) ⬝ᵥ (X.J.map τ) *ᵥ star (fun i => τ (x i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg τ hx` as an intermediate fact. Rewrite `this` using `[map_zero]`. Establish `hs : (star fun i => τ (x i)) = τ ∘ fun i => σ (x i)`. Use extensionality with `i`. Simplify using `[hcm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, hs, form, RingHom.map_dotProduct]`. Use `show (τ ∘ x) ⬝ᵥ _ = (τ ∘ x) ⬝ᵥ _`. Use `congr 1`. Use extensionality with `i`. Conclude with `(RingHom.map_mulVec τ X.J _ i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hasSig_pos_aniso (h.sig w) _ hy` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `τ.injective (by simpa using congrFun this i)`.
+A detailed English derivation is pending.
 -/
 theorem aniso_of_herm_pos {n r : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc F E n) (h : X.IsHerm σ B r 0) :
     ∀ x, form σ X.J x x = 0 → x = 0 := by
@@ -112,7 +110,7 @@ theorem aniso_of_herm_pos {n r : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc
   exact τ.injective (by simpa using congrFun this i)
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v h => h.1.trans h.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W)
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
@@ -129,9 +127,9 @@ namespace GlobalTheory.ThK.StepBAn
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `letI : MeasurableSpace Γ := ⊤`. Use `haveI : MeasurableSMul Γ N := { measurable_const_smul := fun γ => measurable_const_mul (γ : N) measurable_smul_const := fun _ => measurable_from_top }`. Establish `hs` using `Measure.isMulLeftInvariant_eq_smul μ μ₀`. Establish `hc : Measure.haarScalarFactor μ μ₀ ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₀).ne'`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ₀`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h𝓕.mono ?_` and prove the remaining obligations. Rewrite using `[hs]; exact Measure.absolutelyContinuous_smul (by exact_mod_cast hc)`. Establish `e1` using `h𝓕'.setIntegral_eq h𝓕₀ (fun γ x => hg γ γ.2 x)`. Use `conv_lhs => rw [hs]`. Rewrite using `[Measure.restrict_smul, integral_smul_nnreal_measure, e1, NNReal.smul_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_smul {N : Type} [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N]
     [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N] (Γ : Subgroup N) [Countable Γ]
@@ -153,7 +151,7 @@ theorem setIntegral_fd_smul {N : Type} [Group N] [TopologicalSpace N] [IsTopolog
   rw [Measure.restrict_smul, integral_smul_nnreal_measure, e1, NNReal.smul_def]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ J`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) (F := F) J`. Conclude with `⟨_, setIntegral_fd_smul (ratU σ J) g hg μ μ₀ 𝓕 𝓕₀ h𝓕 h𝓕₀⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_unitary {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (μ μ₀ : Measure (UA σ J)) [μ.IsHaarMeasure]
     [μ₀.IsHaarMeasure] (𝓕 𝓕₀ : Set (UA σ J)) (h𝓕 : IsFundamentalDomain (ratU σ J) 𝓕 μ)
@@ -169,21 +167,19 @@ end GlobalTheory.ThK.StepBAn
 open GlobalTheory.ThK.StepBAn in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ hp e he Φ hΦ hI`. Take `⟨p₁, q₁, V₁, V₁', W₁, M₁, M₁'⟩` from `G₁`. Take `rfl : V₁ = G.V` from `hC.eV`. Establish `hp₁ : p₁ = G.p` using `hC.ep`. Establish `hH' : H'.IsAdapted σ B G.W W₁ a (a + b + 1)` using `hC.hH'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `(Check.isPair_of_isTriple hT).1`. Establish `hP₁` using `(Check.isPair_of_isTriple hT₁).1`. Simplify using `only at hP₁`. Rewrite `hP₁` using `[hp₁]`. Establish `hΦs : Φ ∈ schA F _` using `polData_le_schA B G.M hT.geo.hM hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hV` using `hT.geo.hV`. Rewrite `hV` using `[hp, Nat.sub_zero]`. Establish `han` using `aniso_of_herm_pos B hT.base G.V hV`. Take `⟨C₀, hC₀, h1, -⟩` from `GlobalTheory.T.adapted_plane_evaluation_constant hKP F E σ B a (a + (b + 2)) (a + b) G.V G.W W₁ G.M M₁ H' a (a + b + 1) hH' hT₁.geo.hM e he`. Establish `hct : ∀ g, IsCT H' (theta om Φ g) (fun h => C₀ * thetaSum F (e (om (g, h) Φ)))` using `fun g => h1 han _ _ _ _ _ _ _ hP Φ hΦs g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfub` using `GlobalTheory.T.config_b_constant_term_theta_lift hKP F E σ B a b G ⟨p₁, q₁, G.V, V₁', W₁, M₁, M₁'⟩ H H' hC X om om' hT Φ hΦ _ hct`. Use function extensionality and compare the values at `h₁`. Take `⟨m, hm⟩` from `exists_isLevi_unitary_smaller F E σ B _ _ G.W W₁ H' a (a + b + 1) _ _ _ _ hT.base hT.geo.hW hT₁.geo.hW hH' h₁`. Take `⟨μ, 𝓕, hμ, h𝓕, hμ1⟩` from `GlobalTheory.T.triple_adapted_plane_theta_integral F E σ B a (b + 2) G X om om' hT (a + b) W₁ H' a (a + b + 1) hH'`. Establish `k` using `hfub μ 𝓕 hμ h𝓕 hμ1 m`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hI, Pi.zero_apply, integral_zero] at k`. Establish `hlaw : ∀ g, e (om (g, m) Φ) = om₁ (g, h₁) (e Φ)`. Introduce `g`. Use `GlobalTheory.T.adapted_plane_second_variable hKP.base F E σ B a (a + (b + 2)) G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (a + b) W₁ H' a (a + b + 1) M₁ om₁ _ _ hH' hP₁ e he g 1 h₁ m hm 1 (one_mem _) Φ hΦs` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hlaw, integral_const_mul] at k`. Establish `k2 : ∫ g in G.M.dom, theta om₁ (e Φ) g h₁ ∂G.M.μ = 0`. Break down `mul_eq_zero.1 k with h | h` into its components or cases. Conclude with `absurd h hC₀`. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hinv, -⟩` from `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B a (a + b) G.V W₁ M₁ X.β (X.β / X.α) om₁ _ _ _ _ hP₁).1 (e Φ) (he.maps Φ hΦs)`. Use `haveI := hT.geo.hM.haar`. Use `haveI := hT₁.geo.hM.haar`. Use `show ∫ g in M₁.dom, theta om₁ (e Φ) g h₁ ∂M₁.μ = 0`. Take `⟨c, hc⟩` from `setIntegral_fd_unitary G.V.J M₁.μ G.M.μ M₁.dom G.M.dom hT₁.geo.hM.dom hT.geo.hM.dom (fun g => theta om₁ (e Φ) g h₁) (fun γ hγ x => by simpa using hinv γ hγ 1 (one_mem _) x h₁)`.
-
-Rewrite using `[hc, k2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.stepB_anisotropic : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)) (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

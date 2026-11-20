@@ -6,27 +6,23 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`. Introduce `S _ hS`. Use `⟨Fin.elim0, fun f hf _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbot : S = ⊥` using `Subgroup.eq_bot_of_card_le S (by simpa using hS)`. Rewrite `hf` using `[hbot, Subgroup.mem_bot]`. Conclude with `hf`. Consider the case `succ h ih`. Introduce `S hfin hS`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `htriv : ∀ f ∈ S, f = 1`. Conclude with `⟨fun _ => 1, fun f hf _ => htriv f hf⟩`. Use `push_neg at htriv`. Take `⟨f₀, hf₀, hne⟩` from `htriv`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, f₀ g ≠ 1 := by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (MonoidHom.ext hc)`. Set `ev : S →* Multiplicative (ZMod l)` to `{ toFun := fun f => (f : G →* Multiplicative (ZMod l)) g map_one' := rfl map_mul' := fun _ _ => rfl }`. Establish `hrange : Nat.card ev.range = l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hdvd : Nat.card ev.range ∣ l`. Use `Subgroup.card_subgroup_dvd_card ev.range` as an intermediate fact. Simplify `this` using `[Nat.card_zmod]`. Break down `(Nat.dvd_prime hl.out).mp hdvd with h1 | h1` into its components or cases. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbot : ev.range = ⊥` using `Subgroup.eq_bot_of_card_eq _ h1`. Establish `hmem : ev ⟨f₀, hf₀⟩ ∈ ev.range` using `⟨_, rfl⟩`. Rewrite `hmem` using `[hbot, Subgroup.mem_bot]`. Conclude with `hg hmem`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcardS : Nat.card ev.ker * l = Nat.card S`. Use `Subgroup.card_mul_index ev.ker` as an intermediate fact. Rewrite `this` using `[Subgroup.index_ker, hrange]`. Conclude with `this`. Set `S' : Subgroup (G →* Multiplicative (ZMod l))` to `ev.ker.map S.subtype`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS' : Nat.card S' = Nat.card ev.ker` using `Subgroup.card_map_of_injective S.subtype_injective`. Establish `hfin' : Finite S'` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[hS']`. Introduce `h0`. Establish `: Nat.card S = 0` using `by rw [← hcardS, h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Nat.card_pos (α := S)).ne' this)`. Establish `hle : Nat.card S' ≤ l ^ h`. Rewrite using `[hS']`. Establish `hlpos : 0 < l` using `hl.out.pos`. Establish `: Nat.card ev.ker * l ≤ l ^ h * l`.
-
-Rewrite using `[hcardS, ← pow_succ]`. Conclude with `hS`. Conclude with `Nat.le_of_mul_le_mul_right this hlpos`. Take `⟨x', hx'⟩` from `ih S' hfin' hle`. Use `⟨Fin.cons g x', fun f hf hall => ?_⟩` and prove the remaining obligations.
-
-Establish `hfg : f g = 1` using `by simpa using hall 0`. Establish `hmem : f ∈ S'` using `⟨⟨f, hf⟩, hfg, rfl⟩`. Conclude with `hx' f hmem fun i => by simpa using hall i.succ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem count_step (l : ℕ) [hl : Fact l.Prime] (G : Type) [Group G] :
     ∀ (h : ℕ) (S : Subgroup (G →* Multiplicative (ZMod l))), Finite S → Nat.card S ≤ l ^ h →
@@ -89,31 +85,25 @@ private theorem count_step (l : ℕ) [hl : Fact l.Prime] (G : Type) [Group G] :
     exact hx' f hmem fun i => by simpa using hall i.succ
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ _ _ hpro`. Establish `partA : ∀ s : Set G, (∀ f : G →* Multiplicative (ZMod l), IsOpen (f.ker : Set G) → (∀ g ∈ s, f g = 1) → f = 1) → TopGen s`. Introduce `s hs`. Set `H` to `(Subgroup.closure s).topologicalClosure`. Establish `hHc : IsClosed (H : Set G)` using `Subgroup.isClosed_topologicalClosure _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show Dense (Subgroup.closure s : Set G)`. Rewrite using `[dense_iff_closure_eq, Set.eq_univ_iff_forall]`. Introduce `g`. Assume the negation of the conclusion as `hg`. Establish `hg' : g ∉ (H : Set G)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.topologicalClosure_coe]`. Conclude with `hg`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (U := (fun n => g * n) ⁻¹' (H : Set G)ᶜ) (hHc.isOpen_compl.preimage (continuous_const_mul g)) (by simp only [Set.mem_preimage, Set.mem_compl_iff, mul_one]; exact hg')`. Set `Ns : Subgroup G` to `N.toOpenSubgroup`. Use `haveI : Ns.Normal := N.isNormal'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite (G ⧸ Ns) := Subgroup.quotient_finite_of_isOpen _ N.isOpen'`. Set `K` to `H.map (QuotientGroup.mk' Ns)`. Establish `hK : K = ⊤`. Use `UpperTheory.V.CF.burnsideHom l (G ⧸ Ns) (hpro N) K (fun f hf => ?_)` and prove the remaining obligations. Set `F` to `f.comp (QuotientGroup.mk' Ns)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hFo : IsOpen (F.ker : Set G)`. Use `Subgroup.isOpen_mono (H₁ := Ns) (fun x hx => ?_) N.isOpen'` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `[F, (QuotientGroup.eq_one_iff x).mpr hx]`. Establish `hF : F = 1` using `hs F hFo (fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hxH : x ∈ H` using `Subgroup.le_topologicalClosure _ (Subgroup.subset_closure hx)`. Conclude with `hf ⟨x, hxH, rfl⟩)`. Use extensionality with `q`. Simplify `DFunLike.congr_fun hF q` using `[F]`. Establish `hgK : (QuotientGroup.mk' Ns g) ∈ K`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK]`. Conclude with `Subgroup.mem_top _`. Take `⟨y, hyH, hy⟩` from `hgK`. Establish `hyg : y⁻¹ * g ∈ Ns` using `QuotientGroup.eq.mp hy`. Establish `hn : g⁻¹ * y ∈ Ns`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `Ns.inv_mem hyg` as an intermediate fact. Simplify using `using this`. Establish `hU` using `hN hn`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, mul_inv_cancel_left] at hU`. Conclude with `hU hyH`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨partA, fun h hfin hcard => ?_⟩` and prove the remaining obligations. Set `S : Subgroup (G →* Multiplicative (ZMod l))` to `{ carrier := {f | IsOpen (f.ker : Set G)} one_mem' := by show IsOpen ((1 : G →* Multiplicative (ZMod l)).ker : Set G)`. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`. Use the proof step `mul_mem' := fun {a b} ha hb => by show IsOpen ((a * b).ker : Set G)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_mono (H₁ := a.ker ⊓ b.ker) (fun x hx => ?_) ?_` and prove the remaining obligations. Rewrite `hx` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, hx.1, hx.2, one_mul]`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `IsOpen.inter ha hb`.
-
-Use the proof step `inv_mem' := fun {a} ha => by show IsOpen ((a⁻¹).ker : Set G)`. Establish `: (a⁻¹).ker = a.ker`. Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[this]`.
-
-Conclude with `ha }`. Use `haveI : Finite S := hfin.to_subtype`. Establish `hle : Nat.card S ≤ l ^ h`. Establish `: Nat.card S = {f : G →* Multiplicative (ZMod l) | IsOpen (f.ker : Set G)}.ncard` using `Nat.card_coe_set_eq _`. Rewrite using `[this]`.
-
-Conclude with `hcard`. Take `⟨x, hx⟩` from `count_step l G h S inferInstance hle`. Conclude with `⟨x, partA _ fun f hf hv => hx f hf fun i => hv _ ⟨i, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.topGen_of_hom :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G], IsProL l G →

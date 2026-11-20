@@ -4,19 +4,17 @@ open UpperTheory.ConvolutionTheory.RankTwoDescent
 open Filter Topology
 
 /- English proof (translation)
-Use `choose r H m hr hH hm hne hA using h`. Establish `hopen : ∀ ρ : ℝ, IsOpen {z : ℂ | ρ < z.re}` using `fun ρ => isOpen_lt continuous_const Complex.continuous_re`. Establish `key : ∀ a b s : ℂ, r a < s.re → r b < s.re → H a s * m b s = H b s * m a s`. Introduce `a b s ha hb`. Establish `hUc : IsPreconnected {z : ℂ | max (r a) (r b) < z.re}` using `(convex_halfSpace_re_gt (max (r a) (r b))).isPreconnected`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsa : {z : ℂ | max (r a) (r b) < z.re} ⊆ {z | r a < z.re}` using `fun z hz => show r a < z.re from lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hsb : {z : ℂ | max (r a) (r b) < z.re} ⊆ {z | r b < z.re}` using `fun z hz => show r b < z.re from lt_of_le_of_lt (le_max_right _ _) hz`. Establish `d1 : DifferentiableOn ℂ (fun z => H a z * m b z) {z : ℂ | max (r a) (r b) < z.re}` using `((hH a).mono hsa).mul ((hm b).mono hsb)`. Establish `d2 : DifferentiableOn ℂ (fun z => H b z * m a z) {z : ℂ | max (r a) (r b) < z.re}` using `((hH b).mono hsb).mul ((hm a).mono hsa)`. Establish `hz₀ : ((max (max (r a) (r b)) 4 + 1 : ℝ) : ℂ) ∈ {z : ℂ | max (r a) (r b) < z.re}` using `by show max (r a) (r b) < (((max (max (r a) (r b)) 4 + 1 : ℝ) : ℂ)).re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_re]`. Combine the linear relations using `[le_max_left (max (r a) (r b)) 4]`. Establish `h4 : ((max (max (r a) (r b)) 4 + 1 : ℝ) : ℂ) ∈ {z : ℂ | (4 : ℝ) < z.re}` using `by show (4 : ℝ) < (((max (max (r a) (r b)) 4 + 1 : ℝ) : ℂ)).re`. Rewrite using `[Complex.ofReal_re]`. Combine the linear relations using `[le_max_right (max (r a) (r b)) 4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hev : (fun z => H a z * m b z) =ᶠ[𝓝 ((max (max (r a) (r b)) 4 + 1 : ℝ) : ℂ)] fun z => H b z * m a z` using `by filter_upwards [(hopen 4).mem_nhds h4] with z hz`. Rewrite using `[hA a z hz, hA b z hz]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(d1.analyticOnNhd (hopen _)).eqOn_of_preconnected_of_eventuallyEq (d2.analyticOnNhd (hopen _)) hUc hz₀ hev (show max (r a) (r b) < s.re from max_lt ha hb)`. Use `⟨fun s => H s s / m s s, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s₀`. Establish `hU : {z : ℂ | r s₀ < z.re} ∈ 𝓝 s₀` using `(hopen _).mem_nhds (hr s₀)`. Establish `hdH : DifferentiableAt ℂ (H s₀) s₀` using `(hH s₀).differentiableAt hU`. Establish `hdm : DifferentiableAt ℂ (m s₀) s₀` using `(hm s₀).differentiableAt hU`. Establish `hne' : ∀ᶠ z in 𝓝 s₀, m s₀ z ≠ 0` using `hdm.continuousAt.eventually_ne (hne s₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (fun s => H s s / m s s) =ᶠ[𝓝 s₀] fun z => H s₀ z / m s₀ z` using `by filter_upwards [hU, hne'] with z hz hz'`. Rewrite using `[div_eq_div_iff (hne z) hz']`. Conclude with `(key s₀ z z hz (hr z)).symm`. Conclude with `heq.differentiableAt_iff.mpr (hdH.div hdm (hne s₀))`. Introduce `s hs show H s s / m s s = A s`.
-
-Rewrite using `[hA s s hs, mul_div_assoc, div_self (hne s), mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem glue_aux (A : ℂ → ℂ)
     (h : ∀ s₀ : ℂ, ∃ (r : ℝ) (H m : ℂ → ℂ), r < s₀.re ∧
@@ -69,23 +67,23 @@ private theorem glue_aux (A : ℂ → ℂ)
     rw [hA s s hs, mul_div_assoc, div_self (hne s), mul_one]
 
 /- English proof (translation)
-Introduce `hTr hPer hEnt hUnf hPhi hFac hSh hHol hNZ`. Introduce `E _ _ _ D P ω χ hC hU hχ M U hNo L N φ hCh hG hW a ha hsum`. Establish `hA` using `hTr E D P ω χ hC hU hχ`. Establish `hPz` using `hPer E D P ω χ hC hU hχ hA M U hNo`. Take `⟨c₁, hc₁, hZ⟩` from `hUnf E D P ω χ hC hU hχ M U`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, hc₂, hF⟩` from `hFac E D P ω χ hC hU hχ M L N hCh`. Establish `hN` using `hG.pos`. Establish `hπ0 : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Use `glue_aux (LSeries a) ?_` and prove the remaining obligations. Introduce `s₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `exists_nat_gt (1 - s₀.re)`. Establish `hk' : 1 - (k : ℝ) < s₀.re` using `by linarith`. Take `⟨φ', e, p, hG', hp, hne⟩` from `hNZ E D P ω χ hC hU hχ hA L N φ hG hW k s₀ hk'`. Take `⟨n, f, q, hfq, hsumM⟩` from `hSh E D P ω χ hC hU hχ L N k φ' e p hG' hp`. Establish `hAf : ∀ i, admitted D ω (f i)` using `fun i => hA _ (hfq i).1.mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdZ : Differentiable ℂ fun s => ∑ i, Zs M U χ (f i) (PhiN N (q i)) s` using `Differentiable.fun_sum fun i _ => hEnt E D P ω χ hC hU hχ M U (f i) (hAf i) (hPz _ (hfq i).1.mem) _ (hPhi N (q i) hN)`. Establish `hdP : Differentiable ℂ fun s : ℂ => (Real.pi : ℂ) ^ (s + ((e + k : ℕ) : ℂ))` using `(differentiable_id.add_const _).const_cpow (Or.inl hπ0)`. Establish `hdG : Differentiable ℂ fun s : ℂ => (Complex.Gamma (s + ((e + k : ℕ) : ℂ)))⁻¹` using `Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)`. Establish `hdH : Differentiable ℂ fun s : ℂ => (c₁ * c₂)⁻¹ * ((Real.pi : ℂ) ^ (s + ((e + k : ℕ) : ℂ)) * ((Complex.Gamma (s + ((e + k : ℕ) : ℂ)))⁻¹)) * ∑ i, Zs M U χ (f i) (PhiN N (q i)) s` using `((differentiable_const _).mul (hdP.mul hdG)).mul hdZ`. Use `⟨1 - k, _, Mk D χ k φ' p, hk', hdH.differentiableOn, hHol E D P ω χ hC hU hχ k φ' p (hA _ hG'.mem), hne, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Establish `h1 : ∀ i, Zs M U χ (f i) (PhiN N (q i)) s = c₁ * (c₂ * ((Real.pi : ℂ) ^ (-(s + ((e + k : ℕ) : ℂ))) * Complex.Gamma (s + ((e + k : ℕ) : ℂ))) * LSeries a s * Mk D χ 0 (f i) (q i) s)` using `fun i => by`. Rewrite using `[hZ (f i) (hAf i) _ (hPhi N (q i) hN) s hs, hF (f i) (hAf i) (hfq i).1 a ha (e + k) (q i) (hfq i).2 s hs (hsum s hs)]`. Establish `hsM` using `hsumM s hs`. Simplify using `only [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, ← hsM]`. Establish `hre : 0 < (s + ((e + k : ℕ) : ℂ)).re`. Rewrite using `[Complex.add_re, Complex.natCast_re]`. Establish `: (0 : ℝ) ≤ ((e + k : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hΓ` using `Complex.Gamma_ne_zero_of_re_pos hre`. Establish `hXY : (Real.pi : ℂ) ^ (s + ((e + k : ℕ) : ℂ)) * (Real.pi : ℂ) ^ (-(s + ((e + k : ℕ) : ℂ))) = 1`. Rewrite using `[← Complex.cpow_add _ _ hπ0, add_neg_cancel, Complex.cpow_zero]`. Establish `hc : c₁ * c₂ ≠ 0` using `mul_ne_zero hc₁ hc₂`. Generalize the expression as in `(Real.pi : ℂ) ^ (s + ((e + k : ℕ) : ℂ)) = X at hXY ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Real.pi : ℂ) ^ (-(s + ((e + k : ℕ) : ℂ))) = Y at hXY ⊢`. Generalize the expression as in `Complex.Gamma (s + ((e + k : ℕ) : ℂ)) = G at hΓ ⊢`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = LSeries a s * Mk D χ k φ' p s := by`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXY, inv_mul_cancel₀ hc, inv_mul_cancel₀ hΓ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.ext_of :
     TrAdm → PerTr → Ent → Unf → PhiMem → Fac → ShiftM → Hol → NonZ → Ext := by

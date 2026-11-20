@@ -21,7 +21,7 @@ noncomputable section
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChiGrid.rankV_add_lt_two_e_add_two_cen` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChiGridVertexRankAddLtTwoExponentAddCentre.lean&line=22#L22)
 -/

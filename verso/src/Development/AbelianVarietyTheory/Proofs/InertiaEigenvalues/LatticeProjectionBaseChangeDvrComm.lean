@@ -7,39 +7,35 @@ open Formalism.BasicNotions Formalism.L2 NumberField IsDedekindDomain Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hli _ A U U' hUU'`. Use `set F := FractionRing O`. Set `p : V →ₗ[K] V` to `U.subtype ∘ₗ U.projectionOnto U' hUU'`. Establish `hpU : ∀ u ∈ U, p u = u` using `fun u hu => by`. Establish `h` using `Submodule.projectionOnto_apply_left hUU' ⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((U.projectionOnto U' hUU') ((⟨u, hu⟩ : U) : V) : V) = u`. Rewrite using `[h]`. Establish `hpU' : ∀ u ∈ U', p u = 0` using `fun u hu => by`. Establish `h` using `Submodule.projectionOnto_apply_right hUU' ⟨u, hu⟩`. Use `show ((U.projectionOnto U' hUU') ((⟨u, hu⟩ : U') : V) : V) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hpmem : ∀ v, p v ∈ U` using `fun v => by simp [p]`. Establish `hdec : ∀ v, ∃ u ∈ U, ∃ u' ∈ U', u + u' = v` using `fun v => by`. Establish `: v ∈ U ⊔ U'` using `by rw [hUU'.sup_eq_top]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_sup.mp this`. Establish `hpdiff : ∀ v, p v - v ∈ U'` using `fun v => by`. Take `⟨u, hu, u', hu', rfl⟩` from `hdec v`. Rewrite using `[map_add, hpU u hu, hpU' u' hu', add_zero]`. Simplify using `using U'.neg_mem hu'`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `W : Submodule F V'` to `Submodule.span F (Set.range fun a => iV (b a))`. Set `f : W →ₗ[F] V'` to `(Basis.span hli).constr F (fun a => iV (p (b a)))`. Take `⟨q, hq⟩` from `LinearMap.exists_extend f`. Establish `hqi : ∀ v, q (iV v) = iV (p v)`. Establish `: (q.comp iV : V →ₛₗ[e] V') = iV.comp p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `b.ext fun a => ?_` and prove the remaining obligations. Establish `hmem : iV (b a) ∈ W` using `Submodule.subset_span ⟨a, rfl⟩`. Establish `h1 : q (iV (b a)) = f ⟨iV (b a), hmem⟩`. Rewrite using `[← hq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (⟨iV (b a), hmem⟩ : W) = Basis.span hli a`. Rewrite using `[Basis.span_apply]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, h2, Basis.constr_basis]`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `congrArg (fun g => g v) this`. Establish `hqU : ∀ x ∈ Submodule.span F (iV '' (U : Set V)), q x = x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨u, hu, rfl⟩` from `hy`. Rewrite using `[hqi, hpU u hu]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hqU' : ∀ x ∈ Submodule.span F (iV '' (U' : Set V)), q x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, hu, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hqi, hpU' u hu, map_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_inf, Submodule.restrictScalars_mem] at hw`. Take `⟨hwU, hwA⟩` from `hw`. Take `⟨a, ha, u', hu', rfl⟩` from `Submodule.mem_sup.mp hwA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, hwU, rfl⟩`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (Submodule.subset_span ⟨a, ha, rfl⟩) ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨u', hu', rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨hxU, hxs⟩` from `Submodule.mem_inf.mp hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hxs`. Establish `hxq : q (y + z) = y + z` using `hqU _ hxU`. Rewrite `hxq` using `[map_add, hqU' z hz, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hxq]`. Establish `hmap : q y ∈ Submodule.map (q.restrictScalars O) (Submodule.span O (iV '' (A : Set V)))` using `⟨y, hy, rfl⟩`. Rewrite `hmap` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
-
-Use `⟨p a, ?_, (hqi a).symm⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Use `⟨hpmem a, ?_⟩` and prove the remaining obligations. Establish `: p a = a + (p a - a)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `Submodule.add_mem_sup ha (hpdiff a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projection_span_extend_scalars
     (K : Type) [Field K] [NumberField K] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

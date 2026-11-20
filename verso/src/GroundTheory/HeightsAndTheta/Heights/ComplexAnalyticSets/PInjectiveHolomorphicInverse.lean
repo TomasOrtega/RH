@@ -11,9 +11,9 @@ open Filter Topology
 namespace InjectiveHolomorphicInverse
 
 /- English proof (translation)
-Use `AnalyticAt.pi fun i => ?_` and prove the remaining obligations. Use `analyticOnNhd_of_continuousOn_of_separately hU ((continuous_apply i).comp_continuousOn hf.continuousOn) (fun z hz j => ?_) x hx` and prove the remaining obligations. Establish `hfz : DifferentiableAt ℂ (fun w => f w i) z` using `differentiableAt_pi.mp (hf.differentiableAt (hU.mem_nhds hz)) i`. Establish `hu : DifferentiableAt ℂ (Function.update z j) (z j)` using `(hasFDerivAt_update z (z j)).differentiableAt`. Establish `hfz' : DifferentiableAt ℂ (fun w => f w i) (Function.update z j (z j))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_eq_self]` and apply the resulting hypothesis. Conclude with `hfz'.comp (z j) hu`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem analyticAt_of_differentiableOn {k : ℕ} {U : Set (Fin k → ℂ)} {f : (Fin k → ℂ) → Fin k → ℂ}
     (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) {x : Fin k → ℂ} (hx : x ∈ U) : AnalyticAt ℂ f x := by
@@ -29,9 +29,9 @@ theorem analyticAt_of_differentiableOn {k : ℕ} {U : Set (Fin k → ℂ)} {f : 
   exact hfz'.comp (z j) hu
 
 /- English proof (translation)
-Establish `hdet` using `hJ k U f hU hf hinj x hx`. Use `⟨(LinearMap.equivOfDetNeZero _ hdet).toContinuousLinearEquiv, ?_⟩` and prove the remaining obligations. Establish `he : ((LinearMap.equivOfDetNeZero _ hdet).toContinuousLinearEquiv : (Fin k → ℂ) →L[ℂ] Fin k → ℂ) = fderiv ℂ f x` using `by ext1 v`. Both sides reduce to the same expression. Rewrite using `[he]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(analyticAt_of_differentiableOn hU hf hx).hasStrictFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv (hJ : InjectiveHolomorphicJacobianNeZero.Statement) {k : ℕ} {U : Set (Fin k → ℂ)}
     {f : (Fin k → ℂ) → Fin k → ℂ} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) (hinj : Set.InjOn f U)
@@ -47,11 +47,11 @@ theorem exists_equiv (hJ : InjectiveHolomorphicJacobianNeZero.Statement) {k : �
   exact (analyticAt_of_differentiableOn hU hf hx).hasStrictFDerivAt
 
 /- English proof (translation)
-Introduce `k U f hU hf hinj`. Establish `hleft : ∀ z ∈ U, Function.invFunOn f U (f z) = z` using `fun z hz => hinj (Function.invFunOn_mem ⟨z, hz, rfl⟩) hz (Function.invFunOn_eq ⟨z, hz, rfl⟩)`. Use `⟨?_, Function.invFunOn f U, ?_, hleft⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨e, he⟩` from `exists_equiv hJ hU hf hinj hx`. Rewrite using `[← he.map_nhds_eq_of_equiv]`. Conclude with `Filter.image_mem_map (hU.mem_nhds hx)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨e, he⟩` from `exists_equiv hJ hU hf hinj hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(he.to_local_left_inverse ?_).differentiableAt.differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hx] with z hz`. Conclude with `hleft z hz`.
+A detailed English derivation is pending.
 -/
 theorem proof (hJ : InjectiveHolomorphicJacobianNeZero.Statement) : InjectiveHolomorphicInverse.Statement := by
   intro k U f hU hf hinj

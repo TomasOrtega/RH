@@ -10,7 +10,7 @@ private def cpZeroPol {Λ A : Type} [CommRing Λ] [CommRing A] [Algebra Λ A] (�
   neg_mem' := fun {p} hp n => by rw [coeff_neg]; exact neg_mem (hp n)
 
 /- English proof (translation)
-Introduce `n` and use `by rw [coeff_one] split_ifs · exact SetLike.one_mem_graded 𝒜 · exact zero_mem _ mul_mem := fun i j p q hp hq n => by rw [coeff_mul] exact Submodule.sum_mem _ fun x _ => SetLike.mul_mem_graded (hp x.1) (hq x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cpZeroPol_graded {Λ A : Type} [CommRing Λ] [CommRing A] [Algebra Λ A] (𝒜 : ℤ × ℤ → Submodule Λ A)
     [SetLike.GradedMonoid 𝒜] : SetLike.GradedMonoid (cpZeroPol 𝒜) where
@@ -24,21 +24,17 @@ private theorem cpZeroPol_graded {Λ A : Type} [CommRing Λ] [CommRing A] [Algeb
     exact Submodule.sum_mem _ fun x _ => SetLike.mul_mem_graded (hp x.1) (hq x.2)
 
 /- English proof (translation)
-Introduce `Λ A _ _ _ 𝒜 _ M hM`. Use `haveI := cpZeroPol_graded 𝒜`. Establish `hC : ∀ i j, C (M i j) ∈ cpZeroPol 𝒜 (wt i j)` using `fun i j n => by`. Rewrite using `[coeff_C]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM i j`. Conclude with `zero_mem _`. Establish `hX : (X : A[X]) ∈ cpZeroPol 𝒜 0` using `fun n => by`. Rewrite using `[coeff_X]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SetLike.one_mem_graded 𝒜`. Conclude with `zero_mem _`. Establish `hE : ∀ i j, M.charmatrix i j ∈ cpZeroPol 𝒜 (wt i j)`. Introduce `i j`. Distinguish the cases in `h : i = j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.charmatrix_apply_eq]`. Use `sub_mem ?_ (hC i i)` and prove the remaining obligations. Establish `: wt i i = 0` using `by simp [wt]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hX`. Rewrite using `[Matrix.charmatrix_apply_ne _ _ _ h]`. Conclude with `neg_mem (hC i j)`. Establish `key : M.charpoly ∈ cpZeroPol 𝒜 0`. Rewrite using `[Matrix.charpoly, Matrix.det_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `AddSubgroup.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `h0 : ∑ i, wt (σ i) i = 0`. Establish `h1` using `Equiv.sum_comp σ lamW`. Establish `h2` using `Equiv.sum_comp σ muW`. Use `ext`.
-
-Simplify using `only [wt, Prod.fst_sum, Finset.sum_sub_distrib, h1, sub_self, Prod.fst_zero]`. Simplify using `only [wt, Prod.snd_sum, Finset.sum_sub_distrib, h2, sub_self, Prod.snd_zero]`. Establish `hp : ∏ i, M.charmatrix (σ i) i ∈ cpZeroPol 𝒜 (∑ i, wt (σ i) i)` using `SetLike.prod_mem_graded (cpZeroPol 𝒜) (fun i => wt (σ i) i) (fun i => M.charmatrix (σ i) i) fun i _ => hE (σ i) i`. Rewrite `hp` using `[h0]`. Rewrite using `[Units.smul_def]`.
-
-Conclude with `AddSubgroup.zsmul_mem _ hp _`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxCpZero :
     ∀ {Λ A : Type} [CommRing Λ] [CommRing A] [Algebra Λ A] (𝒜 : ℤ × ℤ → Submodule Λ A) [SetLike.GradedMonoid 𝒜] (M : M4 A), (∀ i j, M i j ∈ 𝒜 (wt i j)) → ∀ n, M.charpoly.coeff n ∈ 𝒜 0 := by

@@ -32,9 +32,7 @@ def PointEvaluationSide : BdP _root_.GlobalTheory.Fc.BundleCondition := fun D O 
       (∀ u, Real.log (((D.mem u).A.T : ℕ) : ℝ) ≤ CT * D.R.m * O.L.sc.L) →
       GlobalTheory.ColRows.KerSizes b.R.T.ker W b.DH.1.1 b.DH.1.2 CY CT
 /- English proof (translation)
-Establish `hk` using `b.C.kerTie`. Establish `e : Formalism.L2.Col.Wts _ b.C.c.Pr.Word b.C.c.Rk = Formalism.L2.Col.Wts b.R.T.ker.X b.R.T.ker.Pr.Word (q.w.D q.Z).R` using `wts_eq hk.1.symm hk.2.2.1 hk.2.1`. Establish `hW : HEq (cast e b.C.c.W) q.B.wts` using `(cast_heq e _).trans w.cW.1`. Use `⟨⟨q.x.real, GlobalTheory.T.exists_symmetricColumnForms_stepZeroFiniteCharacter q.w.I q.w.ok q.w.pins q.w.l q.Z⟩, w.colPins, cast e b.C.c.W, (cast_heq e _).symm, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.kernelCompatibilities_standardKernelData_trueColumns q.w.I q.w.ok q.w.pins q.w.l q.Z _ _ _ _ _ _ _ q.O.ex b.R.T.ker _ _ _ q.x.pin.jets w.recPin.k.std hW b.DH.2.1 b.DH.2.2 (b.R.T.ker_sharp _)`.
-
-Conclude with `GlobalTheory.ColRows.kerSizes_of_stdKer q.w.I q.w.ok q.w.pins q.w.l q.Z _ _ _ _ _ _ _ q.O.ex b.R.T.ker _ _ _ w.recPin.k.std hW b.DH.2.1 b.DH.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointEvaluationSide_of_bWit {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide _ _ c b := by
@@ -48,16 +46,16 @@ theorem pointEvaluationSide_of_bWit {hL : _root_.UpperTheory.Zero.LLC.RecTExists
   · exact GlobalTheory.ColRows.kerSizes_of_stdKer q.w.I q.w.ok q.w.pins q.w.l q.Z _ _ _ _ _ _ _ q.O.ex b.R.T.ker _ _ _ w.recPin.k.std hW
       b.DH.2.1 b.DH.2.2
 /- English proof (translation)
-Take `⟨q, b', ⟨w⟩, e⟩` from `h`. Conclude with `Eq.mpr (congrArg (fun y : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide y.1 y.2.1 c y.2.2) e) (_root_.GlobalTheory.Fc.RL.DefSide.pointEvaluationSide_of_bWit q b' w)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pointEvaluationSide_of_isLinked {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (β : BPt K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition β.D β.O c)
     (h : _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p K β c b) : _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide _ _ c b := by
   obtain ⟨q, b', ⟨w⟩, e⟩ := h
   exact Eq.mpr (congrArg (fun y : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide y.1 y.2.1 c y.2.2) e) (_root_.GlobalTheory.Fc.RL.DefSide.pointEvaluationSide_of_bWit q b' w)
 /- English proof (translation)
-Take `⟨C0, hC0⟩` from `_root_.GlobalTheory.T.kernel_columns_from_ties_alt CY CT hCT`. Use `⟨C0, fun D O c b C CH hE h1 h2 h3 h4 h5 hN hF hR hc => ?_⟩` and prove the remaining obligations. Take `⟨-, hpin, W, hW, hT, hS⟩` from `hE`. Introduce `hok1 hsep hP hI lam0 c0 ce Sw C1 H NuC I _ hII u`. Establish `hZs : (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI).Zs = b.P.Zs` using `(_root_.GlobalTheory.Fc.qRealOfBundle b).zs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS0 : HEq (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI).core.base.toIndefData b.P.S0` using `(_root_.GlobalTheory.Fc.qRealOfBundle b).s0`. Establish `hS1 : HEq (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI).core.cols.toIndefData b.P.S1` using `(_root_.GlobalTheory.Fc.qRealOfBundle b).s1`. Establish `hDc : HEq (b.C.toS.c.face (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI).Zs) b.P.Dc` using `(congr_arg_heq b.C.toS.c.face hZs).trans (heq_of_eq b.C.toS.colTie.1)`. Establish `hw : HEq (I.wU u) u` using `((Formalism.L2.DIV.divTieDat3_heq hZs hS0 hS1 hDc hII).2.2 u).trans (b.C.wTie u)`. Conclude with `hC0 D O.L _ _ _ _ _ _ O.ex b.R.T b.P b.C.toS W _ _ hpin hW hT (hS CY CT h1 h2 h3 h4 h5) hN hF hR _ _ C CH (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI) hZs u lam0 c0 ce c Sw C1 (H u) (I.wU u) (I.eNu u) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem definiteSideCondition_of_nprimeDef_of_nuFull (CY CT : ℝ) (hCT : 0 ≤ CT) : ∃ C0 : ℝ, ∀ (D : D7) (O : Obj D) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition D O c) (C CH : ℝ),
     _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide D O c b → GlobalTheory.CoreHt.HtRowsS O.L CY → 8 ≤ O.L.sc.X' → 2 ≤ O.L.sc.x → (∀ u, 4 * O.L.sc.a < ((D.mem u).A.T : ℝ)) →
@@ -76,13 +74,11 @@ theorem definiteSideCondition_of_nprimeDef_of_nuFull (CY CT : ℝ) (hCT : 0 ≤ 
   exact hC0 D O.L _ _ _ _ _ _ O.ex b.R.T b.P b.C.toS W _ _ hpin hW hT (hS CY CT h1 h2 h3 h4 h5) hN hF hR _ _ C CH
     (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (_root_.GlobalTheory.Fc.qRealOfBundle b) hok1 hsep C CH hP hI) hZs u lam0 c0 ce c Sw C1 (H u) (I.wU u) (I.eNu u) hw hc
 /- English proof (translation)
-Use `_root_.GlobalTheory.Fc.RL.LinkedAt.of_row (p := p) (H := Ind.EvWC (Bd := _root_.GlobalTheory.Fc.BundleCondition) (fun _ => True) fun C CH D O c b => _root_.GlobalTheory.Fc.DefiniteSideCondition D O c b C CH) ⟨fun _ => _root_.GlobalTheory.Fc.RL.DefSide.PointEvaluationSide, RowE.of …` and prove the remaining obligations. Use `choose c0 hc0 using fun (CY CT : ℝ) => _root_.GlobalTheory.Fc.RL.DefSide.definiteSideCondition_of_nprimeDef_of_nuFull CY (max CT 0) (le_max_right _ _)`. Use `(Formalism.MainNotions.DIV.closed_Csz_ge_fn (W3 𝒜) fun l => c0 (l.getD 6 0) (l.getD 13 0)).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hC hc _`. Establish `hC' : c0 Fm.CYL Fm.CTu ≤ Fm.Csz` using `hC`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, -, -, hs⟩` from `s Fm (w3_a hc)`. Establish `tie : RealPlaceSecondLayerConditions Fm` using `⟨Fm.x1 + 1, fun x hx i => (hs x (by linarith) i).2.1⟩`. Take `⟨CH', hCh⟩` from `hc.2.1`. Take `⟨⟨a1, hF⟩, ⟨a2, hR⟩⟩` from `full_rank Fm CH' tie hc.2.2.1 hCh`. Take `⟨a3, hz⟩` from `GlobalTheory.CoreHt.famRowsSizes Fm hc.2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, le_rfl, fun C _ => ⟨max a1 (max a2 a3), fun x hx h0 i => ?_⟩⟩` and prove the remaining obligations. Establish `e1 : a1 ≤ x` using `le_trans (le_max_left _ _) h0`. Establish `e2 : a2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h0`. Establish `e3 : a3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h0`. Take `⟨z1, z2, z3, z4, z5⟩` from `hz x e3 i ⟨_, (σ Fm (w3_a hc) x hx i).DH.2.1⟩`.
-
-Conclude with `hc0 Fm.CYL Fm.CTu _ _ _ (σ Fm (w3_a hc) x hx i) C CH (hs x hx i).2 z1 z2 z3 z4 z5 (Fm.nprimeDef x hx i) (hF x e1 i) (hR x e2 i) hC'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linkedAt_df_of_parameters {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) : _root_.GlobalTheory.Fc.RL.LinkedAt p _root_.GlobalTheory.Fc.RL.RowDefectCondition := by
   refine _root_.GlobalTheory.Fc.RL.LinkedAt.of_row (p := p) (H := Ind.EvWC (Bd := _root_.GlobalTheory.Fc.BundleCondition) (fun _ => True) fun C CH D O c b => _root_.GlobalTheory.Fc.DefiniteSideCondition D O c b C CH)
@@ -105,7 +101,7 @@ theorem linkedAt_df_of_parameters {hL : _root_.UpperTheory.Zero.LLC.RecTExists} 
     (hF x e1 i) (hR x e2 i) hC'
 end GlobalTheory.Fc.RL.DefSide
 /- English proof (translation)
-Introduce `_ _ _ _ _ N S Γ` and use `_root_.GlobalTheory.Fc.RL.DefSide.linkedAt_df_of_parameters (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fc.RL.linkedAt_prmR_df_of_cuspRapidDecay : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists →
     GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay →

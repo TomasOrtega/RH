@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherian
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow, ← Submodule.restrictScalars_mem L, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval (maximalIdeal L).fg_of_isNoetherianRing]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma mem_pow_iff (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalRing L] (n : ℕ)
     (x : AdicCompletion (maximalIdeal L) L) :
@@ -16,7 +16,7 @@ private lemma mem_pow_iff (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalR
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[mem_pow_iff, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `h' : Submodule.Quotient.mk (p` using `(maximalIdeal L ^ n • ⊤ : Submodule L L)) a = 0 := by`. Simplify `h` using `[AdicCompletion.eval]`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero]`. Simplify using `using h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma strict_loc (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalRing L] (n : ℕ)
     (a : L) (h : algebraMap L (AdicCompletion (maximalIdeal L) L) a ∈
@@ -28,7 +28,7 @@ private lemma strict_loc (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalRi
   simpa using h'
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (maximalIdeal L) L n b)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_pow_iff, map_sub, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero, ← ha]`. Simplify using `[AdicCompletion.eval]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma dense_loc (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalRing L] (n : ℕ)
     (b : AdicCompletion (maximalIdeal L) L) :
@@ -41,25 +41,23 @@ private lemma dense_loc (L : Type) [CommRing L] [IsNoetherianRing L] [IsLocalRin
   simp [AdicCompletion.eval]
 
 /- English proof (translation)
-Introduce `C _ _ x hx`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hL : ∀ (n : ℕ) (a : Localization.AtPrime x), a ∈ maximalIdeal (Localization.AtPrime x) ^ n → algebraMap (Localization.AtPrime x) (Cpl x) a ∈ maximalIdeal (Cpl x) ^ n`. Introduce `n a ha`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, ← Ideal.map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ ha`. Use `{ noeth := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _ complete := inferInstance comap_pow := fun n => ?_ dense := fun n r => ?_ }` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[IsScalarTower.algebraMap_eq C (Localization.AtPrime x) (Cpl x), ← Ideal.comap_comap]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Ideal.comap (algebraMap (Localization.AtPrime x) (Cpl x)) (maximalIdeal (Cpl x) ^ n) = maximalIdeal (Localization.AtPrime x) ^ n`. Use extensionality with `a`. Conclude with `⟨strict_loc _ n a, hL n a⟩`. Rewrite using `[e, ← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`. Use `IsLocalization.comap_map_of_isPrimary_disjoint x.primeCompl _ ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.isPrimary_of_isMaximal_radical` to reduce the goal to its premises. Rewrite using `[Ideal.radical_pow _ hn.ne', (inferInstance : x.IsPrime).radical]`. Use `infer_instance`. Conclude with `Set.disjoint_left.mpr fun s hs hs' => hs (Ideal.pow_le_self hn.ne' hs')`. Take `⟨a, ha⟩` from `dense_loc _ n r`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective x.primeCompl a`. Establish `hsx : Ideal.span {(s : C)} ⊔ x = ⊤`. Rewrite using `[sup_comm]`. Establish `hm : (s : C) ∈ x ⊔ Ideal.span {(s : C)}` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Use `hx.out.2 _ (lt_of_le_of_ne le_sup_left fun e => s.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[← e]`. Then use the resulting hypothesis. Establish `h1 : (1 : C) ∈ Ideal.span {(s : C)} ⊔ x ^ n`. Rewrite using `[Ideal.sup_pow_eq_top hsx]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h1`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Use `⟨c * t, ?_⟩` and prove the remaining obligations. Establish `key : IsLocalization.mk' (Localization.AtPrime x) c s - algebraMap C _ (c * t) = IsLocalization.mk' (Localization.AtPrime x) c s * algebraMap C _ z`. Establish `hs` using `IsLocalization.mk'_spec (Localization.AtPrime x) c s`. Establish `hz' : z = 1 - t * s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz', map_sub, map_one, map_mul, map_mul, ← hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : IsLocalization.mk' (Localization.AtPrime x) c s - algebraMap C _ (c * t) ∈ maximalIdeal (Localization.AtPrime x) ^ n`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[key, ← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hz)`. Establish `hsum` using `Ideal.add_mem _ ha (hL n _ hmem)`. Rewrite `hsum` using `[map_sub, ← IsScalarTower.algebraMap_apply C (Localization.AtPrime x) (Cpl x)]`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cpl_is :
     ∀ (C : Type) [CommRing C] [IsNoetherianRing C] (x : Ideal C) [x.IsMaximal], ∃ _ : IsLocalRing (Cpl x), IsCplAt x (Cpl x) := by

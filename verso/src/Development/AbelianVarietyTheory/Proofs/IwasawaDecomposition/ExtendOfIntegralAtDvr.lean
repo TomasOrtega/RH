@@ -11,11 +11,9 @@ namespace GlobalTheory.GenExt
 open GlobalTheory.FlagMod
 
 /- English proof (translation)
-Introduce `y _`. Take `⟨x, hx⟩` from `hne`. Take `⟨q, hq⟩` from `hG.range_fromSpec.ge (hW hx)`. Establish `hq' : q ∈ (tau hG ⁻¹ᵁ W : (Sp Γ(X, G)).Opens)` using `by show hG.fromSpec q ∈ W`. Rewrite using `[hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hsp : (spMap (algebraMap Γ(X, G) (FractionRing Γ(X, G)))) y ⤳ q`. Use `(PrimeSpectrum.le_iff_specializes (R := Γ(X, G)) ((spMap (algebraMap Γ(X, G) (FractionRing Γ(X, G)))) y) q).1 ?_` and prove the remaining obligations. Use `show Ideal.comap _ y.asIdeal ≤ q.asIdeal`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ y.asIdeal y.2]`.
-
-Conclude with `Ideal.comap_bot_le_of_injective _ (IsFractionRing.injective Γ(X, G) (FractionRing Γ(X, G)))`. Conclude with `hsp.mem_open (tau hG ⁻¹ᵁ W).isOpen hq'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_le {X : Scheme.{0}} {G W : X.Opens} (hG : IsAffineOpen G) [IsDomain Γ(X, G)]
     (hW : W ≤ G) (hne : ∃ x, x ∈ W) :
@@ -34,25 +32,25 @@ theorem generic_le {X : Scheme.{0}} {G W : X.Opens} (hG : IsAffineOpen G) [IsDom
   exact hsp.mem_open (tau hG ⁻¹ᵁ W).isOpen hq'
 
 /- English proof (translation)
-Introduce `X G W₀ hle hG hD hN hI hC hne`. Set `K` to `FractionRing Γ(X, G)`. Set `η : Sp K ⟶ X` to `spMap (algebraMap Γ(X, G) K) ≫ tau hG`. Establish `hηG : ⊤ ≤ η ⁻¹ᵁ G` using `le_preimage_comp _ (tau_le hG le_rfl)`. Establish `key : ∀ (W : X.Opens) (hW : W ≤ G) (h : ⊤ ≤ η ⁻¹ᵁ W) (a : Γ(X, G)), ev η W h (resG X hW a) = algebraMap Γ(X, G) K a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W hW h a`. Rewrite using `[ev_res η hW h hηG, ev_spMap_tau hG]`. Establish `hW₀ : ⊤ ≤ η ⁻¹ᵁ W₀` using `generic_le hG hle hne`. Use `⟨fun a b e => IsFractionRing.injective Γ(X, G) K (by rw [← key W₀ hle hW₀, ← key W₀ hle hW₀, e]), ?_⟩` and prove the remaining obligations. Introduce `f₀ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKc : Countable K`. Establish `hs : Function.Surjective (fun p : Γ(X, G) × nonZeroDivisors Γ(X, G) => IsLocalization.mk' K p.1 p.2)` using `fun x => by`. Take `⟨p, e⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors Γ(X, G)) x`. Conclude with `⟨p, e⟩`. Conclude with `hs.countable`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hint : _root_.IsIntegral Γ(X, G) (ev η W₀ hW₀ f₀)`. Apply `GlobalTheory.isIntegral_of_forall_mem_discreteValuationSubring Γ(X, G) K` to reduce the goal to its premises. Introduce `V hV hBV`. Set `ι : Γ(X, G) →+* V` to `(algebraMap Γ(X, G) K).codRestrict V.toSubring hBV`. Establish `hz : ⊤ ≤ (spMap ι ≫ tau hG) ⁻¹ᵁ G` using `le_preimage_comp _ (tau_le hG le_rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (algebraMap V K).comp ι = algebraMap Γ(X, G) K` using `RingHom.ext fun _ => rfl`. Establish `he : spMap (algebraMap V K) ≫ spMap ι ≫ tau hG = η`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]`. Establish `h' : ⊤ ≤ (spMap (algebraMap V K) ≫ spMap ι ≫ tau hG) ⁻¹ᵁ W₀` using `by rw [he]; exact hW₀`. Take `⟨v, hv⟩` from `hf V K (spMap ι ≫ tau hG) inferInstance hz h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[ev_congr he W₀ h' hW₀]`. Rewrite using `[← hv]`. Conclude with `v.2`. Take `⟨f, hf'⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := K)).1 hint`. Use `⟨f, ext_ev_loc fun p hp => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hsle, hps⟩` from `hG.exists_basicOpen_le ⟨p, hp⟩ (hle hp)`. Establish `hN : ⊤ ≤ η ⁻¹ᵁ X.basicOpen s` using `generic_le hG (X.basicOpen_le s) ⟨p, hps⟩`. Establish `inj : Function.Injective (ev η (X.basicOpen s) hN)` using `by haveI := hG.isLocalization_basicOpen s`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨a, m⟩, e⟩` from `IsLocalization.surj (Submonoid.powers s) x`. Establish `h1 : algebraMap Γ(X, G) K a = 0`. Rewrite using `[← key _ (X.basicOpen_le s) hN a]`. Express the relevant statement in the definitionally equal form `ev η _ hN (algebraMap Γ(X, G) Γ(X, X.basicOpen s) a) = 0`. Rewrite using `[← e, map_mul, hx, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a = 0` using `IsFractionRing.injective Γ(X, G) K (by rw [h1, map_zero])`. Establish `hu : IsUnit (algebraMap Γ(X, G) Γ(X, X.basicOpen s) m)` using `IsLocalization.map_units _ m`. Rewrite `e` using `[ha, map_zero]`. Conclude with `hu.mul_left_eq_zero.1 e`. Establish `hres : resG X hsle (resG X hle f) = resG X hsle f₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `inj` to reduce the goal to its premises. Rewrite using `[ev_res η hsle hN hW₀, ev_res η hsle hN hW₀, key W₀ hle hW₀, hf']`. Use `⟨X.basicOpen s, hps, fun S _ z hz hzN => ?_⟩` and prove the remaining obligations. Rewrite using `[← ev_res z hsle hzN hz, ← ev_res z hsle hzN hz (f₀), hres]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_of_integral_at_dvr : ∀ (X : Scheme.{0}) (G W₀ : X.Opens) (hle : W₀ ≤ G), IsAffineOpen G → IsDomain Γ(X, G) → IsNoetherianRing Γ(X, G) → IsIntegrallyClosed Γ(X, G) → Countable Γ(X, G) → (∃ x, x ∈ W₀) → Function.Injective (resG X hle) ∧ ∀ f₀ : Γ(X, W₀), (∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (z : Sp R ⟶ X), Countable R → ⊤ ≤ z ⁻¹ᵁ G → ∀ h : ⊤ ≤ (spMap (algebraMap R K) ≫ z) ⁻¹ᵁ W₀, ev (spMap (algebraMap R K) ≫ z) W₀ h f₀ ∈ (algebraMap R K).range) → ∃ f : Γ(X, G), resG X hle f = f₀ := by
   intro X G W₀ hle hG hD hN hI hC hne

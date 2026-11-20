@@ -10,29 +10,27 @@ namespace Formalism.MainNotions.S.Gauge
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhdsWithin_nhds]`. Introduce `e he`. Use `set δ : ℝ := min (1 / 2) (e / (2 * c)) with hδ`. Establish `hδpos : 0 < δ` using `lt_min (by norm_num) (div_pos he (by linarith))`. Establish `hδ1 : δ ≤ 1 / 2` using `min_le_left _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδe : c * δ < e`. Establish `: δ ≤ e / (2 * c)` using `min_le_right _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hJc` using `(continuous_chartJac_thetaExp ε).continuousAt (x := 0)`. Take `⟨η, hη, hcont⟩` from `Metric.continuousAt_iff.1 hJc δ hδpos`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨min η s, lt_min hη hs, fun ρ hρpos hρd => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `hρpos`. Establish `hρd' : ρ < min η s`. Establish `: dist ρ 0 < min η s` using `hρd`. Rewrite `this` using `[Real.dist_eq, sub_zero, abs_of_pos hρ0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hρη : ρ ≤ η` using `(lt_of_lt_of_le hρd' (min_le_left _ _)).le`. Establish `hρr : ρ ≤ s` using `(lt_of_lt_of_le hρd' (min_le_right _ _)).le`. Establish `hbound : ∀ t ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, |chartJac (thetaExp ε) t - 1| < δ`. Introduce `t ht`. Use `hcont (lt_of_lt_of_le ht hρη)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[chartJac_thetaExp_zero, Real.dist_eq]`. Conclude with `this`. Use `set V := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ) with hV`. Establish `hVpos : 0 < V` using `Metric.measure_ball_pos volume 0 hρ0`. Establish `hVfin : V ≠ ⊤` using `measure_ball_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `set I := ∫⁻ t in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (chartJac (thetaExp ε) t) with hI`. Establish `hup : I ≤ ENNReal.ofReal (1 + δ) * V`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_ball] with x hx`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).2])`. Use `_ = ENNReal.ofReal (1 + δ) * V := setLIntegral_const _ _`. Establish `hlo : ENNReal.ofReal (1 - δ) * V ≤ I`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [ae_restrict_mem measurableSet_ball] with x hx`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).1])`. Establish `hIfin : I ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup`. Establish `hVr : 0 < V.toReal` using `ENNReal.toReal_pos hVpos.ne' hVfin`. Establish `hupR : I.toReal ≤ (1 + δ) * V.toReal`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `hloR : (1 - δ) * V.toReal ≤ I.toReal`. Use `ENNReal.toReal_mono hIfin hlo` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hratio : ratioAt ε ρ = c * I.toReal / V.toReal`. Unfold `ratioAt`. Rewrite using `[hb ρ hρ0 hρr, volume_ball_gLie, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc.le]`. Both sides reduce to the same expression. Rewrite using `[Real.dist_eq, hratio]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `key : |c * I.toReal / V.toReal - c| ≤ c * δ`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Establish `: c * ((1 - δ) * V.toReal) ≤ c * I.toReal` using `mul_le_mul_of_nonneg_left hloR hc.le`. Rewrite using `[le_sub_iff_add_le, le_div_iff₀ hVr]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `: c * I.toReal ≤ c * ((1 + δ) * V.toReal)` using `mul_le_mul_of_nonneg_left hupR hc.le`. Rewrite using `[sub_le_iff_le_add, div_le_iff₀ hVr]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_le_of_lt key hδe`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ratioAt_of_ball {ε : Fin n → Bool} {c s : ℝ} (hc : 0 < c) (hs : 0 < s)
     (hb : ∀ ρ : ℝ, 0 < ρ → ρ ≤ s →
@@ -104,7 +102,7 @@ theorem tendsto_ratioAt_of_ball {ε : Fin n → Bool} {c s : ℝ} (hc : 0 < c) (
   exact lt_of_le_of_lt key hδe
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc, s, hs, hb⟩`. Establish `ht` using `tendsto_ratioAt_of_ball hc hs hb`. Establish `he` using `gaugeU_eq ht`. Conclude with `⟨he ▸ ht, he ▸ hc⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem densOfBall (ε : Fin n → Bool) : DensOfBall ε := by
   rintro ⟨c, hc, s, hs, hb⟩

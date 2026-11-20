@@ -11,7 +11,7 @@ namespace GlobalTheory.ParaLevel
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Introduce `w _`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trivOutside_one (T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))) :
     TrivOutside T (1 : GAf L n) := by
@@ -19,7 +19,7 @@ theorem trivOutside_one (T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Unfold `NG.detDD`. Establish `: (Matrix.of fun a b : {x : Fin n // r ≤ x.val} => ((1 : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a.1 b.1) = 1`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem detDD_one (s : SplitPlace L) (r : ℕ) :
     NG.detDD s r (1 : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) = 1 := by
@@ -32,7 +32,7 @@ theorem detDD_one (s : SplitPlace L) (r : ℕ) :
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Unfold `NG.detDD`. Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val (M := Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L)))).matrix_elem a.1 b.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_detDD (s : SplitPlace L) (r : ℕ) :
     Continuous (NG.detDD (n := n) s r) := by
@@ -79,21 +79,21 @@ def lift (s : SplitPlace L) (g : GL (Fin n) (s.v.adicCompletion (maximalRealSubf
   (GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem lift_triv (g : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) :
     TrivOutside {s.v} (lift s g) :=
   (GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem loc_lift (g : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) :
     s.loc n (lift s g) = g :=
   (GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s g).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `(hP.mem _ (lift_triv g.1)).2 (by rw [loc_lift]; exact g.2)`.
+A detailed English derivation is pending.
 -/
 theorem lift_mem (hP : NG.LevelPara J χ s r ξ) (g : paraSub s r J χ ξ hP) : lift s g.1 ∈ J :=
   (hP.mem _ (lift_triv g.1)).2 (by rw [loc_lift]; exact g.2)
@@ -102,11 +102,11 @@ def thetaFun (hP : NG.LevelPara J χ s r ξ) (g : paraSub s r J χ ξ hP) : ℂ�
   χ ⟨lift s g.1, lift_mem hP g⟩
 
 /- English proof (translation)
-Unfold `thetaFun`. Use `set κ₀ := lift s (s.loc n κ) with hκ₀`. Establish `h0 : κ₀ ∈ J` using `lift_mem hP ⟨s.loc n κ, h⟩`. Establish `ht : TrivOutside {s.v} (κ * κ₀⁻¹)` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul hκ (GlobalTheory.SatInd.CosetFin.trivOutside_inv (lift_triv _))`. Establish `hl : s.loc n (κ * κ₀⁻¹) = 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, hκ₀, loc_lift, mul_inv_cancel]`. Establish `hδ : κ * κ₀⁻¹ ∈ J` using `J.mul_mem hJ (J.inv_mem h0)`. Establish `hc : χ ⟨κ * κ₀⁻¹, hδ⟩ = 1`. Rewrite using `[hP.chr _ hδ ht 1 (by rw [hl, detDD_one]; rfl), map_one]`. Establish `hprod : (⟨κ, hJ⟩ : J) = ⟨κ * κ₀⁻¹, hδ⟩ * ⟨κ₀, h0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[hprod, map_mul, hc, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_eq (hP : NG.LevelPara J χ s r ξ) (κ : GAf L n) (hκ : TrivOutside {s.v} κ) (hJ : κ ∈ J)
     (h : s.loc n κ ∈ paraSub s r J χ ξ hP) : χ ⟨κ, hJ⟩ = thetaFun hP ⟨s.loc n κ, h⟩ := by
@@ -158,21 +158,17 @@ end GlobalTheory.ParaLevel
 namespace GlobalTheory.ParaLevel
 
 /- English proof (translation)
-Introduce `L _ _ _ n s r J χ ξ hP hξ`. Take `⟨N, hN⟩` from `hξ`. Use `⟨paraSub s r J χ ξ hP, theta hP, fun g => Iff.rfl, ?_, fun g hg => hg.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h d hd show χ ⟨lift s g, lift_mem hP ⟨g, h⟩⟩ = ξ d`. Conclude with `hP.chr _ _ (lift_triv g) d (by rw [loc_lift]; exact hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subgroup.isOpen_of_mem_nhds` to reduce the goal to its premises. Establish `hc : Continuous fun g : paraSub s r J χ ξ hP => NG.detDD s r g.1` using `(continuous_detDD s r).comp continuous_subtype_val`. Establish `h1 : NG.detDD s r ((1 : paraSub s r J χ ξ hP) : GL (Fin n) _) = 1` using `detDD_one s r`. Take `⟨π, hπ⟩` from `s.v.valuation_exists_uniformizer (maximalRealSubfield L)`. Use `set a : s.v.adicCompletion (maximalRealSubfield L) := ((π : maximalRealSubfield L) : s.v.adicCompletion (maximalRealSubfield L)) ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha : Valued.v a = WithZero.exp (-(N : ℤ))`. Simplify using `only [a, map_pow, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `ha0 : (Valued.v a) ≠ 0` using `by rw [ha]; simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnhds : {x : s.v.adicCompletion (maximalRealSubfield L) | Valued.v (x - 1) < WithZero.exp (-(N : ℤ))} ∈ nhds (1 : s.v.adicCompletion (maximalRealSubfield L))`. Use `Valued.mem_nhds.2 ⟨Units.mk0 (Valued.v.restrict a) (by rwa [ne_eq, Valuation.restrict_eq_zero_iff]), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at hy ⊢`. Rewrite using `[← ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Valuation.restrict_lt_iff _).1 hy`. Establish `hpre` using `hc.tendsto 1 (by rw [h1]; exact hnhds)`. Use `Filter.mem_of_superset hpre ?_` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : NG.detDD s r g.1 ≠ 0`. Introduce `h0`. Rewrite `hg` using `[h0, zero_sub, Valuation.map_neg, Valuation.map_one]`. Conclude with `absurd hg (not_lt.2 (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega))`. Establish `hθ : theta hP g = ξ (Units.mk0 _ hne)` using `by show χ ⟨lift s g.1, lift_mem hP g⟩ = _`.
-
-Conclude with `hP.chr _ _ (lift_triv g.1) _ (by rw [loc_lift]; rfl)`. Use `show theta hP g = 1`. Rewrite using `[hθ]`. Conclude with `hN _ (le_of_lt hg)`. Introduce `κ hκ hJ h`.
-
-Conclude with `chi_eq hP κ hκ hJ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_parahoric_char : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (r : ℕ) (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), NG.LevelPara J χ s r ξ → (∃ N : ℕ, ∀ u : (s.v.adicCompletion (maximalRealSubfield L))ˣ, Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1) ≤ WithZero.exp (-(N : ℤ)) → ξ u = 1) → ∃ (K : Subgroup (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)))) (θ : K →* ℂˣ), (∀ g, g ∈ K ↔ NG.ParaRT s r g) ∧ (∀ g (h : g ∈ K) (d : (s.v.adicCompletion (maximalRealSubfield L))ˣ), (d : s.v.adicCompletion (maximalRealSubfield L)) = NG.detDD s r g → θ ⟨g, h⟩ = ξ d) ∧ (∀ g ∈ K, g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) ∧ IsOpen (θ.ker : Set K) ∧ ∀ κ, TrivOutside {s.v} κ → ∀ (hJ : κ ∈ J) (h : s.loc n κ ∈ K), χ ⟨κ, hJ⟩ = θ ⟨s.loc n κ, h⟩ := by
   intro L _ _ _ n s r J χ ξ hP hξ

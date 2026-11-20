@@ -9,15 +9,15 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 namespace GlobalTheory.LineRankTwo
 
 /- English proof (translation)
-Establish `hzH : (H z).PosDef` using `h.posDef z hz`. Establish `hS : (subGram (H z)).PosDef` using `posDef_subGram hzH`. Establish `hsu : IsUnit (subGram (H z)).det` using `(isUnit_iff_isUnit_det _).1 hS.isUnit`. Establish `hSu : form (subGram (H z)) u u ≠ 0` using `((posDef_iff.1 hS).2 u hu).ne'`. Take `⟨a, ha⟩` from `Fintype.card_eq_one_iff.1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvec : ∀ M : Matrix m m ℂ, M *ᵥ u = M.trace • u`. Introduce `M`. Use function extensionality and compare the values at `i`. Rewrite using `[ha i]`. Simplify using `only [mulVec, dotProduct, trace, diag, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_eq_single a (fun j hj => absurd (ha j) hj), Fintype.sum_eq_single a (fun j hj => absurd (ha j) hj)]`. Establish `hline : lineCurv H z (incl m l *ᵥ u) ξ η = kappa * (blockSS (H z) (curv H z ξ η)).trace`. Establish `e1 : curv H z ξ η *ᵥ (incl m l *ᵥ u) = incl m l *ᵥ (blockSS (H z) (curv H z ξ η) *ᵥ u) + orthLift (H z) *ᵥ (quotMap m l *ᵥ (curv H z ξ η *ᵥ (incl m l *ᵥ u)))` using `by conv_lhs => rw [← Matrix.one_mulVec (curv H z ξ η *ᵥ _), ← incl_mul_orthProj_add (H z)]`. Simplify using `only [Matrix.add_mulVec, mulVec_mulVec, blockSS, Matrix.mul_assoc, Matrix.add_mul]`. Rewrite using `[lineCurv, e1, form_add_left, form_orthLift_incl hsu, add_zero, form_incl, form_incl, hvec, form_smul_left, mul_div_assoc, div_self hSu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ∀ᶠ x in 𝓝 z, (H x).PosDef` using `Filter.eventually_of_mem (h.isOpen.mem_nhds hz) fun x hx => h.posDef x hx`. Establish `hext : extTrace H z ξ η = kappa * (secondForm H z ξ * secondFormAdj H z η).trace` using `extTrace_eq (h.isHermFrame.one hz) hp ξ η`. Establish `h1 : chernOne (gramS H) z ξ η = lineCurv H z (incl m l *ᵥ u) ξ η - extTrace H z ξ η`. Rewrite using `[chernOne, hg, hline, hext, wedgeAntiHol, trace_add, trace_neg, trace_mul_comm (secondFormAdj H z η)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hc ξ η, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chernOne_sub_quot_line {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m]

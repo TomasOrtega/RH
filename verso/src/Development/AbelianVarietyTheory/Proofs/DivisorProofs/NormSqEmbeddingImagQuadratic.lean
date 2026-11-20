@@ -19,15 +19,15 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hnoreal : ∀ w : InfinitePlace K, ¬ InfinitePlace.IsReal w`. Introduce `w hw`. Establish `h` using `InfinitePlace.conjugate_embedding_eq_of_isReal hw`. Establish `h1 : w.embedding δ ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `h2 : (starRingEnd ℂ) (w.embedding δ) = w.embedding δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f : K →+* ℂ => f δ) h` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Take `⟨r, hr⟩ : ∃ r : ℝ, w.embedding δ = r` from `⟨(w.embedding δ).re, (Complex.conj_eq_iff_re.mp h2).symm⟩`. Rewrite `h1` using `[hr]`. Establish `h3 : (r ^ 2 : ℝ) = -(d : ℝ)` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) < d` using `Nat.cast_pos.mpr hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Establish `hR : InfinitePlace.nrRealPlaces K = 0` using `Fintype.card_eq_zero_iff.mpr ⟨fun w => hnoreal w.1 w.2⟩`. Establish `hC : InfinitePlace.nrComplexPlaces K = 1`. Use `InfinitePlace.card_add_two_mul_card_eq_rank K` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcard : Fintype.card (InfinitePlace K) = 1`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, hR, hC]`. Establish `huniv : (Finset.univ : Finset (InfinitePlace K)) = {InfinitePlace.mk io}`. Rewrite using `[Finset.eq_singleton_iff_unique_mem]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Finset.mem_univ _, fun w _ => Fintype.card_le_one_iff.mp hcard.le w _⟩`. Establish `h` using `InfinitePlace.prod_eq_abs_norm x`. Rewrite `h` using `[huniv, Finset.prod_singleton, (InfinitePlace.not_isReal_iff_isComplex.mp (hnoreal _)).mult_eq_two, InfinitePlace.apply]`. Rewrite using `[Complex.normSq_eq_norm_sq, h]`. Use `push_cast`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

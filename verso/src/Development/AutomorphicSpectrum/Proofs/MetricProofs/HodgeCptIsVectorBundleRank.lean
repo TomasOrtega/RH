@@ -15,7 +15,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E']
 
 /- English proof (translation)
-Use `⟨h.1.map' f (LinearMap.ker_eq_bot.2 hf), ?_⟩` and prove the remaining obligations. Use `show (L p).map (f.restrictScalars (regAt ξ p)) = _`. Rewrite using `[h.2, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFrameAt_map_of_injective {L : Lat ξ E} {f : E →ₗ[Ω] E'} (hf : Function.Injective f) {r : ℕ}
     {b : Fin r → E} {p : Cpt ξ} (h : L.IsFrameAt b p) : (L.map f).IsFrameAt (fun a => f (b a)) p := by
@@ -25,7 +25,7 @@ theorem isFrameAt_map_of_injective {L : Lat ξ E} {f : E →ₗ[Ω] E'} (hf : Fu
   rfl
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨U, hU, b, hb, hq⟩` from `h p hp`. Use `⟨U, hU, fun a => f (b a), ?_, fun q hqT hqU => isFrameAt_map_of_injective hf (hq q hqT hqU)⟩` and prove the remaining obligations. Rewrite using `[← hb, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isVB_map_of_injective {L : Lat ξ E} {f : E →ₗ[Ω] E'} (hf : Function.Injective f) {r : ℕ}
     {V : Submodule Ω E} (h : L.IsVB r V) : (L.map f).IsVB r (V.map f) := by
@@ -44,13 +44,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {x : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-The claim follows from `LinearMap.inl_injective`.
+A detailed English derivation is pending.
 -/
 theorem inW_injective (A : HodgeCpt Y S x) : Function.Injective (inW A) :=
   LinearMap.inl_injective
 
 /- English proof (translation)
-Introduce `a b h`. Establish `e` using `congrFun (congrArg Prod.snd h) τ`. Simplify `e` using `[inO]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inO_injective (A : HodgeCpt Y S x) (τ : CMType H) : Function.Injective (inO A τ) := by
   intro a b h
@@ -60,7 +60,7 @@ theorem inO_injective (A : HodgeCpt Y S x) (τ : CMType H) : Function.Injective 
 end Bundles
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 s`. Break down `s with τ | τ` into its components or cases. Conclude with `isVB_map_of_injective (inW_injective 𝔐) (𝔐.vb (.inl τ))`. Conclude with `isVB_map_of_injective (inO_injective 𝔐 τ) (omBundle_isVB 𝔐 τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem LL_isVB : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω]

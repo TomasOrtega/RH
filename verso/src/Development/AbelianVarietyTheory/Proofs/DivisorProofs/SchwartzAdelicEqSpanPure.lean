@@ -21,11 +21,11 @@ theorem pure_eq_pureA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype 
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, g, hg, rfl⟩`. Set `L : ((κ → FiniteAdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ → AdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := fun g => pureA F (⇑f) g map_add' := fun a b => by funext x; simp [pureA, mul_add] map_smul' := fun c a => by funext x; simp [pureA]; ring }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `h` using `GlobalTheory.SBSpan.mem_span_restrictedProd F κ g hg`. Establish `h2 : L g ∈ Submodule.map L (Submodule.span ℂ _)` using `Submodule.mem_map_of_mem h`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨φ, hφ, hcof, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f, φ, hφ, hcof, (pure_eq_pureA f φ).symm⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, φ, hφ, hcof, rfl⟩`. Use `Submodule.subset_span ⟨f, _, ?_, pure_eq_pureA f φ⟩` and prove the remaining obligations. Conclude with `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hφ hcof, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hφ hcof⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem schA_eq_span_pure : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     schA F κ = Submodule.span ℂ {Φ | ∃ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) ∧

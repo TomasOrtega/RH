@@ -20,11 +20,11 @@ open Classical
 namespace GlobalTheory.TwoStepRed
 
 /- English proof (translation)
-Introduce `PP hPP`. Establish `hsplit : x = cA D e • x + cA D f • x`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← add_mul, ← map_add, hx i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : frMapAdj S T βS βT x = frMapAdj S T βS βT (cA D e • x) + toEAf D f • frMapAdj S T βS βT x` using `by conv_lhs => rw [hsplit]`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_add, GlobalTheory.RedHalfDrop.frMapAdj_smul_eq βS βT (cA D f) x, cA_cA]`. Establish `hc : toEAf D f ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E`. Rewrite using `[← GlobalTheory.ExportSeries.idem_eq hR]`. Unfold `GlobalTheory.ExportSeries.idem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (toEAf D) (∑ Q ∈ R, GlobalTheory.ExportSeries.idemAt Q) = ∑ Q ∈ R, (toEAf D) (GlobalTheory.ExportSeries.idemAt Q) from map_sum (toEAf D).toAddMonoidHom _ _]`. Conclude with `sum_mem (fun Q hQ => GlobalTheory.RedHalfDrop.int_idemAt ⟨f, hR⟩ hQ)`. Rewrite using `[eq_sub_of_add_eq h1.symm]`. Conclude with `GlobalTheory.RedHalfDrop.redM_sub_smul PP hN hc (GlobalTheory.AdjRedOff.resS_idemSum_eq_zero hR hc (fun h => Finset.disjoint_left.mp hd hPP h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redM_part_eq {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D))
     (βT : GL (Fin T.rank) (EAf D)) (P R : Finset (Pl D.host.E)) (e f : AE D)
@@ -51,7 +51,7 @@ theorem redM_part_eq {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D))
     (GlobalTheory.AdjRedOff.resS_idemSum_eq_zero hR hc (fun h => Finset.disjoint_left.mp hd hPP h))
 
 /- English proof (translation)
-Introduce `D S T βS βT Pg Q eg eQ hg hQ hd _ x hx hN`. Conclude with `⟨redM_part_eq S T βS βT Pg Q eg eQ hg hQ hd x hx hN, redM_part_eq S T βS βT Q Pg eQ eg hQ hg hd.symm x (by rwa [add_comm]) hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem redM_twoStep : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (Pg Q : Finset (Pl D.host.E)) (eg eQ : AE D), IsIdemSum eg Pg → IsIdemSum eQ Q → Disjoint Pg Q → IsIdemSum (eg + eQ) (Pg ∪ Q) → ∀ x : WO S T, IsHalf (cA D (eg + eQ)) x → IsIntM (frMapAdj S T βS βT x) → (∀ PP ∈ Pg, redM PP (frMapAdj S T βS βT (cA D eg • x)) = redM PP (frMapAdj S T βS βT x)) ∧ (∀ PP ∈ Q, redM PP (frMapAdj S T βS βT (cA D eQ • x)) = redM PP (frMapAdj S T βS βT x)) := by
   intro D S T βS βT Pg Q eg eQ hg hQ hd _ x hx hN

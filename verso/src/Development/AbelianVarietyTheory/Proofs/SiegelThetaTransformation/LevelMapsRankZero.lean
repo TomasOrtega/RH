@@ -20,17 +20,17 @@ def unitSim (D : Datum H) : Sim D where
   mult _ _ _ _ := by simp
 
 /- English proof (translation)
-Introduce `l l₂ Xo Xo₂ hd`. Establish `hsub` using `subsingleton_La hD`. Take `⟨hs, hG⟩` from `isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo`. Take `⟨hs₂, hG₂⟩` from `isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo₂`. Establish `hA : l.A ∣ l₂.A` using `hd.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩ : ∃ r : Xo₂.X ⟶ Xo.X, r ≫ Xo.s = Xo₂.s ≫ spMap (levelFieldIncl hA)` from `⟨(Xo₂.s ≫ spMap (levelFieldIncl hA)) ≫ inv Xo.s, by simp⟩`. Take `⟨m⟩` from `nonempty_sabMap hG₂ hG r`. Establish `haut : ∀ g : Sim D, Xo₂.LevAut g (Iso.refl _)` using `fun g => by`. Take `⟨ν⟩` from `nonempty_sabMap hG₂ hG₂ (Iso.refl Xo₂.X).hom`. Conclude with `⟨Category.id_comp _, ν, fun _ => sec_comm hG₂ ν.cart.1.w _ _, fun _ => sec_comm hG₂ ν.cart.1.w _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨r, levelFieldIncl hA, m, coe_levelFieldIncl hA, hr, fun _ => sec_comm hG m.cart.1.w _ _, fun _ => sec_comm hG m.cart.1.w _ _, fun g _ => ⟨Iso.refl _, haut g, Category.id_comp _⟩, fun c c₂ hc => ?_⟩` and prove the remaining obligations. Establish `hring : (IntermediateField.inclusion c₂.le).toRingHom.comp (levelFieldIncl hA) = (IntermediateField.inclusion hc.le).toRingHom.comp (IntermediateField.inclusion c.le).toRingHom`. Use extensionality with `x`. Conclude with `coe_levelFieldIncl hA x`. Establish `w : (pullback.fst Xo₂.s (spMap (IntermediateField.inclusion c₂.le).toRingHom) ≫ r) ≫ Xo.s = (pullback.snd Xo₂.s (spMap (IntermediateField.inclusion c₂.le).toRingHom) ≫ spMap (IntermediateField.inclusion hc.le).toRingHom) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hr, pullback.condition_assoc, Category.assoc, GlobalTheory.Models.RankZero.spMap_comp, GlobalTheory.Models.RankZero.spMap_comp, hring]`. Establish `e₁` using `pullback.lift_fst _ _ w`. Establish `e₂` using `pullback.lift_snd _ _ w`. Establish `i₀ : IsIso (spMap (IntermediateField.inclusion hc.le).toRingHom)`. Establish `: IsIso (CommRingCat.ofHom (IntermediateField.inclusion hc.le).toRingHom)` using `(ConcreteCategory.isIso_iff_bijective _).2 ⟨IntermediateField.inclusion_injective hc.le, fun x => ⟨⟨x.1, hc.ge x.2⟩, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inferInstanceAs (IsIso (Spec.map (CommRingCat.ofHom (IntermediateField.inclusion hc.le).toRingHom)))`. Establish `i₁ : IsIso (pullback.lift _ _ w)` using `IsIso.of_isIso_fac_right e₂`. Use `⟨pullback.lift _ _ w, e₁, e₂, inferInstance, inferInstance, inferInstance, fun k _ _ y y' h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `rfl` from `(cancel_mono _).1 h`. Conclude with `⟨unitSim D, Iso.refl _, ⟨by simp [unitSim], fun a => by rw [Subsingleton.elim (_ - a) 0]; exact zero_mem _, fun a => ⟨0, Subsingleton.elim _ _⟩⟩, haut _, Category.id_comp _, congrArg (y ≫ ·) (Category.comp_id _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `g _ _ _ _`. Conclude with `⟨fun a => by rw [Subsingleton.elim (g.f l₂.M a - a) 0]; exact zero_mem _, fun a => ⟨0, Subsingleton.elim _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem levelMaps_rank_zero (hD : D.p + D.q = 0) : ToroidalLevelCompatibility (H := H) (D := D) := by
   intro l l₂ Xo Xo₂ hd
@@ -74,7 +74,7 @@ theorem levelMaps_rank_zero (hD : D.p + D.q = 0) : ToroidalLevelCompatibility (H
       fun a => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (D.p + D.q) with h | h` into its components or cases. Conclude with `levelMaps_rank_zero h`. Conclude with `(GlobalTheory.moduliScheme_levelMaps_heckePoints.2 E H D h).1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem levelMaps (D : Datum H) : ToroidalLevelCompatibility (H := H) (D := D) := by
   rcases Nat.eq_zero_or_pos (D.p + D.q) with h | h

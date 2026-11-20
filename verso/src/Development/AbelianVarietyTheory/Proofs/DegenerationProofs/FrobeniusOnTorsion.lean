@@ -26,15 +26,13 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS.FrobTorsion
 
 /- English proof (translation)
-Set `c : B → A` to `fun b => if h : ∃ a : {x : A // x ^ n = 1}, f a = b then (h.choose : A) else 1`. Establish `hc : ∀ x : {x : A // x ^ n = 1}, (c (f x)) ^ n = 1 ∧ f (c (f x)) = f x`. Introduce `x`. Establish `h : ∃ a : {x : A // x ^ n = 1}, f a = f x` using `⟨x, rfl⟩`. Simplify using `only [c, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h.choose.2, h.choose_spec⟩`. Set `Φ : {x : A // x ^ n = 1} → {x : A // f x = 1 ∧ x ^ n = 1} × {y : B // y ^ n = 1}` to `fun x => (⟨x * (c (f x))⁻¹, by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, (hc x).2, mul_inv_cancel]`. Rewrite using `[mul_pow, inv_pow, x.2, (hc x).1] simp⟩,`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `⟨f x, by rw [← map_pow, x.2, map_one]⟩)`. Establish `hΦ : Function.Injective Φ`. Introduce `x y hxy`. Simplify using `only [Φ, Prod.mk.injEq, Subtype.mk.injEq] at hxy`. Take `⟨h1, h2⟩` from `hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `Subtype.ext (mul_right_cancel h1)`. Establish `: Finite {x : A // x ^ n = 1}` using `Finite.of_injective Φ hΦ`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `Nat.card_le_card_of_injective Φ hΦ` as an intermediate fact.
-
-Rewrite `this` using `[Nat.card_prod]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem card_torsion_le_mul {A B : Type} [CommGroup A] [CommGroup B] (f : A →* B) (n : ℕ)
     [Finite {x : A // f x = 1 ∧ x ^ n = 1}] [Finite {y : B // y ^ n = 1}] :
@@ -72,13 +70,13 @@ noncomputable def onPts {G H : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsM
   MonoidHom.mk' (fun x => x ≫ φ) fun x y => MonObj.mul_comp x y φ
 
 /- English proof (translation)
-The claim follows from `MonObj.pow_comp x n φ`.
+A detailed English derivation is pending.
 -/
 theorem pow_comp' {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ] (x : Z ⟶ G) (n : ℕ) :
     (x ^ n) ≫ φ = (x ≫ φ) ^ n := MonObj.pow_comp x n φ
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [MonObj.one_comp]`. Consider the case `cons a l ih => rw [List.prod_cons, MonObj.mul_comp, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem list_prod_comp_degeneration {S : Scheme.{0}} {Z G H : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ]
     (l : List (Z ⟶ G)) : l.prod ≫ φ = (l.map (· ≫ φ)).prod := by
@@ -87,9 +85,9 @@ private theorem list_prod_comp_degeneration {S : Scheme.{0}} {Z G H : Over S} [G
   | cons a l ih => rw [List.prod_cons, MonObj.mul_comp, ih, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Unfold `polyPt`. Rewrite using `[list_prod_comp_degeneration, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `n _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[GrpObj.zpow_comp, Category.assoc, GlobalTheory.SS.FrobSub.pow_comm_hom φ F E h n]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polyPt_comp {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ] (E : End G) (F : End H)
     (h : (show G ⟶ G from E) ≫ φ = φ ≫ (show H ⟶ H from F)) (P : Polynomial ℤ) (x : Z ⟶ G) :
@@ -104,15 +102,15 @@ theorem polyPt_comp {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMon
   simp only [Category.assoc]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hL`. Establish `hc : ∀ k : Fin 2, ν ≫ (![F, 𝟙 X] : Fin 2 → (X ⟶ X)) k = ((![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) k) ≫ ν`. Introduce `k`. Use `fin_cases k`. Simplify using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hle : ∀ (j : Fin 2 → PUnit.{1} → L.ι) (y : Y), y ∈ (L.pull ν).wchart (![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) j → ν y ∈ L.wchart (![F, 𝟙 X] : Fin 2 → (X ⟶ X)) (fun k => j k PUnit.unit)`. Introduce `j y hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h2 : ν ((![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) k y) ∈ L.U (j k PUnit.unit)` using `mem_pull.1 (Set.mem_iInter.1 hy k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun m : Y ⟶ X => m y) (hc k)`. Simplify using `only at h3`. Express the relevant statement in the definitionally equal form `(ν ≫ (![F, 𝟙 X] : Fin 2 → (X ⟶ X)) k) y ∈ L.U (j k PUnit.unit)`. Rewrite using `[h3]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `a : ChartPull (LB.LinComb (L.pull ν) (![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) ![1, -Q]) (LB.LinComb L (![F, 𝟙 X] : Fin 2 → (X ⟶ X)) ![1, -Q]) ν` to `{ idx := fun j k => j k PUnit.unit le := fun j y hy => hle j y hy g := fun y j j' hj hj' => by`. Use `(gm_linComb (L.pull ν) _ _ (𝟙 Y) y j j' hj hj').trans (Eq.trans ?_ (gm_linComb L _ _ ν y _ _ (hle j y hj) (hle j' y hj')).symm)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `m1 : (𝟙 Y ≫ (![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) k) y ∈ (L.pull ν).U (j k)` using `Set.mem_iInter.1 hj k`. Establish `m2 : (𝟙 Y ≫ (![E, 𝟙 Y] : Fin 2 → (Y ⟶ Y)) k) y ∈ (L.pull ν).U (j' k)` using `Set.mem_iInter.1 hj' k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[gm_pull_g L ν _ y (j k) (j' k) m1 m2, Category.id_comp, ← hc k] }`. Take `⟨u, hu⟩` from `gen_chartPull a t ht`. Conclude with `⟨u, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pullPow_pull {X Y : Scheme.{0}} (ν : Y ⟶ X) {F : X ⟶ X} {E : Y ⟶ Y} (h : E ≫ ν = ν ≫ F) {L : LB X} {Q : ℤ}
     (hL : PullPow F L Q) : PullPow E (L.pull ν) Q := by
@@ -147,7 +145,7 @@ theorem pullPow_pull {X Y : Scheme.{0}} (ν : Y ⟶ X) {F : X ⟶ X} {E : Y ⟶ 
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMonHom_mul_degeneration {S : Scheme.{0}} {M G : Over S} [MonObj M] [GrpObj G] [IsCommMonObj G]
     (f g : M ⟶ G) [IsMonHom f] [IsMonHom g] : IsMonHom (f * g) := by
@@ -155,9 +153,9 @@ private theorem isMonHom_mul_degeneration {S : Scheme.{0}} {M G : Over S} [MonOb
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Hom.one_def]`. Use `infer_instance`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `isMonHom_mul_degeneration _ _`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_id_pow (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) : IsMonHom ((𝟙 G) ^ n : G ⟶ G) := by
   induction n with
@@ -169,7 +167,7 @@ theorem isMonHom_id_pow (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) : IsM
     exact isMonHom_mul_degeneration _ _
 
 /- English proof (translation)
-Establish `h1 : ‖β‖ ^ 2 = (Q : ℝ)`. Rewrite using `[← Complex.normSq_eq_norm_sq, h]`. Establish `hQ' : (2 : ℝ) ≤ Q` using `by exact_mod_cast hQ`. Establish `h0 : 0 ≤ ‖β‖` using `norm_nonneg β`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_lt_of_normSq {β : ℂ} {Q : ℕ} (hQ : 2 ≤ Q) (h : Complex.normSq β = Q) : ‖β‖ < Q := by
   have h1 : ‖β‖ ^ 2 = (Q : ℝ) := by
@@ -179,14 +177,14 @@ theorem norm_lt_of_normSq {β : ℂ} {Q : ℕ} (hQ : 2 ≤ Q) (h : Complex.normS
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, MonObj.comp_pow, Category.comp_id, mul_inv_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_mul_inv_pow_eq_one_iff {S : Scheme.{0}} {N Z : Over S} [GrpObj N] [IsCommMonObj N] (E : N ⟶ N) (Q : ℕ)
     (x : Z ⟶ N) : x ≫ (E * ((𝟙 N) ^ Q)⁻¹) = 1 ↔ x ≫ E = x ^ Q := by
   rw [MonObj.comp_mul, GrpObj.comp_inv, MonObj.comp_pow, Category.comp_id, mul_inv_eq_one]
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, MonObj.comp_pow, Category.comp_id, MonObj.mul_comp, GrpObj.inv_comp, MonObj.pow_comp, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_mul_mul_mul_eq_mul {S : Scheme.{0}} {N : Over S} [GrpObj N] [IsCommMonObj N] (E : N ⟶ N) [IsMonHom E] (Q : ℕ) :
     E ≫ (E * ((𝟙 N) ^ Q)⁻¹) = (E * ((𝟙 N) ^ Q)⁻¹) ≫ E := by
@@ -194,35 +192,33 @@ private theorem inv_mul_mul_mul_eq_mul {S : Scheme.{0}} {N : Over S} [GrpObj N] 
     MonObj.pow_comp, Category.id_comp]
 
 /- English proof (translation)
-Establish `: IsCommMonObj N` using `hN.1`. Take `⟨hi_hom, hq_hom, hq_flat, hq_surj, hq_aff, hq_pb, _⟩` from `id hq`. Use `hi_hom` as an intermediate fact. Use `hq_hom` as an intermediate fact. Use `hq_flat` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq_surj` as an intermediate fact. Use `hq_aff` as an intermediate fact. Establish `: IsMonHom ((𝟙 N) ^ Q)` using `isMonHom_id_pow N Q`. Establish `hRhom : IsMonHom (E * ((𝟙 N) ^ Q)⁻¹)` using `isMonHom_mul_degeneration _ _`. Establish `hiq : i ≫ q = 1` using `hq_pb.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiR : i ≫ (E * ((𝟙 N) ^ Q)⁻¹) = toUnit _ ≫ η[N]`. Rewrite using `[(comp_mul_inv_pow_eq_one_iff E Q i).2 hi]`. Both sides reduce to the same expression. Take `⟨ψ, hψ, hqψ⟩` from `GlobalTheory.FlatQuotient.exists_desc q i (E * ((𝟙 N) ^ Q)⁻¹) hq_pb hiR`. Use `hψ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiEq : i ≫ (E ≫ q) = toUnit _ ≫ η[B]`. Rewrite using `[← Category.assoc, hi, MonObj.pow_comp, hiq, one_pow]`. Both sides reduce to the same expression. Take `⟨EB, _, hqEB⟩` from `GlobalTheory.FlatQuotient.exists_desc q i (E ≫ q) hq_pb hiEq`. Establish `hepi : Epi q` using `GlobalTheory.FlatQuotient.epi_of_flat_surjective q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψE : EB ≫ ψ = ψ ≫ E`. Apply `hepi.left_cancellation` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hqEB, Category.assoc, hqψ, inv_mul_mul_mul_eq_mul, ← Category.assoc, hqψ]`. Take `⟨B', _, ν, π, hB', hν, hνci, hπν, hstab, hdim⟩` from `GlobalTheory.AbelianImage.exists_image k N hN B hB ψ hψ`. Use `hν` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hνci` as an intermediate fact. Take `⟨F', hF', hF'ν⟩` from `hstab E inferInstance (fun x => ⟨x ≫ EB, by`. Simplify using `only [Category.assoc, hψE]⟩)`. Use `hF'` as an intermediate fact. Take `⟨a', ha'le, ha'⟩` from `hdim a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL' : AmpleCub B' (L.pull ν.left)` using `(GlobalTheory.SS.AmpSub.ampleCub_pull_and_pullPow (Sp k) N L hL).1 B' ν hν hνci`. Establish `hpp : PullPow F'.left (L.pull ν.left) Q` using `pullPow_pull ν.left (by rw [← Over.comp_left, hF'ν, Over.comp_left]) hE`. Take `⟨P, _, hProots, hPkill⟩` from `GlobalTheory.T.exists_poly_normSq_roots' k B' hB' (L.pull ν.left) hL' F' Q hF' hpp`. Take `⟨C2, hC2⟩` from `GlobalTheory.T.card_torsion_pullbackPowerLocus_le k N hN X B i q hq hB L hL E Q hQ inferInstance hE hi`. Take `⟨C3, hC3⟩` from `GlobalTheory.T.card_torsion_abelianVariety_le_const_mul_pow k B' hB' (L.pull ν.left) hL' a' ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmono : Mono ν`. Establish `: Mono ν.left` using `inferInstance`. Conclude with `(Over.forget _).mono_of_mono_map this`. Establish `: IsMonHom π`. Establish `: IsMonHom (π ≫ ν)` using `by rw [hπν]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.AbelianImage.isMonHom_of_comp_mono π ν`. Establish `: IsCommMonObj B'` using `GlobalTheory.AbelianImage.isCommMonObj_of_mono ν`. Establish `hker : ∀ x : 𝟙_ (Over (Sp k)) ⟶ N, x ≫ q ≫ π = 1 → x ≫ E = x ^ Q`. Introduce `x hx`. Rewrite using `[← comp_mul_inv_pow_eq_one_iff, ← hqψ, ← hπν, ← Category.assoc q, ← Category.assoc, hx, MonObj.one_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a', C2 * (C3 + 1), P, ha'le, fun β hβ => norm_lt_of_normSq hQ (hProots β hβ), ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Establish `hn1 : 1 ≤ n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Conclude with `absurd (by rw [h, Nat.cast_zero]) hn`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Conclude with `h`. Take `⟨hfin2, hcard2⟩` from `hC2 n hn1`. Take `⟨hfin3, hcard3⟩` from `hC3 n hn`. Use `letI : CommGroup (𝟙_ (Over (Sp k)) ⟶ N) := Hom.commGroup`. Use `letI : CommGroup (𝟙_ (Over (Sp k)) ⟶ B') := Hom.commGroup`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : (𝟙_ (Over (Sp k)) ⟶ N) →* (𝟙_ (Over (Sp k)) ⟶ B')` to `{ toFun := fun x => x ≫ q ≫ π map_one' := MonObj.one_comp _ map_mul' := fun x y => MonObj.mul_comp x y _ }`. Set `emb : {x : 𝟙_ (Over (Sp k)) ⟶ N // f x = 1 ∧ x ^ n = 1} → {x : 𝟙_ (Over (Sp k)) ⟶ N // x ≫ E = x ^ Q ∧ x ^ n = 1}` to `fun x => ⟨x.1, hker x.1 x.2.1, x.2.2⟩`. Establish `hemb : Function.Injective emb`. Introduce `x y h`. Establish `h'` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext h'`. Establish `: Finite {x : 𝟙_ (Over (Sp k)) ⟶ N // f x = 1 ∧ x ^ n = 1}` using `Finite.of_injective emb hemb`. Take `⟨hfin, hcard⟩` from `card_torsion_le_mul f n`. Establish `hk` using `Nat.card_le_card_of_injective emb hemb`. Use `⟨⟨hfin, ?_⟩, hfin2, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`. Establish `: C3 ≤ C3 + 1` using `Nat.le_succ C3`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `Nat.le_mul_of_pos_right C2 (Nat.succ_pos C3)`. Introduce `y`. Rewrite using `[← comp_mul_inv_pow_eq_one_iff, polyPt_comp (E * ((𝟙 N) ^ Q)⁻¹) E E (inv_mul_mul_mul_eq_mul E Q) P y, ← hqψ, ← hπν, show y ≫ q ≫ π ≫ ν = ((y ≫ q) ≫ π) ≫ ν by simp only [Category.assoc], ← polyPt_comp ν F' E hF'ν P, hPkill, MonObj.one_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (k : Type) [Field k] [IsAlgClosed k] (N : Over (Sp k)) [GrpObj N] (hN : SmConn N)
     (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B]
@@ -328,9 +324,7 @@ theorem core (k : Type) [Field k] [IsAlgClosed k] (N : Over (Sp k)) [GrpObj N] (
       ← polyPt_comp ν F' E hF'ν P, hPkill, MonObj.one_comp]
 
 /- English proof (translation)
-Establish `hη : IsClosedImmersion (η[B]).left`. Establish `: IsClosedImmersion ((η[B]).left ≫ B.hom)`. Rewrite using `[Over.w]`. Conclude with `(inferInstance : IsClosedImmersion (𝟙 (Sp k)))`. Conclude with `IsClosedImmersion.of_comp _ B.hom`.
-
-Establish `h' : IsPullback i.left (toUnit T).left q.left (η[B]).left` using `h.map (Over.forget (Sp k))`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) h'.flip hη`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isClosedImmersion_of_isPullback_unit {k : Type} [Field k] {T N B : Over (Sp k)} [GrpObj B] [IsSeparated B.hom]
     (i : T ⟶ N) (q : N ⟶ B) (h : IsPullback i (toUnit T) q η[B]) : IsClosedImmersion i.left := by
@@ -343,7 +337,7 @@ private theorem isClosedImmersion_of_isPullback_unit {k : Type} [Field k] {T N B
   exact MorphismProperty.of_isPullback (P := @IsClosedImmersion) h'.flip hη
 
 /- English proof (translation)
-Conclude with `(cancel_mono ν).1 h`.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_comp_mono_eq {k : Type} [Field k] {N G : Over (Sp k)} [GrpObj N] [GrpObj G] (ν : N ⟶ G) [Mono ν]
     {x y : 𝟙_ (Over (Sp k)) ⟶ N} (h : x ≫ ν = y ≫ ν) : x = y := by
@@ -354,51 +348,47 @@ end GlobalTheory.SS.FrobTorsion
 open GlobalTheory.SS.FrobTorsion in
 
 /- English proof (translation)
-Introduce `k _ _ p l _ _ hl hlp G _ hG g hg L hL F q hq hF`. Establish `: IsCommMonObj G` using `hG.1`. Use `letI : CommGroup (𝟙_ (Over (Sp k)) ⟶ G) := Hom.commGroup`. Take `⟨N, _, ν, hN, hν, hνci, hdiv, hlift, hFlift, hdimN⟩` from `GlobalTheory.DivisiblePart.exists_divisiblePart k p G hG`. Use `hν` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hνci` as an intermediate fact. Establish `: IsCommMonObj N` using `hN.1`. Use `letI : CommGroup (𝟙_ (Over (Sp k)) ⟶ N) := Hom.commGroup`. Establish `hFhom : IsMonHom (show G ⟶ G from F)` using `hF.1`. Take `⟨F', hF', hF'ν⟩` from `hFlift F hF.1`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hF'` as an intermediate fact. Establish `hνmono : Mono ν`. Establish `: Mono ν.left` using `inferInstance`. Conclude with `(Over.forget _).mono_of_mono_map this`. Set `F'e : End N` to `F'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', hgiso⟩` from `hdimN g hg`. Take `⟨X, _, _, _, B, _, i, qB, hqB, hB, hdimB⟩` from `GlobalTheory.T.exists_torus_abelian_quotient_p_divisible_smooth_group k p N hN hdiv`. Take `⟨a, ha, hga⟩` from `hdimB g' hg'`. Establish `hFN : FrobG N F' q` using `(GlobalTheory.SS.frobG_pow_and_closed_subgroup k G hG F q hF).2 N ν F' hν hνci hF' hF'ν`. Take `⟨hi_hom, hq_hom, hq_flat, hq_surj, hq_aff, hq_pb, _⟩` from `id hqB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hi_hom` as an intermediate fact. Use `hq_hom` as an intermediate fact. Establish `: IsProper B.hom` using `hB.proper`. Establish `htriv : i ≫ F' ≫ qB = toUnit _ ≫ η[B]` using `GlobalTheory.splitTorus_hom_proper_trivial_field k X B (i ≫ F' ≫ qB) inferInstance`. Set `F'' : splitTorus (Sp k) X ⟶ splitTorus (Sp k) X` to `hq_pb.lift (i ≫ F') (toUnit _) (by rw [Category.assoc, htriv])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF''i : F'' ≫ i = i ≫ F'` using `hq_pb.lift_fst _ _ _`. Establish `: Mono η[B]` using `⟨fun a b _ => toUnit_unique a b⟩`. Establish `hi_mono : Mono i` using `hq_pb.mono_fst_of_mono`. Establish `: IsMonHom (F'' ≫ i)` using `by rw [hF''i]; infer_instance`. Establish `hF''hom : IsMonHom F''` using `GlobalTheory.AbelianImage.isMonHom_of_comp_mono F'' i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion i.left` using `isClosedImmersion_of_isPullback_unit i qB hq_pb`. Establish `hFT : FrobG (splitTorus (Sp k) X) F'' q` using `(GlobalTheory.SS.frobG_pow_and_closed_subgroup k N hN F' q hFN).2 _ i F'' hi_hom inferInstance hF''hom hF''i`. Take `⟨m1, hm1, hpow1⟩` from `GlobalTheory.SS.frobG_splitTorus_pow k X F'' q hFT`. Establish `hLN : AmpleCub N (L.pull ν.left)` using `(GlobalTheory.SS.AmpSub.ampleCub_pull_and_pullPow (Sp k) G L hL).1 N ν hν hνci`. Take `⟨m2, hm2, hpow2⟩` from `GlobalTheory.SS.FrobLB.frob_pullPow k N hN F' q hFN (L.pull ν.left) hLN.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM : 1 ≤ m1 * m2` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hEhom : IsMonHom (show N ⟶ N from F'e ^ (m1 * m2))` using `GlobalTheory.SS.FrobSub.isMonHom_pow N F' hF' (m1 * m2)`. Establish `hQ : 2 ≤ q ^ (m1 * m2)` using `le_trans hq (Nat.le_self_pow (by omega) q)`. Establish `hE : PullPow (show N ⟶ N from F'e ^ (m1 * m2)).left (L.pull ν.left) ((q ^ (m1 * m2) : ℕ) : ℤ)`. Establish `h` using `hpow2 m1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[show m2 * m1 = m1 * m2 from Nat.mul_comm _ _]`. Rewrite using `[Nat.cast_pow]`. Conclude with `h`. Establish `hiE : i ≫ (show N ⟶ N from F'e ^ (m1 * m2)) = i ^ (q ^ (m1 * m2))`. Rewrite using `[← GlobalTheory.SS.FrobSub.pow_comm_hom i F' F'' hF''i (m1 * m2), hpow1 m2, MonObj.pow_comp, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a', C, P, ha'le, hroots, hbounds, hfix⟩` from `core k N hN X B i qB hqB hB (L.pull ν.left) hLN (show N ⟶ N from F'e ^ (m1 * m2)) (q ^ (m1 * m2)) hQ hE hiE a ha`. Establish `hcomm : (show N ⟶ N from F'e ^ (m1 * m2)) ≫ ν = ν ≫ (show G ⟶ G from F ^ (m1 * m2))` using `GlobalTheory.SS.FrobSub.pow_comm_hom ν F F' hF'ν (m1 * m2)`. Establish `hFM : IsMonHom (show G ⟶ G from F ^ (m1 * m2))` using `GlobalTheory.SS.FrobSub.isMonHom_pow G F hF.1 (m1 * m2)`. Set `W : Subgroup (𝟙_ (Over (Sp k)) ⟶ G)` to `{ carrier := {x | x ≫ (show G ⟶ G from F ^ (m1 * m2)) = x ^ (q ^ (m1 * m2))} mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonObj.mul_comp, hx, hy, mul_pow]`. Use the proof step `one_mem' := by`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[MonObj.one_comp, one_pow]`. Use the proof step `inv_mem' := fun {x} hx => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[GrpObj.inv_comp, hx, inv_pow] }`. Establish `hlk : ∀ n : ℕ, ((l ^ n : ℕ) : k) ≠ 0`. Introduce `n h`. Rewrite `h` using `[Nat.cast_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((l : ℕ) : k) = 0` using `pow_eq_zero_iff'.mp h |>.1`. Rewrite `h1` using `[CharP.cast_eq_zero_iff k p]`. Conclude with `hlp ((Nat.prime_dvd_prime_iff_eq (Fact.out) hl).mp h1).symm`. Establish `hcop : ∀ n : ℕ, (l ^ n).Coprime p` using `fun n => Nat.Coprime.pow_left n ((Nat.coprime_primes hl (Fact.out)).2 hlp)`. Establish `hlpos : ∀ n : ℕ, l ^ n ≠ 0` using `fun n => pow_ne_zero n hl.ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlift' : ∀ (x : 𝟙_ (Over (Sp k)) ⟶ G) (n : ℕ), x ^ l ^ n = 1 → ∃ y : 𝟙_ (Over (Sp k)) ⟶ N, y ≫ ν = x ∧ y ^ l ^ n = 1`. Introduce `x n hx`. Take `⟨y, hy⟩` from `hlift x (l ^ n) (hcop n) (hlpos n) hx`. Use `⟨y, hy, eq_of_comp_mono_eq ν ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.pow_comp, hy, hx, MonObj.one_comp]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Module.finrank ℤ X, a', m1 * m2, C, P, W, hM, ?_, fun x hx => hx, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β hβ`. Use `hroots β hβ` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨⟨hfinN, hcardN⟩, hfinF, hcardF⟩` from `hbounds (l ^ n) (hlk n)`. Set `f1 : {y : 𝟙_ (Over (Sp k)) ⟶ N // y ^ l ^ n = 1} → {x : 𝟙_ (Over (Sp k)) ⟶ G // x ^ l ^ n = 1}` to `fun y => ⟨y.1 ≫ ν, by rw [← MonObj.pow_comp, y.2, MonObj.one_comp]⟩`. Establish `hf1 : Function.Surjective f1`. Introduce `x`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hyn⟩` from `hlift' x.1 n x.2`. Conclude with `⟨⟨y, hyn⟩, Subtype.ext hy⟩`. Set `f2 : {y : 𝟙_ (Over (Sp k)) ⟶ N // y ≫ (show N ⟶ N from F'e ^ (m1 * m2)) = y ^ (q ^ (m1 * m2)) ∧ y ^ l ^ n = 1} → {x : W // x ^ l ^ n = 1}` to `fun y => ⟨⟨y.1 ≫ ν, by show (y.1 ≫ ν) ≫ (show G ⟶ G from F ^ (m1 * m2)) = (y.1 ≫ ν) ^ (q ^ (m1 * m2))`. Rewrite using `[Category.assoc, ← hcomm, ← Category.assoc, y.2.1, MonObj.pow_comp]⟩, by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SubgroupClass.coe_pow]`. Use `show (y.1 ≫ ν) ^ l ^ n = 1`. Rewrite using `[← MonObj.pow_comp, y.2.2, MonObj.one_comp]⟩`. Establish `hf2 : Function.Surjective f2`. Introduce `x`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxn : (x.1 : 𝟙_ (Over (Sp k)) ⟶ G) ^ l ^ n = 1`. Rewrite using `[← SubgroupClass.coe_pow, x.2]`. Both sides reduce to the same expression. Take `⟨y, hy, hyn⟩` from `hlift' x.1.1 n hxn`. Establish `hyE : y ≫ (show N ⟶ N from F'e ^ (m1 * m2)) = y ^ (q ^ (m1 * m2))`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Apply `eq_of_comp_mono_eq ν` to reduce the goal to its premises. Rewrite using `[Category.assoc, hcomm, ← Category.assoc, hy, MonObj.pow_comp, hy]`. Conclude with `x.1.2`. Conclude with `⟨⟨y, hyE, hyn⟩, Subtype.ext (Subtype.ext hy)⟩`. Establish `: Finite {x : 𝟙_ (Over (Sp k)) ⟶ G // x ^ l ^ n = 1}` using `Finite.of_surjective f1 hf1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Introduce `x n hx`. Take `⟨y, hy, _⟩` from `hlift' x n hx`.
-
-Use `show polyPt (F ^ (m1 * m2)) P x ≫ (show G ⟶ G from F ^ (m1 * m2)) = (polyPt (F ^ (m1 * m2)) P x) ^ (q ^ (m1 * m2))`. Rewrite using `[← hy, ← polyPt_comp ν (F'e ^ (m1 * m2)) (F ^ (m1 * m2)) hcomm P y, Category.assoc, ← hcomm, ← Category.assoc, hfix y, MonObj.pow_comp]`. Introduce `hle`. Establish `hgg : g ≤ g'` using `by omega`. Use `hgiso hgg` as an intermediate fact.
-
-Establish `: QuasiCompact qB.left` using `inferInstance`. Set `T : TorusExtension N` to `{ X := X, B := B, isAbelian := hB, q := qB, q_hom := hq_hom, q_flat := hq_flat, q_surjective := hq_surj, q_quasiCompact := inferInstance, i := i, i_hom := hi_hom, isKernel := hq_pb }`. Conclude with `⟨torusExtOfIso (asIso ν) T⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SS.frobenius_on_torsion : ∀ (k : Type) [Field k] [IsAlgClosed k] (p l : ℕ) [Fact p.Prime] [CharP k p], l.Prime → l ≠ p → ∀ (G : Over (Sp k)) [GrpObj G], SmConn G → ∀ (g : ℕ), SmoothOfRelativeDimension g G.hom → ∀ (L : LB G.left), AmpleCub G L → ∀ (F : End G) (q : ℕ), 2 ≤ q → FrobG G F q → ∃ (t a m C : ℕ) (P : Polynomial ℤ) (W : Subgroup (𝟙_ (Over (Sp k)) ⟶ G)), 1 ≤ m ∧ (∀ β : ℂ, Polynomial.aeval β P = 0 → ‖β‖ < (q : ℝ) ^ m) ∧ (∀ x ∈ W, x ≫ (show G ⟶ G from F ^ m) = x ^ (q ^ m)) ∧ (∀ n, Finite {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ^ l ^ n = 1} ∧ Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ^ l ^ n = 1} ≤ C * l ^ (n * (t + 2 * a)) ∧ Nat.card {x : W // x ^ l ^ n = 1} ≤ C * l ^ (n * t)) ∧ (∀ (x : (𝟙_ (Over (Sp k)) ⟶ G)) n, x ^ l ^ n = 1 → polyPt (F ^ m) P x ∈ W) ∧ (g ≤ t + a → Nonempty (TorusExtension G)) := by
   intro k _ _ p l _ _ hl hlp G _ hG g hg L hL F q hq hF

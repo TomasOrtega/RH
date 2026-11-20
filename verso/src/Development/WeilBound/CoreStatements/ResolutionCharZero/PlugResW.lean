@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.ResolutionCharZero.FromRes
 namespace PositivityTheory.ResPlug.FromRes
 
 /- English proof (translation)
-The claim follows from `resW_of_functorialResolution FunctorialResolution.functorialResolutionCharZero.{0}`.
+A detailed English derivation is pending.
 -/
 theorem resW : PositivityTheory.ResPlug.ResW :=
   resW_of_functorialResolution FunctorialResolution.functorialResolutionCharZero.{0}

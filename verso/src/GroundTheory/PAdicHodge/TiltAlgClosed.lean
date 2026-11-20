@@ -15,7 +15,7 @@ section Approximation
 variable {F : Type*} [NontriviallyNormedField F] [CompleteSpace F] [IsUltrametricDist F]
 
 /- English proof (translation)
-Rewrite using `[← spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow, ← spectralValueTerms_of_lt_natDegree _ hi]`. Conclude with `le_ciSup (spectralValueTerms_bddAbove _) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_rpow_le_norm_coeff_zero_rpow {L : Type*} [Field L] [Algebra F L]
     [Algebra.IsAlgebraic F L] (β : L) {i : ℕ} (hi : i < (minpoly F β).natDegree) :
@@ -25,9 +25,9 @@ theorem norm_coeff_rpow_le_norm_coeff_zero_rpow {L : Type*} [Field L] [Algebra F
   exact le_ciSup (spectralValueTerms_bddAbove _) i
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure F) P (degree_pos_of_irreducible hirr).ne'`. Establish `hmin : minpoly F (α - algebraMap F (AlgebraicClosure F) x) = P.comp (X + C x)`. Rewrite using `[minpoly.sub_algebraMap, ← minpoly.eq_of_irreducible_of_monic hirr hα hmon]`. Establish `hdeg : (P.comp (X + C x)).natDegree = P.natDegree`. Rewrite using `[natDegree_comp, natDegree_X_add_C, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `norm_coeff_rpow_le_norm_coeff_zero_rpow (F := F) (L := AlgebraicClosure F) (α - algebraMap F (AlgebraicClosure F) x) (i := i) (by rw [hmin, hdeg]; exact hi)`. Rewrite `h` using `[hmin, hdeg, coeff_zero_eq_eval_zero, eval_comp, eval_add, eval_X, eval_C, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_coeff_comp_rpow_le {P : F[X]} (hmon : P.Monic) (hirr : Irreducible P) (x : F) {i : ℕ}
     (hi : i < P.natDegree) :
@@ -44,41 +44,35 @@ theorem norm_coeff_comp_rpow_le {P : F[X]} (hmon : P.Monic) (hirr : Irreducible 
   rwa [hmin, hdeg, coeff_zero_eq_eval_zero, eval_comp, eval_add, eval_X, eval_C, zero_add] at h
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun P hmon hirr => ?_` and prove the remaining obligations. Use `set d := P.natDegree with hd`. Establish `hd0 : 0 < d` using `natDegree_pos_iff_degree_pos.2 (degree_pos_of_irreducible hirr)`. Establish `step : ∀ x : F, ∃ x' : F, ‖P.eval x'‖ ≤ δ * ‖P.eval x‖ ∧ ‖x' - x‖ ^ d ≤ ‖P.eval x‖`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : P.eval x = 0`. Conclude with `⟨x, by simp [hx], by rw [sub_self, norm_zero, zero_pow hd0.ne', hx, norm_zero]⟩`. Take `⟨c, hc⟩` from `hdiv _ hx d hd0`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[norm_zero, zero_pow hd0.ne', eq_comm, norm_eq_zero]`. Conclude with `hx hc`. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.2 hc0`. Use `set Q := P.comp (X + C x) with hQ`. Establish `hQmon : Q.Monic` using `hmon.comp_X_add_C x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQdeg : Q.natDegree = d` using `by rw [hQ, natDegree_comp, natDegree_X_add_C, mul_one]`. Establish `hQc : ∀ i, i < d → ‖Q.coeff i‖ ≤ ‖c‖ ^ (d - i)`. Introduce `i hi`. Establish `h` using `norm_coeff_comp_rpow_le hmon hirr x hi`. Establish `hroot : ‖P.eval x‖ ^ (1 / d : ℝ) = ‖c‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc, one_div, Real.pow_rpow_inv_natCast (norm_nonneg _) hd0.ne']`. Rewrite `h` using `[hroot]`. Establish `hdi : (d : ℝ) - i = ((d - i : ℕ) : ℝ)` using `by rw [Nat.cast_sub hi.le]`. Rewrite `h` using `[hdi, one_div]`. Establish `hne : d - i ≠ 0` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set R := Q.scaleRoots c⁻¹ with hR`. Establish `hRmon : R.Monic` using `(monic_scaleRoots_iff _).2 hQmon`. Establish `hRdeg : R.natDegree = d` using `by rw [hR, natDegree_scaleRoots, hQdeg]`. Establish `hRc : ∀ i, ‖R.coeff i‖ ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hR, coeff_scaleRoots, hQdeg, norm_mul, norm_pow, norm_inv]`. Break down `lt_or_ge i d with hi | hi` into its components or cases. Rewrite using `[inv_pow, ← div_eq_mul_inv, div_le_one (pow_pos hcpos _)]`. Conclude with `hQc i hi`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.sub_eq_zero_of_le hi, pow_zero, mul_one]`. Break down `hi.lt_or_eq with hi | hi` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt (hQdeg ▸ hi), norm_zero]`. Conclude with `zero_le_one`. Rewrite using `[← hi, ← hQdeg, hQmon.coeff_natDegree, norm_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy1, hy⟩` from `happrox R hRmon (hRdeg ▸ hd0) hRc`. Use `⟨x + c * y, ?_, ?_⟩` and prove the remaining obligations. Establish `heval : R.eval y = c⁻¹ ^ d * P.eval (x + c * y)`. Use `scaleRoots_eval_mul Q (c * y) c⁻¹` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ hc0, hQdeg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hR]`. Rewrite using `[this, hQ, eval_comp, eval_add, eval_X, eval_C, add_comm]`. Establish `hPx' : P.eval (x + c * y) = c ^ d * R.eval y`. Rewrite using `[heval, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hc0, one_pow, one_mul]`. Rewrite using `[hPx', norm_mul, norm_pow, hc, mul_comm δ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `mul_le_mul_of_nonneg_left hy (norm_nonneg _)`. Rewrite using `[add_sub_cancel_left, norm_mul, ← hc]`. Conclude with `pow_le_pow_left₀ (by positivity) (mul_le_of_le_one_right (norm_nonneg _) hy1) _`. Use `choose f hf1 hf2 using step`. Use `set s : ℕ → F := fun n => f^[n] 0 with hs`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsucc : ∀ n, s (n + 1) = f (s n)` using `fun n => Function.iterate_succ_apply' f n 0`. Use `set M := ‖P.eval 0‖ with hM`. Establish `hval : ∀ n, ‖P.eval (s n)‖ ≤ δ ^ n * M`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp [hs, hM]`. Consider the case `succ n ih`. Rewrite using `[hsucc, pow_succ, mul_comm (δ ^ n) δ, mul_assoc]`. Conclude with `(hf1 _).trans (mul_le_mul_of_nonneg_left ih hδ0)`. Use `set r : ℝ := δ ^ (1 / d : ℝ) with hr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : 0 ≤ r` using `Real.rpow_nonneg hδ0 _`. Establish `hr1 : r < 1` using `Real.rpow_lt_one hδ0 hδ1 (by positivity)`. Establish `hdist : ∀ n, dist (s n) (s (n + 1)) ≤ M ^ (1 / d : ℝ) * r ^ n`. Introduce `n`. Rewrite using `[dist_comm, dist_eq_norm, hsucc]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ‖f (s n) - s n‖ ^ d ≤ δ ^ n * M` using `(hf2 _).trans (hval n)`. Establish `h2 : ‖f (s n) - s n‖ = (‖f (s n) - s n‖ ^ d) ^ (1 / d : ℝ)`. Rewrite using `[one_div, Real.pow_rpow_inv_natCast (norm_nonneg _) hd0.ne']`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Real.mul_rpow (pow_nonneg hδ0 _) (norm_nonneg _), mul_comm ((δ ^ n) ^ (1 / d : ℝ))]`. Use `congr 1`. Rewrite using `[hr, ← Real.rpow_natCast δ n, ← Real.rpow_mul hδ0, ← Real.rpow_natCast (δ ^ (1 / d : ℝ)) n, ← Real.rpow_mul hδ0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete (cauchySeq_of_le_geometric r _ hr1 hdist)`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun n => P.eval (s n)) atTop (𝓝 (P.eval L))` using `(P.continuous.tendsto L).comp hL`. Establish `hzero : Tendsto (fun n => P.eval (s n)) atTop (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`.
-
-Use `squeeze_zero (fun n => norm_nonneg _) hval ?_` and prove the remaining obligations. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hδ0 hδ1).mul_const M`. Conclude with `tendsto_nhds_unique hlim hzero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_of_exists_approx_root
     (hdiv : ∀ z : F, z ≠ 0 → ∀ n : ℕ, 0 < n → ∃ c : F, ‖c‖ ^ n = ‖z‖)
@@ -193,9 +187,9 @@ local notation "K♭" => Tilt K NormedField.valuation (normInteger K) normIntege
 local notation "♮" x:max => ((PreTilt.untilt x : normInteger K) : K)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq (tiltSharp K p z) hn`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[zero_pow hn.ne', eq_comm, tiltSharp_eq_zero_iff]`. Conclude with `hz hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_tilt_norm_eq (p := p) hw0`. Conclude with `⟨c, by rw [hc, ← norm_pow, hw, norm_tiltSharp]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tilt_norm_pow_eq [IsAlgClosed K] (z : K♭) (hz : z ≠ 0) (n : ℕ) (hn : 0 < n) :
     ∃ c : K♭, ‖c‖ ^ n = ‖z‖ := by
@@ -208,23 +202,19 @@ theorem exists_tilt_norm_pow_eq [IsAlgClosed K] (z : K♭) (hz : z ≠ 0) (n : �
   exact ⟨c, by rw [hc, ← norm_pow, hw, norm_tiltSharp]⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap 𝒪♭ K♭)` using `IsFractionRing.injective 𝒪♭ K♭`. Take `⟨R', hR'⟩ : R ∈ lifts (algebraMap 𝒪♭ K♭)` from `(lifts_iff_coeff_lifts R).2 fun i => norm_le_one_iff_exists_algebraMap.1 (hR i)`. Use `replace hR' : R'.map (algebraMap 𝒪♭ K♭) = R := hR'`. Establish `hR'mon : R'.Monic` using `monic_of_injective hinj (hR' ▸ hmon)`. Establish `hR'deg : R'.natDegree = R.natDegree` using `by rw [← hR', natDegree_map_eq_of_injective hinj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ϖ : normInteger K := a.untilt with hϖ`. Use `set φ := untiltModHom (p := p) ϖ hp with hφ`. Establish `hnt : Nontrivial (normInteger K ⧸ Ideal.span {ϖ})`. Use `Ideal.Quotient.nontrivial_iff.2 fun htop => ?_` and prove the remaining obligations. Establish `h1 : (1 : normInteger K) ∈ Ideal.span {ϖ}` using `htop ▸ Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[mem_span_singleton_iff_norm_le]`. Simplify using `only [OneMemClass.coe_one, norm_one] at h1`. Conclude with `absurd (h1.trans_lt ha1) (lt_irrefl _)`. Use `set Qbar := R'.map φ with hQbar`. Establish `hQbarmon : Qbar.Monic` using `hR'mon.map φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hQbardeg : Qbar.natDegree = R.natDegree`. Rewrite using `[hQbar, hR'mon.natDegree_map, hR'deg]`. Take `⟨Q, hQmap, hQdeg, hQmon⟩` from `lifts_and_natDegree_eq_and_monic (f := Ideal.Quotient.mk (Ideal.span {ϖ})) (map_surjective _ Ideal.Quotient.mk_surjective Qbar) hQbarmon`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Q.map (normInteger K).subtype) (by`. Rewrite using `[degree_eq_natDegree (hQmon.map _).ne_zero, natDegree_map_eq_of_injective Subtype.val_injective, hQdeg, hQbardeg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hdeg.ne')` after adjusting the coercions. Establish `hzint : IsIntegral (normInteger K) z` using `⟨Q, hQmon, by`. Rewrite `hz` using `[IsRoot.def, eval_map]`. Conclude with `hz⟩`. Establish `hzmem : z ∈ normInteger K` using `Valuation.Integers.mem_of_integral normInteger_integers hzint`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `set z' : normInteger K := ⟨z, hzmem⟩`. Establish `hQz : Q.eval z' = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite `hz` using `[IsRoot.def, eval_map]`. Establish `: (normInteger K).subtype (Q.eval z') = Q.eval₂ (normInteger K).subtype z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← eval₂_at_apply]`. Both sides reduce to the same expression. Rewrite using `[ZeroMemClass.coe_zero]`. Conclude with `this.trans hz`. Take `⟨y, hy⟩` from `untiltModHom_surjective (p := p) ϖ hp (Ideal.Quotient.mk _ z')`.
-
-Establish `hker : R'.eval y ∈ RingHom.ker φ`. Rewrite using `[RingHom.mem_ker, ← eval₂_at_apply, ← eval_map, ← hQbar, hφ, hy, ← hQmap, eval_map, eval₂_at_apply, hQz, map_zero]`. Rewrite `hker` using `[ker_untiltModHom a ϖ rfl hp, Ideal.mem_span_singleton, preTilt_dvd_iff_norm_le]`. Use `⟨algebraMap 𝒪♭ K♭ y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_algebraMap_preTilt]`.
-
-Conclude with `preTilt_norm_le_one y`. Rewrite using `[← hR', eval_map, eval₂_at_apply, norm_algebraMap_preTilt]`. Conclude with `hker`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_root_tilt [IsAlgClosed K] (a : 𝒪♭) (hp : ‖(p : K)‖ ≤ ‖♮a‖) (ha1 : ‖♮a‖ < 1)
     (R : K♭[X]) (hmon : R.Monic) (hdeg : 0 < R.natDegree) (hR : ∀ i, ‖R.coeff i‖ ≤ 1) :

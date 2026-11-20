@@ -17,11 +17,11 @@ namespace GlobalTheory.Mum
 open GlobalTheory.HalfBC GlobalTheory.PullLinear GlobalTheory.FactorPull in
 
 /- English proof (translation)
-Introduce `S S' f G _ _ G₀ _ _ inc v L L₁ P hL hL₁ hP hw hPw`. Establish `gG` using `isGrpPullback_pullback G f`. Establish `gG'` using `isGrpPullback_pullback G₀ f`. Take `⟨wL, hwL⟩` from `hw`. Use `⟨sqOf gG, isSquare_sqOf gG, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `lift_sq gG gG' (u := inc) (v := inc ≫ v) (u₁ := (Over.pullback f).map inc) (v₁ := (Over.pullback f).map inc ≫ (Over.pullback f).map v) (map_left_fst _ _) (by rw [← CategoryTheory.Functor.map_comp]; exact map_left_fst _ _)`. Establish `H : LBIso _ _` using `⟨lamIso gG' wL, isGen_lamIso gG' wL hwL⟩`. Establish `lL : (abelian₂ G₀ L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `lL₁ : (abelian₂ _ L₁).IsLB` using `DVR.linComb_isLB _ hL₁ _ _`. Establish `H₁` using `H.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullLinComb (abelian₂ G₀ L) _ (fun _ => sqOf gG) (fun _ => sqOf gG') _ _ fun _ => hm.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H₂` using `hPw.chartPull (Geo.Tor.chartPullPull _ (sqOf gG) _ rfl) (Geo.Tor.chartPullPull _ (sqOf gG) _ rfl)`. Conclude with `LBIso.trans (pull_isLB lL₁ _) (pull_isLB (pull_isLB lL _) _) (pull_isLB hP _) H₁ H₂.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamRetract_baseChange : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (G₀ : Over S) [GrpObj G₀] [IsCommMonObj G₀] (inc : G ⟶ G₀) (v : G₀ ⟶ G₀) (L : LB G₀.left) (L₁ : LB ((Over.pullback f).obj G₀).left) (P : LB (G2 G).left), L.IsLB → L₁.IsLB → P.IsLB → LBIso L₁ (L.pull (pullback.fst G₀.hom f)) → LBIso P ((abelian₂ G₀ L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ v) : G2 G ⟶ G2 G₀).left) → ∃ π₂ : (G2 ((Over.pullback f).obj G)).left ⟶ (G2 G).left, IsSquare (G' := (Over.pullback f).obj G) (G := G) (pullback.fst G.hom f) π₂ ∧ LBIso ((abelian₂ ((Over.pullback f).obj G₀) L₁).pull (lift (fst _ _ ≫ (Over.pullback f).map inc) (snd _ _ ≫ (Over.pullback f).map inc ≫ (Over.pullback f).map v) : G2 ((Over.pullback f).obj G) ⟶ G2 ((Over.pullback f).obj G₀)).left) (P.pull π₂) := by
   intro S S' f G _ _ G₀ _ _ inc v L L₁ P hL hL₁ hP hw hPw

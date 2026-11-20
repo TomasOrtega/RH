@@ -18,9 +18,9 @@ namespace PositivityTheory.Rg.BcB.F.Ex0.BadSplitP
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `e : KB = (GlobalTheory.PrincCong.congSub w n m).subgroupOf (UL n w)`. Use extensionality with `k`. Rewrite using `[Subgroup.mem_subgroupOf, GlobalTheory.PrincCong.mem_congSub_iff, hKB k]`. Conclude with `Iff.rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun k hk => ?_, fun k hk => hk⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `(GlobalTheory.PrincCong.isOpen_congSub w n m).preimage continuous_subtype_val`. Conclude with `Subgroup.mem_subgroupOf.2 ((GlobalTheory.PrincCong.mem_congSub_iff w n m _).1 (Subgroup.mem_subgroupOf.1 hk)).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLevel_of_isCong {n m : ℕ} {w : Pl E} {KB : Subgroup (UL n w)} (hKB : IsCong m KB) :
     GlobalTheory.BCT.IsLevel (MonoidHom.id (UL n w)) (KL n w) KB := by
@@ -41,9 +41,9 @@ namespace PositivityTheory.Rg.BcB.F.Ex0
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n a ha w hw μ hμ m _ KB hKB`. Establish `hK` using `BadSplitP.isLevel_of_isCong hKB`. Establish `e : fixFn n a w μ m KB = ctMu (Nat.add_sub_cancel' ha) w μ (U.lone KB)`. Unfold `fixFn`. Rewrite using `[dif_pos ha, if_pos hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : IsHecke KB (U.lone KB)` using `MB.mb_isHecke_lone hK (MB.mb_isCompact_KL_split hw)`. Take `⟨K₁, K₂, h1, h2, -, hf⟩` from `GlobalTheory.BCT.CtLevel.ctMu_hecke E hE n a ha w hw μ hμ KB hK`. Rewrite using `[e]`. Conclude with `⟨K₁.prod K₂, ⟨K₁, K₂, rfl, h1, h2⟩, (hf _ hH).1, h3 E n a ha w hw μ KB hK _ hH⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem badSplit2 (h3 : M3) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], GlobalTheory.BCT.Unr E → ∀ (n a : ℕ), a ≤ n →
     ∀ (w : Pl E), IsSplitAt w → ∀ (μ : (w.adicCompletion E)ˣ →* ℂˣ), IsOpen (μ.ker : Set (w.adicCompletion E)ˣ) →

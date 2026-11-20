@@ -9,15 +9,15 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `hT` using `restPathTo`. Establish `hF` using `restPathFrom`. Establish `hS` using `restStd`. Establish `hP` using `restPsi`. Establish `hPol` using `restPol`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hLI, hSp⟩` from `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.psiPath_basis n N (isV LL) (Bn B) R`. Establish `hinj : Function.Injective (rename (iv N n) : MvPolynomial (Fin N × Fin n) R →ₐ[R] MvPolynomial (ℕ × Fin n) R).toLinearMap` using `rename_injective _ (iv_inj N n)`. Establish `hfun : (fun x : WIdx n N LL B => (rename (iv N n) : MvPolynomial (Fin N × Fin n) R →ₐ[R] MvPolynomial (ℕ × Fin n) R).toLinearMap (Psi R x.1.1.mu x.1.2)) = (fun y : Formalism.InvariantFactorPaths.GelfandTsetlinBases.PathIdx n N (isV LL) (Bn B) => Formalism.InvariantFactorPaths.Gel …`. Use function extensionality and compare the values at `x`. Conclude with `rename_Psi hT hF hS hP R x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `h1` using `hLI.comp (e17 hT hF hS n N LL B) (e17 hT hF hS n N LL B).injective`. Rewrite `h1` using `[← hfun]`. Conclude with `LinearIndependent.of_comp _ h1`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hPol R n N B, ← hSp, Submodule.map_span]`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨P, I, hI, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e17 hT hF hS n N LL B ⟨(P, I), hI⟩, (congrFun hfun ⟨(P, I), hI⟩).symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `(e17 hT hF hS n N LL B).surjective y`. Conclude with `⟨Psi R x.1.1.mu x.1.2, ⟨x.1.1, x.1.2, x.2, rfl⟩, congrFun hfun x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem standardPath_basis_any_ring (R : Type) [CommRing R] (N n : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) :
     LinearIndependent R (fun x : {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2} =>
@@ -56,7 +56,7 @@ theorem standardPath_basis_any_ring (R : Type) [CommRing R] (N n : ℕ) (LL : Le
       exact ⟨Psi R x.1.1.mu x.1.2, ⟨x.1.1, x.1.2, x.2, rfl⟩, congrFun hfun x⟩
 
 /- English proof (translation)
-Use `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.pathIdxFinite n N (isV LL) (Bn B)` as an intermediate fact. Conclude with `Finite.of_equiv _ (e17 restPathTo restPathFrom restStd n N LL B).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem standardPath_index_finite (N n : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) :
     Finite {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2} := by

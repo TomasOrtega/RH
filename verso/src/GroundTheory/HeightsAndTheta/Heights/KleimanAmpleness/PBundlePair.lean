@@ -18,9 +18,9 @@ section FirstTyping
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω] {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_eq_span_mul_set]`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_mul, SetLike.mem_coe, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, w, hw, rfl⟩`. Conclude with `⟨q, hq, w, hw, rfl⟩`. Introduce and unpack `⟨q, hq, w, hw, rfl⟩`. Conclude with `⟨q, hq, w, hw, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twist_sub_eq_mul (F Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) :
     (F.twist Q).sub I = Q.sub I * F.sub I := by
@@ -36,9 +36,9 @@ theorem twist_sub_eq_mul (F Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) 
     exact ⟨q, hq, w, hw, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero`. Take `⟨i, hi⟩` from `I.2.1`. Express the relevant statement in the definitionally equal form `Kleiman.twistMod S x 0 I = _`. Rewrite using `[Kleiman.twistMod_eq_span 0 I hi, zpow_zero, pow_zero, Submodule.one_eq_span]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ b ih`. Express the relevant statement in the definitionally equal form `((Q.pow b).twist Q).sub I = _`. Rewrite using `[twist_sub_eq_mul, ih, pow_succ']`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_sub_eq (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (b : ℕ) :
     (Q.pow b).sub I = Q.sub I ^ b := by
@@ -52,13 +52,13 @@ theorem pow_sub_eq (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (b : ℕ
     rw [twist_sub_eq_mul, ih, pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem z hz`. Take `⟨j, hj, rfl⟩` from `hz`. Establish `hj' : j ∈ I` using `by exact_mod_cast hj`. Use `⟨1, 1, (I.erase j).card, ∏ l ∈ I.erase j, X l, isHomogeneous_X S j, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using IsHomogeneous.prod (I.erase j) (fun l => (X l : Kleiman.Poly S N)) (fun _ => 1) (fun l _ => isHomogeneous_X S l)`. Rewrite using `[one_mul, add_comm]`. Conclude with `Finset.card_erase_add_one hj'`. Rewrite using `[pow_one]`. Conclude with `Finset.mul_prod_erase I (fun l => (X l : Kleiman.Poly S N)) hj'`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact ⟨0, 0, 0, 1, isHomogeneous_one _ _, isHomogeneous_one _ _, by simp, by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨r, d, d', s', h1, h2, h3, h4⟩` from `ha`. Take `⟨r₂, d₂, d₂', t', g1, g2, g3, g4⟩` from `hb`. Use `⟨r + r₂, d + d₂, d' + d₂', s' * t', h1.mul g1, h2.mul g2, by rw [add_mul]; omega, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[pow_add, ← h4, ← g4]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_prod_pow {I : Finset (Fin (N + 1))} {s : Kleiman.Poly S N} (hs : s ∈ Kleiman.monos I) :
     ∃ (r d d' : ℕ) (s' : Kleiman.Poly S N), s.IsHomogeneous d ∧ s'.IsHomogeneous d' ∧
@@ -84,27 +84,27 @@ theorem exists_mul_eq_prod_pow {I : Finset (Fin (N + 1))} {s : Kleiman.Poly S N}
     ring
 
 /- English proof (translation)
-Establish `hxI : Kleiman.xProd I ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i hi => (Kleiman.mem_support x).mp (I.2.2 hi)`. Establish `hprod : ∀ r : ℕ, aeval x ((∏ j ∈ I.1, (X j : Kleiman.Poly S N)) ^ r) = Kleiman.xProd I ^ r`. Introduce `r`. Simplify using `[Kleiman.xProd, map_prod]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ht`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hi)`. Establish `hsub : (Kleiman.singleChart hxi).1 ⊆ I.1` using `Finset.singleton_subset_iff.mpr hi`. Take `⟨a, ⟨u, hu⟩, hat⟩` from `(Q.mem_iff _ I hsub t).mp ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ᶠ n : ℕ in Filter.atTop, ∀ J, x i ^ n • ((a : Ω) • t) ∈ (Q.twist (Kleiman.twistSys S x (n : ℤ))).sub J` using `Filter.eventually_all.mpr fun J => Kleiman.ExtensionProof.eventually_pow_smul_mem Q.toSubFamily hxi hat J`. Take `⟨n, hn⟩` from `hev.exists`. Establish `hgam : x i ^ n • ((a : Ω) • t) ∈ Q.gam (n : ℤ)` using `Kleiman.ExtensionProof.mem_gam.mpr hn`. Establish `hinv : (a : Ω) * ((↑u⁻¹ : Kleiman.chartRing S x I) : Ω) = 1`. Use `congrArg Subtype.val (Units.mul_inv u)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hu]`. Conclude with `this`. Take `⟨g, s, r, hs, hg, hsr, hb⟩` from `(↑u⁻¹ : Kleiman.chartRing S x I).2`. Take `⟨r', d, d', s', hsd, hs', hdd, hss⟩` from `exists_mul_eq_prod_pow hs`. Establish `hs0 : aeval x s ≠ 0` using `Kleiman.eval_ne_zero_of_mem_monos I hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd : r = d` using `hsr.inj_right hsd (fun h => hs0 (by rw [h, map_zero]))`. Substitute `hrd` using the available equality. Establish `h1 : (∏ l ∈ I.1.erase i, (X l : Kleiman.Poly S N)).IsHomogeneous (I.1.erase i).card`. Simplify using `using IsHomogeneous.prod (I.1.erase i) (fun l => (X l : Kleiman.Poly S N)) (fun _ => 1) (fun l _ => isHomogeneous_X S l)`. Establish `hPh` using `((h1.pow n).mul hg).mul hs'`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `Kleiman.ExtensionProof.smul_mem_gam Q.toSubSystem hPh hgam`. Use `⟨n + r', ?_⟩` and prove the remaining obligations. Establish `hc` using `Finset.card_erase_add_one hi`. Establish `hdeg : ((n : ℤ) + (((I.1.erase i).card * n + r + d' : ℕ) : ℤ)) = (((n + r') * I.1.card : ℕ) : ℤ)`. Rewrite `hdd`, the goal using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdd' : ((r : ℤ) + d') = r' * ((I.1.erase i).card + 1)` using `by exact_mod_cast hdd`. Use `push_cast`. Take the linear combination `hdd'`. Rewrite `hmem` using `[hdeg]`. Use `hmem using 1` and compare the differences between its conclusion and the goal.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hag : (a : Ω) * aeval x g = aeval x s`. Rewrite `hinv` using `[hb]`. Clear denominators, using `at hinv` for the nonvanishing conditions. Take the linear combination `hinv`. Establish `hss' : aeval x s * aeval x s' = (x i * ∏ l ∈ I.1.erase i, x l) ^ r'`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (aeval x) hss` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_prod, aeval_X] at this`. Rewrite using `[this, Finset.mul_prod_erase I.1 x hi]`. Simplify using `only [smul_eq_mul, map_mul, map_pow, map_prod, aeval_X, Kleiman.xProd]`. Rewrite using `[← Finset.mul_prod_erase I.1 x hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(x i * ∏ l ∈ I.1.erase i, x l) ^ n * t) * hss' + (-(x i * ∏ l ∈ I.1.erase i, x l) ^ n * t * aeval x s') * hag`. Introduce and unpack `⟨n, hn⟩`. Establish `h1` using `(Kleiman.ExtensionProof.mem_gam.mp hn) I`. Establish `hs : (∏ j ∈ I.1, (X j : Kleiman.Poly S N)) ^ n ∈ Kleiman.monos I.1` using `pow_mem (prod_mem fun j hj => Kleiman.X_mem_monos hj) n`. Establish `hsh : ((∏ j ∈ I.1, (X j : Kleiman.Poly S N)) ^ n).IsHomogeneous (I.1.card * n)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsHomogeneous.prod I.1 (fun l => (X l : Kleiman.Poly S N)) (fun _ => 1) (fun l _ => isHomogeneous_X S l)` as an intermediate fact. Simplify using `using this.pow n`. Establish `h2` using `Kleiman.ExtensionProof.inv_smul_mem Q.toSubSystem h1 hs hsh (by push_cast; ring)`. Rewrite `h2` using `[hprod, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hxI), one_mul]`. Conclude with `h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sub_iff_gam (Q : Kleiman.LineBundle S x) (I : Kleiman.Chart x) (t : Ω) :
     t ∈ Q.sub I ↔ ∃ n : ℕ, Kleiman.xProd I ^ n * t ∈ Q.gam ((n * I.1.card : ℕ) : ℤ) := by
@@ -182,7 +182,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [DecidableEq K] {ι : K 
   [Algebra S Ω]
 
 /- English proof (translation)
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_secOver_iff_charts (y : (Σ k, ι k) → Ω) (δ : K → ℤ) (t : Ω) :
     t ∈ secOver S y δ ↔ ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) →
@@ -191,15 +191,15 @@ theorem mem_secOver_iff_charts (y : (Σ k, ι k) → Ω) (δ : K → ℤ) (t : �
     Subalgebra.mem_toSubmodule]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mem_secOver_iff_charts]`. Introduce `c hc`. Establish `hxi : (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) (e (c k₀)) ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hc k₀` using `[IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Take `⟨n, hn⟩` from `h (Kleiman.singleChart hxi)`. Rewrite `hn` using `[mem_secOver_iff_charts]`. Establish `h1` using `hn c hc`. Establish `hterm : ∀ k, y ⟨k, c k⟩ ^ (-(δ + (((n * (Kleiman.singleChart hxi).1.card : ℕ) : ℤ)) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k) = y ⟨k, c k⟩ ^ (-δ k) * (if k = k₀ then (y ⟨k, c k⟩ ^ n)⁻¹ else 1)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, IndefiniteRowSideFullHecke.Kleiman2.baseDeg, smul_eq_mul, Kleiman.singleChart, Finset.card_singleton, mul_one]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same, if_pos rfl, mul_one, neg_add, zpow_add₀ (hc _), zpow_neg (y _) (n : ℤ), zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hk, if_neg hk, mul_zero, add_zero, mul_one]`. Rewrite `h1` using `[Finset.prod_congr rfl (fun k _ => hterm k), Finset.prod_mul_distrib, Finset.prod_ite_eq', if_pos (Finset.mem_univ _)]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `hx : Kleiman.xProd (Kleiman.singleChart hxi) = y ⟨k₀, c k₀⟩`. Simplify using `[Kleiman.xProd, Kleiman.singleChart, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Use `pow_ne_zero n (hc k₀)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Introduce `h I`. Conclude with `mem_chartSecOver_of_mem S y k₀ e δ I h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem forall_mem_chartSecOver_iff (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1))
     (δ : K → ℤ) (t : Ω) :
@@ -238,19 +238,19 @@ theorem forall_mem_chartSecOver_iff (y : (Σ k, ι k) → Ω) (k₀ : K) {N : �
 end SecondTyping
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ Ω _ _ y k₀ N e hM γ β`. Establish `hsub : ∀ δ : K → ℤ, ∃ Q : Kleiman.LineBundle S (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm), ∀ I, (Q.sub I : Set Ω) = chartSecOver S y k₀ e δ I`. Introduce `δ`. Take `⟨Q, hQ⟩` from `h₁ S K ι Ω y k₀ N e hM δ`. Use `⟨Q, fun I => Set.ext fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, mem_sub_iff_gam]`. Use `exists_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Kleiman.SubSystem.gam, hQ]`. Establish `hsecs : ∀ (Q : Kleiman.SubSystem S (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) Ω) (δ : K → ℤ), (∀ I, (Q.sub I : Set Ω) = chartSecOver S y k₀ e δ I) → Q.secs = secOver S y δ`. Introduce `Q δ hQ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `t`. Rewrite using `[← forall_mem_chartSecOver_iff]`. Simplify using `only [Kleiman.SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem]`. Conclude with `forall_congr' fun I => by rw [← hQ I]; rfl`. Take `⟨G, hG⟩` from `hsub γ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hsub β`. Establish `hpow : ∀ (b : ℕ) I, ((G.twist (B.pow b)).sub I : Set Ω) = chartSecOver S y k₀ e (γ + b • β) I`. Introduce `b I`. Rewrite using `[twist_sub_eq_mul, pow_sub_eq]`. Proceed by induction on `b with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [hG I]`. Consider the case `succ b ih`. Rewrite using `[pow_succ', mul_assoc, Submodule.mul_eq_span_mul_set (B.sub I) (B.sub I ^ b * G.sub I), hB I, ih, h₂ S K ι Ω y k₀ N e hM β (γ + b • β) I]`. Use `congr 1`. Rewrite using `[add_smul, one_smul]`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `⟨G, B, fun b => hsecs _ _ (hpow b), fun n η => ?_⟩` and prove the remaining obligations. Rewrite using `[hsecs B.toSubSystem β hB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h, fun I => SetLike.coe_injective (((h₃ S K ι Ω y k₀ N e hM β n η h).mp hg I).trans (hB I).symm)⟩`. Introduce and unpack `⟨h, hs⟩`. Conclude with `⟨h, (h₃ S K ι Ω y k₀ N e hM β n η h).mpr fun I => by rw [hs I, hB I]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BundlePair.proof (h₁ : BundleOfDeg.Statement) (h₂ : ChartSecMul.Statement)
     (h₃ : ChartSecGen.Statement) : BundlePair.Statement := by

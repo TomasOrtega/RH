@@ -24,7 +24,7 @@ variable {m : ℕ} (τ : FDRep ℂ (Gn g (m + 1))) {V V' : Type} [AddCommGroup V
 
 include hi in
 /- English proof (translation)
-Take `⟨κ, h1, rfl⟩` from `DzIso.exists_of_mem_KOne i hi hk`. Unfold `FR`. Rewrite using `[corner_mul, rep_mul_apply, rep_mul_apply ρ₀, hv' κ (by rw [h1]; exact isLower_one), ← phi_corner, ← hφ, red_corner, h1, corner_one, rep_one_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem FR_right
     (hφ : ∀ (κ : GL (Fin (m + 1)) ℤ_[g]) (x : τ),
@@ -41,7 +41,7 @@ theorem FR_right
 
 include hi in
 /- English proof (translation)
-Take `⟨κ, h1, rfl⟩` from `DzIso.exists_of_mem_KOne i hi hk`. Unfold `FL`. Rewrite using `[corner_mul, tilde_mul, tilde_mul, rep_mul_apply, rep_mul_apply ρ₀, ← phi_invT, hv' _ (by rw [red_invT, h1, map_one]; exact isLower_one), ← phi_corner, ← phi_invT, ← hφ, red_invT, red_corner, h1, corner_one, map_one, rep_one_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem FL_right
     (hφ : ∀ (κ : GL (Fin (m + 1)) ℤ_[g]) (x : τ),
@@ -59,9 +59,9 @@ theorem FL_right
 
 include hi in
 /- English proof (translation)
-Take `⟨u, hu, d, k, hk, rfl⟩` from `Iwasawa.exists_iwasawa (w.adicCompletion E) m h`. Take `⟨κ, rfl⟩` from `DzLc.exists_inc_eq i hi k hk`. Rewrite `hne` using `[mul_assoc, FR_left π ρ₀ L l' hL hl' _ _ (unipotent_le_unipB hu)]`. Unfold `FR at hne`. Establish `hne'` using `left_ne_zero_of_mul hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `hne'` using `[corner_mul, rep_mul_apply, ← phi_corner, ← hφ, corner_torusPow]`. Establish `hd` using `supp_const i hi hψ h0 τ hτ π φ hφ L hL _ _ hne'`. Establish `hd0 : d = 0` using `funext fun j => by simpa using hd j.castSucc (Fin.last m)`. Use `⟨u, unipotent_le_unipB hu, _, DzIso.map_inc_mem_KO i hi κ, ?_⟩` and prove the remaining obligations. Rewrite using `[hd0, torusPow_zero', mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem FR_supp (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1)
     (hτ : IsCusp τ.character)
@@ -83,9 +83,9 @@ theorem FR_supp (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.t
 
 include hi in
 /- English proof (translation)
-Take `⟨u, hu, d, k, hk, rfl⟩` from `Iwasawa.exists_iwasawa (w.adicCompletion E) m h`. Take `⟨κ, rfl⟩` from `DzLc.exists_inc_eq i hi k hk`. Rewrite `hne` using `[mul_assoc, FL_left π ρ₀ L l' hL hl' _ _ (unipotent_le_unipB hu)]`. Unfold `FL at hne`. Establish `hne'` using `left_ne_zero_of_mul hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `hne'` using `[corner_mul, tilde_mul, show tilde (corner (Iwasawa.torusPow (w.adicCompletion E) m d)) = longElt (m + 1) _ * GlobalTheory.CuspRep.invT (m + 1) _ (corner (Iwasawa.torusPow (w.adicCompletion E) m d)) from rfl, corner_torusPow, longElt_mul_invT_torusPow, mul_assoc, rep_mul_apply, ← …`. Establish `hd` using `supp_const i hi hψ h0 τ hτ π φ hφ L hL _ _ hne'`. Establish `hd0 : d = 0` using `funext fun j => by simpa using hd (j.castSucc).rev (Fin.last m).rev`. Use `⟨u, unipotent_le_unipB hu, _, DzIso.map_inc_mem_KO i hi κ, ?_⟩` and prove the remaining obligations. Rewrite using `[hd0, torusPow_zero', mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem FL_supp (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1)
     (hτ : IsCusp τ.character)

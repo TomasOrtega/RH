@@ -21,17 +21,15 @@ variable {Xo : Moduli Dw l} {c : Coeff l}
 attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.group
 
 /- English proof (translation)
-Take `⟨hs, hM, -⟩` from `h`. Take `⟨-, J, -, -, hJM⟩` from `Xo.univ.geom k (x ≫ ρ) b (by rw [Category.assoc, hs]; exact hx)`. Establish `h1 : a ∈ (l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[l.coprime]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[Submodule.sup_smul]`. Take `⟨b, hb, a', ha', rfl⟩` from `Submodule.mem_sup.1 h1`. Establish `hgb : gM b ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`. Use `Submodule.mem_map_of_mem (f := gM) hb` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hga : gM a' ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`. Use `Submodule.sub_mem _ ha hgb` as an intermediate fact. Simplify using `using this`. Establish `e1 : ρ ≫ (Xo.univ.eta a').left = ρ ≫ (Xo.univ.eta 0).left`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hM a', ← hM 0, Xo.univ.eta_ker _ hga, Xo.univ.eta_ker (gM 0) (by simp)]`. Establish `e5 : J.ev l.M a' = J.ev l.M 0`. Rewrite using `[← hJM _ ha', ← hJM _ (Submodule.zero_mem _)]`. Use `ext`. Simplify using `using congrArg (x ≫ ·) e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `e6 : J.ev l.M 0 = 1` using `(J.ker l.M hM0 0).2 ⟨0, by simp⟩`. Take `⟨b', hb'⟩` from `(J.ker l.M hM0 a').1 (e5.trans e6)`. Use `Submodule.add_mem _ hb ?_` and prove the remaining obligations. Rewrite using `[hb', ← Nat.cast_smul_eq_nsmul (𝓞 E)]`.
-
-Conclude with `Submodule.smul_mem_smul (GlobalTheory.LevelGroupTest.natCast_mem_half l) trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reflects_half_of_move {ρ : Xo.X ⟶ Xo.X} {ν : SABMap Xo.univ.t Xo.univ.t ρ} {gM gA : Dw.La →ₗ[𝓞 E] Dw.La}
     (h : IsLevMove ρ ν gM gA) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Xo.X) (b : KA l →+* k)
@@ -64,11 +62,11 @@ theorem reflects_half_of_move {ρ : Xo.X ⟶ Xo.X} {ν : SABMap Xo.univ.t Xo.uni
   exact Submodule.smul_mem_smul (GlobalTheory.LevelGroupTest.natCast_mem_half l) trivial
 
 /- English proof (translation)
-Take `⟨ρ, ν, i, h, hm⟩` from `h'`. Take `⟨ρ', ν', i', g, gm⟩` from `h''`. Take `⟨m, hmax⟩` from `Ideal.exists_maximal S`. Use `letI : Field (S ⧸ m) := Ideal.Quotient.field m`. Set `φ : S →+* AlgebraicClosure (S ⧸ m)` to `(algebraMap (S ⧸ m) _).comp (Ideal.Quotient.mk m)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hinj` using `reflects_half_of_move h (AlgebraicClosure (S ⧸ m)) (spMap φ ≫ y.x) (φ.comp ((algebraMap c.F S).comp (IntermediateField.inclusion c.le).toRingHom)) (by`. Rewrite using `[Category.assoc, y.x_over]`. Unfold `sOf spMap`. Rewrite using `[← Spec.map_comp]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, e⟩` from `GlobalTheory.T.levelMove_moduli_unique_universalTriple E H Dw l Xo c ρ ρ' ν ν' _ _ _ _ hpq (fun a => by simp) (fun a => ⟨0, by simp⟩) i i' h g (GlobalTheory.exists_sim_of_aut_mod E H Dw l l.A gM hpq l.A_pos hA hinj)`. Conclude with `(GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).2 y' y'' ν' e.symm hm gm`.
+A detailed English derivation is pending.
 -/
 theorem levR_unique (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (gM : Dw.La →ₗ[𝓞 E] Dw.La)
     {S : Type} [CommRing S] [Algebra c.F S] [Nontrivial S] {y y' y'' : FrPt Xo c S}

@@ -11,14 +11,14 @@ noncomputable def autEmb {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
   (IsTotallyReal.complexEmbedding_isReal (g.toRingHom.comp ((algebraMap ℝ ℂ).comp i))).embedding
 
 /- English proof (translation)
-The claim follows from `(IsTotallyReal.complexEmbedding_isReal (g.toRingHom.comp ((algebraMap ℝ ℂ).comp i))).coe_embedding_apply y`.
+A detailed English derivation is pending.
 -/
 theorem autEmb_apply {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (g : ℂ ≃+* ℂ) (i : Emb F) (y : F) :
     ((autEmb g i y : ℝ) : ℂ) = g ((i y : ℝ) : ℂ) :=
   (IsTotallyReal.complexEmbedding_isReal (g.toRingHom.comp ((algebraMap ℝ ℂ).comp i))).coe_embedding_apply y
 
 /- English proof (translation)
-Introduce `i j h`. Use extensionality with `y`. Establish `h1 : g ((i y : ℝ) : ℂ) = g ((j y : ℝ) : ℂ)`. Rewrite using `[← autEmb_apply, ← autEmb_apply, h]`. Conclude with `g.injective h1` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem autEmb_injective {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (g : ℂ ≃+* ℂ) :
     Function.Injective (autEmb (F := F) g) := by
@@ -29,7 +29,7 @@ theorem autEmb_injective {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
   exact_mod_cast g.injective h1
 
 /- English proof (translation)
-Introduce `F _ _ _ g`. Use `⟨Equiv.ofBijective (autEmb g) (Finite.injective_iff_bijective.mp (autEmb_injective g)), ?_⟩` and prove the remaining obligations. Introduce `i y`. Conclude with `(autEmb_apply g i y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aut_perm_emb : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (g : ℂ ≃+* ℂ),
     ∃ π : Equiv.Perm (Emb F), ∀ (i : Emb F) (y : F), g ((i y : ℝ) : ℂ) = ((π i y : ℝ) : ℂ) := by

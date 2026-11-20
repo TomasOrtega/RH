@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.MomPlace
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[p])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
@@ -15,11 +15,11 @@ theorem norm_le_one_of_isIntegral_int {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (hx
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `hmem : ∀ k, σ k ∈ TaylorLogMetric.Qbar` using `fun k => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) k).algHom σ.toRatAlgHom)`. Set `σ' : K →+* TaylorLogMetric.Qbar` to `σ.codRestrict TaylorLogMetric.Qbar hmem`. Set `: Algebra K TaylorLogMetric.Qbar` to `σ'.toAlgebra`. Set `: Algebra K ℂ_[p]` to `ι.toAlgebra`. Establish `: IsScalarTower ℚ K TaylorLogMetric.Qbar` using `IsScalarTower.of_algebraMap_eq fun q => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[eq_ratCast, eq_ratCast, map_ratCast]`. Establish `: Algebra.IsAlgebraic ℚ TaylorLogMetric.Qbar`. Apply the tactic sequence `convert algebraicClosure.isAlgebraic ℚ ℂ <;> first | rfl | exact Subsingleton.elim _ _`. Establish `: Algebra.IsAlgebraic K TaylorLogMetric.Qbar` using `Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Set `f : TaylorLogMetric.Qbar →ₐ[K] ℂ_[p]` to `IsAlgClosed.lift`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨f.toRingHom, fun k => ⟨hmem k, ?_⟩⟩` and prove the remaining obligations. Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos (hmem k)]`. Conclude with `f.commutes k`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime]
     (σ : K →+* ℂ) (ι : K →+* ℂ_[p]) :
@@ -41,9 +41,9 @@ theorem exists_extension (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.
   exact f.commutes k
 
 /- English proof (translation)
-Take `⟨n, d, h⟩` from `w.exists_primeCompl_mul_eq_of_integer x hx`. Establish `hint : ∀ y : 𝓞 K, ‖ι (y : K)‖ ≤ 1` using `fun y => norm_le_one_of_isIntegral_int (by`. Use `map_isIntegral_int ι (RingOfIntegers.isIntegral_coe y)` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _)`. Establish `hd : 1 ≤ ‖ι ((d : 𝓞 K) : K)‖` using `not_lt.1 fun hlt => d.2 ((hw _).2 hlt)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖ι x‖ * ‖ι ((d : 𝓞 K) : K)‖ = ‖ι (n : K)‖`. Rewrite using `[← norm_mul, ← map_mul]`. Conclude with `congrArg (fun z => ‖ι z‖) h`. Establish `h3` using `hint n`. Use polynomial arithmetic with `[norm_nonneg (ι x)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_valuation (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime]
     (ι : K →+* ℂ_[p]) (w : HeightOneSpectrum (𝓞 K))
@@ -61,9 +61,9 @@ theorem norm_le_one_of_valuation (K : Type) [Field K] [NumberField K] (p : ℕ) 
   nlinarith [norm_nonneg (ι x)]
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨-r.num, ?_⟩` and prove the remaining obligations. Establish `h : ((r.den : ℂ)) * (r : ℂ) = (r.num : ℂ)`. Conclude with `Rat.den_mul_eq_num r` after adjusting the coercions. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_rat_pow_den (r : ℚ) :
     Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * ((r : ℝ) : ℂ)) ^ r.den = 1 := by
@@ -75,9 +75,9 @@ theorem exp_rat_pow_den (r : ℚ) :
   rw [← h]; ring
 
 /- English proof (translation)
-Establish `hmem : z ∈ TaylorLogMetric.Qbar`. Use `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (Nat.pos_of_ne_zero hn) ?_)` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `isAlgebraic_one`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos hmem]`. Establish `h1 : (⟨z, hmem⟩ : TaylorLogMetric.Qbar) ^ n = 1` using `Subtype.ext (by simpa using hz)`. Establish `h2 : ‖lam ⟨z, hmem⟩‖ ^ n = 1` using `by rw [← norm_pow, ← map_pow, h1, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_of_unity_norm {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {z : ℂ} {n : ℕ}
     (hn : n ≠ 0) (hz : z ^ n = 1) : z ∈ TaylorLogMetric.Qbar ∧ ‖TaylorLogMetric.lamC lam z‖ = 1 := by
@@ -92,7 +92,7 @@ theorem root_of_unity_norm {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h2
 
 /- English proof (translation)
-Introduce `K _ _ p _ σ ι` and use `⟨exists_extension K p σ ι, norm_le_one_of_valuation K p ι, fun lam r => root_of_unity_norm lam r.den_ne_zero (exp_rat_pow_den r)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem places : ∀ (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime] (σ : K →+* ℂ) (ι : K →+* ℂ_[p]), (∃ lam : TaylorLogMetric.Qbar →+* ℂ_[p], ∀ k, σ k ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam (σ k) = ι k) ∧ (∀ w : HeightOneSpectrum (𝓞 K), (∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖ι (y : K)‖ < 1) → ∀ x : K, w.valuation K x ≤ 1 → ‖ι x‖ ≤ 1) ∧ ∀ (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (r : ℚ), Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * ((r : ℝ) : ℂ)) ∈ TaylorLogMetric.Qbar ∧ ‖TaylorLogMetric.lamC lam (Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * ((r : ℝ) : ℂ)))‖ = 1 :=
   fun K _ _ p _ σ ι => ⟨exists_extension K p σ ι, norm_le_one_of_valuation K p ι,

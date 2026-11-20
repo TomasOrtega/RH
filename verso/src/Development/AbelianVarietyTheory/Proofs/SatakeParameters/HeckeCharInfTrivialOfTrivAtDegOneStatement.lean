@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DegOneIffSurj
 open NumberField IsDedekindDomain HeckeValGen GlobalTheory.HeckeSplit
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeckeInfTriv.inf_trivial_of_trivAt_degOne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeckeCharInfTrivialOfTrivAtDegOne.lean&line=93#L93)
 -/

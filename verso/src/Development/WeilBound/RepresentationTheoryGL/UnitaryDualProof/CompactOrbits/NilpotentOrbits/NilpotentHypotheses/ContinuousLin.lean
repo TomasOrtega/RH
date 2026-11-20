@@ -11,9 +11,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨r', hr', hr⟩` from `Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation k)`. Establish `hr0 : r' ≠ 0`. Introduce `h`. Simplify using `[h] at hr'`. Use `⟨Units.mk0 r' hr0, nabs_pos k _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `nabs_lt_of_valuation_lt (k := k) (x := Units.mk0 r' hr0) (y := 1) (by simpa using hr)`. Simplify `h1` using `[nabs_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem free_etale_sheaf_zmod_exists_hom_sending_generator : ∃ t : kˣ, 0 < nabs k t ∧ nabs k t < 1 := by
   obtain ⟨r', hr', hr⟩ := Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation k)
@@ -25,7 +25,7 @@ theorem free_etale_sheaf_zmod_exists_hom_sending_generator : ∃ t : kˣ, 0 < na
   simpa [nabs_one] using h1
 
 /- English proof (translation)
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_inv (t : kˣ) : nabs k t⁻¹ = (nabs k t)⁻¹ := by
   simp [nabs]
@@ -33,7 +33,7 @@ theorem nabs_inv (t : kˣ) : nabs k t⁻¹ = (nabs k t)⁻¹ := by
 variable {k}
 
 /- English proof (translation)
-Simplify using `only [Bz, Set.mem_setOf_eq] at hx hy ⊢`. Introduce `a ha`. Rewrite using `[mul_add, add_mul, hx a ha, hy a ha]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem bz_add {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x y : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z)
     (hy : y ∈ Bz Z) : x + y ∈ Bz Z := by
@@ -42,7 +42,7 @@ theorem bz_add {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x y : Ma
   rw [mul_add, add_mul, hx a ha, hy a ha]
 
 /- English proof (translation)
-Simplify using `only [Bz, Set.mem_setOf_eq] at hx hy ⊢`. Introduce `a ha`. Rewrite using `[mul_sub, sub_mul, hx a ha, hy a ha]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem bz_sub {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x y : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z)
     (hy : y ∈ Bz Z) : x - y ∈ Bz Z := by
@@ -51,7 +51,7 @@ theorem bz_sub {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x y : Ma
   rw [mul_sub, sub_mul, hx a ha, hy a ha]
 
 /- English proof (translation)
-Simplify using `only [Bz, Set.mem_setOf_eq] at hx ⊢`. Introduce `a ha`. Rewrite using `[Matrix.mul_smul, hx a ha, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem bz_smul {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (c : k) {x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ Bz Z) : c • x ∈ Bz Z := by
@@ -60,7 +60,7 @@ theorem bz_smul {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (c : k) 
   rw [Matrix.mul_smul, hx a ha, Matrix.smul_mul]
 
 /- English proof (translation)
-Simplify using `only [Bz, Set.mem_setOf_eq]`. Introduce `a ha`. Conclude with `hZ.1 a ha c hc`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem z_bz {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) : c ∈ Bz Z := by
@@ -71,14 +71,14 @@ theorem z_bz {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z)
 variable [CharZero k]
 
 /- English proof (translation)
-Simplify using `[sig, hL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_eq {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (L : Matrix (Fin n) (Fin n) k →ₗ[k] Matrix (Fin n) (Fin n) k)
     (hL : ∀ x, piZ Z x = L x) (t : kˣ) (p : Sp k n) : sig Z t p = (L p.1 + (t : k) • (p.1 - L p.1), p.2) := by
   simp [sig, hL]
 
 /- English proof (translation)
-Take `⟨L, hL, hLZ, -, hLc⟩` from `piZ_lin k Z hZ`. Establish `hLL : ∀ x, L (L x) = L x` using `fun x => hLc _ (hLZ x)`. Simplify using `only [sig_eq Z L hL]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only [map_add, map_smul, map_sub, hLL, sub_self, smul_zero, add_zero, add_sub_cancel_left, Units.val_mul, mul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sig_sig {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (s t : kˣ) (p : Sp k n) :
     sig Z s (sig Z t p) = sig Z (s * t) p := by
@@ -90,7 +90,7 @@ theorem sig_sig {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR
     Units.val_mul, mul_smul]
 
 /- English proof (translation)
-Take `⟨L, hL, -, -, -⟩` from `piZ_lin k Z hZ`. Rewrite using `[sig_eq Z L hL]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sig_one {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (p : Sp k n) : sig Z 1 p = p := by
   obtain ⟨L, hL, -, -, -⟩ := piZ_lin k Z hZ
@@ -99,23 +99,23 @@ theorem sig_one {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR
   simp
 
 /- English proof (translation)
-Rewrite using `[sig_sig Z hZ, inv_mul_cancel, sig_one Z hZ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_inv_sig {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (p : Sp k n) :
     sig Z t⁻¹ (sig Z t p) = p := by
   rw [sig_sig Z hZ, inv_mul_cancel, sig_one Z hZ]
 
 /- English proof (translation)
-Rewrite using `[sig_sig Z hZ, mul_inv_cancel, sig_one Z hZ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig_inv {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (p : Sp k n) :
     sig Z t (sig Z t⁻¹ p) = p := by
   rw [sig_sig Z hZ, mul_inv_cancel, sig_one Z hZ]
 
 /- English proof (translation)
-Establish `hL : (L : Matrix (Fin n) (Fin n) k → Matrix (Fin n) (Fin n) k) = fun x => ∑ i, ∑ j, x i j • L (Matrix.single i j 1)`. Use function extensionality and compare the values at `x`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single x]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[hL]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (continuous_id.matrix_elem i j).smul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_lin {n : ℕ} (L : Matrix (Fin n) (Fin n) k →ₗ[k] Matrix (Fin n) (Fin n) k) : Continuous L := by
   have hL : (L : Matrix (Fin n) (Fin n) k → Matrix (Fin n) (Fin n) k) =
@@ -130,9 +130,9 @@ theorem continuous_lin {n : ℕ} (L : Matrix (Fin n) (Fin n) k →ₗ[k] Matrix 
     (continuous_id.matrix_elem i j).smul continuous_const
 
 /- English proof (translation)
-Take `⟨L, hL, -, -, -⟩` from `piZ_lin k Z hZ`. Establish `h1 : sig Z t = fun p => (L p.1 + (t : k) • (p.1 - L p.1), p.2)` using `funext (sig_eq Z L hL t)`. Rewrite using `[h1]`. Establish `hc : Continuous (fun p : Matrix (Fin n) (Fin n) k × (Fin n → k) => p.1)` using `continuous_fst`. Establish `hLc : Continuous (fun p : Matrix (Fin n) (Fin n) k × (Fin n → k) => L p.1)` using `(continuous_lin L).comp hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Continuous (fun p : Matrix (Fin n) (Fin n) k × (Fin n → k) => (t : k) • (p.1 - L p.1))` using `(continuous_const (y := (t : k))).smul (hc.sub hLc)`. Conclude with `(hLc.add hs).prodMk continuous_snd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_sig {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) :
     Continuous (sig Z t) := by
@@ -155,7 +155,7 @@ def sigH {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t 
   continuous_invFun := continuous_sig Z hZ t⁻¹
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(show f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ↔ IsLocallyConstant f ∧ HasCompactSupport f from Iff.rfl).1 hf`. Conclude with `(show f ∘ sig Z t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ↔ IsLocallyConstant (f ∘ sig Z t) ∧ HasCompactSupport (f ∘ sig Z t) from Iff.rfl).2 ⟨h1.comp_continuous (continuous_sig Z hZ t), h2.comp_homeomorph (sigH Z hZ t)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_sig_mem {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) {f : Sp k n → ℂ}
     (hf : f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ) : f ∘ sig Z t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ := by
@@ -172,9 +172,9 @@ theorem pull_apply {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : 
     (f : Sp k n → ℂ) : pull Z t ξ f = ξ (f ∘ sig Z t) := rfl
 
 /- English proof (translation)
-Take `⟨L, hL, hLZ, -, -⟩` from `piZ_lin k Z hZ`. Introduce `f hf hvan`. Rewrite using `[pull_apply]`. Establish `hf' : f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support f ⊆ Set.univ` using `hf`. Use `h (f ∘ sig Z t) (show f ∘ sig Z t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support (f ∘ sig Z t) ⊆ Set.univ from ⟨comp_sig_mem Z hZ t hf'.1, Set.subset_univ _⟩) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Use `hvan _ ⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Rewrite using `[sig_eq Z L hL]`. Conclude with `bz_add (z_bz hZ (hLZ _)) (bz_smul _ (bz_sub hp.1 (z_bz hZ (hLZ _))))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_supp {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (h : Supp ξ (Bz Z ×ˢ Set.univ)) : Supp (pull Z t ξ) (Bz Z ×ˢ Set.univ) := by
@@ -190,9 +190,9 @@ theorem pull_supp {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : 
   exact bz_add (z_bz hZ (hLZ _)) (bz_smul _ (bz_sub hp.1 (z_bz hZ (hLZ _))))
 
 /- English proof (translation)
-Use `⟨LinearMap.ext fun ξ => LinearMap.ext fun f => ?_, LinearMap.ext fun ξ => LinearMap.ext fun f => ?_⟩` and prove the remaining obligations. Use `show ξ ((f ∘ sig Z t) ∘ sig Z t⁻¹) = ξ f`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[sig_sig_inv Z hZ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ξ ((f ∘ sig Z t⁻¹) ∘ sig Z t) = ξ f`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[sig_inv_sig Z hZ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_inv {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) :
     pull Z t ∘ₗ pull Z t⁻¹ = LinearMap.id ∧ pull Z t⁻¹ ∘ₗ pull Z t = LinearMap.id := by
@@ -203,9 +203,9 @@ theorem pull_inv {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : C
     congr 1; funext p; simp [sig_inv_sig Z hZ]
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[pull_apply]`. Establish `hf' : f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support f ⊆ UU` using `hf`. Use `h (f ∘ sig Z t) (show f ∘ sig Z t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support (f ∘ sig Z t) ⊆ UU from ⟨comp_sig_mem Z hZ t hf'.1, ?_⟩)` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `hf'.2 (show sig Z t p ∈ Function.support f from hp)`. Conclude with `h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_kills {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ)
     (h : Kills ξ UU) : Kills (pull Z t ξ) UU := by
@@ -219,13 +219,13 @@ theorem pull_kills {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ :
   exact h3
 
 /- English proof (translation)
-Introduce `f hf h0` and use `by simp [h1 f hf h0, h2 f hf h0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supp_sub {n : ℕ} {C : Set (Sp k n)} {ξ η : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h1 : Supp ξ C) (h2 : Supp η C) (a b : ℂ) :
     Supp (a • ξ - b • η) C := fun f hf h0 => by simp [h1 f hf h0, h2 f hf h0]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `nil => simpa using hξ`. Consider the case `cons x a ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `supp_sub (pull_supp Z hZ t⁻¹ _ ih) ih _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_supp {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (e : ℂ) (a : List ℝ)
     (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) (hξ : Supp ξ (Bz Z ×ˢ Set.univ)) :
@@ -249,7 +249,7 @@ def Bop {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : kˣ) (x : �
 def Agree {n : ℕ} (η η' : (Sp k n → ℂ) →ₗ[ℂ] ℂ) : Prop := ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), η f = η' f
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hf' : f ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support f ⊆ Set.univ` using `hf`. Establish `hfs : f ∘ sig Z t ∈ supportedIn (Set.univ : Set (Sp k n))` using `(show f ∘ sig Z t ∈ locallyConstantCompactSupport (Sp k n) ℂ ℂ ∧ Function.support (f ∘ sig Z t) ⊆ Set.univ from ⟨comp_sig_mem Z hZ t hf'.1, Set.subset_univ _⟩)`. Simplify using `only [Bop, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, pull_apply]`. Rewrite using `[h f hf, h _ hfs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bop_agree {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) (x : ℝ)
     {η η' : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Agree η η') : Agree (Bop Z t x η) (Bop Z t x η') := by
@@ -262,9 +262,9 @@ theorem bop_agree {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : 
   rw [h f hf, h _ hfs]
 
 /- English proof (translation)
-Introduce `f hf`. Simplify using `only [Aop, Bop, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[hF5 t⁻¹ η hη f hf, nabs_inv k t, inv_inv t]`. Establish `hpos : 0 < nabs k t` using `nabs_pos k t`. Establish `hone : (((nabs k t)⁻¹ ^ (dB0 Z : ℝ) : ℝ) : ℂ) * (((nabs k t)⁻¹⁻¹ ^ dB0 Z : ℝ) : ℂ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_natCast, ← Complex.ofReal_mul, ← mul_pow, inv_inv, inv_mul_cancel₀ hpos.ne', one_pow, Complex.ofReal_one]`. Use `congr 1`. Rewrite using `[smul_eq_mul, ← mul_assoc, hone, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem four_one {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k))
     (𝓕 : ((Sp k n → ℂ) →ₗ[ℂ] ℂ) →ₗ[ℂ] ((Sp k n → ℂ) →ₗ[ℂ] ℂ))
@@ -283,11 +283,9 @@ theorem four_one {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k))
   rw [smul_eq_mul, ← mul_assoc, hone, one_mul]
 
 /- English proof (translation)
-Establish `key : Agree (𝓕 ((a.map fun x => Aop Z t x).prod ξ)) ((a.map fun x => Bop Z t x).prod (𝓕 ξ))`. Proceed by induction on `a with`. Consider the case `nil`. Introduce `f hf`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `cons x a ih`. Introduce `f hf`. Establish `hs : Supp ((a.map fun x => Aop Z t x).prod ξ) (Bz Z ×ˢ Set.univ)` using `prod_supp Z hZ t _ a ξ hξ`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `(four_one Z 𝓕 hF5 t x _ hs f hf).trans (bop_agree Z hZ t x ih f hf)`.
-
-Conclude with `key`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem four_prod {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     (𝓕 : ((Sp k n → ℂ) →ₗ[ℂ] ℂ) →ₗ[ℂ] ((Sp k n → ℂ) →ₗ[ℂ] ℂ))

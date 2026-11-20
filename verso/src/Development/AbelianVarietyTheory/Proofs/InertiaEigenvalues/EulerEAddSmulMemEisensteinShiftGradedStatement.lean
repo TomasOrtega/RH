@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomi
 open PowerSeries GlobalTheory.BK
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.eulerE_add_smul_mem_eisenstein_shift_graded.EN_add_smul_mem_shiftE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEulerEAddSmulMemEisensteinShiftGraded.lean&line=58#L58)
 -/

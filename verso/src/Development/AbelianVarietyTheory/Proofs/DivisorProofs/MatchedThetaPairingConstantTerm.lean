@@ -19,7 +19,7 @@ namespace GlobalTheory.ThKDblCore
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `μ 𝓕 hμ h𝓕 h1 x`. Establish `e` using `h μ 𝓕 hμ h𝓕 h1 x`. Simplify using `only [Pi.zero_apply] at e ⊢`. Rewrite using `[integral_const_mul, ← e, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCT_mul {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) {T : UA σ W.J → ℂ} (κ : ℂ)
     (h : IsCT H' T 0) : IsCT H' (fun x => κ * T x) 0 := by
@@ -29,9 +29,9 @@ theorem isCT_mul {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) {T : UA σ
   rw [integral_const_mul, ← e, mul_zero]
 
 /- English proof (translation)
-Use `⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, ⟨h.chars.heckeβ.1.div' h.chars.heckeα.1, fun x => by` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.chars.heckeβ.2 x, h.chars.heckeα.2 x, div_self']⟩,`. Use the proof step `h.chars.resβ, fun x => ?_, h.weil⟩`. Establish `e` using `h.chars.resβ x`. Establish `e'` using `h.chars.resα x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ a' with hm | hm <;> rw [hm] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isPair_larger {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
@@ -49,7 +49,7 @@ theorem isPair_larger {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F
     rcases neg_one_pow_eq_or ℂ a' with hm | hm <;> rw [hm] <;> ring
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -58,15 +58,15 @@ theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
 end GlobalTheory.ThKDblCore
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hp d₁ W₁ H' i₀ i₁ hA Φ₁ hΦ₁ Φ₂ hΦ₂ μ 𝓕 hμ h𝓕 f hfc hfl hfd hcusp`. Establish `hlt` using `hM.triple.geo.lt`. Take `⟨Ez, φ, s₀, κ, R₀, -, hK, hreg, hunf⟩` from `GlobalTheory.T.anisotropic_pair_eisenstein_exists hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThKDblCore.isPair_larger hM.triple) (by rw [hp]; exact Nat.min_zero _) (by omega) (by omega) Φ₂ hΦ₂ Φ₁ hΦ₁ μ hμ`. Establish `hct : IsCT H' f 0` using `GlobalTheory.ThKLineCusp.const_term_zero F E σ B G.W _ _ hM.triple.geo.hW W₁ H' i₀ i₁ hA f hcusp`. Establish `hbd : ∃ C : ℝ, ∀ h, ‖f h‖ ≤ C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hfd 0`. Conclude with `⟨C, fun h => by simpa using hC h⟩`. Establish `hint` using `GlobalTheory.RapidInteg.integrableOn_norm_mul_qht_pow hKP F E σ B G.W _ _ hM.triple.base hM.triple.geo.hW μ 𝓕 hμ h𝓕 f hfc hfd`. Establish `hN` using `GlobalTheory.T.unipotent_height_bounded F E σ (GlobalTheory.ThKDblCore.sigma_sigma hM.triple.base.cm) B G.W _ _ hM.triple.geo.hW W₁ H' i₀ i₁ hA`. Establish `hhalf : ∀ s : ℂ, R₀ < s.re → IsCT H' (fun h => ∫ h' in 𝓕, f h' * Ez s h h' ∂μ) 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Take `⟨hφ, hu⟩` from `hunf s hs`. Establish `e : (fun h => ∫ h' in 𝓕, f h' * Ez s h h' ∂μ) = fun h => ∫ g, φ s g * f (h * g) ∂μ`. Use function extensionality and compare the values at `(hu 𝓕 h𝓕 f hfc hfl hfd hcusp)`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ConvCT.ct_conv_zero F E σ G.W H' μ hμ f (φ s) hfc hbd hφ hct`. Establish `h0` using `GlobalTheory.T.eisenstein_unfolding_rapid_decay F E σ G.W H' μ hμ 𝓕 f Ez s₀ R₀ hfc hint hN hreg hhalf`. Establish `e2 : (fun x => ∫ h' in 𝓕, f h' * GlobalTheory.ThKLiftCusp.kern G.M om Φ₂ Φ₁ x h' ∂μ) = fun x => κ * ∫ h' in 𝓕, f h' * Ez s₀ x h' ∂μ`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun h' => ?_)` and prove the remaining obligations. Simplify using `only [hK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `GlobalTheory.ThKDblCore.isCT_mul H' κ h0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThKDblCore.main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.p = 0 →

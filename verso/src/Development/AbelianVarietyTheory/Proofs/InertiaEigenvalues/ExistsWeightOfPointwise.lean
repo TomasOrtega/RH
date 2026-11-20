@@ -29,9 +29,9 @@ noncomputable section
 namespace GlobalTheory.BpfUniform
 
 /- English proof (translation)
-Take `⟨M, hMmax, hle⟩` from `Ideal.exists_le_maximal _ hI`. Set `_ : Field (A ⧸ M)` to `Ideal.Quotient.field M`. Establish `: Module.Finite K (A ⧸ M)` using `finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)`. Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Set `κ : (A ⧸ M) →ₐ[K] ℂ` to `IsAlgClosed.lift`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨κ.comp (Ideal.Quotient.mkₐ K M), fun x hx => ?_⟩` and prove the remaining obligations. Use `show κ (Ideal.Quotient.mk M x) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (hle hx), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complex_zero {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.FiniteType K A]
     (σ : K →+* ℂ) (I : Ideal A) (hI : I ≠ ⊤) : ∃ ψ : A →ₐ[K] CAt σ, ∀ x ∈ I, ψ x = 0 := by
@@ -45,9 +45,9 @@ theorem exists_complex_zero {K A : Type} [Field K] [CommRing A] [Algebra K A] [A
   rw [Ideal.Quotient.eq_zero_iff_mem.2 (hle hx), map_zero]
 
 /- English proof (translation)
-Establish `h1 : (1 : A) ∈ Submodule.span A (Set.range v)` using `by show (1 : A) ∈ Ideal.span (Set.range v)`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨t, ht, h1t⟩` from `Submodule.mem_span_finite_of_mem_span h1`. Use `choose g hg using fun x : t => ht x.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.image g, (Ideal.eq_top_iff_one _).2 (Submodule.span_mono ?_ h1t)⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨g ⟨x, hx⟩, by simp, hg ⟨x, hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset_span_eq_top {A ι : Type} [CommRing A] (v : ι → A) (h : Ideal.span (Set.range v) = ⊤) :
     ∃ s : Finset ι, Ideal.span (v '' (s : Set ι)) = ⊤ := by
@@ -65,17 +65,15 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hE, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨Y, hP⟩` from `hM`. Take `⟨J, hJ, P, hC⟩` from `GlobalTheory.Reg.exists_finite_pchart_cover GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c hE.bc (la.valuation c.F).valuationSubring Y hP`. Establish `hev` using `fun i => GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE (a i) (n i) (f i) (hf i)`. Establish `htop : ∀ (p : Σ j : J, ((P j).es : Set (P j).Ω)), Ideal.span (Set.range fun i => (evR Xo c (f i) ((P p.1).y p.2.1 p.2.2) : (P p.1).R p.2.1)) = ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨j, e, he⟩`. Assume the negation of the conclusion as `hne`. Use `haveI := (P j).sm e he`. Take `⟨ψ, hψ⟩` from `exists_complex_zero σ _ hne`. Take `⟨z, hz⟩` from `hE.bc _ (CAt σ) ψ ((P j).y e he)`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hnz z`. Apply `hi` to reduce the goal to its premises. Rewrite using `[(hev i _).1 _ ψ _ _ hz]`. Conclude with `hψ _ (Ideal.subset_span ⟨i, rfl⟩)`. Use `choose s hs using fun p => exists_finset_span_eq_top _ (htop p)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `⟨⋃ p, (s p : Set ι), Set.finite_iUnion fun p => (s p).finite_toSet, fun y => ?_⟩` and prove the remaining obligations. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨j, e, he, ψ, z, t, -, hz, hb⟩` from `hC (CAt σ) ⊤ (fun _ => trivial) y`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Ideal.span ((fun i => (evR Xo c (f i) ((P j).y e he) : (P j).R e)) '' (s ⟨j, e, he⟩ : Set ι)) ≤ RingHom.ker ψ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `show ψ _ = 0`. Rewrite using `[← (hev i _).1 _ ψ _ _ hz, GlobalTheory.ArcQ.evR_frBor_of_isDomain hE (hf i) t y z hb, hcon i (Set.mem_iUnion.2 ⟨⟨j, e, he⟩, hi⟩), mul_zero]`.
-
-Rewrite `hle` using `[hs ⟨j, e, he⟩]`. Establish `h1 : ψ 1 = 0` using `hle Submodule.mem_top`. Rewrite `h1` using `[map_one]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_subfamily {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -118,17 +116,15 @@ theorem exists_finite_subfamily {E : Type} [Field E] [NumberField E] [IsCMField 
   exact one_ne_zero h1
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `GlobalTheory.orthonormal_frames_bounded_of_definite r X hp`. Set `K : Set (Frame X.Ψ r)` to `{x | X.IsOrtho x}`. Establish `hKd : K ⊆ X.dom` using `fun x hx => PIW.FdPA.orthonormal_domain r X x hx`. Establish `hKc : IsClosed K`. Establish `e : K = ⋂ τ : X.Ψ, {x : Frame X.Ψ r | gram τ.1 X.Gm (mat x τ) = Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)}`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[K, Data.IsOrtho]`. Rewrite using `[e]`. Use `isClosed_iInter fun τ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Unfold `gram hermC col mat`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `hKb : Bornology.IsBounded K`. Rewrite using `[Metric.isBounded_iff_subset_closedBall 0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max R 0, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun τ => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hR x hx τ a b).trans (le_max_left _ _)`. Take `⟨C, hC⟩` from `(Metric.isCompact_of_isClosed_isBounded hKc hKb).exists_bound_of_continuousOn (hP.1.continuousOn.mono hKd)`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, ho⟩` from `(orthonormalFlagTranslate_holds r X).1 x hx`. Rewrite using `[← (orthonormalFlagTranslate_holds r X).2.1 la P hP.2.1 x hx b hb, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.pnorm_unit X la P (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.dmin_ortho X ho)]`.
-
-Conclude with `hC _ ho`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_of_definite {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (hp : X.p0 = 0 ∨ X.p0 = r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) :
@@ -168,7 +164,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k τ j`. Establish `e : (n + 2) / 2 = n / 2 + 1` using `by omega`. Simplify using `only [laU, Pi.zero_apply, e]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem laU_one (V : Unf Xo c σ r) (n : ℕ) : laU V (fun _ => 1) n = laU V 0 (n + 2) := by
   funext k τ j
@@ -177,11 +173,11 @@ theorem laU_one (V : Unf Xo c σ r) (n : ℕ) : laU V (fun _ => 1) n = laU V 0 (
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using hP`. Consider the case `succ e ih`. Rewrite using `[pow_succ]`. Use `⟨?_, fun k x hx => by simp [hP.2 k x hx]⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).1 ih.1`. Establish `h2` using `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).1 hP.1`. Use `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).2 fun k => ?_` and prove the remaining obligations. Establish `e1 : laU V 0 ((e + 1 + 1) * n) k = laU V 0 ((e + 1) * n) k + laU V 0 n k`. Use `GlobalTheory.CuspProduct.laU_add (Formalism.L2.PjFree.Unf.ofPj V) 0 0 ((e + 1) * n) n (hn.mul_left _) hn k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero, show (e + 1) * n + n = (e + 1 + 1) * n by ring]`. Conclude with `this`. Rewrite using `[e1]`. Conclude with `(siegelSpaceAlgebra_holds (E := E) r _ _ _ 0).2.1 _ (h1 k) _ (h2 k).1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_holSub0 (V : Unf Xo c σ r) {n : ℕ} (hn : Even n) {P : FDSec V.X}
     (hP : P ∈ Formalism.L2.Pj.holSub0 V.X (laU V 0 n)) (e : ℕ) :
@@ -202,11 +198,11 @@ theorem pow_mem_holSub0 (V : Unf Xo c σ r) {n : ℕ} (hn : Even n) {P : FDSec V
     exact (siegelSpaceAlgebra_holds (E := E) r _ _ _ 0).2.1 _ (h1 k) _ (h2 k).1
 
 /- English proof (translation)
-Use `⟨Pi.single k ((V.X k).dom.indicator P), ⟨holCusp_mem_holSub _ _ fun k' => ?_, fun k' y' hy' => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `(GlobalTheory.DomCongr.bddSec_cusp_congr E r _ _ P _ (fun x hx => (Set.indicator_of_mem hx _).symm)).2 hP`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `(siegelSpaceAlgebra_holds (E := E) r (V.X k') (la k') (la k') 0).1.1`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Set.indicator_of_notMem hy' _`. Simplify using `only [Pi.single_eq_of_ne h, Pi.zero_apply]`. Simplify using `only [Pi.single_eq_same]`. Conclude with `Set.indicator_of_mem hx _`.
+A detailed English derivation is pending.
 -/
 theorem exists_holSub0_of_SS (V : Unf Xo c σ r) (la : ∀ k, Wt (V.X k).Ψ r) (k : V.Comp) {P : Frame (V.X k).Ψ r → ℂ}
     (hP : P ∈ (V.X k).SS (la k)) : ∃ Q ∈ Formalism.L2.Pj.holSub0 V.X la, ∀ x ∈ (V.X k).dom, Q k x = P x := by
@@ -228,15 +224,15 @@ theorem exists_holSub0_of_SS (V : Unf Xo c σ r) (la : ∀ k, Wt (V.X k).Ψ r) (
     exact Set.indicator_of_mem hx _
 
 /- English proof (translation)
-Distinguish the cases in `hdef : (V.X k).p0 = 0 ∨ (V.X k).p0 = r`. Take `⟨n, hn, he, f, hf, hne⟩` from `GlobalTheory.Reg.exists_even_sec_evR_ne_zero E H Dw l Xo c σ (V.un k ⟨x, hx⟩)`. Establish `hD : Dom (0 : (E →+* ℂ) × ℕ → ℕ) n` using `⟨fun τ i i' _ => le_rfl, he⟩`. Establish `hs` using `hU.2.2.2.2.1 0 n hD f hf k`. Choose the witnesses or unpack the hypotheses as in `⟨τ0⟩ : Nonempty (V.X k).Ψ := by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ (V.X k).Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, not_not.mp (fun h' => h (((V.X k).cmType τ).mpr h'))⟩⟩`. Take `⟨Q, hQ, hQx⟩` from `exists_holSub0_of_SS V (laU V 0 n) k (GlobalTheory.BoundedCusp.mem_SS_of_definite _ _ τ0 hdef _ ⟨hs, bounded_of_definite _ hdef _ _ hs⟩)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨n, hn, he, Q, hQ, ?_⟩` and prove the remaining obligations. Establish `e : rdU V f k x = toC (evR Xo c f (V.un k ⟨x, hx⟩))` using `dif_pos hx`. Rewrite using `[hQx x hx, e]`. Conclude with `hne`. Establish `hle` using `(V.X k).p0_le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hla : ∀ n : ℕ, laU V 0 n k = fun (τ : (V.X k).Ψ) (j : Fin r) => if (V.X k).p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)` using `fun n => by`. Use function extensionality and compare the values at `τ j`. Simplify using `[laU]`. Take `⟨n, -, hn, he, P, hPm, hne⟩` from `hP E r (V.X k) (by omega) (by omega) (fun n hn γ hγ => by rw [← hla]; exact hχ n hn k γ hγ) x hx 0`. Rewrite `hPm` using `[← hla]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hQx⟩` from `exists_holSub0_of_SS V (laU V 0 n) k hPm`. Conclude with `⟨n, hn, he, Q, hQ, by rw [hQx x hx]; exact hne⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar_ne_zero
     (hP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), 0 < X.p0 → X.p0 < r → (∀ n : ℕ, Even n → ∀ γ ∈ X.Γ, X.χ (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)) γ = 1) → ∀ y ∈ X.dom, ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ 0 < n ∧ Even n ∧ ∃ P ∈ X.SS (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)), P y ≠ 0)
@@ -275,9 +271,9 @@ end Model
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Establish `hdom : Dom (fun _ : (D.host.E →+* ℂ) × ℕ => 1) n` using `⟨fun _ => antitone_const, hev⟩`. Take `⟨hrk, hM⟩` from `h.modelW j hj σ hσ`. Establish `key` using `GlobalTheory.Dict.holSub0_le_span_cusp GlobalTheory.chartIndependence_unconditional D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun s => Formalism.L2.PjFree.Unf.ofPj (T.U j s)) hr h.pins.2.1.2 (fun s hs => (Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj s hs)) σ hσ ( …`. Introduce `P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key ⟨hP.1, hP.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem holSub0_le_span_one (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : Formalism.L2.Pj.InR D j)
     (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ) (n : ℕ) (hev : Even n)
@@ -300,31 +296,27 @@ theorem holSub0_le_span_one (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T h j hj σ hσ`. Use `set B : ℕ := 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 with hB`. Establish `hU` using `h.unf j hj σ hσ`. Establish `hrd : ∀ (f : T.R j) k (x : ((T.U j σ).X k).dom), rdU (T.U j σ) f k x.1 = toC (evR (T.Q.Xo j) T.Q.c f ((T.U j σ).un k x))` using `fun f k x => dif_pos x.2`. Establish `hpt : ∀ k (x : ((T.U j σ).X k).dom), ∃ n, Even n ∧ B ≤ n ∧ ∃ f ∈ T.cuspA j (fun _ => 1) n, rdU (T.U j σ) f k x.1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x`. Take `⟨n, hn, he, Q, hQ, hQx⟩` from `exists_scalar_ne_zero hP (T.U j σ) hU (fun n hn k => h.chiTriv j hj σ hσ 0 n ⟨fun _ => antitone_const, hn⟩ k) k x.1 x.2`. Establish `hQ'` using `pow_mem_holSub0 (T.U j σ) he hQ (B + 1)`. Establish `hge : B + 1 + 1 ≤ (B + 1 + 1) * n` using `Nat.le_mul_of_pos_right _ hn`. Take `⟨m, hm⟩ : ∃ m, (B + 1 + 1) * n = m + 2` from `⟨(B + 1 + 1) * n - 2, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hme : Even m`. Establish `h2 : Even (m + 2)` using `hm ▸ he.mul_left _`. Conclude with `(Nat.even_add.1 h2).2 even_two`. Rewrite `hQ'` using `[hm, ← laU_one]`. Establish `hs` using `holSub0_le_span_one D T h j hj σ hσ m hme (by omega) hQ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨m, hme, by omega, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `ev : FDSec (T.U j σ).X →ₗ[ℂ] ℂ` to `{ toFun := fun P => P k x.1, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hle : Submodule.span ℂ (rdU (T.U j σ) '' (T.cuspA j (fun _ => 1) m : Set (T.R j))) ≤ LinearMap.ker ev`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hcon f hf`. Establish `h0 : (Q k x.1) ^ (B + 1 + 1) = 0` using `hle hs`. Conclude with `hQx (pow_eq_zero_iff (by omega) |>.1 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose n hne hnB f hf hfx using hpt`. Establish `hE` using `(GlobalTheory.Reg.evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c).1`. Establish `hsec : ∀ k x, f k x ∈ sec (T.Q.Xo j) T.Q.c (fun _ => 1) (n k x)` using `fun k x => cusp_le_sec _ _ _ _ _ (hf k x)`. Take `⟨hg, hA, -, -, -, -, hpq⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hM` using `(GlobalTheory.Reg.modelAt_and_nonempty_global_model _ _ _ _ (T.Q.Xo j) T.Q.c (by rw [(hpq j hj).1]; exact (hpq j hj).2.1) hg hA).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨la⟩ : Nonempty (HeightOneSpectrum (𝓞 T.Q.c.F)) := by`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 T.Q.c.F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩⟩`. Use `haveI : IsDomain (CAt σ) := inferInstanceAs (IsDomain ℂ)`. Take `⟨s, hs, hsz⟩` from `exists_finite_subfamily la (hM la) σ (ι := Σ k, ((T.U j σ).X k).dom) (fun _ _ => 1) (fun p => n p.1 p.2) (fun p => f p.1 p.2) (fun p => hsec p.1 p.2) (fun z => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, x, t, ht⟩` from `hU.2.2.1 z`. Use `⟨⟨k, x⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArcQ.evR_frBor_of_isDomain hE (hsec k x) t _ z ht]`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun c _ => pow_ne_zero _ (t c).ne_zero) fun h0 => ?_` and prove the remaining obligations. Apply `hfx k x` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrd, h0]`. Use the proof step `rfl)`. Use `set L : ℕ := (B + 2) * 2 * ∏ p ∈ hs.toFinset, (n p.1 p.2 + 2) with hL`. Establish `hprod : 0 < ∏ p ∈ hs.toFinset, (n p.1 p.2 + 2)` using `Finset.prod_pos fun _ _ => by omega`. Establish `hLB : (B + 2) * 2 ≤ L` using `Nat.le_mul_of_pos_right _ hprod`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Establish `hLe : Even L` using `(even_two.mul_left _).mul_right _`. Take `⟨m, hm⟩ : ∃ m, L = m + 2` from `⟨L - 2, by omega⟩`. Establish `hme : Even m` using `(Nat.even_add.1 (hm ▸ hLe)).2 even_two`. Use `⟨fun _ => 1, m, ⟨fun _ => antitone_const, hme⟩, fun _ _ _ => Nat.one_pos, by omega, fun k x hx => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpz⟩` from `hsz ((T.U j σ).un k ⟨x, hx⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨e, he⟩ : n p.1 p.2 + 2 ∣ L` from `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ (hs.mem_toFinset.2 hp)) _`. Choose the witnesses or unpack the hypotheses as in `⟨e, rfl⟩ : ∃ e', e = e' + 1 := by`. Break down `e with _ | e` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `⟨e, rfl⟩`.
-
-Establish `hmem : rdU (T.U j σ) (f p.1 p.2) ∈ Formalism.L2.Pj.holSub0 (T.U j σ).X (laU (T.U j σ) 0 (n p.1 p.2 + 2))`. Rewrite using `[← laU_one]`. Conclude with `⟨((mem_cusp _ _ _ _ _ _).1 (hf p.1 p.2)).2 σ hσ, rdU_mem_offZero _ _⟩`. Establish `hpw` using `pow_mem_holSub0 (T.U j σ) ((hne p.1 p.2).add even_two) hmem e`. Rewrite `hpw` using `[mul_comm, ← he, hm, ← laU_one]`.
-
-Use `⟨_, hpw, ?_⟩` and prove the remaining obligations. Use `show (rdU (T.U j σ) (f p.1 p.2) k x) ^ (e + 1) ≠ 0`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[hrd _ k ⟨x, hx⟩]`. Conclude with `hpz`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_of_pointwise
     (hP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), 0 < X.p0 → X.p0 < r → (∀ n : ℕ, Even n → ∀ γ ∈ X.Γ, X.χ (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)) γ = 1) → ∀ y ∈ X.dom, ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ 0 < n ∧ Even n ∧ ∃ P ∈ X.SS (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)), P y ≠ 0) :

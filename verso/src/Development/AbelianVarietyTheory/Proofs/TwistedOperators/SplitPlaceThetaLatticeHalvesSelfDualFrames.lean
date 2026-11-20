@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitLatticeHalves
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he`. Take `⟨⟨a, haA, ha0, hmax⟩, ⟨b, hbA, hb0, hbmax⟩⟩` from `GlobalTheory.T.exists_max_valuation_ideal_splitPlace_and_conjugate D v φ e he`. Use `⟨⟨a, haA, ha0, hmax, Set.ext fun y => ⟨?_, fun hy => ?_⟩⟩, ⟨b, hbA, hb0, hbmax, Set.ext fun y => ⟨?_, fun hy => ?_⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ⟨ht, -⟩, rfl⟩`. Conclude with `GlobalTheory.T.splitPlaceHomLattice_entries_bounded_by_idealValuation D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he a hmax t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hh, rfl⟩` from `GlobalTheory.T.splitPlaceBoundedMatrix_from_halfHomLattice D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he a haA ha0 y hy`. Conclude with `⟨u, ⟨hu, hh⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨ht, -⟩, rfl⟩`. Conclude with `GlobalTheory.T.splitPlaceAdjointMatrix_homLattice_bounded_conjugateIdeal D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he b hbmax t ht`. Take `⟨u, hu, hh, rfl⟩` from `GlobalTheory.T.conjugatePlaceBoundedMatrix_from_conjugateHalfHomLattice D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he b hbA hb0 y hy`.
-
-Conclude with `⟨u, ⟨hu, hh⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitLattice : ∀ D : D7, SplitLattice D := by
   intro D S T ΛS ΛT βS βT hS hT hfS hfT v φ e he

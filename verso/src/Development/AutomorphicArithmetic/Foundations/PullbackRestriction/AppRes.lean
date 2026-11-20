@@ -39,14 +39,14 @@ def term (p : ℕ) : Cube.Term A p →ₗ[R] Cube.Term B p where
     · simp [h]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem term_apply (p : ℕ) (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : (t.1.image τ).card = p) :
     ψ.term p x t = sortSign τ t.1 • ψ.app t.1 (x ⟨t.1.image τ, h⟩) := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem term_apply_of_ne (p : ℕ) (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : (t.1.image τ).card ≠ p) : ψ.term p x t = 0 := dif_neg h

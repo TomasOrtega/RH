@@ -5,19 +5,17 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R _ 𝔞 I 𝔶 f`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `X _ _ X₀ _ _ φ ψ n hn hnf h`. Take `⟨c, rfl⟩` from `hnf`. Use `Submodule.smul_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr x _`. Take `⟨a, ha, rfl⟩` from `Ideal.mem_span_singleton_mul.1 hr`. Establish `h1 : a • ψ x ∈ (I • ⊤ : Submodule R X₀)` using `h (Submodule.smul_mem_smul ha Submodule.mem_top)`. Establish `h2 : φ (a • ψ x) ∈ (I • ⊤ : Submodule R X)`. Establish `h3 : φ (a • ψ x) ∈ (I • ⊤ : Submodule R X₀).map φ` using `Submodule.mem_map_of_mem h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h3`. Establish `h4 : (n * c * a) • x = c • φ (a • ψ x)`. Rewrite using `[map_smul, hn, smul_smul, smul_smul]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `Submodule.smul_mem _ c h2`. Introduce `M _ _ h k`. Rewrite using `[← Ideal.span_singleton_pow, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Generalize the expression as in `Ideal.span {f} * 𝔞 = b at h`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hle : (I ⊔ 𝔶 ^ k) * (I ⊔ 𝔶) ≤ I ⊔ 𝔶 ^ (k + 1)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.sup_mul, Ideal.mul_sup (𝔶 ^ k), pow_succ]`. Use `sup_le (le_sup_of_le_left Ideal.mul_le_left) (sup_le (le_sup_of_le_left Ideal.mul_le_right) le_sup_right)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ', mul_smul]`. Use `_ ≤ b • ((I ⊔ 𝔶 ^ k) • ⊤) := smul_mono_right b ih`.
-
-Use `_ = (I ⊔ 𝔶 ^ k) • (b • ⊤) := by`. Rewrite using `[← mul_smul, ← mul_smul, mul_comm]`. Use `_ ≤ (I ⊔ 𝔶 ^ k) • ((I ⊔ 𝔶) • ⊤) := smul_mono_right _ h`. Use `_ = ((I ⊔ 𝔶 ^ k) * (I ⊔ 𝔶)) • ⊤ := by rw [mul_smul]`. Use `_ ≤ (I ⊔ 𝔶 ^ (k + 1)) • ⊤ := Submodule.smul_mono_left hle`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.smul_pow_le_of_step :
     ∀ (R : Type) [CommRing R] (𝔞 I 𝔶 : Ideal R) (f : R),

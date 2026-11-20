@@ -8,19 +8,17 @@ open scoped InnerProductSpace ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B`. Take `⟨hlc, -, hstar, hpos, -⟩` from `B.e_adm`. Establish `him : (B.e 1).im = 0`. Establish `h` using `congrArg Complex.im (hstar 1)`. Rewrite `h` using `[inv_one, Complex.star_def, Complex.conj_im]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : 0 ≤ (B.e 1).re`. Establish `h` using `hpos 1 (fun _ => 1) (fun _ => 1)`. Simplify using `only [Fin.sum_univ_one, star_one, one_mul, inv_one] at h`. Conclude with `(Complex.nonneg_iff.mp h).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨him, hre, ?_, hlc.continuous⟩` and prove the remaining obligations. Introduce `y`. Use `set a := (B.e 1).re with ha`. Establish `h1 : B.e 1 = (a : ℂ)` using `Complex.ext (by simp [ha]) (by simp [him])`. Use `set b := B.e y with hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyi : B.e y⁻¹ = star b` using `hstar y`. Establish `key : star b * b = ((‖b‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : star ((‖b‖ : ℝ) : ℂ) = ((‖b‖ : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `h` using `hpos 2 ![1, y] ![b, -((‖b‖ : ℝ) : ℂ)]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, inv_one, one_mul, mul_one, inv_mul_cancel, hyi, h1, star_neg, hs] at h`. Establish `hE : star b * b * (a : ℂ) + star b * -((‖b‖ : ℝ) : ℂ) * b + (-((‖b‖ : ℝ) : ℂ) * b * star b + -((‖b‖ : ℝ) : ℂ) * -((‖b‖ : ℝ) : ℂ) * (a : ℂ)) = ((2 * ‖b‖ ^ 2 * (a - ‖b‖) : ℝ) : ℂ)`. Move the coercions through the operations in `at key ⊢`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `((a : ℂ) - 2 * ((‖b‖ : ℝ) : ℂ)) * key`. Rewrite `h` using `[hE, Complex.zero_le_real]`. Use `le_of_not_gt fun hlt => ?_` and prove the remaining obligations. Establish `hb0 : 0 < ‖b‖` using `lt_of_le_of_lt hre hlt`. Establish `hneg : 2 * ‖b‖ ^ 2 * (a - ‖b‖) < 0` using `mul_neg_of_pos_of_neg (by positivity) (by linarith)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rowsAut_idem_elementary : ∀ B : RowsAut,
     (B.e 1).im = 0 ∧ 0 ≤ (B.e 1).re ∧ (∀ y, ‖B.e y‖ ≤ (B.e 1).re) ∧ Continuous B.e := by

@@ -19,7 +19,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-The claim follows from `d.norm_at_la_A hd h c la ϖ hϖ hϖ2 y hy`.
+A detailed English derivation is pending.
 -/
 theorem norm_at_la (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     (ϖ : 𝓞 K) (hϖ : ϖ ∈ la.asIdeal) (hϖ2 : ϖ ∉ la.asIdeal ^ 2)
@@ -35,7 +35,7 @@ theorem norm_at_la (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (la : IsDedekindDomain.
 open MeasureTheory in
 
 /- English proof (translation)
-The claim follows from `d.norm_at_sg_B hd h c sg`.
+A detailed English derivation is pending.
 -/
 theorem norm_at_sg (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra

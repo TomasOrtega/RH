@@ -10,24 +10,24 @@ namespace GlobalTheory.HeisOps
 variable {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left (x y z : Fin g → ℂ) : hf Hm (x + y) z = hf Hm x z + hf Hm y z := by
   simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (x y z : Fin g → ℂ) : hf Hm x (y + z) = hf Hm x y + hf Hm x z := by
   simp only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_right (x : Fin g → ℂ) : hf Hm x 0 = 0 := by simp [hf]
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : conj (Hm i j) = Hm j i` using `h.apply j i`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -39,9 +39,9 @@ theorem hf_swap (h : Hm.IsHermitian) (x y : Fin g → ℂ) : hf Hm y x = conj (h
   rw [e]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [opU]`. Rewrite using `[add_assoc z x y, mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [hf_add_left, hf_add_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `e` using `Complex.sub_conj (hf Hm x y)`. Rewrite using `[hf_swap h x y]`. Move the coercions through the operations in `at e`. Take the linear combination `(-(Real.pi : ℂ) / 2) * e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem opU_opU (h : Hm.IsHermitian) (x y : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) :
     opU Hm x (opU Hm y F) = fun z =>
@@ -57,7 +57,7 @@ theorem opU_opU (h : Hm.IsHermitian) (x y : Fin g → ℂ) (F : (Fin g → ℂ) 
   linear_combination (-(Real.pi : ℂ) / 2) * e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[opU_opU h x y, opU_opU h y x, add_comm y x, kap, ← mul_assoc, ← Complex.exp_add, hf_swap h x y, Complex.conj_im]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem opU_comm (h : Hm.IsHermitian) (x y : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) :
     opU Hm x (opU Hm y F) = fun z => kap Hm x y * opU Hm y (opU Hm x F) z := by
@@ -68,9 +68,9 @@ theorem opU_comm (h : Hm.IsHermitian) (x y : Fin g → ℂ) (F : (Fin g → ℂ)
   ring_nf
 
 /- English proof (translation)
-Establish `hs : Real.sqrt d ≠ 0` using `by positivity`. Establish `e` using `congrArg Complex.im h`. Rewrite `e` using `[beta, Complex.im_ofReal_mul]`. Establish `e2 : ((u : ℂ) + v * w0 d).im = Real.sqrt d / 2 * v`. Simplify using `[w0, rtd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[e2]`. Conclude with `mul_left_cancel₀ (div_ne_zero hs two_ne_zero) e`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_eq {d : ℕ} (hd : 0 < d) (x y : Fin g → ℂ) (u v : ℤ) (h : beta d Hm x y = u + v * w0 d) :
     (hf Hm x y).im = v := by
@@ -83,22 +83,22 @@ theorem im_eq {d : ℕ} (hd : 0 < d) (x y : Fin g → ℂ) (u v : ℤ) (h : beta
   exact mul_left_cancel₀ (div_ne_zero hs two_ne_zero) e
 
 /- English proof (translation)
-Simplify using `only [opU]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opU_const_mul (c : ℂ) (x : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ) (z : Fin g → ℂ) :
     opU Hm x (fun w => c * F w) z = c * opU Hm x F z := by
   simp only [opU]; ring
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `hb`. Establish `him` using `im_eq hd x y u v huv`. Establish `hre : (beta d Hm x y).re = u + v / 2`. Rewrite using `[huv]`. Simplify using `[w0, rtd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq : (beta d Hm (x + y) (x + y)).re = (beta d Hm x x).re + (beta d Hm y y).re + (2 * u + v)`. Simplify using `only [beta, Complex.re_ofReal_mul, hf_add_left, hf_add_right, Complex.add_re] at hre ⊢`. Rewrite using `[hf_swap h x y, Complex.conj_re]`. Take the linear combination `2 * hre`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `z`. Establish `e : opW d Hm x (opW d Hm y F) z = Complex.exp ((Real.pi : ℂ) * Complex.I * ((beta d Hm x x).re : ℂ)) * (Complex.exp ((Real.pi : ℂ) * Complex.I * ((beta d Hm y y).re : ℂ)) * opU Hm x (opU Hm y F) z)`. Rewrite using `[← opU_const_mul]`. Both sides reduce to the same expression. Rewrite using `[e, opU_opU h, him]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [opW]`. Rewrite using `[hq, ← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-(u + v), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opW_opW {d : ℕ} (hd : 0 < d) (h : Hm.IsHermitian) (x y : Fin g → ℂ) (F : (Fin g → ℂ) → ℂ)
     (hb : beta d Hm x y ∈ OK d) : opW d Hm x (opW d Hm y F) = opW d Hm (x + y) F := by
@@ -124,7 +124,7 @@ theorem opW_opW {d : ℕ} (hd : 0 < d) (h : Hm.IsHermitian) (x y : Fin g → ℂ
   ring
 
 /- English proof (translation)
-Unfold `opU hf`. Use `(hF.comp (contDiff_id.add contDiff_const)).mul (ContDiff.cexp ?_)` and prove the remaining obligations. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_opU (x : Fin g → ℂ) {F : (Fin g → ℂ) → ℂ} (hF : ContDiff ℂ ⊤ F) : ContDiff ℂ ⊤ (opU Hm x F) := by
   unfold opU hf
@@ -132,16 +132,16 @@ theorem contDiff_opU (x : Fin g → ℂ) {F : (Fin g → ℂ) → ℂ} (hF : Con
   fun_prop
 
 /- English proof (translation)
-The claim follows from `contDiff_const.mul (contDiff_opU x hF)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_opW (d : ℕ) (x : Fin g → ℂ) {F : (Fin g → ℂ) → ℂ} (hF : ContDiff ℂ ⊤ F) :
     ContDiff ℂ ⊤ (opW d Hm x F) :=
   contDiff_const.mul (contDiff_opU x hF)
 
 /- English proof (translation)
-Introduce `g d Hm hd h`. Use `⟨fun x y F => ⟨opU_opU h x y F, opU_comm h x y F, opW_opW hd h x y F⟩, fun F => ?_, fun x F hF => ⟨contDiff_opU x hF, contDiff_opW d x hF⟩, hf_swap h, im_eq hd, fun x y z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `constructor <;> funext z <;> simp [opW, opU, beta, hf_zero_right]`. Simplify using `only [kap, hf_add_right, ← Complex.exp_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Move the coercions through the operations in `[Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [kap, hf_add_left, ← Complex.exp_add]`. Use `congr 1`. Move the coercions through the operations in `[Complex.add_im]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

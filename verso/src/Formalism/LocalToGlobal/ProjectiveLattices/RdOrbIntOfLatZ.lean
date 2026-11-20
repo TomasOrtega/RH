@@ -16,14 +16,14 @@ variable {r ρ : ℕ}
 def cM {m n : Type} (A : Matrix m n ℂ) : Matrix m n ℂ := A.map (starRingEnd ℂ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cM_cM {m n : Type} (A : Matrix m n ℂ) : cM (cM A) = A := by
   ext i j
   simp [cM]
 
 /- English proof (translation)
-Simplify using `only [cM]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cM_mul {m n o : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matrix n o ℂ) :
     cM (A * B) = cM A * cM B := by
@@ -31,21 +31,21 @@ theorem cM_mul {m n o : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matrix n o �
   exact Matrix.map_mul
 
 /- English proof (translation)
-Simplify using `only [cM]`. Conclude with `Matrix.transpose_map`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cM_transpose {m n : Type} (A : Matrix m n ℂ) : cM Aᵀ = (cM A)ᵀ := by
   simp only [cM]
   exact Matrix.transpose_map
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cM_add {m n : Type} (A B : Matrix m n ℂ) : cM (A + B) = cM A + cM B := by
   ext i j
   simp [cM]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cM]`. Simplify using `[cM, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cM_one : cM (1 : Matrix (Fin r) (Fin r) ℂ) = 1 := by
   ext i j
@@ -54,9 +54,9 @@ theorem cM_one : cM (1 : Matrix (Fin r) (Fin r) ℂ) = 1 := by
   · simp [cM, Matrix.one_apply, h]
 
 /- English proof (translation)
-Establish `hg' : cM g = gᵀ`. Use `congrArg Matrix.transpose hg` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ X : Matrix (Fin ρ) (Fin r) ℂ, Fᵀ * (g * (cM F * X)) = 0`. Introduce `X`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc g, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hiso, Matrix.zero_mul]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul, Matrix.transpose_transpose, cM_add, cM_one, cM_mul, cM_transpose, cM_cM, hg', hsk]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, key, neg_zero, Matrix.mul_zero, add_zero, neg_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem unitary_core (g : Matrix (Fin r) (Fin r) ℂ) (F : Matrix (Fin r) (Fin ρ) ℂ)
     (β : Matrix (Fin ρ) (Fin ρ) ℂ) (hg : (cM g)ᵀ = g) (hiso : Fᵀ * g * cM F = 0)
@@ -75,11 +75,11 @@ theorem unitary_core (g : Matrix (Fin r) (Fin r) ℂ) (F : Matrix (Fin r) (Fin �
   abel
 
 /- English proof (translation)
-Establish `hT : (g * cM F)ᵀ * F = 0`. Use `congrArg Matrix.transpose hiso` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Generalize the expression as in `(g * cM F)ᵀ = H at hT ⊢`. Establish `key : ∀ X : Matrix (Fin ρ) (Fin r) ℂ, H * (F * X) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hT, Matrix.zero_mul]`. Establish `hinv : (1 + F * β * H) * (1 - F * β * H) = 1`. Simplify using `only [add_mul, mul_sub, one_mul, mul_one, Matrix.mul_assoc, key, Matrix.mul_zero, sub_zero]`. Apply the tactic sequence `first | abel | skip`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `congrArg Matrix.det hinv` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_core (g : Matrix (Fin r) (Fin r) ℂ) (F : Matrix (Fin r) (Fin ρ) ℂ)
     (β : Matrix (Fin ρ) (Fin ρ) ℂ) (hiso : Fᵀ * g * cM F = 0) :
@@ -106,7 +106,7 @@ section FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
 /- English proof (translation)
-Unfold `cc`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj E τ x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem emb_cc' (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := by unfold cc; exact NumberField.IsCMField.complexEmbedding_complexConj E τ x
 
@@ -114,9 +114,9 @@ def Fm (τ : E →+* ℂ) (e : Fin ρ → Fin r → E) : Matrix (Fin r) (Fin ρ)
   Matrix.of fun k a => τ (e a k)
 
 /- English proof (translation)
-Unfold `zMatC`. Use extensionality with `k l`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply, Matrix.transpose_apply, Fm, cM, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zMatC_eq (X : Data E r) (e : Fin ρ → Fin r → E) (τ : E →+* ℂ) (β : Matrix (Fin ρ) (Fin ρ) ℂ) :
     zMatC X e τ β = 1 + Fm τ e * β * (X.Gm.map τ * cM (Fm τ e))ᵀ := by
@@ -130,7 +130,7 @@ theorem zMatC_eq (X : Data E r) (e : Fin ρ → Fin r → E) (τ : E →+* ℂ) 
   ring
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.FD.gram hermC ReciprocityTheory.ChartRestriction.G.FD.col`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, cM, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq (X : Data E r) (τ : E →+* ℂ) (A : Matrix (Fin r) (Fin r) ℂ) :
     gram τ X.Gm A = Aᵀ * X.Gm.map τ * cM A := by
@@ -140,7 +140,7 @@ theorem gram_eq (X : Data E r) (τ : E →+* ℂ) (A : Matrix (Fin r) (Fin r) �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, cM, Matrix.map_apply]`. Rewrite using `[← emb_cc', X.4 j i]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_g (X : Data E r) (τ : E →+* ℂ) : (cM (X.Gm.map τ))ᵀ = X.Gm.map τ := by
   ext i j
@@ -148,9 +148,9 @@ theorem herm_g (X : Data E r) (τ : E →+* ℂ) : (cM (X.Gm.map τ))ᵀ = X.Gm.
   rw [← emb_cc', X.4 j i]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Fm, cM, Matrix.of_apply, Matrix.map_apply, Matrix.zero_apply, Finset.sum_mul]`. Establish `h` using `congrArg τ (cu.3 a b)`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.herm at h`. Simplify using `only [map_sum, map_mul, map_zero, emb_cc'] at h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_F (X : Data E r) (cu : CuspFD X ρ) (τ : E →+* ℂ) :
     (Fm τ cu.e)ᵀ * X.Gm.map τ * cM (Fm τ cu.e) = 0 := by
@@ -164,7 +164,7 @@ theorem iso_F (X : Data E r) (cu : CuspFD X ρ) (τ : E →+* ℂ) :
   exact h
 
 /- English proof (translation)
-Establish `h'` using `hb`. Unfold `IsSkew at h'`. Use extensionality with `a b`. Simplify using `only [cM, Matrix.map_apply, Matrix.neg_apply, Matrix.transpose_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal, ← emb_cc', h', map_neg, mul_neg, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem skew_beta (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas X cu k)) (τ : E →+* ℂ)
     (t : Fin (nZ X ρ) → ℝ) :
@@ -176,7 +176,7 @@ theorem skew_beta (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas X 
     smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal, ← emb_cc', h', map_neg, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `hs : LinearIndependent ℤ (zBas X cu) ∧ ∀ β, β ∈ zGam X cu ↔ β ∈ Submodule.span ℤ (Set.range (zBas X cu))` using `Classical.epsilon_spec h`. Establish `hm : zBas X cu k ∈ zGam X cu` using `(hs.2 _).2 (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `hm.1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zBas_skew (X : Data E r) (cu : CuspFD X ρ) (h : ∃ bs, IsZBasis X cu bs) (k : Fin (nZ X ρ)) :
     IsSkew (zBas X cu k) := by
@@ -186,17 +186,13 @@ theorem zBas_skew (X : Data E r) (cu : CuspFD X ρ) (h : ∃ bs, IsZBasis X cu b
   exact hm.1
 
 /- English proof (translation)
-Unfold `zAct ReciprocityTheory.ChartRestriction.G.FD.Data.dom at *`. Unfold `GG at *`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Introduce `τ`. Take `⟨hdet, hpos⟩` from `hx τ`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `dmin mat at *`. Use `beta_reduce`. Use `set M := zMatC X cu.e (τ : E →+* ℂ) (∑ k, ((t k : ℝ) : ℂ) • (zBas X cu k).map (τ : E →+* ℂ)) with hMdef`. Establish `hU : Mᵀ * X.Gm.map (τ : E →+* ℂ) * cM M = X.Gm.map (τ : E →+* ℂ)`. Rewrite using `[hMdef, zMatC_eq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unitary_core _ _ _ (herm_g X _) (iso_F X cu _) (skew_beta X cu hb _ t)`. Establish `hD : M.det ≠ 0`. Rewrite using `[hMdef, zMatC_eq]`. Conclude with `det_ne_core _ _ _ (iso_F X cu _)`. Establish `hU' : ∀ Y : Matrix (Fin r) (Fin r) ℂ, Mᵀ * (X.Gm.map (τ : E →+* ℂ) * (cM M * Y)) = X.Gm.map (τ : E →+* ℂ) * Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hU]`. Establish `hG : ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) X.Gm (M * of (x τ)) = ReciprocityTheory.ChartRestriction.G.FD.gram (τ : E →+* ℂ) X.Gm (of (x τ))`. Simplify using `only [gram_eq, Matrix.transpose_mul, cM_mul, Matrix.mul_assoc, hU']`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
-
-Use `show (M * of (x τ)).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hD hdet`. Use `hpos i` as an intermediate fact. Rewrite `this` using `[← hG]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zAct_mem_dom (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas X cu k))
     (t : Fin (nZ X ρ) → ℝ) (x : Frame X.Ψ r) (hx : x ∈ X.dom) : zAct X cu t x ∈ X.dom := by
@@ -230,14 +226,14 @@ theorem zAct_mem_dom (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas
     exact this
 
 /- English proof (translation)
-Introduce `cu t x hx`. Conclude with `zAct_mem_dom (X cu.1) cu.2 (fun k => zBas_skew _ _ (h cu) k) t x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbDom_of_latZ {Comp : Type} (X : Comp → Data E r) (h : LatZ X ρ) : OrbDom X ρ := by
   intro cu t x hx
   exact zAct_mem_dom (X cu.1) cu.2 (fun k => zBas_skew _ _ (h cu) k) t x hx
 
 /- English proof (translation)
-The claim follows from `rdOrbInt_of σ X rd hc (orbDom_of_latZ X h)`.
+A detailed English derivation is pending.
 -/
 theorem rdOrbInt_of_latZ {Comp K : Type} [Field K] (σ : K →+* ℂ) {C : Type} [AddCommGroup C]
     [Module K C] (X : Comp → Data E r) (rd : C →ₛₗ[σ] (∀ c, Frame (X c).Ψ r → ℂ))
